@@ -33,13 +33,29 @@ function browserSyncInit(baseDir, browser) {
    *
    * For more details and option, https://github.com/chimurai/http-proxy-middleware/blob/v0.9.0/README.md
    */
-  // server.middleware = proxyMiddleware('/users', {target: 'http://jsonplaceholder.typicode.com', changeOrigin: true});
+  //server.middleware = proxyMiddleware('/users', {arget: 'http://jsonplaceholder.typicode.com',changeOrigin: true});
+
+  var proxy = require('http-proxy-middleware')
+  var proxyTable = {
+      'localhost:3000/api': 'http://localhost:8000',
+  }
+  // 设置代理
+  var middleware = proxy('/api', {
+      target: 'https://api.github.com',
+      changeOrigin: true,
+      logLevel: 'debug',
+      pathRewrite: {
+          '^/api' : '/api'
+      },
+      router: proxyTable,
+  });
 
   browserSync.instance = browserSync.init({
     startPath: '/',
     server: server,
     browser: browser,
-    ghostMode: false
+    ghostMode: false,
+    middleware: [middleware],
   });
 }
 

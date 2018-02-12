@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+//load serverConfig.js
+var app = require('./config/serverConfig');
+
+//set up api ===========================================
+require('./myNewPage/routes')(app);
+
+
