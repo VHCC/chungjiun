@@ -4,10 +4,12 @@
  * Module dependencies.
  */
 
+require('../app/pages/pages.order')
+
 //load serverConfig.js
-var app = require('./config/serverConfig');
+const app = require('./config/serverConfig');
 
 //set up api ===========================================
-require('./myNewPage/routes')(app);
+require('./restfulAPI/myNewPage/routes')(app);
 
 

@@ -1,17 +1,9 @@
 var path = require('path');
 var appDir = path.dirname(require.main.filename);
 
+var Todo = require('./models/todo');
+
 module.exports = function(app) {
-
-    var mongoose = require('mongoose');
-
-// ----- define model
-    const Todo  = mongoose.model('Todo', {
-        text: {
-            type: String,
-            default: ''
-        }
-    });
 
 // application -------------------------------------------------------------
 // app.get('*', function (req, res) {
