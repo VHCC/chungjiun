@@ -3,8 +3,8 @@
  * created on 2018/02/14
  */
     angular.module('loginCtrl', [])
-        .controller('loginController', ['$scope','$http', 'Login', function (scope, http, Login) {
-            return new LoginCtrl(scope, http, Login);
+        .controller('loginController', ['$scope','$http', '$window', 'Login', function (scope, http, window, Login) {
+            return new LoginCtrl(scope, http, window, Login);
         }])
         .factory('Login', ['$http', function(http) {
             return {
@@ -21,7 +21,7 @@
         }]);
 
     /** @ngInject */
-    function LoginCtrl(scope, mHttp, Login) {
+    function LoginCtrl(scope, mHttp, window, Login) {
         scope.formData = {};
         scope.loading = false;
 
@@ -61,6 +61,7 @@
                 // if successful creation, call our get function to get all the new todos
                     .success(function(data) {
                         scope.loading = false;
+                        window.location.href = 'http://localhost:3000';
                         scope.formData = {}; // clear the form so our user is ready to enter another
                         scope.todos = data; // assign our new list of todos
                     });
