@@ -1,5 +1,4 @@
 var path = require('path');
-var appDir = path.dirname(require.main);
 
 var Todo = require('./models/todo');
 

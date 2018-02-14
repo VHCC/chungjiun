@@ -7,6 +7,9 @@ module.exports = mongoose.model('User', {
     password: {
         type: String
     },
+    name: {
+        type: String
+    },
     roleType: {
         type: Number,
         default: 0

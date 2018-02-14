@@ -36,18 +36,19 @@ function browserSyncInit(baseDir, browser) {
   //server.middleware = proxyMiddleware('/users', {arget: 'http://jsonplaceholder.typicode.com',changeOrigin: true});
 
   var proxy = require('http-proxy-middleware')
-  var proxyTable = {
-      'localhost:3000/api': 'http://localhost:8000',
+
+  var proxyTableAPI = {
+      'localhost:3000/api': 'http://localhost:8000'
   }
   // 设置代理
-  var middleware = proxy('/api', {
+  var apiProxy = proxy('/api', {
       target: 'https://api.github.com',
       changeOrigin: true,
       logLevel: 'debug',
       pathRewrite: {
           '^/api' : '/api'
       },
-      router: proxyTable,
+      router: proxyTableAPI,
   });
 
   browserSync.instance = browserSync.init({
@@ -55,7 +56,7 @@ function browserSyncInit(baseDir, browser) {
     server: server,
     browser: browser,
     ghostMode: false,
-    middleware: [middleware],
+    middleware: [apiProxy]
   });
 }
 
