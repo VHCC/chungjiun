@@ -18,7 +18,7 @@
     'BlurAdmin.pages.profile',
     'BlurAdmin.pages.myNewPage',
     'BlurAdmin.pages.myCalender',
-    'BlurAdmin.pages.myProject'
+    'BlurAdmin.pages.myProject',
   ])
       .config(routeConfig)
 
@@ -45,6 +45,10 @@
         title: '404 Page',
         fixedHref: '404.html',
         blank: true
+      }, {
+          title: 'My Login',
+          fixedHref: 'login.html',
+          blank: true
       }]
     });
     baSidebarServiceProvider.addStaticItem({

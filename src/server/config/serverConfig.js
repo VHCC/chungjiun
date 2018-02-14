@@ -13,7 +13,6 @@ var path = require('path');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var http = require('http');
-var debug = require('debug')('workhourexpress:server');
 
 // var index = require('./routes/index');
 // var users = require('./routes/users');
@@ -120,7 +119,6 @@ function onListening() {
     var bind = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
-    debug('Listening on ' + bind);
 }
 
 // catch 404 and forward to error handler

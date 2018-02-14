@@ -9,22 +9,22 @@
         .controller('mainController', ['$scope','$http', 'Todos', function (scope, http, Todos) {
             return new NewPageCtrl(scope, http, Todos);
         }])
-        .factory('Todos', ['$http',function(aaa) {
+        .factory('Todos', ['$http',function(http) {
             return {
                 get : function() {
-                    return aaa.get('/api/todos');
+                    return http.get('/api/todos');
                 },
                 create : function(todoData) {
-                    return aaa.post('/api/todos', todoData);
+                    return http.post('/api/todos', todoData);
                 },
                 delete : function(id) {
-                    return aaa.delete('/api/todos/' + id);
+                    return http.delete('/api/todos/' + id);
                 },
                 deleteTest : function () {
-                    return aaa.post('/api/todos/test');
+                    return http.post('/api/todos/test');
                 }
             }
-        }]);;
+        }]);
 
     /** @ngInject */
     function NewPageCtrl(scope, mHttp, Todos) {
