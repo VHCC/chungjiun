@@ -7,6 +7,7 @@
 
     angular.module('BlurAdmin.pages', [
         'ui.router',
+        'ngCookies',
 
         'BlurAdmin.pages.dashboard',
         'BlurAdmin.pages.ui',

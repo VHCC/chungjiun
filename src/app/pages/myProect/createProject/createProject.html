@@ -10,13 +10,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group has-feedback"
                                          ng-class="{'has-error': vm.projectInfoForm.username.$invalid && (vm.projectInfoForm.username.$dirty || vm.projectInfoForm.$submitted)}">
-                                        <label for="exampleUsername1">Username</label>
+                                        <label for="exampleUsername1">Username {{username}}aaa</label>
                                         <input type="text" class="form-control" id="exampleUsername1" name="username" placeholder="Username" ng-model="vm.projectInfo.username" required>
                                         <span class="help-block error-block basic-block">Required</span>
                                     </div>
                                     <div class="form-group" ng-class="{'has-error': vm.projectInfoForm.email.$invalid && (vm.projectInfoForm.email.$dirty || vm.projectInfoForm.$submitted)}">
                                         <label for="exampleInputEmail1">Email address</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1" name="email" placeholder="Email" ng-model="vm.projectInfo.email" required>
+                                        <input type="email" class="form-control" id="exampleInputEmail1" name="email" placeholder="Email" ng-model="vm.projectInfo.email" required >
                                         <span class="help-block error-block basic-block">Proper email required</span>
                                     </div>
                                 </div>
