@@ -1,5 +1,5 @@
 var path = require('path');
-var appDir = path.dirname(require.main.filename);
+var appDir = path.dirname(require.main);
 
 var Todo = require('./models/todo');
 
@@ -26,7 +26,7 @@ module.exports = function(app) {
 // create Todo and send back all todos after creation
     app.post('/api/todos', function(req, res) {
         // create a Todo, information comes from AJAX request from Angular
-        console.log("create");
+        console.log("create todo");
         Todo.create({
             text : req.body.text,
             done : false

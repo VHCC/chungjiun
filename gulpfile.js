@@ -38,8 +38,8 @@ gulp.task('load', function() {
         // the script to run the app
         script: './src/server/server',
         // this listens to changes in any of these files/routes and restarts the application
-        watch: ["server.js", "app.js", "routes/", 'public/*', 'public/*/**'],
-        ignore: ["gulpfile.js", "node_modules/", "public/**/*.*"],
+        watch: ["server.js", "app.js", "restfulAPI/"],
+        ignore: ["gulpfile.js", "node_modules/"],
         env: {
             'NODE_ENV': 'development'
         },
