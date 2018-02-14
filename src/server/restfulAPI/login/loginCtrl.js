@@ -2,9 +2,9 @@
  * @author Ichen.chu
  * created on 2018/02/14
  */
-    angular.module('loginCtrl', [])
-        .controller('loginController', ['$scope','$http', '$window', 'Login', function (scope, http, window, Login) {
-            return new LoginCtrl(scope, http, window, Login);
+    angular.module('loginCtrl', ["ngCookies"])
+        .controller('loginController', ['$scope', '$http', '$window', '$cookies', 'Login', function (scope, http, window, cookies, Login) {
+            return new LoginCtrl(scope, http, window, cookies, Login);
         }])
         .factory('Login', ['$http', function(http) {
             return {
@@ -21,7 +21,7 @@
         }]);
 
     /** @ngInject */
-    function LoginCtrl(scope, mHttp, window, Login) {
+    function LoginCtrl(scope, mHttp, window, cookies, Login) {
         scope.formData = {};
         scope.loading = false;
 
@@ -60,8 +60,10 @@
 
                 // if successful creation, call our get function to get all the new todos
                     .success(function(data) {
+                        cookies.loginUser = data;
+                        console.log('cookies.loginUser= ' + cookies.loginUser);
                         scope.loading = false;
-                        window.location.href = 'http://localhost:3000';
+                        // window.location.href = 'http://localhost:3000';
                         scope.formData = {}; // clear the form so our user is ready to enter another
                         scope.todos = data; // assign our new list of todos
                     });
