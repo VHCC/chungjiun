@@ -56,7 +56,12 @@ gulp.task('injectAuth', ['stylesAuth'], function () {
 gulp.task('inject404', ['styles404'], function () {
   return injectAlone({
     css: [path.join('!' + conf.paths.tmp, '/serve/app/vendor.css'), path.join(conf.paths.tmp, '/serve/app/404.css')],
-    paths: path.join(conf.paths.src, '/404.html')
+    paths: [
+        path.join(conf.paths.src, '/404.html'),
+        path.join(conf.paths.src, '/noRight.html')
+    ]
+
+
   })
 });
 

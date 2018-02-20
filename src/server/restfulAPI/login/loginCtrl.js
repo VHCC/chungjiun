@@ -60,16 +60,20 @@
 
                 // if successful creation, call our get function to get all the new todos
                     .success(function(data) {
-                        if (data.length > 0) {
-                            cookies.username = data[0].name;
-                            cookies.put('username', data[0].name);
+                        scope.loading = false;
 
+                        if (data.length == 0) {
+                            return;
                         }
+
+                        // cookies.username = data[0].name; wrong program
+                        cookies.put('username', data[0].name);
+
+                        cookies.put('roletype', data[0].roleType);
                         console.log('cookies.username= ' + cookies.username);
                         console.log('cookies.username= ' + cookies.get('username'));
-                        scope.loading = false;
                         window.location.href = 'http://localhost:3000';
-                        scope.formData = {}; // clear the form so our user is ready to enter another
+
                         scope.todos = data; // assign our new list of todos
                     });
             }

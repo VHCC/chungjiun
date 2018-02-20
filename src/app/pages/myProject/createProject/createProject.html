@@ -1,0 +1,76 @@
+<div class="widgets">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div ba-panel ba-panel-title="專案建立" ba-panel-class="with-scroll">
+                <ba-wizard>
+                    <ba-wizard-step title="承辦資訊">
+                        <form novalidate>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group has-feedback">
+                                        <label>專案建置 經理</label>
+                                        <br>
+                                        <b id="projectCreator">{{username}}</b>
+                                    </div>
+                                    <div class="form-group" >
+                                        <label for="productName">指定承辦人員</label>
+                                        <select class="form-control" id="projectMajor">
+                                            <option ng-repeat="user in users" id="{{user._id}}">{{user.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </ba-wizard-step>
+                    <ba-wizard-step title="專案資訊" form="vm.projectInfo">
+                        <form name="vm.projectInfo" novalidate>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group has-feedback"
+                                         ng-class="{'has-error': vm.projectInfo.productName.$invalid &&
+                                         (vm.projectInfo.productName.$dirty || vm.projectInfo.$submitted)}">
+                                        <label for="productName">專案名稱</label>
+                                        <input type="text" class="form-control" id="productName" name="productName"
+                                               placeholder="Product name" ng-model="vm.productInfo.productName"
+                                               required>
+                                        <span class="help-block error-block basic-block">Required</span>
+                                    </div>
+                                    <div class="form-group"
+                                         ng-class="{'has-error': vm.projectInfo.projectCode.$invalid &&
+                                         (vm.projectInfo.projectCode.$dirty || vm.projectInfo.$submitted)}">
+                                        <label for="projectCode">專案編號</label>
+                                        <input type="text" class="form-control" id="projectCode" name="projectCode"
+                                               placeholder="productId" ng-model="vm.productInfo.projectCode"
+                                               required>
+                                        <span class="help-block error-block basic-block">Required</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label >技師</label>
+                                        <select class="form-control" title="Category" selectpicker>
+                                            <option selected>Ａ技師</option>
+                                            <option>Ｂ技師</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </ba-wizard-step>
+                    <ba-wizard-step title="Finish">
+                        <div ng-controller="ModalsPageCtrl">
+                            <button type="button" class="btn btn-info" data-toggle="modal"
+                                    ng-click="openProgressDialog()">
+                                Save Project
+                            </button>
+                        </div>
+                        </form>
+                    </ba-wizard-step>
+                </ba-wizard>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-primary btn-lg" ng-click="ichen()">TEST</button>
+    <button type="button" class="btn btn-primary btn-lg" ng-click="deleteAll()">deleteAll</button>
+</div>

@@ -11,6 +11,7 @@ const app = require('./config/serverConfig');
 
 //set up api ===========================================
 require('./restfulAPI/login/routes')(app);
+require('./restfulAPI/myProject/createProject/routes')(app);
 require('./restfulAPI/myNewPage/routes')(app);
 
 

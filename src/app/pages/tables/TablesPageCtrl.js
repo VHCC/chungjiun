@@ -20,7 +20,8 @@
         lastName: 'Otto',
         username: '@mdo',
         email: 'mdo@gmail.com',
-        age: '28'
+        age: '28',
+        major: '1',
       },
       {
         id: 2,
@@ -633,7 +634,6 @@
         "id": 6,
         "name": "Mathews Hopkins",
         "status": 4,
-        "group": 2
       },
       {
         "id": 7,

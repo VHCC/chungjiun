@@ -46,7 +46,7 @@ app.use(bodyParser.json({type: 'application/vnd.api+json'})); // parse applicati
 
 // listen (start app with node server.js) ======================================
 app.listen(port);
-console.log("App listening on port " + port);
+console.log("-------- Restful Server listening on port " + port + " --------");
 
 // /**
 //  * Create HTTP server.

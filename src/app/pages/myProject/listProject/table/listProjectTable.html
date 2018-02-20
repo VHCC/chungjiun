@@ -1,0 +1,46 @@
+<div class="horizontal-scroll">
+
+    <p class="text-center" ng-show="loading">
+        <span class="fa fa-spinner fa-spin fa-3x"></span>
+    </p>
+    <table class="table table-hover" st-table="editableTableData">
+        <thead>
+        <tr class="sortable">
+            <th class="table-id" st-sort="id" st-sort-default="true">#</th>
+            <th st-sort="code">代碼</th>
+            <th st-sort="name">名稱</th>
+            <th st-sort="majorID">主承辦</th>
+            <th st-sort="creator">經理</th>
+            <th st-sort="age">技師</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="pro in projects" class="editable-tr-wrap">
+            <td class="table-id">{{pro._id}}</td>
+            <td><span editable-text="pro.code" blur="cancel">{{pro.code}}</span></td>
+            <td><span editable-text="pro.name" blur="cancel">{{pro.name}}</span></td>
+            <td class="select-td">
+        <span editable-select="pro.majorID" blur="cancel" e-name="majorID" e-form="rowform"
+              e-selectpicker
+              e-ng-options="user.value as user.name for user in majorMemebers">
+        {{ showMajor(pro) }}
+        </span>
+                <br>
+                <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$show()"
+                        class="btn btn-primary editable-table-button btn-xs">
+                    Edit
+                </button>
+            </td>
+            <td>{{pro.creator}}</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="6" class="text-center">
+                <div st-pagination="" st-items-by-page="10" st-displayed-pages="5"></div>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>

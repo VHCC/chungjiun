@@ -15,5 +15,5 @@ db.on('error', function callback() {
 });
 
 db.once('open', function callback() {
-    console.log("Database Connected to " + remoteDB.toString());
+    console.log("----- Database Connected to " + remoteDB.toString() + " -----");
 });

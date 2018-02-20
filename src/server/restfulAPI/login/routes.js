@@ -35,7 +35,7 @@ module.exports = function(app) {
                 res.json(user);
                 return;
             }
-            console.log("no User ");
+            console.log("no User= " + req.body.email);
             res.sendStatus("500");
         });
     });
