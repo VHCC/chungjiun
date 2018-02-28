@@ -18,7 +18,7 @@ var http = require('http');
 // var users = require('./routes/users');
 
 // configuration ===============================================================
-mongoose.connect(database.remoteUrl);
+mongoose.connect(database.localUrl);
 
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'hogan');

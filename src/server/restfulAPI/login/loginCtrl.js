@@ -78,4 +78,11 @@
                     });
             }
         };
+
+    //    sign out
+        scope.signOut = function () {
+            console.log("sign Out");
+            cookies.put('username', null);
+            cookies.put('roletype', null);
+        }
     }
