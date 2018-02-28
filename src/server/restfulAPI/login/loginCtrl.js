@@ -79,8 +79,13 @@
                     })
                     .error(function (data) {
                         scope.loading = false;
+
                         console.log(data);
-                        window.userNoFind();
+                        if (data.code == 400) {
+                            window.userPWDWrong();
+                        }  else if (data.code == 404) {
+                            window.userNoFind();
+                        }
                     });
 
             }
@@ -93,5 +98,13 @@
             cookies.put('roletype', null);
             window.signOutSucess();
         }
+
+        scope.initLogin = function () {
+            console.log("initLogin.");
+            // check if there is query in url
+            // and fire search in case its value is not empty
+            cookies.put('username', null);
+            cookies.put('roletype', null);
+        };
 
     }

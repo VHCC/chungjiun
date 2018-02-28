@@ -31,7 +31,7 @@
 
 
 </head>
-<body ng-controller="loginController">
+<body id='yourControllerElementID' ng-controller="loginController" ng-init="initLogin()">
 <main class="auth-main">
     <div class="auth-block">
         <h1>Login</h1>
@@ -60,12 +60,12 @@
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <button type="submit" class="btn btn-default btn-auth" ng-click="findUser()">Sign In</button>
-                    <button type="submit" class="btn btn-default btn-auth" ng-click="createUser()">Sign Up</button>
-                    <button type="button" class="btn btn-default btn-auth" ng-click="signOut()">Sign Out</button>
+                    <!--<button type="submit" class="btn btn-default btn-auth" ng-click="createUser()">Sign Up</button>-->
+                    <!--<button type="button" class="btn btn-default btn-auth" ng-click="signOut()">Sign Out</button>-->
                     <!--<button type="button" class="btn btn-warning" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/warningModal.html')">-->
-                    <button type="button" class="btn btn-warning" data-toggle="modal" onclick="userNoFind()">
-                        Warning Message
-                    </button>
+                    <!--<button type="button" class="btn btn-warning" data-toggle="modal" onclick="userNoFind()">-->
+                        <!--Warning Message-->
+                    <!--</button>-->
 
                 </div>
             </div>
@@ -78,9 +78,19 @@
 
 </body>
 <script>
+
     function userNoFind() {
         new Noty({
             text: 'User Not Find!',
+            layout: 'center',
+            theme: 'light',
+            type: 'error',
+        }).show();
+    }
+
+    function userPWDWrong() {
+        new Noty({
+            text: 'Wrong Password!',
             layout: 'center',
             theme: 'light',
             type: 'error',

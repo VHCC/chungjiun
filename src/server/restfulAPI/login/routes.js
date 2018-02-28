@@ -26,12 +26,22 @@ module.exports = function(app) {
     app.post('/api/loginfind/', function(req, res) {
 
         UserLogin.find({
-            email : req.body.email
+            email : req.body.email,
+
         }, function(err, user) {
             if (err) {
                 res.send(err);
             }
             if (user != '') {
+
+                if (req.body.password != user[0].get('password')) {
+                    console.log('wrong pwd= ' + req.body.password);
+                    res.status(404).send({
+                        code: 400,
+                        error: global.status._400,
+                    });
+                    return;
+                }
                 console.log("find User Success, user= " + user);
                 res.json(user);
                 return;
