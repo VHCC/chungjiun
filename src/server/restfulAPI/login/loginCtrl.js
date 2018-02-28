@@ -63,6 +63,7 @@
                         scope.loading = false;
 
                         if (data.length == 0) {
+                            window.userNoFind();
                             return;
                         }
 
@@ -75,7 +76,13 @@
                         window.location.href = 'http://localhost:3000';
 
                         scope.todos = data; // assign our new list of todos
+                    })
+                    .error(function (data) {
+                        scope.loading = false;
+                        console.log(data);
+                        window.userNoFind();
                     });
+
             }
         };
 
@@ -84,5 +91,7 @@
             console.log("sign Out");
             cookies.put('username', null);
             cookies.put('roletype', null);
+            window.signOutSucess();
         }
+
     }

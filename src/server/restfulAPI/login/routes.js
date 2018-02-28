@@ -1,5 +1,6 @@
 
 var UserLogin = require('./models/user');
+var statusString = require
 
 module.exports = function(app) {
 // application -------------------------------------------------------------
@@ -36,7 +37,10 @@ module.exports = function(app) {
                 return;
             }
             console.log("no User= " + req.body.email);
-            res.sendStatus("500");
+            res.status(404).send({
+                code: 404,
+                error: global.status._404,
+            });
         });
     });
 

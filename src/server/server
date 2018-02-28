@@ -5,6 +5,7 @@
  */
 
 require('../app/pages/pages.order')
+require('./res/constants/statusCodeString')
 
 //load serverConfig.js
 const app = require('./config/serverConfig');

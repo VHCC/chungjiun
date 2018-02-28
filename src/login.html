@@ -12,7 +12,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon-96x96.png">
-
+    <link rel="stylesheet" href="../bower_components/noty/lib/noty.css">
     <!-- build:css({.tmp/serve,src}) styles/vendor.css -->
     <!-- bower:css -->
     <!-- run `gulp inject` to automatically populate bower styles dependencies -->
@@ -27,6 +27,7 @@
     <script src="../bower_components/angular/angular.min.js"></script>
     <script src="../bower_components/angular-cookies/angular-cookies.min.js"></script>
     <script src="server/restfulAPI/login/loginCtrl.js"></script>
+    <script src="../bower_components/noty/lib/noty.js"></script>
 
 
 </head>
@@ -61,6 +62,11 @@
                     <button type="submit" class="btn btn-default btn-auth" ng-click="findUser()">Sign In</button>
                     <button type="submit" class="btn btn-default btn-auth" ng-click="createUser()">Sign Up</button>
                     <button type="button" class="btn btn-default btn-auth" ng-click="signOut()">Sign Out</button>
+                    <!--<button type="button" class="btn btn-warning" data-toggle="modal" ng-click="open('app/pages/ui/modals/modalTemplates/warningModal.html')">-->
+                    <button type="button" class="btn btn-warning" data-toggle="modal" onclick="userNoFind()">
+                        Warning Message
+                    </button>
+
                 </div>
             </div>
         </form>
@@ -69,5 +75,27 @@
 
     </div>
 </main>
+
 </body>
+<script>
+    function userNoFind() {
+        new Noty({
+            text: 'User Not Find!',
+            layout: 'center',
+            theme: 'light',
+            type: 'error',
+        }).show();
+    }
+
+    function signOutSucess() {
+        new Noty({
+            text: 'Sign Out Success.',
+            layout: 'center',
+            theme: 'light',
+            type: 'success',
+        }).show();
+    }
+
+</script>
+
 </html>
