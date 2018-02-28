@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var localDB = 'mongodb://localhost:27017/workhourexpress';
+var localDB = 'mongodb://192.168.0.119:32768/workhourexpress';
 var remoteDB = 'mongodb://ichenprocin.dsmynas.com:27017/workhourexpress';
 
 module.exports = {
