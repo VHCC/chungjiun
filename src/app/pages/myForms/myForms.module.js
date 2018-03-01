@@ -28,7 +28,7 @@
                 })
             .state('myForms.createProject',
                 {
-                    url: '/myForms/workhours',
+                    url: '/workhours',
                     templateUrl: 'app/pages/myForms/workHour/workHourPage.html',
                     controller: 'forms_workhour_controller',
                     title: '工時表',

@@ -28,7 +28,7 @@
                 })
             .state('myProject.createProject',
                 {
-                    url: '/myProject/createProject',
+                    url: '/createProject',
                     templateUrl: 'app/pages/myProject/createProject/createProject.html',
                     controller: 'createProjectCtrl',
                     controllerAs: 'cC',
@@ -39,10 +39,9 @@
                 })
             .state('myProject.listProject',
                 {
-                    url: '/myProject/listProject',
+                    url: '/listProject',
                     templateUrl: 'app/pages/myProject/listProject/listProject.html',
                     controller: 'listProjectCtrl',
-                    controllerAs: 'vm',
                     title: '我的專案',
                     sidebarMeta: {
                         order: global.pages.myProject_listProject,
