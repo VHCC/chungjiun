@@ -89,16 +89,6 @@
                 scope.users = allUsers;
             });
 
-        scope.ichen = function () {
-            scope.loading = true;
-            console.log('aaaaa')
-        }
-
-        scope.deleteAll = function() {
-            scope.loading = true;
-
-        };
-
         baProgressModal.setProgress(0);
 
         (function changeValue() {
