@@ -73,17 +73,10 @@
             window.location.href = '/noRight.html';
         }
 
-        var vm = this;
+        var cC = this;
 
-        vm.personalInfo = {};
-        vm.prj = {};
-        vm.mjr = {};
-        // vm.projectInfo = {};
-        vm.shipment = {};
-
-        vm.arePersonalInfoPasswordsEqual = function () {
-            return vm.personalInfo.confirmPassword && vm.personalInfo.password == vm.personalInfo.confirmPassword;
-        };
+        cC.prj = {};
+        cC.mjr = {};
 
         User.getAllUsers()
             .success(function (allUsers) {
@@ -107,7 +100,7 @@
                 Project.create(projectInfo)
                     .success(function (data) {
                         console.log('create Project Success.');
-                        window.location.href = '/';
+                        window.location.href = '/#/myProject/listProject';
                     })
 
             } else {
