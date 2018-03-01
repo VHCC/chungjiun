@@ -31,7 +31,7 @@
                     url: '/myProject/createProject',
                     templateUrl: 'app/pages/myProject/createProject/createProject.html',
                     controller: 'createProjectCtrl',
-                    controllerAs: 'vm',
+                    controllerAs: 'cC',
                     title: '建置專案',
                     sidebarMeta: {
                         order: global.pages.myProject_createProject,
