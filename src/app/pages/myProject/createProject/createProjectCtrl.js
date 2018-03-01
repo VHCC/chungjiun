@@ -59,8 +59,8 @@
                            Project,
                            document)
     {
-        console.log("load page");
-        console.log("cookies.username= " + cookies.get('username'));
+        // console.log("load page");
+        // console.log("cookies.username= " + cookies.get('username'));
         scope.username = cookies.get('username');
         var roleType = cookies.get('roletype');
 
@@ -76,7 +76,9 @@
         var vm = this;
 
         vm.personalInfo = {};
-        vm.projectInfo = {};
+        vm.prj = {};
+        vm.mjr = {};
+        // vm.projectInfo = {};
         vm.shipment = {};
 
         vm.arePersonalInfoPasswordsEqual = function () {
@@ -113,6 +115,10 @@
                 $timeout(changeValue, 300);
             }
         })();
+
+        scope.preCreateProject = function () {
+            console.log("preCreateProject.");
+        };
 
     }
 })();
