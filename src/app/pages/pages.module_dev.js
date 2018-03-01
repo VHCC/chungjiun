@@ -19,7 +19,8 @@
         'BlurAdmin.pages.profile',
         'BlurAdmin.pages.myNewPage',
         'BlurAdmin.pages.myCalender',
-        'BlurAdmin.pages.myProject'
+        'BlurAdmin.pages.myProject',
+        'BlurAdmin.pages.myForms'
     ])
         .config(routeConfig)
 

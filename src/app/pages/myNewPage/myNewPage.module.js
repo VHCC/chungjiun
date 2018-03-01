@@ -11,9 +11,9 @@
                 url: '/myNewPage',
                 templateUrl: 'app/pages/myNewPage/my-new-page.html',
                 controller: 'mainController',
-                icon: 'ion-grid',
                 title: 'My New Page',
                 sidebarMeta: {
+                    icon: 'ion-card',
                     order: global.pages.myNewPage,
                 },
             })
