@@ -11,9 +11,9 @@
                 url: '/myCalender',
                 templateUrl: 'app/pages/myCalender/myCalenderPage.html',
                 controller: 'mainController',
-                icon: 'ion-grid',
                 title: '行事曆',
                 sidebarMeta: {
+                    icon: 'ion-grid',
                     order: global.pages.myCalender,
                 },
             })
