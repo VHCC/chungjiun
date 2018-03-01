@@ -26,14 +26,23 @@
                         order: global.pages.myForms,
                     },
                 })
-            .state('myForms.createProject',
+            .state('myForms.workHours',
                 {
-                    url: '/workhours',
+                    url: '/workHours',
                     templateUrl: 'app/pages/myForms/workHour/workHourPage.html',
                     controller: 'forms_workhour_controller',
                     title: '工時表',
                     sidebarMeta: {
-                        order: global.pages.myForms_workhour,
+                        order: global.pages.myForms_workHour,
+                    },
+                })
+            .state('myForms.newForm',
+                {
+                    url: '/newForm',
+                    templateUrl: 'app/pages/myForms/newForm/newFormPage.html',
+                    title: '新表單',
+                    sidebarMeta: {
+                        order: global.pages.myForms_newForm,
                     },
                 })
     }
