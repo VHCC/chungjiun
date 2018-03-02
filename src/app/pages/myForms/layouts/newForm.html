@@ -47,30 +47,8 @@
                 </ui-select-choices>
             </ui-select>
         </div>
-        <div ng-controller="datepickerpopupCtrl as dpVm">
-            <h4>Popup</h4>
-            <label>Selected date is: <em>{{dt | date:'fullDate' }}</em></label>
-            <p class="input-group">
-                <input type="text" class="form-control" uib-datepicker-popup="{{dpVm.format}}"
-                       datepicker-options="options"
-
-                       ng-model="dt"
-                       ng-required="true"
-
-                       is-open="opened"
-                       close-text="Close"
-                       alt-input-formats="altInputFormats"
-                       show-button-bar="false"/>
-                <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="open()"><i class="glyphicon glyphicon-calendar"></i></button>
-          </span>
-            </p>
-            <label>Format: <span class="muted-text">(manual alternate <em>{{altInputFormats[0]}}</em>)</span></label>
-            <select class="form-control" ng-model="format" ng-options="f for f in formats">
-                <option></option>
-            </select>
-        </div>
-
+        <div class="col-md-12"
+             ng-include="'app/pages/myInput/widgets/datePickerPopup/datePickerPopup.html'"></div>
 
     </div>
 
