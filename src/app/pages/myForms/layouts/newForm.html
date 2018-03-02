@@ -1,0 +1,78 @@
+<form>
+    <div class="form-group ">
+        <label for="exampleInputEmail1">Email address</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email" required>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required>
+    </div>
+    <div class="checkbox">
+        <label class="custom-checkbox">
+            <input type="checkbox">
+            <span>Check me out</span>
+        </label>
+    </div>
+    <div ng-controller="newFormCtrl as newFormCtrlVm">
+        <div class="form-group ">
+            <ui-select ng-model="newFormCtrlVm.withSearchItem.selected"
+                       class="btn-group bootstrap-select form-control"
+                       ng-disabled="false"
+                       append-to-body="true"
+                       search-enabled="true">
+                <ui-select-match placeholder="Select With Search">
+                    {{$select.selected.label}}
+                </ui-select-match>
+                <ui-select-choices
+                        repeat="withSearchItem in newFormCtrlVm.selectWithSearchItems | filter: $select.search">
+                    <span ng-bind-html="withSearchItem.label"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="form-group">
+            <label for="projectName">專案名稱</label>
+            <ui-select ng-model="newFormCtrlVm.groupedItems.selected"
+                       class="btn-group bootstrap-select form-control"
+                       id="projectName"
+                       ng-disabled="false"
+                       append-to-body="true"
+                       search-enabled="true">
+                <ui-select-match placeholder="Select With Option Groups">
+                    {{$select.selected.label}}
+                </ui-select-match>
+                <ui-select-choices
+                        repeat="groupedItems in newFormCtrlVm.groupedSelectItems | groupSelectpickerOptions: {label: $select.search}"
+                        group-by="'group'">
+                    <span ng-bind-html="groupedItems.label | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div ng-controller="datepickerpopupCtrl as dpVm">
+            <h4>Popup</h4>
+            <label>Selected date is: <em>{{dt | date:'fullDate' }}</em></label>
+            <p class="input-group">
+                <input type="text" class="form-control" uib-datepicker-popup="{{dpVm.format}}"
+                       datepicker-options="options"
+
+                       ng-model="dt"
+                       ng-required="true"
+
+                       is-open="opened"
+                       close-text="Close"
+                       alt-input-formats="altInputFormats"
+                       show-button-bar="false"/>
+                <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="open()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+            </p>
+            <label>Format: <span class="muted-text">(manual alternate <em>{{altInputFormats[0]}}</em>)</span></label>
+            <select class="form-control" ng-model="format" ng-options="f for f in formats">
+                <option></option>
+            </select>
+        </div>
+
+
+    </div>
+
+    <button type="submit" class="btn btn-danger">Submit</button>
+</form>
