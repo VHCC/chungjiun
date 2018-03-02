@@ -13,7 +13,7 @@
             <span>Check me out</span>
         </label>
     </div>
-    <div ng-controller="newFormCtrl as newFormCtrlVm">
+    <div >
         <div class="form-group ">
             <ui-select ng-model="newFormCtrlVm.withSearchItem.selected"
                        class="btn-group bootstrap-select form-control"
@@ -47,10 +47,30 @@
                 </ui-select-choices>
             </ui-select>
         </div>
+        <div class="form-group">
+            <label for="projectName2">專案名稱2</label>
+            <ui-select ng-model="newFormCtrlVm.prjItems.selected"
+                       class="btn-group bootstrap-select form-control"
+                       id="projectName2"
+                       ng-disabled="false"
+                       append-to-body="true"
+                       search-enabled="true">
+                <ui-select-match placeholder="Select With Option Groups">
+                    {{$select.selected.code}}
+                </ui-select-match>
+                <ui-select-choices
+                        repeat="prjItems in newFormCtrlVm.projects | groupSelectpickerOptions: {code: $select.search}"
+                        group-by="'name'">
+                    <span ng-bind-html="prjItems.code | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
         <div class="col-md-12"
              ng-include="'app/pages/myInput/widgets/datePickerPopup/datePickerPopup.html'"></div>
 
-    </div>
 
-    <button type="submit" class="btn btn-danger">Submit</button>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-danger">Submit</button>
+    </div>
 </form>

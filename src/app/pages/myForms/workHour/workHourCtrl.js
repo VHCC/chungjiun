@@ -6,7 +6,7 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.myForms')
-        .controller('forms_workhour_controller', ['$scope','$http', 'Todos', function (scope, http, Todos) {
+        .controller('workhourFormCtrl', ['$scope','$http', 'Todos', function (scope, http, Todos) {
             return new NewPageCtrl(scope, http, Todos);
         }])
         .factory('Todos', ['$http',function(http) {
