@@ -30,7 +30,8 @@
                 {
                     url: '/workHours',
                     templateUrl: 'app/pages/myForms/workHour/workHourPage.html',
-                    controller: 'workhourFormCtrl',
+                    controller: 'workHourFormCtrl',
+                    controllerAs: 'workHourFormCtrlVm',
                     title: '工時表',
                     sidebarMeta: {
                         order: global.pages.myForms_workHour,
