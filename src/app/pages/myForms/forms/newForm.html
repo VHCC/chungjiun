@@ -57,8 +57,10 @@
                        search-enabled="true">
                 <ui-select-match placeholder="Select With Option Groups">
                     {{$select.selected.code}}
+
                 </ui-select-match>
                 <ui-select-choices
+                        ng-model="prjName"
                         repeat="prjItems in newFormCtrlVm.projects | groupSelectpickerOptions: {code: $select.search}"
                         group-by="'name'">
                     <span ng-bind-html="prjItems.code | highlight: $select.search"></span>

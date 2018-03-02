@@ -2,7 +2,6 @@
 
     <div ng-controller="mydatepickerpopupCtrl as dpVM">
         <h4>Popup</h4>
-        <label>Selected date is: <em>{{dpVM.myDT| date:'fullDate' }}</em></label>
         <p class="input-group">
             <input type="text" class="form-control"
                    uib-datepicker-popup="{{format}}"
@@ -20,10 +19,6 @@
             </button>
           </span>
         </p>
-        <label>Format: <span class="muted-text">(manual alternate <em>{{altInputFormats[0]}}</em>)</span></label>
-        <select class="form-control" ng-model="format" ng-options="f for f in formats">
-            <option></option>
-        </select>
     </div>
 
 </div>
