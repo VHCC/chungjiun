@@ -18,8 +18,8 @@
                           Project) {
         Project.get()
             .success(function (allProjects) {
-                console.log('rep - GET ALL Project, SUCCESS');
-                console.log(allProjects);
+                console.log(global.timeFormat(new Date()) + global.log.i + 'Rep - GET ALL Project, SUCCESS');
+                console.log(JSON.stringify(allProjects));
                 vm.projects = allProjects;
             });
 

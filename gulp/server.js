@@ -44,7 +44,7 @@ function browserSyncInit(baseDir, browser) {
   var apiProxy = proxy('/api', {
       target: 'https://api.github.com',
       changeOrigin: true,
-      logLevel: 'debug',
+      logLevel: 'info',
       pathRewrite: {
           '^/api' : '/api'
       },

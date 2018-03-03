@@ -38,6 +38,20 @@ app.use(bodyParser.json({type: 'application/vnd.api+json'})); // parse applicati
 // app.use('/', index);
 // app.use('/users', users);
 
+
+/**
+ * console log write config
+ */
+var fs = require('fs');
+var util = require('util');
+var log_file = fs.createWriteStream('log.txt', {flags : 'w'});
+var log_stdout = process.stdout;
+
+console.log = function(d) { //
+    log_file.write(util.format(d) + '\n');
+    log_stdout.write(util.format(d) + '\n');
+};
+
 /**
  * Get port from environment and store in Express.
  */

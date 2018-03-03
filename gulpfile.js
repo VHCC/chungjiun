@@ -21,7 +21,7 @@ wrench.readdirSyncRecursive('./gulp').filter(function(file) {
  */
 
 gulp.task('default', ['clean', 'load', 'serve'], function () {
-    console.log('------------- Server Start --------------');
+    console.log('------------- Server Begin --------------');
 });
 
 
@@ -46,7 +46,7 @@ gulp.task('load', function() {
         ext: 'js'
         // Below i'm using es6 arrow functions but you can remove the arrow and have it a normal .on('restart', function() { // then place your stuff in here }
     }).on('start', function() {
-        console.log('------server Start.---------')
+        console.log('---------Node Server Started.---------')
     });
 });
 
