@@ -9,7 +9,7 @@ module.exports = function(app) {
     // create
 
     app.post('/api/login', function(req, res) {
-        console.log("create user");
+        console.log(global.timeFormat(new Date()) + global.log.i + "create user");
         UserLogin.create({
             email : req.body.email,
             password : req.body.password,
@@ -35,18 +35,18 @@ module.exports = function(app) {
             if (user != '') {
 
                 if (req.body.password != user[0].get('password')) {
-                    console.log('wrong pwd= ' + req.body.password);
+                    console.log(global.timeFormat(new Date()) + global.log.w + 'wrong pwd= ' + req.body.password);
                     res.status(404).send({
                         code: 400,
                         error: global.status._400,
                     });
                     return;
                 }
-                console.log("find User Success, user= " + user);
+                console.log(global.timeFormat(new Date()) + global.log.i + "Login Success, user= " + JSON.stringify(user));
                 res.json(user);
                 return;
             }
-            console.log("no User= " + req.body.email);
+            console.log(global.timeFormat(new Date()) + global.log.i + "no User= " + req.body.email);
             res.status(404).send({
                 code: 404,
                 error: global.status._404,

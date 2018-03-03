@@ -9,7 +9,7 @@ module.exports = function(app) {
     // create
 
     app.get('/api/getAllUsersName', function(req, res) {
-        console.log("API, getAllUsersName");
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, getAllUsersName");
         User.find(function(err, users) {
             if (err) {
                 res.send(err);
@@ -19,7 +19,7 @@ module.exports = function(app) {
     });
 
     app.post('/api/project', function(req, res) {
-        console.log("API, create project");
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, create project");
         console.log('major= ' + req.body.majorID);
         console.log('name= ' + req.body.name);
         console.log('creator= ' + req.body.creator);
@@ -39,7 +39,7 @@ module.exports = function(app) {
     });
 
     app.get('/api/project', function(req, res) {
-        console.log("API, get projects");
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, get projects");
         Project.find(function(err, projects) {
             if (err) {
                 res.send(err);

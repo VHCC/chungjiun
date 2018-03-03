@@ -35,7 +35,6 @@
                      cookies,
                      window,
                      document) {
-      console.log("load page");
       console.log("cookies.username= " + cookies.get('username'));
       scope.username = cookies.get('username');
   }

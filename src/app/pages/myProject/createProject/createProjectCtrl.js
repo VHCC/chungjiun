@@ -59,17 +59,17 @@
                            Project,
                            document)
     {
-        // console.log("load page");
-        // console.log("cookies.username= " + cookies.get('username'));
         scope.username = cookies.get('username');
         var roleType = cookies.get('roletype');
 
-        console.log('roleType= ' + roleType);
         var queryResult = document[0].getElementById('projectInName');
 
         // right division.
         if (roleType == 0) {
-            console.log('roleType= ' + roleType);
+            console.log(global.timeFormat(new Date()) +
+                global.log.i +
+                'roleType= ' + roleType +
+                'username= ' + scope.username);
             window.location.href = '/noRight.html';
         }
 
@@ -80,7 +80,7 @@
 
         User.getAllUsers()
             .success(function (allUsers) {
-                console.log('rep - GET ALL SUCCESS');
+                console.log(global.timeFormat(new Date()) + global.log.i + 'Rep - GET ALL USERS SUCCESS');
                 scope.users = allUsers;
             });
 
@@ -89,7 +89,7 @@
         (function changeValue() {
             if (baProgressModal.getProgress() >= 100) {
                 baProgressModal.close();
-                console.log('progress complete');
+                console.log(global.timeFormat(new Date()) + global.log.i + 'progress complete!');
 
                 var projectInfo = {
                     creator : document[0].getElementById('projectCreator').innerText,
@@ -99,7 +99,7 @@
                 }
                 Project.create(projectInfo)
                     .success(function (data) {
-                        console.log('create Project Success.');
+                        console.log(global.timeFormat(new Date()) + global.log.i + 'create Project Success.');
                         window.location.href = '/#/myProject/listProject';
                     })
 
