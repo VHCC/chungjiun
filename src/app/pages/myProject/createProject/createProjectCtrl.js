@@ -66,8 +66,7 @@
 
         // right division.
         if (roleType == 0) {
-            console.log(global.timeFormat(new Date()) +
-                global.log.i +
+            console.log(
                 'roleType= ' + roleType +
                 'username= ' + scope.username);
             window.location.href = '/noRight.html';
@@ -80,7 +79,7 @@
 
         User.getAllUsers()
             .success(function (allUsers) {
-                console.log(global.timeFormat(new Date()) + global.log.i + 'Rep - GET ALL USERS SUCCESS');
+                console.log('Rep - GET ALL USERS SUCCESS');
                 scope.users = allUsers;
             });
 
@@ -89,7 +88,7 @@
         (function changeValue() {
             if (baProgressModal.getProgress() >= 100) {
                 baProgressModal.close();
-                console.log(global.timeFormat(new Date()) + global.log.i + 'progress complete!');
+                console.log('progress complete!');
 
                 var projectInfo = {
                     creator : document[0].getElementById('projectCreator').innerText,
@@ -99,7 +98,7 @@
                 }
                 Project.create(projectInfo)
                     .success(function (data) {
-                        console.log(global.timeFormat(new Date()) + global.log.i + 'create Project Success.');
+                        console.log('create Project Success.');
                         window.location.href = '/#/myProject/listProject';
                     })
 
