@@ -21,7 +21,8 @@
         'BlurAdmin.pages.myCalender',
         'BlurAdmin.pages.myProject',
         'BlurAdmin.pages.myInput',
-        'BlurAdmin.pages.myForms'
+        'BlurAdmin.pages.myForms',
+        'BlurAdmin.pages.myExecutive'
     ])
         .config(routeConfig)
 
