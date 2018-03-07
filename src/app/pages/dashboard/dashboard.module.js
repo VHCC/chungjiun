@@ -17,7 +17,7 @@
           title: '首頁',
           sidebarMeta: {
             icon: 'ion-android-home',
-            order: 0,
+            order: global.pages.dashboard,
           },
         });
   }

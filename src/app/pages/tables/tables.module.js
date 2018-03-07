@@ -19,7 +19,7 @@
           title: 'Tables',
           sidebarMeta: {
             icon: 'ion-grid',
-            order: 300,
+            order: global.pages.tables,
           },
         }).state('tables.basic', {
           url: '/basic',
