@@ -1,6 +1,18 @@
 
 global.pages = {
+    dashboard : 0,
+    // default
+    components : 5100,
+    charts : 5150,
+    ui : 5200,
+    form : 5250,
+    tables : 5300,
+    maps : 5500,
 
+
+
+
+    // Customize
     myProject  : 700,
     myProject_createProject  : 100,
     myProject_listProject  : 200,
