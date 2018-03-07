@@ -22,7 +22,7 @@ global.pages = {
     myNewPage  : 800,
 
     myExecutive : 1000,
-    myExecutive_createProject : 100,
+    myExecutive_createNewProject : 100,
     myExecutive_assignRight_vacation : 200,
     myCalender : 2000,
 
