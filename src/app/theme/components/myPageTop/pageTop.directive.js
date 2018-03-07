@@ -37,6 +37,14 @@
                      document) {
       console.log("cookies.username= " + cookies.get('username'));
       scope.username = cookies.get('username');
+
+      scope.initPageTop = function () {
+          console.log("initPageTop.");
+          if (cookies.get('roletype') !== '3') {
+              var entrance = window.document.getElementById('registerEntrance');
+              entrance.parentNode.removeChild(entrance);
+          }
+      };
   }
 
 })();

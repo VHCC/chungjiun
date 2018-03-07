@@ -5,6 +5,7 @@
  */
 
 require('../app/pages/pages.order');
+// require('./restfulAPI/apiURLConstants');
 require('./res/constants/statusCodeString');
 require('./res/constants/logString');
 
@@ -14,6 +15,7 @@ const app = require('./config/serverConfig');
 
 //set up api ===========================================
 require('./restfulAPI/login/routes')(app);
+require('./restfulAPI/register/routes')(app);
 require('./restfulAPI/myProject/createProject/routes')(app);
 require('./restfulAPI/myNewPage/routes')(app);
 

@@ -1,0 +1,6 @@
+
+
+
+global.apiUrl = {
+    post_login_user_find : '/api/loginfind/',
+};

@@ -2,13 +2,23 @@
     <a href="#/dashboard" class="al-logo clearfix"><span>崇峻</span>工程</a>
     <a href class="collapse-menu-link ion-navicon" ba-sidebar-toggle-menu></a>
 
-    <div class="breadcrumb al-breadcrumb" style="text-align: center" ng-controller="myPageTopController">
-        <a href="/login.html" class="signout"><i class="fa fa-power-off"/>
-            <br>
-            登出
-            <br>
-        </a>
-        <span style=" color: #FFFFFFFF">{{username}}</span>
-    </div>
+    <div ng-controller="myPageTopController" ng-init="initPageTop()">
+        <div class="breadcrumb al-breadcrumb" style="text-align: center" >
+            <a href="/login.html" class="signout"><i class="fa fa-power-off"/>
+                <br>
+                登出
+                <br>
+            </a>
+            <span style=" color: #FFFFFFFF">{{username}}</span>
+        </div>
 
+        <div class="breadcrumb al-breadcrumb" style="text-align: center" id="registerEntrance">
+            <a href="/regNewUser.html" class="signout"><i class="ion-android-person-add"/>
+                <br>
+                新增員工
+                <br>
+            </a>
+        </div>
+    </div>
 </div>
+
