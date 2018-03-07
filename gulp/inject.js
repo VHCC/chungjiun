@@ -48,6 +48,7 @@ gulp.task('injectAuth', ['stylesAuth'], function () {
     paths: [
         path.join(conf.paths.src, '/auth.html'),
         path.join(conf.paths.src, '/reg.html'),
+        path.join(conf.paths.src, '/regNewUser.html'),
         path.join(conf.paths.src, '/login.html')
     ]
   })
