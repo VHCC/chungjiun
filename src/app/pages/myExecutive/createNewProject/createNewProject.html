@@ -1,7 +1,7 @@
 <div class="widgets">
     <div class="row">
         <div class="col-md-12">
-            <p>專案代碼: {{cC.thisYear}}{{cC.prjItems.selected.code}}</p>
+            <p>專案代碼: {{cC.thisYear}}{{cC.prjItems.selected.code}}{{cC.prjItems.selected.code}}</p>
             <form class="form-horizontal">
                 <div class="form-group">
                     <label for="projectName" class="col-sm-2 control-label">總案名稱</label>
@@ -9,10 +9,11 @@
                         <ui-select ng-model="cC.prjItems.selected"
                                    class="btn-group bootstrap-select form-control"
                                    id="projectName"
+                                   ng-change="triggerChangeField()"
                                    ng-disabled="false"
                                    append-to-body="true"
                                    search-enabled="true">
-                            <ui-select-match placeholder="選擇總案">
+                            <ui-select-match placeholder="選擇總案" >
                                 {{$select.selected.name}}
                             </ui-select-match>
                             <ui-select-choices

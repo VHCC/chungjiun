@@ -54,6 +54,7 @@
             .success(function (allProjects) {
                 console.log('Rep - GET ALL Project, SUCCESS');
                 console.log(JSON.stringify(allProjects));
+                allProjects.push({name:"新總案", code: ""});
                 cC.projects = allProjects;
                 cC.thisYear = 107;
             });
@@ -70,6 +71,9 @@
                 scope.users = allUsers;
             });
 
+        scope.triggerChangeField = function () {
+            console.log('triggerChangeField');
+        }
 
     }
 })();
