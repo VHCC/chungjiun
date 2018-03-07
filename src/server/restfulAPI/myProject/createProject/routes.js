@@ -1,5 +1,5 @@
 
-var User = require('../../login/models/user');
+var User = require('../../models/user');
 var Project = require('../../myProject/createProject/models/project');
 
 module.exports = function(app) {

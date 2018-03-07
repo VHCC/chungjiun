@@ -8,14 +8,8 @@
         }])
         .factory('Login', ['$http', function(http) {
             return {
-                get : function() {
-                    return http.get('/api/login');
-                },
-                create : function(userData) {
-                    return http.post('/api/login', userData);
-                },
                 find : function(userData) {
-                    return http.post('/api/loginfind', userData);
+                    return http.post('/api/loginfind/', userData);
                 }
             }
         }]);
@@ -24,28 +18,6 @@
     function LoginCtrl(scope, mHttp, window, cookies, Login) {
         scope.formData = {};
         scope.loading = false;
-
-        // CREATE ==================================================================
-        // when submitting the add form, send the text to the node API
-        scope.createUser = function() {
-            console.log("createUser");
-            // validate the formData to make sure that something is there
-            // if form is empty, nothing will happen
-            if (scope.formData.email != undefined) {
-                scope.loading = true;
-
-                // call the create function from our service (returns a promise object)
-                Login.create(scope.formData)
-
-                // if successful creation, call our get function to get all the new todos
-                    .success(function(data) {
-                        console.log('CREATE  SUCCESS');
-                        scope.loading = false;
-                        scope.formData = {}; // clear the form so our user is ready to enter another
-                        scope.todos = data; // assign our new list of todos
-                    });
-            }
-        };
 
         //FIND
         scope.findUser = function() {
@@ -69,8 +41,8 @@
 
                         // cookies.username = data[0].name; wrong program
                         cookies.put('username', data[0].name);
-
                         cookies.put('roletype', data[0].roleType);
+                        
                         console.log('cookies.username= ' + cookies.username);
                         console.log('cookies.username= ' + cookies.get('username'));
                         window.location.href = 'http://localhost:3000';
