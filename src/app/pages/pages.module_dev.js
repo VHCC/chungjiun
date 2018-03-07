@@ -9,6 +9,8 @@
         'ui.router',
         'ngCookies',
 
+        'BlurAdmin.pages.factory',
+
         'BlurAdmin.pages.dashboard',
         'BlurAdmin.pages.ui',
         'BlurAdmin.pages.components',

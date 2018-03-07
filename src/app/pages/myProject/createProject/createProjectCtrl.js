@@ -30,23 +30,6 @@
                     Project,
                     document)
             }])
-        .factory('User', ['$http', function (http) {
-            return {
-                getAllUsers: function () {
-                    return http.get('/api/getAllUsersName');
-                },
-            }
-        }])
-        .factory('Project', ['$http', function (http) {
-            return {
-                get: function () {
-                    return http.get('/api/project');
-                },
-                create: function (projectData) {
-                    return http.post('/api/project', projectData);
-                },
-            }
-        }])
     ;
 
     /** @ngInject */
