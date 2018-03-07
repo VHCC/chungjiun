@@ -23,15 +23,15 @@
                         order: global.pages.myExecutive,
                     },
                 })
-            .state('myExecutive.createProject',
+            .state('myExecutive.createNewProject',
                 {
-                    url: '/createProject',
-                    templateUrl: 'app/pages/myProject/createProject/createProject.html',
-                    controller: 'createProjectCtrl',
+                    url: '/createNewProject',
+                    templateUrl: 'app/pages/myExecutive/createNewProject/createNewProject.html',
+                    controller: 'createNewProjectCtrl',
                     controllerAs: 'cC',
                     title: '建置新專案',
                     sidebarMeta: {
-                        order: global.pages.myExecutive_createProject,
+                        order: global.pages.myExecutive_createNewProject,
                     },
                 })
     }
