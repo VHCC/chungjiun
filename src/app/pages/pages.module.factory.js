@@ -13,18 +13,30 @@
                 getAllUsers: function () {
                     return http.get('/api/getAllUsers');
                 },
+                findTechs: function () {
+                    return http.get('/api/getAllTechs');
+                }
             }
         }])
         .factory('Project', ['$http', function (http) {
             return {
-                get: function () {
-                    return http.get('/api/projectFind');
+                findAll: function () {
+                    return http.get('/api/projectFindAll');
                 },
                 create: function (projectData) {
                     return http.post('/api/projectCreate', projectData);
                 },
                 findPrjByID: function(prjID) {
-                  return http.get('/api/project', prjID);
+                  return http.get('/api/projectFindByPrjID', prjID);
+                },
+                findPrjByName: function(prjName) {
+                    return http.post('/api/projectFindByName', prjName);
+                },
+                findPrjDistinctByName: function () {
+                    return http.get('/api/projectFindByNameDistinct');
+                },
+                findPrjFootNumber: function (projectData) {
+                    return http.post('/api/projectFootCode', projectData);
                 },
             }
         }])
