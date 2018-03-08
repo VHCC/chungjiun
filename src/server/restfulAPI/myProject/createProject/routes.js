@@ -1,8 +1,9 @@
 
 var User = require('../../models/user');
-var Project = require('../../myProject/createProject/models/project');
+var Project = require('../../models/project');
 
 module.exports = function(app) {
+    'use strict';
 // application -------------------------------------------------------------
 
 // ----- define routes

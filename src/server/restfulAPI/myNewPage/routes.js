@@ -3,7 +3,7 @@ var path = require('path');
 var Todo = require('./models/todo');
 
 module.exports = function(app) {
-
+    'use strict';
 // application -------------------------------------------------------------
 // app.get('*', function (req, res) {
 //     res.sendFile(__dirname + '/public/indexold.html'); // load the single view file (angular will handle the page changes on the front-end)

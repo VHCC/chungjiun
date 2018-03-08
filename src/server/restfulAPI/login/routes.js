@@ -2,6 +2,7 @@
 var userModel = require('../models/user');
 
 module.exports = function(app) {
+    'use strict';
 // application -------------------------------------------------------------
 
 // ----- define routes
