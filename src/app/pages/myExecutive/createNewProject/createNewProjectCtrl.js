@@ -97,7 +97,7 @@
                             if (scope.formData.prj.type !== undefined) {
                                 var data = {
                                     year: scope.formData.year,
-                                    code: scope.formData.prj.name.code,
+                                    code: scope.formData.prj.code,
                                     type: scope.formData.prj.type.selected.type,
                                 }
                                 Project.findPrjFootNumber(data)
@@ -117,9 +117,21 @@
                 }
                 Project.findPrjByName(data)
                     .success(function (prj) {
-                        console.log(JSON.stringify(prj));
-                        scope.formData.prj.code = prj.code;
-                    })
+                            console.log(JSON.stringify(prj));
+                            scope.formData.prj.code = prj.code;
+                            var data = {
+                                year: scope.formData.year,
+                                code: scope.formData.prj.code,
+                                type: scope.formData.prj.type.selected.type,
+                            }
+                            Project.findPrjFootNumber(data)
+                                .success(function (prjs) {
+                                    console.log(JSON.stringify(prjs));
+                                    console.log(prjs.length);
+                                    scope.formData.prj.footCode = prjs.length + 1;
+                                })
+                        }
+                    );
             }
         }
 
@@ -144,6 +156,30 @@
 
         // Type Check
         scope.triggerChangePrjType = function () {
+            console.log('triggerChangePrjType');
+
+            if (scope.formData.prj.name !== undefined) {
+                var data = {
+                    name: scope.formData.prj.name.selected.name
+                }
+                Project.findPrjByName(data)
+                    .success(function (prj) {
+                            console.log(JSON.stringify(prj));
+                            scope.formData.prj.code = prj.code;
+                            var data = {
+                                year: scope.formData.year,
+                                code: scope.formData.prj.code,
+                                type: scope.formData.prj.type.selected.type,
+                            }
+                            Project.findPrjFootNumber(data)
+                                .success(function (prjs) {
+                                    console.log(JSON.stringify(prjs));
+                                    console.log(prjs.length);
+                                    scope.formData.prj.footCode = prjs.length + 1;
+                                })
+                        }
+                    );
+            }
         }
 
 
