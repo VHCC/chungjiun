@@ -9,8 +9,8 @@ module.exports = function(app) {
 // ----- define routes
     // create
 
-    app.get('/api/getAllUsersName', function(req, res) {
-        console.log(global.timeFormat(new Date()) + global.log.i + "API, getAllUsersName");
+    app.get(global.apiUrl.get_all_users , function(req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, getAllUsers");
         User.find(function(err, users) {
             if (err) {
                 res.send(err);
@@ -19,7 +19,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/api/project', function(req, res) {
+    app.post(global.apiUrl.post_project_create, function(req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, create project");
         console.log('major= ' + req.body.majorID);
         console.log('name= ' + req.body.name);
@@ -39,7 +39,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/api/project', function(req, res) {
+    app.get(global.apiUrl.get_project_find, function(req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, get projects");
         Project.find(function(err, projects) {
             if (err) {

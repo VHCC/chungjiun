@@ -7,7 +7,7 @@ module.exports = function(app) {
 
 // ----- define routes
     // find
-    app.post('/api/loginfind/', function(req, res) {
+    app.post(global.apiUrl.post_login_user_find, function(req, res) {
 
         userModel.find({
             email : req.body.email,

@@ -9,7 +9,7 @@
         .factory('Login', ['$http', function(http) {
             return {
                 find : function(userData) {
-                    return http.post('/api/loginfind/', userData);
+                    return http.post('/api/loginfind', userData);
                 }
             }
         }]);
