@@ -106,6 +106,7 @@ module.exports = function (app) {
 
     app.post(global.apiUrl.post_project_foot_code, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post prj foot code.");
+        console.log('req= ' + JSON.stringify(req.body));
         Project.find(
             {
                 year: req.body.year,
