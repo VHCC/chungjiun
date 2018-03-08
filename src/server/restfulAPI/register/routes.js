@@ -6,7 +6,7 @@ module.exports = function(app) {
 
 // ----- define routes
     // create
-    app.post('/api/register', function(req, res) {
+    app.post(global.apiUrl.post_register_user, function(req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "create user");
         userModel.create({
             email : req.body.email,

@@ -1,6 +1,6 @@
 /**
- * @author v.lugovsky
- * created on 16.12.2015
+ * @author Ichen.chu
+ * created on 07.03.2018
  */
 (function () {
     'use strict';
@@ -11,17 +11,17 @@
         .factory('User', ['$http', function (http) {
             return {
                 getAllUsers: function () {
-                    return http.get('/api/getAllUsersName');
+                    return http.get('/api/getAllUsers');
                 },
             }
         }])
         .factory('Project', ['$http', function (http) {
             return {
                 get: function () {
-                    return http.get('/api/project');
+                    return http.get('/api/projectFind');
                 },
                 create: function (projectData) {
-                    return http.post('/api/project', projectData);
+                    return http.post('/api/projectCreate', projectData);
                 },
                 findPrjByID: function(prjID) {
                   return http.get('/api/project', prjID);

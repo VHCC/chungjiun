@@ -1,6 +1,19 @@
-
-
+/**
+ * @author Ichen.chu
+ * created on 2018/03/08
+ */
 
 global.apiUrl = {
-    post_login_user_find : '/api/loginfind/',
+    //login
+    post_login_user_find : '/api/loginfind',
+    //register
+    post_register_user : '/api/register',
+
+    //create project
+    get_all_users : '/api/getAllUsers',
+    get_project_find : '/api/projectFind',
+    post_project_create : '/api/projectCreate',
+
+    // todolist
+
 };

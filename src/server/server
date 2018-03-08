@@ -5,7 +5,7 @@
  */
 
 require('../app/pages/pages.order');
-// require('./restfulAPI/apiURLConstants');
+require('./restfulAPI/apiURLConstants');
 require('./res/constants/statusCodeString');
 require('./res/constants/logString');
 
