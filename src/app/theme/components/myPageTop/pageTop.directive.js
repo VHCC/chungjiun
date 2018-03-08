@@ -40,7 +40,9 @@
 
       scope.initPageTop = function () {
           console.log("initPageTop.");
-          if (cookies.get('roletype') !== '3') {
+          var roleType = cookies.get('roletype');
+
+          if (roleType !== '100') {
               var entrance = window.document.getElementById('registerEntrance');
               entrance.parentNode.removeChild(entrance);
           }

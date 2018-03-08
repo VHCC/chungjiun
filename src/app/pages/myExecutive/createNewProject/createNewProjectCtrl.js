@@ -43,7 +43,7 @@
 
 
         // right division.
-        if (roleType === 5) {
+        if (roleType !== '100') {
             console.log(
                 'roleType= ' + roleType +
                 'username= ' + scope.username);
