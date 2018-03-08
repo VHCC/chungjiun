@@ -48,7 +48,7 @@
         var queryResult = document[0].getElementById('projectInName');
 
         // right division.
-        if (roleType == 0) {
+        if (roleType !== '100') {
             console.log(
                 'roleType= ' + roleType +
                 'username= ' + scope.username);
