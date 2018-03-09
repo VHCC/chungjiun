@@ -20,6 +20,9 @@
         }])
         .factory('Project', ['$http', function (http) {
             return {
+                findAllByGroup: function () {
+                    return http.get('/api/projectFindAllByGroup');
+                },
                 findAll: function () {
                     return http.get('/api/projectFindAll');
                 },

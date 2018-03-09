@@ -52,7 +52,7 @@
             window.location.href = '/noRight.html';
         }
 
-        Project.findAll()
+        Project.findAllByGroup()
             .success(function (allProjects) {
                 console.log(JSON.stringify(allProjects));
                 allProjects.push({name: "新總案", code: ""});
@@ -64,7 +64,7 @@
 
         User.findTechs()
             .success(function (techs) {
-                console.log(JSON.stringify(techs));
+                // console.log(JSON.stringify(techs));
                 cC.techsItems = techs;
             })
 
@@ -80,20 +80,21 @@
         User.getAllUsers()
             .success(function (allUsers) {
                 console.log('Rep - GET ALL USERS SUCCESS');
-                console.log(JSON.stringify(allUsers));
+                // console.log(JSON.stringify(allUsers));
                 scope.users = allUsers;
             });
 
         //Prj Name Check whether is new or not.
         scope.triggerChangePrjName = function () {
-            console.log('triggerChangePrjName');
+            // console.log('triggerChangePrjName');
             if (this.formData.prj.name.selected.code === "") {
+                //新總案case
                 window.document.getElementById('newPrjNameDiv').style.display = "block";
                 Project.findPrjDistinctByName()
                     .success(function (prjs) {
                             console.log(JSON.stringify(prjs));
                             scope.formData.prj.code = prjs.length + 1;
-
+                            scope.formData.prj.name.new = "";
                             if (scope.formData.prj.type !== undefined) {
                                 var data = {
                                     year: scope.formData.year,
@@ -110,26 +111,30 @@
                     );
 
             } else {
+                // 專案已存在
+                scope.formData.prj.name.new = scope.formData.prj.name.selected.name;
                 window.document.getElementById('newPrjNameDiv').style.display = "none";
-                console.log(scope.formData.prj.name.selected.name);
+                // console.log(scope.formData.prj.name.selected.name);
                 var data = {
                     name: scope.formData.prj.name.selected.name
                 }
                 Project.findPrjByName(data)
                     .success(function (prj) {
-                            console.log(JSON.stringify(prj));
+                            // console.log(JSON.stringify(prj));
                             scope.formData.prj.code = prj.code;
-                            var data = {
-                                year: scope.formData.year,
-                                code: scope.formData.prj.code,
-                                type: scope.formData.prj.type.selected.type,
+                            if (scope.formData.prj.type !== undefined) {
+                                var data = {
+                                    year: scope.formData.year,
+                                    code: scope.formData.prj.code,
+                                    type: scope.formData.prj.type.selected.type,
+                                }
+                                Project.findPrjFootNumber(data)
+                                    .success(function (prjs) {
+                                        // console.log(JSON.stringify(prjs));
+                                        // console.log(prjs.length);
+                                        scope.formData.prj.footCode = prjs.length + 1;
+                                    })
                             }
-                            Project.findPrjFootNumber(data)
-                                .success(function (prjs) {
-                                    console.log(JSON.stringify(prjs));
-                                    console.log(prjs.length);
-                                    scope.formData.prj.footCode = prjs.length + 1;
-                                })
                         }
                     );
             }
@@ -137,13 +142,13 @@
 
         // Name Check
         scope.triggerChangePrjNewName = function () {
-            console.log('triggerChangePrjNewName');
+            // console.log('triggerChangePrjNewName');
             var data = {
                 name: scope.formData.prj.name.new
             }
             Project.findPrjByName(data)
                 .success(function (prj) {
-                    console.log(JSON.stringify(prj));
+                    // console.log(JSON.stringify(prj));
                     if (prj !== null) {
                         document[0].getElementById('prjSubmitBtn').disabled = true;
                         document[0].getElementById('prjSubmitBtn').innerText = "專案名稱已存在，請檢查！"
@@ -156,7 +161,7 @@
 
         // Type Check
         scope.triggerChangePrjType = function () {
-            console.log('triggerChangePrjType');
+            // console.log('triggerChangePrjType');
 
             if (scope.formData.prj.name !== undefined) {
                 var data = {
@@ -164,19 +169,25 @@
                 }
                 Project.findPrjByName(data)
                     .success(function (prj) {
-                            console.log(JSON.stringify(prj));
-                            scope.formData.prj.code = prj.code;
-                            var data = {
-                                year: scope.formData.year,
-                                code: scope.formData.prj.code,
-                                type: scope.formData.prj.type.selected.type,
+                            // console.log(JSON.stringify(prj));
+                            // 專案已存在 case
+                            if (scope.formData.prj.name.selected.code !== "") {
+                                scope.formData.prj.name.new = scope.formData.prj.name.selected.name;
+                                scope.formData.prj.code = prj.code;
+                                var data = {
+                                    year: scope.formData.year,
+                                    code: scope.formData.prj.code,
+                                    type: scope.formData.prj.type.selected.type,
+                                }
+                                Project.findPrjFootNumber(data)
+                                    .success(function (prjs) {
+                                        // console.log(JSON.stringify(prjs));
+                                        // console.log(prjs.length);
+                                        scope.formData.prj.footCode = prjs.length + 1;
+                                    })
+                            } else {
+                                scope.formData.prj.footCode = 1;
                             }
-                            Project.findPrjFootNumber(data)
-                                .success(function (prjs) {
-                                    console.log(JSON.stringify(prjs));
-                                    console.log(prjs.length);
-                                    scope.formData.prj.footCode = prjs.length + 1;
-                                })
                         }
                     );
             }
@@ -186,7 +197,18 @@
         scope.createSubmit = function () {
             console.log('createSubmit');
             scope.formData.prjCode = document[0].getElementById('prjCode').innerText;
-            Project.create(scope.formData);
+            Project.create(scope.formData)
+                .success(function (data) {
+                    console.log('createSubmit 2');
+                    if (data.code == 200) {
+                        scope.formData = [];
+                        window.location.reload();
+                    }
+                })
+                .error(function (data) {
+                    console.log('createSubmit  error');
+                    window.formNotFullFill();
+                })
         }
 
     }
