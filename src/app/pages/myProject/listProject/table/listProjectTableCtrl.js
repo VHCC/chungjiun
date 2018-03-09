@@ -52,7 +52,7 @@
                     };
                 }
                 console.log($scope.majorMemebers);
-                Project.get()
+                Project.findAll()
                     .success(function(allProjects) {
                         console.log('rep - GET ALL Project, SUCCESS');
                         console.log(allProjects);
