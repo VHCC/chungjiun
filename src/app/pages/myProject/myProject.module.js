@@ -26,17 +26,17 @@
                         order: global.pages.myProject,
                     },
                 })
-            .state('myProject.createProject',
-                {
-                    url: '/createProject',
-                    templateUrl: 'app/pages/myProject/createProject/createProject.html',
-                    controller: 'createProjectCtrl',
-                    controllerAs: 'cC',
-                    title: '建置專案',
-                    sidebarMeta: {
-                        order: global.pages.myProject_createProject,
-                    },
-                })
+            // .state('myProject.createProject',
+            //     {
+            //         url: '/createProject',
+            //         templateUrl: 'app/pages/myProject/createProject/createProject.html',
+            //         controller: 'createProjectCtrl',
+            //         controllerAs: 'cC',
+            //         title: '建置專案',
+            //         sidebarMeta: {
+            //             order: global.pages.myProject_createProject,
+            //         },
+            //     })
             .state('myProject.listProject',
                 {
                     url: '/listProject',
