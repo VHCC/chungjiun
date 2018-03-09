@@ -193,6 +193,12 @@
             }
         }
 
+        scope.triggerChangePrjTechs = function () {
+            console.log('triggerChangePrjTechs');
+            if (this.formData.techs.selected === undefined) {
+                this.formData.techs = null;
+            }
+        }
 
         scope.createSubmit = function () {
             console.log('createSubmit');

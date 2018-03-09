@@ -65,6 +65,7 @@
                         <ui-select multiple
                                    ng-model="formData.techs.selected"
                                    ng-disabled="false"
+                                   ng-change="triggerChangePrjTechs()"
                                    search-enabled="true"
                                    append-to-body="true"
                                    class="form-control "
