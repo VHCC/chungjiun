@@ -16,7 +16,7 @@
     /** @ngInject */
     function WorkHoutCtrl($scope,
                           Project) {
-        Project.get()
+        Project.findAll()
             .success(function (allProjects) {
                 console.log('Rep - GET ALL Project, SUCCESS');
                 console.log(JSON.stringify(allProjects));

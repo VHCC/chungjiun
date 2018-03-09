@@ -11,7 +11,7 @@
                 url: '/myNewPage',
                 templateUrl: 'app/pages/myNewPage/my-new-page.html',
                 controller: 'mainController',
-                title: 'My New Page',
+                title: 'My Todo',
                 sidebarMeta: {
                     icon: 'ion-card',
                     order: global.pages.myNewPage,
