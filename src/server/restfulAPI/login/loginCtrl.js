@@ -3,8 +3,24 @@
  * created on 2018/02/14
  */
     angular.module('loginCtrl', ['ngCookies'])
-        .controller('loginController', ['$scope', '$http', '$window', '$cookies', 'Login', function (scope, http, window, cookies, Login) {
-            return new LoginCtrl(scope, http, window, cookies, Login);
+        .controller('loginController', [
+            '$scope',
+            '$http',
+            '$window',
+            '$cookies',
+            'Login',
+            function (
+                scope,
+                http,
+                window,
+                cookies,
+                Login) {
+            return new LoginCtrl(
+                scope,
+                http,
+                window,
+                cookies,
+                Login);
         }])
         .factory('Login', ['$http', function(http) {
             return {
@@ -42,6 +58,7 @@
                         // cookies.username = data[0].name; wrong program
                         cookies.put('username', data[0].name);
                         cookies.put('roletype', data[0].roleType);
+                        cookies.put('userDID', data[0]._id);
                         
                         console.log('cookies.username= ' + cookies.username);
                         console.log('cookies.username= ' + cookies.get('username'));

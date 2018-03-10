@@ -19,7 +19,12 @@ global.apiUrl = {
     get_project_find_by_prjid : '/api/projectFindByPrjID',
     post_project_foot_code : '/api/projectFootCode',
     post_project_create : '/api/projectCreate',
+    
 
     // todolist
+    post_todo_create : '/api/createTodo',
+    post_todo_findMyAll : '/api/findMyAllTodos',
+    post_todo_checkItem : '/api/checkMySpecificTodo',
+    post_todo_remove : '/api/removeMySpecificTodo',
 
 };

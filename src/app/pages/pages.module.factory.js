@@ -56,7 +56,20 @@
                 },
                 deleteTest : function () {
                     return http.post('/api/todos/test');
+                },
+                createMyTodo : function (todoData) {
+                    return http.post('/api/createTodo', todoData);
+                },
+                findMyTodos : function (userData) {
+                    return http.post('/api/findMyAllTodos', userData);
+                },
+                checkMySpecificTodo : function (todoData) {
+                    return http.post('/api/checkMySpecificTodo', todoData);
+                },
+                removeMySpecificTodo : function (todoData) {
+                    return http.post('/api/removeMySpecificTodo', todoData);
                 }
+
             }
         }])
     ;

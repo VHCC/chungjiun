@@ -1,0 +1,34 @@
+<div class="task-todo-container" ng-class="{'transparent': transparent}">
+    <input type="text" value=""
+           required
+           class="form-control task-todo"
+           placeholder="新增待辦事項"
+           ng-keyup="addToDoItem($event)"
+           ng-model="newTodoText"/>
+    <div class="box-shadow-border"></div>
+    <ul class="todo-list" ui-sortable ng-model="todoList">
+        <li ng-repeat="todo in todoList"
+            ng-if="!todo.deleted" ng-init="activeItem=false"
+            ng-class="{
+                checked: todo.isChecked,
+                active: activeItem
+            }"
+            ng-mouseenter="activeItem=true" ng-mouseleave="activeItem=false">
+            <div class="blur-container">
+                <div class="blur-box"></div>
+            </div>
+            <i class="mark" style="background-color: {{todo.color}}"></i>
+            <label class="todo-checkbox custom-checkbox custom-input-success">
+                <input type="checkbox"
+                       ng-model="todo.isChecked"
+                       ng-click="checkTodo(todo._id)"
+                >
+                <span class="cut-with-dots">{{ todo.text }}</span>
+            </label>
+            <!--<i class="remove-todo ion-ios-close-empty"-->
+               <!--ng-click="removeTodo(todo)"></i>-->
+            <i class="remove-todo ion-ios-close-empty"
+               ng-click="noCheckConfirm(todo, todo.isChecked)"></i>
+        </li>
+    </ul>
+</div>
