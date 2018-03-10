@@ -1,0 +1,21 @@
+<div>
+    <div class="modal-header bg-warning">
+        <i class="ion-android-warning modal-icon"></i>
+        <span> Warning</span>
+        <strong>請注意</strong>
+    </div>
+    <div class="modal-body text-center">
+        {{warningText}}
+        <br>
+        <h4><code>{{confirmData.text}}</code></h4>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger"
+                ng-click="closeThisDialog();removeTodo(confirmData)">確定
+        </button>
+        <button type="button"
+                class="btn btn-primary"
+                ng-click="closeThisDialog()">取消
+        </button>
+    </div>
+</div>

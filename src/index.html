@@ -13,7 +13,8 @@
   <link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon-96x96.png">
   <link rel="stylesheet" href="../bower_components/noty/lib/noty.css">
 
-  <!-- build:css({.tmp/serve,src}) styles/vendor.css -->
+
+    <!-- build:css({.tmp/serve,src}) styles/vendor.css -->
   <!-- bower:css -->
   <!-- run `gulp inject` to automatically populate bower styles dependencies -->
   <!-- endbower -->
@@ -96,6 +97,15 @@
             if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
         }
         return null;
+    }
+
+    function globalNoty(type, text) {
+        new Noty({
+            text: text,
+            layout: 'center',
+            theme: 'light',
+            type: type,
+        }).show();
     }
 </script>
 </html>

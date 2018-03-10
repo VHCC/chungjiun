@@ -36,6 +36,7 @@
                      window,
                      document) {
       console.log("cookies.username= " + cookies.get('username'));
+      console.log("cookies.userDID= " + cookies.get('userDID'));
       scope.username = cookies.get('username');
 
       scope.initPageTop = function () {
