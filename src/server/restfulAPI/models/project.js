@@ -37,8 +37,13 @@ module.exports = mongoose.model('Project', {
         type: Array,
         default: []
     },
+    // 專案關閉 Flag
     enable : {
         type: Boolean
+    },
+    // 到期日
+    endDate : {
+        type: Date
     }
 
 });
