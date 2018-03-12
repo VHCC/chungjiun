@@ -55,6 +55,7 @@ module.exports = function (app) {
                     req.body.prj.type.selected.type +
                     req.body.prj.footCode,
                     technician: req.body.techs.selected,
+                    endDate: req.body.prjEndDate,
                     enable: true,
                 },
                 function (err, project) {
@@ -68,7 +69,7 @@ module.exports = function (app) {
                         error: global.status._200,
                     });
                 });
-        } catch (error){
+        } catch (error) {
             console.log("ERROR");
             res.status(400).send({
                 code: 400,
