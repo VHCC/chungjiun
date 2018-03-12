@@ -1,13 +1,11 @@
-<div class="datepicker row">
-
     <div ng-controller="mydatepickerpopupCtrl as dpVM">
-        <h4>Popup</h4>
         <p class="input-group">
             <input type="text" class="form-control"
                    uib-datepicker-popup="{{format}}"
                    datepicker-options="options"
                    ng-model="myDT"
                    is-open="opened"
+                   id="myDT"
                    ng-required="true"
                    close-text="Close"
                    alt-input-formats="altInputFormats"
@@ -17,8 +15,7 @@
                     ng-click="open()">
                 <i class="glyphicon glyphicon-calendar"></i>
             </button>
+
           </span>
         </p>
     </div>
-
-</div>
