@@ -19,6 +19,7 @@ global.pages = {
     myForms  : 750,
     myForms_workHour  : 100,
     myForms_newForm  : 200,
+    myForms_paymentForm  : 300,
     myNewPage  : 800,
 
     myExecutive : 1000,

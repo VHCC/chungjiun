@@ -32,7 +32,7 @@
                     templateUrl: 'app/pages/myForms/workHour/workHourPage.html',
                     controller: 'workHourFormCtrl',
                     controllerAs: 'workHourFormCtrlVm',
-                    title: '工時表',
+                    title: '工時表(未完成)',
                     sidebarMeta: {
                         order: global.pages.myForms_workHour,
                     },
@@ -43,9 +43,20 @@
                     templateUrl: 'app/pages/myForms/newForm/newFormPage.html',
                     controller: 'newFormCtrl',
                     controllerAs: 'newFormCtrlVm',
-                    title: '新表單',
+                    title: '新表單(Sample)',
                     sidebarMeta: {
                         order: global.pages.myForms_newForm,
+                    },
+                })
+            .state('myForms.paymentForm',
+                {
+                    url: '/paymentForm',
+                    templateUrl: 'app/pages/myForms/paymentForm/paymentFormPage.html',
+                    controller: 'paymentFormCtrl',
+                    controllerAs: 'paymentFormCtrlVm',
+                    title: '墊付款',
+                    sidebarMeta: {
+                        order: global.pages.myForms_paymentForm,
                     },
                 })
     }

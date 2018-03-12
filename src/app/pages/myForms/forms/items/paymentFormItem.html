@@ -1,0 +1,43 @@
+<form>
+    <div class="row">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label >發票日期</label>
+                <div ng-include="'app/pages/myInput/widgets/datePickerPopup/datePickerPopup.html'"/>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group ">
+                <label for="receiptCode">發票代碼</label>
+                <input type="text" class="form-control" id="receiptCode" placeholder="請輸入發票代碼" required>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group ">
+                <label for="payment">內容</label>
+                <input type="text" class="form-control" id="payment" placeholder="請輸入內容" required>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group ">
+                <label for="amount">金額</label>
+                <div class="input-group">
+                    <span class="input-group-addon addon-left input-group-addon-success">NTD</span>
+                    <input type="number"
+                           id="amount"
+                           class="form-control with-success-addon"
+                           min="0"
+                           onkeypress="return event.charCode >= 48"
+                           placeholder="請輸入金額"
+                           aria-label="Amount (to the nearest dollar)"
+                           required>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <button type="submit" class="btn btn-danger">提交</button>
+</form>

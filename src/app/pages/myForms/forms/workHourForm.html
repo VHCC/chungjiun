@@ -15,7 +15,7 @@
                         ng-model="prjName"
                         repeat="prjItems in workHourFormCtrlVm.projects | groupSelectpickerOptions: {name: $select.search}"
                         group-by="'name'">
-                    <span ng-bind-html="prjItems.name + '-' + prjItems.code | highlight: $select.search"></span>
+                    <span ng-bind-html="prjItems.name + ' - ' + prjItems.code | highlight: $select.search"></span>
                 </ui-select-choices>
             </ui-select>
         </div>
