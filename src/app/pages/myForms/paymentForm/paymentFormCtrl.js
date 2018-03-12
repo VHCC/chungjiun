@@ -10,6 +10,7 @@
             [
                 '$scope',
                 '$cookies',
+                '$compile',
                 'Project',
                 PaymentFormCtrl
             ]);
@@ -17,6 +18,7 @@
     /** @ngInject */
     function PaymentFormCtrl($scope,
                              cookies,
+                             $compile,
                              Project) {
 
         $scope.username = cookies.get('username');
@@ -29,19 +31,19 @@
                 vm.projects = allProjects;
             });
 
-        $scope.prjCodeToName = function (code) {
-            switch(code) {
-                case "1":
+        $scope.prjCodeToName = function (type) {
+            switch(type) {
+                case "01":
                     return "服務建議書";
-                case "2":
+                case "02":
                     return "規劃";
-                case "3":
+                case "03":
                     return "設計"
-                case "4":
+                case "04":
                     return "監造"
-                case "5":
+                case "05":
                     return "服務"
-                case "6":
+                case "06":
                     return "總案"
                 default:
                     return "UNKNOWN"
@@ -49,10 +51,15 @@
         }
 
         $scope.aaa = function () {
-            var htmlcontent = $('#rowBody ');
-            htmlcontent.load('../forms/items/paymentFormItem.html');
-            $compile(htmlcontent.contents())($scope);
-            document.getElementById('rowHead').append(123);
+            $scope.count++;
+            angular.element(
+                document.getElementById('space-for-buttons'))
+                .append($compile(
+                    "<div><button class='btn btn-default' " +
+                    "data-alert=" + $scope.count + ">Show alert #" +
+                    $scope.count +
+                    "</button></div>"
+                )($scope));
 
         }
 
