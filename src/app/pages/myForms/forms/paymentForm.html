@@ -1,14 +1,15 @@
 <form id="formHead">
     <div class="row"
          id="rowHead">
-        <div class="col-md-12">
+        <div class="col-md-12"
+             id="colHead">
             <div class="form-group">
                 <label for="projectName">專案名稱 - 類型 - 代碼</label>
                 <ui-select ng-model="paymentFormCtrlVm.prjItems.selected"
                            class="btn-group bootstrap-select form-control"
                            id="projectName"
                            ng-disabled="false"
-                           ng-change="aaa()"
+                           ng-change="addPayment($select.selected.name, prjCodeToName($select.selected.type), $select.selected.prjCode, $select.selected._id)"
                            append-to-body="true"
                            search-enabled="true">
                     <ui-select-match placeholder="選擇專案">
@@ -23,10 +24,14 @@
                     </ui-select-choices>
                 </ui-select>
             </div>
+            <hr>
         </div>
     </div>
+    <hr>
     <div> <!-- Parent Div -->
         <div id="space-for-buttons"></div>
     </div>
-    <button type="submit" class="btn btn-danger">提交</button>
+    <button type="submit"
+            ng-click="sssaa()"
+            class="btn btn-danger">提交墊付款</button>
 </form>

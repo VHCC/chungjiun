@@ -27,4 +27,6 @@ global.apiUrl = {
     post_todo_checkItem : '/api/checkMySpecificTodo',
     post_todo_remove : '/api/removeMySpecificTodo',
 
+    // payment Form
+    post_payment_create : '/api/createPaymentForm',
 };

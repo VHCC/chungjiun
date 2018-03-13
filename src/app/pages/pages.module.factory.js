@@ -69,7 +69,13 @@
                 removeMySpecificTodo : function (todoData) {
                     return http.post('/api/removeMySpecificTodo', todoData);
                 }
-
+            }
+        }])
+        .factory('PaymentForms', ['$http', function (http) {
+            return {
+                createForms: function (formDate) {
+                    return http.post('/api/createPaymentForm', formDate);
+                }
             }
         }])
     ;
