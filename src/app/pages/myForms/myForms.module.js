@@ -59,5 +59,16 @@
                         order: global.pages.myForms_paymentForm,
                     },
                 })
+            .state('myForms.workOffForm',
+                {
+                    url: '/workOffForm',
+                    templateUrl: 'app/pages/myForms/workOffForm/workOffFormPage.html',
+                    controller: 'workOffFormCtrl',
+                    controllerAs: 'workOffFormCtrlVm',
+                    title: '人員休假',
+                    sidebarMeta: {
+                        order: global.pages.myForms_workOff,
+                    },
+                })
     }
 })();
