@@ -9,7 +9,7 @@
     .config(routeConfig);
 
   /** @ngInject */
-  function routeConfig($stateProvider, $urlRouterProvider) {
+  function routeConfig($stateProvider) {
     $stateProvider
         .state('tables', {
           url: '/tables',
@@ -36,7 +36,6 @@
             order: 100,
           },
         });
-    $urlRouterProvider.when('/tables','/tables/basic');
   }
 
 })();
