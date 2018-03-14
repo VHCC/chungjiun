@@ -15,6 +15,9 @@
                 },
                 findTechs: function () {
                     return http.get('/api/getAllTechs');
+                },
+                findManagers: function () {
+                    return http.get('/api/getAllManagers');
                 }
             }
         }])

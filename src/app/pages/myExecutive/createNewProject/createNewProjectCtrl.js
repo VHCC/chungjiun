@@ -68,6 +68,12 @@
                 cC.techsItems = techs;
             })
 
+        User.findManagers()
+            .success(function (managers) {
+                console.log(JSON.stringify(managers));
+                cC.managersItem = managers;
+            })
+
         cC.prjTypes = [
             {label: '服務建議書-01', type: '01'},
             {label: '規劃-02', type: '02'},
@@ -208,6 +214,7 @@
             Project.create(scope.formData)
                 .success(function (data) {
                     console.log('createSubmit 2');
+                    console.log('Error Code= ' + data.code);
                     if (data.code == 200) {
                         scope.formData = [];
                         window.location.reload();

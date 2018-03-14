@@ -40,6 +40,23 @@ module.exports = function (app) {
             })
     });
 
+    app.get(global.apiUrl.get_all_managers, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "AP, getAllManagers");
+        User.find(
+            {
+                roleType: 2 // 技師
+            },
+            {
+                password: 0
+            },
+            function (err, managers) {
+                if (err) {
+                    res.send(err);
+                }
+                res.json(managers);
+            })
+    })
+
     app.post(global.apiUrl.post_project_create, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, create project");
         try {
@@ -49,6 +66,7 @@ module.exports = function (app) {
                     code: String(req.body.prj.code),
                     type: req.body.prj.type.selected.type,
                     name: req.body.prj.name.new,
+                    majorID: req.body.manager.selected._id,
                     prjCode:
                     String(req.body.year) +
                     String(req.body.prj.code) +
@@ -62,7 +80,7 @@ module.exports = function (app) {
                     if (err) {
                         res.send(err);
                     }
-                    console.log(global.timeFormat(new Date()) + global.log.i + "create Rpeject= " +
+                    console.log(global.timeFormat(new Date()) + global.log.i + "create Project= " +
                         JSON.stringify(req.body));
                     res.status(200).send({
                         code: 200,
