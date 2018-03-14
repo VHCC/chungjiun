@@ -96,12 +96,22 @@
 </main>
 </body>
 <script>
-    function noRoleType() {
+
+    function errorText(text) {
         new Noty({
-            text: '請選擇員工角色',
+            text: text,
             layout: 'center',
             theme: 'light',
             type: 'error',
+        }).show();
+    }
+
+    function createSuccess(text) {
+        new Noty({
+            text: text,
+            layout: 'center',
+            theme: 'light',
+            type: 'success',
         }).show();
     }
 </script>

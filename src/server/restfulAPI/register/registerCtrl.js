@@ -8,19 +8,18 @@ angular.module('registerCtrl', ['ngCookies'])
         '$http',
         '$window',
         '$cookies',
-        'Register', function (
-            scope,
-            http,
-            window,
-            cookies,
-            Register) {
-        return new RegisterCtrl(
-            scope,
-            http,
-            window,
-            cookies,
-            Register);
-    }])
+        'Register', function (scope,
+                              http,
+                              window,
+                              cookies,
+                              Register) {
+            return new RegisterCtrl(
+                scope,
+                http,
+                window,
+                cookies,
+                Register);
+        }])
     .factory('Register', ['$http', function (http) {
         return {
             create: function (userData) {
@@ -30,7 +29,11 @@ angular.module('registerCtrl', ['ngCookies'])
     }]);
 
 /** @ngInject */
-function RegisterCtrl(scope, mHttp, window, cookies, Register) {
+function RegisterCtrl(scope,
+                      mHttp,
+                      window,
+                      cookies,
+                      Register) {
     scope.formData = {};
     scope.loading = false;
 
@@ -40,11 +43,11 @@ function RegisterCtrl(scope, mHttp, window, cookies, Register) {
         console.log("createUser");
         // validate the formData to make sure that something is there
         // if form is empty, nothing will happen
-        if (scope.formData.email != undefined) {
+        if (scope.formData.email != undefined && scope.formData.password != undefined) {
             scope.loading = true;
             if (scope.formData.roletype === undefined) {
                 scope.loading = false;
-                window.noRoleType();
+                window.errorText('請選擇員工角色');
                 return;
             }
             // call the create function from our service (returns a promise object)
@@ -54,6 +57,7 @@ function RegisterCtrl(scope, mHttp, window, cookies, Register) {
                 .success(function (data) {
                     console.log('CREATE  SUCCESS');
                     scope.loading = false;
+                    window.createSuccess('員工建立成功');
                     scope.formData = {}; // clear the form so our user is ready to enter another
                 });
         }
