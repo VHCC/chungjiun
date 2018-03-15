@@ -14,14 +14,15 @@
                 '$window',
                 'ngDialog',
                 'Project',
+                'ProjectUtil',
                 'PaymentForms',
                 PaymentFormCtrl
             ])
-        .directive("haha", function () {
+        .directive("removepayment", function () {
             return function (scope, element, attrs) {
                 element.bind("click", function () {
                     console.log(attrs);
-                    $(attrs.haha).remove();
+                    $(attrs.removepayment).remove();
                 });
             };
         });
@@ -33,6 +34,7 @@
                              window,
                              ngDialog,
                              Project,
+                             ProjectUtil,
                              PaymentForms) {
 
         $scope.username = cookies.get('username');
@@ -45,23 +47,8 @@
                 vm.projects = allProjects;
             });
 
-        $scope.prjCodeToName = function (type) {
-            switch (type) {
-                case "01":
-                    return "服務建議書";
-                case "02":
-                    return "規劃";
-                case "03":
-                    return "設計"
-                case "04":
-                    return "監造"
-                case "05":
-                    return "服務"
-                case "06":
-                    return "總案"
-                default:
-                    return "UNKNOWN"
-            }
+        $scope.prjTypeToName = function (type) {
+            return ProjectUtil.getTypeText(type);
         }
 
         $scope.count = 0;
@@ -85,7 +72,7 @@
                     prjDID +
                     "</span>" +
                     "<button class='btn btn-default' " +
-                    "data-haha=#payment" + $scope.count + ">X" +
+                    "data-removepayment=#payment" + $scope.count + ">X" +
                     "</button>" +
                     "</label>" +
                     "<div " +
@@ -95,7 +82,7 @@
                 )($scope));
         }
 
-        $scope.sssaa = function () {
+        $scope.submitPayment = function () {
 
             $scope.warningText = '總共新增 ' + $('#rowHead').find("div[id^='payment']").length + " 筆 墊付款";
             ngDialog.open({
@@ -128,7 +115,6 @@
             }
             PaymentForms.createForms(dataForm)
                 .success(function (data) {
-                    console.log(23333);
                     window.location.reload();
                 })
             console.log(JSON.stringify(dataForm));
