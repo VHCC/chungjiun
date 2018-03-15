@@ -117,6 +117,14 @@
         $scope.prjTypeToName = function (type) {
             return ProjectUtil.getTypeText(type);
         }
+
+        $scope.showTechs = function (techs) {
+            var resault = "";
+            for (var index = 0; index < techs.length; index ++) {
+                resault += techs[index].name + " ";
+            }
+            return resault;
+        }
     }
 
 })();

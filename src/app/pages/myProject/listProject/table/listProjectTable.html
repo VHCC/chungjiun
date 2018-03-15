@@ -5,7 +5,7 @@
             <th class="table-id" st-sort="prjCode" st-sort-default="true">代碼</th>
             <th st-sort="name">名稱</th>
             <th st-sort="majorID">主承辦</th>
-            <th st-sort="creator">經理</th>
+            <th st-sort="creator">協辦人員</th>
             <th st-sort="age">技師</th>
         </tr>
         <tr>
@@ -34,9 +34,9 @@
                     Edit
                 </button>
             </td>
-            <td>{{prj.creator}}</td>
+            <td>{{prj.workers}}</td>
+            <td>{{showTechs(prj.technician)}}</td>
 
-            <td><span editable-text="prj.prjCode" blur="cancel">{{prj.prjCode}}</span></td>
         </tr>
         </tbody>
         <tfoot>
