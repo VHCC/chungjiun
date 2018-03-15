@@ -81,6 +81,31 @@
                 }
             }
         }])
+        .factory('ProjectUtil', function () {
+            return {
+                getTypeText: function (type) {
+                    switch (type) {
+                        case "01":
+                            return "服務建議書";
+                        case "02":
+                            return "規劃";
+                        case "03":
+                            return "設計"
+                        case "04":
+                            return "監造"
+                        case "05":
+                            return "服務"
+                        case "06":
+                            return "總案"
+                        default:
+                            return "UNKNOWN"
+                    }
+                },
+                getManager: function (project) {
+
+                }
+            }
+        })
     ;
 
 

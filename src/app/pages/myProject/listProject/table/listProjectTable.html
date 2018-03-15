@@ -1,16 +1,42 @@
 <div class="horizontal-scroll">
-    <table class="table table-hover" st-table="projects">
+    <table class="table table-hover" st-table="projects" >
         <thead>
         <tr class="sortable">
-            <th class="table-id" st-sort="_id" st-sort-default="true">#</th>
-            <th st-sort="prjCode">代碼</th>
+            <th class="table-id" st-sort="prjCode" st-sort-default="true">代碼</th>
+            <th st-sort="name">名稱</th>
+            <th st-sort="majorID">主承辦</th>
+            <th st-sort="creator">經理</th>
+            <th st-sort="age">技師</th>
+        </tr>
+        <tr>
+            <th><input st-search="prjCode" placeholder="尋找代碼" class="input-sm form-control search-input"
+                       type="search"/></th>
+            <th><input st-search="name" placeholder="輸入名稱" class="input-sm form-control search-input"
+                       type="search"/></th>
+
         </tr>
         </thead>
         <tbody>
 
-        <tr ng-repeat="pro in projects" class="editable-tr-wrap">
-            <td class="table-id">{{pro._id}}</td>
-            <td><span editable-text="pro.prjCode" blur="cancel">{{pro.prjCode}}</span></td>
+        <tr ng-repeat="prj in projects" class="editable-tr-wrap">
+            <td class="table-id">{{prj.prjCode}}</td>
+            <!--<td><span editable-text="prj.name" blur="cancel">{{prj.name}} - {{prjTypeToName(prj.type)}}</span></td>-->
+            <td>{{prj.name}} - {{prjTypeToName(prj.type)}}</td>
+            <td class="select-td">
+        <span editable-select="prj.majorID" blur="cancel" e-name="majorID" e-form="rowform"
+              e-selectpicker
+              e-ng-options="user.value as user.name for user in projectManagers">
+        {{ showMajor(prj) }}
+        </span>
+                <br>
+                <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$show()"
+                        class="btn btn-primary editable-table-button btn-xs">
+                    Edit
+                </button>
+            </td>
+            <td>{{prj.creator}}</td>
+
+            <td><span editable-text="prj.prjCode" blur="cancel">{{prj.prjCode}}</span></td>
         </tr>
         </tbody>
         <tfoot>

@@ -48,6 +48,5 @@
                     },
                 })
 
-        $urlRouterProvider.when('/myProject','/tables/basic');
     }
 })();
