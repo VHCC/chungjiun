@@ -41,7 +41,8 @@
               </a>
             </li>
           </ul>
-          <a ng-mouseenter="hoverItem($event, item)" href ng-if="::(!subitem.subMenu && subitem.disabled)" class="al-sidebar-list-link">
+          <a ng-mouseenter="hoverItem($event, item)" href ng-if="::(!subitem.subMenu && subitem.disabled)"
+             ng-class="{ 'menu_not_allowed' : subitem.disabled}">
             {{ ::subitem.title }}
           </a>
           <a ng-mouseenter="hoverItem($event, item)" target="{{::(subitem.blank ? '_blank' : '_self')}}"

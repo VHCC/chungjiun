@@ -20,7 +20,7 @@
                     url: '/myProject',
                     template: '<ui-view autoscroll="true" autoscroll-body-top></ui-view>',
                     abstract: true,
-                    title: '專案',
+                    title: '專案管理',
                     sidebarMeta: {
                         icon: 'ion-compose',
                         order: global.pages.myProject,
@@ -42,11 +42,21 @@
                     url: '/listProject',
                     templateUrl: 'app/pages/myProject/listProject/listProject.html',
                     controller: 'listProjectCtrl',
-                    title: '我的專案',
+                    title: '執行中專案',
                     sidebarMeta: {
                         order: global.pages.myProject_listProject,
                     },
                 })
-
+            .state('myProject.endProject',
+                {
+                    url: '/endProject',
+                    templateUrl: 'app/pages/myProject/listProject/listProject.html',
+                    controller: 'listProjectCtrl',
+                    title: '已結案專案',
+                    disabled: true,
+                    sidebarMeta: {
+                        order: global.pages.myProject_endProject,
+                    },
+                })
     }
 })();
