@@ -76,7 +76,8 @@
                   level: (s.name.match(/\./g) || []).length,
                   order: meta.order,
                   icon: meta.icon,
-                    disabled: s.disabled,
+                  accessLevel: s.accessLevel,
+                  disabled: s.disabled,
                   stateRef: s.name,
                 };
               })
