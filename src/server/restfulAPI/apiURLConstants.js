@@ -30,4 +30,7 @@ global.apiUrl = {
 
     // payment Form
     post_payment_create : '/api/createPaymentForm',
+
+    //userEdit
+    post_upload_user_avatatr : '/api/uploadUserAvatar',
 };

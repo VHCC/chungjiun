@@ -5,8 +5,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.factory', [
-    ])
+    angular.module('BlurAdmin.pages.factory', [])
         .config(routeConfig)
         .factory('User', ['$http', function (http) {
             return {
@@ -32,10 +31,10 @@
                 create: function (projectData) {
                     return http.post('/api/projectCreate', projectData);
                 },
-                findPrjByID: function(prjID) {
-                  return http.get('/api/projectFindByPrjID', prjID);
+                findPrjByID: function (prjID) {
+                    return http.get('/api/projectFindByPrjID', prjID);
                 },
-                findPrjByName: function(prjName) {
+                findPrjByName: function (prjName) {
                     return http.post('/api/projectFindByName', prjName);
                 },
                 findPrjDistinctByName: function () {
@@ -46,30 +45,30 @@
                 },
             }
         }])
-        .factory('Todos', ['$http',function(http) {
+        .factory('Todos', ['$http', function (http) {
             return {
-                get : function() {
+                get: function () {
                     return http.get('/api/todos');
                 },
-                create : function(todoData) {
+                create: function (todoData) {
                     return http.post('/api/todos', todoData);
                 },
-                delete : function(id) {
+                delete: function (id) {
                     return http.delete('/api/todos/' + id);
                 },
-                deleteTest : function () {
+                deleteTest: function () {
                     return http.post('/api/todos/test');
                 },
-                createMyTodo : function (todoData) {
+                createMyTodo: function (todoData) {
                     return http.post('/api/createTodo', todoData);
                 },
-                findMyTodos : function (userData) {
+                findMyTodos: function (userData) {
                     return http.post('/api/findMyAllTodos', userData);
                 },
-                checkMySpecificTodo : function (todoData) {
+                checkMySpecificTodo: function (todoData) {
                     return http.post('/api/checkMySpecificTodo', todoData);
                 },
-                removeMySpecificTodo : function (todoData) {
+                removeMySpecificTodo: function (todoData) {
                     return http.post('/api/removeMySpecificTodo', todoData);
                 }
             }
@@ -106,6 +105,20 @@
                 }
             }
         })
+        .factory('UserEditUtil', ['$http', function (http) {
+            return {
+                uploadAvatarImage: function (uploadData) {
+                    return http.post('/api/uploadUserAvatar', uploadData, {
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': undefined}
+                    }).success(function () {
+                        console.log("success!!");
+                    }).error(function () {
+                        console.log("error!!");
+                    });
+                }
+            }
+        }])
     ;
 
 
