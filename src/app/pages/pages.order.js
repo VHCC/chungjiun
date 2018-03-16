@@ -26,7 +26,7 @@ global.pages = {
 
     myExecutive : 1000,
     myExecutive_createNewProject : 100,
-    myExecutive_assignRight_vacation : 200,
+    myExecutive_openWorkOffRight : 200,
     myCalender : 2000,
 
 

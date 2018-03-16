@@ -35,5 +35,17 @@
                         order: global.pages.myExecutive_createNewProject,
                     },
                 })
+            .state('myExecutive.openWorkOffRight',
+                {
+                    url: '/openWorkOffRight',
+                    templateUrl: 'app/pages/myExecutive/openWorkOffRight/openWorkOffRight.html',
+                    controller: 'openWorkOffRight',
+                    controllerAs: 'cC',
+                    title: '開啟新假別',
+                    accessLevel: [100],
+                    sidebarMeta: {
+                        order: global.pages.myExecutive_openWorkOffRight,
+                    },
+                })
     }
 })();
