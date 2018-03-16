@@ -24,7 +24,8 @@
         'BlurAdmin.pages.myProject',
         'BlurAdmin.pages.myInput',
         'BlurAdmin.pages.myForms',
-        'BlurAdmin.pages.myExecutive'
+        'BlurAdmin.pages.myExecutive',
+        'BlurAdmin.pages.myProfile'
     ])
         .config(routeConfig)
 
