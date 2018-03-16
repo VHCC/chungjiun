@@ -1,0 +1,123 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-horizontal">
+                <div class="form-group" id="prjNameDiv">
+                    <label for="projectName" class="col-sm-2 control-label">總案名稱</label>
+                    <div class="col-sm-10">
+                        <ui-select ng-model="formData.prj.name.selected"
+                                   class="btn-group bootstrap-select form-control"
+                                   id="projectName"
+                                   ng-change="triggerChangePrjName()"
+                                   ng-disabled="false"
+                                   append-to-body="true"
+                                   search-enabled="true">
+                            <ui-select-match placeholder="選擇總案">
+                                {{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    repeat="prjItems in cC.projects | groupSelectpickerOptions: {name: $select.search}"
+                                    group-by="'name'">
+                                <span ng-bind-html="prjItems.name| highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group" style="display: none" id="newPrjNameDiv">
+                    <label for="newProjectName" class="col-sm-2 control-label">新總案名稱</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control"
+                               id="newProjectName"
+                               ng-model="formData.prj.name.new"
+                               ng-change="triggerChangePrjNewName()"
+                               placeholder="請輸入新總案名稱">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="projectType" class="col-sm-2 control-label">類型</label>
+                    <div class="col-sm-10">
+                        <select class="form-control selectpicker"
+                                id="projectType"
+                                title="請選擇類型"
+                                ng-change="triggerChangePrjType()"
+                                ng-model="formData.prj.type.selected"
+                                ng-options="item as item.label for item in cC.prjTypes"
+                                selectpicker
+                                required
+                        >
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="projectManager"  class="col-sm-2 control-label">承辦經理</label>
+                    <div class="col-sm-10">
+                        <ui-select ng-model="formData.manager.selected"
+                                   class="btn-group bootstrap-select form-control"
+                                   id="projectManager"
+                                   required
+                                   ng-disabled="false"
+                                   append-to-body="true"
+                                   search-enabled="true">
+                            <ui-select-match placeholder="請選擇承辦經理">
+                                {{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    repeat="multipleItem in cC.managersItem | filter: $select.search">
+                                <span ng-bind-html="multipleItem.name | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="projectName" class="col-sm-2 control-label">負責技師</label>
+                    <div class="col-sm-10">
+                        <ui-select multiple
+                                   ng-model="formData.techs.selected"
+                                   ng-disabled="false"
+                                   ng-change="triggerChangePrjTechs()"
+                                   search-enabled="true"
+                                   append-to-body="true"
+                                   class="form-control "
+                                   array-required
+                        >
+
+                            <ui-select-match placeholder="請選擇技師">
+                                {{$item.name}}
+                            </ui-select-match>
+                            <ui-select-choices repeat="multipleItem in cC.techsItems | filter: $select.search">
+                                <span ng-bind-html="multipleItem.name | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">專案結束日期</label>
+                    <div class="col-md-10"
+                         ng-include="'app/pages/myInput/widgets/datePickerPopup/datePickerPopup.html'"></div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit"
+                            class="btn btn-danger"
+                            id="prjSubmitBtn"
+                            ng-click="createSubmit()">建立專案</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function formNotFullFill() {
+        new Noty({
+            text: '輸入資訊未完整 !',
+            layout: 'center',
+            theme: 'light',
+            type: 'alert',
+        }).show();
+    }
+
+</script>
