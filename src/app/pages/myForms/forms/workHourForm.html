@@ -1,25 +1,27 @@
 <form>
-    <div >
-        <div class="form-group">
-            <label for="projectName">專案名稱</label>
-            <ui-select ng-model="workHourFormCtrlVm.prjItems.selected"
-                       class="btn-group bootstrap-select form-control"
-                       id="projectName"
-                       ng-disabled="false"
-                       append-to-body="true"
-                       search-enabled="true">
-                <ui-select-match placeholder="選擇專案">
-                    {{$select.selected.name}}
-                </ui-select-match>
-                <ui-select-choices
-                        ng-model="prjName"
-                        repeat="prjItems in workHourFormCtrlVm.projects | groupSelectpickerOptions: {name: $select.search}"
-                        group-by="'name'">
-                    <span ng-bind-html="prjItems.name + ' - ' + prjItems.code | highlight: $select.search"></span>
-                </ui-select-choices>
-            </ui-select>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="projectName">專案名稱</label>
+                <ui-select ng-model="workHourFormCtrlVm.prjItems.selected"
+                           class="btn-group bootstrap-select form-control"
+                           id="projectName"
+                           ng-disabled="false"
+                           append-to-body="true"
+                           search-enabled="true">
+                    <ui-select-match placeholder="選擇專案">
+                        {{$select.selected.name}}
+                    </ui-select-match>
+                    <ui-select-choices
+                            ng-model="prjName"
+                            repeat="prjItems in workHourFormCtrlVm.projects | groupSelectpickerOptions: {name: $select.search}"
+                            group-by="'name'">
+                        <span ng-bind-html="prjItems.name + ' - ' + prjItems.code | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <p>專案編號: {{workHourFormCtrlVm.prjItems.selected.code}}</p>
         </div>
-        <p>專案編號: {{workHourFormCtrlVm.prjItems.selected.code}}</p>
         <div class="col-md-12"
              ng-include="'app/pages/myInput/widgets/datePickerPopup/datePickerPopup.html'"></div>
 
