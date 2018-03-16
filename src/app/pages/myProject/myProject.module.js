@@ -13,7 +13,7 @@
         .config(routeConfig);
 
     /** @ngInject */
-    function routeConfig($stateProvider) {
+    function routeConfig($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('myProject',
                 {
@@ -47,5 +47,7 @@
                         order: global.pages.myProject_listProject,
                     },
                 })
+
+        $urlRouterProvider.when('/myProject','/tables/basic');
     }
 })();
