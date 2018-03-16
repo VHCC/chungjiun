@@ -9,13 +9,18 @@
         .controller('workHourFormCtrl',
             [
                 '$scope',
+                '$cookies',
                 'Project',
                 WorkHoutCtrl
             ]);
 
     /** @ngInject */
     function WorkHoutCtrl($scope,
+                          cookies,
                           Project) {
+
+        $scope.username = cookies.get('username');
+
         Project.findAll()
             .success(function (allProjects) {
                 console.log('Rep - GET ALL Project, SUCCESS');
@@ -28,10 +33,10 @@
 
         vm.days = [
             new Date(),
-            new Date() +1,
-            new Date() +2,
-            new Date() +3,
-            new Date() +4,
+            new Date() + 1,
+            new Date() + 2,
+            new Date() + 3,
+            new Date() + 4,
         ]
 
         vm.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
