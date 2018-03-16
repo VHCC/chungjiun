@@ -53,7 +53,7 @@
                     templateUrl: 'app/pages/myProject/listProject/listProject.html',
                     controller: 'listProjectCtrl',
                     title: '已結案專案',
-                    disabled: true,
+                    accessLevel: [1, 2, 3, 100],
                     sidebarMeta: {
                         order: global.pages.myProject_endProject,
                     },
