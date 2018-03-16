@@ -8,29 +8,32 @@
     angular.module('BlurAdmin.pages.myProfile')
         .controller('userEditCtrl', [
             '$scope',
+            '$cookies',
             'fileReader',
             '$filter',
             '$uibModal',
+            'UserEditUtil',
             UserEditCtrl
         ]);
 
     /** @ngInject */
     function UserEditCtrl($scope,
+                          cookies,
                           fileReader,
                           $filter,
-                          $uibModal) {
+                          $uibModal,
+                          UserEditUtil) {
 
-        $scope.picture = $filter('profilePicture')('Yng');
+        $scope.picture = $filter('userAvatar')(cookies.get('userDID'));
 
-        $scope.removePicture = function () {
+        $scope.removeAvatar = function () {
             $scope.picture = $filter('appImage')('theme/no-photo.png');
             $scope.noPicture = true;
         };
 
-        $scope.uploadPicture = function () {
+        $scope.selectAvatar = function () {
             var fileInput = document.getElementById('uploadFile');
             fileInput.click();
-
         };
 
         $scope.socialProfiles = [
@@ -86,8 +89,15 @@
             });
         };
 
-        $scope.getFile = function () {
-            fileReader.readAsDataUrl($scope.file, $scope)
+        $scope.operateFile = function (file) {
+            var uploadData = new FormData();
+            uploadData.append('userDID', cookies.get('userDID'));
+            uploadData.append('file', file);
+
+            UserEditUtil.uploadAvatarImage(uploadData);
+            
+
+            fileReader.readAsDataUrl(file, $scope)
                 .then(function (result) {
                     $scope.picture = result;
                 });

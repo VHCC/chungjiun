@@ -57,7 +57,8 @@
     "ng-js-tree": "~0.0.7",
     "angular-ui-select": "^0.19.6",
     "noty": "latest",
-    "ng-dialog": "latest"
+    "ng-dialog": "latest",
+    "angular-file-saver": "latest"
   },
   "resolutions": {
     "angular": "~1.5.9",
