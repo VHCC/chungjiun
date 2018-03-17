@@ -9,6 +9,7 @@
         .controller('userEditCtrl', [
             '$scope',
             '$cookies',
+            '$http',
             'fileReader',
             '$filter',
             '$uibModal',
@@ -19,12 +20,20 @@
     /** @ngInject */
     function UserEditCtrl($scope,
                           cookies,
+                          $http,
                           fileReader,
                           $filter,
                           $uibModal,
                           UserEditUtil) {
-
-        $scope.picture = $filter('userAvatar')(cookies.get('userDID'));
+        var filename = $filter('userAvatar')(cookies.get('userDID'));
+        $http.get(filename)
+            .success(function(data, status){
+                $scope.picture = $filter('userAvatar')(cookies.get('userDID'));
+            })
+            .error(function(data,status){
+                $scope.picture = $filter('appImage')('theme/no-photo.png');
+                $scope.noPicture = true;
+            });
 
         $scope.removeAvatar = function () {
             $scope.picture = $filter('appImage')('theme/no-photo.png');
@@ -95,7 +104,7 @@
             uploadData.append('file', file);
 
             UserEditUtil.uploadAvatarImage(uploadData);
-            
+
 
             fileReader.readAsDataUrl(file, $scope)
                 .then(function (result) {
