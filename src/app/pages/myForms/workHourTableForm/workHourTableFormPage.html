@@ -1,0 +1,21 @@
+<!doctype html>
+
+<!-- SET THE CONTROLLER -->
+<style>
+
+    tr {
+        color:black;
+    }
+
+</style>
+<script>
+    console.log("start");
+</script>
+<div class="col-md-12">
+    <div
+            ba-panel
+            ba-panel-title="工時表－填表人：{{username}}"
+            ba-panel-class="with-scroll">
+        <div ng-include="'app/pages/myForms/forms/workHourTableForm.html'"></div>
+    </div>
+</div>
