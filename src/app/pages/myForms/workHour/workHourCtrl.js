@@ -11,11 +11,11 @@
                 '$scope',
                 '$cookies',
                 'Project',
-                WorkHoutCtrl
+                WorkHourCtrl
             ]);
 
     /** @ngInject */
-    function WorkHoutCtrl($scope,
+    function WorkHourCtrl($scope,
                           cookies,
                           Project) {
 

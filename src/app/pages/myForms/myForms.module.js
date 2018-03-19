@@ -70,5 +70,16 @@
                         order: global.pages.myForms_workOff,
                     },
                 })
+            .state('myForms.workHourTableForm',
+                {
+                    url: '/workHourTableForm',
+                    templateUrl: 'app/pages/myForms/workHourTableForm/workHourTableFormPage.html',
+                    controller: 'workHourTableCtrl',
+                    controllerAs: 'workHourTableCtrlVm',
+                    title: '人員工時',
+                    sidebarMeta: {
+                        order: global.pages.myForms_workHourTable,
+                    },
+                })
     }
 })();
