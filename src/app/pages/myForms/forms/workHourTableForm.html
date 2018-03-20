@@ -1,281 +1,309 @@
-
 <!--<div class="add-row-editable-table">-->
-    <!--<button class="btn btn-primary" ng-click="addWorkItem()">新增項目</button>-->
+<!--<button class="btn btn-primary" ng-click="addWorkItem()">新增項目</button>-->
 <!--</div>-->
-<div class="row"
-     id="rowHead">
-    <div class="col-md-12"
-         id="colHead">
-        <div class="form-group">
-            <label for="projectName">專案名稱 - 類型 - 代碼</label>
-            <ui-select ng-model="workHourTableCtrlVm.prjItems.selected"
-                       class="btn-group bootstrap-select form-control"
-                       id="projectName"
-                       ng-disabled="false"
-                       ng-change="addPayment($select.selected.name, prjTypeToName($select.selected.type), $select.selected.prjCode, $select.selected._id)"
-                       append-to-body="true"
-                       search-enabled="true">
-                <ui-select-match placeholder="選擇專案">
-                    {{$select.selected.name}} - {{prjTypeToName($select.selected.type)}} -
-                    {{$select.selected.prjCode}}
-                </ui-select-match>
-                <ui-select-choices
-                        ng-model="prjName"
-                        repeat="prjItems in workHourTableCtrlVm.projects | groupSelectpickerOptions: {name: $select.search, prjCode: $select.search}"
-                        group-by="'name'">
-                    <span ng-bind-html="prjItems.name + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
-                </ui-select-choices>
-            </ui-select>
-        </div>
-        <hr>
-    </div>
-</div>
 
-
-<table class="table table-bordered table-hover table-condensed">
-    <thead>
-    <tr >
-        <td>專案編號</td>
-        <td>專案名稱</td>
-        <td></td>
-        <td>3/19</td>
-        <td>星期一</td>
-        <td>3/20</td>
-        <td>星期二</td>
-        <td>3/21</td>
-        <td>星期三</td>
-        <td>3/22</td>
-        <td>星期四</td>
-        <td>3/23</td>
-        <td>星期五</td>
-        <td>3/24</td>
-        <td>星期六</td>
-        <td>3/25</td>
-        <td>星期日</td>
-    </tr>
-    </thead>
-
-    <tbody ng-repeat="prj in projectsItems">
-    <tr ng-repeat="user in users">
-        <td rowspan="2" style="vertical-align: inherit; text-align: center"
-            ng-hide="$index>0">
-            {{prj.prjCode}}
-            <br>
-            <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeWorkItem($parent.$index)">移除
-            </button>
-        </td>
-        <td rowspan="2"  style="vertical-align: inherit; text-align: center" ng-hide="$index>0">
-            {{prj.name}}
-        </td>
-        <td rowspan="2" ng-hide="$index>0">
-        <span>
-            正常
-            <br>
-            加班/換休
-        </span>
-        </td>
-
-        <td class="form-group has-success">
-            <span editable-text="user.name" e-name="name" e-form="rowform" e-required>
-           {{ user.name}}
-            </span>
-        </td>
-        <td >
-           <span editable-text="user.b" e-name="b" e-form="rowform" e-required>
-           {{ user.b}}
-           </span>
-        </td>
-        <td class="form-group has-success">
-            <span editable-text="user.c" e-name="c" e-form="rowform" e-required>
-           {{ user.c}}
-           </span>
-        </td>
-        <td>
-            <span editable-text="user.d" e-name="d" e-form="rowform" e-required>
-           {{ user.d}}
-           </span>
-        </td>
-        <td class="form-group has-success">
-            <span editable-text="user.e" e-name="e" e-form="rowform" e-required>
-           {{ user.e}}
-           </span>
-        </td>
-        <td>
-            <span editable-text="user.f" e-name="f" e-form="rowform" e-required>
-           {{ user.f}}
-           </span>
-        </td>
-        <td class="form-group has-success">
-            <span editable-text="user.g" e-name="g" e-form="rowform" e-required>
-           {{ user.g}}
-           </span>
-        </td>
-        <td>
-            <span editable-text="user.h" e-name="h" e-form="rowform" e-required>
-           {{ user.h}}
-           </span>
-        </td>
-        <td class="form-group has-success">
-            <span editable-text="user.a" e-name="a" e-form="rowform" e-required>
-           {{ user.a}}
-        </span>
-        </td>
-        <td>
-           <span editable-text="user.b" e-name="b" e-form="rowform" e-required>
-           {{ user.b}}
-           </span>
-        </td>
-        <td class="form-group has-success">
-            <span editable-text="user.c" e-name="c" e-form="rowform" e-required>
-           {{ user.c}}
-           </span>
-        </td>
-        <td>
-            <span editable-text="user.d" e-name="d" e-form="rowform" e-required>
-           {{ user.d}}
-           </span>
-        </td>
-        <td class="form-group has-success">
-            <span editable-text="user.e" e-name="e" e-form="rowform" e-required>
-           {{ user.e}}
-           </span>
-        </td>
-        <td>
-            <span editable-text="user.f" e-name="f" e-form="rowform" e-required>
-           {{ user.f}}
-           </span>
-        </td>
-
-        <td>
-            <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline">
-                <button type="submit" ng-disabled="rowform.$waiting"
-                        class="btn btn-primary editable-table-button btn-xs">
-                    確認
-                </button>
-            </form>
-            <div class="buttons" ng-show="!rowform.$visible">
-                <button class="btn btn-info editable-table-button btn-xs" ng-click="rowform.$show()">編輯</button>
+<uib-tabset active="$tabSetStatus.activeTab">
+    <uib-tab heading="填寫工時">
+        <div class="row"
+             id="rowHead">
+            <div class="col-md-12"
+                 id="colHead">
+                <div class="form-group">
+                    <label for="projectName">專案名稱 - 類型 - 代碼</label>
+                    <ui-select ng-model="workHourTableCtrlVm.prjItems.selected"
+                               class="btn-group bootstrap-select form-control"
+                               id="projectName"
+                               ng-disabled="false"
+                               ng-change="addPayment($select.selected)"
+                               append-to-body="true"
+                               search-enabled="true">
+                        <ui-select-match placeholder="選擇專案">
+                            {{$select.selected.name}} - {{prjTypeToName($select.selected.type)}} -
+                            {{$select.selected.prjCode}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                ng-model="prjName"
+                                repeat="prjItems in workHourTableCtrlVm.projects | groupSelectpickerOptions: {name: $select.search, prjCode: $select.search}"
+                                group-by="'name'">
+                            <span ng-bind-html="prjItems.name + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <hr>
             </div>
-        </td>
-    </tr>
-    </tbody>
+        </div>
 
-    <tfoot>
 
-    <!--休假-->
-    <tr>
-        <td colspan="2" rowspan="2"></td>
-        <td>
-            <span>
-                休假
-            </span>
-        </td>
-        <!--MON-->
-        <td style="text-align: center">
-            <span>
-                1
-            </span>
-        </td>
-        <!--TUE-->
-        <td></td>
-        <td style="text-align: center">
-            <span>
-                1
-            </span>
-        </td>
-        <!--WED-->
-        <td></td>
-        <td style="text-align: center">
-            <span>
-                1
-            </span>
-        </td>
-        <!--THU-->
-        <td></td>
-        <td style="text-align: center">
-            <span>
-                1
-            </span>
-        </td>
-        <!--FRI-->
-        <td></td>
-        <td style="text-align: center">
-            <span>
-                1
-            </span>
-        </td>
-        <!--SAT-->
-        <td></td>
-        <td style="text-align: center">
-            <span>
-                1
-            </span>
-        </td>
-        <!--SUN-->
-        <td></td>
-        <td style="text-align: center">
-            <span>
-                1
-            </span>
-        </td>
-    </tr>
+        <table class="table table-bordered table-hover table-condensed">
+            <thead >
+            <tr class="aaa">
+                <td rowspan="3" style="vertical-align: inherit; text-align: center">專案代碼</td>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center">專案名稱</td>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center">經理</td>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center">類型</td>
 
-    <!--國定假日-->
-    <tr>
-        <td>
-            <span>
-                國定假日
-            </span>
-        </td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">3/19</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">3/20</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">3/21</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">3/22</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">3/23</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">3/24</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">3/25</td>
 
-        <!--MON-->
-        <td style="text-align: center">
-            <span>
-                1
-            </span>
-        </td>
-        <!--TUE-->
-        <td></td>
-        <td style="text-align: center">
-            <span>
-                1
-            </span>
-        </td>
-        <!--WED-->
-        <td></td>
-        <td style="text-align: center">
-            <span>
-                1
-            </span>
-        </td>
-        <!--THU-->
-        <td></td>
-        <td style="text-align: center">
-            <span>
-                1
-            </span>
-        </td>
-        <!--FRI-->
-        <td></td>
-        <td style="text-align: center">
-            <span>
-                1
-            </span>
-        </td>
-        <!--SAT-->
-        <td></td>
-        <td style="text-align: center">
-            <span>
-                1
-            </span>
-        </td>
-        <!--SUN-->
-        <td></td>
-        <td style="text-align: center">
-            <span>
-                1
-            </span>
-        </td>
-    </tr>
-    </tfoot>
-</table>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center">合計</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">星期一</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">星期二</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">星期三</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">星期四</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">星期五</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">星期六</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">星期日</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
+            </tr>
+            </thead>
+
+            <tbody ng-repeat="prj in projectsItems">
+            <tr ng-repeat="detail in details" class="row{{$index}}">
+                <td rowspan="2" style="vertical-align: inherit; text-align: center"
+                    ng-hide="$index>0">
+                    {{prj.prjCode}}
+                    <br>
+                    <button class="btn btn-danger editable-table-button btn-xs"
+                            ng-click="removeWorkItem($parent.$index)">移除
+                    </button>
+                </td>
+                <td rowspan="2" style="vertical-align: inherit; text-align: center"
+                    ng-hide="$index>0">
+                    {{prj.name}}
+                </td>
+
+                <td rowspan="2" ng-hide="$index>0" style="vertical-align: inherit; text-align: center">
+                    <span>
+                        {{ showMajor(prj)}}
+                    </span>
+                </td>
+
+                <td rowspan="2" ng-hide="$index>0" >
+                    <span>
+                        正常
+                        <br>
+                        加班/換休
+                    </span>
+                </td>
+
+                <td class="form-group has-success">
+                    <span editable-text="detail.mon_h" e-name="name" e-form="rowform" e-required>
+                        {{ detail.mon_h}}
+                    </span>
+                </td>
+                <td>
+                   <span editable-text="detail.mon_memo" e-name="b" e-form="rowform" e-required>
+                        {{ detail.mon_memo}}
+                   </span>
+                </td>
+                <td class="form-group has-success">
+                    <span editable-text="detail.tue_h" e-name="c" e-form="rowform" e-required>
+                        {{ detail.tue_h}}
+                   </span>
+                </td>
+                <td>
+                    <span editable-text="detail.tue_memo" e-name="d" e-form="rowform" e-required>
+                        {{ detail.tue_memo}}
+                   </span>
+                </td>
+                <td class="form-group has-success">
+                    <span editable-text="detail.wes_h" e-name="e" e-form="rowform" e-required>
+                        {{ detail.wes_h}}
+                   </span>
+                </td>
+                <td>
+                    <span editable-text="detail.wes_memo" e-name="f" e-form="rowform" e-required>
+                        {{ detail.wes_memo}}
+                   </span>
+                </td>
+                <td class="form-group has-success">
+                    <span editable-text="detail.thu_h" e-name="g" e-form="rowform" e-required>
+                        {{ detail.thu_h}}
+                   </span>
+                </td>
+                <td>
+                    <span editable-text="detail.thu_memo" e-name="h" e-form="rowform" e-required>
+                        {{ detail.thu_memo}}
+                   </span>
+                </td>
+                <td class="form-group has-success">
+                    <span editable-text="detail.fri_h" e-name="a" e-form="rowform" e-required>
+                        {{ detail.fri_h}}
+                    </span>
+                </td>
+                <td>
+                   <span editable-text="detail.fri_memo" e-name="b" e-form="rowform" e-required>
+                        {{ detail.fri_memo}}
+                   </span>
+                </td>
+                <td class="form-group has-success">
+                    <span editable-text="detail.sat_h" e-name="c" e-form="rowform" e-required>
+                        {{ detail.sat_h}}
+                    </span>
+                </td>
+                <td>
+                    <span editable-text="detail.sat_memo" e-name="d" e-form="rowform" e-required>
+                        {{ detail.sat_memo}}
+                    </span>
+                </td>
+                <td class="form-group has-success">
+                    <span editable-text="detail.sun_h" e-name="e" e-form="rowform" e-required>
+                        {{ detail.sun_h}}
+                    </span>
+                </td>
+                <td>
+                    <span editable-text="detail.sun_memo" e-name="f" e-form="rowform" e-required>
+                        {{ detail.sun_memo}}
+                    </span>
+                </td>
+
+                <td>
+                    <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline">
+                        <button type="submit" ng-disabled="rowform.$waiting"
+                                class="btn btn-primary editable-table-button btn-xs">
+                            確認
+                        </button>
+                    </form>
+                    <div class="buttons" ng-show="!rowform.$visible">
+                        <button class="btn btn-info editable-table-button btn-xs" ng-click="rowform.$show()">編輯</button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+
+            
+            <tfoot>
+            <!--休假-->
+            <tr>
+                <td colspan="2" rowspan="2"></td>
+                <td colspan="2">
+                    <span>
+                        休假
+                    </span>
+                </td>
+                <!--MON-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        1
+                    </span>
+                </td>
+                <!--TUE-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        1
+                    </span>
+                </td>
+                <!--WED-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        1
+                    </span>
+                </td>
+                <!--THU-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        1
+                    </span>
+                </td>
+                <!--FRI-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        1
+                    </span>
+                </td>
+                <!--SAT-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        1
+                    </span>
+                </td>
+                <!--SUN-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        1
+                    </span>
+                </td>
+            </tr>
+
+            <!--國定假日-->
+            <tr>
+                <td colspan="2">
+                    <span>
+                        國定假日
+                    </span>
+                </td>
+
+                <!--MON-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        1
+                    </span>
+                </td>
+                <!--TUE-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        1
+                    </span>
+                </td>
+                <!--WED-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        1
+                    </span>
+                </td>
+                <!--THU-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        1
+                    </span>
+                </td>
+                <!--FRI-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        1
+                    </span>
+                </td>
+                <!--SAT-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        1
+                    </span>
+                </td>
+                <!--SUN-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        1
+                    </span>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+        <hr>
+        <div class="add-row-editable-table">
+            <button class="btn btn-primary" ng-click="createSubmit()">新增</button>
+        </div>
+
+    </uib-tab>
+    <uib-tab heading="工時審核">
+        <div ng-repeat="prj in projectsItems">
+            {{prj.name}}
+        </div>
+    </uib-tab>
+</uib-tabset>
+
+

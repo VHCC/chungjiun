@@ -31,6 +31,10 @@ global.apiUrl = {
     // payment Form
     post_payment_create : '/api/createPaymentForm',
 
+    //workHourTable Form
+    post_work_hour_create : '/api/createWorkHourForm',
+    post_work_hour_get : '/api/getWorkHourForm',
+
     //userEdit
     post_upload_user_avatatr : '/api/uploadUserAvatar',
 };

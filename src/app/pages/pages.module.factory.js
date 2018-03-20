@@ -75,8 +75,18 @@
         }])
         .factory('PaymentForms', ['$http', function (http) {
             return {
-                createForms: function (formDate) {
-                    return http.post('/api/createPaymentForm', formDate);
+                createForms: function (formData) {
+                    return http.post('/api/createPaymentForm', formData);
+                }
+            }
+        }])
+        .factory('WorkHourForms', ['$http', function (http) {
+            return {
+                createWorkHourForm: function (formData) {
+                    return http.post('/api/createWorkHourForm', formData);
+                },
+                getWorkHourForm : function (formData) {
+                    return http.post('/api/getWorkHourForm', formData);
                 }
             }
         }])
@@ -102,6 +112,27 @@
                 },
                 getManager: function (project) {
 
+                }
+            }
+        })
+        .factory('DateUtil', function () {
+            return {
+                getFirstDayofThisWeek: function (today) {
+                    var offset = (1 - today.day()) === 1 ? -6 : 1 - today.day();
+                    var firstDay = moment(today).add(offset, 'days');
+                    console.log(firstDay.format('YYYY/MM/DD'));
+                    return firstDay.format('YYYY/MM/DD');
+                },
+                formatDate: function (date) {
+                    var d = new Date(date),
+                        month = '' + (d.getMonth() + 1),
+                        day = '' + d.getDate(),
+                        year = d.getFullYear();
+
+                    if (month.length < 2) month = '0' + month;
+                    if (day.length < 2) day = '0' + day;
+
+                    return [year, month, day].join('-');
                 }
             }
         })

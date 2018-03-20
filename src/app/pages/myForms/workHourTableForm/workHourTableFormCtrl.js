@@ -11,8 +11,11 @@
                 '$scope',
                 '$filter',
                 '$cookies',
+                'User',
                 'Project',
                 'ProjectUtil',
+                'DateUtil',
+                'WorkHourForms',
                 'editableOptions',
                 'editableThemes',
                 WorkHourTableCtrl
@@ -22,8 +25,11 @@
     function WorkHourTableCtrl($scope,
                                $filter,
                                cookies,
+                               User,
                                Project,
                                ProjectUtil,
+                               DateUtil,
+                               WorkHourForms,
                                editableOptions,
                                editableThemes) {
         var vm = this;
@@ -33,38 +39,75 @@
                 vm.projects = allProjects;
             });
 
+        User.findManagers()
+            .success(function (allManagers) {
+                console.log('rep - GET ALL Managers, SUCCESS');
+                $scope.projectManagers = [];
+                for (var i = 0; i < allManagers.length; i++) {
+                    $scope.projectManagers[i] = {
+                        value: allManagers[i]._id,
+                        name: allManagers[i].name
+                    };
+                }
+            });
+
+        $scope.showMajor = function (prj) {
+            var selected = [];
+            if (prj.majorID) {
+                selected = $filter('filter')($scope.projectManagers, {
+                    value: prj.majorID
+                });
+            }
+            return selected.length ? selected[0].name : 'Not Set';
+        };
 
         $scope.username = cookies.get('username');
 
 
-        $scope.users = [
+        $scope.details = [
             {
-                "id": 1,
-                "name": "Esther Vang",
-                "status": 4,
-                "group": 3,
-                "a":"a",
-                b:"b",
-                c:"c",
-                d:"d",
-                e:"e",
-                f:"f",
-                g:"g",
-                h:"h",
+                mon_h: "1",
+                mon_memo: "memo",
+
+                tue_h: "1",
+                tue_memo: "memo",
+
+                wes_h: "1",
+                wes_memo: "memo",
+
+                thu_h: "1",
+                thu_memo: "memo",
+
+                fri_h: "1",
+                fri_memo: "memo",
+
+                sat_h: "1",
+                sat_memo: "memo",
+
+                sun_h: "1",
+                sun_memo: "memo",
             },
             {
-                "id": 2,
-                "name": "22222",
-                "status": 4,
-                "group": 3,
-                a:"aa",
-                b:"bb",
-                c:"cc",
-                d:"dd",
-                e:"ee",
-                f:"ff",
-                g:"gg",
-                h:"hh",
+                mon_h: "1",
+                mon_memo: "memo",
+
+                tue_h: "1",
+                tue_memo: "memo",
+
+                wes_h: "1",
+                wes_memo: "memo",
+
+                thu_h: "1",
+                thu_memo: "memo",
+
+                fri_h: "1",
+                fri_memo: "memo",
+
+                sat_h: "1",
+                sat_memo: "memo",
+
+                sun_h: "1",
+                sun_memo: "memo",
             },
         ];
 
@@ -106,22 +149,51 @@
         editableThemes['bs3'].submitTpl = '<button type="submit" class="btn btn-primary btn-with-icon"><i class="ion-checkmark-round"></i></button>';
         editableThemes['bs3'].cancelTpl = '<button type="button" ng-click="$form.$cancel()" class="btn btn-default btn-with-icon"><i class="ion-close-round"></i></button>';
 
-
         $scope.prjTypeToName = function (type) {
             return ProjectUtil.getTypeText(type);
         }
 
         $scope.projectsItems = [];
 
-        $scope.addPayment = function (prjName, prjType, prjCode, prjDID) {
-
+        $scope.addPayment = function (prj) {
+            vm.prjItems.selected = "";
             var inserted = {
-                prjCode: prjCode,
-                name: prjName + prjType,
+                prjDID: prj._id,
+                prjCode: prj.prjCode,
+                name: prj.name + " - " + ProjectUtil.getTypeText(prj.type),
+                majorID: prj.majorID,
             };
             $scope.projectsItems.push(inserted);
         }
+        DateUtil.getFirstDayofThisWeek(moment());
 
+        $scope.createSubmit = function () {
+            var formData = {
+                creatorDID: cookies.get('userDID'),
+                create_formDate: DateUtil.getFirstDayofThisWeek(moment()),
+                formTable: [],
+            }
+            WorkHourForms.createWorkHourForm(formData)
+                .success(function () {
+                })
+                .error(function () {
+                    console.log(22222222)
+                })
+        }
+
+
+        var getFormData = {
+            creatorDID: cookies.get('userDID'),
+            create_formDate: DateUtil.getFirstDayofThisWeek(moment('2018-03-13')),
+        }
+        WorkHourForms.getWorkHourForm(getFormData)
+            .success(function (res) {
+                console.log(11111);
+                console.log(JSON.stringify(res.payload));
+            })
+            .error(function () {
+                console.log(2222)
+            })
 
     }
 
