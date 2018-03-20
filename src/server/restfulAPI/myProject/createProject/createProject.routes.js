@@ -165,4 +165,28 @@ module.exports = function (app) {
             })
     });
 
+    app.post(global.apiUrl.get_project_find_by_prjid_array, function (req, res) {
+        var prjCount = req.body.prjIDArray.length;
+        var findData = []
+        for (var index = 0; index < prjCount; index++) {
+            var target = {
+                _id: req.body.prjIDArray[index],
+            }
+            findData.push(target);
+        };
+        Project.find(
+            {
+                $or: findData,
+            }, function (err, projects) {
+                if (err) {
+                    res.send(err);
+                }
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: projects,
+                });
+            })
+    });
+
 }

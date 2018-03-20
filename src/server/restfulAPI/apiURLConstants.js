@@ -18,6 +18,7 @@ global.apiUrl = {
     post_project_find_by_name : '/api/projectFindByName',
     get_project_find_by_name_distinct : '/api/projectFindByNameDistinct',
     get_project_find_by_prjid : '/api/projectFindByPrjID',
+    get_project_find_by_prjid_array : '/api/projectFindByPrjIDArray',
     post_project_foot_code : '/api/projectFootCode',
     post_project_create : '/api/projectCreate',
     
@@ -32,8 +33,9 @@ global.apiUrl = {
     post_payment_create : '/api/createPaymentForm',
 
     //workHourTable Form
-    post_work_hour_create : '/api/createWorkHourForm',
+    post_work_hour_create_table : '/api/createWorkHourTableForm',
     post_work_hour_get : '/api/getWorkHourForm',
+    post_work_hour_table_find_by_tableid_array : '/api/findWorkHourTableFormByTableIDArray',
 
     //userEdit
     post_upload_user_avatatr : '/api/uploadUserAvatar',

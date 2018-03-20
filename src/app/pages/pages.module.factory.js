@@ -43,6 +43,10 @@
                 findPrjFootNumber: function (projectData) {
                     return http.post('/api/projectFootCode', projectData);
                 },
+
+                findPrjByIDArray: function (prjIDData) {
+                    return http.post('/api/projectFindByPrjIDArray', prjIDData);
+                },
             }
         }])
         .factory('Todos', ['$http', function (http) {
@@ -82,11 +86,14 @@
         }])
         .factory('WorkHourForms', ['$http', function (http) {
             return {
-                createWorkHourForm: function (formData) {
-                    return http.post('/api/createWorkHourForm', formData);
+                createWorkHourTableForm: function (formData) {
+                    return http.post('/api/createWorkHourTableForm', formData);
                 },
                 getWorkHourForm : function (formData) {
                     return http.post('/api/getWorkHourForm', formData);
+                },
+                findWorkHourTableFormByTableIDArray : function (formData) {
+                    return http.post('/api/findWorkHourTableFormByTableIDArray', formData);
                 }
             }
         }])
@@ -120,7 +127,6 @@
                 getFirstDayofThisWeek: function (today) {
                     var offset = (1 - today.day()) === 1 ? -6 : 1 - today.day();
                     var firstDay = moment(today).add(offset, 'days');
-                    console.log(firstDay.format('YYYY/MM/DD'));
                     return firstDay.format('YYYY/MM/DD');
                 },
                 formatDate: function (date) {
