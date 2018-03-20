@@ -11,11 +11,15 @@
                 '$scope',
                 'baConfig',
                 'Project',
+                'DateUtil',
                 MyCalendarCtrl
             ]);
 
     /** @ngInject */
-    function MyCalendarCtrl($scope, baConfig, Project) {
+    function MyCalendarCtrl($scope,
+                            baConfig,
+                            Project,
+                            DateUtil) {
         var dashboardColors = baConfig.colors.dashboard;
 
         Project.findAll()
@@ -30,7 +34,7 @@
                 for (var index = 0; index < $scope.projects.length; index++) {
                     var eventItem = {
                         title: $scope.projects[index].name,
-                        start: formatDate($scope.projects[index].endDate),
+                        start: DateUtil.formatDate($scope.projects[index].endDate),
                         color: baConfig.colors.warning,
                     }
                     totalEvent.push(eventItem);
@@ -44,7 +48,7 @@
                         center: 'title',
                         right: 'month,agendaWeek,agendaDay'
                     },
-                    defaultDate: '2018-03-12',
+                    defaultDate: new Date(),
                     selectable: false,
                     selectHelper: false,
                     select: function (start, end) {
@@ -66,17 +70,5 @@
                 });
 
             });
-
-        function formatDate(date) {
-            var d = new Date(date),
-                month = '' + (d.getMonth() + 1),
-                day = '' + d.getDate(),
-                year = d.getFullYear();
-
-            if (month.length < 2) month = '0' + month;
-            if (day.length < 2) day = '0' + day;
-
-            return [year, month, day].join('-');
-        }
     }
 })();
