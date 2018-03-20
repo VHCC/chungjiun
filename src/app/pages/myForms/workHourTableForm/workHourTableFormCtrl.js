@@ -67,47 +67,47 @@
         $scope.details = [
             {
                 mon_h: "1",
-                mon_memo: "memo",
+                mon_memo: "memo1",
 
                 tue_h: "1",
-                tue_memo: "memo",
+                tue_memo: "memo2",
 
                 wes_h: "1",
-                wes_memo: "memo",
+                wes_memo: "memo3",
 
                 thu_h: "1",
-                thu_memo: "memo",
+                thu_memo: "memo4",
 
                 fri_h: "1",
-                fri_memo: "memo",
+                fri_memo: "memo5",
 
                 sat_h: "1",
-                sat_memo: "memo",
+                sat_memo: "memo6",
 
                 sun_h: "1",
-                sun_memo: "memo",
+                sun_memo: "memo7",
             },
             {
                 mon_h: "1",
-                mon_memo: "memo",
+                mon_memo: "memo11",
 
                 tue_h: "1",
-                tue_memo: "memo",
+                tue_memo: "memo22",
 
                 wes_h: "1",
-                wes_memo: "memo",
+                wes_memo: "memo33",
 
                 thu_h: "1",
-                thu_memo: "memo",
+                thu_memo: "memo44",
 
                 fri_h: "1",
-                fri_memo: "memo",
+                fri_memo: "memo55",
 
                 sat_h: "1",
-                sat_memo: "memo",
+                sat_memo: "memo66",
 
                 sun_h: "1",
-                sun_memo: "memo",
+                sun_memo: "memo77",
             },
         ];
 
@@ -155,7 +155,7 @@
 
         $scope.projectsItems = [];
 
-        $scope.addPayment = function (prj) {
+        $scope.addWorkItem = function (prj) {
             vm.prjItems.selected = "";
             var inserted = {
                 prjDID: prj._id,
@@ -165,31 +165,113 @@
             };
             $scope.projectsItems.push(inserted);
         }
-        DateUtil.getFirstDayofThisWeek(moment());
 
+        // CREATE SUBMIT
         $scope.createSubmit = function () {
+
+            var workItemCount = $('tbody').length;
+            var workHourTableData = [];
+
+            for (var index = 0; index < workItemCount; index++) {
+                var itemPrjCode = $('tbody').find("span[id^='prjCode']")[index * 2].innerText;
+                var itemPrjDID = $('tbody').find("span[id^='prjDID']")[index * 2].innerText;
+
+                var mon_hour = $('tbody').find("span[id^='monh']")[index * 2].innerText;
+                var monh_add = $('tbody').find("span[id^='monh']")[index * 2 + 1].innerText;
+
+                var mon_memo = $('tbody').find("span[id^='monmemo']")[index * 2].innerText;
+                var mon_memo_add = $('tbody').find("span[id^='monmemo']")[index * 2 + 1].innerText;
+
+                var tableItem = {
+                    creatorDID: cookies.get('userDID'),
+                    prjDID: itemPrjDID,
+
+                    mon_hour: mon_hour,
+                    mon_hour_add: monh_add,
+
+                    mon_memo: mon_memo,
+                    mon_memo_add: mon_memo_add,
+                }
+
+                workHourTableData.push(tableItem);
+            }
+
             var formData = {
                 creatorDID: cookies.get('userDID'),
                 create_formDate: DateUtil.getFirstDayofThisWeek(moment()),
-                formTable: [],
+                formTables: workHourTableData,
             }
-            WorkHourForms.createWorkHourForm(formData)
+            console.log(workHourTableData);
+            WorkHourForms.createWorkHourTableForm(formData)
                 .success(function () {
+
                 })
                 .error(function () {
-                    console.log(22222222)
+                    console.log(33333)
                 })
         }
 
-
-        var getFormData = {
+        $scope.loading = true;
+        var getData = {
             creatorDID: cookies.get('userDID'),
-            create_formDate: DateUtil.getFirstDayofThisWeek(moment('2018-03-13')),
+            create_formDate: DateUtil.getFirstDayofThisWeek(moment()),
         }
-        WorkHourForms.getWorkHourForm(getFormData)
+        //init
+        WorkHourForms.getWorkHourForm(getData)
             .success(function (res) {
-                console.log(11111);
-                console.log(JSON.stringify(res.payload));
+                if (res.payload.length > 0) {
+                    var workItemCount = res.payload[0].formTables.length;
+
+                    var prjIDArray = [];
+                    var workTableIDArray = [];
+                    for (var index = 0; index < workItemCount; index++) {
+                        workTableIDArray[index] = res.payload[0].formTables[index].tableID;
+                        prjIDArray[index] = res.payload[0].formTables[index].prjDID;
+                    }
+
+                    var formData = {
+                        prjIDArray: prjIDArray,
+                    }
+
+                    Project.findPrjByIDArray(formData)
+                        .success(function (res) {
+                            $scope.loading = false;
+                            // console.log(res.payload);
+                            var prjCount = res.payload.length;
+                            for (var index = 0; index < prjCount; index++) {
+                                var inserted = {
+                                    prjDID: res.payload[index]._id,
+                                    prjCode: res.payload[index].prjCode,
+                                    name: res.payload[index].name + " - " + ProjectUtil.getTypeText(res.payload[index].type),
+                                    majorID: res.payload[index].majorID,
+
+                                };
+                                $scope.projectsItems.push(inserted);
+                            }
+                        })
+                        .error(function () {
+                            console.log(99999);
+                        })
+
+                    var formDataTable = {
+                        tableIDArray: workTableIDArray,
+                    }
+                    // console.log(formDataTable);
+
+                    WorkHourForms.findWorkHourTableFormByTableIDArray(formDataTable)
+                        .success(function (res) {
+                            console.log(res.payload)
+
+                            var detailCount = res.payload.length;
+                            // console.log(456456)
+                        })
+                        .error(function () {
+                            console.log(789789)
+                        })
+
+                } else {
+                    $scope.loading = false;
+                }
             })
             .error(function () {
                 console.log(2222)

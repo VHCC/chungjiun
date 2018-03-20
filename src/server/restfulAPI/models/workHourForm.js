@@ -7,7 +7,7 @@ module.exports = mongoose.model('WorkHourForm', {
     create_formDate: {
         type: String,
     },
-    formTableDIDs: {
+    formTables: {
         type: Array,
     },
     
