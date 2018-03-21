@@ -12,12 +12,14 @@ module.exports = mongoose.model('WorkHourTableForm', {
     // MON
     mon_hour: {
         type: Number,
+        default: 0,
     },
     mon_memo: {
         type: String,
     },
     mon_hour_add: {
         type: Number,
+        default: 0,
     },
     mon_memo_add: {
         type: String,
@@ -25,12 +27,14 @@ module.exports = mongoose.model('WorkHourTableForm', {
     // TUE
     tue_hour: {
         type: Number,
+        default: 0,
     },
     tue_memo: {
         type: String,
     },
     tue_hour_add: {
         type: Number,
+        default: 0,
     },
     tue_memo_add: {
         type: String,
@@ -38,12 +42,14 @@ module.exports = mongoose.model('WorkHourTableForm', {
     // WES
     wes_hour: {
         type: Number,
+        default: 0,
     },
     wes_memo: {
         type: String,
     },
     wes_hour_add: {
         type: Number,
+        default: 0,
     },
     wes_memo_add: {
         type: String,
@@ -51,12 +57,14 @@ module.exports = mongoose.model('WorkHourTableForm', {
     // THU
     thu_hour: {
         type: Number,
+        default: 0,
     },
     thu_memo: {
         type: String,
     },
     thu_hour_add: {
         type: Number,
+        default: 0,
     },
     thu_memo_add: {
         type: String,
@@ -64,12 +72,14 @@ module.exports = mongoose.model('WorkHourTableForm', {
     // FRI
     fri_hour: {
         type: Number,
+        default: 0,
     },
     fri_memo: {
         type: String,
     },
     fri_hour_add: {
         type: Number,
+        default: 0,
     },
     fri_memo_add: {
         type: String,
@@ -77,12 +87,14 @@ module.exports = mongoose.model('WorkHourTableForm', {
     // SAT
     sat_hour: {
         type: Number,
+        default: 0,
     },
     sat_memo: {
         type: String,
     },
     sat_hour_add: {
         type: Number,
+        default: 0,
     },
     sat_memo_add: {
         type: String,
@@ -90,12 +102,14 @@ module.exports = mongoose.model('WorkHourTableForm', {
     // SUN
     sun_hour: {
         type: Number,
+        default: 0,
     },
     sun_memo: {
         type: String,
     },
     sun_hour_add: {
         type: Number,
+        default: 0,
     },
     sun_memo_add: {
         type: String,
