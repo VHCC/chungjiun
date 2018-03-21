@@ -1,5 +1,5 @@
 var WorkHourForm = require('../../models/workHourForm');
-var WorkHourTableForm = require('../../models/WorkHourTableForm');
+var WorkHourTableForm = require('../../models/workHourTableForm');
 
 module.exports = function (app) {
     'use strict';
