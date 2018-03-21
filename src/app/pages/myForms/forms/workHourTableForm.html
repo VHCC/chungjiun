@@ -1,7 +1,6 @@
 <!--<div class="add-row-editable-table">-->
 <!--<button class="btn btn-primary" ng-click="addWorkItem()">新增項目</button>-->
 <!--</div>-->
-
 <uib-tabset active="$tabSetStatus.activeTab">
     <uib-tab heading="填寫工時">
         <div class="row"
@@ -14,7 +13,7 @@
                                class="btn-group bootstrap-select form-control"
                                id="projectName"
                                ng-disabled="false"
-                               ng-change="addWorkItem($select.selected)"
+                               ng-change="addWorkItem($select.selected); tableChange()"
                                append-to-body="true"
                                search-enabled="true">
                         <ui-select-match placeholder="選擇專案">
@@ -38,7 +37,7 @@
 
         <table class="table table-bordered table-hover table-condensed">
             <thead>
-            <tr class="aaa">
+            <tr >
                 <td rowspan="3" style="vertical-align: inherit; text-align: center">專案代碼</td>
                 <td rowspan="3" style="vertical-align: inherit; text-align: center">專案名稱</td>
                 <td rowspan="3" style="vertical-align: inherit; text-align: center">經理</td>
@@ -74,27 +73,25 @@
             </tr>
             </thead>
 
-            <tbody ng-repeat="prj in projectsItems">
-            <tr ng-repeat="detail in details" class="row{{$index}}">
-                <td rowspan="2" style="vertical-align: inherit; text-align: center"
-                    ng-hide="$index>0">
-                    <span id="prjCode{{$index}}">{{prj.prjCode}}</span>
-                    <span style="display: none;" id="prjDID{{$index}}">{{prj.prjDID}}</span>
+            <tbody ng-repeat="table in tablesItems">
+            <tr style="vertical-align: inherit; text-align: center">
+                <td rowspan="2" style="vertical-align: inherit; text-align: center">
+                    <span id="prjCode">{{showPrjCode(table.prjDID)}}</span>
+                    <span style="display: none;" id="prjDID">{{table.prjDID}}</span>
                     <br>
                     <button class="btn btn-danger editable-table-button btn-xs"
-                            ng-click="removeWorkItem($parent.$index)">移除
+                            ng-click="removeWorkItem($index)">移除
                     </button>
                 </td>
-                <td rowspan="2" style="vertical-align: inherit; text-align: center"
-                    ng-hide="$index>0">
-                    {{prj.name}}
+                <td rowspan="2" style="vertical-align: inherit; text-align: center">
+                    {{showPrjName(table.prjDID)}}
                 </td>
 
-                <td rowspan="2" ng-hide="$index>0" style="vertical-align: inherit; text-align: center">
-                    <span>{{ showMajor(prj)}}</span>
+                <td rowspan="2" style="vertical-align: inherit; text-align: center">
+                    <span>{{ showMajor(table.prjDID)}}</span>
                 </td>
 
-                <td rowspan="2" ng-hide="$index>0">
+                <td rowspan="2">
                     <span>
                         正常
                         <br>
@@ -103,104 +100,202 @@
                 </td>
 
                 <td class="form-group has-success">
-                    <span editable-text="detail.mon_h"
-                          e-form="rowform"
-                          id="monh{{$index}}"
-                          e-required>{{ detail.mon_h}}</span>
+                    <span editable-text="table.mon_hour"
+                          e-form="rowform1"
+                          id="mon_hour"
+                          e-required>{{ table.mon_hour || 0 }}</span>
                 </td>
                 <td>
-                   <span editable-text="detail.mon_memo"
-                         e-form="rowform"
-                         id="monmemo{{$index}}"
-                         e-required>{{ detail.mon_memo}}</span>
+                   <span editable-text="table.mon_memo"
+                         e-form="rowform1"
+                         id="mon_memo"
+                         e-required>{{ table.mon_memo}}</span>
                 </td>
                 <td class="form-group has-success">
-                    <span editable-text="detail.tue_h"
-                          e-form="rowform"
-                          id="tueh{{$index}}"
-                          e-required>{{ detail.tue_h}}</span>
+                    <span editable-text="table.tue_hour"
+                          e-form="rowform1"
+                          id="tue_hour"
+                          e-required>{{ table.tue_hour || 0 }}</span>
                 </td>
                 <td>
-                    <span editable-text="detail.tue_memo"
-                          e-form="rowform"
-                          id="tuememo{{$index}}"
-                          e-required>{{ detail.tue_memo}}</span>
+                    <span editable-text="table.tue_memo"
+                          e-form="rowform1"
+                          id="tue_memo"
+                          e-required>{{ table.tue_memo}}</span>
                 </td>
                 <td class="form-group has-success">
-                    <span editable-text="detail.wes_h"
-                          e-form="rowform"
-                          id="wesh{{$index}}"
-                          e-required>{{ detail.wes_h}}</span>
+                    <span editable-text="table.wes_hour"
+                          e-form="rowform1"
+                          id="wes_hour"
+                          e-required>{{ table.wes_hour || 0 }}</span>
                 </td>
                 <td>
-                    <span editable-text="detail.wes_memo"
-                          e-form="rowform"
-                          id="wesmemo{{$index}}"
-                          e-required>{{ detail.wes_memo}}</span>
+                    <span editable-text="table.wes_memo"
+                          e-form="rowform1"
+                          id="wes_memo"
+                          e-required>{{ table.wes_memo}}</span>
                 </td>
                 <td class="form-group has-success">
-                    <span editable-text="detail.thu_h"
-                          e-form="rowform"
-                          id="thuh{{$index}}"
-                          e-required>{{ detail.thu_h}}</span>
+                    <span editable-text="table.thu_hour"
+                          e-form="rowform1"
+                          id="thu_hour"
+                          e-required>{{ table.thu_hour || 0}}</span>
                 </td>
                 <td>
-                    <span editable-text="detail.thu_memo"
-                          e-form="rowform"
-                          id="thumemo{{$index}}"
-                          e-required>{{ detail.thu_memo}}</span>
+                    <span editable-text="table.thu_memo"
+                          e-form="rowform1"
+                          id="thu_memo"
+                          e-required>{{ table.thu_memo}}</span>
                 </td>
                 <td class="form-group has-success">
-                    <span editable-text="detail.fri_h"
-                          e-form="rowform"
-                          id="frih{{$index}}"
-                          e-required>{{ detail.fri_h}}</span>
+                    <span editable-text="table.fri_hour"
+                          e-form="rowform1"
+                          id="fri_hour"
+                          e-required>{{ table.fri_hour || 0}}</span>
                 </td>
                 <td>
-                   <span editable-text="detail.fri_memo"
-                         e-form="rowform"
-                         id="frimemo{{$index}}"
-                         e-required>{{ detail.fri_memo}}</span>
+                   <span editable-text="table.fri_memo"
+                         e-form="rowform1"
+                         id="fri_memo"
+                         e-required>{{ table.fri_memo}}</span>
                 </td>
                 <td class="form-group has-success">
-                    <span editable-text="detail.sat_h"
-                          e-form="rowform"
-                          id="sath{{$index}}"
-                          e-required>{{ detail.sat_h}}</span>
+                    <span editable-text="table.sat_hour"
+                          e-form="rowform1"
+                          id="sat_hour"
+                          e-required>{{ table.sat_hour || 0}}</span>
                 </td>
                 <td>
-                    <span editable-text="detail.sat_memo"
-                          e-form="rowform"
-                          id="satmemo{{$index}}"
-                          e-required>{{ detail.sat_memo}}</span>
+                    <span editable-text="table.sat_memo"
+                          e-form="rowform1"
+                          id="sat_memo"
+                          e-required>{{ table.sat_memo}}</span>
                 </td>
                 <td class="form-group has-success">
-                    <span editable-text="detail.sun_h"
-                          e-form="rowform"
-                          id="sunh{{$index}}"
-                          e-required>{{ detail.sun_h}}</span>
+                    <span editable-text="table.sun_hour"
+                          e-form="rowform1"
+                          id="sun_hour"
+                          e-required>{{ table.sun_hour || 0}}</span>
                 </td>
                 <td>
-                    <span editable-text="detail.sun_memo"
-                          e-form="rowform"
-                          id="sunmemo{{$index}}"
-                          e-required>{{ detail.sun_memo}}</span>
+                    <span editable-text="table.sun_memo"
+                          e-form="rowform1"
+                          id="sun_memo"
+                          e-required>{{ table.sun_memo}}</span>
                 </td>
 
                 <td>
-                    <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline">
-                        <button type="submit" ng-disabled="rowform.$waiting"
+                    <form editable-form name="rowform1" ng-show="rowform1.$visible" class="form-buttons form-inline">
+                        <button type="submit" ng-disabled="rowform1.$waiting"
                                 class="btn btn-primary editable-table-button btn-xs">
                             確認
                         </button>
                     </form>
-                    <div class="buttons" ng-show="!rowform.$visible">
-                        <button class="btn btn-info editable-table-button btn-xs" ng-click="rowform.$show()">編輯</button>
+                    <div class="buttons" ng-show="!rowform1.$visible">
+                        <button class="btn btn-info editable-table-button btn-xs" ng-click="rowform1.$show(); tableChange()">編輯</button>
+                    </div>
+                </td>
+            </tr>
+            <!--加班欄位-->
+            <tr class="row1" style="vertical-align: inherit; text-align: center">
+                <td class="form-group has-success">
+                    <span editable-text="table.mon_hour_add"
+                          e-form="rowform2"
+                          id="mon_hour_add"
+                          e-required>{{ table.mon_hour_add || 0}}</span>
+                </td>
+                <td>
+                   <span editable-text="table.mon_memo_add"
+                         e-form="rowform2"
+                         id="mon_memo_add"
+                         e-required>{{ table.mon_memo_add}}</span>
+                </td>
+                <td class="form-group has-success">
+                    <span editable-text="table.tue_hour_add"
+                          e-form="rowform2"
+                          id="tue_hour_add"
+                          e-required>{{ table.tue_hour_add || 0}}</span>
+                </td>
+                <td>
+                    <span editable-text="table.tue_memo_add"
+                          e-form="rowform2"
+                          id="tue_memo_add"
+                          e-required>{{ table.tue_memo_add}}</span>
+                </td>
+                <td class="form-group has-success">
+                    <span editable-text="table.wes_hour_add"
+                          e-form="rowform2"
+                          id="wes_hour_add"
+                          e-required>{{ table.wes_hour_add || 0}}</span>
+                </td>
+                <td>
+                    <span editable-text="table.wes_memo_add"
+                          e-form="rowform2"
+                          id="wes_memo_add"
+                          e-required>{{ table.wes_memo_add}}</span>
+                </td>
+                <td class="form-group has-success">
+                    <span editable-text="table.thu_hour_add"
+                          e-form="rowform2"
+                          id="thu_hour_add"
+                          e-required>{{ table.thu_hour_add || 0}}</span>
+                </td>
+                <td>
+                    <span editable-text="table.thu_memo_add"
+                          e-form="rowform2"
+                          id="thu_memo_add"
+                          e-required>{{ table.thu_memo_add}}</span>
+                </td>
+                <td class="form-group has-success">
+                    <span editable-text="table.fri_hour_add"
+                          e-form="rowform2"
+                          id="fri_hour_add"
+                          e-required>{{ table.fri_hour_add || 0}}</span>
+                </td>
+                <td>
+                   <span editable-text="table.fri_memo_add"
+                         e-form="rowform2"
+                         id="fri_memo_add"
+                         e-required>{{ table.fri_memo_add}}</span>
+                </td>
+                <td class="form-group has-success">
+                    <span editable-text="table.sat_hour_add"
+                          e-form="rowform2"
+                          id="sat_hour_add"
+                          e-required>{{ table.sat_hour_add || 0}}</span>
+                </td>
+                <td>
+                    <span editable-text="table.sat_memo_add"
+                          e-form="rowform2"
+                          id="sat_memo_add"
+                          e-required>{{ table.sat_memo_add}}</span>
+                </td>
+                <td class="form-group has-success">
+                    <span editable-text="table.sun_hour_add"
+                          e-form="rowform2"
+                          id="sun_hour_add"
+                          e-required>{{ table.sun_hour_add || 0}}</span>
+                </td>
+                <td>
+                    <span editable-text="table.sun_memo_add"
+                          e-form="rowform2"
+                          id="sun_memo_add"
+                          e-required>{{ table.sun_memo_add}}</span>
+                </td>
+
+                <td>
+                    <form editable-form name="rowform2" ng-show="rowform2.$visible" class="form-buttons form-inline">
+                        <button type="submit" ng-disabled="rowform2.$waiting"
+                                class="btn btn-primary editable-table-button btn-xs">
+                            確認
+                        </button>
+                    </form>
+                    <div class="buttons" ng-show="!rowform2.$visible">
+                        <button class="btn btn-info editable-table-button btn-xs" ng-click="rowform2.$show(); tableChange()">編輯</button>
                     </div>
                 </td>
             </tr>
             </tbody>
-
 
             <tfoot>
             <!--休假-->
@@ -309,8 +404,8 @@
             </tfoot>
         </table>
         <hr>
-        <div class="add-row-editable-table">
-            <button class="btn btn-warning" ng-click="createSubmit()">暫存</button>
+        <div class="add-row-editable-table" >
+            <button class="btn btn-warning" ng-click="createSubmit()" id="btnSubmit" style="display: none;">暫存</button>
         </div>
 
     </uib-tab>
