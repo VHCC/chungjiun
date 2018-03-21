@@ -91,112 +91,117 @@
         var formDataTable = {};
 
         $scope.loading = true;
-        var getData = {
-            creatorDID: cookies.get('userDID'),
-            create_formDate: DateUtil.getFirstDayofThisWeek(moment()),
-        }
+
         //取得使用者個人工時表，userDID, 當周第一天日期，一個人只有一張工時表
-        WorkHourForms.getWorkHourForm(getData)
-            .success(function (res) {
-                if (res.payload.length > 0) {
-                    var workItemCount = res.payload[0].formTables.length;
+        $scope.getTable = function () {
+            var getData = {
+                creatorDID: cookies.get('userDID'),
+                create_formDate:  $scope.firstFullDate,
+            }
+            console.log($scope.firstFullDate);
+            WorkHourForms.getWorkHourForm(getData)
+                .success(function (res) {
+                    if (res.payload.length > 0) {
+                        var workItemCount = res.payload[0].formTables.length;
 
-                    var prjIDArray = [];
-                    var workTableIDArray = [];
-                    // 組成 prjID Array, TableID Array，再去Server要資料
-                    for (var index = 0; index < workItemCount; index++) {
-                        workTableIDArray[index] = res.payload[0].formTables[index].tableID;
-                        prjIDArray[index] = res.payload[0].formTables[index].prjDID;
+                        var prjIDArray = [];
+                        var workTableIDArray = [];
+                        // 組成 prjID Array, TableID Array，再去Server要資料
+                        for (var index = 0; index < workItemCount; index++) {
+                            workTableIDArray[index] = res.payload[0].formTables[index].tableID;
+                            prjIDArray[index] = res.payload[0].formTables[index].prjDID;
+                        }
+
+                        var formData = {
+                            prjIDArray: prjIDArray,
+                        }
+                        // 取得Prj Data
+                        Project.findPrjByIDArray(formData)
+                            .success(function (res) {
+                                $scope.loading = false;
+                                // console.log(res.payload);
+                                // 與這位user有關的Project
+                                // $scope.projectData = [];
+                                // var prjCount = res.payload.length;
+                                // for (var index = 0; index < prjCount; index++) {
+                                //     $scope.projectData[index] = {
+                                //         prjDID: res.payload[index]._id,
+                                //         prjCode: res.payload[index].prjCode,
+                                //         name: res.payload[index].name + " - " + ProjectUtil.getTypeText(res.payload[index].type),
+                                //         majorID: res.payload[index].majorID,
+                                //     };
+                                // }
+                            })
+                            .error(function () {
+                                console.log('ERROR Project.findPrjByIDArray');
+                            })
+
+                        formDataTable = {
+                            tableIDArray: workTableIDArray,
+                        }
+                        // console.log(formDataTable);
+                        // 取得 Table Data
+                        WorkHourForms.findWorkHourTableFormByTableIDArray(formDataTable)
+                            .success(function (res) {
+
+                                // 填入表單資訊
+                                $scope.tableData = {};
+                                for (var index = 0; index < res.payload.length; index++) {
+                                    var detail = {
+                                        prjDID: res.payload[index].prjDID,
+                                        //MON
+                                        mon_hour: res.payload[index].mon_hour,
+                                        mon_memo: res.payload[index].mon_memo,
+                                        mon_hour_add: res.payload[index].mon_hour_add,
+                                        mon_memo_add: res.payload[index].mon_memo_add,
+                                        //TUE
+                                        tue_hour: res.payload[index].tue_hour,
+                                        tue_memo: res.payload[index].tue_memo,
+                                        tue_hour_add: res.payload[index].tue_hour_add,
+                                        tue_memo_add: res.payload[index].tue_memo_add,
+                                        //WES
+                                        wes_hour: res.payload[index].wes_hour,
+                                        wes_memo: res.payload[index].wes_memo,
+                                        wes_hour_add: res.payload[index].wes_hour_add,
+                                        wes_memo_add: res.payload[index].wes_memo_add,
+                                        //THU
+                                        thu_hour: res.payload[index].thu_hour,
+                                        thu_memo: res.payload[index].thu_memo,
+                                        thu_hour_add: res.payload[index].thu_hour_add,
+                                        thu_memo_add: res.payload[index].thu_memo_add,
+                                        //FRI
+                                        fri_hour: res.payload[index].fri_hour,
+                                        fri_memo: res.payload[index].fri_memo,
+                                        fri_hour_add: res.payload[index].fri_hour_add,
+                                        fri_memo_add: res.payload[index].fri_memo_add,
+                                        //SAT
+                                        sat_hour: res.payload[index].sat_hour,
+                                        sat_memo: res.payload[index].sat_memo,
+                                        sat_hour_add: res.payload[index].sat_hour_add,
+                                        sat_memo_add: res.payload[index].sat_memo_add,
+                                        //SUN
+                                        sun_hour: res.payload[index].sun_hour,
+                                        sun_memo: res.payload[index].sun_memo,
+                                        sun_hour_add: res.payload[index].sun_hour_add,
+                                        sun_memo_add: res.payload[index].sun_memo_add,
+                                    };
+                                    $scope.tablesItems.push(detail)
+                                }
+                                // console.log($scope.tablesItems);
+                            })
+                            .error(function () {
+                                console.log('ERROR WorkHourForms.findWorkHourTableFormByTableIDArray');
+                            })
+
+                    } else {
+                        $scope.loading = false;
                     }
+                })
+                .error(function () {
+                    console.log('ERROR WorkHourForms.getWorkHourForm');
+                })
+        }
 
-                    var formData = {
-                        prjIDArray: prjIDArray,
-                    }
-                    // 取得Prj Data
-                    Project.findPrjByIDArray(formData)
-                        .success(function (res) {
-                            $scope.loading = false;
-                            // console.log(res.payload);
-                            // 與這位user有關的Project
-                            // $scope.projectData = [];
-                            // var prjCount = res.payload.length;
-                            // for (var index = 0; index < prjCount; index++) {
-                            //     $scope.projectData[index] = {
-                            //         prjDID: res.payload[index]._id,
-                            //         prjCode: res.payload[index].prjCode,
-                            //         name: res.payload[index].name + " - " + ProjectUtil.getTypeText(res.payload[index].type),
-                            //         majorID: res.payload[index].majorID,
-                            //     };
-                            // }
-                        })
-                        .error(function () {
-                            console.log('ERROR Project.findPrjByIDArray');
-                        })
-
-                    formDataTable = {
-                        tableIDArray: workTableIDArray,
-                    }
-                    // console.log(formDataTable);
-                    // 取得 Table Data
-                    WorkHourForms.findWorkHourTableFormByTableIDArray(formDataTable)
-                        .success(function (res) {
-
-                            // 填入表單資訊
-                            $scope.tableData = {};
-                            for (var index = 0; index < res.payload.length; index++) {
-                                var detail = {
-                                    prjDID: res.payload[index].prjDID,
-                                    //MON
-                                    mon_hour: res.payload[index].mon_hour,
-                                    mon_memo: res.payload[index].mon_memo,
-                                    mon_hour_add: res.payload[index].mon_hour_add,
-                                    mon_memo_add: res.payload[index].mon_memo_add,
-                                    //TUE
-                                    tue_hour: res.payload[index].tue_hour,
-                                    tue_memo: res.payload[index].tue_memo,
-                                    tue_hour_add: res.payload[index].tue_hour_add,
-                                    tue_memo_add: res.payload[index].tue_memo_add,
-                                    //WES
-                                    wes_hour: res.payload[index].wes_hour,
-                                    wes_memo: res.payload[index].wes_memo,
-                                    wes_hour_add: res.payload[index].wes_hour_add,
-                                    wes_memo_add: res.payload[index].wes_memo_add,
-                                    //THU
-                                    thu_hour: res.payload[index].thu_hour,
-                                    thu_memo: res.payload[index].thu_memo,
-                                    thu_hour_add: res.payload[index].thu_hour_add,
-                                    thu_memo_add: res.payload[index].thu_memo_add,
-                                    //FRI
-                                    fri_hour: res.payload[index].fri_hour,
-                                    fri_memo: res.payload[index].fri_memo,
-                                    fri_hour_add: res.payload[index].fri_hour_add,
-                                    fri_memo_add: res.payload[index].fri_memo_add,
-                                    //SAT
-                                    sat_hour: res.payload[index].sat_hour,
-                                    sat_memo: res.payload[index].sat_memo,
-                                    sat_hour_add: res.payload[index].sat_hour_add,
-                                    sat_memo_add: res.payload[index].sat_memo_add,
-                                    //SUN
-                                    sun_hour: res.payload[index].sun_hour,
-                                    sun_memo: res.payload[index].sun_memo,
-                                    sun_hour_add: res.payload[index].sun_hour_add,
-                                    sun_memo_add: res.payload[index].sun_memo_add,
-                                };
-                                $scope.tablesItems.push(detail)
-                            }
-                            // console.log($scope.tablesItems);
-                        })
-                        .error(function () {
-                            console.log('ERROR WorkHourForms.findWorkHourTableFormByTableIDArray');
-                        })
-
-                } else {
-                    $scope.loading = false;
-                }
-            })
-            .error(function () {
-                console.log('ERROR WorkHourForms.getWorkHourForm');
-            })
         // -------------------------------------
         $scope.tableChange = function () {
             $("[id='btnSubmit']")[0].innerText = '更動後請儲存';
@@ -240,6 +245,57 @@
 
             return selected.length ? selected[0].name : 'Not Set';
         };
+
+        $scope.weekShift = 0;
+        $scope.firstFullDate = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0);
+        $scope.firstDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0));
+        $scope.lastDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 6));
+
+        $scope.monDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 0));
+        $scope.tueDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 1));
+        $scope.wesDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 2));
+        $scope.thuDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 3));
+        $scope.friDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 4));
+        $scope.satDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 5));
+        $scope.sunDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 6));
+
+
+        $scope.addWeek = function () {
+            $scope.weekShift++;
+            $scope.firstFullDate = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift));
+            $scope.firstDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift)));
+            $scope.lastDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 6));
+
+            $scope.monDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 0));
+            $scope.tueDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 1));
+            $scope.wesDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 2));
+            $scope.thuDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 3));
+            $scope.friDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 4));
+            $scope.satDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 5));
+            $scope.sunDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 6));
+            $("[id='btnSubmit']").css('display', 'none');
+            $scope.tablesItems = [];
+            $scope.getTable();
+        }
+
+        $scope.decreaceWeek = function () {
+            $scope.weekShift--;
+            $scope.firstFullDate = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift));
+            $scope.firstDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift)));
+            $scope.lastDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 6));
+
+            $scope.monDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 0));
+            $scope.tueDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 1));
+            $scope.wesDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 2));
+            $scope.thuDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 3));
+            $scope.friDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 4));
+            $scope.satDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 5));
+            $scope.sunDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 6));
+            $("[id='btnSubmit']").css('display', 'none');
+            $scope.tablesItems = [];
+            $scope.getTable();
+
+        }
 
         // ************************ CREATE SUBMIT ***************************
         $scope.createSubmit = function () {
@@ -333,7 +389,7 @@
             console.log(formDataTable);
             var formData = {
                 creatorDID: cookies.get('userDID'),
-                create_formDate: DateUtil.getFirstDayofThisWeek(moment()),
+                create_formDate: $scope.firstFullDate,
                 formTables: workHourTableData,
                 oldTables: formDataTable,
             }
@@ -343,7 +399,7 @@
                     // 更新old Table ID Array
                     var workTableIDArray = [];
                     if (res.payload.length > 0) {
-                        for (var index = 0; index < res.payload.length; index ++) {
+                        for (var index = 0; index < res.payload.length; index++) {
                             console.log(res.payload[index]);
                             workTableIDArray[index] = res.payload[index].tableID;
                         }

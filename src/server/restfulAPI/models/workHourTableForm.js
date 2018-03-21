@@ -5,6 +5,10 @@ module.exports = mongoose.model('WorkHourTableForm', {
     creatorDID: {
       type: String,
     },
+    // 首周
+    create_formDate: {
+        type: String,
+    },
     //專案DID
     prjDID: {
         type: String,

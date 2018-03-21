@@ -17,13 +17,14 @@ module.exports = function (app) {
                 console.log(err);
             }
         })
-        console.log(req.body.oldTables.tableIDArray);
-        if (req.body.oldTables.tableIDArray.length > 0) {
+        console.log(req.body.oldTables);
+        if (req.body.oldTables.length > 0 && req.body.oldTables.tableIDArray.length > 0) {
             var findData = []
             for (var index = 0; index < req.body.oldTables.tableIDArray.length; index++) {
                 var target = {
                     _id: req.body.oldTables.tableIDArray[index],
                     creatorDID: req.body.creatorDID,
+                    create_formDate: req.body.create_formDate,
                 }
                 findData.push(target);
             };
@@ -45,6 +46,7 @@ module.exports = function (app) {
                 WorkHourTableForm.create({
                     creatorDID: req.body.formTables[index].creatorDID,
                     prjDID: req.body.formTables[index].prjDID,
+                    create_formDate: req.body.create_formDate,
                     //MON
                     mon_hour:       req.body.formTables[index].mon_hour,
                     mon_memo:       req.body.formTables[index].mon_memo,

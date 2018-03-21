@@ -4,6 +4,7 @@
 <uib-tabset active="$tabSetStatus.activeTab">
     <uib-tab heading="填寫工時">
         <div class="row"
+             ng-init="getTable()"
              id="rowHead">
             <div class="col-md-12"
                  id="colHead">
@@ -34,6 +35,12 @@
         <p class="text-center" ng-show="loading">
             <span class="fa fa-spinner fa-spin fa-3x"></span>
         </p>
+        <div >
+            <button type="button" class="btn btn-default btn-icon" ng-click="decreaceWeek()"><i class="ion-chevron-left"></i></button>
+            {{firstDate}} ~ {{lastDate}}
+            <button type="button" class="btn btn-default btn-icon" ng-click="addWeek()"><i class="ion-chevron-right"></i></button>
+        </div>
+        <br>
 
         <table class="table table-bordered table-hover table-condensed">
             <thead>
@@ -43,15 +50,18 @@
                 <td rowspan="3" style="vertical-align: inherit; text-align: center">經理</td>
                 <td rowspan="3" style="vertical-align: inherit; text-align: center">類型</td>
 
-                <td colspan="2" style="vertical-align: inherit; text-align: center">3/19</td>
-                <td colspan="2" style="vertical-align: inherit; text-align: center">3/20</td>
-                <td colspan="2" style="vertical-align: inherit; text-align: center">3/21</td>
-                <td colspan="2" style="vertical-align: inherit; text-align: center">3/22</td>
-                <td colspan="2" style="vertical-align: inherit; text-align: center">3/23</td>
-                <td colspan="2" style="vertical-align: inherit; text-align: center">3/24</td>
-                <td colspan="2" style="vertical-align: inherit; text-align: center">3/25</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">{{monDate}}</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">{{tueDate}}</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">{{wesDate}}</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">{{thuDate}}</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">{{friDate}}</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">{{satDate}}</td>
+                <td colspan="2" style="vertical-align: inherit; text-align: center">{{sunDate}}</td>
 
                 <td rowspan="3" style="vertical-align: inherit; text-align: center">合計</td>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center">狀態</td>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center">經理確認</td>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center">行政確認</td>
             </tr>
             <tr>
                 <td colspan="2" style="vertical-align: inherit; text-align: center">星期一</td>
@@ -80,7 +90,7 @@
                     <span style="display: none;" id="prjDID">{{table.prjDID}}</span>
                     <br>
                     <button class="btn btn-danger editable-table-button btn-xs"
-                            ng-click="removeWorkItem($index)">移除
+                            ng-click="removeWorkItem($index); tableChange()">移除
                     </button>
                 </td>
                 <td rowspan="2" style="vertical-align: inherit; text-align: center">
@@ -91,7 +101,7 @@
                     <span>{{ showMajor(table.prjDID)}}</span>
                 </td>
 
-                <td rowspan="2">
+                <td rowspan="2" style="vertical-align: inherit;">
                     <span>
                         正常
                         <br>
@@ -99,92 +109,98 @@
                     </span>
                 </td>
 
-                <td class="form-group has-success">
+                <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="table.mon_hour"
                           e-form="rowform1"
                           id="mon_hour"
                           e-required>{{ table.mon_hour || 0 }}</span>
                 </td>
-                <td>
+                <td style="vertical-align: inherit;">
                    <span editable-text="table.mon_memo"
                          e-form="rowform1"
                          id="mon_memo"
                          e-required>{{ table.mon_memo}}</span>
                 </td>
-                <td class="form-group has-success">
+                <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="table.tue_hour"
                           e-form="rowform1"
                           id="tue_hour"
                           e-required>{{ table.tue_hour || 0 }}</span>
                 </td>
-                <td>
+                <td style="vertical-align: inherit;">
                     <span editable-text="table.tue_memo"
                           e-form="rowform1"
                           id="tue_memo"
                           e-required>{{ table.tue_memo}}</span>
                 </td>
-                <td class="form-group has-success">
+                <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="table.wes_hour"
                           e-form="rowform1"
                           id="wes_hour"
                           e-required>{{ table.wes_hour || 0 }}</span>
                 </td>
-                <td>
+                <td style="vertical-align: inherit;">
                     <span editable-text="table.wes_memo"
                           e-form="rowform1"
                           id="wes_memo"
                           e-required>{{ table.wes_memo}}</span>
                 </td>
-                <td class="form-group has-success">
+                <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="table.thu_hour"
                           e-form="rowform1"
                           id="thu_hour"
                           e-required>{{ table.thu_hour || 0}}</span>
                 </td>
-                <td>
+                <td style="vertical-align: inherit;">
                     <span editable-text="table.thu_memo"
                           e-form="rowform1"
                           id="thu_memo"
                           e-required>{{ table.thu_memo}}</span>
                 </td>
-                <td class="form-group has-success">
+                <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="table.fri_hour"
                           e-form="rowform1"
                           id="fri_hour"
                           e-required>{{ table.fri_hour || 0}}</span>
                 </td>
-                <td>
+                <td style="vertical-align: inherit;">
                    <span editable-text="table.fri_memo"
                          e-form="rowform1"
                          id="fri_memo"
                          e-required>{{ table.fri_memo}}</span>
                 </td>
-                <td class="form-group has-success">
+                <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="table.sat_hour"
                           e-form="rowform1"
                           id="sat_hour"
                           e-required>{{ table.sat_hour || 0}}</span>
                 </td>
-                <td>
+                <td style="vertical-align: inherit;">
                     <span editable-text="table.sat_memo"
                           e-form="rowform1"
                           id="sat_memo"
                           e-required>{{ table.sat_memo}}</span>
                 </td>
-                <td class="form-group has-success">
+                <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="table.sun_hour"
                           e-form="rowform1"
                           id="sun_hour"
                           e-required>{{ table.sun_hour || 0}}</span>
                 </td>
-                <td>
+                <td style="vertical-align: inherit;">
                     <span editable-text="table.sun_memo"
                           e-form="rowform1"
                           id="sun_memo"
                           e-required>{{ table.sun_memo}}</span>
                 </td>
 
-                <td>
+                <!--合計-->
+                <td style="vertical-align: inherit;">
+                    <span e-form="rowform1"
+                          e-required>test</span>
+                </td>
+                <!--狀態-->
+                <td style="vertical-align: inherit;" rowspan="2">
                     <form editable-form name="rowform1" ng-show="rowform1.$visible" class="form-buttons form-inline">
                         <button type="submit" ng-disabled="rowform1.$waiting"
                                 class="btn btn-primary editable-table-button btn-xs">
@@ -195,105 +211,121 @@
                         <button class="btn btn-info editable-table-button btn-xs" ng-click="rowform1.$show(); tableChange()">編輯</button>
                     </div>
                 </td>
+                <!--經理確認-->
+                <td rowspan="2" style="vertical-align: inherit;">
+                    <span e-form="rowform1"
+                          e-required>test</span>
+                </td>
+                <!--行政確認-->
+                <td rowspan="2" style="vertical-align: inherit;">
+                    <span e-form="rowform1"
+                          e-required>test</span>
+                </td>
+
             </tr>
             <!--加班欄位-->
             <tr class="row1" style="vertical-align: inherit; text-align: center">
-                <td class="form-group has-success">
+                <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="table.mon_hour_add"
-                          e-form="rowform2"
+                          e-form="rowform1"
                           id="mon_hour_add"
                           e-required>{{ table.mon_hour_add || 0}}</span>
                 </td>
-                <td>
+                <td style="vertical-align: inherit;">
                    <span editable-text="table.mon_memo_add"
-                         e-form="rowform2"
+                         e-form="rowform1"
                          id="mon_memo_add"
                          e-required>{{ table.mon_memo_add}}</span>
                 </td>
-                <td class="form-group has-success">
+                <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="table.tue_hour_add"
-                          e-form="rowform2"
+                          e-form="rowform1"
                           id="tue_hour_add"
                           e-required>{{ table.tue_hour_add || 0}}</span>
                 </td>
-                <td>
+                <td style="vertical-align: inherit;">
                     <span editable-text="table.tue_memo_add"
-                          e-form="rowform2"
+                          e-form="rowform1"
                           id="tue_memo_add"
                           e-required>{{ table.tue_memo_add}}</span>
                 </td>
-                <td class="form-group has-success">
+                <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="table.wes_hour_add"
-                          e-form="rowform2"
+                          e-form="rowform1"
                           id="wes_hour_add"
                           e-required>{{ table.wes_hour_add || 0}}</span>
                 </td>
-                <td>
+                <td style="vertical-align: inherit;">
                     <span editable-text="table.wes_memo_add"
-                          e-form="rowform2"
+                          e-form="rowform1"
                           id="wes_memo_add"
                           e-required>{{ table.wes_memo_add}}</span>
                 </td>
-                <td class="form-group has-success">
+                <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="table.thu_hour_add"
-                          e-form="rowform2"
+                          e-form="rowform1"
                           id="thu_hour_add"
                           e-required>{{ table.thu_hour_add || 0}}</span>
                 </td>
-                <td>
+                <td style="vertical-align: inherit;">
                     <span editable-text="table.thu_memo_add"
-                          e-form="rowform2"
+                          e-form="rowform1"
                           id="thu_memo_add"
                           e-required>{{ table.thu_memo_add}}</span>
                 </td>
-                <td class="form-group has-success">
+                <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="table.fri_hour_add"
-                          e-form="rowform2"
+                          e-form="rowform1"
                           id="fri_hour_add"
                           e-required>{{ table.fri_hour_add || 0}}</span>
                 </td>
-                <td>
+                <td style="vertical-align: inherit;">
                    <span editable-text="table.fri_memo_add"
-                         e-form="rowform2"
+                         e-form="rowform1"
                          id="fri_memo_add"
                          e-required>{{ table.fri_memo_add}}</span>
                 </td>
-                <td class="form-group has-success">
+                <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="table.sat_hour_add"
-                          e-form="rowform2"
+                          e-form="rowform1"
                           id="sat_hour_add"
                           e-required>{{ table.sat_hour_add || 0}}</span>
                 </td>
-                <td>
+                <td style="vertical-align: inherit;">
                     <span editable-text="table.sat_memo_add"
-                          e-form="rowform2"
+                          e-form="rowform1"
                           id="sat_memo_add"
                           e-required>{{ table.sat_memo_add}}</span>
                 </td>
-                <td class="form-group has-success">
+                <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="table.sun_hour_add"
-                          e-form="rowform2"
+                          e-form="rowform1"
                           id="sun_hour_add"
                           e-required>{{ table.sun_hour_add || 0}}</span>
                 </td>
-                <td>
+                <td style="vertical-align: inherit;">
                     <span editable-text="table.sun_memo_add"
-                          e-form="rowform2"
+                          e-form="rowform1"
                           id="sun_memo_add"
                           e-required>{{ table.sun_memo_add}}</span>
                 </td>
-
-                <td>
-                    <form editable-form name="rowform2" ng-show="rowform2.$visible" class="form-buttons form-inline">
-                        <button type="submit" ng-disabled="rowform2.$waiting"
-                                class="btn btn-primary editable-table-button btn-xs">
-                            確認
-                        </button>
-                    </form>
-                    <div class="buttons" ng-show="!rowform2.$visible">
-                        <button class="btn btn-info editable-table-button btn-xs" ng-click="rowform2.$show(); tableChange()">編輯</button>
-                    </div>
+                <!--合計-->
+                <td style="vertical-align: inherit;">
+                    <span e-form="rowform1"
+                          e-required>test</span>
                 </td>
+
+                <!--<td>-->
+                    <!--<form editable-form name="rowform2" ng-show="rowform2.$visible" class="form-buttons form-inline">-->
+                        <!--<button type="submit" ng-disabled="rowform2.$waiting"-->
+                                <!--class="btn btn-primary editable-table-button btn-xs">-->
+                            <!--確認-->
+                        <!--</button>-->
+                    <!--</form>-->
+                    <!--<div class="buttons" ng-show="!rowform2.$visible">-->
+                        <!--<button class="btn btn-info editable-table-button btn-xs" ng-click="rowform2.$show(); tableChange()">編輯</button>-->
+                    <!--</div>-->
+                <!--</td>-->
             </tr>
             </tbody>
 
@@ -409,10 +441,7 @@
         </div>
 
     </uib-tab>
-    <uib-tab heading="工時審核">
-        <div ng-repeat="prj in projectsItems">
-            {{prj.name}}
-        </div>
+    <uib-tab heading="TBD">
     </uib-tab>
 </uib-tabset>
 
