@@ -1,77 +1,91 @@
 <div ba-panel ba-panel-class="profile-page">
-    <div class="panel-content">
-        <h3 class="with-line">Personal Information</h3>
+    <uib-tabset active="$tabSetStatus.activeTab">
+        <uib-tab heading="個人更新">
+            <div class="panel-content">
+                <h3 class="with-line">Personal Information</h3>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group row clearfix">
-                    <label for="inputFirstName" class="col-md-3 control-label">大頭貼</label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row clearfix">
+                            <label for="inputFirstName" class="col-md-3 control-label">大頭貼</label>
 
-                    <div class="col-md-9">
-                        <div class="userpic">
-                            <div class="userpic-wrapper">
-                                <img ng-src="{{ picture }}" ng-click="selectAvatar()">
+                            <div class="col-md-9">
+                                <div class="userpic">
+                                    <div class="userpic-wrapper">
+                                        <img ng-src="{{ picture }}" ng-click="selectAvatar()">
+                                    </div>
+                                    <!--<i class="ion-ios-close-outline" ng-click="removeAvatar()" ng-if="!noPicture"></i>-->
+                                    <a href class="change-userpic" ng-click="selectAvatar()"
+                                       style="color: white">變更大頭貼</a>
+                                    <input type="file" ng-show="false" id="uploadFile"
+                                           my-file-select="onFileSelect($files)">
+                                </div>
                             </div>
-                            <!--<i class="ion-ios-close-outline" ng-click="removeAvatar()" ng-if="!noPicture"></i>-->
-                            <a href class="change-userpic" ng-click="selectAvatar()" style="color: white">變更大頭貼</a>
-                            <input type="file" ng-show="false" id="uploadFile" my-file-select="onFileSelect($files)">
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group row clearfix">
-                <label for="inputFirstName" class="col-md-3 control-label">姓名</label>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row clearfix">
+                        <label for="inputFirstName" class="col-md-3 control-label">姓名</label>
 
-                <div class="col-md-9">
-                    <input type="text"
-                           class="form-control"
-                           id="inputFirstName"
-                           placeholder=""
-                           disabled="true"
-                           value="{{username}}">
+                        <div class="col-md-9">
+                            <input type="text"
+                                   class="form-control"
+                                   id="inputFirstName"
+                                   placeholder=""
+                                   disabled="true"
+                                   value="{{username}}">
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <h3 class="with-line">變更密碼</h3>
+            <h3 class="with-line">變更密碼</h3>
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group row clearfix">
-                <label for="inputPassword" class="col-md-3 control-label">新密碼</label>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row clearfix">
+                        <label for="inputPassword" class="col-md-3 control-label">新密碼</label>
 
-                <div class="col-md-9">
-                    <input type="password"
-                           class="form-control"
-                           id="inputPassword"
-                           value="{{password}}"
-                           placeholder="">
+                        <div class="col-md-9">
+                            <input type="password"
+                                   class="form-control"
+                                   id="inputPassword"
+                                   value="{{password}}"
+                                   placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group row clearfix">
+                        <label for="inputConfirmPassword" class="col-md-3 control-label">確認密碼</label>
+
+                        <div class="col-md-9">
+                            <input type="password"
+                                   class="form-control"
+                                   id="inputConfirmPassword"
+                                   placeholder="">
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group row clearfix">
-                <label for="inputConfirmPassword" class="col-md-3 control-label">確認密碼</label>
 
-                <div class="col-md-9">
-                    <input type="password"
-                           class="form-control"
-                           id="inputConfirmPassword"
-                           placeholder="">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <button type="button"
-            ng-click="changePassword()"
-            class="btn btn-primary btn-with-icon save-profile ">儲存密碼
-    </button>
+            <button type="button"
+                    ng-click="changePassword()"
+                    class="btn btn-primary btn-with-icon save-profile ">儲存密碼
+            </button>
+        </uib-tab>
+        <uib-tab heading="人事輸入" ng-if="roleType === '100'">
+        </uib-tab>
+    </uib-tabset>
 </div>
-</div>
+
+
+
+
+
+
+

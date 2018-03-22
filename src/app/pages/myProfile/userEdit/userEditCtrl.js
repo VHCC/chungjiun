@@ -30,6 +30,7 @@
                           User,
                           UserEditUtil) {
         $scope.username = cookies.get('username');
+        $scope.roleType = cookies.get('roletype');
 
         var formData = {
             userDID: cookies.get('userDID'),
