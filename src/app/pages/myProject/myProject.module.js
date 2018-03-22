@@ -37,6 +37,18 @@
             //             order: global.pages.myProject_createProject,
             //         },
             //     })
+            .state('myProject.createNewProject',
+                {
+                    url: '/createNewProject',
+                    templateUrl: 'app/pages/myExecutive/createNewProject/createNewProject.html',
+                    controller: 'createNewProjectCtrl',
+                    controllerAs: 'cC',
+                    title: '建立專案',
+                    accessLevel: [100],
+                    sidebarMeta: {
+                        order: global.pages.myProject_createProject,
+                    },
+                })
             .state('myProject.listProject',
                 {
                     url: '/listProject',
@@ -56,6 +68,26 @@
                     accessLevel: [1, 2, 3, 100],
                     sidebarMeta: {
                         order: global.pages.myProject_endProject,
+                    },
+                })
+            .state('myProject.projectIncome',
+                {
+                    url: '/projectIncome',
+                    templateUrl: 'app/pages/myNewPage/empty.html',
+                    title: '專案收支',
+                    accessLevel: [9999],
+                    sidebarMeta: {
+                        order: global.pages.myProject_projectIncome,
+                    },
+                })
+            .state('myProject.projectFinancial',
+                {
+                    url: '/projectFinancial',
+                    templateUrl: 'app/pages/myNewPage/empty.html',
+                    title: '專案結算',
+                    accessLevel: [9999],
+                    sidebarMeta: {
+                        order: global.pages.myProject_projectFinancial,
                     },
                 })
     }
