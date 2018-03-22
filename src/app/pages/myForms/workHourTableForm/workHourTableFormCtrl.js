@@ -36,6 +36,9 @@
                                editableThemes) {
         var vm = this;
 
+        $scope.username = cookies.get('username');
+        $scope.roleType = cookies.get('roletype');
+
         // 主要顯示
         $scope.tablesItems = [];
 
@@ -73,8 +76,6 @@
                     };
                 }
             });
-
-        $scope.username = cookies.get('username');
 
         $scope.removeWorkItem = function (index) {
             console.log(index)
@@ -146,10 +147,18 @@
                         WorkHourForms.findWorkHourTableFormByTableIDArray(formDataTable)
                             .success(function (res) {
 
+                                $scope.monOffTotal = 0;
+                                $scope.tueOffTotal = 0;
+                                $scope.wesOffTotal = 0;
+                                $scope.thuOffTotal = 0;
+                                $scope.friOffTotal = 0;
+                                $scope.satOffTotal = 0;
+                                $scope.sunOffTotal = 0;
                                 // 填入表單資訊
                                 $scope.tableData = {};
                                 for (var index = 0; index < res.payload.length; index++) {
                                     var detail = {
+                                        tableID: workTableIDArray[index],
                                         prjDID: res.payload[index].prjDID,
                                         //MON
                                         mon_hour: res.payload[index].mon_hour,
@@ -188,21 +197,41 @@
                                         sun_memo_add: res.payload[index].sun_memo_add,
                                         // TOTAL
                                         hourTotal: res.payload[index].mon_hour +
-                                            res.payload[index].tue_hour +
-                                            res.payload[index].wes_hour +
-                                            res.payload[index].thu_hour +
-                                            res.payload[index].fri_hour +
-                                            res.payload[index].sat_hour +
-                                            res.payload[index].sun_hour,
+                                        res.payload[index].tue_hour +
+                                        res.payload[index].wes_hour +
+                                        res.payload[index].thu_hour +
+                                        res.payload[index].fri_hour +
+                                        res.payload[index].sat_hour +
+                                        res.payload[index].sun_hour,
                                         hourAddTotal: res.payload[index].mon_hour_add +
-                                            res.payload[index].tue_hour_add +
-                                            res.payload[index].wes_hour_add +
-                                            res.payload[index].thu_hour_add +
-                                            res.payload[index].fri_hour_add +
-                                            res.payload[index].sat_hour_add +
-                                            res.payload[index].sun_hour_add,
+                                        res.payload[index].tue_hour_add +
+                                        res.payload[index].wes_hour_add +
+                                        res.payload[index].thu_hour_add +
+                                        res.payload[index].fri_hour_add +
+                                        res.payload[index].sat_hour_add +
+                                        res.payload[index].sun_hour_add,
+
                                     };
-                                    $scope.tablesItems.push(detail)
+                                    $scope.tablesItems.push(detail);
+
+                                    //Off Day
+
+                                    $scope.monOffTotal += res.payload[index].mon_hour +
+                                        res.payload[index].mon_hour_add;
+                                    $scope.tueOffTotal += res.payload[index].tue_hour +
+                                        res.payload[index].tue_hour_add;
+                                    $scope.wesOffTotal += res.payload[index].wes_hour +
+                                        res.payload[index].wes_hour_add;
+                                    $scope.thuOffTotal += res.payload[index].thu_hour +
+                                        res.payload[index].thu_hour_add;
+                                    $scope.friOffTotal += res.payload[index].fri_hour +
+                                        res.payload[index].fri_hour_add;
+                                    $scope.satOffTotal += res.payload[index].sat_hour +
+                                        res.payload[index].sat_hour_add;
+                                    $scope.sunOffTotal += res.payload[index].sun_hour +
+                                        res.payload[index].sun_hour_add;
+                                    console.log(res.payload[index].mon_hour +
+                                        res.payload[index].mon_hour_add);
                                 }
                                 // console.log($scope.tablesItems);
                             })
@@ -223,6 +252,66 @@
         $scope.tableChange = function () {
             $("[id='btnSubmit']")[0].innerText = '更動後請儲存';
             $("[id='btnSubmit']").css('display', 'inline-block');
+        }
+
+        $scope.rowEdit = function (table) {
+            console.log(table);
+        }
+
+        $scope.hourChange = function (obj) {
+
+            var stringtable = [
+                "table.mon_hour",
+                "table.tue_hour",
+                "table.wes_hour",
+                "table.thu_hour",
+                "table.fri_hour",
+                "table.sat_hour",
+                "table.sun_hour",
+            ]
+            var targetString = obj.$parent.$editable.name
+            var result = 0;
+            for (var index = 0; index < stringtable.length; index ++) {
+                if (targetString === stringtable[index]) {
+                    continue;
+                }
+                var oldValueString = 'obj.$parent.$parent.' + stringtable[index];
+                result += eval(oldValueString);
+            }
+            var newValue = obj.$parent.$data;
+
+            obj.$parent.$parent.table.hourTotal = newValue + result;
+
+            var updateString = 'obj.$parent.$parent.' + targetString + " = " + newValue;
+            eval(updateString);
+
+        }
+
+        $scope.hourAddChange = function (obj) {
+            var stringtable = [
+                "table.mon_hour_add",
+                "table.tue_hour_add",
+                "table.wes_hour_add",
+                "table.thu_hour_add",
+                "table.fri_hour_add",
+                "table.sat_hour_add",
+                "table.sun_hour_add",
+            ]
+            var targetString = obj.$parent.$editable.name
+            var result = 0;
+            for (var index = 0; index < stringtable.length; index ++) {
+                if (targetString === stringtable[index]) {
+                    continue;
+                }
+                var oldValueString = 'obj.$parent.$parent.' + stringtable[index];
+                result += eval(oldValueString);
+            }
+            var newValue = obj.$parent.$data;
+
+            obj.$parent.$parent.table.hourAddTotal = newValue + result;
+
+            var updateString = 'obj.$parent.$parent.' + targetString + " = " + newValue;
+            eval(updateString);
         }
         // -----------------------  Show methods --------------------------
         $scope.showPrjName = function (prjDID) {
@@ -316,7 +405,7 @@
 
         // ************************ CREATE SUBMIT ***************************
         $scope.createSubmit = function () {
-            return $timeout(function() {
+            return $timeout(function () {
 
                 var workItemCount = $('tbody').length;
                 var workHourTableData = [];
