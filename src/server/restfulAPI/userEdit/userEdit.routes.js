@@ -1,3 +1,5 @@
+var userModel = require('../models/user');
+
 module.exports = function (app) {
 // application -------------------------------------------------------------
     var multer = require('multer');
@@ -17,5 +19,34 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_upload_user_avatatr, upload.single('file'), function (req, res) {
         // req.file is the `avatar` file
         // req.body will hold the text fields, if there were any
+    })
+
+    app.post(global.apiUrl.post_user_find_by_userdid, function (req, res) {
+        userModel.find({
+            _id: req.body.userDID,
+        }, function (err, user) {
+            if (err) {
+                res.send(err);
+            }
+            res.json(user[0]);
+        })
+    })
+
+    app.post(global.apiUrl.post_user_change_password_by_userdid, function (req, res) {
+        userModel.update({
+            _id: req.body.userDID,
+        }, {
+            $set: {
+                password: req.body.password,
+            }
+        }, function (err) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        })
     })
 }

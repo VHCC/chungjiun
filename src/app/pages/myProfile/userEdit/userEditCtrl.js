@@ -13,6 +13,8 @@
             'fileReader',
             '$filter',
             '$uibModal',
+            'toastr',
+            'User',
             'UserEditUtil',
             UserEditCtrl
         ]);
@@ -24,13 +26,26 @@
                           fileReader,
                           $filter,
                           $uibModal,
+                          toastr,
+                          User,
                           UserEditUtil) {
+        $scope.username = cookies.get('username');
+
+        var formData = {
+            userDID: cookies.get('userDID'),
+        }
+
+        User.findUserByUserDID(formData)
+            .success(function (user) {
+                $scope.password = user.password;
+            })
+
         var filename = $filter('userAvatar')(cookies.get('userDID'));
         $http.get(filename)
-            .success(function(data, status){
+            .success(function (data, status) {
                 $scope.picture = $filter('userAvatar')(cookies.get('userDID'));
             })
-            .error(function(data,status){
+            .error(function (data, status) {
                 $scope.picture = $filter('appImage')('theme/no-photo.png');
                 $scope.noPicture = true;
             });
@@ -38,54 +53,12 @@
         $scope.removeAvatar = function () {
             $scope.picture = $filter('appImage')('theme/no-photo.png');
             $scope.noPicture = true;
+            toastr['success']('成功', '移除照片');
         };
 
         $scope.selectAvatar = function () {
             var fileInput = document.getElementById('uploadFile');
             fileInput.click();
-        };
-
-        $scope.socialProfiles = [
-            {
-                name: 'Facebook',
-                href: 'https://www.facebook.com/akveo/',
-                icon: 'socicon-facebook'
-            },
-            {
-                name: 'Twitter',
-                href: 'https://twitter.com/akveo_inc',
-                icon: 'socicon-twitter'
-            },
-            {
-                name: 'Google',
-                icon: 'socicon-google'
-            },
-            {
-                name: 'LinkedIn',
-                href: 'https://www.linkedin.com/company/akveo',
-                icon: 'socicon-linkedin'
-            },
-            {
-                name: 'GitHub',
-                href: 'https://github.com/akveo',
-                icon: 'socicon-github'
-            },
-            {
-                name: 'StackOverflow',
-                icon: 'socicon-stackoverflow'
-            },
-            {
-                name: 'Dribbble',
-                icon: 'socicon-dribble'
-            },
-            {
-                name: 'Behance',
-                icon: 'socicon-behace'
-            }
-        ];
-
-        $scope.unconnect = function (item) {
-            item.href = undefined;
         };
 
         $scope.showModal = function (item) {
@@ -109,10 +82,36 @@
             fileReader.readAsDataUrl(file, $scope)
                 .then(function (result) {
                     $scope.picture = result;
+                    toastr['success']('成功', '照片上傳');
                 });
         };
 
-        $scope.switches = [true, true, false, true, true, false];
+
+        // notification
+
+        $scope.changePassword = function () {
+            console.log($scope.password);
+            console.log($('[id="inputConfirmPassword"]')[0].value);
+            if ($('[id="inputPassword"]')[0].value !== $('[id="inputConfirmPassword"]')[0].value) {
+                toastr['warning']('請確認新密碼輸入是否相同', '儲存失敗');
+                return;
+            }
+            if ($scope.password !== $('[id="inputConfirmPassword"]')[0].value) {
+                toastr['warning']('新密碼與舊密碼相同', '注意');
+                return;
+            }
+
+            var formData = {
+                userDID: cookies.get('userDID'),
+                password: $scope.password,
+            }
+
+            User.updatePassword(formData)
+                .success(function () {
+                    toastr['success']('成功', '變更密碼');
+                })
+
+        }
     }
 
 })();
