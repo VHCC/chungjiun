@@ -17,6 +17,12 @@
                 },
                 findManagers: function () {
                     return http.get('/api/getAllManagers');
+                },
+                findUserByUserDID : function (formData) {
+                    return http.post('/api/userFindByuserDID', formData);
+                },
+                updatePassword : function (formData) {
+                    return http.post('/api/userChangePasswordByuserDID', formData);
                 }
             }
         }])
