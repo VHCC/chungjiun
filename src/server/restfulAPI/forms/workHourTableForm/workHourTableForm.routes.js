@@ -9,6 +9,7 @@ module.exports = function (app) {
     // create Form
     app.post(global.apiUrl.post_work_hour_create_table, function (req, res) {
 
+        // 刪除既有工時表
         WorkHourForm.remove({
             creatorDID: req.body.creatorDID,
             create_formDate: req.body.create_formDate,
@@ -18,7 +19,7 @@ module.exports = function (app) {
             }
         })
         console.log(req.body.oldTables);
-        if (req.body.oldTables.length > 0 && req.body.oldTables.tableIDArray.length > 0) {
+        if (req.body.oldTables.hasOwnProperty('tableIDArray')) {
             var findData = []
             for (var index = 0; index < req.body.oldTables.tableIDArray.length; index++) {
                 var target = {
@@ -29,6 +30,7 @@ module.exports = function (app) {
                 findData.push(target);
             };
             console.log(findData);
+            // 刪除既有 工時表格
             WorkHourTableForm.remove(
                 {
                     $or: findData,
