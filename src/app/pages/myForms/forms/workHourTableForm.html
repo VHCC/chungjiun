@@ -35,16 +35,18 @@
         <p class="text-center" ng-show="loading">
             <span class="fa fa-spinner fa-spin fa-3x"></span>
         </p>
-        <div >
-            <button type="button" class="btn btn-default btn-icon" ng-click="decreaceWeek()"><i class="ion-chevron-left"></i></button>
+        <div>
+            <button type="button" class="btn btn-default btn-icon" ng-click="decreaceWeek()"><i
+                    class="ion-chevron-left"></i></button>
             {{firstDate}} ~ {{lastDate}}
-            <button type="button" class="btn btn-default btn-icon" ng-click="addWeek()"><i class="ion-chevron-right"></i></button>
+            <button type="button" class="btn btn-default btn-icon" ng-click="addWeek()"><i
+                    class="ion-chevron-right"></i></button>
         </div>
         <br>
 
         <table class="table table-bordered table-hover table-condensed">
             <thead>
-            <tr >
+            <tr>
                 <td rowspan="3" style="vertical-align: inherit; text-align: center">專案代碼</td>
                 <td rowspan="3" style="vertical-align: inherit; text-align: center">專案名稱</td>
                 <td rowspan="3" style="vertical-align: inherit; text-align: center">經理</td>
@@ -197,7 +199,7 @@
                 <!--合計-->
                 <td style="vertical-align: inherit;">
                     <span e-form="rowform1"
-                          e-required>test</span>
+                          e-required>{{table.hourTotal}}</span>
                 </td>
                 <!--狀態-->
                 <td style="vertical-align: inherit;" rowspan="2">
@@ -208,18 +210,20 @@
                         </button>
                     </form>
                     <div class="buttons" ng-show="!rowform1.$visible">
-                        <button class="btn btn-info editable-table-button btn-xs" ng-click="rowform1.$show(); tableChange()">編輯</button>
+                        <button class="btn btn-info editable-table-button btn-xs"
+                                ng-click="rowform1.$show(); tableChange()">編輯
+                        </button>
                     </div>
                 </td>
                 <!--經理確認-->
                 <td rowspan="2" style="vertical-align: inherit;">
                     <span e-form="rowform1"
-                          e-required>test</span>
+                          e-required>bb</span>
                 </td>
                 <!--行政確認-->
                 <td rowspan="2" style="vertical-align: inherit;">
                     <span e-form="rowform1"
-                          e-required>test</span>
+                          e-required>cc</span>
                 </td>
 
             </tr>
@@ -312,20 +316,9 @@
                 <!--合計-->
                 <td style="vertical-align: inherit;">
                     <span e-form="rowform1"
-                          e-required>test</span>
+                          e-required>{{table.hourAddTotal}}</span>
                 </td>
 
-                <!--<td>-->
-                    <!--<form editable-form name="rowform2" ng-show="rowform2.$visible" class="form-buttons form-inline">-->
-                        <!--<button type="submit" ng-disabled="rowform2.$waiting"-->
-                                <!--class="btn btn-primary editable-table-button btn-xs">-->
-                            <!--確認-->
-                        <!--</button>-->
-                    <!--</form>-->
-                    <!--<div class="buttons" ng-show="!rowform2.$visible">-->
-                        <!--<button class="btn btn-info editable-table-button btn-xs" ng-click="rowform2.$show(); tableChange()">編輯</button>-->
-                    <!--</div>-->
-                <!--</td>-->
             </tr>
             </tbody>
 
@@ -436,9 +429,12 @@
             </tfoot>
         </table>
         <hr>
-        <div class="add-row-editable-table" >
-            <button class="btn btn-warning" ng-click="createSubmit()" id="btnSubmit" style="display: none;">暫存</button>
-        </div>
+        <section class="col-md-6">
+            <button progress-button="createSubmit()"
+                    style="float: inherit;"
+                    pb-style="shrink"
+                    class="btn btn-warning">Save</button>
+        </section>
 
     </uib-tab>
     <uib-tab heading="TBD">

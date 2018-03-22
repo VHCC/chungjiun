@@ -11,6 +11,7 @@
                 '$scope',
                 '$filter',
                 '$cookies',
+                '$timeout',
                 'User',
                 'Project',
                 'ProjectUtil',
@@ -25,6 +26,7 @@
     function WorkHourTableCtrl($scope,
                                $filter,
                                cookies,
+                               $timeout,
                                User,
                                Project,
                                ProjectUtil,
@@ -96,7 +98,7 @@
         $scope.getTable = function () {
             var getData = {
                 creatorDID: cookies.get('userDID'),
-                create_formDate:  $scope.firstFullDate,
+                create_formDate: $scope.firstFullDate,
             }
             console.log($scope.firstFullDate);
             WorkHourForms.getWorkHourForm(getData)
@@ -184,6 +186,21 @@
                                         sun_memo: res.payload[index].sun_memo,
                                         sun_hour_add: res.payload[index].sun_hour_add,
                                         sun_memo_add: res.payload[index].sun_memo_add,
+                                        // TOTAL
+                                        hourTotal: res.payload[index].mon_hour +
+                                            res.payload[index].tue_hour +
+                                            res.payload[index].wes_hour +
+                                            res.payload[index].thu_hour +
+                                            res.payload[index].fri_hour +
+                                            res.payload[index].sat_hour +
+                                            res.payload[index].sun_hour,
+                                        hourAddTotal: res.payload[index].mon_hour_add +
+                                            res.payload[index].tue_hour_add +
+                                            res.payload[index].wes_hour_add +
+                                            res.payload[index].thu_hour_add +
+                                            res.payload[index].fri_hour_add +
+                                            res.payload[index].sat_hour_add +
+                                            res.payload[index].sun_hour_add,
                                     };
                                     $scope.tablesItems.push(detail)
                                 }
@@ -299,119 +316,121 @@
 
         // ************************ CREATE SUBMIT ***************************
         $scope.createSubmit = function () {
+            return $timeout(function() {
 
-            var workItemCount = $('tbody').length;
-            var workHourTableData = [];
+                var workItemCount = $('tbody').length;
+                var workHourTableData = [];
 
-            for (var index = 0; index < workItemCount; index++) {
-                var itemPrjCode = $('tbody').find("span[id^='prjCode']")[index].innerText;
-                var itemPrjDID = $('tbody').find("span[id='prjDID']")[index].innerText;
-                //MON
-                var mon_hour = $('tbody').find("span[id='mon_hour']")[index].innerText;
-                var mon_memo = $('tbody').find("span[id='mon_memo']")[index].innerText;
-                var mon_hour_add = $('tbody').find("span[id='mon_hour_add']")[index].innerText;
-                var mon_memo_add = $('tbody').find("span[id='mon_memo_add']")[index].innerText;
-                //TUE
-                var tue_hour = $('tbody').find("span[id='tue_hour']")[index].innerText;
-                var tue_memo = $('tbody').find("span[id='tue_memo']")[index].innerText;
-                var tue_hour_add = $('tbody').find("span[id='tue_hour_add']")[index].innerText;
-                var tue_memo_add = $('tbody').find("span[id='tue_memo_add']")[index].innerText;
-                //WES
-                var wes_hour = $('tbody').find("span[id='wes_hour']")[index].innerText;
-                var wes_memo = $('tbody').find("span[id='wes_memo']")[index].innerText;
-                var wes_hour_add = $('tbody').find("span[id='wes_hour_add']")[index].innerText;
-                var wes_memo_add = $('tbody').find("span[id='wes_memo_add']")[index].innerText;
-                //THU
-                var thu_hour = $('tbody').find("span[id='thu_hour']")[index].innerText;
-                var thu_memo = $('tbody').find("span[id='thu_memo']")[index].innerText;
-                var thu_hour_add = $('tbody').find("span[id='thu_hour_add']")[index].innerText;
-                var thu_memo_add = $('tbody').find("span[id='thu_memo_add']")[index].innerText;
-                //FRI
-                var fri_hour = $('tbody').find("span[id='fri_hour']")[index].innerText;
-                var fri_memo = $('tbody').find("span[id='fri_memo']")[index].innerText;
-                var fri_hour_add = $('tbody').find("span[id='fri_hour_add']")[index].innerText;
-                var fri_memo_add = $('tbody').find("span[id='fri_memo_add']")[index].innerText;
-                //SAT
-                var sat_hour = $('tbody').find("span[id='sat_hour']")[index].innerText;
-                var sat_memo = $('tbody').find("span[id='sat_memo']")[index].innerText;
-                var sat_hour_add = $('tbody').find("span[id='sat_hour_add']")[index].innerText;
-                var sat_memo_add = $('tbody').find("span[id='sat_memo_add']")[index].innerText;
-                //SUN
-                var sun_hour = $('tbody').find("span[id='sun_hour']")[index].innerText;
-                var sun_memo = $('tbody').find("span[id='sun_memo']")[index].innerText;
-                var sun_hour_add = $('tbody').find("span[id='sun_hour_add']")[index].innerText;
-                var sun_memo_add = $('tbody').find("span[id='sun_memo_add']")[index].innerText;
-
-                var tableItem = {
-                    creatorDID: cookies.get('userDID'),
-                    prjDID: itemPrjDID,
-
+                for (var index = 0; index < workItemCount; index++) {
+                    var itemPrjCode = $('tbody').find("span[id^='prjCode']")[index].innerText;
+                    var itemPrjDID = $('tbody').find("span[id='prjDID']")[index].innerText;
                     //MON
-                    mon_hour: mon_hour,
-                    mon_memo: mon_memo,
-                    mon_hour_add: mon_hour_add,
-                    mon_memo_add: mon_memo_add,
+                    var mon_hour = $('tbody').find("span[id='mon_hour']")[index].innerText;
+                    var mon_memo = $('tbody').find("span[id='mon_memo']")[index].innerText;
+                    var mon_hour_add = $('tbody').find("span[id='mon_hour_add']")[index].innerText;
+                    var mon_memo_add = $('tbody').find("span[id='mon_memo_add']")[index].innerText;
                     //TUE
-                    tue_hour: tue_hour,
-                    tue_memo: tue_memo,
-                    tue_hour_add: tue_hour_add,
-                    tue_memo_add: tue_memo_add,
+                    var tue_hour = $('tbody').find("span[id='tue_hour']")[index].innerText;
+                    var tue_memo = $('tbody').find("span[id='tue_memo']")[index].innerText;
+                    var tue_hour_add = $('tbody').find("span[id='tue_hour_add']")[index].innerText;
+                    var tue_memo_add = $('tbody').find("span[id='tue_memo_add']")[index].innerText;
                     //WES
-                    wes_hour: wes_hour,
-                    wes_memo: wes_memo,
-                    wes_hour_add: wes_hour_add,
-                    wes_memo_add: wes_memo_add,
+                    var wes_hour = $('tbody').find("span[id='wes_hour']")[index].innerText;
+                    var wes_memo = $('tbody').find("span[id='wes_memo']")[index].innerText;
+                    var wes_hour_add = $('tbody').find("span[id='wes_hour_add']")[index].innerText;
+                    var wes_memo_add = $('tbody').find("span[id='wes_memo_add']")[index].innerText;
                     //THU
-                    thu_hour: thu_hour,
-                    thu_memo: thu_memo,
-                    thu_hour_add: thu_hour_add,
-                    thu_memo_add: thu_memo_add,
+                    var thu_hour = $('tbody').find("span[id='thu_hour']")[index].innerText;
+                    var thu_memo = $('tbody').find("span[id='thu_memo']")[index].innerText;
+                    var thu_hour_add = $('tbody').find("span[id='thu_hour_add']")[index].innerText;
+                    var thu_memo_add = $('tbody').find("span[id='thu_memo_add']")[index].innerText;
                     //FRI
-                    fri_hour: fri_hour,
-                    fri_memo: fri_memo,
-                    fri_hour_add: fri_hour_add,
-                    fri_memo_add: fri_memo_add,
+                    var fri_hour = $('tbody').find("span[id='fri_hour']")[index].innerText;
+                    var fri_memo = $('tbody').find("span[id='fri_memo']")[index].innerText;
+                    var fri_hour_add = $('tbody').find("span[id='fri_hour_add']")[index].innerText;
+                    var fri_memo_add = $('tbody').find("span[id='fri_memo_add']")[index].innerText;
                     //SAT
-                    sat_hour: sat_hour,
-                    sat_memo: sat_memo,
-                    sat_hour_add: sat_hour_add,
-                    sat_memo_add: sat_memo_add,
+                    var sat_hour = $('tbody').find("span[id='sat_hour']")[index].innerText;
+                    var sat_memo = $('tbody').find("span[id='sat_memo']")[index].innerText;
+                    var sat_hour_add = $('tbody').find("span[id='sat_hour_add']")[index].innerText;
+                    var sat_memo_add = $('tbody').find("span[id='sat_memo_add']")[index].innerText;
                     //SUN
-                    sun_hour: sun_hour,
-                    sun_memo: sun_memo,
-                    sun_hour_add: sun_hour_add,
-                    sun_memo_add: sun_memo_add,
+                    var sun_hour = $('tbody').find("span[id='sun_hour']")[index].innerText;
+                    var sun_memo = $('tbody').find("span[id='sun_memo']")[index].innerText;
+                    var sun_hour_add = $('tbody').find("span[id='sun_hour_add']")[index].innerText;
+                    var sun_memo_add = $('tbody').find("span[id='sun_memo_add']")[index].innerText;
 
-                }
+                    var tableItem = {
+                        creatorDID: cookies.get('userDID'),
+                        prjDID: itemPrjDID,
 
-                workHourTableData.push(tableItem);
-            }
-            console.log(formDataTable);
-            var formData = {
-                creatorDID: cookies.get('userDID'),
-                create_formDate: $scope.firstFullDate,
-                formTables: workHourTableData,
-                oldTables: formDataTable,
-            }
-            // console.log(workHourTableData);
-            WorkHourForms.createWorkHourTableForm(formData)
-                .success(function (res) {
-                    // 更新old Table ID Array
-                    var workTableIDArray = [];
-                    if (res.payload.length > 0) {
-                        for (var index = 0; index < res.payload.length; index++) {
-                            console.log(res.payload[index]);
-                            workTableIDArray[index] = res.payload[index].tableID;
-                        }
+                        //MON
+                        mon_hour: mon_hour,
+                        mon_memo: mon_memo,
+                        mon_hour_add: mon_hour_add,
+                        mon_memo_add: mon_memo_add,
+                        //TUE
+                        tue_hour: tue_hour,
+                        tue_memo: tue_memo,
+                        tue_hour_add: tue_hour_add,
+                        tue_memo_add: tue_memo_add,
+                        //WES
+                        wes_hour: wes_hour,
+                        wes_memo: wes_memo,
+                        wes_hour_add: wes_hour_add,
+                        wes_memo_add: wes_memo_add,
+                        //THU
+                        thu_hour: thu_hour,
+                        thu_memo: thu_memo,
+                        thu_hour_add: thu_hour_add,
+                        thu_memo_add: thu_memo_add,
+                        //FRI
+                        fri_hour: fri_hour,
+                        fri_memo: fri_memo,
+                        fri_hour_add: fri_hour_add,
+                        fri_memo_add: fri_memo_add,
+                        //SAT
+                        sat_hour: sat_hour,
+                        sat_memo: sat_memo,
+                        sat_hour_add: sat_hour_add,
+                        sat_memo_add: sat_memo_add,
+                        //SUN
+                        sun_hour: sun_hour,
+                        sun_memo: sun_memo,
+                        sun_hour_add: sun_hour_add,
+                        sun_memo_add: sun_memo_add,
+
                     }
-                    formDataTable = {
-                        tableIDArray: workTableIDArray,
-                    };
-                    console.log(formDataTable);
-                })
-                .error(function () {
-                    console.log('ERROR WorkHourForms.createWorkHourTableForm');
-                })
+
+                    workHourTableData.push(tableItem);
+                }
+                console.log(formDataTable);
+                var formData = {
+                    creatorDID: cookies.get('userDID'),
+                    create_formDate: $scope.firstFullDate,
+                    formTables: workHourTableData,
+                    oldTables: formDataTable,
+                }
+                // console.log(workHourTableData);
+                WorkHourForms.createWorkHourTableForm(formData)
+                    .success(function (res) {
+                        // 更新old Table ID Array
+                        var workTableIDArray = [];
+                        if (res.payload.length > 0) {
+                            for (var index = 0; index < res.payload.length; index++) {
+                                console.log(res.payload[index]);
+                                workTableIDArray[index] = res.payload[index].tableID;
+                            }
+                        }
+                        formDataTable = {
+                            tableIDArray: workTableIDArray,
+                        };
+                        console.log(formDataTable);
+                    })
+                    .error(function () {
+                        console.log('ERROR WorkHourForms.createWorkHourTableForm');
+                    })
+            }, 3000);
         }
 
     }
