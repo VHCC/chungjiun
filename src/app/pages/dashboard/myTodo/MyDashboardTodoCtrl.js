@@ -110,7 +110,7 @@
             $scope.confirmData = data;
             $scope.warningText = '待辦未完成，確定要刪除 ';
             ngDialog.open({
-                template: 'app/pages/ui/modals/modalTemplates/myTodoWarningModal.html',
+                template: 'app/pages/myModalTemplate/myTodoWarningModal.html',
                 className: 'ngdialog-theme-default',
                 scope: $scope,
                 showClose: false,
