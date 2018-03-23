@@ -111,7 +111,71 @@
                 .success(function () {
                     toastr['success']('成功', '變更密碼');
                 })
+        }
 
+        // ---------------------- 人事輸入 -----------------------
+        var vm = this;
+
+        User.getAllUsers()
+            .success(function (allUsers) {
+                vm.users = allUsers;
+            });
+
+
+        $scope.updateUser = function () {
+            if (vm.selectedOption === undefined) {
+                toastr['warning']('請選擇員工角色', '人事資料更新');
+                return;
+            }
+
+            var formData = {
+                userDID: vm.user.selected._id,
+                roleType: vm.selectedOption.roleType,
+                bossID: 1,
+            }
+
+            console.log(formData);
+            User.updateUserProfile(formData)
+                .success(function (res) {
+                    toastr['success'](vm.user.selected.name + '人員 資料更新成功', '人事資料變更');
+                })
+                .error(function (res) {
+
+                })
+        }
+
+        vm.roleOptions = [
+            {
+                name: "技師",
+                roleType: 1
+            },
+            {
+                name: "經理",
+                roleType: 2
+            },
+            {
+                name: "工程師",
+                roleType: 3
+            },
+            {
+                name: "行政",
+                roleType: 4
+            },
+            {
+                name: "工讀生",
+                roleType: 5
+            },
+                ];
+
+        $scope.showRoleType = function (user) {
+
+            var selected = [];
+            if (user.roleType) {
+                selected = $filter('filter')(vm.roleOptions, {
+                    roleType: user.roleType,
+                });
+            }
+            vm.selectedOption = selected[0];
         }
     }
 

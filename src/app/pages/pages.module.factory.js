@@ -23,6 +23,9 @@
                 },
                 updatePassword : function (formData) {
                     return http.post('/api/userChangePasswordByuserDID', formData);
+                },
+                updateUserProfile : function (formData) {
+                    return http.post('/api/userUpdateProfile', formData);
                 }
             }
         }])

@@ -27,6 +27,7 @@
                 title: '個人資料',
                 templateUrl: 'app/pages/myProfile/userEdit/userEdit.html',
                 controller: 'userEditCtrl',
+                controllerAs: 'userEditCtrlVm',
                 sidebarMeta: {
                     order: global.pages.myProfile_userEdit,
                 },
