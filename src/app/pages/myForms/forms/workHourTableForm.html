@@ -14,7 +14,7 @@
                                class="btn-group bootstrap-select form-control"
                                id="projectName"
                                ng-disabled="false"
-                               ng-change="addWorkItem($select.selected); tableChange()"
+                               ng-change="addWorkItem($select.selected); "
                                append-to-body="true"
                                search-enabled="true">
                         <ui-select-match placeholder="選擇專案(新增)">
@@ -92,7 +92,8 @@
                     <span style="display: none;" id="prjDID">{{table.prjDID}}</span>
                     <br>
                     <button class="btn btn-danger editable-table-button btn-xs"
-                            ng-click="removeWorkItem($index); tableChange()">移除
+                            ng-show="!rowform1.$waiting && !table.isSendReview"
+                            ng-click="removeWorkItem($index);">移除
                     </button>
                 </td>
                 <td rowspan="2" style="vertical-align: inherit; text-align: center">
@@ -217,27 +218,54 @@
                 </td>
                 <!--狀態-->
                 <td style="vertical-align: inherit;" rowspan="2">
-                    <form editable-form name="rowform1" ng-show="rowform1.$visible" class="form-buttons form-inline">
-                        <button type="submit" ng-disabled="rowform1.$waiting"
-                                class="btn btn-primary editable-table-button btn-xs">
-                            暫存
+                    <!--審查中-->
+                    <div ng-show="rowform1.$waiting || table.isSendReview">
+                        <button class="btn btn-warning editable-table-button btn-xs">
+                            審查中
                         </button>
-                    </form>
-                    <div class="buttons" ng-show="!rowform1.$visible">
-                        <button class="btn btn-info editable-table-button btn-xs"
-                                ng-click="rowform1.$show(); rowEdit(table) ">編輯
-                        </button>
+                    </div>
+                    <!--可編輯-->
+                    <div ng-show="!rowform1.$waiting && !table.isSendReview">
+                        <form editable-form name="rowform1" ng-show="rowform1.$visible"
+                              class="form-buttons form-inline">
+                            <button type="submit"
+                                    class="btn btn-primary editable-table-button btn-xs">
+                                暫存
+                            </button>
+                        </form>
+                        <div class="buttons" ng-show="!rowform1.$visible">
+                            <button class="btn btn-info editable-table-button btn-xs"
+                                    ng-click="rowform1.$show()">編輯
+                            </button>
+                        </div>
+                        <div class="buttons" ng-show="!rowform1.$visible">
+                            <button class="btn btn-danger editable-table-button btn-xs"
+                                    ng-click="review(table, this) ">提交審查
+                            </button>
+                        </div>
                     </div>
                 </td>
                 <!--經理確認-->
                 <td rowspan="2" style="vertical-align: inherit;">
-                    <span e-form="rowform1"
-                          e-required>bb</span>
+                    <div ng-show="rowform1.$waiting || table.isSendReview">
+                        <button class="btn btn-warning editable-table-button btn-xs"
+                                style="color: black">
+                            {{ showMajor(table.prjDID)}}
+                            <br>
+                            確認作業中
+                        </button>
+                    </div>
                 </td>
                 <!--行政確認-->
                 <td rowspan="2" style="vertical-align: inherit;">
-                    <span e-form="rowform1"
-                          e-required>cc</span>
+                    <div ng-show="rowform1.$waiting || table.isSendReview">
+                        <button class="btn btn-warning editable-table-button btn-xs"
+                                style="color: black">
+                            行政
+                            <br>
+                            確認作業中
+                        </button>
+                    </div>
                 </td>
 
             </tr>
@@ -250,6 +278,12 @@
                           e-min="0"
                           id="mon_hour_add"
                           e-required>{{ table.mon_hour_add || 0}}</span>
+                    <button type="button" ng-disabled="rowform1.$waiting"
+                            ng-show="rowform1.$visible"
+                            ng-click="showModal(table)"
+                            class="btn btn-primary editable-table-button btn-xs">
+                        新增
+                    </button>
                 </td>
                 <td style="vertical-align: inherit;">
                    <span editable-textarea="table.mon_memo_add"
@@ -446,8 +480,10 @@
         <section class="col-md-6">
             <button progress-button="createSubmit()"
                     style="float: inherit;"
+                    id="btnCreate"
                     pb-style="shrink"
-                    class="btn btn-warning">Save</button>
+                    class="btn btn-warning">Save
+            </button>
         </section>
 
     </uib-tab>
