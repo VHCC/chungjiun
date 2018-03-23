@@ -90,7 +90,7 @@
                 }
             }
         }])
-        .factory('WorkHourForms', ['$http', function (http) {
+        .factory('WorkHourUtil', ['$http', function (http) {
             return {
                 createWorkHourTableForm: function (formData) {
                     return http.post('/api/createWorkHourTableForm', formData);
@@ -100,6 +100,9 @@
                 },
                 findWorkHourTableFormByTableIDArray : function (formData) {
                     return http.post('/api/findWorkHourTableFormByTableIDArray', formData);
+                },
+                updateTableSendReview : function (formData) {
+                    return http.post('/api/updateWorkHourTableFormSendReview', formData);
                 }
             }
         }])

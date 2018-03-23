@@ -84,6 +84,10 @@ module.exports = function (app) {
                     sun_memo:       req.body.formTables[index].sun_memo,
                     sun_hour_add:   req.body.formTables[index].sun_hour_add,
                     sun_memo_add:   req.body.formTables[index].sun_memo_add,
+                    //RIGHT
+                    isSendReview:  req.body.formTables[index].isSendReview,
+                    isManagerCheck:  req.body.formTables[index].isManagerCheck,
+                    isExecutiveCheck:  req.body.formTables[index].isExecutiveCheck,
 
                 }, function (err, workTable) {
                     resIndex++;
@@ -160,6 +164,25 @@ module.exports = function (app) {
                 payload: tables,
             });
         });
+    })
+
+    // update table form send review
+    app.post(global.apiUrl.post_work_hour_table_update_send_review, function (req, res) {
+        WorkHourTableForm.update({
+            _id: req.body.tableID,
+        }, {
+            $set: {
+                isSendReview: true,
+            }
+        }, function (err) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        })
     })
 
 }

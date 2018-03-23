@@ -1,0 +1,18 @@
+<div>
+    <div class="modal-header bg-warning">
+        <i class="ion-android-warning modal-icon"></i>
+        <strong>請確認</strong>
+    </div>
+    <div class="modal-body text-center">
+        {{checkText}}
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger"
+                ng-click="closeThisDialog();sendTable(checkingTable, checkingButton)">確定
+        </button>
+        <button type="button"
+                class="btn btn-primary"
+                ng-click="closeThisDialog()">取消
+        </button>
+    </div>
+</div>

@@ -119,16 +119,19 @@ module.exports = mongoose.model('WorkHourTableForm', {
         type: String,
     },
     //狀態：已提交、尚未提交
-    isSend: {
-        type: Boolean
+    isSendReview: {
+        type: Boolean,
+        default: false,
     },
     //經理審核
-    managerCheck: {
-        type: Boolean
+    isManagerCheck: {
+        type: Boolean,
+        default: false,
     },
     // 行政審核
-    executiveCheck: {
-        type: Boolean
+    isExecutiveCheck: {
+        type: Boolean,
+        default: false,
     }
 
 

@@ -36,6 +36,7 @@ global.apiUrl = {
     post_work_hour_create_table : '/api/createWorkHourTableForm',
     post_work_hour_get : '/api/getWorkHourForm',
     post_work_hour_table_find_by_tableid_array : '/api/findWorkHourTableFormByTableIDArray',
+    post_work_hour_table_update_send_review : '/api/updateWorkHourTableFormSendReview',
 
     //userEdit
     post_upload_user_avatatr : '/api/uploadUserAvatar',
