@@ -23,6 +23,9 @@ module.exports = mongoose.model('User', {
     // 員工角色
     roleType: {
         type: Number
+    },
+    bossID: {
+        type: String,
     }
 
 });
