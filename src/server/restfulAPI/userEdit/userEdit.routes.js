@@ -1,4 +1,4 @@
-var userModel = require('../models/user');
+var User = require('../models/user');
 
 module.exports = function (app) {
 // application -------------------------------------------------------------
@@ -22,7 +22,7 @@ module.exports = function (app) {
     })
 
     app.post(global.apiUrl.post_user_find_by_userdid, function (req, res) {
-        userModel.find({
+        User.find({
             _id: req.body.userDID,
         }, function (err, user) {
             if (err) {
@@ -33,7 +33,7 @@ module.exports = function (app) {
     })
 
     app.post(global.apiUrl.post_user_change_password_by_userdid, function (req, res) {
-        userModel.update({
+        User.update({
             _id: req.body.userDID,
         }, {
             $set: {

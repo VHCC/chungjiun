@@ -82,18 +82,18 @@
                 )($scope));
         }
 
-        $scope.submitPayment = function () {
+        $scope.checkPayment = function () {
 
             $scope.warningText = '總共新增 ' + $('#rowHead').find("div[id^='payment']").length + " 筆 墊付款";
             ngDialog.open({
-                template: 'app/pages/ui/modals/modalTemplates/myPaymentFormWarningModal.html',
+                template: 'app/pages/myModalTemplate/myPaymentFormWarningModal.html',
                 className: 'ngdialog-theme-default',
                 scope: $scope,
                 showClose: false,
             });
         }
 
-        $scope.submitPatment = function () {
+        $scope.submitPayment = function () {
             var dataForm = [];
 
             var paymentCount = $('#rowHead').find("div[id^='payment']").length
