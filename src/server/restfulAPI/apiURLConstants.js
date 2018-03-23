@@ -42,4 +42,5 @@ global.apiUrl = {
     post_upload_user_avatatr : '/api/uploadUserAvatar',
     post_user_find_by_userdid : '/api/userFindByuserDID',
     post_user_change_password_by_userdid : '/api/userChangePasswordByuserDID',
+    post_user_update_profile : '/api/userUpdateProfile',
 };

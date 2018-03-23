@@ -79,6 +79,76 @@
             </button>
         </uib-tab>
         <uib-tab heading="人事輸入" ng-if="roleType === '100'">
+            <form>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="userName">選擇員工</label>
+                            <ui-select ng-model="userEditCtrlVm.user.selected"
+                                       class="btn-group bootstrap-select form-control"
+                                       id="userName"
+                                       ng-change="showRoleType(userEditCtrlVm.user.selected)"
+                                       ng-disabled="false"
+                                       append-to-body="true"
+                                       search-enabled="true">
+                                <ui-select-match placeholder="選擇員工">
+                                    {{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="user in userEditCtrlVm.users | groupSelectpickerOptions: {name: $select.search}">
+                                    <span ng-bind-html="user.name | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="with-line"></h3>
+                <div class="row" ng-if="userEditCtrlVm.user.selected">
+                    <div class="col-md-6">
+                        <div class="form-group row clearfix">
+                            <label for="inputFirstName" class="col-md-3 control-label">姓名</label>
+
+                            <div class="col-md-9">
+                                <input type="text"
+                                       class="form-control"
+                                       placeholder=""
+                                       required
+                                       value=" {{userEditCtrlVm.user.selected.name}}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-if="userEditCtrlVm.user.selected">
+                    <div class="col-md-6">
+                        <div class="form-group row clearfix">
+                            <label class="col-md-3 control-label">員工角色</label>
+
+                            <div class="col-md-9" >
+                                <ui-select ng-model="userEditCtrlVm.selectedOption"
+                                           class="btn-group bootstrap-select form-control"
+                                           append-to-body="true"
+                                           search-enabled="true">
+                                    <ui-select-match placeholder="員工角色">
+                                        {{$select.selected.name}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                            repeat="option in userEditCtrlVm.roleOptions | filter: $select.search">
+                                        <span ng-bind-html="option.name"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <h3 class="with-line"></h3>
+                <div class="form-group">
+                    <button type="submit"
+                            ng-click="updateUser()"
+                            class="btn btn-info">儲存人事資料</button>
+                </div>
+            </form>
         </uib-tab>
     </uib-tabset>
 </div>

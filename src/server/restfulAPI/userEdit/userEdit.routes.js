@@ -49,4 +49,23 @@ module.exports = function (app) {
             });
         })
     })
+
+    app.post(global.apiUrl.post_user_update_profile, function (req, res) {
+        User.update({
+            _id: req.body.userDID,
+        }, {
+            $set: {
+                roleType: req.body.roleType,
+                bossID: req.body.bossID,
+            }
+        }, function (err) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        })
+    })
 }
