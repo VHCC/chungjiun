@@ -25,7 +25,11 @@
         'BlurAdmin.pages.myInput',
         'BlurAdmin.pages.myForms',
         'BlurAdmin.pages.myExecutive',
-        'BlurAdmin.pages.myProfile'
+        'BlurAdmin.pages.myProfile',
+
+        'BlurAdmin.pages.cgWorkManage',
+        'BlurAdmin.pages.cgAccountingManage',
+        'BlurAdmin.pages.cgKPI'
     ])
         .config(routeConfig)
 

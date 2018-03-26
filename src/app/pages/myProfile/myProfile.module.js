@@ -11,26 +11,26 @@
     /** @ngInject */
     function routeConfig($stateProvider) {
         $stateProvider
-            .state('myProfile',
-                {
-                    url: '/myProfile',
-                    template: '<ui-view autoscroll="true" autoscroll-body-top></ui-view>',
-                    abstract: true,
-                    title: '個人專區',
-                    sidebarMeta: {
-                        icon: 'ion-compose',
-                        order: global.pages.myProfile,
-                    },
-                })
-            .state('myProfile.userEdit', {
-                url: '/userEdit',
-                title: '個人資料',
-                templateUrl: 'app/pages/myProfile/userEdit/userEdit.html',
-                controller: 'userEditCtrl',
-                controllerAs: 'userEditCtrlVm',
-                sidebarMeta: {
-                    order: global.pages.myProfile_userEdit,
-                },
-            });
+            // .state('myProfile',
+            //     {
+            //         url: '/myProfile',
+            //         template: '<ui-view autoscroll="true" autoscroll-body-top></ui-view>',
+            //         abstract: true,
+            //         title: '個人專區',
+            //         sidebarMeta: {
+            //             icon: 'ion-compose',
+            //             order: global.pages.myProfile,
+            //         },
+            //     })
+            // .state('myProfile.userEdit', {
+            //     url: '/userEdit',
+            //     title: '個人資料',
+            //     templateUrl: 'app/pages/myProfile/userEdit/userEdit.html',
+            //     controller: 'userEditCtrl',
+            //     controllerAs: 'userEditCtrlVm',
+            //     sidebarMeta: {
+            //         order: global.pages.myProfile_userEdit,
+            //     },
+            // });
     }
 })();

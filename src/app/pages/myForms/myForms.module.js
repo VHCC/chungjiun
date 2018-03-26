@@ -48,38 +48,38 @@
                         order: global.pages.myForms_newForm,
                     },
                 })
-            .state('myForms.paymentForm',
-                {
-                    url: '/paymentForm',
-                    templateUrl: 'app/pages/myForms/paymentForm/paymentFormPage.html',
-                    controller: 'paymentFormCtrl',
-                    controllerAs: 'paymentFormCtrlVm',
-                    title: '墊付款',
-                    sidebarMeta: {
-                        order: global.pages.myForms_paymentForm,
-                    },
-                })
-            .state('myForms.workOffForm',
-                {
-                    url: '/workOffForm',
-                    templateUrl: 'app/pages/myForms/workOffForm/workOffFormPage.html',
-                    controller: 'workOffFormCtrl',
-                    controllerAs: 'cC',
-                    title: '人員休假',
-                    sidebarMeta: {
-                        order: global.pages.myForms_workOff,
-                    },
-                })
-            .state('myForms.workHourTableForm',
-                {
-                    url: '/workHourTableForm',
-                    templateUrl: 'app/pages/myForms/workHourTableForm/workHourTableFormPage.html',
-                    controller: 'workHourTableCtrl',
-                    controllerAs: 'workHourTableCtrlVm',
-                    title: '人員工時',
-                    sidebarMeta: {
-                        order: global.pages.myForms_workHourTable,
-                    },
-                })
+            // .state('myForms.paymentForm',
+            //     {
+            //         url: '/paymentForm',
+            //         templateUrl: 'app/pages/myForms/paymentForm/paymentFormPage.html',
+            //         controller: 'paymentFormCtrl',
+            //         controllerAs: 'paymentFormCtrlVm',
+            //         title: '墊付款',
+            //         sidebarMeta: {
+            //             order: global.pages.myForms_paymentForm,
+            //         },
+            //     })
+            // .state('myForms.workOffForm',
+            //     {
+            //         url: '/workOffForm',
+            //         templateUrl: 'app/pages/myForms/workOffForm/workOffFormPage.html',
+            //         controller: 'workOffFormCtrl',
+            //         controllerAs: 'cC',
+            //         title: '人員休假',
+            //         sidebarMeta: {
+            //             order: global.pages.myForms_workOff,
+            //         },
+            //     })
+            // .state('myForms.workHourTableForm',
+            //     {
+            //         url: '/workHourTableForm',
+            //         templateUrl: 'app/pages/myForms/workHourTableForm/workHourTableFormPage.html',
+            //         controller: 'workHourTableCtrl',
+            //         controllerAs: 'workHourTableCtrlVm',
+            //         title: '人員工時',
+            //         sidebarMeta: {
+            //             order: global.pages.myForms_workHourTable,
+            //         },
+            //     })
     }
 })();
