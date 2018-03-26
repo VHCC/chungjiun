@@ -32,6 +32,7 @@
         $scope.username = cookies.get('username');
         $scope.roleType = cookies.get('roletype');
 
+
         var formData = {
             userDID: cookies.get('userDID'),
         }
@@ -121,9 +122,14 @@
                 vm.users = allUsers;
             });
 
+        User.findManagers()
+            .success(function (managers) {
+                // console.log(JSON.stringify(managers));
+                vm.managersList = managers;
+            })
 
         $scope.updateUser = function () {
-            if (vm.selectedOption === undefined) {
+            if (vm.userRole === undefined) {
                 toastr['warning']('請選擇員工角色', '人事資料更新');
                 return;
             }
@@ -131,8 +137,9 @@
             var formData = {
                 userDID: vm.user.selected._id,
                 userName: $('#userNewName')[0].value,
-                roleType: vm.selectedOption.roleType,
-                bossID: 1,
+                roleType: vm.userRole.roleType,
+                userHourSalary: $('#userHourSalary')[0].value,
+                bossID: vm.userBoss._id,
             }
 
             console.log(formData);
@@ -168,15 +175,26 @@
             },
                 ];
 
-        $scope.showRoleType = function (user) {
-
-            var selected = [];
+        $scope.selectUserProfile = function (user) {
+            vm.userHourSalary = user.userHourSalary;
+            // user Role
+            var selectedRole = [];
             if (user.roleType) {
-                selected = $filter('filter')(vm.roleOptions, {
+                selectedRole = $filter('filter')(vm.roleOptions, {
                     roleType: user.roleType,
                 });
             }
-            vm.selectedOption = selected[0];
+            vm.userRole = selectedRole[0];
+
+            // user Boss
+            var selectedBoss = [];
+            if (user.bossID) {
+                selectedBoss = $filter('filter')(vm.managersList, {
+                    _id: user.bossID,
+                });
+            }
+            vm.userBoss = selectedBoss.length ? selectedBoss[0] : undefined;
+
         }
     }
 
