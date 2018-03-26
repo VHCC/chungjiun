@@ -54,22 +54,23 @@
                     url: '/listProject',
                     templateUrl: 'app/pages/myProject/listProject/listProject.html',
                     controller: 'listProjectCtrl',
-                    title: '執行中專案',
+                    title: '執行專案',
+                    accessLevel: [2],
                     sidebarMeta: {
                         order: global.pages.myProject_listProject,
                     },
                 })
-            .state('myProject.endProject',
-                {
-                    url: '/endProject',
-                    templateUrl: 'app/pages/myProject/listProject/listProject.html',
-                    controller: 'listProjectCtrl',
-                    title: '已結案專案',
-                    accessLevel: [1, 2, 3, 100],
-                    sidebarMeta: {
-                        order: global.pages.myProject_endProject,
-                    },
-                })
+            // .state('myProject.endProject',
+            //     {
+            //         url: '/endProject',
+            //         templateUrl: 'app/pages/myProject/listProject/listProject.html',
+            //         controller: 'listProjectCtrl',
+            //         title: '已結案專案',
+            //         accessLevel: [1, 2, 3, 100],
+            //         sidebarMeta: {
+            //             order: global.pages.myProject_endProject,
+            //         },
+            //     })
             .state('myProject.projectIncome',
                 {
                     url: '/projectIncome',

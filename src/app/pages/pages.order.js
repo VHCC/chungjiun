@@ -13,30 +13,43 @@ global.pages = {
 
 
     // Customize
-    myProject  : 700,
+    myProject  : 100,
     myProject_createProject  : 100,
     myProject_listProject  : 200,
     myProject_endProject  : 300,
     myProject_projectIncome  : 400,
     myProject_projectFinancial  : 500,
+    //
+    cgWorkManage: 200,
+    cgWorkManage_userEdit: 100,
+    cgWorkManage_workHourTable  : 200,
+    cgWorkManage_workOff  : 300,
+    //
+    cgAccountingManage : 300,
+    cgAccountingManage_paymentForm  : 100,
 
-    myForms  : 750,
+    //
+    cgKPI  : 400,
+
+    myCalender : 500,
+
+    //
+    myForms  : 1000,
     myForms_workHour  : 100,
     myForms_newForm  : 200,
     myForms_paymentForm  : 300,
     myForms_workOff  : 400,
     myForms_workHourTable  : 500,
-
-    myNewPage  : 800,
-
-    myExecutive : 1000,
+    //
+    myNewPage  : 1100,
+    //
+    myExecutive : 1200,
     myExecutive_createNewProject : 100,
     myExecutive_openWorkOffRight : 200,
-
-    myProfile: 1500,
+    //
+    myProfile: 1300,
     myProfile_userEdit : 100,
 
-    myCalender : 2000,
 
 
 };

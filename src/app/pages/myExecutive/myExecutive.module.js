@@ -23,18 +23,18 @@
                         order: global.pages.myExecutive,
                     },
                 })
-            .state('myExecutive.createNewProject',
-                {
-                    url: '/createNewProject',
-                    templateUrl: 'app/pages/myExecutive/createNewProject/createNewProject.html',
-                    controller: 'createNewProjectCtrl',
-                    controllerAs: 'cC',
-                    title: '建置新專案',
-                    accessLevel: [100],
-                    sidebarMeta: {
-                        order: global.pages.myExecutive_createNewProject,
-                    },
-                })
+            // .state('myExecutive.createNewProject',
+            //     {
+            //         url: '/createNewProject',
+            //         templateUrl: 'app/pages/myExecutive/createNewProject/createNewProject.html',
+            //         controller: 'createNewProjectCtrl',
+            //         controllerAs: 'cC',
+            //         title: '建置新專案',
+            //         accessLevel: [100],
+            //         sidebarMeta: {
+            //             order: global.pages.myExecutive_createNewProject,
+            //         },
+            //     })
             .state('myExecutive.openWorkOffRight',
                 {
                     url: '/openWorkOffRight',
