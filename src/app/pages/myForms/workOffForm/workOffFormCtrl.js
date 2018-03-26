@@ -11,31 +11,49 @@
                 '$scope',
                 '$cookies',
                 'Project',
+                'User',
+                'editableOptions',
+                'editableThemes',
                 WorkOffFormCtrl
             ]);
 
     /** @ngInject */
     function WorkOffFormCtrl($scope,
                              cookies,
-                             Project) {
+                             Project,
+                             User,
+                             editableOptions,
+                             editableThemes) {
+
+        editableOptions.theme = 'bs3';
+        editableThemes['bs3'].submitTpl = '<button type="submit" class="btn btn-primary btn-with-icon"><i class="ion-checkmark-round"></i></button>';
+        editableThemes['bs3'].cancelTpl = '<button type="button" ng-click="$form.$cancel()" class="btn btn-default btn-with-icon"><i class="ion-close-round"></i></button>';
 
         $scope.username = cookies.get('username');
+        $scope.roleType = cookies.get('roletype');
 
         Project.findAll()
             .success(function (allProjects) {
-                console.log(allProjects);
-                cC.projects = allProjects;
+                // console.log(allProjects);
+                vm.projects = allProjects;
             });
 
-        var cC = this;
+        User.getAllUsers()
+            .success(function (allUsers) {
+                vm.users = allUsers;
+            });
 
-        cC.offTypes = [
-            {label: '事假',   type: 'w01'},
-            {label: '病假',   type: 'w02'},
-            {label: '特休假', type: 'w03'},
-            {label: '補休',   type: 'w04'},
-        ];
+        var vm = this;
 
+        //  --------------------------  update holiday Data -----------------------
+        $scope.updateUserHolidayData = function () {
+
+        }
+
+        $scope.holiday = {
+            aaa: 1,
+            bbb: 2,
+        }
 
     }
 })();

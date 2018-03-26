@@ -1,23 +1,179 @@
-<form class="form-horizontal">
-    <div class="form-group">
-        <label for="projectType" class="col-md-1 control-label">類型</label>
-        <div class="col-md-11">
-            <select class="form-control selectpicker"
-                    id="projectType"
-                    title="請選擇假別"
-                    ng-model="formData.type"
-                    ng-options="item as item.label for item in cC.offTypes"
-                    selectpicker
-                    required
-            >
-            </select>
+<!--<div class="add-row-editable-table">-->
+<!--<button class="btn btn-primary" ng-click="addWorkItem()">新增項目</button>-->
+<!--</div>-->
+<uib-tabset active="$tabSetStatus.activeTab">
+    <uib-tab heading="個人填寫">
+        <div class="row"
+             ng-init="getTable()"
+             id="rowHead">
+            <div class="col-md-12"
+                 id="colHead">
+                <div class="form-group">
+                    <label for="projectName">專案名稱 - 類型 - 代碼</label>
+                    <ui-select ng-model="workHourTableCtrlVm.prjItems.selected"
+                               class="btn-group bootstrap-select form-control"
+                               id="projectName"
+                               ng-disabled="false"
+                               ng-change="addWorkItem($select.selected); "
+                               append-to-body="true"
+                               search-enabled="true">
+                        <ui-select-match placeholder="選擇專案(新增)">
+                            {{$select.selected.name}} - {{prjTypeToName($select.selected.type)}} -
+                            {{$select.selected.prjCode}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                ng-model="prjName"
+                                repeat="prjItems in workHourTableCtrlVm.projects | groupSelectpickerOptions: {name: $select.search, prjCode: $select.search}"
+                                group-by="'name'">
+                            <span ng-bind-html="prjItems.name + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <hr>
+
+
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <button type="submit"
-                class="btn btn-danger"
-                ng-click="createSubmit()">Submit
-        </button>
-    </div>
-</form>
+
+    </uib-tab>
+    <uib-tab heading="主管審核" ng-if="roleType === '2'">
+    </uib-tab>
+    <uib-tab heading="行政確認" ng-if="roleType === '100'">
+    </uib-tab>
+    <uib-tab heading="假期確認" ng-if="roleType === '100'" style="color: blue">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="userName">選擇員工</label>
+                    <ui-select ng-model="workOffFormCtrlVm.user.selected"
+                               class="btn-group bootstrap-select form-control"
+                               id="userName"
+                               ng-disabled="false"
+                               append-to-body="true"
+                               search-enabled="true">
+                        <ui-select-match placeholder="選擇員工">
+                            {{$select.selected.name}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                repeat="user in workOffFormCtrlVm.users | groupSelectpickerOptions: {name: $select.search}">
+                            <span ng-bind-html="user.name | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-hover table-condensed">
+            <thead>
+            <tr>
+                <td style="vertical-align: inherit; text-align: center"></td>
+                <td style="vertical-align: inherit; text-align: center">病假(時)</td>
+                <td style="vertical-align: inherit; text-align: center">事假(時)</td>
+                <td style="vertical-align: inherit; text-align: center">補假(時)</td>
+
+                <td style="vertical-align: inherit; text-align: center">特休(天)</td>
+                <td style="vertical-align: inherit; text-align: center">婚假(時)</td>
+                <td style="vertical-align: inherit; text-align: center">喪假(天)</td>
+                <td style="vertical-align: inherit; text-align: center">公假(時)</td>
+                <td style="vertical-align: inherit; text-align: center">公傷假(天)</td>
+                <td style="vertical-align: inherit; text-align: center">產假(時)</td>
+                <td style="vertical-align: inherit; text-align: center">陪產假(時)</td>
+            </tr>
+            </thead>
+
+            <input type="number" id="tttt">
+
+            <tbody >
+            <!-- 1 row-->
+            <tr style="vertical-align: inherit; text-align: center">
+                <td style="vertical-align: inherit; text-align: center">
+                    起始日
+                </td>
+
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    <span editable-number="holiday.aaa"
+                          e-form="holidayform"
+                          id="test"
+                          e-min="0"
+                          e-step="0.5"
+                          e-required>{{ holiday.aaa || 0 }}</span>
+                </td>
+                <td style="vertical-align: inherit;">
+                       <span editable-number="holiday.bbb"
+                             e-form="holidayform"
+                             e-min="0"
+                             e-required>{{ holiday.bbb}}</span>
+                </td>
+
+                <!--狀態-->
+                <td style="vertical-align: inherit;">
+                    <div ng-show="!holidayform.$waiting">
+                        <form editable-form
+                              id="holidayform"
+                              name="holidayform" ng-show="holidayform.$visible"
+                              class="form-buttons form-inline">
+                            <button type="submit"
+                                    class="btn btn-primary editable-table-button btn-xs">
+                                暫存
+                            </button>
+                        </form>
+                        <div class="buttons" ng-show="!holidayform.$visible">
+                            <button class="btn btn-info editable-table-button btn-xs"
+                                    ng-click="holidayform.$show()">編輯
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <!--2 row-->
+            <tr style="vertical-align: inherit; text-align: center">
+                <td style="vertical-align: inherit; text-align: center">
+                    截止日
+                </td>
+            </tr>
+
+            <!--3 row-->
+            <tr style="vertical-align: inherit; text-align: center">
+                <td style="vertical-align: inherit; text-align: center">
+                    累積休假
+                </td>
+            </tr>
+
+            <!--4 row-->
+            <tr style="vertical-align: inherit; text-align: center">
+                <td style="vertical-align: inherit; text-align: center">
+                    尚餘休假
+                </td>
+            </tr>
+
+            <!--5 row-->
+            <tr style="vertical-align: inherit; text-align: center">
+                <td style="vertical-align: inherit; text-align: center">
+                    休假總數
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+        <h3 class="with-line"></h3>
+        <div class="form-group">
+            <button type="submit"
+                    ng-click="updateUserHolidayData()"
+                    class="btn btn-info">儲存 {{workOffFormCtrlVm.user.selected.name}} 資料
+            </button>
+        </div>
+
+    </uib-tab>
+</uib-tabset>
+<script>
+    $(document).ready(function(){
+        $('#tttt').mask('00.0');
+        $('#test').mask('00.0');
+    });
+
+</script>
+
 

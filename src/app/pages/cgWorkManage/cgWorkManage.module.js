@@ -48,7 +48,7 @@
                     url: '/workOffForm',
                     templateUrl: 'app/pages/myForms/workOffForm/workOffFormPage.html',
                     controller: 'workOffFormCtrl',
-                    controllerAs: 'cC',
+                    controllerAs: 'workOffFormCtrlVm',
                     title: '人員休假',
                     sidebarMeta: {
                         order: global.pages.cgWorkManage_workOff,

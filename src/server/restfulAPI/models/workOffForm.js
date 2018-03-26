@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 
+// 休假單
 module.exports = mongoose.model('WorkOffForm', {
     creatorDID: {
       type: String,
@@ -12,19 +13,23 @@ module.exports = mongoose.model('WorkOffForm', {
     create_formDate: {
         type: String,
     },
+    // 年分
+    year: {
+      type: Number,
+    },
     // 月份
     month: {
         type: Number,
     },
-    // 日期
+    // 日
     day: {
         type: Number,
     },
-    // 加班開始時間
+    // 休假開始時間
     start_time: {
         type: Date,
     },
-    // 加班結束時間
+    // 休假結束時間
     end_time: {
         type: Date,
     },
