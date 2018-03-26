@@ -1,24 +1,41 @@
 var mongoose = require('mongoose');
 
 module.exports = mongoose.model('Project', {
-    //編碼方式
-    // prjCode = year + code + type + 流水號
+    // 分支主題
+    // P 服務建議書
+    // C 已成案
+    branch: {
+        type: String,
+        required: true,
+    },
     // 年度
+    //OOO
     year: {
         type: String,
-        required: true
+        required: true,
     },
-    // 總案號
+    // 總案
+    //OO
     code: {
         type: String,
-        required: true
+        required: true,
     },
-    // 類型：總案、規劃、設計、監造、服務
+    // 類型：
+    // 規劃 00
+    // 設計 01
+    // 監造 02
+    // 服務 03
+    // 行政 04
+    // 投標 05
+    // 總案 06
+    // 其他 07
+    // O
     type: {
         type: String,
-        required: true
+        required: true,
     },
     // 專案編碼
+    // O + OOO + OO + O + OO 共 9 碼
     prjCode: {
         type: String,
         required: true
@@ -28,7 +45,7 @@ module.exports = mongoose.model('Project', {
         type: String,
         required: true
     },
-    // 承辦人員
+    // 承辦人員，經理級
     majorID: {
         type: String,
         required: true
@@ -48,8 +65,8 @@ module.exports = mongoose.model('Project', {
         type: Boolean,
     },
     // 到期日
-    endDate : {
-        type: Date
-    }
+    // endDate : {
+    //     type: Date
+    // }
 
 });

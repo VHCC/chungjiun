@@ -59,21 +59,19 @@ module.exports = function (app) {
 
     app.post(global.apiUrl.post_project_create, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, create project");
+        console.log(req.body);
         try {
             Project.create(
                 {
+                    branch: req.body.branch,
                     year: String(req.body.year),
-                    code: String(req.body.prj.code),
-                    type: req.body.prj.type.selected.type,
-                    name: req.body.prj.name.new,
-                    majorID: req.body.manager.selected._id,
-                    prjCode:
-                    String(req.body.year) +
-                    String(req.body.prj.code) +
-                    req.body.prj.type.selected.type +
-                    req.body.prj.footCode,
-                    technician: req.body.techs.selected,
-                    endDate: req.body.prjEndDate,
+                    code: String(req.body.code),
+                    type: req.body.type,
+                    name: req.body.name,
+                    majorID: req.body.majorID,
+                    prjCode: req.body.prjCode,
+                    technician: req.body.technician,
+                    // endDate: req.body.prjEndDate,
                     enable: true,
                 },
                 function (err, project) {

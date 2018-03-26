@@ -42,7 +42,7 @@
                     url: '/createNewProject',
                     templateUrl: 'app/pages/myExecutive/createNewProject/createNewProject.html',
                     controller: 'createNewProjectCtrl',
-                    controllerAs: 'cC',
+                    controllerAs: 'createNewProjectCtrlVm',
                     title: '建立專案',
                     accessLevel: [100],
                     sidebarMeta: {
