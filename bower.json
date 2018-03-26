@@ -58,7 +58,8 @@
     "angular-ui-select": "^0.19.6",
     "noty": "latest",
     "ng-dialog": "latest",
-    "angular-file-saver": "latest"
+    "angular-file-saver": "latest",
+    "jquery-mask-plugin": "latest"
   },
   "resolutions": {
     "angular": "~1.5.9",
