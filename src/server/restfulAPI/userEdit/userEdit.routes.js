@@ -56,6 +56,7 @@ module.exports = function (app) {
         }, {
             $set: {
                 roleType: req.body.roleType,
+                name: req.body.userName,
                 bossID: req.body.bossID,
             }
         }, function (err) {

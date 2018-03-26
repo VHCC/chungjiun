@@ -130,6 +130,7 @@
 
             var formData = {
                 userDID: vm.user.selected._id,
+                userName: $('#userNewName')[0].value,
                 roleType: vm.selectedOption.roleType,
                 bossID: 1,
             }
