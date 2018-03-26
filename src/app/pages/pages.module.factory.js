@@ -113,18 +113,22 @@
             return {
                 getTypeText: function (type) {
                     switch (type) {
-                        case "01":
-                            return "服務建議書";
-                        case "02":
+                        case "0":
                             return "規劃";
-                        case "03":
-                            return "設計"
-                        case "04":
+                        case "1":
+                            return "設計";
+                        case "2":
                             return "監造"
-                        case "05":
+                        case "3":
                             return "服務"
-                        case "06":
+                        case "4":
+                            return "行政"
+                        case "5":
+                            return "投標"
+                        case "6":
                             return "總案"
+                        case "7":
+                            return "其他"
                         default:
                             return "UNKNOWN"
                     }
