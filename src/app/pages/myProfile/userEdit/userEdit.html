@@ -87,7 +87,7 @@
                             <ui-select ng-model="userEditCtrlVm.user.selected"
                                        class="btn-group bootstrap-select form-control"
                                        id="userName"
-                                       ng-change="showRoleType(userEditCtrlVm.user.selected)"
+                                       ng-change="selectUserProfile(userEditCtrlVm.user.selected)"
                                        ng-disabled="false"
                                        append-to-body="true"
                                        search-enabled="true">
@@ -103,6 +103,7 @@
                     </div>
                 </div>
                 <h3 class="with-line"></h3>
+                <!--姓名-->
                 <div class="row" ng-if="userEditCtrlVm.user.selected">
                     <div class="col-md-6">
                         <div class="form-group row clearfix">
@@ -119,17 +120,17 @@
                         </div>
                     </div>
                 </div>
+                <!--角色-->
                 <div class="row" ng-if="userEditCtrlVm.user.selected">
                     <div class="col-md-6">
                         <div class="form-group row clearfix">
                             <label class="col-md-3 control-label">員工角色</label>
-
-                            <div class="col-md-9" >
-                                <ui-select ng-model="userEditCtrlVm.selectedOption"
+                            <div class="col-md-9">
+                                <ui-select ng-model="userEditCtrlVm.userRole"
                                            class="btn-group bootstrap-select form-control"
                                            append-to-body="true"
                                            search-enabled="true">
-                                    <ui-select-match placeholder="員工角色">
+                                    <ui-select-match placeholder="請選擇員工角色">
                                         {{$select.selected.name}}
                                     </ui-select-match>
                                     <ui-select-choices
@@ -141,13 +142,60 @@
                         </div>
                     </div>
                 </div>
-
+                <!--主管-->
+                <div class="row" ng-if="userEditCtrlVm.user.selected">
+                    <div class="col-md-6">
+                        <div class="form-group row clearfix">
+                            <label class="col-md-3 control-label" style="color:red">{{userEditCtrlVm.user.selected.name}} 的主管</label>
+                            <div class="col-md-9">
+                                <ui-select ng-model="userEditCtrlVm.userBoss"
+                                           class="btn-group bootstrap-select form-control"
+                                           required
+                                           ng-disabled="false"
+                                           append-to-body="true"
+                                           search-enabled="true">
+                                    <ui-select-match placeholder="請選擇 {{userEditCtrlVm.user.selected.name}} 的主管">
+                                        {{$select.selected.name}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                            repeat="multipleItem in userEditCtrlVm.managersList | filter: $select.search">
+                                        <span ng-bind-html="multipleItem.name | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--時薪-->
+                <div class="row" ng-if="userEditCtrlVm.user.selected">
+                    <div class="col-md-6">
+                        <div class="form-group row clearfix">
+                            <label for="inputFirstName" class="col-md-3 control-label">時薪</label>
+                            <div class="col-md-9">
+                                <div class="input-group">
+                                    <span class="input-group-addon addon-left input-group-addon-success">NTD</span>
+                                    <input type="number"
+                                           ng-model="userEditCtrlVm.userHourSalary"
+                                           class="form-control with-success-addon"
+                                           min="0"
+                                           id="userHourSalary"
+                                           onkeypress="return event.charCode >= 48"
+                                           placeholder="請輸入金額"
+                                           aria-label="Amount (to the nearest dollar)"
+                                           value=" {{userEditCtrlVm.userHourSalary}}"
+                                           required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <h3 class="with-line"></h3>
                 <div class="form-group">
                     <button type="submit"
                             ng-click="updateUser()"
-                            class="btn btn-info">儲存人事資料</button>
+                            class="btn btn-info">儲存人事資料
+                    </button>
                 </div>
             </form>
         </uib-tab>

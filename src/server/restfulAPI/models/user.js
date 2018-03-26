@@ -27,6 +27,12 @@ module.exports = mongoose.model('User', {
     // 主管ID
     bossID: {
         type: String,
+    },
+    userHourSalary : {
+        type: Number,
+        default: 0,
     }
+
+
 
 });
