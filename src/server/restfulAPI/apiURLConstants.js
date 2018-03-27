@@ -38,6 +38,11 @@ global.apiUrl = {
     post_work_hour_table_find_by_tableid_array : '/api/findWorkHourTableFormByTableIDArray',
     post_work_hour_table_update_send_review : '/api/updateWorkHourTableFormSendReview',
 
+    // holidayDataForm
+    post_holiday_data_form_create : '/api/createHolidayDataForm',
+    post_holiday_data_form_find_by_user_did : '/api/findHolidayDataFormByUserDID',
+    post_holiday_data_form_update_by_form_id : '/api/updateHolidayDataFormByFormDID',
+
     //userEdit
     post_upload_user_avatatr : '/api/uploadUserAvatar',
     post_user_find_by_userdid : '/api/userFindByuserDID',
