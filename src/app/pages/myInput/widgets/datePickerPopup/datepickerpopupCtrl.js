@@ -6,10 +6,10 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.myInput')
-        .controller('mydatepickerpopupCtrl', mydatepickerpopupCtrl);
+        .controller('MyDatepickerPopupCtrl', myDatepickerPopupCtrl);
 
     /** @ngInject */
-    function mydatepickerpopupCtrl($scope) {
+    function myDatepickerPopupCtrl($scope) {
 
         $scope.open = open;
         $scope.myDT = new Date();
@@ -21,6 +21,7 @@
         };
 
         function open() {
+            console.log($scope.format);
             $scope.opened = true;
         }
     }
