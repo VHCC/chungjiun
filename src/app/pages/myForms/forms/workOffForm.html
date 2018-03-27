@@ -2,38 +2,322 @@
 <!--<button class="btn btn-primary" ng-click="addWorkItem()">新增項目</button>-->
 <!--</div>-->
 <uib-tabset active="$tabSetStatus.activeTab">
-    <uib-tab heading="個人填寫">
-        <div class="row"
-             ng-init="getTable()"
-             id="rowHead">
-            <div class="col-md-12"
-                 id="colHead">
-                <div class="form-group">
-                    <label for="projectName">專案名稱 - 類型 - 代碼</label>
-                    <ui-select ng-model="workHourTableCtrlVm.prjItems.selected"
-                               class="btn-group bootstrap-select form-control"
-                               id="projectName"
-                               ng-disabled="false"
-                               ng-change="addWorkItem($select.selected); "
-                               append-to-body="true"
-                               search-enabled="true">
-                        <ui-select-match placeholder="選擇專案(新增)">
-                            {{$select.selected.name}} - {{prjTypeToName($select.selected.type)}} -
-                            {{$select.selected.prjCode}}
-                        </ui-select-match>
-                        <ui-select-choices
-                                ng-model="prjName"
-                                repeat="prjItems in workHourTableCtrlVm.projects | groupSelectpickerOptions: {name: $select.search, prjCode: $select.search}"
-                                group-by="'name'">
-                            <span ng-bind-html="prjItems.name + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
-                        </ui-select-choices>
-                    </ui-select>
-                </div>
-                <hr>
+    <uib-tab heading="個人填寫" select="getUserHoliday()()">
+        <div class="row">
+            <table class="table table-bordered table-hover table-condensed"
+                   ng-if="workOffFormCtrlVm.loginUserHolidayForm">
+                <thead>
+                <tr style="white-space:nowrap">
+                    <td style="vertical-align: inherit; text-align: center" width="100px"></td>
+                    <td style="vertical-align: inherit; text-align: center">病假(時)</td>
+                    <td style="vertical-align: inherit; text-align: center">事假(時)</td>
+                    <td style="vertical-align: inherit; text-align: center">補假(時)</td>
 
+                    <td style="vertical-align: inherit; text-align: center">特休(天)</td>
+                    <td style="vertical-align: inherit; text-align: center">婚假(時)</td>
+                    <td style="vertical-align: inherit; text-align: center">喪假(天)</td>
+                    <td style="vertical-align: inherit; text-align: center">公假(時)</td>
+                    <td style="vertical-align: inherit; text-align: center">公傷假(天)</td>
+                    <td style="vertical-align: inherit; text-align: center">產假(時)</td>
+                    <td style="vertical-align: inherit; text-align: center">陪產假(時)</td>
+                </tr>
+                </thead>
 
-            </div>
+                <tbody>
+                <!-- 1 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+                    <td style="vertical-align: inherit; text-align: center">
+                        起始日
+                    </td>
+
+                    <td class="form-group" style="vertical-align: inherit;">
+                    </td>
+                    <td style="vertical-align: inherit;">
+                    </td>
+                    <td style="vertical-align: inherit;">
+                    </td>
+                    <td style="vertical-align: inherit;">
+                    </td>
+                    <td style="vertical-align: inherit;">
+                    </td>
+                    <td style="vertical-align: inherit;">
+                    </td>
+                    <td style="vertical-align: inherit;">
+                    </td>
+                    <td style="vertical-align: inherit;">
+                    </td>
+                    <td style="vertical-align: inherit;">
+                    </td>
+                    <td style="vertical-align: inherit;">
+                    </td>
+                </tr>
+                <!--2 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+                    <td style="vertical-align: inherit; text-align: center">
+                        截止日
+                    </td>
+
+                    <td class="form-group " style="vertical-align: inherit;">
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                    </td>
+                </tr>
+
+                <!--3 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+                    <td style="vertical-align: inherit; text-align: center">
+                        累積休假
+                    </td>
+
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.calculate_sick}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.calculate_private}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.calculate_observed}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.calculate_special}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.calculate_married}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.calculate_mourning}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.calculate_official}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.calculate_workinjury}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.calculate_maternity}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.calculate_paternity}}</t>
+                    </td>
+                </tr>
+
+                <!--4 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+                    <td style="vertical-align: inherit; text-align: center">
+                        尚餘休假
+                    </td>
+
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_sick}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_private}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_observed}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_special}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_married}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_mourning}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_official}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_workinjury}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_maternity}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_paternity}}</t>
+                    </td>
+                </tr>
+
+                <!--5 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+                    <td style="vertical-align: inherit; text-align: center">
+                        休假總數
+                    </td>
+
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{total(workOffFormCtrlVm.loginUserHolidayForm.calculate_sick,
+                            workOffFormCtrlVm.loginUserHolidayForm.rest_sick)}}
+                        </t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{total(workOffFormCtrlVm.loginUserHolidayForm.calculate_private,
+                            workOffFormCtrlVm.loginUserHolidayForm.rest_private)}}
+                        </t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{total(workOffFormCtrlVm.loginUserHolidayForm.calculate_observed,
+                            workOffFormCtrlVm.loginUserHolidayForm.rest_observed)}}
+                        </t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{total(workOffFormCtrlVm.loginUserHolidayForm.calculate_special,
+                            workOffFormCtrlVm.loginUserHolidayForm.rest_special)}}
+                        </t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{total(workOffFormCtrlVm.loginUserHolidayForm.calculate_married,
+                            workOffFormCtrlVm.loginUserHolidayForm.rest_married)}}
+                        </t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{total(workOffFormCtrlVm.loginUserHolidayForm.calculate_mourning,
+                            workOffFormCtrlVm.loginUserHolidayForm.rest_mourning)}}
+                        </t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{total(workOffFormCtrlVm.loginUserHolidayForm.calculate_official,
+                            workOffFormCtrlVm.loginUserHolidayForm.rest_official)}}
+                        </t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{total(workOffFormCtrlVm.loginUserHolidayForm.calculate_workinjury,
+                            workOffFormCtrlVm.loginUserHolidayForm.rest_workinjury)}}
+                        </t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{total(workOffFormCtrlVm.loginUserHolidayForm.calculate_maternity,
+                            workOffFormCtrlVm.loginUserHolidayForm.rest_maternity)}}
+                        </t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{total(workOffFormCtrlVm.loginUserHolidayForm.calculate_paternity,
+                            workOffFormCtrlVm.loginUserHolidayForm.rest_paternity)}}
+                        </t>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
         </div>
+        <h3 class="with-line">{{username}} 3月份休假單</h3>
+
+        <div class="row">
+            <table class="table table-bordered table-hover table-condensed"
+                   ng-if="workOffFormCtrlVm.loginUserHolidayForm">
+                <thead>
+                <tr style="white-space:nowrap">
+                    <td style="vertical-align: inherit; text-align: center" width="80px"></td>
+                    <td style="vertical-align: inherit; text-align: center" width="150px">日期</td>
+                    <td style="vertical-align: inherit; text-align: center">星期</td>
+                    <td style="vertical-align: inherit; text-align: center">假別</td>
+
+                    <td style="vertical-align: inherit; text-align: center">時間</td>
+                    <td style="vertical-align: inherit; text-align: center">時數／天數</td>
+                    <td style="vertical-align: inherit; text-align: center">狀態</td>
+                    <td style="vertical-align: inherit; text-align: center">經理確認</td>
+                    <td style="vertical-align: inherit; text-align: center">行政確認</td>
+                    <td style="vertical-align: inherit; text-align: center">請假扣款</td>
+                </tr>
+                </thead>
+                <tbody ng-repeat="table in loginUserTablesItems">
+                <tr style="vertical-align: inherit; text-align: center">
+                    <!--序號-->
+                    <td style="vertical-align: inherit; text-align: center">
+                        <span id="prjCode">{{$index + 1}}</span>
+                        <br>
+                        <button class="btn btn-danger editable-table-button btn-xs"
+                                ng-show="!rowform1.$waiting && !table.isSendReview"
+                                ng-click="removeWorkItem($index);">移除
+                        </button>
+                    </td>
+                    <!--日期-->
+                    <td style="vertical-align: inherit; text-align: center">
+                        <my-date-picker format="MM/dd"></my-date-picker>
+                        <!--{{table.month}} / {{table.day}}-->
+                    </td>
+                    <!--星期-->
+                    <td style="vertical-align: inherit; text-align: center">
+                        {{showDay(table)}}
+                    </td>
+                    <!--假別-->
+                    <td style="vertical-align: inherit;">
+                        {{table.workOffType}}
+                    </td>
+                    <!--時間-->
+                    <td style="vertical-align: inherit;">
+                    </td>
+                    <!--時數/天數-->
+                    <td class="form-group has-success" style="vertical-align: inherit;">
+                    </td>
+                    <!--狀態-->
+                    <td style="vertical-align: inherit;" rowspan="2">
+                        <!--審查中-->
+                        <div ng-show="rowform1.$waiting || table.isSendReview">
+                            <button class="btn btn-warning editable-table-button btn-xs">
+                                審查中
+                            </button>
+                        </div>
+                        <!--可編輯-->
+                        <div ng-show="!rowform1.$waiting && !table.isSendReview">
+                            <div class="buttons" ng-show="!rowform1.$visible">
+                                <button class="btn btn-danger editable-table-button btn-xs"
+                                        ng-click="review(table, this) ">提交審查
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                    <!--經理確認-->
+                    <td rowspan="2" style="vertical-align: inherit;">
+                        <div ng-show="rowform1.$waiting || table.isSendReview">
+                            <button class="btn btn-warning editable-table-button btn-xs"
+                                    style="color: black">
+                                {{ showMajor(table.prjDID)}}
+                                <br>
+                                確認作業中
+                            </button>
+                        </div>
+                    </td>
+                    <!--行政確認-->
+                    <td rowspan="2" style="vertical-align: inherit;">
+                        <div ng-show="rowform1.$waiting || table.isSendReview">
+                            <button class="btn btn-warning editable-table-button btn-xs"
+                                    style="color: black">
+                                行政
+                                <br>
+                                確認作業中
+                            </button>
+                        </div>
+                    </td>
+                    <!--請假扣款-->
+                    <td style="vertical-align: inherit;">
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <button type="button"
+                ng-click="addHolidayItem()"
+                class="btn btn-info btn-icon">
+            <i class="ion-plus-round"/>
+        </button>
 
     </uib-tab>
     <uib-tab heading="主管審核" ng-if="roleType === '2'">
@@ -69,7 +353,7 @@
             <thead>
             <tr style="white-space:nowrap">
                 <td style="vertical-align: inherit; text-align: center" width="100px"></td>
-                <td style="vertical-align: inherit; text-align: center" >病假(時)</td>
+                <td style="vertical-align: inherit; text-align: center">病假(時)</td>
                 <td style="vertical-align: inherit; text-align: center">事假(時)</td>
                 <td style="vertical-align: inherit; text-align: center">補假(時)</td>
 
@@ -83,7 +367,7 @@
             </tr>
             </thead>
 
-            <tbody >
+            <tbody>
             <!-- 1 row-->
             <tr style="vertical-align: inherit; text-align: center">
                 <td style="vertical-align: inherit; text-align: center">
@@ -342,34 +626,54 @@
                 </td>
 
                 <td class="form-group " style="vertical-align: inherit;">
-                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_sick, workOffFormCtrlVm.holidayForm.rest_sick)}}</t>
+                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_sick,
+                        workOffFormCtrlVm.holidayForm.rest_sick)}}
+                    </t>
                 </td>
                 <td class="form-group " style="vertical-align: inherit;">
-                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_private, workOffFormCtrlVm.holidayForm.rest_private)}}</t>
+                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_private,
+                        workOffFormCtrlVm.holidayForm.rest_private)}}
+                    </t>
                 </td>
                 <td class="form-group " style="vertical-align: inherit;">
-                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_observed, workOffFormCtrlVm.holidayForm.rest_observed)}}</t>
+                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_observed,
+                        workOffFormCtrlVm.holidayForm.rest_observed)}}
+                    </t>
                 </td>
                 <td class="form-group " style="vertical-align: inherit;">
-                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_special, workOffFormCtrlVm.holidayForm.rest_special)}}</t>
+                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_special,
+                        workOffFormCtrlVm.holidayForm.rest_special)}}
+                    </t>
                 </td>
                 <td class="form-group " style="vertical-align: inherit;">
-                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_married, workOffFormCtrlVm.holidayForm.rest_married)}}</t>
+                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_married,
+                        workOffFormCtrlVm.holidayForm.rest_married)}}
+                    </t>
                 </td>
                 <td class="form-group " style="vertical-align: inherit;">
-                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_mourning, workOffFormCtrlVm.holidayForm.rest_mourning)}}</t>
+                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_mourning,
+                        workOffFormCtrlVm.holidayForm.rest_mourning)}}
+                    </t>
                 </td>
                 <td class="form-group " style="vertical-align: inherit;">
-                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_official, workOffFormCtrlVm.holidayForm.rest_official)}}</t>
+                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_official,
+                        workOffFormCtrlVm.holidayForm.rest_official)}}
+                    </t>
                 </td>
                 <td class="form-group " style="vertical-align: inherit;">
-                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_workinjury, workOffFormCtrlVm.holidayForm.rest_workinjury)}}</t>
+                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_workinjury,
+                        workOffFormCtrlVm.holidayForm.rest_workinjury)}}
+                    </t>
                 </td>
                 <td class="form-group " style="vertical-align: inherit;">
-                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_maternity, workOffFormCtrlVm.holidayForm.rest_maternity)}}</t>
+                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_maternity,
+                        workOffFormCtrlVm.holidayForm.rest_maternity)}}
+                    </t>
                 </td>
                 <td class="form-group " style="vertical-align: inherit;">
-                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_paternity, workOffFormCtrlVm.holidayForm.rest_paternity)}}</t>
+                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_paternity,
+                        workOffFormCtrlVm.holidayForm.rest_paternity)}}
+                    </t>
                 </td>
             </tr>
 

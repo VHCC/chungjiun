@@ -12,6 +12,7 @@
                 '$cookies',
                 'Project',
                 'User',
+                'DateUtil',
                 'HolidayDataForms',
                 WorkOffFormCtrl
             ]);
@@ -21,11 +22,21 @@
                              cookies,
                              Project,
                              User,
+                             DateUtil,
                              HolidayDataForms) {
 
 
         $scope.username = cookies.get('username');
+        $scope.userDID = cookies.get('userDID'),
         $scope.roleType = cookies.get('roletype');
+
+        var formData = {
+            userDID: cookies.get('userDID'),
+        }
+        User.findUserByUserDID(formData)
+            .success(function (user) {
+                $scope.userHourSalary = user.userHourSalary;
+            })
 
         Project.findAll()
             .success(function (allProjects) {
@@ -38,33 +49,87 @@
                 vm.users = allUsers;
             });
 
-        var vm = this;
+        // 主要顯示
+        $scope.loginUserTablesItems = [];
 
-        //  --------------------------  update holiday Data -----------------------
+        var vm = this;
+        var thisYear = new Date().getFullYear() - 1911;
+        var thisMonth = new Date().getMonth() + 1; //January is 0!;
+        var thisDay = new Date().getDate();
+        if (thisDay < 10) {
+            thisDay = '0' + thisDay;
+        }
+        // ***********************  個人填寫 ************************
+
+        $scope.getUserHoliday = function () {
+            var formData = {
+                year: thisYear,
+                creatorDID: $scope.userDID,
+            };
+            HolidayDataForms.findFormByUserDID(formData)
+                .success(function (res) {
+                    if (res.payload.length > 0) {
+                        vm.loginUserHolidayForm = res.payload[0];
+                    } else {
+                        HolidayDataForms.createForms(formData)
+                            .success(function (res) {
+                                vm.loginUserHolidayForm = res.payload;
+                            })
+                    }
+                })
+        }
+
+        $scope.firstFullDate = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0);
+
+        $scope.addHolidayItem = function () {
+            var inserted = {
+                creatorDID: $scope.userDID,
+                workOffType: 1,
+                create_formDate: $scope.firstFullDate,
+                year: thisYear,
+                month: thisMonth,
+                day: thisDay,
+                start_time: new Date(),
+                end_time: new Date(),
+                //RIGHT
+                isSendReview: false,
+                isManagerCheck: false,
+                isExecutiveCheck: false,
+            };
+            $scope.loginUserTablesItems.push(inserted);
+        }
+        
+        $scope.showDay = function (table) {
+            var date = String(table.year + 1911) +
+                "/" + String(table.month) +
+                "/" + String(table.day);
+            return DateUtil.getDay(moment(date).day())
+        }
+
+        // ***********************  行政確認 ************************
+
+        // ***********************  update holiday Data ************************
         $scope.updateUserHolidayData = function () {
             var formData = vm.holidayForm;
-            console.log(vm.holidayForm);
             HolidayDataForms.updateFormByFormDID(formData)
                 .success(function (res) {
-                    console.log(res.code);
+                    // console.log(res.code);
                 })
         }
 
         // -------------find form ----------------------
         $scope.findHolidayFormByUserDID = function () {
             var formData = {
-                year: 107,
+                year: thisYear,
                 creatorDID: vm.user.selected._id
             };
             HolidayDataForms.findFormByUserDID(formData)
                 .success(function (res) {
-                    console.log(res.payload);
                     if (res.payload.length > 0) {
                         vm.holidayForm = res.payload[0];
                     } else {
                         HolidayDataForms.createForms(formData)
                             .success(function (res) {
-                                console.log(res.payload);
                                 vm.holidayForm = res.payload;
                             })
                     }
