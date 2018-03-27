@@ -93,6 +93,19 @@
                 }
             }
         }])
+        .factory('HolidayDataForms', ['$http', function (http) {
+            return {
+                createForms: function (formData) {
+                    return http.post('/api/createHolidayDataForm', formData)
+                },
+                findFormByUserDID: function (formData) {
+                    return http.post('/api/findHolidayDataFormByUserDID', formData)
+                },
+                updateFormByFormDID: function (formData) {
+                    return http.post('/api/updateHolidayDataFormByFormDID', formData)
+                }
+            }
+        }])
         .factory('WorkHourUtil', ['$http', function (http) {
             return {
                 createWorkHourTableForm: function (formData) {
