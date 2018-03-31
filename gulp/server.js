@@ -38,7 +38,7 @@ function browserSyncInit(baseDir, browser) {
   var proxy = require('http-proxy-middleware')
 
   var proxyTableAPI = {
-      'localhost:3000/api': 'http://localhost:8000'
+      'ec2-52-203-24-163.compute-1.amazonaws.com:3000/api': 'http://172.31.86.117:8000'
   }
   // 设置代理
   var apiProxy = proxy('/api', {
