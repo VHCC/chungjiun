@@ -38,6 +38,14 @@ global.apiUrl = {
     post_work_hour_table_find_by_tableid_array : '/api/findWorkHourTableFormByTableIDArray',
     post_work_hour_table_update_send_review : '/api/updateWorkHourTableFormSendReview',
 
+    //workOffTable Form
+    post_work_off_create_table : '/api/createWorkOffTableForm',
+    post_work_off_get : '/api/getWorkOffForm',
+    post_work_off_table_find_by_tableid_array : '/api/findWorkOffTableFormByTableIDArray',
+    post_work_off_table_update_send_review : '/api/updateWorkOffTableFormSendReview',
+
+
+
     // holidayDataForm
     post_holiday_data_form_create : '/api/createHolidayDataForm',
     post_holiday_data_form_find_by_user_did : '/api/findHolidayDataFormByUserDID',
