@@ -55,9 +55,9 @@
   "scripts": {
     "postinstall": "bower install"
   },
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/npm/npm.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/npm/npm.git",
     "private": true
   },
   "license": "Apache-2.0"

@@ -16,7 +16,8 @@
             controller: 'MyDatePickerCtrl',
             // template: "<div><h2>我叫{{name}}</h2></div>",
             link: function ($scope, elem, attrs) {
-                $scope.format = attrs.format;
+                $scope.format = attrs.qwert;
+                $scope.myDT = new Date(attrs.old);
             },
             templateUrl: 'app/pages/myInput/widgets/myDatePicker/myDatePicker.html',
         };

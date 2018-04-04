@@ -59,7 +59,8 @@
     "noty": "latest",
     "ng-dialog": "latest",
     "angular-file-saver": "latest",
-    "jquery-mask-plugin": "latest"
+    "jquery-mask-plugin": "latest",
+    "timepicker": "latest"
   },
   "resolutions": {
     "angular": "~1.5.9",

@@ -18,13 +18,13 @@
                 findManagers: function () {
                     return http.get('/api/getAllManagers');
                 },
-                findUserByUserDID : function (formData) {
+                findUserByUserDID: function (formData) {
                     return http.post('/api/userFindByuserDID', formData);
                 },
-                updatePassword : function (formData) {
+                updatePassword: function (formData) {
                     return http.post('/api/userChangePasswordByuserDID', formData);
                 },
-                updateUserProfile : function (formData) {
+                updateUserProfile: function (formData) {
                     return http.post('/api/userUpdateProfile', formData);
                 }
             }
@@ -111,14 +111,30 @@
                 createWorkHourTableForm: function (formData) {
                     return http.post('/api/createWorkHourTableForm', formData);
                 },
-                getWorkHourForm : function (formData) {
+                getWorkHourForm: function (formData) {
                     return http.post('/api/getWorkHourForm', formData);
                 },
-                findWorkHourTableFormByTableIDArray : function (formData) {
+                findWorkHourTableFormByTableIDArray: function (formData) {
                     return http.post('/api/findWorkHourTableFormByTableIDArray', formData);
                 },
-                updateTableSendReview : function (formData) {
+                updateTableSendReview: function (formData) {
                     return http.post('/api/updateWorkHourTableFormSendReview', formData);
+                }
+            }
+        }])
+        .factory('WorkOffFormUtil', ['$http', function (http) {
+            return {
+                createWrokOffTableForm: function (formData) {
+                    return http.post('/api/createWorkOffTableForm', formData);
+                },
+                getWorkOffForm: function (formData) {
+                    return http.post('/api/getWorkOffForm', formData);
+                },
+                findWorkOffTableFormByTableIDArray: function (formData) {
+                    return http.post('/api/findWorkOffTableFormByTableIDArray', formData);
+                },
+                updateWorkOffTableSendReview: function (formData) {
+                    return http.post('/api/updateWorkOffTableFormSendReview', formData);
                 }
             }
         }])
@@ -193,6 +209,22 @@
                 }
             }
         })
+        .factory('WorkOffTypeUtil', ['$http', function (http) {
+            return {
+                getWorkOffString: function (type) {
+                    switch (type) {
+                        case 0:
+                            return "事假";
+                        case 1:
+                            return "病假";
+                        case 2:
+                            return "補休";
+                        case 3:
+                            return "特休";
+                    }
+                }
+            }
+        }])
         .factory('UserEditUtil', ['$http', function (http) {
             return {
                 uploadAvatarImage: function (uploadData) {
