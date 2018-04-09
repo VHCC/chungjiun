@@ -272,7 +272,8 @@
                     <!--時間-->
                     <td class="form-group" style="vertical-align: inherit; text-align: center">
                         <my ng-show="!rowform1.$waiting && !table.isSendReview">
-                            <my-time-picker myFormatTime="HH:mm" start="{{table.start_time}}" end="{{table.end_time}}"></my-time-picker>
+                            <my-time-picker myFormatTime="HH:mm" start="{{table.start_time}}"
+                                            end="{{table.end_time}}"></my-time-picker>
                         </my>
                         <my ng-show="rowform1.$waiting ||table.isSendReview">
                             {{table.start_time}} - {{table.end_time}}
@@ -294,7 +295,7 @@
                             </button>
                         </div>
                         <!--審查完成-->
-                        <div ng-show="rowform1.$waiting || (table.isBossCheck && table.isExecutiveCheck)">
+                        <div ng-show="(table.isBossCheck && table.isExecutiveCheck)">
                             <button class="btn btn-success editable-table-button btn-xs">
                                 審查完成
                             </button>
@@ -349,7 +350,7 @@
                     <!--請假扣款-->
                     <td style="vertical-align: inherit;">
                         <!--審查完成-->
-                        <div ng-show="rowform1.$waiting || (table.isBossCheck && table.isExecutiveCheck)">
+                        <div ng-show="(table.isBossCheck && table.isExecutiveCheck)">
                             <span>
                                 -{{table.userHourSalary * table.myHourDiff}}
                             </span>
@@ -381,16 +382,106 @@
     <uib-tab heading="主管審核" ng-if="roleType === '2'">
     </uib-tab>
     <uib-tab heading="行政確認" ng-if="roleType === '100'">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>選擇員工</label>
+                    <ui-select ng-model="workOffFormCtrlVm.executive.selected"
+                               class="btn-group bootstrap-select form-control"
+                               ng-disabled="false"
+                               ng-change="findWorkOffItemByUserDID()"
+                               append-to-body="true"
+                               search-enabled="true">
+                        <ui-select-match placeholder="選擇員工">
+                            {{$select.selected.name}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                repeat="user in workOffFormCtrlVm.users | groupSelectpickerOptions: {name: $select.search}">
+                            <span ng-bind-html="user.name | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-if="workOffFormCtrlVm.executive.selected">
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                <tr style="white-space:nowrap">
+                    <td style="vertical-align: inherit; text-align: center" width="80px"></td>
+                    <td style="vertical-align: inherit; text-align: center" width="150px">日期</td>
+                    <td style="vertical-align: inherit; text-align: center">星期</td>
+                    <td style="vertical-align: inherit; text-align: center">假別</td>
+
+                    <td style="vertical-align: inherit; text-align: center" width="180px">時間</td>
+                    <td style="vertical-align: inherit; text-align: center">時數／天數</td>
+                    <td style="vertical-align: inherit; text-align: center">行政確認</td>
+                </tr>
+                </thead>
+                <tbody ng-repeat="table in executiveCheckTablesItems">
+                <tr style="vertical-align: inherit; text-align: center">
+                    <!--序號-->
+                    <td style="vertical-align: inherit; text-align: center">
+                        <span>{{$index + 1}}</span>
+                    </td>
+                    <!--日期-->
+                    <td class="form-group" style="vertical-align: inherit; text-align: center">
+                        <my ng-show="!table.isExecutiveCheck">
+                            {{showDate(table)}}
+                        </my>
+                        <!--{{table.month}} / {{table.day}}-->
+                    </td>
+                    <!--星期-->
+                    <td style="vertical-align: inherit; text-align: center">
+                        {{showDay(table.day)}}
+                    </td>
+                    <!--假別-->
+                    <td class="form-group" style="vertical-align: inherit; text-align: center">
+                        <my ng-show="!table.isExecutiveCheck">
+                            {{showWorkOffTypeString(table.workOffType)}}
+                        </my>
+                    </td>
+                    <!--時間-->
+                    <td class="form-group" style="vertical-align: inherit; text-align: center">
+                        <my ng-show="!table.isExecutiveCheck">
+                            {{table.start_time}} - {{table.end_time}}
+                        </my>
+                    </td>
+                    <!--時數/天數-->
+                    <td class="form-group has-success" style="vertical-align: inherit;">
+                        {{getHourDiffByTime(table.start_time, table.end_time)}}
+                    </td>
+                    <!--行政確認-->
+                    <td rowspan="2" style="vertical-align: inherit;">
+                        <div ng-show="!table.isExecutiveCheck">
+                            <button class="btn btn-info editable-table-button btn-xs"
+                                    style="color: black">
+                                同意
+                            </button>
+                        </div>
+                        <div ng-show="!table.isExecutiveCheck">
+                            <button class="btn btn-danger editable-table-button btn-xs"
+                                    style="color: black">
+                                退回
+                            </button>
+                        </div>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
     </uib-tab>
     <uib-tab heading="假期確認" ng-if="roleType === '100'" style="color: blue">
 
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <label for="userName">選擇員工</label>
+                    <label>選擇員工</label>
                     <ui-select ng-model="workOffFormCtrlVm.user.selected"
                                class="btn-group bootstrap-select form-control"
-                               id="userName"
                                ng-disabled="false"
                                ng-change="findHolidayFormByUserDID()"
                                append-to-body="true"

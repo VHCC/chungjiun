@@ -295,7 +295,7 @@
             // compute  and return total seconds
             return parts[0] * 3600 +  // an hour has 3600 seconds
                 parts[1] * 60         // a minute has 60 seconds
-                // +parts[2];         // seconds
+            // +parts[2];         // seconds
         }
 
         // Send WorkOffTable to Review
@@ -336,7 +336,7 @@
             return $timeout(function () {
                 var workOffTableData = [];
 
-                for (var index = 0; index < $scope.loginUserTablesItems.length; index ++) {
+                for (var index = 0; index < $scope.loginUserTablesItems.length; index++) {
                     var tableItem = $scope.loginUserTablesItems[index];
 
                     var dataItem = {
@@ -394,7 +394,45 @@
             }, time);
         }
 
+        // ***********************  主管審核 ************************
+
+
         // ***********************  行政確認 ************************
+
+        $scope.findWorkOffItemByUserDID = function () {
+            var formData = {
+                year: thisYear,
+                creatorDID: vm.executive.selected._id
+            };
+            $scope.executiveCheckTablesItems = [];
+            WorkOffFormUtil.findWorkOffTableItemByUserDID(formData)
+                .success(function (res) {
+                    console.log(res.payload);
+                    for (var index = 0; index < res.payload.length; index++) {
+                        var detail = {
+                            tableID: res.payload[index].tableID,
+
+                            workOffType: res.payload[index].workOffType,
+                            create_formDate: res.payload[index].create_formDate,
+                            year: res.payload[index].year,
+                            month: res.payload[index].month,
+                            day: res.payload[index].day,
+                            start_time: res.payload[index].start_time,
+                            end_time: res.payload[index].end_time,
+
+                            //RIGHT
+                            isSendReview: res.payload[index].isSendReview,
+                            isBossCheck: res.payload[index].isBossCheck,
+                            isExecutiveCheck: res.payload[index].isExecutiveCheck,
+                            userHourSalary: res.payload[index].userHourSalary,
+                        };
+                        $scope.executiveCheckTablesItems.push(detail);
+                    }
+                })
+                .error(function () {
+                    console.log('ERROR WorkOffFormUtil.findWorkOffTableItemByUserDID');
+                })
+        }
 
         // ***********************  update holiday Data ************************
         $scope.updateUserHolidayData = function () {
