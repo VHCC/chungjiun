@@ -159,4 +159,23 @@ module.exports = function (app) {
         })
     })
 
+    // find table item by user DID to executive
+    app.post(global.apiUrl.post_work_off_table_item_find_by_user_did, function (req,res) {
+        WorkOffTableForm.find({
+            creatorDID: req.body.creatorDID,
+            year: req.body.year,
+            isSendReview: true,
+            isExecutiveCheck: false,
+        }, function (err, tables) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+                payload: tables,
+            });
+        })
+    })
+
 }
