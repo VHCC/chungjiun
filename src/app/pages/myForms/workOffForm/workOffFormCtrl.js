@@ -54,10 +54,25 @@
                 // console.log(allProjects);
                 vm.projects = allProjects;
             });
-
+        
         User.getAllUsers()
             .success(function (allUsers) {
                 vm.users = allUsers;
+                if ($scope.roleType === '100') {
+                    vm.executiveUsers = [];
+                    WorkOffFormUtil.fetchAllExecutiveItem()
+                        .success(function (res) {
+                            for (var outIndex = 0; outIndex < res.payload.length; outIndex++) {
+                                console.log(res.payload[outIndex]);
+                                for (var index = 0; index < allUsers.length; index++) {
+                                    if (res.payload[outIndex]._id === allUsers[index]._id) {
+                                        allUsers[index].count = res.payload[outIndex].count;
+                                        vm.executiveUsers.push(allUsers[index]);
+                                    }
+                                }
+                            }
+                        })
+                }
             });
 
         User.findManagers()
