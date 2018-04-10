@@ -46,6 +46,7 @@ global.apiUrl = {
     post_work_off_table_item_find_by_user_did : '/api/findWorkOffTableItemByUserDID',
     post_work_off_table_update_executive_agree : '/api/post_work_off_table_update_executive_agree',
     post_work_off_table_update_disagree : '/api/post_work_off_table_update_disagree',
+    post_work_off_table_fetch_all_executive : '/api/post_work_off_table_fetch_all_executive',
 
 
 

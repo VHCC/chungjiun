@@ -28,7 +28,8 @@ module.exports = function (app) {
                     creatorDID: req.body.creatorDID,
                 }
                 findData.push(target);
-            };
+            }
+            ;
             console.log(findData);
             // 刪除既有 工時表格
             WorkOffTableForm.remove(
@@ -125,7 +126,8 @@ module.exports = function (app) {
                 _id: req.body.tableIDArray[index],
             }
             findData.push(target);
-        };
+        }
+        ;
         WorkOffTableForm.find({
             $or: findData,
         }, function (err, tables) {
@@ -216,6 +218,37 @@ module.exports = function (app) {
                 error: global.status._200,
             });
         })
+    })
+
+    // fetch all executive tables
+    app.post(global.apiUrl.post_work_off_table_fetch_all_executive, function (req, res) {
+        WorkOffTableForm.aggregate(
+            [
+                {
+                    $match: {
+                        isExecutiveCheck: false
+                    }
+                },
+                {
+                    $group: {
+                        _id: "$creatorDID",
+                        count: {
+                            $sum: 1
+                        }
+                    }
+                }
+            ], function (err, tables) {
+                if (err) {
+                    res.send(err);
+                }
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: tables,
+                });
+            }
+        )
+
     })
 
 }

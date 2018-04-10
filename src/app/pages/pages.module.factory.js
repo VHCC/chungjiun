@@ -144,6 +144,9 @@
                 },
                 findWorkOffTableItemByUserDID: function (formData) {
                     return http.post('/api/findWorkOffTableItemByUserDID', formData);
+                },
+                fetchAllExecutiveItem: function (formData) {
+                    return http.post('/api/post_work_off_table_fetch_all_executive', formData);
                 }
             }
         }])
