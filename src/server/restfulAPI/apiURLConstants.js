@@ -44,6 +44,8 @@ global.apiUrl = {
     post_work_off_table_find_by_tableid_array : '/api/findWorkOffTableFormByTableIDArray',
     post_work_off_table_update_send_review : '/api/updateWorkOffTableFormSendReview',
     post_work_off_table_item_find_by_user_did : '/api/findWorkOffTableItemByUserDID',
+    post_work_off_table_update_executive_agree : '/api/post_work_off_table_update_executive_agree',
+    post_work_off_table_update_disagree : '/api/post_work_off_table_update_disagree',
 
 
 

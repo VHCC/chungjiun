@@ -136,6 +136,12 @@
                 updateWorkOffTableSendReview: function (formData) {
                     return http.post('/api/updateWorkOffTableFormSendReview', formData);
                 },
+                updateExecutiveAgree: function(formData) {
+                    return http.post('/api/post_work_off_table_update_executive_agree', formData);
+                },
+                updateDisAgree: function(formData) {
+                    return http.post('/api/post_work_off_table_update_disagree', formData);
+                },
                 findWorkOffTableItemByUserDID: function (formData) {
                     return http.post('/api/findWorkOffTableItemByUserDID', formData);
                 }
