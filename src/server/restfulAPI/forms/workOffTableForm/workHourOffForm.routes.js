@@ -58,7 +58,7 @@ module.exports = function (app) {
 
                     //RIGHT
                     isSendReview: req.body.formTables[index].isSendReview,
-                    isManagerCheck: req.body.formTables[index].isManagerCheck,
+                    isBossCheck: req.body.formTables[index].isBossCheck,
                     isExecutiveCheck: req.body.formTables[index].isExecutiveCheck,
                     userHourSalary: req.body.formTables[index].userHourSalary,
 
@@ -160,7 +160,7 @@ module.exports = function (app) {
     })
 
     // find table item by user DID to executive
-    app.post(global.apiUrl.post_work_off_table_item_find_by_user_did, function (req,res) {
+    app.post(global.apiUrl.post_work_off_table_item_find_by_user_did, function (req, res) {
         WorkOffTableForm.find({
             creatorDID: req.body.creatorDID,
             year: req.body.year,
@@ -174,6 +174,46 @@ module.exports = function (app) {
                 code: 200,
                 error: global.status._200,
                 payload: tables,
+            });
+        })
+    })
+
+    // executive agree
+    app.post(global.apiUrl.post_work_off_table_update_executive_agree, function (req, res) {
+        WorkOffTableForm.update({
+            _id: req.body.tableID,
+        }, {
+            $set: {
+                isExecutiveCheck: true,
+            }
+        }, function (err) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        })
+    })
+
+    // disagree
+    app.post(global.apiUrl.post_work_off_table_update_disagree, function (req, res) {
+        WorkOffTableForm.update({
+            _id: req.body.tableID,
+        }, {
+            $set: {
+                isSendReview: false,
+                isExecutiveCheck: false,
+                isBossCheck: false
+            }
+        }, function (err) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
             });
         })
     })

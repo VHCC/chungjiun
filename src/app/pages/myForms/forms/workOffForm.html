@@ -300,7 +300,7 @@
                                 審查完成
                             </button>
                         </div>
-                        <!--可編輯-->
+                        <!--提交-->
                         <div ng-show="!rowform1.$waiting && !table.isSendReview">
                             <div class="buttons" ng-show="!rowform1.$visible">
                                 <button class="btn btn-danger editable-table-button btn-xs"
@@ -456,12 +456,14 @@
                     <td rowspan="2" style="vertical-align: inherit;">
                         <div ng-show="!table.isExecutiveCheck">
                             <button class="btn btn-info editable-table-button btn-xs"
+                                    ng-click="reviewExecutiveItem(table, $index)"
                                     style="color: black">
                                 同意
                             </button>
                         </div>
                         <div ng-show="!table.isExecutiveCheck">
                             <button class="btn btn-danger editable-table-button btn-xs"
+                                    ng-click="disagreeItem(table, $index)"
                                     style="color: black">
                                 退回
                             </button>
