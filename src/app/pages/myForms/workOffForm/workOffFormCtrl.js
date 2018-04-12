@@ -66,8 +66,24 @@
                                 console.log(res.payload[outIndex]);
                                 for (var index = 0; index < allUsers.length; index++) {
                                     if (res.payload[outIndex]._id === allUsers[index]._id) {
-                                        allUsers[index].count = res.payload[outIndex].count;
+                                        allUsers[index].excutive_count = res.payload[outIndex].count;
                                         vm.executiveUsers.push(allUsers[index]);
+                                    }
+                                }
+                            }
+                        })
+                }
+
+                if ($scope.roleType === '100') {
+                    vm.bossUsers = [];
+                    WorkOffFormUtil.fetchAllBossItem()
+                        .success(function (res) {
+                            for (var outIndex = 0; outIndex < res.payload.length; outIndex++) {
+                                console.log(res.payload[outIndex]);
+                                for (var index = 0; index < allUsers.length; index++) {
+                                    if (res.payload[outIndex]._id === allUsers[index]._id) {
+                                        allUsers[index].boss_count = res.payload[outIndex].count;
+                                        vm.bossUsers.push(allUsers[index]);
                                     }
                                 }
                             }
@@ -342,7 +358,7 @@
                 })
         }
 
-        //行政確認 確認
+        //行政確認
         $scope.reviewExecutiveItem = function (table, index) {
             $scope.checkText = '確定 同意：' + vm.executive.selected.name + " " +
                 DateUtil.getShiftDatefromFirstDate(
@@ -370,8 +386,8 @@
                 })
         }
 
-        //退回
-        $scope.disagreeItem = function (table, index) {
+        //行政退回
+        $scope.disagreeItem_executive = function (table, index) {
             $scope.checkText = '確定 退回：' + vm.executive.selected.name + " " +
                 DateUtil.getShiftDatefromFirstDate(
                     DateUtil.getFirstDayofThisWeek(moment(table.create_formDate)),
@@ -380,15 +396,71 @@
             $scope.checkingTable = table;
             $scope.mIndex = index;
             ngDialog.open({
-                template: 'app/pages/myModalTemplate/myWorkOffTableFormDisAgreeModal.html',
+                template: 'app/pages/myModalTemplate/myWorkOffTableFormDisAgree_ExecutiveModal.html',
                 className: 'ngdialog-theme-default',
                 scope: $scope,
                 showClose: false,
             });
         }
 
-        $scope.sendDisagree = function (checkingTable, index) {
+        $scope.sendDisagree_executive = function (checkingTable, index) {
             $scope.executiveCheckTablesItems.splice(index, 1);
+            var formData = {
+                tableID: checkingTable.tableID,
+            }
+            WorkOffFormUtil.updateDisAgree(formData)
+                .success(function (res) {
+                    console.log(res.code);
+                })
+        }
+
+        //主管確認
+        $scope.reviewBossItem = function (table, index) {
+            $scope.checkText = '確定 同意：' + vm.boss.selected.name + " " +
+                DateUtil.getShiftDatefromFirstDate(
+                    DateUtil.getFirstDayofThisWeek(moment(table.create_formDate)),
+                    table.day === 0 ? 6 : table.day - 1) +
+                "  ？";
+            $scope.checkingTable = table;
+            $scope.mIndex = index;
+            ngDialog.open({
+                template: 'app/pages/myModalTemplate/myWorkOffTableFormBossAgreeModal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+
+        $scope.sendBossAgree = function (checkingTable, index) {
+            $scope.bossCheckTablesItems.splice(index, 1);
+            var formData = {
+                tableID: checkingTable.tableID,
+            }
+            WorkOffFormUtil.updateBossAgree(formData)
+                .success(function (res) {
+                    console.log(res.code);
+                })
+        }
+
+        //主管退回
+        $scope.disagreeItem_boss = function (table, index) {
+            $scope.checkText = '確定 退回：' + vm.boss.selected.name + " " +
+                DateUtil.getShiftDatefromFirstDate(
+                    DateUtil.getFirstDayofThisWeek(moment(table.create_formDate)),
+                    table.day === 0 ? 6 : table.day - 1) +
+                "  ？";
+            $scope.checkingTable = table;
+            $scope.mIndex = index;
+            ngDialog.open({
+                template: 'app/pages/myModalTemplate/myWorkOffTableFormDisAgree_BossModal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+
+        $scope.sendDisagree_boss = function (checkingTable, index) {
+            $scope.bossCheckTablesItems.splice(index, 1);
             var formData = {
                 tableID: checkingTable.tableID,
             }
@@ -466,16 +538,49 @@
 
         // ***********************  主管審核 ************************
 
+        $scope.findWorkOffItemByUserDID_boss = function () {
+            var formData = {
+                year: thisYear,
+                creatorDID: vm.boss.selected._id
+            };
+            $scope.bossCheckTablesItems = [];
+            WorkOffFormUtil.findWorkOffTableItemByUserDID_boss(formData)
+                .success(function (res) {
+                    for (var index = 0; index < res.payload.length; index++) {
+                        var detail = {
+                            tableID: res.payload[index]._id,
+
+                            workOffType: res.payload[index].workOffType,
+                            create_formDate: res.payload[index].create_formDate,
+                            year: res.payload[index].year,
+                            month: res.payload[index].month,
+                            day: res.payload[index].day,
+                            start_time: res.payload[index].start_time,
+                            end_time: res.payload[index].end_time,
+
+                            //RIGHT
+                            isSendReview: res.payload[index].isSendReview,
+                            isBossCheck: res.payload[index].isBossCheck,
+                            isExecutiveCheck: res.payload[index].isExecutiveCheck,
+                            userHourSalary: res.payload[index].userHourSalary,
+                        };
+                        $scope.bossCheckTablesItems.push(detail);
+                    }
+                })
+                .error(function () {
+                    console.log('ERROR WorkOffFormUtil.findWorkOffTableItemByUserDID');
+                })
+        }
 
         // ***********************  行政確認 ************************
 
-        $scope.findWorkOffItemByUserDID = function () {
+        $scope.findWorkOffItemByUserDID_executive = function () {
             var formData = {
                 year: thisYear,
                 creatorDID: vm.executive.selected._id
             };
             $scope.executiveCheckTablesItems = [];
-            WorkOffFormUtil.findWorkOffTableItemByUserDID(formData)
+            WorkOffFormUtil.findWorkOffTableItemByUserDID_executive(formData)
                 .success(function (res) {
                     for (var index = 0; index < res.payload.length; index++) {
                         var detail = {
