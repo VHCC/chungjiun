@@ -165,6 +165,9 @@
 
                         formDataTable = {
                             tableIDArray: workTableIDArray,
+                            isFindSendReview: null,
+                            isFindManagerCheck: null,
+                            isFindExecutiveCheck: null
                         }
                         // console.log(formDataTable);
                         // 取得 Table Data
@@ -370,6 +373,7 @@
             return selected.length ? selected[0].name : 'Not Set';
         };
 
+        // -------------------- Week Methods ---------------------
         $scope.weekShift = 0;
         $scope.firstFullDate = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0);
         $scope.firstDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0));
@@ -416,7 +420,6 @@
             $scope.sunDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 6));
             $("[id='btnSubmit']").css('display', 'none');
             $scope.getTable();
-
         }
 
         // Send table to Review
@@ -580,5 +583,259 @@
             }, 3000);
         }
 
-    }
+        // ********************** 專案經理確認 *****************************
+
+        // ********************** 行政確認 *****************************
+
+        // 主要顯示
+        $scope.tablesExecutiveItems = [];
+
+        User.getAllUsers()
+            .success(function (allUsers) {
+                vm.users = allUsers;
+                vm.executiveUsers = allUsers;
+                if ($scope.roleType === '100') {
+                    // vm.executiveUsers = [];
+                    // WorkOffFormUtil.fetchAllExecutiveItem()
+                    //     .success(function (res) {
+                    //         for (var outIndex = 0; outIndex < res.payload.length; outIndex++) {
+                    //             // console.log(res.payload[outIndex]);
+                    //             for (var index = 0; index < allUsers.length; index++) {
+                    //                 if (res.payload[outIndex]._id === allUsers[index]._id) {
+                    //                     allUsers[index].excutive_count = res.payload[outIndex].count;
+                    //                     vm.executiveUsers.push(allUsers[index]);
+                    //                 }
+                    //             }
+                    //         }
+                    //     })
+                }
+            });
+
+        // -------------------- Week Methods Excutive---------------------
+        $scope.weekShift_executive = 0;
+        $scope.firstFullDate_executive = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0);
+        $scope.firstDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0));
+        $scope.lastDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 6));
+
+        $scope.monDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 0));
+        $scope.tueDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 1));
+        $scope.wesDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 2));
+        $scope.thuDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 3));
+        $scope.friDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 4));
+        $scope.satDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 5));
+        $scope.sunDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 6));
+
+
+        $scope.addWeek_executive = function () {
+            $scope.weekShift_executive++;
+            $scope.firstFullDate_executive = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_executive));
+            $scope.firstDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_executive)));
+            $scope.lastDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 6));
+
+            $scope.monDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 0));
+            $scope.tueDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 1));
+            $scope.wesDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 2));
+            $scope.thuDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 3));
+            $scope.friDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 4));
+            $scope.satDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 5));
+            $scope.sunDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 6));
+            $scope.getTable_executive();
+        }
+
+        $scope.decreaceWeek_executive = function () {
+            $scope.weekShift_executive--;
+            $scope.firstFullDate_executive = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_executive));
+            $scope.firstDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_executive)));
+            $scope.lastDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 6));
+
+            $scope.monDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 0));
+            $scope.tueDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 1));
+            $scope.wesDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 2));
+            $scope.thuDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 3));
+            $scope.friDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 4));
+            $scope.satDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 5));
+            $scope.sunDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 6));
+            $scope.getTable_executive();
+        }
+
+        //行政取得相關人員表，以人為選取單位
+        $scope.getTable_executive = function () {
+            $scope.tablesExecutiveItems = [];
+            var getData = {
+                creatorDID: vm.executive.selected._id,
+                create_formDate: $scope.firstFullDate_executive,
+            }
+            // console.log($scope.firstFullDate);
+            WorkHourUtil.getWorkHourForm(getData)
+                .success(function (res) {
+                    // console.log(res.payload)
+                    if (res.payload.length > 0) {
+                        var workItemCount = res.payload[0].formTables.length;
+
+                        var prjIDArray = [];
+                        var workTableIDArray = [];
+                        // 組成 prjID Array, TableID Array，再去Server要資料
+                        for (var index = 0; index < workItemCount; index++) {
+                            workTableIDArray[index] = res.payload[0].formTables[index].tableID;
+                            prjIDArray[index] = res.payload[0].formTables[index].prjDID;
+                        }
+
+                        var formData = {
+                            prjIDArray: prjIDArray,
+                        }
+                        // 取得Prj Data
+                        Project.findPrjByIDArray(formData)
+                            .success(function (res) {
+                                $scope.loading = false;
+                            })
+                            .error(function () {
+                                console.log('ERROR Project.findPrjByIDArray');
+                            })
+
+                        formDataTable = {
+                            tableIDArray: workTableIDArray,
+                            isFindSendReview: true,
+                            isFindManagerCheck: null,
+                            isFindExecutiveCheck: false
+                        }
+                        // console.log(formDataTable);
+                        // 取得 Table Data
+                        WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
+                            .success(function (res) {
+
+                                $scope.monOffTotal_executive = 0;
+                                $scope.tueOffTotal_executive = 0;
+                                $scope.wesOffTotal_executive = 0;
+                                $scope.thuOffTotal_executive = 0;
+                                $scope.friOffTotal_executive = 0;
+                                $scope.satOffTotal_executive = 0;
+                                $scope.sunOffTotal_executive = 0;
+                                // 填入表單資訊
+                                console.log(res.payload)
+                                for (var index = 0; index < res.payload.length; index++) {
+                                    var detail = {
+                                        tableID: workTableIDArray[index],
+                                        prjDID: res.payload[index].prjDID,
+                                        //MON
+                                        mon_hour: res.payload[index].mon_hour,
+                                        mon_memo: res.payload[index].mon_memo,
+                                        mon_hour_add: res.payload[index].mon_hour_add,
+                                        mon_memo_add: res.payload[index].mon_memo_add,
+                                        //TUE
+                                        tue_hour: res.payload[index].tue_hour,
+                                        tue_memo: res.payload[index].tue_memo,
+                                        tue_hour_add: res.payload[index].tue_hour_add,
+                                        tue_memo_add: res.payload[index].tue_memo_add,
+                                        //WES
+                                        wes_hour: res.payload[index].wes_hour,
+                                        wes_memo: res.payload[index].wes_memo,
+                                        wes_hour_add: res.payload[index].wes_hour_add,
+                                        wes_memo_add: res.payload[index].wes_memo_add,
+                                        //THU
+                                        thu_hour: res.payload[index].thu_hour,
+                                        thu_memo: res.payload[index].thu_memo,
+                                        thu_hour_add: res.payload[index].thu_hour_add,
+                                        thu_memo_add: res.payload[index].thu_memo_add,
+                                        //FRI
+                                        fri_hour: res.payload[index].fri_hour,
+                                        fri_memo: res.payload[index].fri_memo,
+                                        fri_hour_add: res.payload[index].fri_hour_add,
+                                        fri_memo_add: res.payload[index].fri_memo_add,
+                                        //SAT
+                                        sat_hour: res.payload[index].sat_hour,
+                                        sat_memo: res.payload[index].sat_memo,
+                                        sat_hour_add: res.payload[index].sat_hour_add,
+                                        sat_memo_add: res.payload[index].sat_memo_add,
+                                        //SUN
+                                        sun_hour: res.payload[index].sun_hour,
+                                        sun_memo: res.payload[index].sun_memo,
+                                        sun_hour_add: res.payload[index].sun_hour_add,
+                                        sun_memo_add: res.payload[index].sun_memo_add,
+                                        //RIGHT
+                                        isSendReview: res.payload[index].isSendReview,
+                                        isManagerCheck: res.payload[index].isManagerCheck,
+                                        isExecutiveCheck: res.payload[index].isExecutiveCheck,
+                                        // TOTAL
+                                        hourTotal: res.payload[index].mon_hour +
+                                        res.payload[index].tue_hour +
+                                        res.payload[index].wes_hour +
+                                        res.payload[index].thu_hour +
+                                        res.payload[index].fri_hour +
+                                        res.payload[index].sat_hour +
+                                        res.payload[index].sun_hour,
+                                        hourAddTotal: res.payload[index].mon_hour_add +
+                                        res.payload[index].tue_hour_add +
+                                        res.payload[index].wes_hour_add +
+                                        res.payload[index].thu_hour_add +
+                                        res.payload[index].fri_hour_add +
+                                        res.payload[index].sat_hour_add +
+                                        res.payload[index].sun_hour_add,
+
+                                    };
+                                    $scope.tablesExecutiveItems.push(detail);
+
+                                    //Off Day
+
+                                    $scope.monOffTotal_executive += res.payload[index].mon_hour +
+                                        res.payload[index].mon_hour_add;
+                                    $scope.tueOffTotal_executive += res.payload[index].tue_hour +
+                                        res.payload[index].tue_hour_add;
+                                    $scope.wesOffTotal_executive += res.payload[index].wes_hour +
+                                        res.payload[index].wes_hour_add;
+                                    $scope.thuOffTotal_executive += res.payload[index].thu_hour +
+                                        res.payload[index].thu_hour_add;
+                                    $scope.friOffTotal_executive += res.payload[index].fri_hour +
+                                        res.payload[index].fri_hour_add;
+                                    $scope.satOffTotal_executive += res.payload[index].sat_hour +
+                                        res.payload[index].sat_hour_add;
+                                    $scope.sunOffTotal_executive += res.payload[index].sun_hour +
+                                        res.payload[index].sun_hour_add;
+                                }
+                                // console.log($scope.tablesItems);
+                            })
+                            .error(function () {
+                                console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
+                            })
+
+                    } else {
+                        $scope.loading = false;
+                    }
+                })
+                .error(function () {
+                    console.log('ERROR WorkHourUtil.getWorkHourForm');
+                })
+        }
+
+        //行政確認
+        $scope.reviewWHExecutiveItem = function (table, index) {
+            $scope.checkText = '確定 同意：' + vm.executive.selected.name + " " +
+                $scope.showPrjName(table.prjDID) +
+                "  ？";
+            $scope.checkingTable = table;
+            $scope.mIndex = index;
+            ngDialog.open({
+                template: 'app/pages/myModalTemplate/myWorkHourTableFormReview_ExecutiveModal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+
+        $scope.sendWHExecutiveAgree = function (checkingTable, index) {
+            $scope.tablesExecutiveItems.splice(index, 1);
+            var formData = {
+                tableID: checkingTable.tableID,
+                isSendReview: null,
+                isManagerCheck: null,
+                isExecutiveCheck: true,
+            }
+            WorkHourUtil.updateWHTable(formData)
+                .success(function (res) {
+                    console.log(res.code);
+                })
+        }
+
+
+
+    } // function End line
 })();
