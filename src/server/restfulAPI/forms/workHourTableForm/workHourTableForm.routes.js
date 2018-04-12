@@ -152,9 +152,20 @@ module.exports = function (app) {
             }
             findData.push(target);
         };
-        WorkHourTableForm.find({
-            $or: findData,
-        }, function (err, tables) {
+
+        var query = {};
+        query.$or = findData;
+        if (req.body.isFindSendReview !== null) {
+            query.isSendReview = req.body.isFindSendReview;
+        }
+        if (req.body.isFindManagerCheck !== null) {
+            query.isManagerCheck = req.body.isFindManagerCheck;
+        }
+        if (req.body.isFindExecutiveCheck !== null) {
+            query.isExecutiveCheck = req.body.isFindExecutiveCheck;
+        }
+        console.log(query)
+        WorkHourTableForm.find(query, function (err, tables) {
             if (err) {
                 res.send(err);
             }
@@ -174,6 +185,35 @@ module.exports = function (app) {
             $set: {
                 isSendReview: true,
             }
+        }, function (err) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        })
+    })
+
+    // update table executive check
+    app.post(global.apiUrl.post_work_hour_table_update, function (req, res) {
+
+        var setQuery = {};
+
+        if (req.body.isSendReview !== null) {
+            setQuery.isSendReview = req.body.isSendReview;
+        }
+        if (req.body.isManagerCheck !== null) {
+            setQuery.isManagerCheck = req.body.isManagerCheck;
+        }
+        if (req.body.isExecutiveCheck !== null) {
+            setQuery.isExecutiveCheck = req.body.isExecutiveCheck;
+        }
+        WorkHourTableForm.update({
+            _id: req.body.tableID,
+        }, {
+            $set: setQuery
         }, function (err) {
             if (err) {
                 res.send(err);

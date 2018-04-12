@@ -35,8 +35,9 @@ global.apiUrl = {
     //workHourTable Form
     post_work_hour_create_table : '/api/createWorkHourTableForm',
     post_work_hour_get : '/api/getWorkHourForm',
-    post_work_hour_table_find_by_tableid_array : '/api/findWorkHourTableFormByTableIDArray',
+    post_work_hour_table_find_by_tableid_array : '/api/post_work_hour_table_find_by_tableid_array',
     post_work_hour_table_update_send_review : '/api/updateWorkHourTableFormSendReview',
+    post_work_hour_table_update : '/api/post_work_hour_table_update',
 
     //workOffTable Form
     post_work_off_create_table : '/api/createWorkOffTableForm',

@@ -115,11 +115,14 @@
                     return http.post('/api/getWorkHourForm', formData);
                 },
                 findWorkHourTableFormByTableIDArray: function (formData) {
-                    return http.post('/api/findWorkHourTableFormByTableIDArray', formData);
+                    return http.post('/api/post_work_hour_table_find_by_tableid_array', formData);
                 },
                 updateTableSendReview: function (formData) {
                     return http.post('/api/updateWorkHourTableFormSendReview', formData);
-                }
+                },
+                updateWHTable: function(formData) {
+                    return http.post('/api/post_work_hour_table_update', formData);
+                },
             }
         }])
         .factory('WorkOffFormUtil', ['$http', function (http) {

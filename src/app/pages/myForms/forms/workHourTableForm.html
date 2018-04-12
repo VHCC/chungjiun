@@ -247,7 +247,7 @@
                 </td>
                 <!--經理確認-->
                 <td rowspan="2" style="vertical-align: inherit;">
-                    <div ng-show="rowform1.$waiting || table.isSendReview">
+                    <div ng-show="rowform1.$waiting || (table.isSendReview && !table.isManagerCheck)">
                         <button class="btn btn-warning editable-table-button btn-xs"
                                 style="color: black">
                             {{ showMajor(table.prjDID)}}
@@ -255,15 +255,31 @@
                             確認作業中
                         </button>
                     </div>
+                    <div ng-show="table.isManagerCheck">
+                        <button class="btn btn-info editable-table-button btn-xs"
+                                style="color: black">
+                            {{ showMajor(table.prjDID)}}
+                            <br>
+                            確認完成
+                        </button>
+                    </div>
                 </td>
                 <!--行政確認-->
                 <td rowspan="2" style="vertical-align: inherit;">
-                    <div ng-show="rowform1.$waiting || table.isSendReview">
+                    <div ng-show="rowform1.$waiting || table.isSendReview && !table.isExecutiveCheck">
                         <button class="btn btn-warning editable-table-button btn-xs"
                                 style="color: black">
                             行政
                             <br>
                             確認作業中
+                        </button>
+                    </div>
+                    <div ng-show="table.isExecutiveCheck">
+                        <button class="btn btn-info editable-table-button btn-xs"
+                                style="color: black">
+                            行政
+                            <br>
+                            確認完成
                         </button>
                     </div>
                 </td>
@@ -490,6 +506,7 @@
     <uib-tab heading="經理審核" ng-if="roleType === '2'">
     </uib-tab>
     <uib-tab heading="行政確認" ng-if="roleType === '100'">
+        <div ng-include="'app/pages/myForms/forms/workHourTableForm_executiveTab.html'"></div>
     </uib-tab>
 </uib-tabset>
 
