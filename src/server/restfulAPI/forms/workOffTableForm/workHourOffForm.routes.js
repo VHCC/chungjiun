@@ -291,10 +291,20 @@ module.exports = function (app) {
 
     // fetch all boss tables
     app.post(global.apiUrl.post_work_off_table_fetch_all_boss, function (req, res) {
+        var underlingCount = req.body.underlingArray.length;
+        var findData = []
+        for (var index = 0; index < underlingCount; index++) {
+            var target = {
+                creatorDID: req.body.underlingArray[index],
+            }
+            findData.push(target);
+        };
+        console.log(findData)
         WorkOffTableForm.aggregate(
             [
                 {
                     $match: {
+                        $or: findData,
                         isSendReview: true,
                         isBossCheck: false
                     }
