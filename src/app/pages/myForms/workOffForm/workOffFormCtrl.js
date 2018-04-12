@@ -74,9 +74,18 @@
                         })
                 }
 
-                if ($scope.roleType === '100') {
+                if ($scope.roleType === '2') {
+                    var underling = []
+                    for (var x = 0; x < allUsers.length; x++) {
+                        if (allUsers[x].bossID === cookies.get('userDID')) {
+                            underling.push(allUsers[x]._id)
+                        }
+                    }
+                    var formData = {
+                        underlingArray: underling,
+                    }
                     vm.bossUsers = [];
-                    WorkOffFormUtil.fetchAllBossItem()
+                    WorkOffFormUtil.fetchAllBossItem(formData)
                         .success(function (res) {
                             for (var outIndex = 0; outIndex < res.payload.length; outIndex++) {
                                 console.log(res.payload[outIndex]);
