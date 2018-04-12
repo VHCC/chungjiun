@@ -162,12 +162,31 @@ module.exports = function (app) {
     })
 
     // find table item by user DID to executive
-    app.post(global.apiUrl.post_work_off_table_item_find_by_user_did, function (req, res) {
+    app.post(global.apiUrl.post_work_off_table_item_find_by_user_did_executive, function (req, res) {
         WorkOffTableForm.find({
             creatorDID: req.body.creatorDID,
             year: req.body.year,
             isSendReview: true,
             isExecutiveCheck: false,
+        }, function (err, tables) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+                payload: tables,
+            });
+        })
+    })
+
+    // find table item by user DID to boss
+    app.post(global.apiUrl.post_work_off_table_item_find_by_user_did_boss, function (req, res) {
+        WorkOffTableForm.find({
+            creatorDID: req.body.creatorDID,
+            year: req.body.year,
+            isSendReview: true,
+            isBossCheck: false,
         }, function (err, tables) {
             if (err) {
                 res.send(err);
@@ -187,6 +206,25 @@ module.exports = function (app) {
         }, {
             $set: {
                 isExecutiveCheck: true,
+            }
+        }, function (err) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        })
+    })
+
+    // boss agree
+    app.post(global.apiUrl.post_work_off_table_update_boss_agree, function (req, res) {
+        WorkOffTableForm.update({
+            _id: req.body.tableID,
+        }, {
+            $set: {
+                isBossCheck: true,
             }
         }, function (err) {
             if (err) {
@@ -226,6 +264,7 @@ module.exports = function (app) {
             [
                 {
                     $match: {
+                        isSendReview: true,
                         isExecutiveCheck: false
                     }
                 },
@@ -248,7 +287,37 @@ module.exports = function (app) {
                 });
             }
         )
+    })
 
+    // fetch all boss tables
+    app.post(global.apiUrl.post_work_off_table_fetch_all_boss, function (req, res) {
+        WorkOffTableForm.aggregate(
+            [
+                {
+                    $match: {
+                        isSendReview: true,
+                        isBossCheck: false
+                    }
+                },
+                {
+                    $group: {
+                        _id: "$creatorDID",
+                        count: {
+                            $sum: 1
+                        }
+                    }
+                }
+            ], function (err, tables) {
+                if (err) {
+                    res.send(err);
+                }
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: tables,
+                });
+            }
+        )
     })
 
 }

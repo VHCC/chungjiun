@@ -139,15 +139,24 @@
                 updateExecutiveAgree: function(formData) {
                     return http.post('/api/post_work_off_table_update_executive_agree', formData);
                 },
+                updateBossAgree: function(formData) {
+                    return http.post('/api/post_work_off_table_update_boss_agree', formData);
+                },
                 updateDisAgree: function(formData) {
                     return http.post('/api/post_work_off_table_update_disagree', formData);
                 },
-                findWorkOffTableItemByUserDID: function (formData) {
-                    return http.post('/api/findWorkOffTableItemByUserDID', formData);
+                findWorkOffTableItemByUserDID_executive: function (formData) {
+                    return http.post('/api/post_work_off_table_item_find_by_user_did_executive', formData);
+                },
+                findWorkOffTableItemByUserDID_boss: function (formData) {
+                    return http.post('/api/post_work_off_table_item_find_by_user_did_boss', formData);
                 },
                 fetchAllExecutiveItem: function (formData) {
                     return http.post('/api/post_work_off_table_fetch_all_executive', formData);
-                }
+                },
+                fetchAllBossItem: function (formData) {
+                    return http.post('/api/post_work_off_table_fetch_all_boss', formData);
+                },
             }
         }])
         .factory('ProjectUtil', function () {

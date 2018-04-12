@@ -43,10 +43,13 @@ global.apiUrl = {
     post_work_off_get : '/api/getWorkOffForm',
     post_work_off_table_find_by_tableid_array : '/api/findWorkOffTableFormByTableIDArray',
     post_work_off_table_update_send_review : '/api/updateWorkOffTableFormSendReview',
-    post_work_off_table_item_find_by_user_did : '/api/findWorkOffTableItemByUserDID',
+    post_work_off_table_item_find_by_user_did_executive : '/api/post_work_off_table_item_find_by_user_did_executive',
+    post_work_off_table_item_find_by_user_did_boss : '/api/post_work_off_table_item_find_by_user_did_boss',
     post_work_off_table_update_executive_agree : '/api/post_work_off_table_update_executive_agree',
+    post_work_off_table_update_boss_agree : '/api/post_work_off_table_update_boss_agree',
     post_work_off_table_update_disagree : '/api/post_work_off_table_update_disagree',
     post_work_off_table_fetch_all_executive : '/api/post_work_off_table_fetch_all_executive',
+    post_work_off_table_fetch_all_boss : '/api/post_work_off_table_fetch_all_boss',
 
 
 
