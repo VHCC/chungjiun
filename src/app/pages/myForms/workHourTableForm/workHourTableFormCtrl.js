@@ -43,6 +43,14 @@
         $scope.username = cookies.get('username');
         $scope.roleType = cookies.get('roletype');
 
+        var formData = {
+            userDID: cookies.get('userDID'),
+        }
+        User.findUserByUserDID(formData)
+            .success(function (user) {
+                $scope.userHourSalary = user.userHourSalary;
+            })
+
         // 主要顯示
         $scope.tablesItems = [];
 
@@ -93,6 +101,12 @@
                 isExecutiveCheck: false,
             };
             $scope.tablesItems.push(inserted);
+            $timeout(function () {
+                $('button[id="btnCreate"]')[0].click();
+            }, 300);
+        }
+
+        $scope.saveTemp = function() {
             $timeout(function () {
                 $('button[id="btnCreate"]')[0].click();
             }, 300);
@@ -187,6 +201,7 @@
                                     var detail = {
                                         tableID:res.payload[index]._id,
                                         prjDID: res.payload[index].prjDID,
+                                        create_formDate: res.payload[index].create_formDate,
                                         //MON
                                         mon_hour: res.payload[index].mon_hour,
                                         mon_memo: res.payload[index].mon_memo,
@@ -498,18 +513,56 @@
         }
 
         // SHOW Work Add Form
-        $scope.showModal = function (item) {
+        $scope.showWorkAddModal = function (table, type) {
             $uibModal.open({
                 animation: true,
-                controller: 'ProfileModalCtrl',
-                templateUrl: 'app/pages/profile/profileModal.html'
-            }).result.then(function (link) {
-                item.href = link;
+                controller: 'MyWorkHourTable_AddHourModalCtrl',
+                templateUrl: 'app/pages/myModalTemplate/myWorkHourTable_AddHourModal.html',
+                resolve: {
+                    table: function () {
+                        return table;
+                    },
+                    parent: function () {
+                        return $scope;
+                    },
+                    searchType: function () {
+                        return type;
+                    },
+                    userHourSalary : function () {
+                        return $scope.userHourSalary;
+                    }
+
+                }
+            }).result.then(function (table) {
+                switch(type) {
+                    case 1 : {
+                        table.mon_hour_add = table.totalHourTemp;
+                    }break;
+                    case 2 : {
+                        table.tue_hour_add = table.totalHourTemp;
+                    }break;
+                    case 3 : {
+                        table.wes_hour_add = table.totalHourTemp;
+                    }break;
+                    case 4 : {
+                        table.thu_hour_add = table.totalHourTemp;
+                    }break;
+                    case 5 : {
+                        table.fri_hour_add = table.totalHourTemp;
+                    }break;
+                    case 6 : {
+                        table.sat_hour_add = table.totalHourTemp;
+                    }break;
+                    case 7 : {
+                        table.sun_hour_add = table.totalHourTemp;
+                    }break;
+                }
+                $scope.createSubmit(500);
             });
         };
 
         // ************************ CREATE SUBMIT ***************************
-        $scope.createSubmit = function () {
+        $scope.createSubmit = function (time) {
             return $timeout(function () {
 
                 var workItemCount = $('tbody').length;
@@ -630,7 +683,7 @@
                     .error(function () {
                         console.log('ERROR WorkHourUtil.createWorkHourTableForm');
                     })
-            }, 3000);
+            }, time);
         }
 
         // ********************** 專案經理確認 *****************************

@@ -1,0 +1,106 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+            <em class="ion-ios-close-empty sn-link-close"></em>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">加班換休</h4>
+    </div>
+    <form name="linkForm">
+        <div class="modal-body">
+
+            <table class="table table-bordered table-condensed">
+
+                <thead>
+                <tr>
+                    <td style="vertical-align: inherit; text-align: center"></td>
+                    <td style="vertical-align: inherit; text-align: center">事由</td>
+                    <td style="vertical-align: inherit; text-align: center">時間</td>
+                    <td style="vertical-align: inherit; text-align: center">時數</td>
+
+                    <td style="vertical-align: inherit; text-align: center">類型</td>
+                </tr>
+                </thead>
+                <tbody ng-repeat="table in workAddTablesItems">
+                <tr style="vertical-align: inherit; text-align: center">
+                    <td rowspan="2" style="vertical-align: inherit; text-align: center">
+                        <span id="prjCode">{{parent.showPrjCode(table.prjDID)}}</span>
+                        <span style="display: none;" id="prjDID">{{prjDID}}</span>
+                    </td>
+                    <!--事由-->
+                    <td style="vertical-align: inherit; text-align: center">
+                        <input type="text" class="form-control " value="{{table.reason}}">
+                    </td>
+                    <!--時間-->
+                    <td class="form-group" style="vertical-align: inherit; text-align: center">
+                        <my ng-show="!table.isSendReview">
+                            <my-time-picker myFormatTime="HH:mm" start="{{table.start_time}}"
+                                            end="{{table.end_time}}"></my-time-picker>
+                        </my>
+                        <my ng-show="table.isSendReview">
+                            {{table.start_time}} - {{table.end_time}}
+                        </my>
+                    </td>
+                    <!--時數/天數-->
+                    <td class="form-group has-success" style="vertical-align: inherit;">
+                        {{table.myHourDiff}}
+                    </td>
+                    <!--類型-->
+                    <td class="form-group" style="vertical-align: inherit; text-align: center">
+                        <my ng-show="!table.isSendReview">
+                            <div >
+                                <label class=" custom-radio nowrap">
+                                    <input type="radio" name="inlineRadioOptions{{$index}}"
+                                           id="inlineRadio1"
+                                           ng-checked="table.workAddType == 1"
+                                           ng-click="setWorkAddType(table, 1)">
+                                    <span>加班</span>
+                                </label>
+                            </div>
+                            <br>
+                            <div >
+                                <label class=" custom-radio nowrap">
+                                    <input type="radio" name="inlineRadioOptions{{$index}}"
+                                           id="inlineRadio2"
+                                           ng-checked="table.workAddType == 2"
+                                           ng-click="setWorkAddType(table, 2)">
+                                    <span>換休</span>
+                                </label>
+                            </div>
+                        </my>
+                        <my ng-show="table.isSendReview">
+                        </my>
+                    </td>
+
+                </tr>
+                </tbody>
+                <tfoot>
+                <!--總時數-->
+                <tr>
+                    <td colspan="2" style="text-align: center">
+                        <span>
+                            總時數
+                        </span>
+                    </td>
+                    <td colspan="3" style="text-align: center">
+                        <span>
+                            {{showTotalAddHour(workAddTablesItems)}}
+                        </span>
+                    </td>
+                </tr>
+                </tfoot>
+
+
+            </table>
+        </div>
+        <div style="margin-left: 20px">
+            <button type="button"
+                    ng-click="addWorkAddItem(workAddTablesItems)"
+                    class="btn btn-info btn-icon">
+                <i class="ion-plus-round"/>
+            </button>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="saveWorkAddItem($event)">確定</button>
+        </div>
+    </form>
+</div>
