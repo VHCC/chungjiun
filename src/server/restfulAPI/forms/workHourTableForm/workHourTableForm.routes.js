@@ -18,7 +18,7 @@ module.exports = function (app) {
                 console.log(err);
             }
         })
-        console.log(req.body.oldTables);
+        // console.log(req.body.oldTables);
         if (req.body.oldTables.hasOwnProperty('tableIDArray')) {
             var findData = []
             for (var index = 0; index < req.body.oldTables.tableIDArray.length; index++) {
@@ -29,7 +29,7 @@ module.exports = function (app) {
                 }
                 findData.push(target);
             };
-            console.log(findData);
+            // console.log(findData);
             // 刪除既有 工時表格
             WorkHourTableForm.remove(
                 {
@@ -99,7 +99,7 @@ module.exports = function (app) {
                     formTable.push(tableItem);
 
                     if (resIndex === req.body.formTables.length) {
-                        console.log(formTable);
+                        // console.log(formTable);
                         WorkHourForm.create({
                             creatorDID: req.body.creatorDID,
                             create_formDate: req.body.create_formDate,
@@ -164,7 +164,7 @@ module.exports = function (app) {
         if (req.body.isFindExecutiveCheck !== null) {
             query.isExecutiveCheck = req.body.isFindExecutiveCheck;
         }
-        console.log(query)
+        // console.log(query)
         WorkHourTableForm.find(query, function (err, tables) {
             if (err) {
                 res.send(err);
