@@ -185,7 +185,7 @@
                                 $scope.tableData = {};
                                 for (var index = 0; index < res.payload.length; index++) {
                                     var detail = {
-                                        tableID: workTableIDArray[index],
+                                        tableID:res.payload[index]._id,
                                         prjDID: res.payload[index].prjDID,
                                         //MON
                                         mon_hour: res.payload[index].mon_hour,
@@ -711,10 +711,10 @@
                                 $scope.satOffTotal_executive = 0;
                                 $scope.sunOffTotal_executive = 0;
                                 // 填入表單資訊
-                                console.log(res.payload)
+                                // console.log(res.payload)
                                 for (var index = 0; index < res.payload.length; index++) {
                                     var detail = {
-                                        tableID: workTableIDArray[index],
+                                        tableID: res.payload[index]._id,
                                         prjDID: res.payload[index].prjDID,
                                         //MON
                                         mon_hour: res.payload[index].mon_hour,
@@ -814,7 +814,7 @@
             $scope.checkingTable = table;
             $scope.mIndex = index;
             ngDialog.open({
-                template: 'app/pages/myModalTemplate/myWorkHourTableFormReview_ExecutiveModal.html',
+                template: 'app/pages/myModalTemplate/myWorkHourTableFormAgree_ExecutiveModal.html',
                 className: 'ngdialog-theme-default',
                 scope: $scope,
                 showClose: false,
@@ -835,6 +835,34 @@
                 })
         }
 
+        //行政退回
+        $scope.disagreeWHItem_executive = function (table, index) {
+            $scope.checkText = '確定 退回：' + vm.executive.selected.name + " " +
+                $scope.showPrjName(table.prjDID) +
+                "  ？";
+            $scope.checkingTable = table;
+            $scope.mIndex = index;
+            ngDialog.open({
+                template: 'app/pages/myModalTemplate/myWorkHourTableFormDisAgree_ExecutiveModal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+
+        $scope.sendWHDisagree_executive = function (checkingTable, index) {
+            $scope.tablesExecutiveItems.splice(index, 1);
+            var formData = {
+                tableID: checkingTable.tableID,
+                isSendReview: false,
+                isManagerCheck: false,
+                isExecutiveCheck: false,
+            }
+            WorkHourUtil.updateWHTable(formData)
+                .success(function (res) {
+                    console.log(res.code);
+                })
+        }
 
 
     } // function End line
