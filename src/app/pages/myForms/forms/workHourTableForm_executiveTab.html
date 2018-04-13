@@ -9,11 +9,11 @@
                        append-to-body="true"
                        search-enabled="true">
                 <ui-select-match placeholder="選擇員工">
-                    {{$select.selected.name}} ({{$select.selected.excutive_count}})
+                    {{$select.selected.name}}
                 </ui-select-match>
                 <ui-select-choices
                         repeat="user in workHourTableCtrlVm.executiveUsers | groupSelectpickerOptions: {name: $select.search}">
-                    <span ng-bind-html="user.name + '(' + user.excutive_count + ')'| highlight: $select.search"></span>
+                    <span ng-bind-html="user.name| highlight: $select.search"></span>
                 </ui-select-choices>
             </ui-select>
         </div>
@@ -58,15 +58,6 @@
         <td colspan="2" style="vertical-align: inherit; text-align: center">星期五</td>
         <td colspan="2" style="vertical-align: inherit; text-align: center">星期六</td>
         <td colspan="2" style="vertical-align: inherit; text-align: center">星期日</td>
-    </tr>
-    <tr>
-        <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
-        <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
-        <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
-        <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
-        <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
-        <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
-        <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
     </tr>
     </thead>
 
@@ -338,7 +329,7 @@
     <tfoot>
     <!--休假-->
     <tr>
-        <td colspan="2" rowspan="2"></td>
+        <td colspan="2" rowspan="3"></td>
 
         <td colspan="2">
                     <span>
@@ -422,6 +413,57 @@
         <td colspan="2" style="text-align: center">
                     <span>
                         1
+                    </span>
+        </td>
+    </tr>
+
+    <!--小計-->
+    <tr>
+        <td colspan="2">
+                    <span>
+                        小計
+                    </span>
+        </td>
+        <!--MON-->
+        <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesExecutiveItems, 1)}}
+                    </span>
+        </td>
+        <!--TUE-->
+        <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesExecutiveItems, 2)}}
+                    </span>
+        </td>
+        <!--WED-->
+        <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesExecutiveItems, 3)}}
+                    </span>
+        </td>
+        <!--THU-->
+        <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesExecutiveItems, 4)}}
+                    </span>
+        </td>
+        <!--FRI-->
+        <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesExecutiveItems, 5)}}
+                    </span>
+        </td>
+        <!--SAT-->
+        <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesExecutiveItems, 6)}}
+                    </span>
+        </td>
+        <!--SUN-->
+        <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesExecutiveItems, 7)}}
                     </span>
         </td>
     </tr>

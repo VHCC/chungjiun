@@ -74,15 +74,7 @@
                 <td colspan="2" style="vertical-align: inherit; text-align: center">星期六</td>
                 <td colspan="2" style="vertical-align: inherit; text-align: center">星期日</td>
             </tr>
-            <tr>
-                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
-                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
-                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
-                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
-                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
-                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
-                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
-            </tr>
+
             </thead>
 
             <tbody ng-repeat="table in tablesItems">
@@ -403,7 +395,7 @@
             <tfoot>
             <!--休假-->
             <tr>
-                <td colspan="2" rowspan="2"></td>
+                <td colspan="2" rowspan="3"></td>
 
                 <td colspan="2">
                     <span>
@@ -487,6 +479,57 @@
                 <td colspan="2" style="text-align: center">
                     <span>
                         1
+                    </span>
+                </td>
+            </tr>
+
+            <!--小計-->
+            <tr>
+                <td colspan="2">
+                    <span>
+                        小計
+                    </span>
+                </td>
+                <!--MON-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesItems, 1)}}
+                    </span>
+                </td>
+                <!--TUE-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesItems, 2)}}
+                    </span>
+                </td>
+                <!--WED-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesItems, 3)}}
+                    </span>
+                </td>
+                <!--THU-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesItems, 4)}}
+                    </span>
+                </td>
+                <!--FRI-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesItems, 5)}}
+                    </span>
+                </td>
+                <!--SAT-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesItems, 6)}}
+                    </span>
+                </td>
+                <!--SUN-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesItems, 7)}}
                     </span>
                 </td>
             </tr>

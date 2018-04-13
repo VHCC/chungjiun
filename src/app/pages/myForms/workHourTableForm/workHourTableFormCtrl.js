@@ -373,6 +373,56 @@
             return selected.length ? selected[0].name : 'Not Set';
         };
 
+        $scope.showCalculateHour =function(tables, type) {
+            var index = 0;
+            var result = 0;
+            switch (type) {
+                case 1: {
+                    for (index = 0; index < tables.length; index++) {
+                        result += tables[index].mon_hour;
+                        result += tables[index].mon_hour_add;
+                    }
+                } break;
+                case 2: {
+                    for (index = 0; index < tables.length; index++) {
+                        result += tables[index].tue_hour;
+                        result += tables[index].tue_hour_add;
+                    }
+                } break;
+                case 3: {
+                    for (index = 0; index < tables.length; index++) {
+                        result += tables[index].wes_hour;
+                        result += tables[index].wes_hour_add;
+                    }
+                } break;
+                case 4: {
+                    for (index = 0; index < tables.length; index++) {
+                        result += tables[index].thu_hour;
+                        result += tables[index].thu_hour_add;
+                    }
+                } break;
+                case 5: {
+                    for (index = 0; index < tables.length; index++) {
+                        result += tables[index].fri_hour;
+                        result += tables[index].fri_hour;
+                    }
+                } break;
+                case 6: {
+                    for (index = 0; index < tables.length; index++) {
+                        result += tables[index].sat_hour;
+                        result += tables[index].sat_hour_add;
+                    }
+                } break;
+                case 7: {
+                    for (index = 0; index < tables.length; index++) {
+                        result += tables[index].sun_hour;
+                        result += tables[index].sun_hour_add;
+                    }
+                } break;
+            }
+            return result;
+        }
+
         // -------------------- Week Methods ---------------------
         $scope.weekShift = 0;
         $scope.firstFullDate = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0);
