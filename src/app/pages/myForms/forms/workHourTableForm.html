@@ -221,6 +221,7 @@
                         <form editable-form name="rowform1" ng-show="rowform1.$visible"
                               class="form-buttons form-inline">
                             <button type="submit"
+                                    ng-click="saveTemp()"
                                     class="btn btn-primary editable-table-button btn-xs">
                                 暫存
                             </button>
@@ -277,20 +278,21 @@
                 </td>
 
             </tr>
-            <!--加班欄位-->
+            <!--加班 / 換休-->
             <tr class="row1" style="vertical-align: inherit; text-align: center">
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-number="table.mon_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
+                          e-style="display: none"
                           id="mon_hour_add"
                           e-required>{{ table.mon_hour_add || 0}}</span>
                     <button type="button" ng-disabled="rowform1.$waiting"
                             ng-show="rowform1.$visible"
-                            ng-click="showModal(table)"
+                            ng-click="showWorkAddModal(table, 1)"
                             class="btn btn-primary editable-table-button btn-xs">
-                        新增
+                        {{ table.mon_hour_add || 0}}
                     </button>
                 </td>
                 <td style="vertical-align: inherit;">
@@ -304,8 +306,15 @@
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
+                          e-style="display: none"
                           id="tue_hour_add"
                           e-required>{{ table.tue_hour_add || 0}}</span>
+                    <button type="button" ng-disabled="rowform1.$waiting"
+                            ng-show="rowform1.$visible"
+                            ng-click="showWorkAddModal(table, 2)"
+                            class="btn btn-primary editable-table-button btn-xs">
+                        {{ table.tue_hour_add || 0}}
+                    </button>
                 </td>
                 <td style="vertical-align: inherit;">
                     <span editable-textarea="table.tue_memo_add"
@@ -318,8 +327,15 @@
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
+                          e-style="display: none"
                           id="wes_hour_add"
                           e-required>{{ table.wes_hour_add || 0}}</span>
+                    <button type="button" ng-disabled="rowform1.$waiting"
+                            ng-show="rowform1.$visible"
+                            ng-click="showWorkAddModal(table, 3)"
+                            class="btn btn-primary editable-table-button btn-xs">
+                        {{ table.wes_hour_add || 0}}
+                    </button>
                 </td>
                 <td style="vertical-align: inherit;">
                     <span editable-textarea="table.wes_memo_add"
@@ -332,8 +348,15 @@
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
+                          e-style="display: none"
                           id="thu_hour_add"
                           e-required>{{ table.thu_hour_add || 0}}</span>
+                    <button type="button" ng-disabled="rowform1.$waiting"
+                            ng-show="rowform1.$visible"
+                            ng-click="showWorkAddModal(table, 4)"
+                            class="btn btn-primary editable-table-button btn-xs">
+                        {{ table.thu_hour_add || 0}}
+                    </button>
                 </td>
                 <td style="vertical-align: inherit;">
                     <span editable-textarea="table.thu_memo_add"
@@ -346,8 +369,15 @@
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
+                          e-style="display: none"
                           id="fri_hour_add"
                           e-required>{{ table.fri_hour_add || 0}}</span>
+                    <button type="button" ng-disabled="rowform1.$waiting"
+                            ng-show="rowform1.$visible"
+                            ng-click="showWorkAddModal(table, 5)"
+                            class="btn btn-primary editable-table-button btn-xs">
+                        {{ table.fri_hour_add || 0}}
+                    </button>
                 </td>
                 <td style="vertical-align: inherit;">
                    <span editable-textarea="table.fri_memo_add"
@@ -360,8 +390,15 @@
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
+                          e-style="display: none"
                           id="sat_hour_add"
                           e-required>{{ table.sat_hour_add || 0}}</span>
+                    <button type="button" ng-disabled="rowform1.$waiting"
+                            ng-show="rowform1.$visible"
+                            ng-click="showWorkAddModal(table, 6)"
+                            class="btn btn-primary editable-table-button btn-xs">
+                        {{ table.sat_hour_add || 0}}
+                    </button>
                 </td>
                 <td style="vertical-align: inherit;">
                     <span editable-textarea="table.sat_memo_add"
@@ -374,8 +411,15 @@
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
+                          e-style="display: none"
                           id="sun_hour_add"
                           e-required>{{ table.sun_hour_add || 0}}</span>
+                    <button type="button" ng-disabled="rowform1.$waiting"
+                            ng-show="rowform1.$visible"
+                            ng-click="showWorkAddModal(table, 7)"
+                            class="btn btn-primary editable-table-button btn-xs">
+                        {{ table.sun_hour_add || 0}}
+                    </button>
                 </td>
                 <td style="vertical-align: inherit;">
                     <span editable-textarea="table.sun_memo_add"
@@ -537,7 +581,7 @@
         </table>
         <hr>
         <section class="col-md-6">
-            <button progress-button="createSubmit()"
+            <button progress-button="createSubmit(1500)"
                     style="float: inherit;"
                     id="btnCreate"
                     pb-style="shrink"

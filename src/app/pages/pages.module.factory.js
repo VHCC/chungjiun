@@ -162,6 +162,16 @@
                 },
             }
         }])
+        .factory('WorkHourAddItemUtil', ['$http', function (http) {
+            return {
+                createWorkHourAddItem: function (formData) {
+                    return http.post('/api/post_work_hour_work_add_create_item', formData);
+                },
+                getWorkHourItems: function (formData) {
+                    return http.post('/api/post_work_hour_work_add_get_items', formData);
+                }
+            }
+        }])
         .factory('ProjectUtil', function () {
             return {
                 getTypeText: function (type) {

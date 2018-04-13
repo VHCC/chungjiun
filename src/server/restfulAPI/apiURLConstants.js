@@ -39,6 +39,10 @@ global.apiUrl = {
     post_work_hour_table_update_send_review : '/api/updateWorkHourTableFormSendReview',
     post_work_hour_table_update : '/api/post_work_hour_table_update',
 
+    //workHourTable Form Work Add
+    post_work_hour_work_add_create_item : '/api/post_work_hour_work_add_create_item',
+    post_work_hour_work_add_get_items : '/api/post_work_hour_work_add_get_items',
+
     //workOffTable Form
     post_work_off_create_table : '/api/createWorkOffTableForm',
     post_work_off_get : '/api/getWorkOffForm',
