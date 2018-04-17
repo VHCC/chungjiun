@@ -51,12 +51,16 @@
                 $scope.userHourSalary = user.userHourSalary;
             })
 
+        //所有專案
+        var allPrj;
+
         // 主要顯示
         $scope.tablesItems = [];
 
         // 找跟User有關係的
         Project.findAll()
             .success(function (allProjects) {
+                allPrj = allProjects;
                 vm.projects = allProjects;
                 $scope.projectData = [];
                 var prjCount = allProjects.length;
@@ -101,12 +105,13 @@
                 isExecutiveCheck: false,
             };
             $scope.tablesItems.push(inserted);
-            $timeout(function () {
-                $('button[id="btnCreate"]')[0].click();
-            }, 300);
+            $scope.createSubmit(500, true);
+            // $timeout(function () {
+            //     $('button[id="btnCreate"]')[0].click();
+            // }, 300);
         }
 
-        $scope.saveTemp = function() {
+        $scope.saveTemp = function () {
             $timeout(function () {
                 $('button[id="btnCreate"]')[0].click();
             }, 300);
@@ -127,9 +132,10 @@
             // console.log(index)
             $scope.tablesItems.splice(index, 1);
             console.log('removeWorkItem, Index= ' + index);
-            $timeout(function () {
-                $('button[id="btnCreate"]')[0].click();
-            }, 300);
+            $scope.createSubmit(500, true)
+            // $timeout(function () {
+            //     $('button[id="btnCreate"]')[0].click();
+            // }, 300);
         };
 
         editableOptions.theme = 'bs3';
@@ -150,6 +156,9 @@
             var getData = {
                 creatorDID: cookies.get('userDID'),
                 create_formDate: $scope.firstFullDate,
+            }
+            if (allPrj !== undefined) {
+                vm.projects = allPrj.slice();
             }
             // console.log($scope.firstFullDate);
             WorkHourUtil.getWorkHourForm(getData)
@@ -172,6 +181,19 @@
                         Project.findPrjByIDArray(formData)
                             .success(function (res) {
                                 $scope.loading = false;
+                                // console.log(res.payload);
+                                vm.projects = [];
+                                for (var outIndex = 0; outIndex < allPrj.length; outIndex++) {
+                                    var isExitst = true;
+                                    for (var index = 0; index < res.payload.length; index++) {
+                                        if (allPrj[outIndex]._id === res.payload[index]._id) {
+                                            isExitst = false;
+                                        }
+                                    }
+                                    if (isExitst) {
+                                        vm.projects.push(allPrj[outIndex]);
+                                    }
+                                }
                             })
                             .error(function () {
                                 console.log('ERROR Project.findPrjByIDArray');
@@ -199,7 +221,7 @@
                                 $scope.tableData = {};
                                 for (var index = 0; index < res.payload.length; index++) {
                                     var detail = {
-                                        tableID:res.payload[index]._id,
+                                        tableID: res.payload[index]._id,
                                         prjDID: res.payload[index].prjDID,
                                         create_formDate: res.payload[index].create_formDate,
                                         //MON
@@ -307,7 +329,7 @@
             ]
             var targetString = obj.$parent.$editable.name
             var result = 0;
-            for (var index = 0; index < stringtable.length; index ++) {
+            for (var index = 0; index < stringtable.length; index++) {
                 if (targetString === stringtable[index]) {
                     continue;
                 }
@@ -335,7 +357,7 @@
             ]
             var targetString = obj.$parent.$editable.name
             var result = 0;
-            for (var index = 0; index < stringtable.length; index ++) {
+            for (var index = 0; index < stringtable.length; index++) {
                 if (targetString === stringtable[index]) {
                     continue;
                 }
@@ -388,7 +410,7 @@
             return selected.length ? selected[0].name : 'Not Set';
         };
 
-        $scope.showCalculateHour =function(tables, type) {
+        $scope.showCalculateHour = function (tables, type) {
             var index = 0;
             var result = 0;
             switch (type) {
@@ -397,43 +419,50 @@
                         result += tables[index].mon_hour;
                         result += tables[index].mon_hour_add;
                     }
-                } break;
+                }
+                    break;
                 case 2: {
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].tue_hour;
                         result += tables[index].tue_hour_add;
                     }
-                } break;
+                }
+                    break;
                 case 3: {
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].wes_hour;
                         result += tables[index].wes_hour_add;
                     }
-                } break;
+                }
+                    break;
                 case 4: {
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].thu_hour;
                         result += tables[index].thu_hour_add;
                     }
-                } break;
+                }
+                    break;
                 case 5: {
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].fri_hour;
                         result += tables[index].fri_hour;
                     }
-                } break;
+                }
+                    break;
                 case 6: {
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].sat_hour;
                         result += tables[index].sat_hour_add;
                     }
-                } break;
+                }
+                    break;
                 case 7: {
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].sun_hour;
                         result += tables[index].sun_hour_add;
                     }
-                } break;
+                }
+                    break;
             }
             return result;
         }
@@ -528,45 +557,60 @@
                     searchType: function () {
                         return type;
                     },
-                    userHourSalary : function () {
+                    userHourSalary: function () {
                         return $scope.userHourSalary;
                     }
 
                 }
             }).result.then(function (table) {
-                switch(type) {
+                switch (type) {
                     case 1 : {
                         table.mon_hour_add = table.totalHourTemp;
-                    }break;
+                    }
+                        break;
                     case 2 : {
                         table.tue_hour_add = table.totalHourTemp;
-                    }break;
+                    }
+                        break;
                     case 3 : {
                         table.wes_hour_add = table.totalHourTemp;
-                    }break;
+                    }
+                        break;
                     case 4 : {
                         table.thu_hour_add = table.totalHourTemp;
-                    }break;
+                    }
+                        break;
                     case 5 : {
                         table.fri_hour_add = table.totalHourTemp;
-                    }break;
+                    }
+                        break;
                     case 6 : {
                         table.sat_hour_add = table.totalHourTemp;
-                    }break;
+                    }
+                        break;
                     case 7 : {
                         table.sun_hour_add = table.totalHourTemp;
-                    }break;
+                    }
+                        break;
                 }
-                $scope.createSubmit(500);
+                $scope.createSubmit(500, false);
             });
         };
 
         // ************************ CREATE SUBMIT ***************************
-        $scope.createSubmit = function (time) {
+        $scope.createSubmit = function (time, isRefreshProjectSelector) {
             return $timeout(function () {
 
                 var workItemCount = $('tbody').length;
                 var workHourTableData = [];
+
+                if (workItemCount === 0) {
+                    if (isRefreshProjectSelector) {
+                        $timeout(function () {
+                            $scope.getTable();
+                        }, 300)
+                    }
+                }
 
                 for (var index = 0; index < workItemCount; index++) {
                     var itemPrjCode = $('tbody').find("span[id^='prjCode']")[index].innerText;
@@ -677,6 +721,9 @@
                         formDataTable = {
                             tableIDArray: workTableIDArray,
                         };
+                        if (isRefreshProjectSelector) {
+                            $scope.getTable();
+                        }
                         // console.log(formDataTable);
                         // console.log($scope.tablesItems);
                     })
