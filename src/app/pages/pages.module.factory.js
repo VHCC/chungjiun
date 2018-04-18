@@ -114,6 +114,9 @@
                 getWorkHourForm: function (formData) {
                     return http.post('/api/getWorkHourForm', formData);
                 },
+                getWorkHourFormForManager: function (formData) {
+                    return http.post('/api/post_work_hour_get_for_manager', formData);
+                },
                 findWorkHourTableFormByTableIDArray: function (formData) {
                     return http.post('/api/post_work_hour_table_find_by_tableid_array', formData);
                 },
