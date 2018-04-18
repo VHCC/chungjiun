@@ -25,6 +25,7 @@
         $scope.table = $scope.$resolve.table;
         $scope.searchType = $scope.$resolve.searchType;
         $scope.userHourSalary = $scope.$resolve.userHourSalary;
+        $scope.editableFlag = $scope.$resolve.editableFlag;
 
         // initial
         $scope.username = cookies.get('username');
@@ -36,11 +37,13 @@
 
         var formData = {
             creatorDID: $scope.userDID,
+            prjDID: $scope.table.prjDID,
             create_formDate: $scope.table.create_formDate,
             day: $scope.searchType,
         }
+        // console.log($scope.table)
         var workAddTableIDArray = [];
-        WorkHourAddItemUtil.getWorkHourItems(formData)
+        WorkHourAddItemUtil.getWorkHourAddItems(formData)
             .success(function (res) {
                 $scope.workAddTablesItems = res.payload;
                 workAddTableIDArray = [];
@@ -48,10 +51,10 @@
                 for (var index = 0; index < res.payload.length; index++) {
                     workAddTableIDArray[index] = res.payload[index]._id;
                 }
-                console.log(workAddTableIDArray);
+                // console.log(workAddTableIDArray);
             })
             .error(function () {
-                console.log('ERROR  WorkHourAddItemUtil.getWorkHourItem')
+                console.log('ERROR  WorkHourAddItemUtil.getWorkHourAddItems')
             })
 
         $scope.addWorkAddItem = function () {
@@ -60,7 +63,7 @@
                 workAddType: -1,
                 create_formDate: $scope.table.create_formDate,
                 prjDID: $scope.table.prjDID,
-                month: (new Date($scope.table.create_formDate).getMonth() +1),
+                month: (new Date($scope.table.create_formDate).getMonth() + 1),
                 day: $scope.searchType,
                 start_time: "",
                 end_time: "",
@@ -70,11 +73,15 @@
             $scope.workAddTablesItems.push(inserted);
         }
 
-        $scope.setWorkAddType = function(table, type) {
+        $scope.removeWorkAddItem = function (index) {
+            $scope.workAddTablesItems.splice(index, 1);
+        };
+
+        $scope.setWorkAddType = function (table, type) {
             table.workAddType = type;
         }
 
-        $scope.showTotalAddHour = function(tables) {
+        $scope.showTotalAddHour = function (tables) {
             var result = 0;
             for (var index = 0; index < tables.length; index++) {
                 result += $scope.getHourDiffByTime(tables[index].start_time, tables[index].end_time)
@@ -134,6 +141,7 @@
                 return result;
             }
         }
+
         function toSeconds(time_str) {
             // Extract hours, minutes and seconds
             var parts = time_str.split(':');
@@ -145,23 +153,14 @@
 
         // **************** time section ********************
 
-
         $scope.saveWorkAddItem = function (button) {
             button.currentTarget.innerText = "saving...";
-            var formData = {
+            var data = {
+                table: $scope.table,
                 formTables: $scope.workAddTablesItems,
                 oldTables: workAddTableIDArray,
-            }
-
-            WorkHourAddItemUtil.createWorkHourAddItem(formData)
-                .success(function (res) {
-
-                })
-                .error(function () {
-                    console.log('ERROR WorkHourAddItemUtil.createWorkHourAddItem')
-                })
-
-            $uibModalInstance.close($scope.table);
+            };
+            $uibModalInstance.close(data);
         };
     }
 

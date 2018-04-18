@@ -25,18 +25,31 @@
                     <td rowspan="2" style="vertical-align: inherit; text-align: center">
                         <span id="prjCode">{{parent.showPrjCode(table.prjDID)}}</span>
                         <span style="display: none;" id="prjDID">{{prjDID}}</span>
+                        <br>
+                        <button class="btn btn-danger editable-table-button btn-xs"
+                                ng-show="editableFlag"
+                                ng-click="removeWorkAddItem($index);">
+                            移除
+                        </button>
                     </td>
                     <!--事由-->
                     <td style="vertical-align: inherit; text-align: center">
-                        <input type="text" class="form-control " value="{{table.reason}}">
+                        <input type="text"
+                               ng-model="table.reason"
+                               ng-show="editableFlag"
+                               class="form-control "
+                               value="{{table.reason}}">
+                        <my ng-show="!editableFlag">
+                            {{table.reason}}
+                        </my>
                     </td>
                     <!--時間-->
                     <td class="form-group" style="vertical-align: inherit; text-align: center">
-                        <my ng-show="!table.isSendReview">
+                        <my ng-show="editableFlag">
                             <my-time-picker myFormatTime="HH:mm" start="{{table.start_time}}"
                                             end="{{table.end_time}}"></my-time-picker>
                         </my>
-                        <my ng-show="table.isSendReview">
+                        <my ng-show="!editableFlag">
                             {{table.start_time}} - {{table.end_time}}
                         </my>
                     </td>
@@ -46,11 +59,12 @@
                     </td>
                     <!--類型-->
                     <td class="form-group" style="vertical-align: inherit; text-align: center">
-                        <my ng-show="!table.isSendReview">
+                        <my >
                             <div >
                                 <label class=" custom-radio nowrap">
                                     <input type="radio" name="inlineRadioOptions{{$index}}"
                                            id="inlineRadio1"
+                                           ng-disabled="!editableFlag"
                                            ng-checked="table.workAddType == 1"
                                            ng-click="setWorkAddType(table, 1)">
                                     <span>加班</span>
@@ -61,13 +75,12 @@
                                 <label class=" custom-radio nowrap">
                                     <input type="radio" name="inlineRadioOptions{{$index}}"
                                            id="inlineRadio2"
+                                           ng-disabled="!editableFlag"
                                            ng-checked="table.workAddType == 2"
                                            ng-click="setWorkAddType(table, 2)">
                                     <span>換休</span>
                                 </label>
                             </div>
-                        </my>
-                        <my ng-show="table.isSendReview">
                         </my>
                     </td>
 
@@ -92,14 +105,14 @@
 
             </table>
         </div>
-        <div style="margin-left: 20px">
+        <div style="margin-left: 20px" ng-show="editableFlag">
             <button type="button"
                     ng-click="addWorkAddItem(workAddTablesItems)"
                     class="btn btn-info btn-icon">
                 <i class="ion-plus-round"/>
             </button>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer" ng-show="editableFlag">
             <button type="button" class="btn btn-primary" ng-click="saveWorkAddItem($event)">確定</button>
         </div>
     </form>
