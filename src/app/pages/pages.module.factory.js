@@ -167,8 +167,11 @@
                 createWorkHourAddItem: function (formData) {
                     return http.post('/api/post_work_hour_work_add_create_item', formData);
                 },
-                getWorkHourItems: function (formData) {
+                getWorkHourAddItems: function (formData) {
                     return http.post('/api/post_work_hour_work_add_get_items', formData);
+                },
+                removeRelatedAddItemByProject: function (formData) {
+                    return http.post('/api/post_work_hour_work_remove_related_work_add_items', formData);
                 }
             }
         }])

@@ -19,6 +19,7 @@
                 'ProjectUtil',
                 'DateUtil',
                 'WorkHourUtil',
+                'WorkHourAddItemUtil',
                 'editableOptions',
                 'editableThemes',
                 WorkHourTableCtrl
@@ -36,6 +37,7 @@
                                ProjectUtil,
                                DateUtil,
                                WorkHourUtil,
+                               WorkHourAddItemUtil,
                                editableOptions,
                                editableThemes) {
         var vm = this;
@@ -128,14 +130,36 @@
                 }
             });
 
-        $scope.removeWorkItem = function (index) {
+        // Remove Work Hour Check
+        $scope.deleteCheck = function (table, index) {
+            $scope.checkText = '確定移除 ' + $scope.showPrjName(table.prjDID) + "  ？";
+            $scope.checkingTable = table;
+            $scope.mIndex = index;
+            ngDialog.open({
+                template: 'app/pages/myModalTemplate/myWorkHourTableFormDeleteModal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+
+        $scope.removeWorkItem = function (table, index) {
             // console.log(index)
             $scope.tablesItems.splice(index, 1);
-            console.log('removeWorkItem, Index= ' + index);
-            $scope.createSubmit(500, true)
-            // $timeout(function () {
-            //     $('button[id="btnCreate"]')[0].click();
-            // }, 300);
+
+            var formData = {
+                creatorDID: cookies.get('userDID'),
+                prjDID: table.prjDID,
+                create_formDate: table.create_formDate,
+            }
+
+            WorkHourAddItemUtil.removeRelatedAddItemByProject(formData)
+                .success(function (res) {
+                    $scope.createSubmit(500, true);
+                })
+                .error(function () {
+                    console.log("ERROR WorkHourAddItemUtil.removeRelatedAddItemByProject");
+                })
         };
 
         editableOptions.theme = 'bs3';
@@ -530,7 +554,7 @@
         }
 
         $scope.sendTable = function (checkingTable, checkingButton) {
-            console.log(checkingTable);
+            // console.log(checkingTable);
             checkingButton.rowform1.$waiting = true;
             var formData = {
                 tableID: checkingTable.tableID,
@@ -541,8 +565,18 @@
                 })
         }
 
+        $scope.showWorkAddCheck = function(hours, table, type) {
+            if (hours === 0) {
+                // console.log(0);
+            } else {
+                if (!this.rowform1.$visible) {
+                    $scope.showWorkAddModal(table, type, false);
+                }
+            }
+        }
+
         // SHOW Work Add Form
-        $scope.showWorkAddModal = function (table, type) {
+        $scope.showWorkAddModal = function (table, type, editable) {
             $uibModal.open({
                 animation: true,
                 controller: 'MyWorkHourTable_AddHourModalCtrl',
@@ -559,43 +593,58 @@
                     },
                     userHourSalary: function () {
                         return $scope.userHourSalary;
+                    },
+                    editableFlag: function () {
+                        return editable;
                     }
 
                 }
-            }).result.then(function (table) {
-                switch (type) {
-                    case 1 : {
-                        table.mon_hour_add = table.totalHourTemp;
-                    }
-                        break;
-                    case 2 : {
-                        table.tue_hour_add = table.totalHourTemp;
-                    }
-                        break;
-                    case 3 : {
-                        table.wes_hour_add = table.totalHourTemp;
-                    }
-                        break;
-                    case 4 : {
-                        table.thu_hour_add = table.totalHourTemp;
-                    }
-                        break;
-                    case 5 : {
-                        table.fri_hour_add = table.totalHourTemp;
-                    }
-                        break;
-                    case 6 : {
-                        table.sat_hour_add = table.totalHourTemp;
-                    }
-                        break;
-                    case 7 : {
-                        table.sun_hour_add = table.totalHourTemp;
-                    }
-                        break;
+            }).result.then(function (data) {
+                var formData = {
+                    formTables: data.formTables,
+                    oldTables: data.oldTables,
                 }
-                $scope.createSubmit(500, false);
+                // console.log(formData);
+                WorkHourAddItemUtil.createWorkHourAddItem(formData)
+                    .success(function (res) {
+                        switch (type) {
+                            case 1 : {
+                                table.mon_hour_add = table.totalHourTemp;
+                            }
+                                break;
+                            case 2 : {
+                                table.tue_hour_add = table.totalHourTemp;
+                            }
+                                break;
+                            case 3 : {
+                                table.wes_hour_add = table.totalHourTemp;
+                            }
+                                break;
+                            case 4 : {
+                                table.thu_hour_add = table.totalHourTemp;
+                            }
+                                break;
+                            case 5 : {
+                                table.fri_hour_add = table.totalHourTemp;
+                            }
+                                break;
+                            case 6 : {
+                                table.sat_hour_add = table.totalHourTemp;
+                            }
+                                break;
+                            case 7 : {
+                                table.sun_hour_add = table.totalHourTemp;
+                            }
+                                break;
+                        }
+                        $scope.createSubmit(500, false);
+                    })
+                    .error(function () {
+                        console.log('ERROR WorkHourAddItemUtil.createWorkHourAddItem')
+                    })
             });
         };
+
 
         // ************************ CREATE SUBMIT ***************************
         $scope.createSubmit = function (time, isRefreshProjectSelector) {

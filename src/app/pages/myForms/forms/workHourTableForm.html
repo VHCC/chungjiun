@@ -1,6 +1,12 @@
 <!--<div class="add-row-editable-table">-->
 <!--<button class="btn btn-primary" ng-click="addWorkItem()">新增項目</button>-->
 <!--</div>-->
+<style type='text/css'>
+    .workAdd {
+        cursor: pointer;
+    }
+</style>
+
 <uib-tabset active="$tabSetStatus.activeTab">
     <uib-tab heading="個人填寫">
         <div class="row"
@@ -85,7 +91,8 @@
                     <br>
                     <button class="btn btn-danger editable-table-button btn-xs"
                             ng-show="!rowform1.$waiting && !table.isSendReview"
-                            ng-click="removeWorkItem($index);">移除
+                            ng-click="deleteCheck(table, $index);">
+                        移除
                     </button>
                 </td>
                 <td rowspan="2" style="vertical-align: inherit; text-align: center">
@@ -280,7 +287,12 @@
             </tr>
             <!--加班 / 換休-->
             <tr class="row1" style="vertical-align: inherit; text-align: center">
-                <td class="form-group has-success" style="vertical-align: inherit;">
+                <td class="form-group has-success"
+                    ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.mon_hour_add > 0)"
+                    ng-click="showWorkAddCheck(table.mon_hour_add, table, 1)"
+                    ng-mouseleave="hover = false"
+                    style="vertical-align: inherit;">
                     <span editable-number="table.mon_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
@@ -290,7 +302,7 @@
                           e-required>{{ table.mon_hour_add || 0}}</span>
                     <button type="button" ng-disabled="rowform1.$waiting"
                             ng-show="rowform1.$visible"
-                            ng-click="showWorkAddModal(table, 1)"
+                            ng-click="showWorkAddModal(table, 1, true)"
                             class="btn btn-primary editable-table-button btn-xs">
                         {{ table.mon_hour_add || 0}}
                     </button>
@@ -301,7 +313,12 @@
                          id="mon_memo_add"
                          e-required>{{ table.mon_memo_add}}</span>
                 </td>
-                <td class="form-group has-success" style="vertical-align: inherit;">
+                <td class="form-group has-success"
+                    ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.tue_hour_add > 0)"
+                    ng-click="showWorkAddCheck(table.tue_hour_add, table, 2)"
+                    ng-mouseleave="hover = false"
+                    style="vertical-align: inherit;">
                     <span editable-number="table.tue_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
@@ -311,7 +328,7 @@
                           e-required>{{ table.tue_hour_add || 0}}</span>
                     <button type="button" ng-disabled="rowform1.$waiting"
                             ng-show="rowform1.$visible"
-                            ng-click="showWorkAddModal(table, 2)"
+                            ng-click="showWorkAddModal(table, 2, true)"
                             class="btn btn-primary editable-table-button btn-xs">
                         {{ table.tue_hour_add || 0}}
                     </button>
@@ -322,7 +339,12 @@
                           id="tue_memo_add"
                           e-required>{{ table.tue_memo_add}}</span>
                 </td>
-                <td class="form-group has-success" style="vertical-align: inherit;">
+                <td class="form-group has-success"
+                    ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.wes_hour_add > 0)"
+                    ng-click="showWorkAddCheck(table.wes_hour_add, table, 3)"
+                    ng-mouseleave="hover = false"
+                    style="vertical-align: inherit;">
                     <span editable-number="table.wes_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
@@ -332,7 +354,7 @@
                           e-required>{{ table.wes_hour_add || 0}}</span>
                     <button type="button" ng-disabled="rowform1.$waiting"
                             ng-show="rowform1.$visible"
-                            ng-click="showWorkAddModal(table, 3)"
+                            ng-click="showWorkAddModal(table, 3, true)"
                             class="btn btn-primary editable-table-button btn-xs">
                         {{ table.wes_hour_add || 0}}
                     </button>
@@ -343,7 +365,12 @@
                           id="wes_memo_add"
                           e-required>{{ table.wes_memo_add}}</span>
                 </td>
-                <td class="form-group has-success" style="vertical-align: inherit;">
+                <td class="form-group has-success"
+                    ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.thu_hour_add > 0)"
+                    ng-click="showWorkAddCheck(table.thu_hour_add, table, 4)"
+                    ng-mouseleave="hover = false"
+                    style="vertical-align: inherit;">
                     <span editable-number="table.thu_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
@@ -353,7 +380,7 @@
                           e-required>{{ table.thu_hour_add || 0}}</span>
                     <button type="button" ng-disabled="rowform1.$waiting"
                             ng-show="rowform1.$visible"
-                            ng-click="showWorkAddModal(table, 4)"
+                            ng-click="showWorkAddModal(table, 4, true)"
                             class="btn btn-primary editable-table-button btn-xs">
                         {{ table.thu_hour_add || 0}}
                     </button>
@@ -364,7 +391,12 @@
                           id="thu_memo_add"
                           e-required>{{ table.thu_memo_add}}</span>
                 </td>
-                <td class="form-group has-success" style="vertical-align: inherit;">
+                <td class="form-group has-success"
+                    ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.fri_hour_add > 0)"
+                    ng-click="showWorkAddCheck(table.fri_hour_add, table, 5)"
+                    ng-mouseleave="hover = false"
+                    style="vertical-align: inherit;">
                     <span editable-number="table.fri_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
@@ -374,7 +406,7 @@
                           e-required>{{ table.fri_hour_add || 0}}</span>
                     <button type="button" ng-disabled="rowform1.$waiting"
                             ng-show="rowform1.$visible"
-                            ng-click="showWorkAddModal(table, 5)"
+                            ng-click="showWorkAddModal(table, 5, true)"
                             class="btn btn-primary editable-table-button btn-xs">
                         {{ table.fri_hour_add || 0}}
                     </button>
@@ -385,7 +417,12 @@
                          id="fri_memo_add"
                          e-required>{{ table.fri_memo_add}}</span>
                 </td>
-                <td class="form-group has-success" style="vertical-align: inherit;">
+                <td class="form-group has-success"
+                    ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.sat_hour_add > 0)"
+                    ng-click="showWorkAddCheck(table.sat_hour_add, table, 6)"
+                    ng-mouseleave="hover = false"
+                    style="vertical-align: inherit;">
                     <span editable-number="table.sat_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
@@ -395,7 +432,7 @@
                           e-required>{{ table.sat_hour_add || 0}}</span>
                     <button type="button" ng-disabled="rowform1.$waiting"
                             ng-show="rowform1.$visible"
-                            ng-click="showWorkAddModal(table, 6)"
+                            ng-click="showWorkAddModal(table, 6, true)"
                             class="btn btn-primary editable-table-button btn-xs">
                         {{ table.sat_hour_add || 0}}
                     </button>
@@ -406,7 +443,12 @@
                           id="sat_memo_add"
                           e-required>{{ table.sat_memo_add}}</span>
                 </td>
-                <td class="form-group has-success" style="vertical-align: inherit;">
+                <td class="form-group has-success"
+                    ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.sun_hour_add > 0)"
+                    ng-click="showWorkAddCheck(table.sun_hour_add, table, 7)"
+                    ng-mouseleave="hover = false"
+                    style="vertical-align: inherit;">
                     <span editable-number="table.sun_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
@@ -416,7 +458,7 @@
                           e-required>{{ table.sun_hour_add || 0}}</span>
                     <button type="button" ng-disabled="rowform1.$waiting"
                             ng-show="rowform1.$visible"
-                            ng-click="showWorkAddModal(table, 7)"
+                            ng-click="showWorkAddModal(table, 7, true)"
                             class="btn btn-primary editable-table-button btn-xs">
                         {{ table.sun_hour_add || 0}}
                     </button>

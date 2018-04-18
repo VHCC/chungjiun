@@ -27,19 +27,26 @@ module.exports = function (app) {
         }
 
         if (req.body.hasOwnProperty('formTables')) {
-            for (var index = 0; index < req.body.formTables.length; index++) {
-                WorkHourTableFormWorkAdd.create({
-                    creatorDID: req.body.formTables[index].creatorDID,
-                    workAddType: req.body.formTables[index].workAddType,
-                    create_formDate: req.body.formTables[index].create_formDate,
-                    prjDID: req.body.formTables[index].prjDID,
-                    month: req.body.formTables[index].month,
-                    day: req.body.formTables[index].day,
-                    start_time: req.body.formTables[index].start_time,
-                    end_time: req.body.formTables[index].end_time,
-                    userHourSalary: req.body.formTables[index].userHourSalary,
-                    reason: req.body.formTables[index].reason,
-                })
+            try {
+                for (var index = 0; index < req.body.formTables.length; index++) {
+                    WorkHourTableFormWorkAdd.create({
+                        creatorDID: req.body.formTables[index].creatorDID,
+                        workAddType: req.body.formTables[index].workAddType,
+                        create_formDate: req.body.formTables[index].create_formDate,
+                        prjDID: req.body.formTables[index].prjDID,
+                        month: req.body.formTables[index].month,
+                        day: req.body.formTables[index].day,
+                        start_time: req.body.formTables[index].start_time,
+                        end_time: req.body.formTables[index].end_time,
+                        userHourSalary: req.body.formTables[index].userHourSalary,
+                        reason: req.body.formTables[index].reason,
+                    })
+                }
+            } finally {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
             }
         }
     });
@@ -47,9 +54,10 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_work_hour_work_add_get_items, function (req, res) {
         WorkHourTableFormWorkAdd.find({
             creatorDID: req.body.creatorDID,
+            prjDID: req.body.prjDID,
             create_formDate: req.body.create_formDate,
             day: req.body.day,
-        }, function (err,workAddItems) {
+        }, function (err, workAddItems) {
             if (err) {
                 res.send(err);
             }
@@ -60,5 +68,22 @@ module.exports = function (app) {
             });
         })
     });
+
+    // remove related work add items by project ID
+    app.post(global.apiUrl.post_work_hour_work_remove_related_work_add_items, function (req, res) {
+        WorkHourTableFormWorkAdd.remove({
+            creatorDID: req.body.creatorDID,
+            prjDID: req.body.prjDID,
+            create_formDate: req.body.create_formDate,
+        }, function (err) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        })
+    })
 
 }
