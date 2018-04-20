@@ -672,7 +672,7 @@
         $scope.createSubmit = function (time, isRefreshProjectSelector) {
             return $timeout(function () {
 
-                var workItemCount = $('tbody').length;
+                var workItemCount = $('tbody[id="majorBody"]').length;
                 var workHourTableData = [];
 
                 if (workItemCount === 0) {
@@ -722,6 +722,8 @@
                     var sun_hour_add = $('tbody').find("span[id='sun_hour_add']")[index].innerText;
                     var sun_memo_add = $('tbody').find("span[id='sun_memo_add']")[index].innerText;
 
+                    console.log(index);
+
                     var tableItem = {
                         creatorDID: cookies.get('userDID'),
                         prjDID: itemPrjDID,
@@ -767,7 +769,11 @@
                         isExecutiveCheck: $scope.tablesItems[index].isExecutiveCheck,
 
                     }
-
+                    console.log(index);
+                    console.log(tableItem);
+                    console.log($scope.tablesItems[index].isSendReview);
+                    console.log($scope.tablesItems[index].isManagerCheck);
+                    console.log($scope.tablesItems[index].isExecutiveCheck);
                     workHourTableData.push(tableItem);
                 }
                 // console.log(formDataTable);
@@ -1001,7 +1007,63 @@
                 })
         }
 
+        //專案經理確認
+        $scope.reviewWHManagerItem = function (table, index) {
+            $scope.checkText = '確定 同意：' + vm.manager.selected.name + " " +
+                $scope.showPrjName(table.prjDID) +
+                "  ？";
+            $scope.checkingTable = table;
+            $scope.mIndex = index;
+            ngDialog.open({
+                template: 'app/pages/myModalTemplate/myWorkHourTableFormAgree_ManagerModal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
 
+        $scope.sendWHManagerAgree = function (checkingTable, index) {
+            $scope.tablesManagerItems.splice(index, 1);
+            var formData = {
+                tableID: checkingTable.tableID,
+                isSendReview: null,
+                isManagerCheck: true,
+                isExecutiveCheck: null,
+            }
+            WorkHourUtil.updateWHTable(formData)
+                .success(function (res) {
+                    console.log(res.code);
+                })
+        }
+
+        //專案經理退回
+        $scope.disagreeWHItem_manager = function (table, index) {
+            $scope.checkText = '確定 退回：' + vm.manager.selected.name + " " +
+                $scope.showPrjName(table.prjDID) +
+                "  ？";
+            $scope.checkingTable = table;
+            $scope.mIndex = index;
+            ngDialog.open({
+                template: 'app/pages/myModalTemplate/myWorkHourTableFormDisAgree_ManagerModal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+
+        $scope.sendWHDisagree_manager = function (checkingTable, index) {
+            $scope.tablesManagerItems.splice(index, 1);
+            var formData = {
+                tableID: checkingTable.tableID,
+                isSendReview: false,
+                isManagerCheck: false,
+                isExecutiveCheck: false,
+            }
+            WorkHourUtil.updateWHTable(formData)
+                .success(function (res) {
+                    console.log(res.code);
+                })
+        }
 
         // ********************** 行政確認 *****************************
 
