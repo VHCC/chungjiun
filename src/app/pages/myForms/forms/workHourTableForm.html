@@ -83,7 +83,8 @@
 
             </thead>
 
-            <tbody ng-repeat="table in tablesItems">
+            <tbody id="majorBody"
+                    ng-repeat="table in tablesItems">
             <tr style="vertical-align: inherit; text-align: center">
                 <td rowspan="2" style="vertical-align: inherit; text-align: center">
                     <span id="prjCode">{{showPrjCode(table.prjDID)}}</span>
@@ -218,9 +219,14 @@
                 <!--狀態-->
                 <td style="vertical-align: inherit;" rowspan="2">
                     <!--審查中-->
-                    <div ng-show="rowform1.$waiting || table.isSendReview">
+                    <div ng-show="rowform1.$waiting || (table.isSendReview && (!table.isManagerCheck || !table.isExecutiveCheck))">
                         <button class="btn btn-warning editable-table-button btn-xs">
                             審查中
+                        </button>
+                    </div>
+                    <div ng-show="table.isSendReview && table.isManagerCheck && table.isExecutiveCheck">
+                        <button class="btn btn-success editable-table-button btn-xs">
+                            審查完成
                         </button>
                     </div>
                     <!--可編輯-->
