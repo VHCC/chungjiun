@@ -27,8 +27,8 @@
 
         $('.disableTimeRangesExample').timepicker({
             'disableTimeRanges': [
-                ['1am', '2am'],
-                ['3am', '4:01am']
+                ['12:01pm', '13pm'],
+                ['18"01pm', '19pm']
             ],
             'timeFormat': 'H:i',
             'forceRoundTime': true
