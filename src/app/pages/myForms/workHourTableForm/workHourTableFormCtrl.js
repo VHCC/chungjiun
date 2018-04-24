@@ -510,16 +510,18 @@
                 }
                     break;
             }
-            return result;
+            if (result > 8) {
+                return result + " *";
+            } else {
+                return result;
+            }
         }
 
         // -------------------- Week Methods ---------------------
         $scope.weekShift = 0;
         $scope.firstFullDate = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0);
         $scope.firstDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0));
-        console.log($scope.firstDate)
         $scope.lastDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 6));
-        console.log($scope.lastDate)
         $scope.monDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 0));
         $scope.tueDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 1));
         $scope.wesDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 2));
@@ -619,7 +621,8 @@
                     },
                     editableFlag: function () {
                         return editable;
-                    }
+                    },
+
 
                 }
             }).result.then(function (data) {
@@ -916,6 +919,7 @@
                                             var detail = {
                                                 tableID: res.payload[index]._id,
                                                 prjDID: res.payload[index].prjDID,
+                                                create_formDate: res.payload[index].create_formDate,
                                                 //MON
                                                 mon_hour: res.payload[index].mon_hour,
                                                 mon_memo: res.payload[index].mon_memo,
@@ -1176,6 +1180,7 @@
                                     var detail = {
                                         tableID: res.payload[index]._id,
                                         prjDID: res.payload[index].prjDID,
+                                        create_formDate: res.payload[index].create_formDate,
                                         //MON
                                         mon_hour: res.payload[index].mon_hour,
                                         mon_memo: res.payload[index].mon_memo,

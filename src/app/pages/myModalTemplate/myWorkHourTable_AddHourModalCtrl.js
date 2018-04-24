@@ -41,7 +41,8 @@
             create_formDate: $scope.table.create_formDate,
             day: $scope.searchType,
         }
-        // console.log($scope.table)
+        // console.log(formData);
+        // console.log($scope.table);
         var workAddTableIDArray = [];
         WorkHourAddItemUtil.getWorkHourAddItems(formData)
             .success(function (res) {
@@ -60,7 +61,7 @@
         $scope.addWorkAddItem = function () {
             var inserted = {
                 creatorDID: $scope.userDID,
-                workAddType: -1,
+                workAddType: 1,
                 create_formDate: $scope.table.create_formDate,
                 prjDID: $scope.table.prjDID,
                 month: (new Date($scope.table.create_formDate).getMonth() + 1),
