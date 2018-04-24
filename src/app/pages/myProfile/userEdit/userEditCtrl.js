@@ -80,7 +80,6 @@
 
             UserEditUtil.uploadAvatarImage(uploadData);
 
-
             fileReader.readAsDataUrl(file, $scope)
                 .then(function (result) {
                     $scope.picture = result;
@@ -88,9 +87,7 @@
                 });
         };
 
-
         // notification
-
         $scope.changePassword = function () {
             console.log($scope.password);
             console.log($('[id="inputConfirmPassword"]')[0].value);
@@ -142,7 +139,7 @@
                 bossID: vm.userBoss._id,
             }
 
-            console.log(formData);
+            // console.log(formData);
             User.updateUserProfile(formData)
                 .success(function (res) {
                     toastr['success'](vm.user.selected.name + '人員 資料更新成功', '人事資料變更');
@@ -152,7 +149,7 @@
                 })
         }
 
-        vm.roleOptions = [
+        var options_ragular = [
             {
                 name: "技師",
                 roleType: 1
@@ -173,14 +170,29 @@
                 name: "工讀生",
                 roleType: 5
             },
-                ];
+        ];
+
+        vm.roleOptions = options_ragular;
+
+        vm.roleOptions_executive = [
+            {
+                name: "行政總管",
+                roleType: 100
+            },
+        ];
 
         $scope.selectUserProfile = function (user) {
             vm.userHourSalary = user.userHourSalary;
             // user Role
             var selectedRole = [];
-            if (user.roleType) {
+            if (user.roleType !== 100) {
+                vm.roleOptions = options_ragular;
                 selectedRole = $filter('filter')(vm.roleOptions, {
+                    roleType: user.roleType,
+                });
+            } else if (user.roleType === 100) {
+                vm.roleOptions = vm.roleOptions_executive;
+                selectedRole = $filter('filter')(vm.roleOptions_executive, {
                     roleType: user.roleType,
                 });
             }
@@ -194,7 +206,18 @@
                 });
             }
             vm.userBoss = selectedBoss.length ? selectedBoss[0] : undefined;
+        }
 
+        $scope.showUserStatus = function (user) {
+            if (!user.bossID && user.userHourSalary === 0) {
+                return user.name + " (未設定主管、薪水)"
+            } else if (!user.bossID) {
+                return user.name + " (未設定主管)"
+            } else if (user.userHourSalary === 0) {
+                return user.name + " (未設定薪水)"
+            } else {
+                return user.name;
+            }
         }
     }
 

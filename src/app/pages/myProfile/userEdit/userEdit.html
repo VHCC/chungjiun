@@ -96,7 +96,7 @@
                                 </ui-select-match>
                                 <ui-select-choices
                                         repeat="user in userEditCtrlVm.users | groupSelectpickerOptions: {name: $select.search}">
-                                    <span ng-bind-html="user.name | highlight: $select.search"></span>
+                                    <span ng-bind-html="showUserStatus(user) | highlight: $select.search"></span>
                                 </ui-select-choices>
                             </ui-select>
                         </div>
