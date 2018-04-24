@@ -517,30 +517,31 @@
         $scope.weekShift = 0;
         $scope.firstFullDate = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0);
         $scope.firstDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0));
-        $scope.lastDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 6));
-
-        $scope.monDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 0));
-        $scope.tueDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 1));
-        $scope.wesDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 2));
-        $scope.thuDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 3));
-        $scope.friDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 4));
-        $scope.satDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 5));
-        $scope.sunDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 6));
+        console.log($scope.firstDate)
+        $scope.lastDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 6));
+        console.log($scope.lastDate)
+        $scope.monDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 0));
+        $scope.tueDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 1));
+        $scope.wesDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 2));
+        $scope.thuDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 3));
+        $scope.friDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 4));
+        $scope.satDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 5));
+        $scope.sunDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 6));
 
 
         $scope.addWeek = function () {
             $scope.weekShift++;
             $scope.firstFullDate = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift));
             $scope.firstDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift)));
-            $scope.lastDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 6));
+            $scope.lastDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 6));
 
-            $scope.monDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 0));
-            $scope.tueDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 1));
-            $scope.wesDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 2));
-            $scope.thuDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 3));
-            $scope.friDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 4));
-            $scope.satDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 5));
-            $scope.sunDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 6));
+            $scope.monDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 0));
+            $scope.tueDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 1));
+            $scope.wesDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 2));
+            $scope.thuDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 3));
+            $scope.friDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 4));
+            $scope.satDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 5));
+            $scope.sunDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 6));
             $("[id='btnSubmit']").css('display', 'none');
             $scope.getTable();
         }
@@ -549,15 +550,15 @@
             $scope.weekShift--;
             $scope.firstFullDate = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift));
             $scope.firstDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift)));
-            $scope.lastDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 6));
+            $scope.lastDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 6));
 
-            $scope.monDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 0));
-            $scope.tueDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 1));
-            $scope.wesDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 2));
-            $scope.thuDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 3));
-            $scope.friDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 4));
-            $scope.satDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 5));
-            $scope.sunDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate, 6));
+            $scope.monDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 0));
+            $scope.tueDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 1));
+            $scope.wesDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 2));
+            $scope.thuDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 3));
+            $scope.friDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 4));
+            $scope.satDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 5));
+            $scope.sunDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 6));
             $("[id='btnSubmit']").css('display', 'none');
             $scope.getTable();
         }
@@ -819,30 +820,30 @@
         $scope.weekShift_manager = 0;
         $scope.firstFullDate_manager = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0);
         $scope.firstDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0));
-        $scope.lastDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 6));
+        $scope.lastDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 6));
 
-        $scope.monDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 0));
-        $scope.tueDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 1));
-        $scope.wesDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 2));
-        $scope.thuDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 3));
-        $scope.friDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 4));
-        $scope.satDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 5));
-        $scope.sunDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 6));
+        $scope.monDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 0));
+        $scope.tueDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 1));
+        $scope.wesDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 2));
+        $scope.thuDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 3));
+        $scope.friDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 4));
+        $scope.satDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 5));
+        $scope.sunDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 6));
 
 
         $scope.addWeek_manager = function () {
             $scope.weekShift_manager++;
             $scope.firstFullDate_manager = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_manager));
             $scope.firstDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_manager)));
-            $scope.lastDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 6));
+            $scope.lastDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 6));
 
-            $scope.monDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 0));
-            $scope.tueDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 1));
-            $scope.wesDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 2));
-            $scope.thuDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 3));
-            $scope.friDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 4));
-            $scope.satDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 5));
-            $scope.sunDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 6));
+            $scope.monDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 0));
+            $scope.tueDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 1));
+            $scope.wesDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 2));
+            $scope.thuDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 3));
+            $scope.friDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 4));
+            $scope.satDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 5));
+            $scope.sunDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 6));
             $scope.getTable_manager();
         }
 
@@ -850,15 +851,15 @@
             $scope.weekShift_manager--;
             $scope.firstFullDate_manager = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_manager));
             $scope.firstDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_manager)));
-            $scope.lastDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 6));
+            $scope.lastDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 6));
 
-            $scope.monDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 0));
-            $scope.tueDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 1));
-            $scope.wesDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 2));
-            $scope.thuDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 3));
-            $scope.friDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 4));
-            $scope.satDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 5));
-            $scope.sunDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_manager, 6));
+            $scope.monDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 0));
+            $scope.tueDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 1));
+            $scope.wesDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 2));
+            $scope.thuDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 3));
+            $scope.friDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 4));
+            $scope.satDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 5));
+            $scope.sunDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 6));
             $scope.getTable_manager();
         }
 
@@ -1074,30 +1075,30 @@
         $scope.weekShift_executive = 0;
         $scope.firstFullDate_executive = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0);
         $scope.firstDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0));
-        $scope.lastDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 6));
+        $scope.lastDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 6));
 
-        $scope.monDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 0));
-        $scope.tueDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 1));
-        $scope.wesDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 2));
-        $scope.thuDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 3));
-        $scope.friDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 4));
-        $scope.satDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 5));
-        $scope.sunDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 6));
+        $scope.monDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 0));
+        $scope.tueDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 1));
+        $scope.wesDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 2));
+        $scope.thuDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 3));
+        $scope.friDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 4));
+        $scope.satDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 5));
+        $scope.sunDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 6));
 
 
         $scope.addWeek_executive = function () {
             $scope.weekShift_executive++;
             $scope.firstFullDate_executive = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_executive));
             $scope.firstDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_executive)));
-            $scope.lastDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 6));
+            $scope.lastDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 6));
 
-            $scope.monDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 0));
-            $scope.tueDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 1));
-            $scope.wesDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 2));
-            $scope.thuDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 3));
-            $scope.friDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 4));
-            $scope.satDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 5));
-            $scope.sunDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 6));
+            $scope.monDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 0));
+            $scope.tueDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 1));
+            $scope.wesDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 2));
+            $scope.thuDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 3));
+            $scope.friDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 4));
+            $scope.satDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 5));
+            $scope.sunDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 6));
             $scope.getTable_executive();
         }
 
@@ -1105,15 +1106,15 @@
             $scope.weekShift_executive--;
             $scope.firstFullDate_executive = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_executive));
             $scope.firstDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_executive)));
-            $scope.lastDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 6));
+            $scope.lastDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 6));
 
-            $scope.monDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 0));
-            $scope.tueDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 1));
-            $scope.wesDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 2));
-            $scope.thuDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 3));
-            $scope.friDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 4));
-            $scope.satDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 5));
-            $scope.sunDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate($scope.firstDate_executive, 6));
+            $scope.monDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 0));
+            $scope.tueDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 1));
+            $scope.wesDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 2));
+            $scope.thuDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 3));
+            $scope.friDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 4));
+            $scope.satDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 5));
+            $scope.sunDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 6));
             $scope.getTable_executive();
         }
 
