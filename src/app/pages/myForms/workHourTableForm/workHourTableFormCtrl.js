@@ -330,20 +330,20 @@
 
                                     //Off Day
 
-                                    $scope.monOffTotal += res.payload[index].mon_hour +
-                                        res.payload[index].mon_hour_add;
-                                    $scope.tueOffTotal += res.payload[index].tue_hour +
-                                        res.payload[index].tue_hour_add;
-                                    $scope.wesOffTotal += res.payload[index].wes_hour +
-                                        res.payload[index].wes_hour_add;
-                                    $scope.thuOffTotal += res.payload[index].thu_hour +
-                                        res.payload[index].thu_hour_add;
-                                    $scope.friOffTotal += res.payload[index].fri_hour +
-                                        res.payload[index].fri_hour_add;
-                                    $scope.satOffTotal += res.payload[index].sat_hour +
-                                        res.payload[index].sat_hour_add;
-                                    $scope.sunOffTotal += res.payload[index].sun_hour +
-                                        res.payload[index].sun_hour_add;
+                                    // $scope.monOffTotal += res.payload[index].mon_hour +
+                                    //     res.payload[index].mon_hour_add;
+                                    // $scope.tueOffTotal += res.payload[index].tue_hour +
+                                    //     res.payload[index].tue_hour_add;
+                                    // $scope.wesOffTotal += res.payload[index].wes_hour +
+                                    //     res.payload[index].wes_hour_add;
+                                    // $scope.thuOffTotal += res.payload[index].thu_hour +
+                                    //     res.payload[index].thu_hour_add;
+                                    // $scope.friOffTotal += res.payload[index].fri_hour +
+                                    //     res.payload[index].fri_hour_add;
+                                    // $scope.satOffTotal += res.payload[index].sat_hour +
+                                    //     res.payload[index].sat_hour_add;
+                                    // $scope.sunOffTotal += res.payload[index].sun_hour +
+                                    //     res.payload[index].sun_hour_add;
                                 }
                                 // console.log($scope.tablesItems);
                             })
@@ -463,52 +463,78 @@
                 case 1: {
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].mon_hour;
-                        result += tables[index].mon_hour_add;
+                        // result += tables[index].mon_hour_add;
                     }
                 }
                     break;
                 case 2: {
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].tue_hour;
-                        result += tables[index].tue_hour_add;
+                        // result += tables[index].tue_hour_add;
                     }
                 }
                     break;
                 case 3: {
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].wes_hour;
-                        result += tables[index].wes_hour_add;
+                        // result += tables[index].wes_hour_add;
                     }
                 }
                     break;
                 case 4: {
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].thu_hour;
-                        result += tables[index].thu_hour_add;
+                        // result += tables[index].thu_hour_add;
                     }
                 }
                     break;
                 case 5: {
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].fri_hour;
-                        result += tables[index].fri_hour;
+                        // result += tables[index].fri_hour_add;
                     }
                 }
                     break;
                 case 6: {
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].sat_hour;
-                        result += tables[index].sat_hour_add;
+                        // result += tables[index].sat_hour_add;
                     }
                 }
                     break;
                 case 7: {
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].sun_hour;
-                        result += tables[index].sun_hour_add;
+                        // result += tables[index].sun_hour_add;
                     }
                 }
                     break;
+                case 1001: {
+                    for (index = 0; index < tables.length; index++) {
+                        result += tables[index].mon_hour;
+                        result += tables[index].tue_hour;
+                        result += tables[index].wes_hour;
+                        result += tables[index].thu_hour;
+                        result += tables[index].fri_hour;
+                        result += tables[index].sat_hour;
+                        result += tables[index].sun_hour;
+                    }
+                    return result;
+                }
+                break;
+                case 2001: {
+                    for (index = 0; index < tables.length; index++) {
+                        result += tables[index].mon_hour_add;
+                        result += tables[index].tue_hour_add;
+                        result += tables[index].wes_hour_add;
+                        result += tables[index].thu_hour_add;
+                        result += tables[index].fri_hour_add;
+                        result += tables[index].sat_hour_add;
+                        result += tables[index].sun_hour_add;
+                    }
+                    return result;
+                }
+                break;
             }
             if (result > 8) {
                 return result + " *";

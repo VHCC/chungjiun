@@ -54,51 +54,53 @@
                 // console.log(allProjects);
                 vm.projects = allProjects;
             });
-        
-        User.getAllUsers()
-            .success(function (allUsers) {
-                vm.users = allUsers;
-                if ($scope.roleType === '100') {
-                    vm.executiveUsers = [];
-                    WorkOffFormUtil.fetchAllExecutiveItem()
-                        .success(function (res) {
-                            for (var outIndex = 0; outIndex < res.payload.length; outIndex++) {
-                                // console.log(res.payload[outIndex]);
-                                for (var index = 0; index < allUsers.length; index++) {
-                                    if (res.payload[outIndex]._id === allUsers[index]._id) {
-                                        allUsers[index].excutive_count = res.payload[outIndex].count;
-                                        vm.executiveUsers.push(allUsers[index]);
-                                    }
-                                }
-                            }
-                        })
-                }
 
-                if ($scope.roleType === '2') {
-                    var underling = []
-                    for (var x = 0; x < allUsers.length; x++) {
-                        if (allUsers[x].bossID === cookies.get('userDID')) {
-                            underling.push(allUsers[x]._id)
-                        }
-                    }
-                    var formData = {
-                        underlingArray: underling,
-                    }
-                    vm.bossUsers = [];
-                    WorkOffFormUtil.fetchAllBossItem(formData)
-                        .success(function (res) {
-                            for (var outIndex = 0; outIndex < res.payload.length; outIndex++) {
-                                // console.log(res.payload[outIndex]);
-                                for (var index = 0; index < allUsers.length; index++) {
-                                    if (res.payload[outIndex]._id === allUsers[index]._id) {
-                                        allUsers[index].boss_count = res.payload[outIndex].count;
-                                        vm.bossUsers.push(allUsers[index]);
+        $scope.initUser = function() {
+            User.getAllUsers()
+                .success(function (allUsers) {
+                    vm.users = allUsers;
+                    if ($scope.roleType === '100') {
+                        vm.executiveUsers = [];
+                        WorkOffFormUtil.fetchAllExecutiveItem()
+                            .success(function (res) {
+                                for (var outIndex = 0; outIndex < res.payload.length; outIndex++) {
+                                    // console.log(res.payload[outIndex]);
+                                    for (var index = 0; index < allUsers.length; index++) {
+                                        if (res.payload[outIndex]._id === allUsers[index]._id) {
+                                            allUsers[index].excutive_count = res.payload[outIndex].count;
+                                            vm.executiveUsers.push(allUsers[index]);
+                                        }
                                     }
                                 }
+                            })
+                    }
+
+                    if ($scope.roleType === '2') {
+                        var underling = []
+                        for (var x = 0; x < allUsers.length; x++) {
+                            if (allUsers[x].bossID === cookies.get('userDID')) {
+                                underling.push(allUsers[x]._id)
                             }
-                        })
-                }
-            });
+                        }
+                        var formData = {
+                            underlingArray: underling,
+                        }
+                        vm.bossUsers = [];
+                        WorkOffFormUtil.fetchAllBossItem(formData)
+                            .success(function (res) {
+                                for (var outIndex = 0; outIndex < res.payload.length; outIndex++) {
+                                    // console.log(res.payload[outIndex]);
+                                    for (var index = 0; index < allUsers.length; index++) {
+                                        if (res.payload[outIndex]._id === allUsers[index]._id) {
+                                            allUsers[index].boss_count = res.payload[outIndex].count;
+                                            vm.bossUsers.push(allUsers[index]);
+                                        }
+                                    }
+                                }
+                            })
+                    }
+                });
+        }
 
         User.findManagers()
             .success(function (allManagers) {
@@ -171,7 +173,7 @@
                                 $scope.tableData = {};
                                 for (var index = 0; index < res.payload.length; index++) {
                                     var detail = {
-                                        tableID: workOffTableIDArray[index],
+                                        tableID: res.payload[index]._id,
 
                                         workOffType: res.payload[index].workOffType,
                                         create_formDate: res.payload[index].create_formDate,
@@ -190,7 +192,8 @@
                                     $scope.loginUserTablesItems.push(detail);
 
                                 }
-                                // console.log($scope.loginUserTablesItems);
+                                console.log(workOffTableIDArray);
+                                console.log($scope.loginUserTablesItems);
                             })
                             .error(function () {
                                 console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByTableIDArray');
@@ -337,25 +340,30 @@
         }
 
         // Send WorkOffTable to Review
-        $scope.reviewWorkOffTable = function (table, button) {
+        $scope.reviewWorkOffTable = function (table, button, index) {
             $scope.createSubmit(0);
-            // console.log(table)
-            $scope.checkText = '確定提交 休假：' +
-                DateUtil.getShiftDatefromFirstDate(
-                    DateUtil.getFirstDayofThisWeek(moment(table.create_formDate)),
-                    table.day === 0 ? 6 : table.day - 1) +
-                "  審查？";
-            $scope.checkingTable = table;
-            $scope.checkingButton = button;
-            ngDialog.open({
-                template: 'app/pages/myModalTemplate/myWorkOffTableFormReviewModal.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope,
-                showClose: false,
-            });
+            $timeout(function () {
+                // console.log(table)
+                // console.log($scope.loginUserTablesItems[index]);
+                $scope.checkText = '確定提交 休假：' +
+                    DateUtil.getShiftDatefromFirstDate(
+                        DateUtil.getFirstDayofThisWeek(moment($scope.loginUserTablesItems[index].create_formDate)),
+                        $scope.loginUserTablesItems[index].day === 0 ? 6 : $scope.loginUserTablesItems[index].day - 1) +
+                    "  審查？";
+                $scope.checkingTable = $scope.loginUserTablesItems[index];
+                $scope.checkingButton = button;
+                $scope.checkingIndex = index;
+                ngDialog.open({
+                    template: 'app/pages/myModalTemplate/myWorkOffTableFormReviewModal.html',
+                    className: 'ngdialog-theme-default',
+                    scope: $scope,
+                    showClose: false,
+                });
+            }, 150)
+
         }
 
-        $scope.sendWorkOffTable = function (checkingTable, checkingButton) {
+        $scope.sendWorkOffTable = function (checkingTable, checkingButton, checkingIndex) {
             // console.log(checkingTable);
             checkingButton.rowform1.$waiting = true;
             var formData = {
@@ -363,7 +371,8 @@
             }
             WorkOffFormUtil.updateWorkOffTableSendReview(formData)
                 .success(function (res) {
-                    console.log(res.code);
+                    $scope.loginUserTablesItems[checkingIndex].isSendReview = true;
+                    console.log(res.code + ", sendWorkOffTable");
                 })
         }
 
@@ -391,7 +400,7 @@
             }
             WorkOffFormUtil.updateExecutiveAgree(formData)
                 .success(function (res) {
-                    console.log(res.code);
+                    console.log(res.code + ", sendExecutiveAgree");
                 })
         }
 
@@ -419,7 +428,7 @@
             }
             WorkOffFormUtil.updateDisAgree(formData)
                 .success(function (res) {
-                    console.log(res.code);
+                    console.log(res.code + ", sendDisagree_executive");
                 })
         }
 
@@ -447,7 +456,7 @@
             }
             WorkOffFormUtil.updateBossAgree(formData)
                 .success(function (res) {
-                    console.log(res.code);
+                    console.log(res.code + ", sendBossAgree");
                 })
         }
 
@@ -475,7 +484,7 @@
             }
             WorkOffFormUtil.updateDisAgree(formData)
                 .success(function (res) {
-                    console.log(res.code);
+                    console.log(res.code + ", sendDisagree_boss");
                 })
         }
 
@@ -536,7 +545,7 @@
                         formDataTable = {
                             tableIDArray: workOffTableIDArray,
                         };
-
+                        // console.log($scope.loginUserTablesItems);
                     })
                     .error(function () {
                         console.log('ERROR WorkOffFormUtil.createWrokOffTableForm');
