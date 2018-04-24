@@ -194,6 +194,9 @@
         </td>
         <!--行政確認-->
         <td rowspan="2" style="vertical-align: inherit;">
+            <form editable-form name="rowform1" ng-show="rowform1.$visible"
+                  class="form-buttons form-inline">
+            </form>
             <div ng-show="!table.isExecutiveCheck">
                 <button class="btn btn-info editable-table-button btn-xs"
                         ng-click="reviewWHExecutiveItem(table, $index)"
@@ -213,19 +216,18 @@
     </tr>
     <!--加班欄位-->
     <tr class="row1" style="vertical-align: inherit; text-align: center">
-        <td class="form-group has-success" style="vertical-align: inherit;">
+        <td class="form-group has-success"
+            ng-class="{workAdd: hover}"
+            ng-mouseover="hover = (table.mon_hour_add > 0)"
+            ng-click="showWorkAddCheck(table.mon_hour_add, table, 1)"
+            ng-mouseleave="hover = false"
+            style="vertical-align: inherit;">
                     <span editable-number="table.mon_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
                           id="mon_hour_add"
                           e-required>{{ table.mon_hour_add || 0}}</span>
-            <button type="button" ng-disabled="rowform1.$waiting"
-                    ng-show="rowform1.$visible"
-                    ng-click="showModal(table)"
-                    class="btn btn-primary editable-table-button btn-xs">
-                新增
-            </button>
         </td>
         <td style="vertical-align: inherit;">
                    <span editable-textarea="table.mon_memo_add"
@@ -233,7 +235,12 @@
                          id="mon_memo_add"
                          e-required>{{ table.mon_memo_add}}</span>
         </td>
-        <td class="form-group has-success" style="vertical-align: inherit;">
+        <td class="form-group has-success"
+            ng-class="{workAdd: hover}"
+            ng-mouseover="hover = (table.tue_hour_add > 0)"
+            ng-click="showWorkAddCheck(table.tue_hour_add, table, 2)"
+            ng-mouseleave="hover = false"
+            style="vertical-align: inherit;">
                     <span editable-number="table.tue_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
@@ -247,7 +254,12 @@
                           id="tue_memo_add"
                           e-required>{{ table.tue_memo_add}}</span>
         </td>
-        <td class="form-group has-success" style="vertical-align: inherit;">
+        <td class="form-group has-success"
+            ng-class="{workAdd: hover}"
+            ng-mouseover="hover = (table.wes_hour_add > 0)"
+            ng-click="showWorkAddCheck(table.wes_hour_add, table, 3)"
+            ng-mouseleave="hover = false"
+            style="vertical-align: inherit;">
                     <span editable-number="table.wes_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
@@ -261,7 +273,12 @@
                           id="wes_memo_add"
                           e-required>{{ table.wes_memo_add}}</span>
         </td>
-        <td class="form-group has-success" style="vertical-align: inherit;">
+        <td class="form-group has-success"
+            ng-class="{workAdd: hover}"
+            ng-mouseover="hover = (table.thu_hour_add > 0)"
+            ng-click="showWorkAddCheck(table.thu_hour_add, table, 4)"
+            ng-mouseleave="hover = false"
+            style="vertical-align: inherit;">
                     <span editable-number="table.thu_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
@@ -275,7 +292,12 @@
                           id="thu_memo_add"
                           e-required>{{ table.thu_memo_add}}</span>
         </td>
-        <td class="form-group has-success" style="vertical-align: inherit;">
+        <td class="form-group has-success"
+            ng-class="{workAdd: hover}"
+            ng-mouseover="hover = (table.fri_hour_add > 0)"
+            ng-click="showWorkAddCheck(table.fri_hour_add, table, 5)"
+            ng-mouseleave="hover = false"
+            style="vertical-align: inherit;">
                     <span editable-number="table.fri_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
@@ -289,7 +311,12 @@
                          id="fri_memo_add"
                          e-required>{{ table.fri_memo_add}}</span>
         </td>
-        <td class="form-group has-success" style="vertical-align: inherit;">
+        <td class="form-group has-success"
+            ng-class="{workAdd: hover}"
+            ng-mouseover="hover = (table.sat_hour_add > 0)"
+            ng-click="showWorkAddCheck(table.sat_hour_add, table, 6)"
+            ng-mouseleave="hover = false"
+            style="vertical-align: inherit;">
                     <span editable-number="table.sat_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
@@ -303,7 +330,12 @@
                           id="sat_memo_add"
                           e-required>{{ table.sat_memo_add}}</span>
         </td>
-        <td class="form-group has-success" style="vertical-align: inherit;">
+        <td class="form-group has-success"
+            ng-class="{workAdd: hover}"
+            ng-mouseover="hover = (table.sun_hour_add > 0)"
+            ng-click="showWorkAddCheck(table.sun_hour_add, table, 7)"
+            ng-mouseleave="hover = false"
+            style="vertical-align: inherit;">
                     <span editable-number="table.sun_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
