@@ -534,43 +534,43 @@
                 <!--MON-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        1
+                        0
                     </span>
                 </td>
                 <!--TUE-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        1
+                        0
                     </span>
                 </td>
                 <!--WED-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        1
+                        0
                     </span>
                 </td>
                 <!--THU-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        1
+                        0
                     </span>
                 </td>
                 <!--FRI-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        1
+                        0
                     </span>
                 </td>
                 <!--SAT-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        1
+                        0
                     </span>
                 </td>
                 <!--SUN-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        1
+                        0
                     </span>
                 </td>
             </tr>
@@ -624,6 +624,16 @@
                         {{showCalculateHour(tablesItems, 7)}}
                     </span>
                 </td>
+                <!-- summation-->
+                <td style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesItems, 1001)}}
+                    </span>
+                    <br>
+                    <span>
+                        {{showCalculateHour(tablesItems, 2001)}}
+                    </span>
+                </td>
             </tr>
             </tfoot>
         </table>
@@ -641,7 +651,7 @@
     <uib-tab heading="經理審核" ng-if="roleType === '2'">
         <div ng-include="'app/pages/myForms/forms/workHourTableForm_managerTab.html'"></div>
     </uib-tab>
-    <uib-tab heading="行政確認" ng-if="roleType === '2'">
+    <uib-tab heading="行政確認" ng-if="roleType === '100'">
         <div ng-include="'app/pages/myForms/forms/workHourTableForm_executiveTab.html'"></div>
     </uib-tab>
 </uib-tabset>
