@@ -150,7 +150,7 @@
                 month: thisMonth,
             }
             // console.log($scope.firstFullDate);
-            WorkOffFormUtil.getWorkOffForm(getData)
+            WorkOffFormUtil.fetchUserWorkOffForm(getData)
                 .success(function (res) {
                     if (res.payload.length > 0) {
                         var workItemCount = res.payload[0].formTables.length;
@@ -192,8 +192,8 @@
                                     $scope.loginUserTablesItems.push(detail);
 
                                 }
-                                console.log(workOffTableIDArray);
-                                console.log($scope.loginUserTablesItems);
+                                // console.log(workOffTableIDArray);
+                                // console.log($scope.loginUserTablesItems);
                             })
                             .error(function () {
                                 console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByTableIDArray');
@@ -204,7 +204,7 @@
                     }
                 })
                 .error(function () {
-                    console.log('ERROR WorkOffFormUtil.getWorkOffForm');
+                    console.log('ERROR WorkOffFormUtil.fetchUserWorkOffForm');
                 })
         }
 
@@ -531,7 +531,7 @@
                     oldTables: formDataTable,
                 }
 
-                WorkOffFormUtil.createWrokOffTableForm(formData)
+                WorkOffFormUtil.createWorkOffTableForm(formData)
                     .success(function (res) {
                         // 更新old Table ID Array
                         var workOffTableIDArray = [];
@@ -548,7 +548,7 @@
                         // console.log($scope.loginUserTablesItems);
                     })
                     .error(function () {
-                        console.log('ERROR WorkOffFormUtil.createWrokOffTableForm');
+                        console.log('ERROR WorkOffFormUtil.createWorkOffTableForm');
                     })
 
             }, time);
