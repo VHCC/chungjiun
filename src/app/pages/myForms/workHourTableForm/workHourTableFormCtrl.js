@@ -137,9 +137,7 @@
         }
 
         $scope.saveTemp = function () {
-            $timeout(function () {
-                $('button[id="btnCreate"]')[0].click();
-            }, 300);
+            $scope.createSubmit(500, false);
         }
 
         User.findManagers()
@@ -750,6 +748,13 @@
                             }
                                 break;
                         }
+                        table.hourAddTotal = table.mon_hour_add +
+                            table.tue_hour_add +
+                            table.wes_hour_add +
+                            table.thu_hour_add +
+                            table.fri_hour_add +
+                            table.sat_hour_add +
+                            table.sun_hour_add;
                         $scope.createSubmit(500, false);
                     })
                     .error(function () {
@@ -1031,7 +1036,6 @@
                                                 res.payload[index].fri_hour_add +
                                                 res.payload[index].sat_hour_add +
                                                 res.payload[index].sun_hour_add,
-
                                             };
                                             $scope.tablesManagerItems.push(detail);
 
