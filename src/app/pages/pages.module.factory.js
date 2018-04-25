@@ -130,12 +130,21 @@
         }])
         .factory('WorkOffFormUtil', ['$http', function (http) {
             return {
-                createWrokOffTableForm: function (formData) {
+                // Create form
+                createWorkOffTableForm: function (formData) {
                     return http.post('/api/createWorkOffTableForm', formData);
                 },
-                getWorkOffForm: function (formData) {
-                    return http.post('/api/getWorkOffForm', formData);
+                // get form default
+                fetchUserWorkOffForm: function (formData) {
+                    return http.post('/api/fetchUserWorkOffForm', formData);
                 },
+                findWorkOffTableItemByUserDID_executive: function (formData) {
+                    return http.post('/api/post_work_off_table_item_find_by_user_did_executive', formData);
+                },
+                findWorkOffTableItemByUserDID_boss: function (formData) {
+                    return http.post('/api/post_work_off_table_item_find_by_user_did_boss', formData);
+                },
+
                 findWorkOffTableFormByTableIDArray: function (formData) {
                     return http.post('/api/findWorkOffTableFormByTableIDArray', formData);
                 },
@@ -151,15 +160,11 @@
                 updateDisAgree: function(formData) {
                     return http.post('/api/post_work_off_table_update_disagree', formData);
                 },
-                findWorkOffTableItemByUserDID_executive: function (formData) {
-                    return http.post('/api/post_work_off_table_item_find_by_user_did_executive', formData);
-                },
-                findWorkOffTableItemByUserDID_boss: function (formData) {
-                    return http.post('/api/post_work_off_table_item_find_by_user_did_boss', formData);
-                },
+                //get the count for executive check
                 fetchAllExecutiveItem: function (formData) {
                     return http.post('/api/post_work_off_table_fetch_all_executive', formData);
                 },
+                //get the count for boss check
                 fetchAllBossItem: function (formData) {
                     return http.post('/api/post_work_off_table_fetch_all_boss', formData);
                 },

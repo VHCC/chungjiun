@@ -100,7 +100,7 @@ module.exports = function (app) {
     });
 
     //get form by date
-    app.post(global.apiUrl.post_work_off_get, function (req, res) {
+    app.post(global.apiUrl.post_work_off_table_fetch_all_user, function (req, res) {
         WorkOffForm.find({
             creatorDID: req.body.creatorDID,
             year: req.body.year,
@@ -118,7 +118,7 @@ module.exports = function (app) {
     });
 
     // find table by tableid array
-    app.post(global.apiUrl.post_work_off_table_find_by_tableid_array, function (req, res) {
+    app.post(global.apiUrl.post_work_off_table_find_by_table_id_array, function (req, res) {
         var tableCount = req.body.tableIDArray.length;
         var findData = []
         for (var index = 0; index < tableCount; index++) {
