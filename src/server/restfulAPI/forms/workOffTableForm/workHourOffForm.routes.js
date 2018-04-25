@@ -5,10 +5,8 @@ module.exports = function (app) {
     'use strict';
 
     // ----- define routes
-
     // create Form
     app.post(global.apiUrl.post_work_off_create_table, function (req, res) {
-
         // 刪除既有休假表
         WorkOffForm.remove({
             creatorDID: req.body.creatorDID,
@@ -29,8 +27,7 @@ module.exports = function (app) {
                 }
                 findData.push(target);
             }
-            ;
-            console.log(findData);
+            // console.log(findData);
             // 刪除既有 工時表格
             WorkOffTableForm.remove(
                 {
@@ -127,7 +124,6 @@ module.exports = function (app) {
             }
             findData.push(target);
         }
-        ;
         WorkOffTableForm.find({
             $or: findData,
         }, function (err, tables) {
@@ -298,8 +294,8 @@ module.exports = function (app) {
                 creatorDID: req.body.underlingArray[index],
             }
             findData.push(target);
-        };
-        console.log(findData)
+        }
+        // console.log(findData)
         WorkOffTableForm.aggregate(
             [
                 {
@@ -328,6 +324,33 @@ module.exports = function (app) {
                 });
             }
         )
+    })
+
+
+    // find table by table id array and parameters
+    app.post(global.apiUrl.post_work_off_table_find_by_table_id_array_and_parameters, function (req, res) {
+        var tableCount = req.body.tableIDArray.length;
+        var findData = [];
+        for (var index = 0; index < tableCount; index++) {
+            var target = {
+                _id: req.body.tableIDArray[index],
+                create_formDate: req.body.create_formDate,
+            }
+            findData.push(target);
+        }
+
+        WorkOffTableForm.find({
+            $or: findData,
+        }, function (err, tables) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+                payload: tables,
+            });
+        });
     })
 
 }

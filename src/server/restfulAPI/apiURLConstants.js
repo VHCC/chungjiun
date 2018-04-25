@@ -48,6 +48,7 @@ global.apiUrl = {
     //workOffTable Form
     post_work_off_create_table : '/api/createWorkOffTableForm',
     post_work_off_table_find_by_table_id_array : '/api/findWorkOffTableFormByTableIDArray',
+    post_work_off_table_find_by_table_id_array_and_parameters : '/api/post_work_off_table_find_by_table_id_array_and_parameters',
     post_work_off_table_item_find_by_user_did_executive : '/api/post_work_off_table_item_find_by_user_did_executive',
     post_work_off_table_item_find_by_user_did_boss : '/api/post_work_off_table_item_find_by_user_did_boss',
     post_work_off_table_update_send_review : '/api/updateWorkOffTableFormSendReview',
