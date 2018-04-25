@@ -168,6 +168,11 @@
                 fetchAllBossItem: function (formData) {
                     return http.post('/api/post_work_off_table_fetch_all_boss', formData);
                 },
+
+                // find specify create form date
+                findWorkOffTableFormByTableIDArrayAndParameters: function (formData) {
+                    return http.post('/api/post_work_off_table_find_by_table_id_array_and_parameters', formData);
+                },
             }
         }])
         .factory('WorkHourAddItemUtil', ['$http', function (http) {

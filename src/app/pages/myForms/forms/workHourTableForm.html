@@ -585,53 +585,53 @@
                 <!--MON-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(tablesItems, 1)}}
+                        {{showCalculateHour(tablesItems, 1, 1)}}
                     </span>
                 </td>
                 <!--TUE-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(tablesItems, 2)}}
+                        {{showCalculateHour(tablesItems, 2, 1)}}
                     </span>
                 </td>
                 <!--WED-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(tablesItems, 3)}}
+                        {{showCalculateHour(tablesItems, 3, 1)}}
                     </span>
                 </td>
                 <!--THU-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(tablesItems, 4)}}
+                        {{showCalculateHour(tablesItems, 4, 1)}}
                     </span>
                 </td>
                 <!--FRI-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(tablesItems, 5)}}
+                        {{showCalculateHour(tablesItems, 5, 1)}}
                     </span>
                 </td>
                 <!--SAT-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(tablesItems, 6)}}
+                        {{showCalculateHour(tablesItems, 6, 1)}}
                     </span>
                 </td>
                 <!--SUN-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(tablesItems, 7)}}
+                        {{showCalculateHour(tablesItems, 7, 1)}}
                     </span>
                 </td>
                 <!-- summation-->
                 <td style="text-align: center">
                     <span>
-                        {{showCalculateHour(tablesItems, 1001)}}
+                        {{showCalculateHour(tablesItems, 1001, 1)}}
                     </span>
                     <br>
                     <span>
-                        {{showCalculateHour(tablesItems, 2001)}}
+                        {{showCalculateHour(tablesItems, 2001, 1)}}
                     </span>
                 </td>
             </tr>
@@ -643,12 +643,13 @@
                     style="float: inherit;"
                     id="btnCreate"
                     pb-style="shrink"
-                    class="btn btn-warning">Save
+                    class="btn btn-warning">
+                Save
             </button>
         </section>
 
     </uib-tab>
-    <uib-tab heading="經理審核" ng-if="roleType === '2'">
+    <uib-tab heading="經理審核" ng-if="roleType === '100'">
         <div ng-include="'app/pages/myForms/forms/workHourTableForm_managerTab.html'"></div>
     </uib-tab>
     <uib-tab heading="行政確認" ng-if="roleType === '100'">
