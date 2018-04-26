@@ -69,6 +69,7 @@ global.apiUrl = {
     post_national_holiday_data_form_fetch_all : '/api/post_national_holiday_data_form_fetch_all',
     post_national_holiday_data_form_update : '/api/post_national_holiday_data_form_update',
     post_national_holiday_data_form_remove : '/api/post_national_holiday_data_form_remove',
+    post_national_holiday_data_form_fetch_with_parameters : '/api/post_national_holiday_data_form_fetch_with_parameters',
 
     //userEdit
     post_upload_user_avatatr : '/api/uploadUserAvatar',

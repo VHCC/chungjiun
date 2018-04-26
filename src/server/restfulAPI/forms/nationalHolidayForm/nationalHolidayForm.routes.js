@@ -82,6 +82,21 @@ module.exports = function (app) {
     })
 
     //fetch Holiday with parameters
-
+    app.post(global.apiUrl.post_national_holiday_data_form_fetch_with_parameters, function (req, res) {
+        console.log(JSON.stringify(req.body));
+        NationalHoliday.find({
+            year: req.body.year,
+            create_formDate: req.body.create_formDate,
+        }, function (err, tables) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+                payload: tables,
+            });
+        });
+    })
 
 }

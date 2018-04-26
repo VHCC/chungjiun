@@ -21,6 +21,7 @@
                 'WorkHourUtil',
                 'WorkHourAddItemUtil',
                 'WorkOffFormUtil',
+                'NationalHolidayUtil',
                 'editableOptions',
                 'editableThemes',
                 WorkHourTableCtrl
@@ -40,6 +41,7 @@
                                WorkHourUtil,
                                WorkHourAddItemUtil,
                                WorkOffFormUtil,
+                               NationalHolidayUtil,
                                editableOptions,
                                editableThemes) {
         var vm = this;
@@ -215,6 +217,30 @@
         $scope.satOffTotal_manager = 0;
         $scope.sunOffTotal_manager = 0;
 
+        $scope.monNH = 0;
+        $scope.tueNH = 0;
+        $scope.wesNH = 0;
+        $scope.thuNH = 0;
+        $scope.friNH = 0;
+        $scope.satNH = 0;
+        $scope.sunNH = 0;
+
+        $scope.monNH_executive = 0;
+        $scope.tueNH_executive = 0;
+        $scope.wesNH_executive = 0;
+        $scope.thuNH_executive = 0;
+        $scope.friNH_executive = 0;
+        $scope.satNH_executive = 0;
+        $scope.sunNH_executive = 0;
+
+        $scope.monNH_manager = 0;
+        $scope.tueNH_manager = 0;
+        $scope.wesNH_manager = 0;
+        $scope.thuNH_manager = 0;
+        $scope.friNH_manager = 0;
+        $scope.satNH_manager = 0;
+        $scope.sunNH_manager = 0;
+
         function initialUserTable(type) {
             /**
              *  type
@@ -223,6 +249,14 @@
              *  3: executive
              */
             var stringTable = [
+                "$scope.monNH",
+                "$scope.tueNH",
+                "$scope.wesNH",
+                "$scope.thuNH",
+                "$scope.friNH",
+                "$scope.satNH",
+                "$scope.sunNH",
+
                 "$scope.monOffTotal",
                 "$scope.tueOffTotal",
                 "$scope.wesOffTotal",
@@ -378,6 +412,7 @@
                                     $scope.tablesItems.push(detail);
                                 }
                                 loadWorkOffTable(cookies.get('userDID'), 1);
+                                loadNH(1);
                             })
                             .error(function () {
                                 console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
@@ -492,15 +527,18 @@
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].mon_hour;
                     }
+                    var evalString = "$scope.monNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    eval("result += " + evalString);
                     var evalString = "$scope.monOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
                     eval("result += " + evalString);
-                    // result += $scope.monOffTotal;
                 }
                     break;
                 case 2: {
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].tue_hour;
                     }
+                    var evalString = "$scope.tueNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    eval("result += " + evalString);
                     var evalString = "$scope.tueOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
                     eval("result += " + evalString);
                 }
@@ -509,6 +547,8 @@
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].wes_hour;
                     }
+                    var evalString = "$scope.wesNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    eval("result += " + evalString);
                     var evalString = "$scope.wesOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
                     eval("result += " + evalString);
                 }
@@ -517,6 +557,8 @@
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].thu_hour;
                     }
+                    var evalString = "$scope.thuNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    eval("result += " + evalString);
                     var evalString = "$scope.thuOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
                     eval("result += " + evalString);
                 }
@@ -525,6 +567,8 @@
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].fri_hour;
                     }
+                    var evalString = "$scope.friNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    eval("result += " + evalString);
                     var evalString = "$scope.friOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
                     eval("result += " + evalString);
                 }
@@ -533,6 +577,8 @@
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].sat_hour;
                     }
+                    var evalString = "$scope.satNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    eval("result += " + evalString);
                     var evalString = "$scope.satOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
                     eval("result += " + evalString);
                 }
@@ -541,6 +587,8 @@
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].sun_hour;
                     }
+                    var evalString = "$scope.sunNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    eval("result += " + evalString);
                     var evalString = "$scope.sunOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
                     eval("result += " + evalString);
                 }
@@ -555,6 +603,22 @@
                         result += tables[index].sat_hour;
                         result += tables[index].sun_hour;
                     }
+                    var evalString = "$scope.monNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    eval("result += " + evalString);
+                    var evalString = "$scope.tueNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    eval("result += " + evalString);
+                    var evalString = "$scope.wesNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    eval("result += " + evalString);
+                    var evalString = "$scope.thuNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    eval("result += " + evalString);
+                    var evalString = "$scope.friNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    eval("result += " + evalString);
+                    var evalString = "$scope.satNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    eval("result += " + evalString);
+                    var evalString = "$scope.sunNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    eval("result += " + evalString);
+
+
                     var evalString = "$scope.monOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
                     eval("result += " + evalString);
                     var evalString = "$scope.tueOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
@@ -1026,7 +1090,8 @@
                                             $scope.tablesManagerItems.push(detail);
                                         }
                                     }
-                                    loadWorkOffTable(vm.manager.selected._id, 2)
+                                    loadWorkOffTable(vm.manager.selected._id, 2);
+                                    loadNH(2);
                                 }
                                 // console.log($scope.tablesItems);
                             })
@@ -1244,7 +1309,8 @@
                                     };
                                     $scope.tablesExecutiveItems.push(detail);
                                 }
-                                loadWorkOffTable(vm.executive.selected._id, 3)
+                                loadWorkOffTable(vm.executive.selected._id, 3);
+                                loadNH(3);
                             })
                             .error(function () {
                                 console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
@@ -1317,6 +1383,70 @@
                 })
         }
 
+
+        function loadNH(type) {
+            $scope.nationalHolidayTables = [];
+            var fetchNationalHolidayData = {
+                create_formDate: $scope.firstFullDate,
+                year: thisYear,
+            }
+
+            NationalHolidayUtil.fetchAllNationalHolidaysWithParameter(fetchNationalHolidayData)
+                .success(function (res) {
+                    if (res.payload.length > 0) {
+                        // 填入表單資訊
+                        for (var index = 0; index < res.payload.length; index++) {
+                            var detail = {
+                                tableID: res.payload[index]._id,
+
+                                create_formDate: res.payload[index].create_formDate,
+                                year: res.payload[index].year,
+                                month: res.payload[index].month,
+                                day: res.payload[index].day,
+                                isEnable: res.payload[index].isEnable,
+                            };
+                            $scope.nationalHolidayTables.push(detail);
+                        }
+
+                        for (var index = 0; index < $scope.nationalHolidayTables.length; index++) {
+                            console.log($scope.nationalHolidayTables[index])
+                            if (!$scope.nationalHolidayTables[index].isEnable) continue;
+                            switch ($scope.nationalHolidayTables[index].day) {
+                                case 1:
+                                    var evalString = "$scope.monNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                    eval(evalString + " += 8");
+                                    break;
+                                case 2:
+                                    var evalString = "$scope.tueNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                    eval(evalString + " += 8");
+                                    break;
+                                case 3:
+                                    var evalString = "$scope.wesNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                    eval(evalString + " += 8");
+                                    break;
+                                case 4:
+                                    var evalString = "$scope.thuNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                    eval(evalString + " += 8");
+                                    break;
+                                case 5:
+                                    var evalString = "$scope.friNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                    eval(evalString + " += 8");
+                                    break;
+                                case 6:
+                                    var evalString = "$scope.satNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                    eval(evalString + " += 8");
+                                    break;
+                                case 0:
+                                    var evalString = "$scope.sunNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                    eval(evalString + " += 8");
+                                    break;
+                            }
+                        }
+                    } else {
+                        // res.payload.length == 0
+                    }
+                })
+        }
 
         function loadWorkOffTable(userDID, type) {
             $scope.loginUserWorkOffTables = [];
