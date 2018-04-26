@@ -59,12 +59,16 @@ global.apiUrl = {
     post_work_off_table_fetch_all_executive : '/api/post_work_off_table_fetch_all_executive',
     post_work_off_table_fetch_all_boss : '/api/post_work_off_table_fetch_all_boss',
 
-
-
     // holidayDataForm
     post_holiday_data_form_create : '/api/createHolidayDataForm',
     post_holiday_data_form_find_by_user_did : '/api/findHolidayDataFormByUserDID',
     post_holiday_data_form_update_by_form_id : '/api/updateHolidayDataFormByFormDID',
+
+    // nationalHolidayForm
+    post_national_holiday_data_form_create : '/api/post_national_holiday_data_form_create',
+    post_national_holiday_data_form_fetch_all : '/api/post_national_holiday_data_form_fetch_all',
+    post_national_holiday_data_form_update : '/api/post_national_holiday_data_form_update',
+    post_national_holiday_data_form_remove : '/api/post_national_holiday_data_form_remove',
 
     //userEdit
     post_upload_user_avatatr : '/api/uploadUserAvatar',
