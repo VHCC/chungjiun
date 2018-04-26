@@ -1090,9 +1090,9 @@
                                             $scope.tablesManagerItems.push(detail);
                                         }
                                     }
-                                    loadWorkOffTable(vm.manager.selected._id, 2);
-                                    loadNH(2);
                                 }
+                                loadWorkOffTable(vm.manager.selected._id, 2);
+                                loadNH(2);
                                 // console.log($scope.tablesItems);
                             })
                             .error(function () {
@@ -1409,7 +1409,6 @@
                         }
 
                         for (var index = 0; index < $scope.nationalHolidayTables.length; index++) {
-                            console.log($scope.nationalHolidayTables[index])
                             if (!$scope.nationalHolidayTables[index].isEnable) continue;
                             switch ($scope.nationalHolidayTables[index].day) {
                                 case 1:
