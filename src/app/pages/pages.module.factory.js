@@ -175,6 +175,22 @@
                 },
             }
         }])
+        .factory('NationalHolidayUtil', ['$http', function (http) {
+            return {
+                createNationalHoliday: function (formData) {
+                    return http.post('/api/post_national_holiday_data_form_create', formData);
+                },
+                fetchAllNationalHolidays: function (formData) {
+                    return http.post('/api/post_national_holiday_data_form_fetch_all', formData);
+                },
+                updateNationalHoliday: function (formData) {
+                    return http.post('/api/post_national_holiday_data_form_update', formData);
+                },
+                removeNationalHoliday: function (formData) {
+                    return http.post('/api/post_national_holiday_data_form_remove', formData);
+                }
+            }
+        }])
         .factory('WorkHourAddItemUtil', ['$http', function (http) {
             return {
                 createWorkHourAddItem: function (formData) {

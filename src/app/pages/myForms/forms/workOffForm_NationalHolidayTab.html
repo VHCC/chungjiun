@@ -1,0 +1,56 @@
+<h3 class="with-line">{{year}}年 國定假日表</h3>
+
+<div class="row" ng-init="fetchNationHolidays()">
+    <table class="table table-bordered table-hover table-condensed">
+        <thead>
+        <tr style="white-space:nowrap">
+            <td style="vertical-align: inherit; text-align: center" width="80px"></td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">日期</td>
+            <td style="vertical-align: inherit; text-align: center">星期</td>
+        </tr>
+        </thead>
+        <tbody ng-repeat="table in nationalHolidayTablesItems">
+        <tr style="vertical-align: inherit; text-align: center">
+            <!--序號-->
+            <td style="vertical-align: inherit; text-align: center">
+                <span id="prjCode">{{$index + 1}}</span>
+                <button class="btn btn-danger editable-table-button btn-xs"
+                        ng-show="table.isEnable"
+                        ng-click="removeNationalHoliday(table);">
+                    移除
+                </button>
+                <!--提交-->
+                <div ng-show="!table.isEnable">
+                    <div class="buttons" ng-show="!table.isEnable">
+                        <button class="btn btn-info editable-table-button btn-xs"
+                                ng-click="saveNationalHoliday(table, this) ">
+                            設定
+                        </button>
+                    </div>
+                </div>
+            </td>
+            <!--日期-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <my ng-show="!table.isEnable">
+                    <my-date-picker qwert="MM/dd" old="{{showDate(table)}}"></my-date-picker>
+                </my>
+                <my ng-show="table.isEnable">
+                    {{showDate(table)}}
+                </my>
+            </td>
+            <!--星期-->
+            <td style="vertical-align: inherit; text-align: center">
+                {{showDay(table.day)}}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <button type="button"
+            ng-click="addNationalHolidayItem()"
+            class="btn btn-info btn-icon">
+        <i class="ion-plus-round"/>
+    </button>
+</div>

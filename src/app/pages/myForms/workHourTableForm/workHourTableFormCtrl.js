@@ -1368,7 +1368,6 @@
                                     $scope.loginUserWorkOffTables.push(detail);
 
                                 }
-                                // console.log($scope.loginUserWorkOffTables);
 
                                 for (var index = 0; index < $scope.loginUserWorkOffTables.length; index++) {
                                     if (!$scope.loginUserWorkOffTables[index].isBossCheck || !$scope.loginUserWorkOffTables[index].isExecutiveCheck) continue;
