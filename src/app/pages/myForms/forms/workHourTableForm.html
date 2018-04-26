@@ -42,7 +42,7 @@
             <span class="fa fa-spinner fa-spin fa-3x"></span>
         </p>
         <div>
-            <button type="button" class="btn btn-default btn-icon" ng-click="decreaceWeek()"><i
+            <button type="button" class="btn btn-default btn-icon" ng-click="decreaseWeek()"><i
                     class="ion-chevron-left"></i></button>
             {{firstDate}} ~ {{lastDate}}
             <button type="button" class="btn btn-default btn-icon" ng-click="addWeek()"><i
@@ -649,7 +649,7 @@
         </section>
 
     </uib-tab>
-    <uib-tab heading="經理審核" ng-if="roleType === '100'">
+    <uib-tab heading="經理審核" ng-if="roleType === '2'">
         <div ng-include="'app/pages/myForms/forms/workHourTableForm_managerTab.html'"></div>
     </uib-tab>
     <uib-tab heading="行政確認" ng-if="roleType === '100'">
