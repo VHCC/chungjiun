@@ -5,7 +5,7 @@
             <ui-select ng-model="workHourTableCtrlVm.workAdd.selected"
                        class="btn-group bootstrap-select form-control"
                        ng-disabled="false"
-                       ng-change="getttttt($select.selected)"
+                       ng-change="fetchNationHolidays($select.selected)"
                        append-to-body="true"
                        search-enabled="true">
                 <ui-select-match placeholder="選擇員工">
@@ -67,7 +67,7 @@
         </td>
         <!--工作日-->
         <td class="form-group has-success" style="vertical-align: inherit;">
-            <div ng-show="table.day < 6">
+            <div ng-show="table.day < 6; !table.isNH">
                 <div ng-show="table.addWork > 0">
                     <span ng-show="table.addWork < 2">1.34 * {{table.addWork}}</span>
                     <span ng-show="table.addWork > 2">1.34 * 2</span>
@@ -99,7 +99,15 @@
             </div>
         </td>
         <!--國定假日-->
-        <td style="vertical-align: inherit;">
+        <td class="form-group has-success" style="vertical-align: inherit;">
+            <div ng-show="table.isNH">
+                <div ng-show="table.addWork > 0">
+                    <span ng-show="table.addWork < 2">1.34 * {{table.addWork}}</span>
+                    <span ng-show="table.addWork > 2">1.34 * 2</span>
+                    <br>
+                    <span ng-show="table.addWork > 2">1.66 * {{table.addWork - 2}}</span>
+                </div>
+            </div>
         </td>
         <!--換休-->
         <td class="form-group has-success" style="vertical-align: inherit;">
