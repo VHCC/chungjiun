@@ -1604,7 +1604,44 @@
         }
 
         // **************** 加班單 ****************
-        $scope.getttttt = function (user) {
+        // 主要顯示
+        $scope.nationalHolidayTablesItems = [];
+
+        $scope.fetchNationHolidays = function (user) {
+            $scope.nationalHolidayTablesItems = [];
+            var getData = {
+                year: thisYear,
+            }
+            NationalHolidayUtil.fetchAllNationalHolidays(getData)
+                .success(function (res) {
+                    console.log(res.payload);
+                    if (res.payload.length > 0) {
+                        // 取得 Table Data
+                        for (var index = 0; index < res.payload.length; index++) {
+                            var detail = {
+                                tableID: res.payload[index]._id,
+
+                                create_formDate: res.payload[index].create_formDate,
+                                year: res.payload[index].year,
+                                month: res.payload[index].month,
+                                day: res.payload[index].day,
+                                isEnable: res.payload[index].isEnable,
+                            };
+                            if (detail.isEnable) {
+                                $scope.nationalHolidayTablesItems.push($scope.showDate(detail));
+                            }
+                        }
+                    }
+                    console.log($scope.nationalHolidayTablesItems);
+                    showWorkOffTableData(user);
+                })
+                .error(function () {
+                    console.log('ERROR NationalHolidayUtil.fetchAllNationalHolidays');
+                })
+        }
+
+
+        function showWorkOffTableData(user) {
             // 主要顯示
             $scope.workAddTablesItems = [];
 
@@ -1641,10 +1678,19 @@
                     prjDID: "",
                     // 時薪
                     userHourSalary: 0,
+                    // 國定假日
+                    isNH: false,
                 }
                 if (workAddTable[$scope.showDate(tables[index])] === undefined) {
                     workAddItem.date = $scope.showDate(tables[index]);
                     workAddItem.prjDID = tables[index].prjDID;
+                    for (var subIndex = 0; subIndex < $scope.nationalHolidayTablesItems.length; subIndex ++) {
+                        if (workAddItem.date === $scope.nationalHolidayTablesItems[subIndex]) {
+                            console.log(workAddItem.date);
+                            workAddItem.isNH = true;
+                            break;
+                        }
+                    }
                     workAddItem.day = tables[index].day;
                     workAddItem.userHourSalary = tables[index].userHourSalary;
                     switch(tables[index].workAddType) {
@@ -1662,8 +1708,6 @@
 
                     workAddTable[$scope.showDate(tables[index])] = workAddItem;
                 } else {
-                    console.log($scope.showDate(tables[index]))
-                    console.log(tables[index].workAddType)
                     switch(tables[index].workAddType) {
                         case 1:
                             workAddTable[$scope.showDate(tables[index])].addWork += $scope.getHourDiffByTime(
@@ -1678,7 +1722,6 @@
                     }
                 }
             }
-            console.log(workAddTable);
             $scope.workAddTablesItems = workAddTable;
         }
 
@@ -1720,6 +1763,9 @@
                         break;
                     case 5:
                         // 國定假日
+                        if (array[index].isNH) {
+                            result += array[index].addWork;
+                        }
                         break;
                     case 6:
                         result += array[index].restWork;
@@ -1733,7 +1779,6 @@
                 }
             }
             return result;
-
         }
 
         $scope.showDay = function (day) {
