@@ -250,7 +250,6 @@
                 return DateUtil.getShiftDatefromFirstDate(
                     DateUtil.getFirstDayofThisWeek(moment(table.create_formDate)),
                     table.day === 0 ? 6 : table.day - 1);
-
             }
 
             $scope.showDay = function (day) {

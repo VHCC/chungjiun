@@ -7,6 +7,8 @@ module.exports = mongoose.model('workHourTableFormWorkAdd', {
       type: String,
     },
     // 類別
+    // 1: 加班
+    // 2: 換休
     workAddType: {
         type: Number,
     },
