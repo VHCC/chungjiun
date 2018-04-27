@@ -655,6 +655,9 @@
     <uib-tab heading="行政確認" ng-if="roleType === '100'">
         <div ng-include="'app/pages/myForms/forms/workHourTableForm_executiveTab.html'"></div>
     </uib-tab>
+    <uib-tab heading="加班單" ng-if="roleType === '100'">
+        <div ng-include="'app/pages/myForms/forms/workHourTableForm_executive_workAddTab.html'"></div>
+    </uib-tab>
 </uib-tabset>
 
 

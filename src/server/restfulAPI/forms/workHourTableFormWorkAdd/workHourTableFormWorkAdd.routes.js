@@ -15,7 +15,8 @@ module.exports = function (app) {
                     _id: req.body.oldTables[index],
                 }
                 findData.push(target);
-            };
+            }
+            ;
             WorkHourTableFormWorkAdd.remove(
                 {
                     $or: findData,
@@ -52,12 +53,35 @@ module.exports = function (app) {
     });
 
     app.post(global.apiUrl.post_work_hour_work_add_get_items, function (req, res) {
-        WorkHourTableFormWorkAdd.find({
-            creatorDID: req.body.creatorDID,
-            prjDID: req.body.prjDID,
-            create_formDate: req.body.create_formDate,
-            day: req.body.day,
-        }, function (err, workAddItems) {
+
+        var keyArray = Object.keys(req.body);
+        var query = {};
+        for (var index = 0; index < keyArray.length; index++) {
+            var evalString = "query.";
+            evalString += keyArray[index];
+
+            var evalFooter = "req.body.";
+            evalFooter += keyArray[index];
+            eval(evalString + " = " + evalFooter);
+        }
+        // console.log(query);
+
+        // WorkHourTableFormWorkAdd.find(query, function (err, workAddItems) {
+        //     if (err) {
+        //         res.send(err);
+        //     }
+        //     res.status(200).send({
+        //         code: 200,
+        //         error: global.status._200,
+        //         payload: workAddItems,
+        //     });
+        // })
+        WorkHourTableFormWorkAdd.find(query)
+            .sort({
+                create_formDate: 1,
+                day: 1
+            })
+            .exec(function (err, workAddItems) {
             if (err) {
                 res.send(err);
             }
@@ -66,7 +90,8 @@ module.exports = function (app) {
                 error: global.status._200,
                 payload: workAddItems,
             });
-        })
+        });
+
     });
 
     // remove related work add items by project ID

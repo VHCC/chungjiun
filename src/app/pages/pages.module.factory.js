@@ -261,6 +261,7 @@
                 getDay: function (day) {
                     switch (day) {
                         case 0:
+                        case 7:
                             return "日";
                         case 1:
                             return "一";
