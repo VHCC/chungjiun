@@ -4,11 +4,12 @@ var mongoose = require('mongoose');
 module.exports = mongoose.model('workOffTableForm', {
     //填表人
     creatorDID: {
-      type: String,
+        type: String,
     },
     // 放假類別
     workOffType: {
-      type: Number,
+        type: Number,
+        default: -1
     },
     // 首周
     create_formDate: {
@@ -16,7 +17,7 @@ module.exports = mongoose.model('workOffTableForm', {
     },
     // 年分
     year: {
-      type: Number,
+        type: Number,
     },
     // 月份
     month: {
