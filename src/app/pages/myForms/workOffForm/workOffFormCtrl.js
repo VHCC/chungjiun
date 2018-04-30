@@ -232,18 +232,14 @@
                 };
                 $scope.loginUserTablesItems.push(inserted);
 
-                $timeout(function () {
-                    $('button[id="btnCreate"]')[0].click();
-                }, 10);
+                $scope.createSubmit(0);
             }
 
             $scope.removeHolidayItem = function (index) {
                 // console.log(index)
                 $scope.loginUserTablesItems.splice(index, 1);
                 console.log('removeHolidayItem, Index= ' + index);
-                $timeout(function () {
-                    $('button[id="btnCreate"]')[0].click();
-                }, 10);
+                $scope.createSubmit(0);
             };
 
             $scope.showDate = function (table) {
@@ -517,14 +513,10 @@
                             isBossCheck: tableItem.isBossCheck,
                             isExecutiveCheck: tableItem.isExecutiveCheck,
                             userHourSalary: tableItem.userHourSalary,
-
                         }
-
                         workOffTableData.push(dataItem);
                     }
-
                     // console.log(formDataTable);
-
                     var formData = {
                         creatorDID: $scope.userDID,
                         year: thisYear,
@@ -532,7 +524,6 @@
                         formTables: workOffTableData,
                         oldTables: formDataTable,
                     }
-
                     WorkOffFormUtil.createWorkOffTableForm(formData)
                         .success(function (res) {
                             // 更新old Table ID Array
@@ -541,6 +532,7 @@
                                 for (var index = 0; index < res.payload.length; index++) {
                                     // console.log(res.payload[index]);
                                     workOffTableIDArray[index] = res.payload[index].tableID;
+                                    // $scope.loginUserTablesItems[index] = res.payload[index];
                                     $scope.loginUserTablesItems[index].tableID = res.payload[index].tableID;
                                 }
                             }
@@ -700,7 +692,7 @@
                 }
                 NationalHolidayUtil.fetchAllNationalHolidays(getData)
                     .success(function (res) {
-                        console.log(res.payload);
+                        // console.log(res.payload);
                         if (res.payload.length > 0) {
                             // 取得 Table Data
                             for (var index = 0; index < res.payload.length; index++) {
