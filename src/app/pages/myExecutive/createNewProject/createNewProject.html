@@ -63,6 +63,17 @@
                     </div>
                 </div>
 
+                <div class="form-group" style="display: none" id="setPrjCodeDiv">
+                    <label for="setPrjCode" class="col-md-2 control-label">自訂總案編號</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control"
+                               id="setPrjCode"
+                               ng-model="formData.prj.set.code"
+                               ng-change="triggerChangePrjCode()"
+                               placeholder="請輸入自訂總案編號">
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="projectType" class="col-md-2 control-label">類型</label>
                     <div class="col-md-10">

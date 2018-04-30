@@ -128,14 +128,27 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_project_find_by_name, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, find prj by name");
         Project.findOne({
-                name: req.body.name
-            },
-            function (err, prj) {
-                if (err) {
-                    res.send(err);
-                }
-                res.json(prj);
-            })
+            name: req.body.name
+        }, function (err, prj) {
+            if (err) {
+                res.send(err);
+            }
+            res.json(prj);
+        })
+    });
+
+    app.post(global.apiUrl.post_project_find_by_code, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, find prj by code");
+        console.log(req.body.code)
+        Project.findOne({
+            code: req.body.code
+        }, function (err, prj) {
+            console.log(prj)
+            if (err) {
+                res.send(err);
+            }
+            res.json(prj);
+        })
     });
 
     app.get(global.apiUrl.get_project_find_by_name_distinct, function (req, res) {
@@ -171,7 +184,8 @@ module.exports = function (app) {
                 _id: req.body.prjIDArray[index],
             }
             findData.push(target);
-        };
+        }
+        ;
         Project.find(
             {
                 $or: findData,

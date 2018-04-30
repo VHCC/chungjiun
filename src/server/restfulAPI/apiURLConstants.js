@@ -16,6 +16,7 @@ global.apiUrl = {
     get_project_find_all : '/api/projectFindAll',
     get_project_find_all_by_group : '/api/projectFindAllByGroup',
     post_project_find_by_name : '/api/projectFindByName',
+    post_project_find_by_code : '/api/post_project_find_by_code',
     get_project_find_by_name_distinct : '/api/projectFindByNameDistinct',
     get_project_find_by_prjid : '/api/projectFindByPrjID',
     get_project_find_by_prjid_array : '/api/projectFindByPrjIDArray',
