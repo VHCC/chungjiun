@@ -1,8 +1,14 @@
 <!--<div class="add-row-editable-table">-->
 <!--<button class="btn btn-primary" ng-click="addWorkItem()">新增項目</button>-->
 <!--</div>-->
+<style type='text/css'>
+    .workAdd {
+        cursor: pointer;
+    }
+</style>
+
 <uib-tabset active="$tabSetStatus.activeTab">
-    <uib-tab heading="個人填寫">
+    <uib-tab heading="個人填寫" ng-click="getTable()">
         <div class="row"
              ng-init="getTable()"
              id="rowHead">
@@ -36,7 +42,7 @@
             <span class="fa fa-spinner fa-spin fa-3x"></span>
         </p>
         <div>
-            <button type="button" class="btn btn-default btn-icon" ng-click="decreaceWeek()"><i
+            <button type="button" class="btn btn-default btn-icon" ng-click="decreaseWeek()"><i
                     class="ion-chevron-left"></i></button>
             {{firstDate}} ~ {{lastDate}}
             <button type="button" class="btn btn-default btn-icon" ng-click="addWeek()"><i
@@ -74,18 +80,11 @@
                 <td colspan="2" style="vertical-align: inherit; text-align: center">星期六</td>
                 <td colspan="2" style="vertical-align: inherit; text-align: center">星期日</td>
             </tr>
-            <tr>
-                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
-                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
-                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
-                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
-                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
-                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
-                <td colspan="2" style="vertical-align: inherit; text-align: center">8</td>
-            </tr>
+
             </thead>
 
-            <tbody ng-repeat="table in tablesItems">
+            <tbody id="majorBody"
+                    ng-repeat="table in tablesItems">
             <tr style="vertical-align: inherit; text-align: center">
                 <td rowspan="2" style="vertical-align: inherit; text-align: center">
                     <span id="prjCode">{{showPrjCode(table.prjDID)}}</span>
@@ -93,7 +92,8 @@
                     <br>
                     <button class="btn btn-danger editable-table-button btn-xs"
                             ng-show="!rowform1.$waiting && !table.isSendReview"
-                            ng-click="removeWorkItem($index);">移除
+                            ng-click="deleteCheck(table, $index);">
+                        移除
                     </button>
                 </td>
                 <td rowspan="2" style="vertical-align: inherit; text-align: center">
@@ -219,9 +219,14 @@
                 <!--狀態-->
                 <td style="vertical-align: inherit;" rowspan="2">
                     <!--審查中-->
-                    <div ng-show="rowform1.$waiting || table.isSendReview">
+                    <div ng-show="rowform1.$waiting || (table.isSendReview && (!table.isManagerCheck || !table.isExecutiveCheck))">
                         <button class="btn btn-warning editable-table-button btn-xs">
                             審查中
+                        </button>
+                    </div>
+                    <div ng-show="table.isSendReview && table.isManagerCheck && table.isExecutiveCheck">
+                        <button class="btn btn-success editable-table-button btn-xs">
+                            審查完成
                         </button>
                     </div>
                     <!--可編輯-->
@@ -229,6 +234,7 @@
                         <form editable-form name="rowform1" ng-show="rowform1.$visible"
                               class="form-buttons form-inline">
                             <button type="submit"
+                                    ng-click="saveTemp()"
                                     class="btn btn-primary editable-table-button btn-xs">
                                 暫存
                             </button>
@@ -247,7 +253,7 @@
                 </td>
                 <!--經理確認-->
                 <td rowspan="2" style="vertical-align: inherit;">
-                    <div ng-show="rowform1.$waiting || table.isSendReview">
+                    <div ng-show="rowform1.$waiting || (table.isSendReview && !table.isManagerCheck)">
                         <button class="btn btn-warning editable-table-button btn-xs"
                                 style="color: black">
                             {{ showMajor(table.prjDID)}}
@@ -255,10 +261,18 @@
                             確認作業中
                         </button>
                     </div>
+                    <div ng-show="table.isManagerCheck">
+                        <button class="btn btn-info editable-table-button btn-xs"
+                                style="color: black">
+                            {{ showMajor(table.prjDID)}}
+                            <br>
+                            確認完成
+                        </button>
+                    </div>
                 </td>
                 <!--行政確認-->
                 <td rowspan="2" style="vertical-align: inherit;">
-                    <div ng-show="rowform1.$waiting || table.isSendReview">
+                    <div ng-show="rowform1.$waiting || table.isSendReview && !table.isExecutiveCheck">
                         <button class="btn btn-warning editable-table-button btn-xs"
                                 style="color: black">
                             行政
@@ -266,23 +280,37 @@
                             確認作業中
                         </button>
                     </div>
+                    <div ng-show="table.isExecutiveCheck">
+                        <button class="btn btn-info editable-table-button btn-xs"
+                                style="color: black">
+                            行政
+                            <br>
+                            確認完成
+                        </button>
+                    </div>
                 </td>
 
             </tr>
-            <!--加班欄位-->
+            <!--加班 / 換休-->
             <tr class="row1" style="vertical-align: inherit; text-align: center">
-                <td class="form-group has-success" style="vertical-align: inherit;">
+                <td class="form-group has-success"
+                    ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.mon_hour_add > 0)"
+                    ng-click="showWorkAddCheck(table.mon_hour_add, table, 1)"
+                    ng-mouseleave="hover = false"
+                    style="vertical-align: inherit;">
                     <span editable-number="table.mon_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
+                          e-style="display: none"
                           id="mon_hour_add"
                           e-required>{{ table.mon_hour_add || 0}}</span>
                     <button type="button" ng-disabled="rowform1.$waiting"
                             ng-show="rowform1.$visible"
-                            ng-click="showModal(table)"
+                            ng-click="showWorkAddModal(table, 1, true)"
                             class="btn btn-primary editable-table-button btn-xs">
-                        新增
+                        {{ table.mon_hour_add || 0}}
                     </button>
                 </td>
                 <td style="vertical-align: inherit;">
@@ -291,13 +319,25 @@
                          id="mon_memo_add"
                          e-required>{{ table.mon_memo_add}}</span>
                 </td>
-                <td class="form-group has-success" style="vertical-align: inherit;">
+                <td class="form-group has-success"
+                    ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.tue_hour_add > 0)"
+                    ng-click="showWorkAddCheck(table.tue_hour_add, table, 2)"
+                    ng-mouseleave="hover = false"
+                    style="vertical-align: inherit;">
                     <span editable-number="table.tue_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
+                          e-style="display: none"
                           id="tue_hour_add"
                           e-required>{{ table.tue_hour_add || 0}}</span>
+                    <button type="button" ng-disabled="rowform1.$waiting"
+                            ng-show="rowform1.$visible"
+                            ng-click="showWorkAddModal(table, 2, true)"
+                            class="btn btn-primary editable-table-button btn-xs">
+                        {{ table.tue_hour_add || 0}}
+                    </button>
                 </td>
                 <td style="vertical-align: inherit;">
                     <span editable-textarea="table.tue_memo_add"
@@ -305,13 +345,25 @@
                           id="tue_memo_add"
                           e-required>{{ table.tue_memo_add}}</span>
                 </td>
-                <td class="form-group has-success" style="vertical-align: inherit;">
+                <td class="form-group has-success"
+                    ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.wes_hour_add > 0)"
+                    ng-click="showWorkAddCheck(table.wes_hour_add, table, 3)"
+                    ng-mouseleave="hover = false"
+                    style="vertical-align: inherit;">
                     <span editable-number="table.wes_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
+                          e-style="display: none"
                           id="wes_hour_add"
                           e-required>{{ table.wes_hour_add || 0}}</span>
+                    <button type="button" ng-disabled="rowform1.$waiting"
+                            ng-show="rowform1.$visible"
+                            ng-click="showWorkAddModal(table, 3, true)"
+                            class="btn btn-primary editable-table-button btn-xs">
+                        {{ table.wes_hour_add || 0}}
+                    </button>
                 </td>
                 <td style="vertical-align: inherit;">
                     <span editable-textarea="table.wes_memo_add"
@@ -319,13 +371,25 @@
                           id="wes_memo_add"
                           e-required>{{ table.wes_memo_add}}</span>
                 </td>
-                <td class="form-group has-success" style="vertical-align: inherit;">
+                <td class="form-group has-success"
+                    ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.thu_hour_add > 0)"
+                    ng-click="showWorkAddCheck(table.thu_hour_add, table, 4)"
+                    ng-mouseleave="hover = false"
+                    style="vertical-align: inherit;">
                     <span editable-number="table.thu_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
+                          e-style="display: none"
                           id="thu_hour_add"
                           e-required>{{ table.thu_hour_add || 0}}</span>
+                    <button type="button" ng-disabled="rowform1.$waiting"
+                            ng-show="rowform1.$visible"
+                            ng-click="showWorkAddModal(table, 4, true)"
+                            class="btn btn-primary editable-table-button btn-xs">
+                        {{ table.thu_hour_add || 0}}
+                    </button>
                 </td>
                 <td style="vertical-align: inherit;">
                     <span editable-textarea="table.thu_memo_add"
@@ -333,13 +397,25 @@
                           id="thu_memo_add"
                           e-required>{{ table.thu_memo_add}}</span>
                 </td>
-                <td class="form-group has-success" style="vertical-align: inherit;">
+                <td class="form-group has-success"
+                    ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.fri_hour_add > 0)"
+                    ng-click="showWorkAddCheck(table.fri_hour_add, table, 5)"
+                    ng-mouseleave="hover = false"
+                    style="vertical-align: inherit;">
                     <span editable-number="table.fri_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
+                          e-style="display: none"
                           id="fri_hour_add"
                           e-required>{{ table.fri_hour_add || 0}}</span>
+                    <button type="button" ng-disabled="rowform1.$waiting"
+                            ng-show="rowform1.$visible"
+                            ng-click="showWorkAddModal(table, 5, true)"
+                            class="btn btn-primary editable-table-button btn-xs">
+                        {{ table.fri_hour_add || 0}}
+                    </button>
                 </td>
                 <td style="vertical-align: inherit;">
                    <span editable-textarea="table.fri_memo_add"
@@ -347,13 +423,25 @@
                          id="fri_memo_add"
                          e-required>{{ table.fri_memo_add}}</span>
                 </td>
-                <td class="form-group has-success" style="vertical-align: inherit;">
+                <td class="form-group has-success"
+                    ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.sat_hour_add > 0)"
+                    ng-click="showWorkAddCheck(table.sat_hour_add, table, 6)"
+                    ng-mouseleave="hover = false"
+                    style="vertical-align: inherit;">
                     <span editable-number="table.sat_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
+                          e-style="display: none"
                           id="sat_hour_add"
                           e-required>{{ table.sat_hour_add || 0}}</span>
+                    <button type="button" ng-disabled="rowform1.$waiting"
+                            ng-show="rowform1.$visible"
+                            ng-click="showWorkAddModal(table, 6, true)"
+                            class="btn btn-primary editable-table-button btn-xs">
+                        {{ table.sat_hour_add || 0}}
+                    </button>
                 </td>
                 <td style="vertical-align: inherit;">
                     <span editable-textarea="table.sat_memo_add"
@@ -361,13 +449,25 @@
                           id="sat_memo_add"
                           e-required>{{ table.sat_memo_add}}</span>
                 </td>
-                <td class="form-group has-success" style="vertical-align: inherit;">
+                <td class="form-group has-success"
+                    ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.sun_hour_add > 0)"
+                    ng-click="showWorkAddCheck(table.sun_hour_add, table, 7)"
+                    ng-mouseleave="hover = false"
+                    style="vertical-align: inherit;">
                     <span editable-number="table.sun_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
+                          e-style="display: none"
                           id="sun_hour_add"
                           e-required>{{ table.sun_hour_add || 0}}</span>
+                    <button type="button" ng-disabled="rowform1.$waiting"
+                            ng-show="rowform1.$visible"
+                            ng-click="showWorkAddModal(table, 7, true)"
+                            class="btn btn-primary editable-table-button btn-xs">
+                        {{ table.sun_hour_add || 0}}
+                    </button>
                 </td>
                 <td style="vertical-align: inherit;">
                     <span editable-textarea="table.sun_memo_add"
@@ -387,7 +487,7 @@
             <tfoot>
             <!--休假-->
             <tr>
-                <td colspan="2" rowspan="2"></td>
+                <td colspan="2" rowspan="3"></td>
 
                 <td colspan="2">
                     <span>
@@ -434,43 +534,104 @@
                 <!--MON-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        1
+                        {{monNH}}
                     </span>
                 </td>
                 <!--TUE-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        1
+                        {{tueNH}}
                     </span>
                 </td>
                 <!--WED-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        1
+                        {{wesNH}}
                     </span>
                 </td>
                 <!--THU-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        1
+                        {{thuNH}}
                     </span>
                 </td>
                 <!--FRI-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        1
+                        {{friNH}}
                     </span>
                 </td>
                 <!--SAT-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        1
+                        {{satNH}}
                     </span>
                 </td>
                 <!--SUN-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        1
+                        {{sunNH}}
+                    </span>
+                </td>
+            </tr>
+
+            <!--小計-->
+            <tr>
+                <td colspan="2">
+                    <span>
+                        小計
+                    </span>
+                </td>
+                <!--MON-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesItems, 1, 1)}}
+                    </span>
+                </td>
+                <!--TUE-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesItems, 2, 1)}}
+                    </span>
+                </td>
+                <!--WED-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesItems, 3, 1)}}
+                    </span>
+                </td>
+                <!--THU-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesItems, 4, 1)}}
+                    </span>
+                </td>
+                <!--FRI-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesItems, 5, 1)}}
+                    </span>
+                </td>
+                <!--SAT-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesItems, 6, 1)}}
+                    </span>
+                </td>
+                <!--SUN-->
+                <td colspan="2" style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesItems, 7, 1)}}
+                    </span>
+                </td>
+                <!-- summation-->
+                <td style="text-align: center">
+                    <span>
+                        {{showCalculateHour(tablesItems, 1001, 1)}}
+                    </span>
+                    <br>
+                    <span>
+                        {{showCalculateHour(tablesItems, 2001, 1)}}
                     </span>
                 </td>
             </tr>
@@ -478,18 +639,24 @@
         </table>
         <hr>
         <section class="col-md-6">
-            <button progress-button="createSubmit()"
+            <button progress-button="createSubmit(1500, false)"
                     style="float: inherit;"
                     id="btnCreate"
                     pb-style="shrink"
-                    class="btn btn-warning">Save
+                    class="btn btn-warning">
+                Save
             </button>
         </section>
 
     </uib-tab>
     <uib-tab heading="經理審核" ng-if="roleType === '2'">
+        <div ng-include="'app/pages/myForms/forms/workHourTableForm_managerTab.html'"></div>
     </uib-tab>
     <uib-tab heading="行政確認" ng-if="roleType === '100'">
+        <div ng-include="'app/pages/myForms/forms/workHourTableForm_executiveTab.html'"></div>
+    </uib-tab>
+    <uib-tab heading="加班單" ng-if="roleType === '100'">
+        <div ng-include="'app/pages/myForms/forms/workHourTableForm_executive_workAddTab.html'"></div>
     </uib-tab>
 </uib-tabset>
 

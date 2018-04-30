@@ -1,8 +1,6 @@
-<!--<div class="add-row-editable-table">-->
-<!--<button class="btn btn-primary" ng-click="addWorkItem()">新增項目</button>-->
-<!--</div>-->
 <uib-tabset active="$tabSetStatus.activeTab">
-    <uib-tab heading="個人填寫" select="getUserHoliday()()">
+    <uib-tab heading="個人填寫" ng-click="getWorkOffTable()"
+             select="getUserHolidayForm()">
         <div class="row">
             <table class="table table-bordered table-hover table-condensed"
                    ng-if="workOffFormCtrlVm.loginUserHolidayForm">
@@ -216,9 +214,9 @@
                 </tbody>
             </table>
         </div>
-        <h3 class="with-line">{{username}} 3月份休假單</h3>
+        <h3 class="with-line">{{username}} {{month}}月份休假單</h3>
 
-        <div class="row">
+        <div class="row" ng-init="getWorkOffTable()">
             <table class="table table-bordered table-hover table-condensed"
                    ng-if="workOffFormCtrlVm.loginUserHolidayForm">
                 <thead>
@@ -228,7 +226,7 @@
                     <td style="vertical-align: inherit; text-align: center">星期</td>
                     <td style="vertical-align: inherit; text-align: center">假別</td>
 
-                    <td style="vertical-align: inherit; text-align: center">時間</td>
+                    <td style="vertical-align: inherit; text-align: center" width="180px">時間</td>
                     <td style="vertical-align: inherit; text-align: center">時數／天數</td>
                     <td style="vertical-align: inherit; text-align: center">狀態</td>
                     <td style="vertical-align: inherit; text-align: center">經理確認</td>
@@ -241,62 +239,96 @@
                     <!--序號-->
                     <td style="vertical-align: inherit; text-align: center">
                         <span id="prjCode">{{$index + 1}}</span>
-                        <br>
                         <button class="btn btn-danger editable-table-button btn-xs"
                                 ng-show="!rowform1.$waiting && !table.isSendReview"
-                                ng-click="removeWorkItem($index);">移除
+                                ng-click="removeHolidayItem($index);">移除
                         </button>
                     </td>
                     <!--日期-->
-                    <td style="vertical-align: inherit; text-align: center">
-                        <my-date-picker format="MM/dd"></my-date-picker>
+                    <td class="form-group" style="vertical-align: inherit; text-align: center">
+                        <my ng-show="!rowform1.$waiting && !table.isSendReview">
+                            <my-date-picker qwert="MM/dd" old="{{showDate(table)}}"></my-date-picker>
+                        </my>
+                        <my ng-show="rowform1.$waiting ||table.isSendReview">
+                            {{showDate(table)}}
+                        </my>
                         <!--{{table.month}} / {{table.day}}-->
                     </td>
                     <!--星期-->
                     <td style="vertical-align: inherit; text-align: center">
-                        {{showDay(table)}}
+                        {{showDay(table.day)}}
                     </td>
                     <!--假別-->
-                    <td style="vertical-align: inherit;">
-                        {{table.workOffType}}
+                    <td class="form-group" style="vertical-align: inherit; text-align: center">
+                        <my ng-show="!rowform1.$waiting && !table.isSendReview">
+                            <my-selector type="{{table.workOffType}}"></my-selector>
+                        </my>
+                        <my ng-show="rowform1.$waiting ||table.isSendReview">
+                            {{showWorkOffTypeString(table.workOffType)}}
+                        </my>
                     </td>
                     <!--時間-->
-                    <td style="vertical-align: inherit;">
+                    <td class="form-group" style="vertical-align: inherit; text-align: center">
+                        <my ng-show="!rowform1.$waiting && !table.isSendReview">
+                            <my-time-picker myFormatTime="HH:mm" start="{{table.start_time}}"
+                                            end="{{table.end_time}}"></my-time-picker>
+                        </my>
+                        <my ng-show="rowform1.$waiting ||table.isSendReview">
+                            {{table.start_time}} - {{table.end_time}}
+                        </my>
                     </td>
                     <!--時數/天數-->
                     <td class="form-group has-success" style="vertical-align: inherit;">
+                        {{table.myHourDiff}}
                     </td>
                     <!--狀態-->
                     <td style="vertical-align: inherit;" rowspan="2">
+                        <form editable-form name="rowform1" ng-show="rowform1.$visible"
+                              class="form-buttons form-inline">
+                        </form>
                         <!--審查中-->
-                        <div ng-show="rowform1.$waiting || table.isSendReview">
+                        <div ng-show="rowform1.$waiting || (table.isSendReview && (!table.isBossCheck || !table.isExecutiveCheck))">
                             <button class="btn btn-warning editable-table-button btn-xs">
                                 審查中
                             </button>
                         </div>
-                        <!--可編輯-->
+                        <!--審查完成-->
+                        <div ng-show="(table.isBossCheck && table.isExecutiveCheck)">
+                            <button class="btn btn-success editable-table-button btn-xs">
+                                審查完成
+                            </button>
+                        </div>
+                        <!--提交-->
                         <div ng-show="!rowform1.$waiting && !table.isSendReview">
                             <div class="buttons" ng-show="!rowform1.$visible">
                                 <button class="btn btn-danger editable-table-button btn-xs"
-                                        ng-click="review(table, this) ">提交審查
+                                        ng-click="reviewWorkOffTable(table, this, $index) ">提交審查
                                 </button>
                             </div>
                         </div>
                     </td>
                     <!--經理確認-->
                     <td rowspan="2" style="vertical-align: inherit;">
-                        <div ng-show="rowform1.$waiting || table.isSendReview">
+                        <div ng-show="rowform1.$waiting || (table.isSendReview && !table.isBossCheck)">
                             <button class="btn btn-warning editable-table-button btn-xs"
                                     style="color: black">
-                                {{ showMajor(table.prjDID)}}
+                                {{ showBoss(bossID)}}
                                 <br>
                                 確認作業中
+                            </button>
+                        </div>
+                        <div ng-show="table.isBossCheck">
+                            <button class="btn btn-info editable-table-button btn-xs"
+                                    style="color: black">
+                                {{ showBoss(bossID)}}
+                                <br>
+                                確認完成
                             </button>
                         </div>
                     </td>
                     <!--行政確認-->
                     <td rowspan="2" style="vertical-align: inherit;">
-                        <div ng-show="rowform1.$waiting || table.isSendReview">
+                        <div ng-show="rowform1.$waiting || table.isSendReview && !table.isExecutiveCheck">
                             <button class="btn btn-warning editable-table-button btn-xs"
                                     style="color: black">
                                 行政
@@ -304,391 +336,66 @@
                                 確認作業中
                             </button>
                         </div>
+                        <div ng-show="table.isExecutiveCheck">
+                            <button class="btn btn-info editable-table-button btn-xs"
+                                    style="color: black">
+                                行政
+                                <br>
+                                確認完成
+                            </button>
+                        </div>
                     </td>
                     <!--請假扣款-->
                     <td style="vertical-align: inherit;">
+                        <!--審查完成-->
+                        <div ng-show="(table.isBossCheck && table.isExecutiveCheck)">
+                            <span>
+                                -{{table.userHourSalary * table.myHourDiff}}
+                            </span>
+                        </div>
                     </td>
 
                 </tr>
                 </tbody>
             </table>
         </div>
-        <button type="button"
-                ng-click="addHolidayItem()"
-                class="btn btn-info btn-icon">
-            <i class="ion-plus-round"/>
-        </button>
-
-    </uib-tab>
-    <uib-tab heading="主管審核" ng-if="roleType === '2'">
-    </uib-tab>
-    <uib-tab heading="行政確認" ng-if="roleType === '100'">
-    </uib-tab>
-    <uib-tab heading="假期確認" ng-if="roleType === '100'" style="color: blue">
-
         <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="userName">選擇員工</label>
-                    <ui-select ng-model="workOffFormCtrlVm.user.selected"
-                               class="btn-group bootstrap-select form-control"
-                               id="userName"
-                               ng-disabled="false"
-                               ng-change="findHolidayFormByUserDID()"
-                               append-to-body="true"
-                               search-enabled="true">
-                        <ui-select-match placeholder="選擇員工">
-                            {{$select.selected.name}}
-                        </ui-select-match>
-                        <ui-select-choices
-                                repeat="user in workOffFormCtrlVm.users | groupSelectpickerOptions: {name: $select.search}">
-                            <span ng-bind-html="user.name | highlight: $select.search"></span>
-                        </ui-select-choices>
-                    </ui-select>
-                </div>
-            </div>
-        </div>
-
-        <table class="table table-bordered table-hover table-condensed" ng-if="workOffFormCtrlVm.user.selected">
-            <thead>
-            <tr style="white-space:nowrap">
-                <td style="vertical-align: inherit; text-align: center" width="100px"></td>
-                <td style="vertical-align: inherit; text-align: center">病假(時)</td>
-                <td style="vertical-align: inherit; text-align: center">事假(時)</td>
-                <td style="vertical-align: inherit; text-align: center">補假(時)</td>
-
-                <td style="vertical-align: inherit; text-align: center">特休(天)</td>
-                <td style="vertical-align: inherit; text-align: center">婚假(時)</td>
-                <td style="vertical-align: inherit; text-align: center">喪假(天)</td>
-                <td style="vertical-align: inherit; text-align: center">公假(時)</td>
-                <td style="vertical-align: inherit; text-align: center">公傷假(天)</td>
-                <td style="vertical-align: inherit; text-align: center">產假(時)</td>
-                <td style="vertical-align: inherit; text-align: center">陪產假(時)</td>
-            </tr>
-            </thead>
-
-            <tbody>
-            <!-- 1 row-->
-            <tr style="vertical-align: inherit; text-align: center">
-                <td style="vertical-align: inherit; text-align: center">
-                    起始日
-                </td>
-
-                <td class="form-group" style="vertical-align: inherit;">
-                    <input type="number"
-                           class="form-control workOffFormNumberInput input-sm"
-                           step="0.5">
-                </td>
-                <td style="vertical-align: inherit;">
-                    <input type="number"
-                           class="form-control workOffFormNumberInput input-sm"
-                           step="0.5">
-                </td>
-                <td style="vertical-align: inherit;">
-                    <input type="number"
-                           class="form-control workOffFormNumberInput input-sm"
-                           step="0.5">
-                </td>
-                <td style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormDateInput input-sm">
-                </td>
-                <td style="vertical-align: inherit;">
-                    <input type="number"
-                           class="form-control workOffFormNumberInput input-sm"
-                           step="0.5">
-                </td>
-                <td style="vertical-align: inherit;">
-                    <input type="number"
-                           class="form-control workOffFormNumberInput input-sm"
-                           step="0.5">
-                </td>
-                <td style="vertical-align: inherit;">
-                    <input type="number"
-                           class="form-control workOffFormNumberInput input-sm"
-                           step="0.5">
-                </td>
-                <td style="vertical-align: inherit;">
-                    <input type="number"
-                           class="form-control workOffFormNumberInput input-sm"
-                           step="0.5">
-                </td>
-                <td style="vertical-align: inherit;">
-                    <input type="number"
-                           class="form-control workOffFormNumberInput input-sm"
-                           step="0.5">
-                </td>
-                <td style="vertical-align: inherit;">
-                    <input type="number"
-                           class="form-control workOffFormNumberInput input-sm"
-                           step="0.5">
-                </td>
-
-            </tr>
-            <!--2 row-->
-            <tr style="vertical-align: inherit; text-align: center">
-                <td style="vertical-align: inherit; text-align: center">
-                    截止日
-                </td>
-
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="number"
-                           class="form-control workOffFormNumberInput input-sm"
-                           step="0.5">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="number"
-                           class="form-control workOffFormNumberInput input-sm"
-                           step="0.5">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="number"
-                           class="form-control workOffFormNumberInput input-sm"
-                           step="0.5">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="number"
-                           class="form-control workOffFormNumberInput input-sm"
-                           step="0.5">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="number"
-                           class="form-control workOffFormNumberInput input-sm"
-                           step="0.5">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="number"
-                           class="form-control workOffFormNumberInput input-sm"
-                           step="0.5">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="number"
-                           class="form-control workOffFormNumberInput input-sm"
-                           step="0.5">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="number"
-                           class="form-control workOffFormNumberInput input-sm"
-                           step="0.5">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="number"
-                           class="form-control workOffFormNumberInput input-sm"
-                           step="0.5">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="number"
-                           class="form-control workOffFormNumberInput input-sm"
-                           step="0.5">
-                </td>
-            </tr>
-
-            <!--3 row-->
-            <tr style="vertical-align: inherit; text-align: center">
-                <td style="vertical-align: inherit; text-align: center">
-                    累積休假
-                </td>
-
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormNumberInput input-sm"
-                           ng-model="workOffFormCtrlVm.holidayForm.calculate_sick"
-                           value="{{workOffFormCtrlVm.holidayForm.calculate_sick}}">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormNumberInput input-sm"
-                           ng-model="workOffFormCtrlVm.holidayForm.calculate_private"
-                           value="{{workOffFormCtrlVm.holidayForm.calculate_private}}">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormNumberInput input-sm"
-                           ng-model="workOffFormCtrlVm.holidayForm.calculate_observed"
-                           value="{{workOffFormCtrlVm.holidayForm.calculate_observed}}">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormNumberInput input-sm"
-                           ng-model="workOffFormCtrlVm.holidayForm.calculate_special"
-                           value="{{workOffFormCtrlVm.holidayForm.calculate_special}}">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormNumberInput input-sm"
-                           ng-model="workOffFormCtrlVm.holidayForm.calculate_married"
-                           value="{{workOffFormCtrlVm.holidayForm.calculate_married}}">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormNumberInput input-sm"
-                           ng-model="workOffFormCtrlVm.holidayForm.calculate_mourning"
-                           value="{{workOffFormCtrlVm.holidayForm.calculate_mourning}}">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormNumberInput input-sm"
-                           ng-model="workOffFormCtrlVm.holidayForm.calculate_official"
-                           value="{{workOffFormCtrlVm.holidayForm.calculate_official}}">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormNumberInput input-sm"
-                           ng-model="workOffFormCtrlVm.holidayForm.calculate_workinjury"
-                           value="{{workOffFormCtrlVm.holidayForm.calculate_workinjury}}">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormNumberInput input-sm"
-                           ng-model="workOffFormCtrlVm.holidayForm.calculate_maternity"
-                           value="{{workOffFormCtrlVm.holidayForm.calculate_maternity}}">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormNumberInput input-sm"
-                           ng-model="workOffFormCtrlVm.holidayForm.calculate_paternity"
-                           value="{{workOffFormCtrlVm.holidayForm.calculate_paternity}}">
-                </td>
-            </tr>
-
-            <!--4 row-->
-            <tr style="vertical-align: inherit; text-align: center">
-                <td style="vertical-align: inherit; text-align: center">
-                    尚餘休假
-                </td>
-
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormNumberInput input-sm"
-                           ng-model="workOffFormCtrlVm.holidayForm.rest_sick"
-                           value="{{workOffFormCtrlVm.holidayForm.rest_sick}}">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormNumberInput input-sm"
-                           ng-model="workOffFormCtrlVm.holidayForm.rest_private"
-                           value="{{workOffFormCtrlVm.holidayForm.rest_private}}">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormNumberInput input-sm"
-                           ng-model="workOffFormCtrlVm.holidayForm.rest_observed"
-                           value="{{workOffFormCtrlVm.holidayForm.rest_observed}}">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormNumberInput input-sm"
-                           ng-model="workOffFormCtrlVm.holidayForm.rest_special"
-                           value="{{workOffFormCtrlVm.holidayForm.rest_special}}">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormNumberInput input-sm"
-                           ng-model="workOffFormCtrlVm.holidayForm.rest_married"
-                           value="{{workOffFormCtrlVm.holidayForm.rest_married}}">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormNumberInput input-sm"
-                           ng-model="workOffFormCtrlVm.holidayForm.rest_mourning"
-                           value="{{workOffFormCtrlVm.holidayForm.rest_mourning}}">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormNumberInput input-sm"
-                           ng-model="workOffFormCtrlVm.holidayForm.rest_official"
-                           value="{{workOffFormCtrlVm.holidayForm.rest_official}}">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormNumberInput input-sm"
-                           ng-model="workOffFormCtrlVm.holidayForm.rest_workinjury"
-                           value="{{workOffFormCtrlVm.holidayForm.rest_workinjury}}">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormNumberInput input-sm"
-                           ng-model="workOffFormCtrlVm.holidayForm.rest_maternity"
-                           value="{{workOffFormCtrlVm.holidayForm.rest_maternity}}">
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <input type="text"
-                           class="form-control workOffFormNumberInput input-sm"
-                           ng-model="workOffFormCtrlVm.holidayForm.rest_paternity"
-                           value="{{workOffFormCtrlVm.holidayForm.rest_paternity}}">
-                </td>
-            </tr>
-
-            <!--5 row-->
-            <tr style="vertical-align: inherit; text-align: center">
-                <td style="vertical-align: inherit; text-align: center">
-                    休假總數
-                </td>
-
-                <td class="form-group " style="vertical-align: inherit;">
-                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_sick,
-                        workOffFormCtrlVm.holidayForm.rest_sick)}}
-                    </t>
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_private,
-                        workOffFormCtrlVm.holidayForm.rest_private)}}
-                    </t>
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_observed,
-                        workOffFormCtrlVm.holidayForm.rest_observed)}}
-                    </t>
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_special,
-                        workOffFormCtrlVm.holidayForm.rest_special)}}
-                    </t>
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_married,
-                        workOffFormCtrlVm.holidayForm.rest_married)}}
-                    </t>
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_mourning,
-                        workOffFormCtrlVm.holidayForm.rest_mourning)}}
-                    </t>
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_official,
-                        workOffFormCtrlVm.holidayForm.rest_official)}}
-                    </t>
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_workinjury,
-                        workOffFormCtrlVm.holidayForm.rest_workinjury)}}
-                    </t>
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_maternity,
-                        workOffFormCtrlVm.holidayForm.rest_maternity)}}
-                    </t>
-                </td>
-                <td class="form-group " style="vertical-align: inherit;">
-                    <t>{{total(workOffFormCtrlVm.holidayForm.calculate_paternity,
-                        workOffFormCtrlVm.holidayForm.rest_paternity)}}
-                    </t>
-                </td>
-            </tr>
-
-            </tbody>
-
-        </table>
-
-        <h3 class="with-line"></h3>
-        <div class="form-group">
-            <button type="submit"
-                    ng-click="updateUserHolidayData()"
-                    class="btn btn-info">儲存 {{workOffFormCtrlVm.user.selected.name}} 資料
+            <button type="button"
+                    ng-click="addHolidayItem()"
+                    class="btn btn-info btn-icon">
+                <i class="ion-plus-round"/>
             </button>
         </div>
+        <hr>
+        <section class="col-md-6">
+            <button progress-button="createSubmit(2000)"
+                    style="float: inherit;"
+                    id="btnCreate"
+                    pb-style="shrink"
+                    class="btn btn-warning">Save
 
+            </button>
+        </section>
+
+    </uib-tab>
+    <uib-tab heading="主管審核" ng-if="roleType === '2'"
+             ng-click="initUser()">
+        <div ng-include="'app/pages/myForms/forms/workOffForm_BossTab.html'"></div>
+    </uib-tab>
+
+    <uib-tab heading="行政確認" ng-if="roleType === '100'"
+             ng-click="initUser()">
+        <div ng-include="'app/pages/myForms/forms/workOffForm_ExecutiveTab.html'"></div>
+    </uib-tab>
+
+    <uib-tab heading="假期確認" ng-if="roleType === '100'"
+             style="color: blue">
+        <div ng-include="'app/pages/myForms/forms/workOffForm_HolidayTab.html'"></div>
+    </uib-tab>
+
+    <uib-tab heading="國定假日設定" ng-if="roleType === '100'"
+             ng-click="aaa()":>
+        <div ng-include="'app/pages/myForms/forms/workOffForm_NationalHolidayTab.html'"></div>
     </uib-tab>
 </uib-tabset>
 

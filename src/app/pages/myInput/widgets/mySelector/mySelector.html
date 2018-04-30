@@ -1,0 +1,14 @@
+<div>
+    <ui-select ng-model="workOffType"
+               append-to-body="true"
+               on-select="changeWorkOffType(this)"
+               search-enabled="true">
+        <ui-select-match placeholder="選擇假別">
+            {{$select.selected.name}}
+        </ui-select-match>
+        <ui-select-choices
+                repeat="option in workOffTypeOptions | filter: $select.search">
+            <span ng-bind-html="option.name"></span>
+        </ui-select-choices>
+    </ui-select>
+</div>

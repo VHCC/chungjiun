@@ -28,11 +28,11 @@ module.exports = mongoose.model('workOffTableForm', {
     },
     // 休假開始時間
     start_time: {
-        type: Date,
+        type: String,
     },
     // 休假結束時間
     end_time: {
-        type: Date,
+        type: String,
     },
     //狀態：已提交、尚未提交
     isSendReview: {
@@ -48,7 +48,10 @@ module.exports = mongoose.model('workOffTableForm', {
     isExecutiveCheck: {
         type: Boolean,
         default: false,
+    },
+    // 薪水
+    userHourSalary: {
+        type: Number,
     }
-
 
 });

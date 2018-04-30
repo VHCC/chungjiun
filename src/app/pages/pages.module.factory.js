@@ -18,13 +18,13 @@
                 findManagers: function () {
                     return http.get('/api/getAllManagers');
                 },
-                findUserByUserDID : function (formData) {
+                findUserByUserDID: function (formData) {
                     return http.post('/api/userFindByuserDID', formData);
                 },
-                updatePassword : function (formData) {
+                updatePassword: function (formData) {
                     return http.post('/api/userChangePasswordByuserDID', formData);
                 },
-                updateUserProfile : function (formData) {
+                updateUserProfile: function (formData) {
                     return http.post('/api/userUpdateProfile', formData);
                 }
             }
@@ -111,14 +111,99 @@
                 createWorkHourTableForm: function (formData) {
                     return http.post('/api/createWorkHourTableForm', formData);
                 },
-                getWorkHourForm : function (formData) {
+                getWorkHourForm: function (formData) {
                     return http.post('/api/getWorkHourForm', formData);
                 },
-                findWorkHourTableFormByTableIDArray : function (formData) {
-                    return http.post('/api/findWorkHourTableFormByTableIDArray', formData);
+                getWorkHourFormForManager: function (formData) {
+                    return http.post('/api/post_work_hour_get_for_manager', formData);
                 },
-                updateTableSendReview : function (formData) {
+                findWorkHourTableFormByTableIDArray: function (formData) {
+                    return http.post('/api/post_work_hour_table_find_by_tableid_array', formData);
+                },
+                updateTableSendReview: function (formData) {
                     return http.post('/api/updateWorkHourTableFormSendReview', formData);
+                },
+                updateWHTable: function(formData) {
+                    return http.post('/api/post_work_hour_table_update', formData);
+                },
+            }
+        }])
+        .factory('WorkOffFormUtil', ['$http', function (http) {
+            return {
+                // Create form
+                createWorkOffTableForm: function (formData) {
+                    return http.post('/api/createWorkOffTableForm', formData);
+                },
+                // get form default
+                fetchUserWorkOffForm: function (formData) {
+                    return http.post('/api/fetchUserWorkOffForm', formData);
+                },
+                findWorkOffTableItemByUserDID_executive: function (formData) {
+                    return http.post('/api/post_work_off_table_item_find_by_user_did_executive', formData);
+                },
+                findWorkOffTableItemByUserDID_boss: function (formData) {
+                    return http.post('/api/post_work_off_table_item_find_by_user_did_boss', formData);
+                },
+
+                findWorkOffTableFormByTableIDArray: function (formData) {
+                    return http.post('/api/findWorkOffTableFormByTableIDArray', formData);
+                },
+                updateWorkOffTableSendReview: function (formData) {
+                    return http.post('/api/updateWorkOffTableFormSendReview', formData);
+                },
+                updateExecutiveAgree: function(formData) {
+                    return http.post('/api/post_work_off_table_update_executive_agree', formData);
+                },
+                updateBossAgree: function(formData) {
+                    return http.post('/api/post_work_off_table_update_boss_agree', formData);
+                },
+                updateDisAgree: function(formData) {
+                    return http.post('/api/post_work_off_table_update_disagree', formData);
+                },
+                //get the count for executive check
+                fetchAllExecutiveItem: function (formData) {
+                    return http.post('/api/post_work_off_table_fetch_all_executive', formData);
+                },
+                //get the count for boss check
+                fetchAllBossItem: function (formData) {
+                    return http.post('/api/post_work_off_table_fetch_all_boss', formData);
+                },
+
+                // find specify create form date
+                findWorkOffTableFormByTableIDArrayAndParameters: function (formData) {
+                    return http.post('/api/post_work_off_table_find_by_table_id_array_and_parameters', formData);
+                },
+            }
+        }])
+        .factory('NationalHolidayUtil', ['$http', function (http) {
+            return {
+                createNationalHoliday: function (formData) {
+                    return http.post('/api/post_national_holiday_data_form_create', formData);
+                },
+                fetchAllNationalHolidays: function (formData) {
+                    return http.post('/api/post_national_holiday_data_form_fetch_all', formData);
+                },
+                updateNationalHoliday: function (formData) {
+                    return http.post('/api/post_national_holiday_data_form_update', formData);
+                },
+                removeNationalHoliday: function (formData) {
+                    return http.post('/api/post_national_holiday_data_form_remove', formData);
+                },
+                fetchAllNationalHolidaysWithParameter: function (formData) {
+                    return http.post('/api/post_national_holiday_data_form_fetch_with_parameters', formData);
+                },
+            }
+        }])
+        .factory('WorkHourAddItemUtil', ['$http', function (http) {
+            return {
+                createWorkHourAddItem: function (formData) {
+                    return http.post('/api/post_work_hour_work_add_create_item', formData);
+                },
+                getWorkHourAddItems: function (formData) {
+                    return http.post('/api/post_work_hour_work_add_get_items', formData);
+                },
+                removeRelatedAddItemByProject: function (formData) {
+                    return http.post('/api/post_work_hour_work_remove_related_work_add_items', formData);
                 }
             }
         }])
@@ -176,6 +261,7 @@
                 getDay: function (day) {
                     switch (day) {
                         case 0:
+                        case 7:
                             return "日";
                         case 1:
                             return "一";
@@ -193,6 +279,22 @@
                 }
             }
         })
+        .factory('WorkOffTypeUtil', ['$http', function (http) {
+            return {
+                getWorkOffString: function (type) {
+                    switch (type) {
+                        case 0:
+                            return "事假";
+                        case 1:
+                            return "病假";
+                        case 2:
+                            return "補休";
+                        case 3:
+                            return "特休";
+                    }
+                }
+            }
+        }])
         .factory('UserEditUtil', ['$http', function (http) {
             return {
                 uploadAvatarImage: function (uploadData) {

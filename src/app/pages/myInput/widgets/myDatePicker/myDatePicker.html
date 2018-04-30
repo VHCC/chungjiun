@@ -1,11 +1,13 @@
 <div>
-    <p class="input-group">
-        <input type="text" class="form-control myDatePicker"
+    <my class="input-group">
+        <input type="text"
+               class="form-control myDatePicker"
                uib-datepicker-popup="{{format}}"
                datepicker-options="options"
                ng-model="myDT"
                is-open="opened"
                id="myDT"
+               ng-change="changeTableDay(this)"
                ng-required="true"
                close-text="Close"
                alt-input-formats="altInputFormats"
@@ -17,5 +19,5 @@
             </button>
 
           </span>
-    </p>
+    </my>
 </div>
