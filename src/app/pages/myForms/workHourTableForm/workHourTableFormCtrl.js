@@ -246,7 +246,7 @@
             /**
              *  type
              *  1: user
-             *  2: boss
+             *  2: manager
              *  3: executive
              */
             var stringTable = [
@@ -1240,7 +1240,7 @@
                         formDataTable = {
                             tableIDArray: workTableIDArray,
                             isFindSendReview: true,
-                            isFindManagerCheck: null,
+                            isFindManagerCheck: true, // new flow process 2018/04/28
                             isFindExecutiveCheck: false
                         }
                         // 取得 Table Data
