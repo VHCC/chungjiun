@@ -46,6 +46,9 @@
                 findPrjByName: function (prjName) {
                     return http.post('/api/projectFindByName', prjName);
                 },
+                findPrjByCode: function (prjCode) {
+                    return http.post('/api/post_project_find_by_code', prjCode);
+                },
                 findPrjDistinctByName: function () {
                     return http.get('/api/projectFindByNameDistinct');
                 },

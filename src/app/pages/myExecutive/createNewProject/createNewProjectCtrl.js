@@ -15,7 +15,6 @@
             '$document',
             createNewProject
         ])
-    ;
 
     /** @ngInject */
     function createNewProject($scope,
@@ -33,7 +32,6 @@
 
         $scope.formData = {};
 
-
         // right division.
         if (roleType !== '100') {
             console.log(
@@ -45,6 +43,7 @@
         Project.findAllByGroup()
             .success(function (allProjects) {
                 allProjects.push({name: "新總案", code: ""});
+                allProjects.push({name: "建立總案 (自訂編號)", code: "9999"});
                 vm.projects = allProjects;
                 $scope.formData.year = new Date().getFullYear() - 1911;
             });
@@ -101,6 +100,7 @@
             if (this.formData.prj.name.selected.code === "") {
                 //新總案case
                 window.document.getElementById('newPrjNameDiv').style.display = "block";
+                window.document.getElementById('setPrjCodeDiv').style.display = "none";
                 Project.findPrjDistinctByName()
                     .success(function (prjs) {
                             // console.log(JSON.stringify(prjs));
@@ -122,11 +122,18 @@
                             }
                         }
                     );
+            //    自訂總案編號
+            } else if (this.formData.prj.name.selected.code === "9999") {
+                $scope.formData.prj.set.code = "";
+                window.document.getElementById('newPrjNameDiv').style.display = "block";
+                window.document.getElementById('setPrjCodeDiv').style.display = "block";
+
 
             } else {
                 // 專案已存在
                 $scope.formData.prj.name.new = $scope.formData.prj.name.selected.name;
                 window.document.getElementById('newPrjNameDiv').style.display = "none";
+                window.document.getElementById('setPrjCodeDiv').style.display = "none";
                 // console.log(scope.formData.prj.name.selected.name);
                 var data = {
                     name: $scope.formData.prj.name.selected.name
@@ -168,6 +175,36 @@
                         document[0].getElementById('prjSubmitBtn').disabled = true;
                         document[0].getElementById('prjSubmitBtn').innerText = "專案名稱已存在，請檢查！"
                     } else {
+                        document[0].getElementById('prjSubmitBtn').disabled = false;
+                        document[0].getElementById('prjSubmitBtn').innerText = "建立專案"
+                    }
+                })
+        }
+
+        // Code Check
+        $scope.triggerChangePrjCode = function () {
+            // console.log('triggerChangePrjNewName');
+            if ($scope.formData.prj.set.code.length !== 2) {
+                document[0].getElementById('prjSubmitBtn').disabled = true;
+                document[0].getElementById('prjSubmitBtn').innerText = "請確認 自訂總案編號為 2 位數字！"
+                return;
+            } else {
+                document[0].getElementById('prjSubmitBtn').disabled = false;
+                document[0].getElementById('prjSubmitBtn').innerText = "建立專案"
+            }
+
+            var formData = {
+                code: $scope.formData.prj.set.code
+            }
+            Project.findPrjByCode(formData)
+                .success(function (prj) {
+                    // console.log(JSON.stringify(prj));
+                    if (prj !== null) {
+                        document[0].getElementById('prjSubmitBtn').disabled = true;
+                        document[0].getElementById('prjSubmitBtn').innerText = "專案編號已存在，請檢查！"
+                    } else {
+                        $scope.formData.prj.code = $scope.formData.prj.set.code;
+
                         document[0].getElementById('prjSubmitBtn').disabled = false;
                         document[0].getElementById('prjSubmitBtn').innerText = "建立專案"
                     }
