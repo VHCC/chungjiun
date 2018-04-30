@@ -214,7 +214,7 @@
                 </tbody>
             </table>
         </div>
-        <h3 class="with-line">{{username}} {{month}}月份休假單</h3>
+        <h3 class="with-line">{{username}} {{year}}年休假單</h3>
 
         <div class="row" ng-init="getWorkOffTable()">
             <table class="table table-bordered table-hover table-condensed"
@@ -239,6 +239,7 @@
                     <!--序號-->
                     <td style="vertical-align: inherit; text-align: center">
                         <span id="prjCode">{{$index + 1}}</span>
+                        <!--<span >{{table.tableID}}</span>-->
                         <button class="btn btn-danger editable-table-button btn-xs"
                                 ng-show="!rowform1.$waiting && !table.isSendReview"
                                 ng-click="removeHolidayItem($index);">移除
@@ -393,8 +394,7 @@
         <div ng-include="'app/pages/myForms/forms/workOffForm_HolidayTab.html'"></div>
     </uib-tab>
 
-    <uib-tab heading="國定假日設定" ng-if="roleType === '100'"
-             ng-click="aaa()":>
+    <uib-tab heading="國定假日設定" ng-if="roleType === '100'":>
         <div ng-include="'app/pages/myForms/forms/workOffForm_NationalHolidayTab.html'"></div>
     </uib-tab>
 </uib-tabset>

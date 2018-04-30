@@ -17,7 +17,7 @@ module.exports = function (app) {
                 console.log(err);
             }
         })
-        console.log(req.body.oldTables);
+        // console.log(req.body.oldTables);
         if (req.body.oldTables.hasOwnProperty('tableIDArray')) {
             var findData = []
             for (var index = 0; index < req.body.oldTables.tableIDArray.length; index++) {
@@ -40,6 +40,7 @@ module.exports = function (app) {
         }
 
         var formTable = [];
+        var resultTable = [];
         var resIndex = 0;
         for (var index = 0; index < req.body.formTables.length; index++) {
             try {
@@ -60,7 +61,6 @@ module.exports = function (app) {
                     isExecutiveCheck: req.body.formTables[index].isExecutiveCheck,
                     userHourSalary: req.body.formTables[index].userHourSalary,
 
-
                 }, function (err, workOffTable) {
                     resIndex++;
                     // workOffForm formTables 的參數
@@ -68,9 +68,7 @@ module.exports = function (app) {
                         tableID: workOffTable._id,
                     }
                     formTable.push(tableItem);
-
                     if (resIndex === req.body.formTables.length) {
-                        console.log(formTable);
                         WorkOffForm.create({
                             creatorDID: req.body.creatorDID,
                             year: req.body.year,
@@ -80,11 +78,25 @@ module.exports = function (app) {
                             if (err) {
                                 res.send(err);
                             }
-                            res.status(200).send({
-                                code: 200,
-                                error: global.status._200,
-                                payload: formTable,
-                            });
+                            WorkOffTableForm.find({
+                                creatorDID: req.body.creatorDID,
+                                year: req.body.year,
+                            }, function (err, workOffForms) {
+                                if (err) {
+                                    res.send(err);
+                                }
+                                for (var x= 0; x < workOffForms.length; x++) {
+                                    var tableItem = {
+                                        tableID: workOffForms[x]._id,
+                                    }
+                                    resultTable.push(tableItem);
+                                }
+                                res.status(200).send({
+                                    code: 200,
+                                    error: global.status._200,
+                                    payload: resultTable,
+                                });
+                            })
                         });
                     }
                 });
@@ -94,6 +106,8 @@ module.exports = function (app) {
                 }
             }
         }
+
+
     });
 
     //get form by date
@@ -163,6 +177,7 @@ module.exports = function (app) {
             creatorDID: req.body.creatorDID,
             year: req.body.year,
             isSendReview: true,
+            isBossCheck: true,
             isExecutiveCheck: false,
         }, function (err, tables) {
             if (err) {
@@ -261,6 +276,7 @@ module.exports = function (app) {
                 {
                     $match: {
                         isSendReview: true,
+                        isBossCheck: true,
                         isExecutiveCheck: false
                     }
                 },
