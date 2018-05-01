@@ -24,7 +24,8 @@
         $scope.parent = $scope.$resolve.parent;
         $scope.table = $scope.$resolve.table;
         $scope.searchType = $scope.$resolve.searchType;
-        $scope.userHourSalary = $scope.$resolve.userHourSalary;
+        $scope.userMonthSalary = $scope.$resolve.userMonthSalary;
+        // $scope.userHourSalary = $scope.$resolve.userHourSalary;
         $scope.editableFlag = $scope.$resolve.editableFlag;
 
         // initial
@@ -69,7 +70,8 @@
                 start_time: "",
                 end_time: "",
                 reason: "事由",
-                userHourSalary: $scope.userHourSalary,
+                userMonthSalary: $scope.userMonthSalary,
+                // userHourSalary: $scope.userHourSalary,
             };
             $scope.workAddTablesItems.push(inserted);
         }

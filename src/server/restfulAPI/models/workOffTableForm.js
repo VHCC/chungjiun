@@ -50,9 +50,16 @@ module.exports = mongoose.model('workOffTableForm', {
         type: Boolean,
         default: false,
     },
-    // 薪水
-    userHourSalary: {
+    // 時薪（不使用）
+    // userHourSalary: {
+    //     type: Number,
+    // },
+
+    // 月薪
+    // 換算月薪定義：月薪/30/8
+    userMonthSalary: {
         type: Number,
+
     }
 
 });

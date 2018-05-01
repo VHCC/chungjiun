@@ -79,7 +79,7 @@
                     class="btn btn-primary btn-with-icon save-profile ">儲存密碼
             </button>
         </uib-tab>
-        <uib-tab heading="人事輸入" ng-if="roleType === '100'">
+        <uib-tab heading="人事輸入" ng-if="roleType === '100'" ng-click="fetchAllUsers()">
             <form>
                 <div class="row">
                     <div class="col-md-12">
@@ -171,19 +171,19 @@
                 <div class="row" ng-if="userEditCtrlVm.user.selected">
                     <div class="col-md-6">
                         <div class="form-group row clearfix">
-                            <label for="inputFirstName" class="col-md-3 control-label">時薪</label>
+                            <label for="inputFirstName" class="col-md-3 control-label">月薪</label>
                             <div class="col-md-9">
                                 <div class="input-group">
                                     <span class="input-group-addon addon-left input-group-addon-success">NTD</span>
                                     <input type="number"
-                                           ng-model="userEditCtrlVm.userHourSalary"
+                                           ng-model="userEditCtrlVm.userMonthSalary"
                                            class="form-control with-success-addon"
                                            min="0"
-                                           id="userHourSalary"
+                                           id="userMonthSalary"
                                            onkeypress="return event.charCode >= 48"
                                            placeholder="請輸入金額"
                                            aria-label="Amount (to the nearest dollar)"
-                                           value=" {{userEditCtrlVm.userHourSalary}}"
+                                           value=" {{userEditCtrlVm.userMonthSalary}}"
                                            required>
                                 </div>
                             </div>

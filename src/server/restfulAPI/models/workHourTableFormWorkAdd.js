@@ -36,9 +36,16 @@ module.exports = mongoose.model('workHourTableFormWorkAdd', {
     end_time: {
         type: String,
     },
-    // 薪水
-    userHourSalary: {
-        type: Number,
+    // 時薪（不使用）
+    // userHourSalary: {
+    //     type: Number,
+    // },
+
+    // 月薪
+    // 換算月薪定義：月薪/30/8
+    userMonthSalary: {
+        type:Number,
+        default: 0
     },
     // 事由
     reason: {

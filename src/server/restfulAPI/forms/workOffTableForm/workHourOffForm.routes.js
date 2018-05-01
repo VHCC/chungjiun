@@ -59,7 +59,9 @@ module.exports = function (app) {
                     isSendReview: req.body.formTables[index].isSendReview,
                     isBossCheck: req.body.formTables[index].isBossCheck,
                     isExecutiveCheck: req.body.formTables[index].isExecutiveCheck,
-                    userHourSalary: req.body.formTables[index].userHourSalary,
+
+                    // userHourSalary: req.body.formTables[index].userHourSalary,
+                    userMonthSalary: req.body.formTables[index].userMonthSalary,
 
                 }, function (err, workOffTable) {
                     resIndex++;

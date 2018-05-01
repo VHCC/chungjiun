@@ -119,7 +119,8 @@
         </td>
         <!--加班費-->
         <td class="form-group has-success" style="vertical-align: inherit;">
-            {{table.addWork * table.userHourSalary}}
+            <!--{{table.addWork * table.userHourSalary}}-->
+            {{table.addWork * (table.userMonthSalary/240)}}
         </td>
     </tr>
     </tbody>

@@ -47,7 +47,8 @@
             }
             User.findUserByUserDID(formData)
                 .success(function (user) {
-                    $scope.userHourSalary = user.userHourSalary;
+                    // $scope.userHourSalary = user.userHourSalary;
+                    $scope.userMonthSalary = user.userMonthSalary;
                     $scope.bossID = user.bossID;
                 })
 
@@ -190,7 +191,8 @@
                                             isSendReview: res.payload[index].isSendReview,
                                             isBossCheck: res.payload[index].isBossCheck,
                                             isExecutiveCheck: res.payload[index].isExecutiveCheck,
-                                            userHourSalary: res.payload[index].userHourSalary,
+                                            userMonthSalary: res.payload[index].userMonthSalary,
+                                            // userHourSalary: res.payload[index].userHourSalary,
                                         };
                                         $scope.loginUserTablesItems.push(detail);
 
@@ -228,7 +230,8 @@
                     isBossCheck: false,
                     isExecutiveCheck: false,
                     myDay: DateUtil.getDay(new Date().getDay()),
-                    userHourSalary: $scope.userHourSalary,
+                    // userHourSalary: $scope.userHourSalary,
+                    userMonthSalary: $scope.userMonthSalary,
                 };
                 $scope.loginUserTablesItems.push(inserted);
 
@@ -512,7 +515,8 @@
                             isSendReview: tableItem.isSendReview,
                             isBossCheck: tableItem.isBossCheck,
                             isExecutiveCheck: tableItem.isExecutiveCheck,
-                            userHourSalary: tableItem.userHourSalary,
+                            // userHourSalary: tableItem.userHourSalary,
+                            userMonthSalary: tableItem.userMonthSalary,
                         }
                         workOffTableData.push(dataItem);
                     }
@@ -574,7 +578,8 @@
                                 isSendReview: res.payload[index].isSendReview,
                                 isBossCheck: res.payload[index].isBossCheck,
                                 isExecutiveCheck: res.payload[index].isExecutiveCheck,
-                                userHourSalary: res.payload[index].userHourSalary,
+                                // userHourSalary: res.payload[index].userHourSalary,
+                                userMonthSalary: res.payload[index].userMonthSalary,
                             };
                             $scope.bossCheckTablesItems.push(detail);
                         }
@@ -610,7 +615,8 @@
                                 isSendReview: res.payload[index].isSendReview,
                                 isBossCheck: res.payload[index].isBossCheck,
                                 isExecutiveCheck: res.payload[index].isExecutiveCheck,
-                                userHourSalary: res.payload[index].userHourSalary,
+                                // userHourSalary: res.payload[index].userHourSalary,
+                                userMonthSalary: res.payload[index].userMonthSalary,
                             };
                             $scope.executiveCheckTablesItems.push(detail);
                         }
