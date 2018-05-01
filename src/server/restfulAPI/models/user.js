@@ -28,9 +28,17 @@ module.exports = mongoose.model('User', {
     bossID: {
         type: String,
     },
-    userHourSalary : {
+    // 時薪（不使用）
+    // userHourSalary: {
+    //     type: Number,
+    //     default: 0,
+    // },
+
+    // 月薪
+    // 換算月薪定義：月薪/30/8
+    userMonthSalary: {
         type: Number,
-        default: 0,
+        default: 0
     }
 
 

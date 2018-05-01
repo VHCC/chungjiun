@@ -39,7 +39,8 @@ module.exports = function (app) {
                         day: req.body.formTables[index].day,
                         start_time: req.body.formTables[index].start_time,
                         end_time: req.body.formTables[index].end_time,
-                        userHourSalary: req.body.formTables[index].userHourSalary,
+                        // userHourSalary: req.body.formTables[index].userHourSalary,
+                        userMonthSalary: req.body.formTables[index].userMonthSalary,
                         reason: req.body.formTables[index].reason,
                     })
                 }

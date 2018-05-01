@@ -114,10 +114,15 @@
         // ---------------------- 人事輸入 -----------------------
         var vm = this;
 
-        User.getAllUsers()
-            .success(function (allUsers) {
-                vm.users = allUsers;
-            });
+
+        $scope.fetchAllUsers = function () {
+            User.getAllUsers()
+                .success(function (allUsers) {
+                    vm.users = allUsers;
+                });
+        }
+
+        $scope.fetchAllUsers();
 
         User.findManagers()
             .success(function (managers) {
@@ -135,7 +140,7 @@
                 userDID: vm.user.selected._id,
                 userName: $('#userNewName')[0].value,
                 roleType: vm.userRole.roleType,
-                userHourSalary: $('#userHourSalary')[0].value,
+                userMonthSalary: $('#userMonthSalary')[0].value,
                 bossID: vm.userBoss._id,
             }
 
@@ -143,9 +148,10 @@
             User.updateUserProfile(formData)
                 .success(function (res) {
                     toastr['success'](vm.user.selected.name + '人員 資料更新成功', '人事資料變更');
+                    $scope.fetchAllUsers();
                 })
                 .error(function (res) {
-
+                    toastr['warning'](vm.user.selected.name + '人員 資料更新失敗', '人事資料變更');
                 })
         }
 
@@ -182,7 +188,7 @@
         ];
 
         $scope.selectUserProfile = function (user) {
-            vm.userHourSalary = user.userHourSalary;
+            vm.userMonthSalary = user.userMonthSalary;
             // user Role
             var selectedRole = [];
             if (user.roleType !== 100) {
@@ -209,11 +215,11 @@
         }
 
         $scope.showUserStatus = function (user) {
-            if (!user.bossID && user.userHourSalary === 0) {
+            if (!user.bossID && user.userMonthSalary === 0) {
                 return user.name + " (未設定主管、薪水)"
             } else if (!user.bossID) {
                 return user.name + " (未設定主管)"
-            } else if (user.userHourSalary === 0) {
+            } else if (user.userMonthSalary === 0) {
                 return user.name + " (未設定薪水)"
             } else {
                 return user.name;

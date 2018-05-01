@@ -57,7 +57,8 @@
         }
         User.findUserByUserDID(formData)
             .success(function (user) {
-                $scope.userHourSalary = user.userHourSalary;
+                // $scope.userHourSalary = user.userHourSalary;
+                $scope.userMonthSalary = user.userMonthSalary;
             })
 
         //所有專案
@@ -754,8 +755,11 @@
                     searchType: function () {
                         return type;
                     },
-                    userHourSalary: function () {
-                        return $scope.userHourSalary;
+                    // userHourSalary: function () {
+                    //     return $scope.userHourSalary;
+                    // },
+                    userMonthSalary: function () {
+                        return $scope.userMonthSalary;
                     },
                     editableFlag: function () {
                         return editable;
@@ -1493,7 +1497,8 @@
                                         isSendReview: res.payload[index].isSendReview,
                                         isBossCheck: res.payload[index].isBossCheck,
                                         isExecutiveCheck: res.payload[index].isExecutiveCheck,
-                                        userHourSalary: res.payload[index].userHourSalary,
+                                        // userHourSalary: res.payload[index].userHourSalary,
+                                        userMonthSalary: res.payload[index].userMonthSalary,
                                     };
                                     $scope.loginUserWorkOffTables.push(detail);
 
@@ -1677,7 +1682,8 @@
                     // Project DID
                     prjDID: "",
                     // 時薪
-                    userHourSalary: 0,
+                    userMonthSalary: 0,
+                    // userHourSalary: 0,
                     // 國定假日
                     isNH: false,
                 }
@@ -1686,13 +1692,14 @@
                     workAddItem.prjDID = tables[index].prjDID;
                     for (var subIndex = 0; subIndex < $scope.nationalHolidayTablesItems.length; subIndex ++) {
                         if (workAddItem.date === $scope.nationalHolidayTablesItems[subIndex]) {
-                            console.log(workAddItem.date);
+                            // console.log(workAddItem.date);
                             workAddItem.isNH = true;
                             break;
                         }
                     }
                     workAddItem.day = tables[index].day;
-                    workAddItem.userHourSalary = tables[index].userHourSalary;
+                    // workAddItem.userHourSalary = tables[index].userHourSalary;
+                    workAddItem.userMonthSalary = tables[index].userMonthSalary;
                     switch(tables[index].workAddType) {
                         case 1:
                             workAddItem.addWork += $scope.getHourDiffByTime(
@@ -1774,7 +1781,8 @@
                         result += array[index].addWork;
                         break;
                     case 8:
-                        result += (array[index].addWork * array[index].userHourSalary);
+                        // result += (array[index].addWork * array[index].userHourSalary);
+                        result += (array[index].addWork * (array[index].userMonthSalary/240));
                         break;
                 }
             }
