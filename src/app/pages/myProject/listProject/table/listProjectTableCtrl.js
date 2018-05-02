@@ -102,6 +102,16 @@
                 //     });
             });
 
+        $scope.showManager = function (project) {
+            var selected = [];
+            if (project.managerID) {
+                selected = $filter('filter')($scope.projectManagers, {
+                    value: project.managerID
+                });
+            }
+            return selected.length ? selected[0].name : 'Not Set';
+        };
+
         $scope.showMajor = function (project) {
             var selected = [];
             if (project.majorID) {
