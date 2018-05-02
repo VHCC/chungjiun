@@ -39,7 +39,50 @@
                     Edit
                 </button>
             </td>
-            <td>{{prj.workers}}</td>
+            <!--<td>{{prj.workers}}</td>-->
+            <td class="select-td">
+                <form data-editable-form
+                      name="uiSelectForm">
+                    <div editable-ui-select="prj.workers"
+                         e-multiple
+                         data-e-form="uiSelectForm"
+                         data-e-name="workers"
+                         name="workers"
+                         data-e-style="min-width:150px;max-width:500px"
+                         data-e-ng-model="prj.workers">
+                        {{showWorkers(prj.workers)}}
+                        <editable-ui-select-match placeholder="請選擇協辦人員">
+                            {{$select.selected[$index].name}}
+                        </editable-ui-select-match>
+                        <editable-ui-select-choices repeat="user in allWorkers | filter: $select.search ">
+                            {{user.name}}
+                        </editable-ui-select-choices>
+                    </div>
+                    <br/>
+                    <div class="buttons">
+                        <!-- button to show form -->
+                        <button type="button" class="btn btn-primary editable-table-button btn-xs"
+                                ng-click="uiSelectForm.$show()"
+                                ng-show="!uiSelectForm.$visible">
+                            Edit
+                        </button>
+                        <!-- buttons to submit / cancel form -->
+                        <span ng-show="uiSelectForm.$visible">
+                        <br/>
+                        <button type="submit" class="btn btn-primary editable-table-button btn-xs"
+                                ng-click="aaaaa(uiSelectForm)"
+                                ng-disabled="uiSelectForm.$waiting">
+                          Save
+                        </button>
+                        <button type="button" class="btn btn-default editable-table-button btn-xs"
+                                ng-disabled="uiSelectForm.$waiting"
+                                ng-click="uiSelectForm.$cancel()">
+                          Cancel
+                        </button>
+                      </span>
+                    </div>
+                </form>
+            </td>
             <td>{{showTechs(prj.technician)}}</td>
 
         </tr>

@@ -204,7 +204,6 @@ module.exports = function (app) {
 
     // 更新承辦人員
     app.post(global.apiUrl.post_project_update_major_id, function (req, res) {
-        console.log(req.body)
         Project.update({
             _id: req.body.prjID,
         }, {
