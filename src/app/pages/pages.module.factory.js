@@ -207,6 +207,9 @@
                 },
                 removeRelatedAddItemByProject: function (formData) {
                     return http.post('/api/post_work_hour_work_remove_related_work_add_items', formData);
+                },
+                executiveConfirm: function (formData) {
+                    return http.post('/api/post_work_hour_work_executive_confirm', formData);
                 }
             }
         }])
