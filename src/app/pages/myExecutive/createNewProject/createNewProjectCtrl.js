@@ -270,7 +270,8 @@
                     code: String($scope.formData.prj.code),
                     type: $scope.formData.prj.type.selected.type,
                     name: $scope.formData.prj.name.new,
-                    majorID: $scope.formData.manager.selected._id,
+                    // majorID: $scope.formData.manager.selected._id,
+                    managerID: $scope.formData.manager.selected._id,
                     prjCode:
                     vm.branch.value +
                     String($scope.formData.year) +

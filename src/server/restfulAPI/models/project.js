@@ -45,10 +45,14 @@ module.exports = mongoose.model('Project', {
         type: String,
         required: true
     },
+    // 專案負責人員，經理級
+    managerID: {
+        type: String,
+        required: true
+    },
     // 承辦人員，經理級
     majorID: {
         type: String,
-        required: true
     },
     // 協辦人員
     workers : {

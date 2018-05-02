@@ -1,9 +1,10 @@
 <div class="horizontal-scroll">
-    <table class="table table-hover" st-table="projects" >
+    <table class="table table-hover" st-table="projects">
         <thead>
         <tr class="sortable">
             <th class="table-id" st-sort="prjCode" st-sort-default="true">代碼</th>
             <th st-sort="name">名稱</th>
+            <th st-sort="majorID">經理</th>
             <th st-sort="majorID">主承辦</th>
             <th st-sort="creator">協辦人員</th>
             <th st-sort="age">技師</th>
@@ -22,12 +23,13 @@
             <td class="table-id">{{prj.prjCode}}</td>
             <!--<td><span editable-text="prj.name" blur="cancel">{{prj.name}} - {{prjTypeToName(prj.type)}}</span></td>-->
             <td>{{prj.name}} - {{prjTypeToName(prj.type)}}</td>
+            <td>{{ showManager(prj) }}</td>
             <td class="select-td">
-        <span editable-select="prj.majorID" blur="cancel" e-name="majorID" e-form="rowform"
-              e-selectpicker
-              e-ng-options="user.value as user.name for user in projectManagers">
-        {{ showMajor(prj) }}
-        </span>
+                <span editable-select="prj.majorID" blur="cancel" e-name="majorID" e-form="rowform"
+                      e-selectpicker
+                      e-ng-options="user.value as user.name for user in projectManagers">
+                {{ showMajor(prj) }}
+                </span>
                 <br>
                 <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$show()"
                         class="btn btn-primary editable-table-button btn-xs">
