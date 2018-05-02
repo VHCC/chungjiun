@@ -50,6 +50,10 @@ module.exports = mongoose.model('workHourTableFormWorkAdd', {
     // 事由
     reason: {
         type: String,
+    },
+    isExecutiveConfirm: {
+        type: Boolean,
+        default: false
     }
 
 

@@ -9,6 +9,7 @@
         .controller('workHourTableCtrl',
             [
                 '$scope',
+                'toastr',
                 '$filter',
                 '$cookies',
                 '$timeout',
@@ -29,6 +30,7 @@
 
     /** @ngInject */
     function WorkHourTableCtrl($scope,
+                               toastr,
                                $filter,
                                cookies,
                                $timeout,
@@ -1619,7 +1621,7 @@
             }
             NationalHolidayUtil.fetchAllNationalHolidays(getData)
                 .success(function (res) {
-                    console.log(res.payload);
+                    // console.log(res.payload);
                     if (res.payload.length > 0) {
                         // 取得 Table Data
                         for (var index = 0; index < res.payload.length; index++) {
@@ -1667,9 +1669,15 @@
                 })
         }
 
+        // 行政確認的原始ＤＡＴＡ
+        $scope.workAddTablesRawData = [];
+
+        // 整理相同日期的加班項目
         function operateWorkHourAddArray(tables) {
+            $scope.workAddTablesRawData = tables;
+            // console.log($scope.workAddTablesRawData);
             var workAddTable = {};
-            for (var index = 0; index < tables.length; index ++) {
+            for (var index = 0; index < tables.length; index++) {
                 var workAddItem = {
                     // 首周
                     date: "",
@@ -1690,7 +1698,7 @@
                 if (workAddTable[$scope.showDate(tables[index])] === undefined) {
                     workAddItem.date = $scope.showDate(tables[index]);
                     workAddItem.prjDID = tables[index].prjDID;
-                    for (var subIndex = 0; subIndex < $scope.nationalHolidayTablesItems.length; subIndex ++) {
+                    for (var subIndex = 0; subIndex < $scope.nationalHolidayTablesItems.length; subIndex++) {
                         if (workAddItem.date === $scope.nationalHolidayTablesItems[subIndex]) {
                             // console.log(workAddItem.date);
                             workAddItem.isNH = true;
@@ -1700,7 +1708,7 @@
                     workAddItem.day = tables[index].day;
                     // workAddItem.userHourSalary = tables[index].userHourSalary;
                     workAddItem.userMonthSalary = tables[index].userMonthSalary;
-                    switch(tables[index].workAddType) {
+                    switch (tables[index].workAddType) {
                         case 1:
                             workAddItem.addWork += $scope.getHourDiffByTime(
                                 tables[index].start_time,
@@ -1715,7 +1723,7 @@
 
                     workAddTable[$scope.showDate(tables[index])] = workAddItem;
                 } else {
-                    switch(tables[index].workAddType) {
+                    switch (tables[index].workAddType) {
                         case 1:
                             workAddTable[$scope.showDate(tables[index])].addWork += $scope.getHourDiffByTime(
                                 tables[index].start_time,
@@ -1730,9 +1738,10 @@
                 }
             }
             $scope.workAddTablesItems = workAddTable;
+            console.log($scope.workAddTablesItems);
         }
 
-        Object.size = function(obj) {
+        Object.size = function (obj) {
             var size = 0, key;
             for (key in obj) {
                 if (obj.hasOwnProperty(key)) size++;
@@ -1748,7 +1757,7 @@
                 return [value];
             });
             for (var index = 0; index < array.length; index ++) {
-                switch (type) {
+                switch(type) {
                     case 1:
                         result += array[index].addWork;
                         result += array[index].restWork;
@@ -1797,6 +1806,25 @@
             return DateUtil.getShiftDatefromFirstDate(
                 DateUtil.getFirstDayofThisWeek(moment(table.create_formDate)),
                 table.day === 0 ? 6 : table.day - 1);
+        }
+
+        $scope.confirmWorkAddItems = function () {
+            if ($scope.workAddTablesRawData.length === 0) {
+                toastr.warning('沒有任何加班單', 'Warning');
+            }
+
+            var formData = {
+                formTables: $scope.workAddTablesRawData,
+            }
+            WorkHourAddItemUtil.executiveConfirm(formData)
+                .success(function () {
+                    toastr.success('確認成功', 'Success');
+                })
+                .error(function () {
+
+                })
+
+
         }
 
     } // function End line

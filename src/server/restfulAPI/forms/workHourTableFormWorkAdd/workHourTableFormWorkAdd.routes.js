@@ -16,7 +16,6 @@ module.exports = function (app) {
                 }
                 findData.push(target);
             }
-            ;
             WorkHourTableFormWorkAdd.remove(
                 {
                     $or: findData,
@@ -83,15 +82,15 @@ module.exports = function (app) {
                 day: 1
             })
             .exec(function (err, workAddItems) {
-            if (err) {
-                res.send(err);
-            }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-                payload: workAddItems,
+                if (err) {
+                    res.send(err);
+                }
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: workAddItems,
+                });
             });
-        });
 
     });
 
@@ -110,6 +109,32 @@ module.exports = function (app) {
                 error: global.status._200,
             });
         })
+    })
+
+    // executive confirm
+    app.post(global.apiUrl.post_work_hour_work_executive_confirm, function (req, res) {
+        var findData = []
+        var resultCount = 0
+        for (var index = 0; index < req.body.formTables.length; index++) {
+            WorkHourTableFormWorkAdd.update({
+                _id: req.body.formTables[index]._id,
+            }, {
+                $set: {
+                    isExecutiveConfirm: true,
+                }
+            }, function (err) {
+                resultCount ++;
+                if (err) {
+                    res.send(err);
+                }
+                if (resultCount === req.body.formTables.length) {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                    });
+                }
+            })
+        }
     })
 
 }
