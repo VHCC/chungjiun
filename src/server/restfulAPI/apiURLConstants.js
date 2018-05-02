@@ -22,7 +22,8 @@ global.apiUrl = {
     get_project_find_by_prjid_array : '/api/projectFindByPrjIDArray',
     post_project_foot_code : '/api/projectFootCode',
     post_project_create : '/api/projectCreate',
-    
+    post_project_update_major_id: '/api/post_project_update_major_id',
+
 
     // todolist
     post_todo_create : '/api/createTodo',

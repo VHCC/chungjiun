@@ -21,17 +21,20 @@
 
         <tr ng-repeat="prj in projects" class="editable-tr-wrap">
             <td class="table-id">{{prj.prjCode}}</td>
-            <!--<td><span editable-text="prj.name" blur="cancel">{{prj.name}} - {{prjTypeToName(prj.type)}}</span></td>-->
             <td>{{prj.name}} - {{prjTypeToName(prj.type)}}</td>
             <td>{{ showManager(prj) }}</td>
             <td class="select-td">
-                <span editable-select="prj.majorID" blur="cancel" e-name="majorID" e-form="rowform"
+                <span editable-select="prj.majorID"
+                      e-name="majorID"
+                      e-form="rowform"
                       e-selectpicker
                       e-ng-options="user.value as user.name for user in projectManagers">
                 {{ showMajor(prj) }}
                 </span>
                 <br>
-                <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$show()"
+                <button type="button"
+                        ng-disabled="rowform.$visible"
+                        ng-click="rowform.$show()"
                         class="btn btn-primary editable-table-button btn-xs">
                     Edit
                 </button>

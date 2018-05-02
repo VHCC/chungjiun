@@ -56,7 +56,7 @@
                                  editableThemes,
                                  Project,
                                  ProjectUtil,
-                                 intiProjectsService ) {
+                                 intiProjectsService) {
         $scope.loading = true;
 
         intiProjectsService.then(function (resp) {
@@ -80,7 +80,6 @@
 
         User.findManagers()
             .success(function (allUsers) {
-                console.log('rep - GET ALL User, SUCCESS');
                 $scope.projectManagers = [];
                 for (var i = 0; i < allUsers.length; i++) {
                     $scope.projectManagers[i] = {
@@ -102,6 +101,17 @@
                 //     });
             });
 
+        User.findTechs()
+            .success(function (allTechs) {
+                $scope.projectTechs = [];
+                for (var i = 0; i < allTechs.length; i++) {
+                    $scope.projectTechs[i] = {
+                        value: allTechs[i]._id,
+                        name: allTechs[i].name
+                    };
+                }
+            });
+
         $scope.showManager = function (project) {
             var selected = [];
             if (project.managerID) {
@@ -116,7 +126,7 @@
             var selected = [];
             if (project.majorID) {
                 selected = $filter('filter')($scope.projectManagers, {
-                    value: project.majorID
+                    value: project.majorID,
                 });
             }
             return selected.length ? selected[0].name : 'Not Set';
@@ -130,11 +140,36 @@
 
         $scope.showTechs = function (techs) {
             var resault = "";
-            for (var index = 0; index < techs.length; index ++) {
-                resault += techs[index].name + " ";
+            var selected = [];
+            for (var index = 0; index < techs.length; index++) {
+                selected = $filter('filter')($scope.projectTechs, {
+                    value: techs[index],
+                });
+                resault += selected[0].name + ", ";
             }
             return resault;
         }
+
+        editableThemes['bs3'].submitTpl = '<button type="submit" ng-click="qqqqq($form, $parent)" class="btn btn-primary btn-with-icon"><i class="ion-checkmark-round"></i></button>';
+        editableThemes['bs3'].cancelTpl = '<button type="button" ng-click="$form.$cancel()" class="btn btn-default btn-with-icon"><i class="ion-close-round"></i></button>';
+
+        $scope.qqqqq = function (form, table) {
+            console.log(form.$data);
+            console.log(table.$parent.prj._id);
+            var formData = {
+                prjID: table.$parent.prj._id,
+                majorID: form.$data.majorID,
+            }
+
+            Project.updateMajorID(formData)
+                .success(function (res) {
+                    console.log(res.code);
+                })
+                .error(function () {
+
+                })
+        }
+
     }
 
 })();
