@@ -78,6 +78,17 @@
                 )($scope));
         })
 
+        User.getAllUsers()
+            .success(function (allUsers) {
+                $scope.allWorkers = [];
+                for (var i = 0; i < allUsers.length; i++) {
+                    $scope.allWorkers[i] = {
+                        value: allUsers[i]._id,
+                        name: allUsers[i].name
+                    };
+                }
+            })
+
         User.findManagers()
             .success(function (allUsers) {
                 $scope.projectManagers = [];
@@ -150,12 +161,12 @@
             return resault;
         }
 
-        editableThemes['bs3'].submitTpl = '<button type="submit" ng-click="qqqqq($form, $parent)" class="btn btn-primary btn-with-icon"><i class="ion-checkmark-round"></i></button>';
+        editableThemes['bs3'].submitTpl = '<button type="submit" ng-click="updateMajor($form, $parent)" class="btn btn-primary btn-with-icon"><i class="ion-checkmark-round"></i></button>';
         editableThemes['bs3'].cancelTpl = '<button type="button" ng-click="$form.$cancel()" class="btn btn-default btn-with-icon"><i class="ion-close-round"></i></button>';
 
-        $scope.qqqqq = function (form, table) {
-            console.log(form.$data);
-            console.log(table.$parent.prj._id);
+        $scope.updateMajor = function (form, table) {
+            // console.log(form.$data);
+            // console.log(table.$parent.prj._id);
             var formData = {
                 prjID: table.$parent.prj._id,
                 majorID: form.$data.majorID,
@@ -168,6 +179,19 @@
                 .error(function () {
 
                 })
+        }
+
+        $scope.aaaaa = function (form) {
+            console.log(form);
+        }
+
+        $scope.showWorkers = function (workers) {
+            var resault = "";
+            var selected = [];
+            for (var index = 0; index < workers.length; index++) {
+                resault += workers[index].name + ", ";
+            }
+            return resault;
         }
 
     }
