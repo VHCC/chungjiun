@@ -116,8 +116,8 @@
                 // result = result.map(function (v) {
                 //     return v < 10 ? '0' + v : v;
                 // }).join(':');
-                result = result[0] + (result[1] > 0 ? 0.5 : 0);
-                dom.table.myHourDiff = result;
+                result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
+                dom.table.myHourDiff = result <= 1 ? 1 : result >= 8 ? 8 : result;
             }
         }
 
@@ -140,8 +140,8 @@
                 // result = result.map(function (v) {
                 //     return v < 10 ? '0' + v : v;
                 // }).join(':');
-                result = result[0] + (result[1] > 0 ? 0.5 : 0);
-                return result;
+                result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
+                return result <= 1 ? 1 : result >= 8 ? 8 : result;
             }
         }
 

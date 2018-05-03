@@ -14,25 +14,25 @@
         $scope.options = {
             showWeeks: false
         };
-        $('.disableTimeRangesExample').mask('H0:0D', {
+        $('.disableTimeRangesExample').mask('H0:D0', {
             translation: {
                 'H': {
                     pattern: /[012]/,
                 },
                 'D': {
-                    pattern: /[0]/,
+                    pattern: /[012345]/,
                 }
             }
         });
 
-        $('.disableTimeRangesExample').timepicker({
-            'disableTimeRanges': [
-                ['12:01pm', '13pm'],
-                ['18"01pm', '19pm']
-            ],
-            'timeFormat': 'H:i',
-            'forceRoundTime': true
-        });
+        // $('.disableTimeRangesExample').timepicker({
+        //     'disableTimeRanges': [
+        //         ['12:01pm', '13pm'],
+        //         ['18"01pm', '19pm']
+        //     ],
+        //     'timeFormat': 'H:i',
+        //     'forceRoundTime': true
+        // });
 
     }
 })();
