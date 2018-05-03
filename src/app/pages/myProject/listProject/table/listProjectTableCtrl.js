@@ -60,7 +60,7 @@
         $scope.loading = true;
 
         intiProjectsService.then(function (resp) {
-            console.log(resp.data);
+            // console.log(resp.data);
             $scope.projects = resp.data;
             $scope.projects.slice(0, resp.data.length);
 
@@ -81,11 +81,23 @@
         User.getAllUsers()
             .success(function (allUsers) {
                 $scope.allWorkers = [];
+                $scope.allWorkersID = [];
                 for (var i = 0; i < allUsers.length; i++) {
                     $scope.allWorkers[i] = {
                         value: allUsers[i]._id,
-                        name: allUsers[i].name
+                        name: allUsers[i].name,
                     };
+                    $scope.allWorkersID[i] = allUsers[i]._id;
+                }
+
+                for (var index = 0; index < $scope.projects.length; index++) {
+                    var selected = [];
+                    for (var subIndex = 0; subIndex < $scope.projects[index].workers.length; subIndex++) {
+                        selected = $filter('filter')($scope.allWorkers, {
+                            value: $scope.projects[index].workers[subIndex],
+                        });
+                        selected.length ? $scope.projects[index].workers[subIndex] = selected[0] : "";
+                    }
                 }
             })
 
@@ -125,6 +137,7 @@
 
         $scope.showManager = function (project) {
             var selected = [];
+            if ($scope.projectManagers === undefined) return;
             if (project.managerID) {
                 selected = $filter('filter')($scope.projectManagers, {
                     value: project.managerID
@@ -135,6 +148,7 @@
 
         $scope.showMajor = function (project) {
             var selected = [];
+            if ($scope.projectManagers === undefined) return;
             if (project.majorID) {
                 selected = $filter('filter')($scope.projectManagers, {
                     value: project.majorID,
@@ -152,6 +166,7 @@
         $scope.showTechs = function (techs) {
             var resault = "";
             var selected = [];
+            if ($scope.projectTechs === undefined) return;
             for (var index = 0; index < techs.length; index++) {
                 selected = $filter('filter')($scope.projectTechs, {
                     value: techs[index],
@@ -181,19 +196,36 @@
                 })
         }
 
-        $scope.aaaaa = function (form) {
-            console.log(form);
+        $scope.updateWorkers = function (form, table) {
+            try {
+                var workers = [];
+                for (var index = 0; index < form.$data.workers.length; index++) {
+                    workers[index] = form.$data.workers[index].value;
+                }
+                var formData = {
+                    prjID: table.prj._id,
+                    workers: workers,
+                }
+                Project.updateWorkers(formData)
+                    .success(function (res) {
+                        console.log(res.code);
+                    })
+                    .error(function () {
+
+                    })
+            } catch (err) {
+                toastr['warning']('資訊未完整 !', '更新失敗');
+                return;
+            }
         }
 
-        $scope.showWorkers = function (workers) {
+        $scope.showWorkersName = function (workers) {
             var resault = "";
-            var selected = [];
             for (var index = 0; index < workers.length; index++) {
                 resault += workers[index].name + ", ";
             }
             return resault;
         }
-
     }
 
 })();

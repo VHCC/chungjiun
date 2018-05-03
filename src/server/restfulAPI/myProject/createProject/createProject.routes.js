@@ -186,7 +186,6 @@ module.exports = function (app) {
             }
             findData.push(target);
         }
-        ;
         Project.find(
             {
                 $or: findData,
@@ -209,6 +208,25 @@ module.exports = function (app) {
         }, {
             $set: {
                 majorID: req.body.majorID,
+            }
+        }, function (err) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        })
+    })
+    
+    // 更新協辦
+    app.post(global.apiUrl.post_project_update_workers, function (req, res) {
+        Project.update({
+            _id: req.body.prjID,
+        }, {
+            $set: {
+                workers: req.body.workers,
             }
         }, function (err) {
             if (err) {
