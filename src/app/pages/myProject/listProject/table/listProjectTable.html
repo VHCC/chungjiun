@@ -10,11 +10,16 @@
             <th st-sort="age">技師</th>
         </tr>
         <tr>
-            <th><input st-search="prjCode" placeholder="尋找代碼" class="input-sm form-control search-input"
-                       type="search"/></th>
-            <th><input st-search="name" placeholder="輸入名稱" class="input-sm form-control search-input"
-                       type="search"/></th>
-
+            <th><input st-search="prjCode"
+                       placeholder="尋找代碼"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+            <th><input st-search="name"
+                       placeholder="輸入名稱"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
         </tr>
         </thead>
         <tbody>
@@ -36,7 +41,7 @@
                         ng-disabled="rowform.$visible"
                         ng-click="rowform.$show()"
                         class="btn btn-primary editable-table-button btn-xs">
-                    Edit
+                    指派主承辦
                 </button>
             </td>
             <!--<td>{{prj.workers}}</td>-->
@@ -50,12 +55,12 @@
                          name="workers"
                          data-e-style="min-width:150px;max-width:500px"
                          data-e-ng-model="prj.workers">
-                        {{showWorkers(prj.workers)}}
+                        {{showWorkersName(prj.workers)}}
                         <editable-ui-select-match placeholder="請選擇協辦人員">
                             {{$select.selected[$index].name}}
                         </editable-ui-select-match>
                         <editable-ui-select-choices repeat="user in allWorkers | filter: $select.search ">
-                            {{user.name}}
+                            <span ng-bind-html="user.name | highlight: $select.search"></span>
                         </editable-ui-select-choices>
                     </div>
                     <br/>
@@ -64,20 +69,20 @@
                         <button type="button" class="btn btn-primary editable-table-button btn-xs"
                                 ng-click="uiSelectForm.$show()"
                                 ng-show="!uiSelectForm.$visible">
-                            Edit
+                            分派協辦
                         </button>
                         <!-- buttons to submit / cancel form -->
                         <span ng-show="uiSelectForm.$visible">
                         <br/>
                         <button type="submit" class="btn btn-primary editable-table-button btn-xs"
-                                ng-click="aaaaa(uiSelectForm)"
+                                ng-click="updateWorkers(uiSelectForm, this)"
                                 ng-disabled="uiSelectForm.$waiting">
-                          Save
+                          確認
                         </button>
                         <button type="button" class="btn btn-default editable-table-button btn-xs"
                                 ng-disabled="uiSelectForm.$waiting"
                                 ng-click="uiSelectForm.$cancel()">
-                          Cancel
+                          取消
                         </button>
                       </span>
                     </div>

@@ -255,7 +255,7 @@
         // ----------------- CREATE ---------------
 
         $scope.createSubmit = function () {
-            console.log('createSubmit');
+            // console.log('createSubmit');
             $scope.formData.prjCode = document[0].getElementById('prjCode').innerText;
             // $scope.formData.prjEndDate = document[0].getElementById('myDT').value;
 
