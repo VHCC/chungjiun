@@ -117,6 +117,7 @@
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
+                          e-step="0.5"
                           id="mon_hour"
                           e-required>{{ table.mon_hour || 0 }}</span>
                 </td>
@@ -131,6 +132,7 @@
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
+                          e-step="0.5"
                           id="tue_hour"
                           e-required>{{ table.tue_hour || 0 }}</span>
                 </td>
@@ -145,6 +147,7 @@
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
+                          e-step="0.5"
                           id="wes_hour"
                           e-required>{{ table.wes_hour || 0 }}</span>
                 </td>
@@ -159,6 +162,7 @@
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
+                          e-step="0.5"
                           id="thu_hour"
                           e-required>{{ table.thu_hour || 0}}</span>
                 </td>
@@ -173,6 +177,7 @@
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
+                          e-step="0.5"
                           id="fri_hour"
                           e-required>{{ table.fri_hour || 0}}</span>
                 </td>
@@ -187,6 +192,7 @@
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
+                          e-step="0.5"
                           id="sat_hour"
                           e-required>{{ table.sat_hour || 0}}</span>
                 </td>
@@ -201,6 +207,7 @@
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
+                          e-step="0.5"
                           id="sun_hour"
                           e-required>{{ table.sun_hour || 0}}</span>
                 </td>
@@ -241,7 +248,7 @@
                         </form>
                         <div class="buttons" ng-show="!rowform1.$visible">
                             <button class="btn btn-info editable-table-button btn-xs"
-                                    ng-click="rowform1.$show()">編輯
+                                    ng-click="rowform1.$show();bbbbb()">編輯
                             </button>
                         </div>
                         <div class="buttons" ng-show="!rowform1.$visible">
