@@ -18,12 +18,15 @@ global.apiUrl = {
     post_project_find_by_name : '/api/projectFindByName',
     post_project_find_by_code : '/api/post_project_find_by_code',
     get_project_find_by_name_distinct : '/api/projectFindByNameDistinct',
+    post_project_number_find_by_code_distinct : '/api/post_project_number_find_by_code_distinct',
     get_project_find_by_prjid : '/api/projectFindByPrjID',
     get_project_find_by_prjid_array : '/api/projectFindByPrjIDArray',
     post_project_foot_code : '/api/projectFootCode',
     post_project_create : '/api/projectCreate',
     post_project_update_major_id: '/api/post_project_update_major_id',
     post_project_update_workers: '/api/post_project_update_workers',
+    post_project_number_find_by_code: '/api/post_project_number_find_by_code',
+    post_project_sub_number_find_by_number: '/api/post_project_sub_number_find_by_number',
 
 
     // todolist

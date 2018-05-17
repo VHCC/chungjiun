@@ -4,7 +4,7 @@
             <div class="form-group">
                 <label for="prjCode" class="col-md-2 control-label">專案代碼: </label>
                 <p id="prjCode" class="col-md-10">
-                    {{createNewProjectCtrlVm.branch.value}}{{year}}{{mainProject.code}}
+                    {{createNewProjectCtrlVm.branch.value}}{{year}}{{mainProject.code}}{{mainProject.number.code}}{{mainProject.subNumber.code}}
                     <span id="prjCodeNumber" style="color: red">{{mainProject.footCode}}</span>
                     {{mainProject.type.selected.type}}
                 </p>
@@ -37,17 +37,17 @@
                         <ui-select ng-model="mainProject.selected"
                                    class="btn-group bootstrap-select form-control"
                                    id="projectName"
-                                   ng-change="triggerChangePrjName()"
+                                   ng-change="triggerChangeMainProject()"
                                    ng-disabled="false"
                                    append-to-body="true"
                                    search-enabled="true">
                             <ui-select-match placeholder="選擇總案">
-                                {{$select.selected.name}}
+                                {{$select.selected.mainName}}
                             </ui-select-match>
                             <ui-select-choices
-                                    repeat="prjItems in createNewProjectCtrlVm.projects | groupSelectpickerOptions: {name: $select.search}"
-                                    group-by="'name'">
-                                <span ng-bind-html="prjItems.name| highlight: $select.search"></span>
+                                    repeat="prjItems in createNewProjectCtrlVm.projects | groupSelectpickerOptions: {mainName: $select.search}"
+                                    group-by="'mainName'">
+                                <span ng-bind-html="prjItems.mainName| highlight: $select.search"></span>
                             </ui-select-choices>
                         </ui-select>
                     </div>
@@ -75,7 +75,66 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" ng-show="mainProject.selected">
+                    <label class="col-md-2 control-label">專案(2)</label>
+                    <div class="col-md-10">
+                        <ui-select ng-model="mainProject.number.selected"
+                                   class="btn-group bootstrap-select form-control"
+                                   ng-change="triggerChangePrjNumber()"
+                                   append-to-body="true"
+                                   search-enabled="true">
+                            <ui-select-match placeholder="請選擇專案">
+                                {{$select.selected.label}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    repeat="option in createNewProjectCtrlVm.prjNumbers">
+                                <span ng-bind-html="option.label"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group" style="display: none" id="newPrjNumberDiv">
+                    <label for="newProjectName" class="col-md-2 control-label">新專案名稱</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control"
+                               id="newProjectNumber"
+                               ng-model="mainProject.numberNew"
+                               ng-change="triggerChangePrjNewName()"
+                               placeholder="請輸入新專案名稱">
+                    </div>
+                </div>
+
+                <div class="form-group" ng-show="mainProject.number.selected">
+                    <label for="projectType" class="col-md-2 control-label">子案(2)</label>
+                    <div class="col-md-10">
+                        <ui-select ng-model="mainProject.subNumber.selected"
+                                   class="btn-group bootstrap-select form-control"
+                                   ng-change="triggerChangePrjSubNumber()"
+                                   append-to-body="true"
+                                   search-enabled="true">
+                            <ui-select-match placeholder="請選擇子案">
+                                {{$select.selected.label}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    repeat="option in createNewProjectCtrlVm.prjSubNumbers">
+                                <span ng-bind-html="option.label"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="form-group" style="display: none" id="newPrjSubNumberDiv">
+                    <label class="col-md-2 control-label">新子案名稱</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control"
+                               ng-model="mainProject.subNumberNew"
+                               ng-change="triggerChangePrjNewName()"
+                               placeholder="請輸入新子案名稱">
+                    </div>
+                </div>
+
+                <div class="form-group" ng-show="mainProject.subNumber.selected">
                     <label for="projectType" class="col-md-2 control-label">類型(1)</label>
                     <div class="col-md-10">
                         <select class="form-control selectpicker"
@@ -91,7 +150,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" ng-show="mainProject.type.selected">
                     <label for="projectManager" class="col-md-2 control-label">承辦經理</label>
                     <div class="col-md-10">
                         <ui-select ng-model="mainProject.manager"
@@ -112,7 +171,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" ng-show="mainProject.type.selected">
                     <label for="projectName" class="col-md-2 control-label">負責技師</label>
                     <div class="col-md-10">
                         <ui-select multiple

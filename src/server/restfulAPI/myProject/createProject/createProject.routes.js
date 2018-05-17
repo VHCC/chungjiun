@@ -74,6 +74,10 @@ module.exports = function (app) {
                     technician: req.body.technician,
                     // endDate: req.body.prjEndDate,
                     enable: true,
+                    prjNumber: req.body.prjNumber,
+                    prjName: req.body.prjName,
+                    prjSubNumber: req.body.prjSubNumber,
+                    prjSubName: req.body.prjSubName,
                 },
                 function (err, project) {
                     if (err) {
@@ -84,6 +88,7 @@ module.exports = function (app) {
                     res.status(200).send({
                         code: 200,
                         error: global.status._200,
+
                     });
                 });
         } catch (error) {
@@ -112,7 +117,7 @@ module.exports = function (app) {
             {
                 $group: {
                     _id: '$name',  //$region is the column name in collection
-                    name: {$first: '$name'},
+                    mainName: {$first: '$mainName'},
                     code: {$first: '$code'},
                     type: {$first: '$type'},
                     prjCode: {$first: '$prjCode'},
@@ -129,7 +134,7 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_project_find_by_name, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, find prj by name");
         Project.findOne({
-            name: req.body.name
+            mainName: req.body.name
         }, function (err, prj) {
             if (err) {
                 res.send(err);
@@ -236,6 +241,28 @@ module.exports = function (app) {
                 code: 200,
                 error: global.status._200,
             });
+        })
+    })
+
+    app.post(global.apiUrl.post_project_number_find_by_code_distinct, function (req, res) {
+        Project.find({
+            code: req.body.code,
+        }).distinct('prjNumber', function (err, projects) {
+            if (err) {
+                res.send(err);
+            }
+            res.json(projects);
+        })
+    })
+
+    app.post(global.apiUrl.post_project_number_find_by_code, function (req, res) {
+        Project.find({
+            code: req.body.code
+        }, function (err, prj) {
+            if (err) {
+                res.send(err);
+            }
+            res.json(prj);
         })
     })
 

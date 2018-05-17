@@ -43,8 +43,9 @@
 
         Project.findAllByGroup()
             .success(function (allProjects) {
-                allProjects.push({name: "新總案", code: ""});
-                allProjects.push({name: "建立總案 (自訂編號)", code: "9999"});
+                console.log(allProjects);
+                allProjects.push({mainName: "新總案", code: ""});
+                allProjects.push({mainName: "建立總案 (自訂編號)", code: "9999"});
                 vm.projects = allProjects;
                 $scope.year = new Date().getFullYear() - 1911;
             });
@@ -74,6 +75,14 @@
             {label: '其他-7', value: '7'},
         ];
 
+        vm.prjNumbers = [
+            {label: "新專案", value: ""},
+        ];
+
+        vm.prjSubNumbers = [
+            {label: '新子案', value: ""},
+        ];
+
         vm.prjBranch = [
             {label: 'P-投標-服務建議書', value: 'P'},
             {label: 'C-已成案', value: 'C'},
@@ -96,7 +105,7 @@
             });
 
         //Prj Name Check whether is new or not.　總案名稱變更
-        $scope.triggerChangePrjName = function () {
+        $scope.triggerChangeMainProject = function () {
             // console.log('triggerChangePrjName');
             if (this.mainProject.selected.code === "") {
                 //新總案case
@@ -130,12 +139,12 @@
                 $scope.mainProject.setCode = "";
             } else {
                 // 專案已存在
-                $scope.mainProject.new = $scope.mainProject.selected.name;
+                $scope.mainProject.new = $scope.mainProject.selected.mainName;
                 window.document.getElementById('newPrjNameDiv').style.display = "none";
                 window.document.getElementById('setPrjCodeDiv').style.display = "none";
                 // console.log(scope.mainProject.selected.name);
                 var data = {
-                    name: $scope.mainProject.selected.name
+                    name: $scope.mainProject.selected.mainName
                 }
                 Project.findPrjByName(data)
                     .success(function (prj) {
@@ -143,6 +152,25 @@
                             $scope.mainProject.code = prj.code;
                             $scope.year = prj.year;
                             vm.branch = $scope.showPrjBranch(prj.branch);
+
+                            var data = {
+                                code: $scope.mainProject.code,
+                            }
+
+                            //TODO
+                            //loadProjectNumberByCode
+                            Project.findPrjNumberByCode(data)
+                                .success(function (prj) {
+                                    // console.log(prj);
+                                    var allNumberProject = [];
+                                    for (var index = 0; index < prj.length; index ++) {
+                                        allNumberProject.push({label: prj[index].prjName, value: prj[index].prjNumber});
+                                    }
+                                    allNumberProject.push({label: "新專案", value: ""});
+                                    vm.prjNumbers = allNumberProject;
+                                })
+
+
                             if ($scope.mainProject.type !== undefined) {
                                 //若類型已選
                                 var formData = {
@@ -162,7 +190,7 @@
             }
         }
 
-        // Name Check　總案名稱
+        // Name Check　新總案名稱
         $scope.triggerChangePrjNewName = function () {
             // console.log('triggerChangePrjNewName');
             var data = {
@@ -211,13 +239,62 @@
                 })
         }
 
+        // TODO
+        // Number Check 專案
+        $scope.triggerChangePrjNumber = function() {
+            if (this.mainProject.selected.code === "") {
+                window.document.getElementById('newPrjNumberDiv').style.display = "block";
+                //新總案，必新專案 00
+                $scope.mainProject.number.code = "00";
+                $scope.mainProject.numberNew = "";
+                return;
+            }
+            if (this.mainProject.number.selected.value === "") {
+                //既有總案，新專案case
+                window.document.getElementById('newPrjNumberDiv').style.display = "block";
+                var data = {
+                    code: $scope.mainProject.code
+                }
+                Project.findPrjNumberDistinctByCode(data)
+                    .success(function (prjs) {
+                            console.log(JSON.stringify(prjs));
+                            // 專案案編號自動跳號 +1
+                            $scope.mainProject.number.code = prjs.length + 1 > 10 ? prjs.length : "0" + (prjs.length);
+                            $scope.mainProject.numberNew = "";
+                        }
+                    );
+            } else {
+                // 既有專案
+                window.document.getElementById('newPrjNumberDiv').style.display = "none";
+                $scope.mainProject.number.code = this.mainProject.number.selected.value;
+                $scope.mainProject.numberNew = this.mainProject.number.selected.label;
+            }
+        }
+
+
+        // TODO
+        // SubNumber Check 子案
+        $scope.triggerChangePrjSubNumber = function() {
+            if (this.mainProject.number.selected.value === "") {
+                window.document.getElementById('newPrjSubNumberDiv').style.display = "block";
+                //新專案，必新子案 00
+                $scope.mainProject.subNumber.code = "00";
+                $scope.mainProject.subNumberNew = "";
+                return;
+            }
+            if (this.mainProject.subNumber.selected.value === "") {
+                //既有專案，新子案case
+                window.document.getElementById('newPrjSubNumberDiv').style.display = "block";
+            }
+        }
+
         // Type Check　類型
         $scope.triggerChangePrjType = function () {
             // console.log('triggerChangePrjType');
 
-            if ($scope.mainProject.selected.name !== undefined) {
+            if ($scope.mainProject.selected.mainName !== undefined) {
                 var data = {
-                    name: $scope.mainProject.selected.name
+                    name: $scope.mainProject.selected.mainName
                 }
                 Project.findPrjByName(data)
                     .success(function (prj) {
@@ -225,7 +302,7 @@
                             // 專案已存在 case
                             if ($scope.mainProject.selected.code !== "") {
                                 //若專案名稱已選
-                                $scope.mainProject.new = $scope.mainProject.selected.name;
+                                $scope.mainProject.new = $scope.mainProject.selected.mainName;
                                 $scope.mainProject.code = prj.code;
                                 var data = {
                                     year: $scope.year,
@@ -274,13 +351,19 @@
                     // majorID: $scope.mainProject.manager._id,
                     managerID: $scope.mainProject.manager._id,
                     prjCode:
-                    vm.branch.value +
-                    String($scope.year) +
-                    String($scope.mainProject.code) +
-                    $scope.mainProject.type.selected.value +
-                    $scope.mainProject.footCode,
+                        vm.branch.value +
+                        String($scope.year) +
+                        String($scope.mainProject.code) +
+                        String($scope.mainProject.number.code) +
+                        String($scope.mainProject.subNumber.code) +
+                        $scope.mainProject.type.selected.value,
                     technician: prjTechs,
                     // endDate: req.body.prjEndDate,
+                    prjNumber: $scope.mainProject.number.code,
+                    prjName: $scope.mainProject.numberNew,
+                    prjSubNumber: $scope.mainProject.subNumber.code,
+                    prjSubName: $scope.mainProject.subNumberNew,
+
                 }
             } catch (err) {
                 toastr['warning']('輸入資訊未完整 !', '建立失敗');

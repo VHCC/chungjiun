@@ -34,7 +34,7 @@ module.exports = mongoose.model('Project', {
         required: true,
     },
     // 專案編碼
-    // O + OOO + OO + O O+ OO + O 共 11 碼
+    // O + OOO(年度) + OO(總案) + OO(專案) + OO(子案) + O(類型) 共 11 碼
     prjCode: {
         type: String,
         required: true
@@ -90,7 +90,7 @@ module.exports = mongoose.model('Project', {
         required: true,
     },
     //子案名稱
-    prjSubNumber: {
+    prjSubName: {
         type: String,
         required: true,
     },
