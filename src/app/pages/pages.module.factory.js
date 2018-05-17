@@ -55,15 +55,23 @@
                 findPrjByCode: function (prjCode) {
                     return http.post('/api/post_project_find_by_code', prjCode);
                 },
-                findPrjDistinctByName: function () {
+                findPrjDistinctByName: function () { // 以名稱為區隔，尋找總案數
                     return http.get('/api/projectFindByNameDistinct');
+                },
+                findPrjNumberDistinctByCode: function (formData) { // 以總案代碼為區隔，尋找專案數
+                    return http.post('/api/post_project_number_find_by_code_distinct', formData);
                 },
                 findPrjFootNumber: function (projectData) {
                     return http.post('/api/projectFootCode', projectData);
                 },
-
                 findPrjByIDArray: function (prjIDData) {
                     return http.post('/api/projectFindByPrjIDArray', prjIDData);
+                },
+                findPrjNumberByCode: function (formData) { // 用總案代碼找專案
+                    return http.post('/api/post_project_number_find_by_code', formData);
+                },
+                findPrjSubNumberByNumber: function (formData) { // 用專案找子案
+                    return http.post('/api/post_project_sub_number_find_by_number', formData);
                 },
             }
         }])
