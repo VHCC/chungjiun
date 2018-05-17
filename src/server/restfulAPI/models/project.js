@@ -21,27 +21,26 @@ module.exports = mongoose.model('Project', {
         required: true,
     },
     // 類型：
-    // 規劃 00
+    // O
     // 設計 01
     // 監造 02
-    // 服務 03
-    // 行政 04
-    // 投標 05
-    // 總案 06
+    // 規劃 03
+    // 服務 04
+    // 總案 05
+    // 專案管理 06
     // 其他 07
-    // O
     type: {
         type: String,
         required: true,
     },
     // 專案編碼
-    // O + OOO + OO + O + OO 共 9 碼
+    // O + OOO + OO + O O+ OO + O 共 11 碼
     prjCode: {
         type: String,
         required: true
     },
     // 專案名稱
-    name: {
+    mainName: {
         type: String,
         required: true
     },
@@ -73,4 +72,26 @@ module.exports = mongoose.model('Project', {
     //     type: Date
     // }
 
+    // 專案編號
+    // OO
+    prjNumber: {
+        type: String,
+        required: true,
+    },
+    //專案名稱
+    prjName: {
+        type: String,
+        required: true,
+    },
+    // 子岸編號
+    // OO
+    prjSubNumber: {
+        type: String,
+        required: true,
+    },
+    //子案名稱
+    prjSubNumber: {
+        type: String,
+        required: true,
+    },
 });

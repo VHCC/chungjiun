@@ -67,7 +67,7 @@ module.exports = function (app) {
                     year: String(req.body.year),
                     code: String(req.body.code),
                     type: req.body.type,
-                    name: req.body.name,
+                    mainName: req.body.mainName,
                     // majorID: req.body.majorID,
                     managerID: req.body.managerID,
                     prjCode: req.body.prjCode,
