@@ -31,6 +31,7 @@
         var roleType = cookies.get('roletype');
 
         $scope.formData = {};
+        $scope.mainProject = {};
 
         // right division.
         if (roleType !== '100') {
@@ -45,7 +46,7 @@
                 allProjects.push({name: "新總案", code: ""});
                 allProjects.push({name: "建立總案 (自訂編號)", code: "9999"});
                 vm.projects = allProjects;
-                $scope.formData.year = new Date().getFullYear() - 1911;
+                $scope.year = new Date().getFullYear() - 1911;
             });
 
         var vm = this;
@@ -63,14 +64,14 @@
             })
 
         vm.prjTypes = [
-            {label: '規劃-0', type: '0'},
-            {label: '設計-1', type: '1'},
-            {label: '監造-2', type: '2'},
-            {label: '服務-3', type: '3'},
-            {label: '行政-4', type: '4'},
-            {label: '投標-5', type: '5'},
-            {label: '總案-6', type: '6'},
-            {label: '其他-7', type: '7'},
+            // {label: '規劃-0', type: '0'},
+            {label: '設計-1', value: '1'},
+            {label: '監造-2', value: '2'},
+            {label: '規劃-3', value: '3'},
+            {label: '服務-4', value: '4'},
+            {label: '總案-5', value: '5'},
+            {label: '專案管理-6', value: '6'},
+            {label: '其他-7', value: '7'},
         ];
 
         vm.prjBranch = [
@@ -94,10 +95,10 @@
                 $scope.users = allUsers;
             });
 
-        //Prj Name Check whether is new or not.
+        //Prj Name Check whether is new or not.　總案名稱變更
         $scope.triggerChangePrjName = function () {
             // console.log('triggerChangePrjName');
-            if (this.formData.prj.name.selected.code === "") {
+            if (this.mainProject.selected.code === "") {
                 //新總案case
                 window.document.getElementById('newPrjNameDiv').style.display = "block";
                 window.document.getElementById('setPrjCodeDiv').style.display = "none";
@@ -105,56 +106,55 @@
                     .success(function (prjs) {
                             // console.log(JSON.stringify(prjs));
                             // 總案編號自動跳號 +1
-                            $scope.formData.prj.code = prjs.length + 1 > 10 ? prjs.length : "0" + (prjs.length);
-                            $scope.formData.prj.name.new = "";
-                            $scope.formData.year = new Date().getFullYear() - 1911;
-                            if ($scope.formData.prj.type !== undefined) {
+                            $scope.mainProject.code = prjs.length + 1 > 10 ? prjs.length : "0" + (prjs.length);
+                            $scope.mainProject.new = "";
+                            $scope.year = new Date().getFullYear() - 1911;
+                            if ($scope.mainProject.type !== undefined) {
                                 var data = {
-                                    year: $scope.formData.year,
-                                    code: $scope.formData.prj.code,
-                                    type: $scope.formData.prj.type.selected.type,
+                                    year: $scope.year,
+                                    code: $scope.mainProject.code,
+                                    type: $scope.mainProject.type.selected.value,
                                 }
                                 Project.findPrjFootNumber(data)
                                     .success(function (prjs) {
                                         // console.log(JSON.stringify(prjs));
-                                        $scope.formData.prj.footCode = prjs.length + 1 > 10 ? prjs.length + 1 : "0" + (prjs.length + 1);
+                                        $scope.mainProject.footCode = prjs.length + 1 > 10 ? prjs.length + 1 : "0" + (prjs.length + 1);
                                     })
                             }
                         }
                     );
             //    自訂總案編號
-            } else if (this.formData.prj.name.selected.code === "9999") {
-                $scope.formData.prj.set.code = "";
+            } else if (this.mainProject.selected.code === "9999") {
                 window.document.getElementById('newPrjNameDiv').style.display = "block";
                 window.document.getElementById('setPrjCodeDiv').style.display = "block";
-
-
+                $scope.mainProject.setCode = "";
             } else {
                 // 專案已存在
-                $scope.formData.prj.name.new = $scope.formData.prj.name.selected.name;
+                $scope.mainProject.new = $scope.mainProject.selected.name;
                 window.document.getElementById('newPrjNameDiv').style.display = "none";
                 window.document.getElementById('setPrjCodeDiv').style.display = "none";
-                // console.log(scope.formData.prj.name.selected.name);
+                // console.log(scope.mainProject.selected.name);
                 var data = {
-                    name: $scope.formData.prj.name.selected.name
+                    name: $scope.mainProject.selected.name
                 }
                 Project.findPrjByName(data)
                     .success(function (prj) {
                             // console.log(JSON.stringify(prj));
-                            $scope.formData.prj.code = prj.code;
-                            $scope.formData.year = prj.year;
+                            $scope.mainProject.code = prj.code;
+                            $scope.year = prj.year;
                             vm.branch = $scope.showPrjBranch(prj.branch);
-                            if ($scope.formData.prj.type !== undefined) {
+                            if ($scope.mainProject.type !== undefined) {
+                                //若類型已選
                                 var formData = {
-                                    year: $scope.formData.year,
-                                    code: $scope.formData.prj.code,
-                                    type: $scope.formData.prj.type.selected.type,
+                                    year: $scope.year,
+                                    code: $scope.mainProject.code,
+                                    type: $scope.mainProject.type.selected.value,
                                 }
                                 Project.findPrjFootNumber(formData)
                                     .success(function (prjs) {
                                         // console.log(JSON.stringify(prjs));
                                         // console.log(prjs.length);
-                                        $scope.formData.prj.footCode = prjs.length + 1 > 10 ? prjs.length + 1 : "0" + (prjs.length + 1);
+                                        $scope.mainProject.footCode = prjs.length + 1 > 10 ? prjs.length + 1 : "0" + (prjs.length + 1);
                                     })
                             }
                         }
@@ -162,11 +162,11 @@
             }
         }
 
-        // Name Check
+        // Name Check　總案名稱
         $scope.triggerChangePrjNewName = function () {
             // console.log('triggerChangePrjNewName');
             var data = {
-                name: $scope.formData.prj.name.new
+                name: $scope.mainProject.new
             }
             Project.findPrjByName(data)
                 .success(function (prj) {
@@ -181,10 +181,10 @@
                 })
         }
 
-        // Code Check
+        // Code Check　自訂編號
         $scope.triggerChangePrjCode = function () {
             // console.log('triggerChangePrjNewName');
-            if ($scope.formData.prj.set.code.length !== 2) {
+            if ($scope.mainProject.setCode.length !== 2) {
                 document[0].getElementById('prjSubmitBtn').disabled = true;
                 document[0].getElementById('prjSubmitBtn').innerText = "請確認 自訂總案編號為 2 位數字！"
                 return;
@@ -194,7 +194,7 @@
             }
 
             var formData = {
-                code: $scope.formData.prj.set.code
+                code: $scope.mainProject.setCode
             }
             Project.findPrjByCode(formData)
                 .success(function (prj) {
@@ -203,7 +203,7 @@
                         document[0].getElementById('prjSubmitBtn').disabled = true;
                         document[0].getElementById('prjSubmitBtn').innerText = "專案編號已存在，請檢查！"
                     } else {
-                        $scope.formData.prj.code = $scope.formData.prj.set.code;
+                        $scope.mainProject.code = $scope.mainProject.setCode;
 
                         document[0].getElementById('prjSubmitBtn').disabled = false;
                         document[0].getElementById('prjSubmitBtn').innerText = "建立專案"
@@ -211,34 +211,35 @@
                 })
         }
 
-        // Type Check
+        // Type Check　類型
         $scope.triggerChangePrjType = function () {
             // console.log('triggerChangePrjType');
 
-            if ($scope.formData.prj.name !== undefined) {
+            if ($scope.mainProject.selected.name !== undefined) {
                 var data = {
-                    name: $scope.formData.prj.name.selected.name
+                    name: $scope.mainProject.selected.name
                 }
                 Project.findPrjByName(data)
                     .success(function (prj) {
                             // console.log(JSON.stringify(prj));
                             // 專案已存在 case
-                            if ($scope.formData.prj.name.selected.code !== "") {
-                                $scope.formData.prj.name.new = $scope.formData.prj.name.selected.name;
-                                $scope.formData.prj.code = prj.code;
+                            if ($scope.mainProject.selected.code !== "") {
+                                //若專案名稱已選
+                                $scope.mainProject.new = $scope.mainProject.selected.name;
+                                $scope.mainProject.code = prj.code;
                                 var data = {
-                                    year: $scope.formData.year,
-                                    code: $scope.formData.prj.code,
-                                    type: $scope.formData.prj.type.selected.type,
+                                    year: $scope.year,
+                                    code: $scope.mainProject.code,
+                                    type: $scope.mainProject.type.selected.value,
                                 }
                                 Project.findPrjFootNumber(data)
                                     .success(function (prjs) {
                                         // console.log(JSON.stringify(prjs));
                                         // console.log(prjs.length);
-                                        $scope.formData.prj.footCode = prjs.length + 1 > 10 ? prjs.length + 1 : "0" + (prjs.length + 1);
+                                        $scope.mainProject.footCode = prjs.length + 1 > 10 ? prjs.length + 1 : "0" + (prjs.length + 1);
                                     })
                             } else {
-                                $scope.formData.prj.footCode = "01";
+                                $scope.mainProject.footCode = "00";
                             }
                         }
                     );
@@ -247,8 +248,8 @@
 
         $scope.triggerChangePrjTechs = function () {
             console.log('triggerChangePrjTechs');
-            if (this.formData.techs.selected === undefined) {
-                this.formData.techs = null;
+            if (this.mainProject.techs === undefined) {
+                this.mainProject.techs = null;
             }
         }
 
@@ -256,28 +257,28 @@
 
         $scope.createSubmit = function () {
             // console.log('createSubmit');
-            $scope.formData.prjCode = document[0].getElementById('prjCode').innerText;
+            // $scope.formData.prjCode = document[0].getElementById('prjCode').innerText;
             // $scope.formData.prjEndDate = document[0].getElementById('myDT').value;
 
             try {
                 var prjTechs = [];
-                for (var index = 0; index < $scope.formData.techs.selected.length; index ++) {
-                    prjTechs[index] = $scope.formData.techs.selected[index]._id;
+                for (var index = 0; index < $scope.mainProject.techs.length; index ++) {
+                    prjTechs[index] = $scope.mainProject.techs[index]._id;
                 }
                 var createData = {
                     branch: vm.branch.value,
-                    year: String($scope.formData.year),
-                    code: String($scope.formData.prj.code),
-                    type: $scope.formData.prj.type.selected.type,
-                    name: $scope.formData.prj.name.new,
-                    // majorID: $scope.formData.manager.selected._id,
-                    managerID: $scope.formData.manager.selected._id,
+                    year: String($scope.year),
+                    code: String($scope.mainProject.code),
+                    type: $scope.mainProject.type.selected.value,
+                    name: $scope.mainProject.new,
+                    // majorID: $scope.mainProject.manager._id,
+                    managerID: $scope.mainProject.manager._id,
                     prjCode:
                     vm.branch.value +
-                    String($scope.formData.year) +
-                    String($scope.formData.prj.code) +
-                    $scope.formData.prj.type.selected.type +
-                    $scope.formData.prj.footCode,
+                    String($scope.year) +
+                    String($scope.mainProject.code) +
+                    $scope.mainProject.type.selected.value +
+                    $scope.mainProject.footCode,
                     technician: prjTechs,
                     // endDate: req.body.prjEndDate,
                 }
