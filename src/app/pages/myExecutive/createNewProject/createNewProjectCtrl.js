@@ -123,7 +123,7 @@
                             }
                         }
                     );
-            //    自訂總案編號
+                //    自訂總案編號
             } else if (this.mainProject.selected.code === "9999") {
                 window.document.getElementById('newPrjNameDiv').style.display = "block";
                 window.document.getElementById('setPrjCodeDiv').style.display = "block";
@@ -262,7 +262,7 @@
 
             try {
                 var prjTechs = [];
-                for (var index = 0; index < $scope.mainProject.techs.length; index ++) {
+                for (var index = 0; index < $scope.mainProject.techs.length; index++) {
                     prjTechs[index] = $scope.mainProject.techs[index]._id;
                 }
                 var createData = {
@@ -270,7 +270,7 @@
                     year: String($scope.year),
                     code: String($scope.mainProject.code),
                     type: $scope.mainProject.type.selected.value,
-                    name: $scope.mainProject.new,
+                    mainName: $scope.mainProject.new,
                     // majorID: $scope.mainProject.manager._id,
                     managerID: $scope.mainProject.manager._id,
                     prjCode:
