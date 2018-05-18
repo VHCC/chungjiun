@@ -116,7 +116,7 @@ module.exports = function (app) {
         Project.aggregate([
             {
                 $group: {
-                    _id: '$name',  //$region is the column name in collection
+                    _id: '$mainName',  //$region is the column name in collection
                     mainName: {$first: '$mainName'},
                     code: {$first: '$code'},
                     type: {$first: '$type'},
@@ -135,11 +135,11 @@ module.exports = function (app) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, find prj by name");
         Project.findOne({
             mainName: req.body.name
-        }, function (err, prj) {
+        }, function (err, oneProject) {
             if (err) {
                 res.send(err);
             }
-            res.json(prj);
+            res.json(oneProject);
         })
     });
 
@@ -148,24 +148,25 @@ module.exports = function (app) {
         console.log(req.body.code)
         Project.findOne({
             code: req.body.code
-        }, function (err, prj) {
-            console.log(prj)
+        }, function (err, oneProject) {
+            console.log(oneProject)
             if (err) {
                 res.send(err);
             }
-            res.json(prj);
+            res.json(oneProject);
         })
     });
 
     app.get(global.apiUrl.get_project_find_by_name_distinct, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, get projects by name distonct.");
-        Project.find().distinct('name', function (err, projects) {
+        Project.find().distinct('mainName', function (err, projects) {
             if (err) {
                 res.send(err);
             }
             res.json(projects);
         })
     });
+
 
     app.post(global.apiUrl.post_project_foot_code, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post prj foot code.");
@@ -244,9 +245,24 @@ module.exports = function (app) {
         })
     })
 
+    // 找總案代碼下的專案總數
     app.post(global.apiUrl.post_project_number_find_by_code_distinct, function (req, res) {
         Project.find({
             code: req.body.code,
+            prjNumber: req.body.prjNumber
+        }).distinct('prjSubNumber', function (err, projects) {
+            if (err) {
+                res.send(err);
+            }
+            res.json(projects);
+        })
+    })
+
+    // 找專案代碼下的子案總數
+    app.post(global.apiUrl.post_project_sub_number_find_by_number_distinct, function (req, res) {
+        Project.find({
+            code: req.body.code,
+
         }).distinct('prjNumber', function (err, projects) {
             if (err) {
                 res.send(err);
@@ -255,15 +271,44 @@ module.exports = function (app) {
         })
     })
 
+    // 用總案代碼找專案
     app.post(global.apiUrl.post_project_number_find_by_code, function (req, res) {
         Project.find({
             code: req.body.code
-        }, function (err, prj) {
+        }, function (err, projects) {
             if (err) {
                 res.send(err);
             }
-            res.json(prj);
+            res.json(projects);
         })
     })
 
+    // 用專案代碼找子案
+    app.post(global.apiUrl.post_project_sub_number_find_by_number, function (req, res) {
+        Project.find({
+            code: req.body.code,
+            prjNumber: req.body.prjNumber
+        }, function (err, projects) {
+            if (err) {
+                res.send(err);
+            }
+            res.json(projects);
+        })
+    })
+
+    // 用子案代碼找類型
+    app.post(global.apiUrl.post_project_type_find_by_sub_number, function (req, res) {
+        Project.find({
+            year: req.body.year,
+            code: req.body.code,
+            prjNumber: req.body.prjNumber,
+            prjSubNumber: req.body.prjSubNumber,
+            type: req.body.type,
+        }, function (err, projects) {
+            if (err) {
+                res.send(err);
+            }
+            res.json(projects);
+        })
+    })
 }

@@ -113,7 +113,7 @@
                 window.document.getElementById('setPrjCodeDiv').style.display = "none";
                 Project.findPrjDistinctByName()
                     .success(function (prjs) {
-                            // console.log(JSON.stringify(prjs));
+                            console.log(JSON.stringify(prjs));
                             // 總案編號自動跳號 +1
                             $scope.mainProject.code = prjs.length + 1 > 10 ? prjs.length : "0" + (prjs.length);
                             $scope.mainProject.new = "";
@@ -158,6 +158,7 @@
                             }
 
                             //TODO
+                            // *******撈專案*******
                             //loadProjectNumberByCode
                             Project.findPrjNumberByCode(data)
                                 .success(function (prj) {
@@ -200,11 +201,13 @@
                 .success(function (prj) {
                     // console.log(JSON.stringify(prj));
                     if (prj !== null) {
-                        document[0].getElementById('prjSubmitBtn').disabled = true;
-                        document[0].getElementById('prjSubmitBtn').innerText = "專案名稱已存在，請檢查！"
+                        $scope.changeSubmitBtnStatus(true, "專案名稱已存在，請檢查！");
+                        // document[0].getElementById('prjSubmitBtn').disabled = true;
+                        // document[0].getElementById('prjSubmitBtn').innerText = "專案名稱已存在，請檢查！"
                     } else {
-                        document[0].getElementById('prjSubmitBtn').disabled = false;
-                        document[0].getElementById('prjSubmitBtn').innerText = "建立專案"
+                        $scope.changeSubmitBtnStatus(false, "建立專案");
+                        // document[0].getElementById('prjSubmitBtn').disabled = false;
+                        // document[0].getElementById('prjSubmitBtn').innerText = "建立專案"
                     }
                 })
         }
@@ -213,12 +216,14 @@
         $scope.triggerChangePrjCode = function () {
             // console.log('triggerChangePrjNewName');
             if ($scope.mainProject.setCode.length !== 2) {
-                document[0].getElementById('prjSubmitBtn').disabled = true;
-                document[0].getElementById('prjSubmitBtn').innerText = "請確認 自訂總案編號為 2 位數字！"
+                $scope.changeSubmitBtnStatus(true, "請確認 自訂總案編號為 2 位數字！");
+                // document[0].getElementById('prjSubmitBtn').disabled = true;
+                // document[0].getElementById('prjSubmitBtn').innerText = "請確認 自訂總案編號為 2 位數字！"
                 return;
             } else {
-                document[0].getElementById('prjSubmitBtn').disabled = false;
-                document[0].getElementById('prjSubmitBtn').innerText = "建立專案"
+                $scope.changeSubmitBtnStatus(false, "建立專案");
+                // document[0].getElementById('prjSubmitBtn').disabled = false;
+                // document[0].getElementById('prjSubmitBtn').innerText = "建立專案"
             }
 
             var formData = {
@@ -228,18 +233,18 @@
                 .success(function (prj) {
                     // console.log(JSON.stringify(prj));
                     if (prj !== null) {
-                        document[0].getElementById('prjSubmitBtn').disabled = true;
-                        document[0].getElementById('prjSubmitBtn').innerText = "專案編號已存在，請檢查！"
+                        $scope.changeSubmitBtnStatus(true, "專案編號已存在，請檢查！");
+                        // document[0].getElementById('prjSubmitBtn').disabled = true;
+                        // document[0].getElementById('prjSubmitBtn').innerText = "專案編號已存在，請檢查！"
                     } else {
                         $scope.mainProject.code = $scope.mainProject.setCode;
-
-                        document[0].getElementById('prjSubmitBtn').disabled = false;
-                        document[0].getElementById('prjSubmitBtn').innerText = "建立專案"
+                        $scope.changeSubmitBtnStatus(false, "建立專案");
+                        // document[0].getElementById('prjSubmitBtn').disabled = false;
+                        // document[0].getElementById('prjSubmitBtn').innerText = "建立專案"
                     }
                 })
         }
 
-        // TODO
         // Number Check 專案
         $scope.triggerChangePrjNumber = function() {
             if (this.mainProject.selected.code === "") {
@@ -268,11 +273,27 @@
                 window.document.getElementById('newPrjNumberDiv').style.display = "none";
                 $scope.mainProject.number.code = this.mainProject.number.selected.value;
                 $scope.mainProject.numberNew = this.mainProject.number.selected.label;
+
+                var data = {
+                    code: $scope.mainProject.code,
+                    prjNumber: $scope.mainProject.number.code,
+                }
+
+                // *******撈子案*******
+                //loadProjectSubNumberByNumber
+                Project.findPrjSubNumberByNumber(data)
+                    .success(function (prjs) {
+                        console.log(prjs);
+                        var allSubNumberProject = [];
+                        for (var index = 0; index < prjs.length; index ++) {
+                            allSubNumberProject.push({label: prjs[index].prjSubName, value: prjs[index].prjSubNumber});
+                        }
+                        allSubNumberProject.push({label: "新子案", value: ""});
+                        vm.prjSubNumbers = allSubNumberProject;
+                    })
             }
         }
 
-
-        // TODO
         // SubNumber Check 子案
         $scope.triggerChangePrjSubNumber = function() {
             if (this.mainProject.number.selected.value === "") {
@@ -285,42 +306,60 @@
             if (this.mainProject.subNumber.selected.value === "") {
                 //既有專案，新子案case
                 window.document.getElementById('newPrjSubNumberDiv').style.display = "block";
+                var data = {
+                    code: $scope.mainProject.code,
+                    prjNumber: $scope.mainProject.number.code,
+                }
+                Project.findPrjSubNumberDistinctByNumber(data)
+                    .success(function (prjs) {
+                            // console.log(JSON.stringify(prjs));
+                            // 子案案編號自動跳號 +1
+                            $scope.mainProject.subNumber.code = prjs.length + 1 > 10 ? prjs.length : "0" + (prjs.length);
+                            $scope.mainProject.subNumberNew = "";
+                        }
+                    );
+            } else {
+                // 既有子案
+                window.document.getElementById('newPrjSubNumberDiv').style.display = "none";
+                $scope.mainProject.subNumber.code = this.mainProject.subNumber.selected.value;
+                $scope.mainProject.subNumberNew = this.mainProject.subNumber.selected.label;
             }
         }
 
         // Type Check　類型
         $scope.triggerChangePrjType = function () {
             // console.log('triggerChangePrjType');
-
-            if ($scope.mainProject.selected.mainName !== undefined) {
-                var data = {
-                    name: $scope.mainProject.selected.mainName
-                }
-                Project.findPrjByName(data)
-                    .success(function (prj) {
-                            // console.log(JSON.stringify(prj));
-                            // 專案已存在 case
-                            if ($scope.mainProject.selected.code !== "") {
-                                //若專案名稱已選
-                                $scope.mainProject.new = $scope.mainProject.selected.mainName;
-                                $scope.mainProject.code = prj.code;
-                                var data = {
-                                    year: $scope.year,
-                                    code: $scope.mainProject.code,
-                                    type: $scope.mainProject.type.selected.value,
-                                }
-                                Project.findPrjFootNumber(data)
-                                    .success(function (prjs) {
-                                        // console.log(JSON.stringify(prjs));
-                                        // console.log(prjs.length);
-                                        $scope.mainProject.footCode = prjs.length + 1 > 10 ? prjs.length + 1 : "0" + (prjs.length + 1);
-                                    })
-                            } else {
-                                $scope.mainProject.footCode = "00";
-                            }
-                        }
-                    );
+            var data = {
+                year: $scope.year,
+                code: $scope.mainProject.code,
+                prjNumber: $scope.mainProject.number.code,
+                prjSubNumber: $scope.mainProject.subNumber.code,
+                type: $scope.mainProject.type.selected.value,
             }
+            console.log(data);
+            Project.findPrjTypeBySubNumber(data)
+                .success(function (projects) {
+                        console.log(JSON.stringify(projects));
+                        if (projects.length !== 0) {
+                            $scope.changeSubmitBtnStatus(true, "此類型子案已存在，請檢察！");
+                        } else {
+                            $scope.changeSubmitBtnStatus(false, "建立專案");
+                        }
+                        // $scope.mainProject.new = $scope.mainProject.selected.mainName;
+                        // $scope.mainProject.code = projects.code;
+                        // var data = {
+                        //     year: $scope.year,
+                        //     code: $scope.mainProject.code,
+                        //     type: $scope.mainProject.type.selected.value,
+                        // }
+                        // Project.findPrjFootNumber(data)
+                        //     .success(function (prjs) {
+                        //         // console.log(JSON.stringify(prjs));
+                        //         // console.log(prjs.length);
+                        //         $scope.mainProject.footCode = prjs.length + 1 > 10 ? prjs.length + 1 : "0" + (prjs.length + 1);
+                        //     })
+                    }
+                );
         }
 
         $scope.triggerChangePrjTechs = function () {
@@ -328,6 +367,11 @@
             if (this.mainProject.techs === undefined) {
                 this.mainProject.techs = null;
             }
+        }
+
+        $scope.changeSubmitBtnStatus = function(isEnable, showText) {
+            document[0].getElementById('prjSubmitBtn').disabled = isEnable;
+            document[0].getElementById('prjSubmitBtn').innerText = showText;
         }
 
         // ----------------- CREATE ---------------

@@ -61,6 +61,9 @@
                 findPrjNumberDistinctByCode: function (formData) { // 以總案代碼為區隔，尋找專案數
                     return http.post('/api/post_project_number_find_by_code_distinct', formData);
                 },
+                findPrjSubNumberDistinctByNumber: function (formData) { // 以子案代碼為區隔，尋找子案數
+                    return http.post('/api/post_project_number_find_by_code_distinct', formData);
+                },
                 findPrjFootNumber: function (projectData) {
                     return http.post('/api/projectFootCode', projectData);
                 },
@@ -72,6 +75,9 @@
                 },
                 findPrjSubNumberByNumber: function (formData) { // 用專案找子案
                     return http.post('/api/post_project_sub_number_find_by_number', formData);
+                },
+                findPrjTypeBySubNumber: function (formData) { // 用子案找類型
+                    return http.post('/api/post_project_type_find_by_sub_number', formData);
                 },
             }
         }])

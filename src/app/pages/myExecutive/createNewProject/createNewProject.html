@@ -4,9 +4,13 @@
             <div class="form-group">
                 <label for="prjCode" class="col-md-2 control-label">專案代碼: </label>
                 <p id="prjCode" class="col-md-10">
-                    {{createNewProjectCtrlVm.branch.value}}{{year}}{{mainProject.code}}{{mainProject.number.code}}{{mainProject.subNumber.code}}
+                    {{createNewProjectCtrlVm.branch.value}} <!-- 分支O-->
+                    {{year}} <!-- 年度 OOO-->
+                    {{mainProject.code}} <!-- 總案 OO-->
+                    {{mainProject.number.code}} <!-- 專案 OO-->
+                    {{mainProject.subNumber.code}} <!-- 子案 OO-->
                     <span id="prjCodeNumber" style="color: red">{{mainProject.footCode}}</span>
-                    {{mainProject.type.selected.type}}
+                    {{mainProject.type.selected.value}} <!-- 類型 O-->
                 </p>
             </div>
             <form class="form-horizontal">
@@ -100,7 +104,6 @@
                         <input type="text" class="form-control"
                                id="newProjectNumber"
                                ng-model="mainProject.numberNew"
-                               ng-change="triggerChangePrjNewName()"
                                placeholder="請輸入新專案名稱">
                     </div>
                 </div>
@@ -129,7 +132,6 @@
                     <div class="col-md-10">
                         <input type="text" class="form-control"
                                ng-model="mainProject.subNumberNew"
-                               ng-change="triggerChangePrjNewName()"
                                placeholder="請輸入新子案名稱">
                     </div>
                 </div>
