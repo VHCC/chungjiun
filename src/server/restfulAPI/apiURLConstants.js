@@ -17,16 +17,23 @@ global.apiUrl = {
     get_project_find_all_by_group : '/api/projectFindAllByGroup',
     post_project_find_by_name : '/api/projectFindByName',
     post_project_find_by_code : '/api/post_project_find_by_code',
+    // 尋找總數
     get_project_find_by_name_distinct : '/api/projectFindByNameDistinct',
     post_project_number_find_by_code_distinct : '/api/post_project_number_find_by_code_distinct',
+    post_project_sub_number_find_by_number_distinct : '/api/post_project_sub_number_find_by_number_distinct',
+
     get_project_find_by_prjid : '/api/projectFindByPrjID',
     get_project_find_by_prjid_array : '/api/projectFindByPrjIDArray',
     post_project_foot_code : '/api/projectFootCode',
+    // Create
     post_project_create : '/api/projectCreate',
+    // Update
     post_project_update_major_id: '/api/post_project_update_major_id',
     post_project_update_workers: '/api/post_project_update_workers',
+    // search
     post_project_number_find_by_code: '/api/post_project_number_find_by_code',
     post_project_sub_number_find_by_number: '/api/post_project_sub_number_find_by_number',
+    post_project_type_find_by_sub_number: '/api/post_project_type_find_by_sub_number',
 
 
     // todolist
