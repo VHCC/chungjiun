@@ -7,7 +7,12 @@
 
     angular.module('BlurAdmin.pages.myProject')
         .service('intiProjectsService', function ($http, $cookies) {
-            var promise = $http.get('/api/projectFindAll')
+
+            // console.log($cookies.get('userDID'));
+            var formData = {
+                relatedID: $cookies.get('userDID'),
+            }
+            var promise = $http.post('/api/post_project_all_related_to_user', formData)
                 .success(function (allProjects) {
                     return allProjects;
                 });

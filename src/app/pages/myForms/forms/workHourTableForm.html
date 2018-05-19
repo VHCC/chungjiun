@@ -15,7 +15,7 @@
             <div class="col-md-12"
                  id="colHead">
                 <div class="form-group">
-                    <label for="projectName">專案名稱 - 類型 - 代碼</label>
+                    <label for="projectName">總案名稱 - 專案名稱 - 子案名稱 - 類型 - 代碼</label>
                     <ui-select ng-model="workHourTableCtrlVm.prjItems.selected"
                                class="btn-group bootstrap-select form-control"
                                id="projectName"
@@ -23,15 +23,18 @@
                                ng-change="addWorkItem($select.selected);"
                                append-to-body="true"
                                search-enabled="true">
-                        <ui-select-match placeholder="選擇專案(新增)">
-                            {{$select.selected.mainName}} - {{prjTypeToName($select.selected.type)}} -
+                        <ui-select-match placeholder="選擇(新增)">
+                            {{$select.selected.mainName}} -
+                            {{$select.selected.prjName}} -
+                            {{$select.selected.prjSubName}} -
+                            {{prjTypeToName($select.selected.type)}} -
                             {{$select.selected.prjCode}}
                         </ui-select-match>
                         <ui-select-choices
                                 ng-model="prjName"
                                 repeat="prjItems in workHourTableCtrlVm.projects | groupSelectpickerOptions: {mainName: $select.search, prjCode: $select.search}"
                                 group-by="'mainName'">
-                            <span ng-bind-html="prjItems.mainName + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
+                            <span ng-bind-html="prjItems.mainName + ' - ' + prjItems.prjName + ' - ' + prjItems.prjSubName + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
                 </div>
@@ -53,9 +56,9 @@
         <table class="table table-bordered table-hover table-condensed">
             <thead>
             <tr>
-                <td rowspan="3" style="vertical-align: inherit; text-align: center">專案代碼</td>
-                <td rowspan="3" style="vertical-align: inherit; text-align: center">專案名稱</td>
-                <td rowspan="3" style="vertical-align: inherit; text-align: center">經理</td>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center">代碼</td>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center">名稱</td>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center">主承辦</td>
                 <td rowspan="3" style="vertical-align: inherit; text-align: center">類型</td>
 
                 <td colspan="2" style="vertical-align: inherit; text-align: center">{{monDate}}</td>

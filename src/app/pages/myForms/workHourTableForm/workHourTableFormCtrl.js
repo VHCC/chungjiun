@@ -70,7 +70,11 @@
         $scope.tablesItems = [];
 
         // 找跟User有關係的 Project
-        Project.findAll()
+        var formData = {
+            relatedID: cookies.get('userDID'),
+        }
+        // Project.findAll()
+        Project.getProjectRelated(formData)
             .success(function (allProjects) {
                 allPrj = allProjects;
                 vm.projects = allProjects;
@@ -80,7 +84,10 @@
                     $scope.projectData[index] = {
                         prjDID: allProjects[index]._id,
                         prjCode: allProjects[index].prjCode,
-                        name: allProjects[index].mainName + " - " + ProjectUtil.getTypeText(allProjects[index].type),
+                        mainName: allProjects[index].mainName + " - "
+                        + allProjects[index].prjName + " - "
+                        + allProjects[index].prjSubName + " - "
+                        + ProjectUtil.getTypeText(allProjects[index].type),
                         majorID: allProjects[index].majorID,
                     };
                 }
