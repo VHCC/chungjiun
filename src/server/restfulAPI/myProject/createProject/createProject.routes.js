@@ -88,7 +88,6 @@ module.exports = function (app) {
                     res.status(200).send({
                         code: 200,
                         error: global.status._200,
-
                     });
                 });
         } catch (error) {
@@ -168,24 +167,9 @@ module.exports = function (app) {
     });
 
 
-    app.post(global.apiUrl.post_project_foot_code, function (req, res) {
-        console.log(global.timeFormat(new Date()) + global.log.i + "API, post prj foot code.");
-        Project.find(
-            {
-                year: req.body.year,
-                code: req.body.code,
-                type: req.body.type,
-            }, function (err, projects) {
-                if (err) {
-                    res.send(err);
-                }
-                res.json(projects);
-            })
-    });
-
     app.post(global.apiUrl.get_project_find_by_prjid_array, function (req, res) {
         var prjCount = req.body.prjIDArray.length;
-        var findData = []
+        var findData = [];
         for (var index = 0; index < prjCount; index++) {
             var target = {
                 _id: req.body.prjIDArray[index],
@@ -225,7 +209,7 @@ module.exports = function (app) {
             });
         })
     })
-    
+
     // 更新協辦
     app.post(global.apiUrl.post_project_update_workers, function (req, res) {
         Project.update({
@@ -249,8 +233,7 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_project_number_find_by_code_distinct, function (req, res) {
         Project.find({
             code: req.body.code,
-            prjNumber: req.body.prjNumber
-        }).distinct('prjSubNumber', function (err, projects) {
+        }).distinct('prjNumber', function (err, projects) {
             if (err) {
                 res.send(err);
             }
@@ -261,9 +244,10 @@ module.exports = function (app) {
     // 找專案代碼下的子案總數
     app.post(global.apiUrl.post_project_sub_number_find_by_number_distinct, function (req, res) {
         Project.find({
+            year: req.body.year,
             code: req.body.code,
-
-        }).distinct('prjNumber', function (err, projects) {
+            prjNumber: req.body.prjNumber
+        }).distinct('prjSubNumber', function (err, projects) {
             if (err) {
                 res.send(err);
             }
@@ -271,21 +255,60 @@ module.exports = function (app) {
         })
     })
 
-    // 用總案代碼找專案
-    app.post(global.apiUrl.post_project_number_find_by_code, function (req, res) {
-        Project.find({
-            code: req.body.code
-        }, function (err, projects) {
-            if (err) {
-                res.send(err);
+    // 用總案代碼找專案，用專案代碼分類
+    app.post(global.apiUrl.post_project_number_find_by_code_group_by_number, function (req, res) {
+        // Project.aggregate(
+        //     [
+        //         {
+        //             $match: {
+        //                 year: req.body.year,
+        //                 code: req.body.code
+        //             }
+        //         },
+        //         {
+        //             $group: {
+        //                 _id: '$prjName',  //$region is the column name in collection
+        //                 prjName: {$first: '$prjName'},
+        //                 prjNumber: {$first: '$prjNumber'},
+        //             }
+        //         }
+        //     ], function (err, projects) {
+        //         if (err) {
+        //             res.send(err);
+        //         }
+        //         res.json(projects);
+        //     })
+        var query = [
+            {
+                $match: {
+                    year: req.body.year,
+                    code: req.body.code
+                }
+            },
+            {
+                $group: {
+                    _id: '$prjName',  //$region is the column name in collection
+                    prjName: {$first: '$prjName'},
+                    prjNumber: {$first: '$prjNumber'},
+                }
             }
-            res.json(projects);
-        })
+        ];
+        Project.aggregate(query)
+            .sort({
+                prjNumber: 1,
+            })
+            .exec(function (err, projects) {
+                if (err) {
+                    res.send(err);
+                }
+                res.json(projects);
+            });
     })
 
     // 用專案代碼找子案
     app.post(global.apiUrl.post_project_sub_number_find_by_number, function (req, res) {
         Project.find({
+            year: req.body.year,
             code: req.body.code,
             prjNumber: req.body.prjNumber
         }, function (err, projects) {

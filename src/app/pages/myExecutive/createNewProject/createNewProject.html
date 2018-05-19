@@ -9,7 +9,6 @@
                     {{mainProject.code}} <!-- 總案 OO-->
                     {{mainProject.number.code}} <!-- 專案 OO-->
                     {{mainProject.subNumber.code}} <!-- 子案 OO-->
-                    <span id="prjCodeNumber" style="color: red">{{mainProject.footCode}}</span>
                     {{mainProject.type.selected.value}} <!-- 類型 O-->
                 </p>
             </div>
@@ -88,11 +87,11 @@
                                    append-to-body="true"
                                    search-enabled="true">
                             <ui-select-match placeholder="請選擇專案">
-                                {{$select.selected.label}}
+                                {{$select.selected.label}}-{{$select.selected.value}}
                             </ui-select-match>
                             <ui-select-choices
-                                    repeat="option in createNewProjectCtrlVm.prjNumbers">
-                                <span ng-bind-html="option.label"></span>
+                                    repeat="option in createNewProjectCtrlVm.prjNumbers | filter: $select.search">
+                                <span ng-bind-html="option.label | highlight: $select.search"></span>-<span ng-bind-html="option.value | highlight: $select.search"></span>
                             </ui-select-choices>
                         </ui-select>
                     </div>
@@ -104,6 +103,7 @@
                         <input type="text" class="form-control"
                                id="newProjectNumber"
                                ng-model="mainProject.numberNew"
+                               required
                                placeholder="請輸入新專案名稱">
                     </div>
                 </div>
@@ -117,11 +117,11 @@
                                    append-to-body="true"
                                    search-enabled="true">
                             <ui-select-match placeholder="請選擇子案">
-                                {{$select.selected.label}}
+                                {{$select.selected.label}}-{{$select.selected.value}}
                             </ui-select-match>
                             <ui-select-choices
-                                    repeat="option in createNewProjectCtrlVm.prjSubNumbers">
-                                <span ng-bind-html="option.label"></span>
+                                    repeat="option in createNewProjectCtrlVm.prjSubNumbers | filter: $select.search">
+                                <span ng-bind-html="option.label | highlight: $select.search"></span>-<span ng-bind-html="option.value | highlight: $select.search"></span>
                             </ui-select-choices>
                         </ui-select>
                     </div>
@@ -132,6 +132,7 @@
                     <div class="col-md-10">
                         <input type="text" class="form-control"
                                ng-model="mainProject.subNumberNew"
+                               required
                                placeholder="請輸入新子案名稱">
                     </div>
                 </div>
