@@ -80,7 +80,7 @@
                     $scope.projectData[index] = {
                         prjDID: allProjects[index]._id,
                         prjCode: allProjects[index].prjCode,
-                        name: allProjects[index].name + " - " + ProjectUtil.getTypeText(allProjects[index].type),
+                        name: allProjects[index].mainName + " - " + ProjectUtil.getTypeText(allProjects[index].type),
                         majorID: allProjects[index].majorID,
                     };
                 }
@@ -493,7 +493,7 @@
                     prjDID: prjDID,
                 });
             }
-            return selected.length ? selected[0].name : 'Not Set';
+            return selected.length ? selected[0].mainName : 'Not Set';
         };
 
         $scope.showPrjCode = function (prjDID) {

@@ -171,7 +171,7 @@
                 selected = $filter('filter')($scope.projectTechs, {
                     value: techs[index],
                 });
-                resault += selected[0].name + ", ";
+                resault += selected.length ? selected[0].name + ", ": 'UnKnown, ';
             }
             return resault;
         }

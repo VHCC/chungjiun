@@ -20,18 +20,18 @@
                                class="btn-group bootstrap-select form-control"
                                id="projectName"
                                ng-disabled="false"
-                               ng-change="addWorkItem($select.selected); "
+                               ng-change="addWorkItem($select.selected);"
                                append-to-body="true"
                                search-enabled="true">
                         <ui-select-match placeholder="選擇專案(新增)">
-                            {{$select.selected.name}} - {{prjTypeToName($select.selected.type)}} -
+                            {{$select.selected.mainName}} - {{prjTypeToName($select.selected.type)}} -
                             {{$select.selected.prjCode}}
                         </ui-select-match>
                         <ui-select-choices
                                 ng-model="prjName"
-                                repeat="prjItems in workHourTableCtrlVm.projects | groupSelectpickerOptions: {name: $select.search, prjCode: $select.search}"
-                                group-by="'name'">
-                            <span ng-bind-html="prjItems.name + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
+                                repeat="prjItems in workHourTableCtrlVm.projects | groupSelectpickerOptions: {mainName: $select.search, prjCode: $select.search}"
+                                group-by="'mainName'">
+                            <span ng-bind-html="prjItems.mainName + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
                 </div>
