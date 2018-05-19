@@ -119,6 +119,8 @@
             this.mainProject.type = null;
             window.document.getElementById('newPrjNumberDiv').style.display = "none";
             window.document.getElementById('newPrjSubNumberDiv').style.display = "none";
+            window.document.getElementById('prjCode').style.display = "block";
+            window.document.getElementById('prjCodeSet').style.display = "none";
             $scope.changeSubmitBtnStatus(false, "建立專案");
             // console.log('triggerChangePrjName');
             if (this.mainProject.selected.code === "") {
@@ -139,6 +141,8 @@
             } else if (this.mainProject.selected.code === "9999") {
                 window.document.getElementById('newPrjNameDiv').style.display = "block";
                 window.document.getElementById('setPrjCodeDiv').style.display = "block";
+                window.document.getElementById('prjCode').style.display = "none";
+                window.document.getElementById('prjCodeSet').style.display = "block";
                 $scope.mainProject.setCode = "";
             } else {
                 // 專案已存在
@@ -198,15 +202,15 @@
         // Code Check　自訂編號
         $scope.triggerChangePrjCode = function () {
             // console.log('triggerChangePrjNewName');
-            if ($scope.mainProject.setCode.length !== 2) {
-                $scope.changeSubmitBtnStatus(true, "請確認 自訂總案編號為 2 位數字！");
+            if ($scope.mainProject.setCode.length !== 11) {
+                $scope.changeSubmitBtnStatus(true, "請確認 自訂總案編號為 11 碼！");
                 return;
             } else {
                 $scope.changeSubmitBtnStatus(false, "建立專案");
             }
 
             var formData = {
-                code: $scope.mainProject.setCode
+                prjCode: $scope.mainProject.setCode,
             }
             Project.findPrjByCode(formData)
                 .success(function (prj) {
@@ -214,7 +218,7 @@
                     if (prj !== null) {
                         $scope.changeSubmitBtnStatus(true, "專案編號已存在，請檢查！");
                     } else {
-                        $scope.mainProject.code = $scope.mainProject.setCode;
+                        // $scope.mainProject.code = $scope.mainProject.setCode;
                         $scope.changeSubmitBtnStatus(false, "建立專案");
                     }
                 })
@@ -355,6 +359,18 @@
                 for (var index = 0; index < $scope.mainProject.techs.length; index++) {
                     prjTechs[index] = $scope.mainProject.techs[index]._id;
                 }
+                var totalCode = "";
+                if (window.document.getElementById('setPrjCodeDiv').style.display === 'block') {
+                    console.log(123);
+                    totalCode = $scope.mainProject.setCode;
+                } else {
+                    totalCode = vm.branch.value +
+                        String($scope.year) +
+                        String($scope.mainProject.code) +
+                        String($scope.mainProject.number.code) +
+                        String($scope.mainProject.subNumber.code) +
+                        $scope.mainProject.type.selected.value;
+                }
                 var createData = {
                     branch: vm.branch.value,
                     year: String($scope.year),
@@ -363,13 +379,7 @@
                     mainName: $scope.mainProject.new,
                     // majorID: $scope.mainProject.manager._id,
                     managerID: $scope.mainProject.manager._id,
-                    prjCode:
-                        vm.branch.value +
-                        String($scope.year) +
-                        String($scope.mainProject.code) +
-                        String($scope.mainProject.number.code) +
-                        String($scope.mainProject.subNumber.code) +
-                        $scope.mainProject.type.selected.value,
+                    prjCode: totalCode,
                     technician: prjTechs,
                     // endDate: req.body.prjEndDate,
                     prjNumber: $scope.mainProject.number.code,

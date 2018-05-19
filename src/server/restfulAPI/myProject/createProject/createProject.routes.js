@@ -144,9 +144,9 @@ module.exports = function (app) {
 
     app.post(global.apiUrl.post_project_find_by_code, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, find prj by code");
-        console.log(req.body.code)
+        console.log(req.body.prjCode)
         Project.findOne({
-            code: req.body.code
+            prjCode: req.body.prjCode
         }, function (err, oneProject) {
             console.log(oneProject)
             if (err) {
