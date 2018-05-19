@@ -27,13 +27,18 @@ global.apiUrl = {
     post_project_foot_code : '/api/projectFootCode',
     // Create
     post_project_create : '/api/projectCreate',
-    // Update
-    post_project_update_major_id: '/api/post_project_update_major_id',
-    post_project_update_workers: '/api/post_project_update_workers',
     // search
     post_project_number_find_by_code_group_by_number: '/api/post_project_number_find_by_code_group_by_number',
     post_project_sub_number_find_by_number: '/api/post_project_sub_number_find_by_number',
     post_project_type_find_by_sub_number: '/api/post_project_type_find_by_sub_number',
+
+
+    // ListProject
+    post_project_all_related_to_user : '/api/post_project_all_related_to_user',
+    // Update
+    post_project_update_major_id: '/api/post_project_update_major_id',
+    post_project_update_workers: '/api/post_project_update_workers',
+
 
 
     // todolist

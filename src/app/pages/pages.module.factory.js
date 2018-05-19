@@ -40,12 +40,7 @@
                 create: function (projectData) {
                     return http.post('/api/projectCreate', projectData);
                 },
-                updateMajorID: function(formData) {
-                    return http.post('/api/post_project_update_major_id', formData);
-                },
-                updateWorkers: function(formData) {
-                    return http.post('/api/post_project_update_workers', formData);
-                },
+
                 findPrjByID: function (prjID) {
                     return http.get('/api/projectFindByPrjID', prjID);
                 },
@@ -79,6 +74,18 @@
                 findPrjTypeBySubNumber: function (formData) { // 用子案找類型
                     return http.post('/api/post_project_type_find_by_sub_number', formData);
                 },
+
+                //ListProject
+                getProjectRelated: function(formData) {
+                    return http.post('/api/post_project_all_related_to_user', formData);
+                },
+                updateMajorID: function(formData) {
+                    return http.post('/api/post_project_update_major_id', formData);
+                },
+                updateWorkers: function(formData) {
+                    return http.post('/api/post_project_update_workers', formData);
+                },
+
             }
         }])
         .factory('Todos', ['$http', function (http) {

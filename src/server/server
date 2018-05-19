@@ -17,6 +17,7 @@ const app = require('./config/serverConfig');
 require('./restfulAPI/login/login.routes')(app);
 require('./restfulAPI/register/register.routes')(app);
 require('./restfulAPI/myProject/createProject/createProject.routes')(app);
+require('./restfulAPI/myProject/listProject/listProject.routes')(app);
 require('./restfulAPI/myNewPage/todo.routes')(app);
 require('./restfulAPI/forms/paymentForm/paymentForm.routes')(app);
 require('./restfulAPI/forms/workHourTableForm/workHourTableForm.routes')(app);
