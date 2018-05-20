@@ -393,7 +393,7 @@
             }
             console.log(createData);
 
-            if (createData.prjName === "" || createData.prjSubName === "") {
+            if (createData.prjName === "") {
                 toastr['warning']('輸入資訊未完整 !', '建立失敗');
                 return;
             }
