@@ -73,11 +73,14 @@
         var formData = {
             relatedID: cookies.get('userDID'),
         }
-        // Project.findAll()
         Project.getProjectRelated(formData)
+            .success(function (relatedProjects) {
+                allPrj = relatedProjects;
+                vm.projects = relatedProjects;
+            });
+
+        Project.findAll()
             .success(function (allProjects) {
-                allPrj = allProjects;
-                vm.projects = allProjects;
                 $scope.projectData = [];
                 var prjCount = allProjects.length;
                 for (var index = 0; index < prjCount; index++) {
@@ -92,7 +95,7 @@
                         managerID: allProjects[index].managerID,
                     };
                 }
-            });
+            })
 
         User.getAllUsers()
             .success(function (allUsers) {
@@ -1224,6 +1227,7 @@
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
                     console.log(res.code);
+                    // checkingTable.isManagerCheck = true;
                 })
         }
 
@@ -1301,8 +1305,8 @@
                         formDataTable = {
                             tableIDArray: workTableIDArray,
                             isFindSendReview: true,
-                            isFindManagerCheck: true, // new flow process 2018/04/28
-                            isFindExecutiveCheck: false
+                            isFindManagerCheck: null, // new flow process 2018/04/28
+                            isFindExecutiveCheck: null
                         }
                         // 取得 Table Data
                         WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
@@ -1403,7 +1407,7 @@
         }
 
         $scope.sendWHExecutiveAgree = function (checkingTable, index) {
-            $scope.tablesExecutiveItems.splice(index, 1);
+            // $scope.tablesExecutiveItems.splice(index, 1);
             var formData = {
                 tableID: checkingTable.tableID,
                 isSendReview: null,
@@ -1413,6 +1417,7 @@
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
                     console.log(res.code);
+                    checkingTable.isExecutiveCheck = true;
                 })
         }
 
@@ -1442,6 +1447,7 @@
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
                     console.log(res.code);
+                    // checkingTable.isExecutiveCheck = true;
                 })
         }
 
