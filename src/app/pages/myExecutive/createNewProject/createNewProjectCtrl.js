@@ -120,7 +120,7 @@
             window.document.getElementById('newPrjNumberDiv').style.display = "none";
             window.document.getElementById('newPrjSubNumberDiv').style.display = "none";
             window.document.getElementById('prjCode').style.display = "block";
-            window.document.getElementById('prjCodeSet').style.display = "none";
+            // window.document.getElementById('prjCodeSet').style.display = "none";
             $scope.changeSubmitBtnStatus(false, "建立專案");
             // console.log('triggerChangePrjName');
             if (this.mainProject.selected.code === "") {
@@ -142,7 +142,7 @@
                 window.document.getElementById('newPrjNameDiv').style.display = "block";
                 window.document.getElementById('setPrjCodeDiv').style.display = "block";
                 window.document.getElementById('prjCode').style.display = "none";
-                window.document.getElementById('prjCodeSet').style.display = "block";
+                // window.document.getElementById('prjCodeSet').style.display = "block";
                 $scope.mainProject.setCode = "";
             } else {
                 // 專案已存在
@@ -388,12 +388,6 @@
                     prjSubName: $scope.mainProject.subNumberNew,
                 }
             } catch (err) {
-                toastr['warning']('輸入資訊未完整 !', '建立失敗');
-                return;
-            }
-            console.log(createData);
-
-            if (createData.prjName === "") {
                 toastr['warning']('輸入資訊未完整 !', '建立失敗');
                 return;
             }
