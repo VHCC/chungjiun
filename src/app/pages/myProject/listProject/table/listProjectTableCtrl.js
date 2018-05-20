@@ -106,7 +106,7 @@
                 }
             })
 
-        User.findManagers()
+        User.getAllUsers()
             .success(function (allUsers) {
                 $scope.projectManagers = [];
                 for (var i = 0; i < allUsers.length; i++) {
