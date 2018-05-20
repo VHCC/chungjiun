@@ -197,19 +197,21 @@
             <form editable-form name="rowform1" ng-show="rowform1.$visible"
                   class="form-buttons form-inline">
             </form>
-            <div ng-show="!table.isManagerCheck">
-                <button class="btn btn-info editable-table-button btn-xs"
-                        ng-click="reviewWHManagerItem(table, $index)"
-                        style="color: black">
-                    同意
-                </button>
-            </div>
-            <div ng-show="!table.isManagerCheck">
-                <button class="btn btn-danger editable-table-button btn-xs"
-                        ng-click="disagreeWHItem_manager(table, $index)"
-                        style="color: black">
-                    退回
-                </button>
+            <div ng-show="isFitManager(table.prjDID)">
+                <div ng-show="!table.isManagerCheck">
+                    <button class="btn btn-info editable-table-button btn-xs"
+                            ng-click="reviewWHManagerItem(table, $index)"
+                            style="color: black">
+                        同意
+                    </button>
+                </div>
+                <div ng-show="!table.isManagerCheck">
+                    <button class="btn btn-danger editable-table-button btn-xs"
+                            ng-click="disagreeWHItem_manager(table, $index)"
+                            style="color: black">
+                        退回
+                    </button>
+                </div>
             </div>
         </td>
 
