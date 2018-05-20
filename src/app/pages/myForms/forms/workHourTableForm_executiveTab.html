@@ -48,6 +48,7 @@
         <td colspan="2" style="vertical-align: inherit; text-align: center">{{sunDate_executive}}</td>
 
         <td rowspan="3" style="vertical-align: inherit; text-align: center">合計</td>
+        <td rowspan="3" style="vertical-align: inherit; text-align: center">經理確認</td>
         <td rowspan="3" style="vertical-align: inherit; text-align: center">行政確認</td>
     </tr>
     <tr>
@@ -192,23 +193,50 @@
                     <span e-form="rowform1"
                           e-required>{{table.hourTotal}}</span>
         </td>
+        <!--經理確認-->
+        <td rowspan="2" style="vertical-align: inherit;">
+            <div ng-show="rowform1.$waiting || (table.isSendReview && !table.isManagerCheck)">
+                <button class="btn btn-warning editable-table-button btn-xs"
+                        style="color: black">
+                    {{ showMajor(table.prjDID)}}
+                    <br>
+                    確認作業中
+                </button>
+            </div>
+            <div ng-show="table.isManagerCheck">
+                <button class="btn btn-info editable-table-button btn-xs"
+                        style="color: black">
+                    {{ showMajor(table.prjDID)}}
+                    <br>
+                    確認完成
+                </button>
+            </div>
+        </td>
         <!--行政確認-->
         <td rowspan="2" style="vertical-align: inherit;">
             <form editable-form name="rowform1" ng-show="rowform1.$visible"
                   class="form-buttons form-inline">
             </form>
-            <div ng-show="!table.isExecutiveCheck">
+            <div ng-show="!table.isExecutiveCheck && table.isManagerCheck">
                 <button class="btn btn-info editable-table-button btn-xs"
                         ng-click="reviewWHExecutiveItem(table, $index)"
                         style="color: black">
                     同意
                 </button>
             </div>
-            <div ng-show="!table.isExecutiveCheck">
+            <div ng-show="!table.isExecutiveCheck && table.isManagerCheck">
                 <button class="btn btn-danger editable-table-button btn-xs"
                         ng-click="disagreeWHItem_executive(table, $index)"
                         style="color: black">
                     退回
+                </button>
+            </div>
+            <div ng-show="table.isExecutiveCheck">
+                <button class="btn btn-info editable-table-button btn-xs"
+                        style="color: black">
+                    行政
+                    <br>
+                    確認完成
                 </button>
             </div>
         </td>
