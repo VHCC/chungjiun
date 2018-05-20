@@ -58,7 +58,7 @@
                 vm.techsItems = techs;
             })
 
-        User.findManagers()
+        User.getAllUsers()
             .success(function (managers) {
                 // console.log(JSON.stringify(managers));
                 vm.managersItem = managers;
