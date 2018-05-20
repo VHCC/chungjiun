@@ -12,17 +12,17 @@
     /** @ngInject */
     function routeConfig($stateProvider) {
         $stateProvider
-            .state('myExecutive',
-                {
-                    url: '/myExecutive',
-                    template: '<ui-view autoscroll="true" autoscroll-body-top></ui-view>',
-                    abstract: true,
-                    title: '行政專區',
-                    sidebarMeta: {
-                        icon: 'ion-compose',
-                        order: global.pages.myExecutive,
-                    },
-                })
+            // .state('myExecutive',
+            //     {
+            //         url: '/myExecutive',
+            //         template: '<ui-view autoscroll="true" autoscroll-body-top></ui-view>',
+            //         abstract: true,
+            //         title: '行政專區',
+            //         sidebarMeta: {
+            //             icon: 'ion-compose',
+            //             order: global.pages.myExecutive,
+            //         },
+            //     })
             // .state('myExecutive.createNewProject',
             //     {
             //         url: '/createNewProject',
@@ -35,17 +35,17 @@
             //             order: global.pages.myExecutive_createNewProject,
             //         },
             //     })
-            .state('myExecutive.openWorkOffRight',
-                {
-                    url: '/openWorkOffRight',
-                    templateUrl: 'app/pages/myExecutive/openWorkOffRight/openWorkOffRight.html',
-                    controller: 'openWorkOffRight',
-                    controllerAs: 'cC',
-                    title: '開啟新假別',
-                    accessLevel: [100],
-                    sidebarMeta: {
-                        order: global.pages.myExecutive_openWorkOffRight,
-                    },
-                })
+            // .state('myExecutive.openWorkOffRight',
+            //     {
+            //         url: '/openWorkOffRight',
+            //         templateUrl: 'app/pages/myExecutive/openWorkOffRight/openWorkOffRight.html',
+            //         controller: 'openWorkOffRight',
+            //         controllerAs: 'cC',
+            //         title: '開啟新假別',
+            //         accessLevel: [100],
+            //         sidebarMeta: {
+            //             order: global.pages.myExecutive_openWorkOffRight,
+            //         },
+            //     })
     }
 })();
