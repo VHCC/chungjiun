@@ -124,7 +124,7 @@
 
         $scope.fetchAllUsers();
 
-        User.findManagers()
+        User.getAllUsers()
             .success(function (managers) {
                 // console.log(JSON.stringify(managers));
                 vm.managersList = managers;
