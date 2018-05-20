@@ -254,11 +254,11 @@
                                     ng-click="rowform1.$show();bbbbb()">編輯
                             </button>
                         </div>
-                        <div class="buttons" ng-show="!rowform1.$visible">
-                            <button class="btn btn-danger editable-table-button btn-xs"
-                                    ng-click="review(table, this) ">提交審查
-                            </button>
-                        </div>
+                        <!--<div class="buttons" ng-show="!rowform1.$visible">-->
+                            <!--<button class="btn btn-danger editable-table-button btn-xs"-->
+                                    <!--ng-click="review(table, this) ">提交審查-->
+                            <!--</button>-->
+                        <!--</div>-->
                     </div>
                 </td>
                 <!--經理確認-->
@@ -648,13 +648,21 @@
             </tfoot>
         </table>
         <hr>
-        <section class="col-md-6">
+        <section class="col-md-12">
             <button progress-button="createSubmit(1500, false)"
                     style="float: inherit;"
                     id="btnCreate"
                     pb-style="shrink"
                     class="btn btn-warning">
                 Save
+            </button>
+
+            <button ng-click="reviewFormCheck()"
+                    style="float: right;"
+                    id="btnReview"
+                    pb-style="shrink"
+                    class="btn btn-primary">
+                提交審查
             </button>
         </section>
 

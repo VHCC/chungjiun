@@ -957,6 +957,36 @@
             }, time);
         }
 
+        // ************************ REVIEW SUBMIT ***************************
+        $scope.reviewFormCheck = function() {
+            console.log($scope.tablesItems);
+            $scope.checkText = '確定提交 審查？';
+            ngDialog.open({
+                template: 'app/pages/myModalTemplate/myWorkHourTableFormReviewModalTotal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+
+        $scope.reviewForm = function() {
+            $timeout(function () {
+                var tableList = [];
+                for (var index = 0; index < $scope.tablesItems.length; index ++) {
+                    tableList[index] = $scope.tablesItems[index].tableID;
+                }
+                var formData = {
+                    tableArray: tableList,
+                }
+                WorkHourUtil.updateTotalTableSendReview(formData)
+                    .success(function (res) {
+                        console.log(res.code);
+                        $scope.getTable();
+                    })
+            }, 1000);
+        }
+
+
         // ********************** 專案經理確認 *****************************
         // 主要顯示
         $scope.tablesManagerItems = [];

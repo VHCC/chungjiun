@@ -150,8 +150,13 @@
                 findWorkHourTableFormByTableIDArray: function (formData) {
                     return http.post('/api/post_work_hour_table_find_by_tableid_array', formData);
                 },
+                // update one
                 updateTableSendReview: function (formData) {
                     return http.post('/api/updateWorkHourTableFormSendReview', formData);
+                },
+                // update all
+                updateTotalTableSendReview: function (formData) {
+                    return http.post('/api/post_work_hour_table_total_update_send_review', formData);
                 },
                 updateWHTable: function(formData) {
                     return http.post('/api/post_work_hour_table_update', formData);
