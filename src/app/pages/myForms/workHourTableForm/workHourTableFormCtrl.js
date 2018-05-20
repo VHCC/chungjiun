@@ -89,6 +89,7 @@
                         + allProjects[index].prjSubName + " - "
                         + ProjectUtil.getTypeText(allProjects[index].type),
                         majorID: allProjects[index].majorID,
+                        managerID: allProjects[index].managerID,
                     };
                 }
             });
@@ -520,15 +521,26 @@
                     prjDID: prjDID
                 });
             }
-            var majorDID = majorSelected[0].majorID;
+            var managerDID = majorSelected[0].managerID;
             var selected = [];
-            if (majorDID) {
+            if (managerDID) {
                 selected = $filter('filter')($scope.projectManagers, {
-                    value: majorDID
+                    value: managerDID
                 });
             }
             return selected.length ? selected[0].name : 'Not Set';
         };
+
+        $scope.isFitManager = function(prjDID) {
+            var majorSelected = [];
+            if (prjDID) {
+                majorSelected = $filter('filter')($scope.projectData, {
+                    prjDID: prjDID
+                });
+            }
+            var managerDID = majorSelected[0].managerID;
+            return managerDID === cookies.get('userDID');
+        }
 
         $scope.showCalculateHour = function (tables, day, type) {
             var index = 0;
@@ -1041,13 +1053,15 @@
         $scope.getTable_manager = function () {
             initialUserTable(2);
             var getData = {
-                majorID: cookies.get('userDID'),
+                // managerID: cookies.get('userDID'),
                 creatorDID: vm.manager.selected._id,
                 create_formDate: $scope.firstFullDate_manager,
             }
-            WorkHourUtil.getWorkHourFormForManager(getData)
+            // WorkHourUtil.getWorkHourFormForManager(getData)
+            WorkHourUtil.getWorkHourForm(getData)
                 .success(function (res) {
-                    var relatedPijIDArray = res.prjIDArray;
+                    // var relatedPijIDArray = res.prjIDArray;
+                    // console.log(res.prjIDArray);
                     if (res.payload.length > 0) {
                         var workItemCount = res.payload[0].formTables.length;
 
@@ -1061,7 +1075,8 @@
                         formDataTable = {
                             tableIDArray: workTableIDArray,
                             isFindSendReview: true,
-                            isFindManagerCheck: false,
+                            // isFindManagerCheck: false,
+                            isFindManagerCheck: null,
                             isFindExecutiveCheck: null
                         }
                         // console.log(formDataTable);
@@ -1070,8 +1085,8 @@
                             .success(function (res) {
                                 // 填入表單資訊
                                 for (var index = 0; index < res.payload.length; index++) {
-                                    for (var subIndex = 0; subIndex < relatedPijIDArray.length; subIndex++) {
-                                        if (relatedPijIDArray[subIndex] === res.payload[index].prjDID) {
+                                    // for (var subIndex = 0; subIndex < relatedPijIDArray.length; subIndex++) {
+                                    //     if (relatedPijIDArray[subIndex] === res.payload[index].prjDID) {
                                             var detail = {
                                                 tableID: res.payload[index]._id,
                                                 prjDID: res.payload[index].prjDID,
@@ -1132,8 +1147,8 @@
                                                 res.payload[index].sun_hour_add,
                                             };
                                             $scope.tablesManagerItems.push(detail);
-                                        }
-                                    }
+                                    //     }
+                                    // }
                                 }
                                 loadWorkOffTable(vm.manager.selected._id, 2);
                                 loadNH(2);
@@ -1153,6 +1168,8 @@
 
         //專案經理確認
         $scope.reviewWHManagerItem = function (table, index) {
+            console.log(table);
+            console.log($scope.isFitManager(table.prjDID));
             $scope.checkText = '確定 同意：' + vm.manager.selected.name + " " +
                 $scope.showPrjName(table.prjDID) +
                 "  ？";
@@ -1167,7 +1184,7 @@
         }
 
         $scope.sendWHManagerAgree = function (checkingTable, index) {
-            $scope.tablesManagerItems.splice(index, 1);
+            // $scope.tablesManagerItems.splice(index, 1);
             var formData = {
                 tableID: checkingTable.tableID,
                 isSendReview: null,
@@ -1177,6 +1194,7 @@
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
                     console.log(res.code);
+                    checkingTable.isManagerCheck = true;
                 })
         }
 

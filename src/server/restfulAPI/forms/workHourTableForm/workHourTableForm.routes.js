@@ -145,12 +145,13 @@ module.exports = function (app) {
     });
 
     // get forms for manager
-    app.post(global.apiUrl.post_work_hour_get_for_manager, function (req, res) {
+    app.post(global.apiUrl.
+        post_work_hour_get_for_manager, function (req, res) {
         var relatedProjects = [];
         var prjCount = 0;
         Project.find(
             {
-                majorID: req.body.majorID,
+                managerID: req.body.managerID,
             }, function (err, projects) {
                 relatedProjects = projects;
                 prjCount = projects.length;
