@@ -1833,7 +1833,6 @@
         }
 
         $scope.bbbbb = function () {
-            console.log(12312);
             $('input[type="number"]').mask('H.D', {
                 translation: {
                     'H': {

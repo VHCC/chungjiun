@@ -55,11 +55,12 @@
                             return;
                         }
 
-                        // cookies.username = data[0].name; wrong program
                         cookies.put('username', data[0].name);
                         cookies.put('roletype', data[0].roleType);
                         cookies.put('userDID', data[0]._id);
-                        
+                        cookies.put('bossID', data[0].bossID);
+                        cookies.put('userMonthSalary', data[0].userMonthSalary);
+
                         console.log('cookies.username= ' + cookies.username);
                         console.log('cookies.username= ' + cookies.get('username'));
                         window.location.href = 'http://localhost:3000';
@@ -85,6 +86,9 @@
             console.log("sign Out");
             cookies.put('username', null);
             cookies.put('roletype', null);
+            cookies.put('userDID', null);
+            cookies.put('bossID', null);
+            cookies.put('userMonthSalary', null);
             window.signOutSucess();
         }
 
@@ -94,6 +98,9 @@
             // and fire search in case its value is not empty
             cookies.put('username', null);
             cookies.put('roletype', null);
+            cookies.put('userDID', null);
+            cookies.put('bossID', null);
+            cookies.put('userMonthSalary', null);
         };
 
     }
