@@ -55,7 +55,7 @@
                     templateUrl: 'app/pages/myProject/listProject/listProject.html',
                     controller: 'listProjectCtrl',
                     title: '執行專案',
-                    accessLevel: [2],
+                    accessLevel: [2, 100],
                     sidebarMeta: {
                         order: global.pages.myProject_listProject,
                     },
