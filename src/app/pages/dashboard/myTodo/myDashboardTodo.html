@@ -21,7 +21,7 @@
             <label class="todo-checkbox custom-checkbox custom-input-success">
                 <input type="checkbox"
                        ng-model="todo.isChecked"
-                       ng-click="checkTodo(todo._id)"
+                       ng-click="checkTodo(todo._id, todo.isChecked)"
                 >
                 <span class="cut-with-dots">{{ todo.text }}</span>
             </label>
