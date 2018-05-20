@@ -11,15 +11,14 @@
                     {{mainProject.subNumber.code}} <!-- 子案 OO-->
                     {{mainProject.type.selected.value}} <!-- 類型 O-->
                 </p>
-                <p id="prjCodeSet" class="col-md-10">
-                    {{mainProject.codeSet}}
-                </p>
+                <!--<p id="prjCodeSet" class="col-md-10">-->
+                    <!--{{mainProject.codeSet}}-->
+                <!--</p>-->
             </div>
             <form class="form-horizontal">
                 <!--分支主題-->
-
                 <div class="form-group">
-                    <label for="projectType" class="col-md-2 control-label">分支主題</label>
+                    <label class="col-md-2 control-label">分支主題</label>
                     <div class="col-md-10">
                         <ui-select ng-model="createNewProjectCtrlVm.branch"
                                    class="btn-group bootstrap-select form-control"
