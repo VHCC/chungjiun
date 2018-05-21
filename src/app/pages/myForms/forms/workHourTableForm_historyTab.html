@@ -2,17 +2,17 @@
     <div class="col-md-12">
         <div class="form-group">
             <label>選擇員工</label>
-            <ui-select ng-model="workHourTableCtrlVm.manager.selected"
+            <ui-select ng-model="workHourTableCtrlVm.history.selected"
                        class="btn-group bootstrap-select form-control"
                        ng-disabled="false"
-                       ng-change="getTable_manager()"
+                       ng-change="getTable_history()"
                        append-to-body="true"
                        search-enabled="true">
                 <ui-select-match placeholder="選擇員工">
                     {{$select.selected.name}}
                 </ui-select-match>
                 <ui-select-choices
-                        repeat="user in workHourTableCtrlVm.managerUsers | groupSelectpickerOptions: {name: $select.search}">
+                        repeat="user in workHourTableCtrlVm.historyUsers | groupSelectpickerOptions: {name: $select.search}">
                     <span ng-bind-html="user.name| highlight: $select.search"></span>
                 </ui-select-choices>
             </ui-select>
@@ -22,7 +22,7 @@
 
 <hr/>
 
-<div ng-show="workHourTableCtrlVm.manager.selected">
+<div ng-show="workHourTableCtrlVm.history.selected">
     <button type="button" class="btn btn-default btn-icon" ng-click="decreaceWeek_manager()"><i
             class="ion-chevron-left"></i></button>
     {{firstDate_manager}} ~ {{lastDate_manager}}
@@ -31,13 +31,14 @@
 </div>
 <br>
 
-<table class="table table-bordered table-hover table-condensed" ng-show="workHourTableCtrlVm.manager.selected">
+<table class="table table-bordered table-hover table-condensed" ng-show="workHourTableCtrlVm.history.selected">
     <thead>
     <tr>
         <td rowspan="3" style="vertical-align: inherit; text-align: center">專案代碼</td>
-        <td rowspan="3" style="vertical-align: inherit; text-align: center">專案名稱</td>
-        <td rowspan="3" style="vertical-align: inherit; text-align: center">經理</td>
-        <td rowspan="3" style="vertical-align: inherit; text-align: center">類型</td>
+        <td rowspan="3" style="vertical-align: inherit; text-align: center"width="240px">名稱</td>
+        <td rowspan="3" style="vertical-align: inherit; text-align: center" width="80px">經理</td>
+        <td rowspan="3" style="vertical-align: inherit; text-align: center" width="80px">類型</td>
+
 
         <td colspan="2" style="vertical-align: inherit; text-align: center">{{monDate_manager}}</td>
         <td colspan="2" style="vertical-align: inherit; text-align: center">{{tueDate_manager}}</td>
@@ -48,7 +49,6 @@
         <td colspan="2" style="vertical-align: inherit; text-align: center">{{sunDate_manager}}</td>
 
         <td rowspan="3" style="vertical-align: inherit; text-align: center">合計</td>
-        <td rowspan="3" style="vertical-align: inherit; text-align: center">經理確認</td>
     </tr>
     <tr>
         <td colspan="2" style="vertical-align: inherit; text-align: center">星期一</td>
@@ -191,54 +191,6 @@
         <td style="vertical-align: inherit;">
                     <span e-form="rowform1"
                           e-required>{{table.hourTotal}}</span>
-        </td>
-        <!--經理確認-->
-        <td rowspan="2" style="vertical-align: inherit;">
-            <form editable-form name="rowform1" ng-show="rowform1.$visible"
-                  class="form-buttons form-inline">
-            </form>
-            <div ng-show="isFitManager(table.prjDID)">
-                <div ng-show="!table.isManagerCheck">
-                    <button class="btn btn-info editable-table-button btn-xs"
-                            ng-click="reviewWHManagerItem(table, $index)"
-                            style="color: black">
-                        同意
-                    </button>
-                </div>
-                <div ng-show="!table.isManagerCheck">
-                    <button class="btn btn-danger editable-table-button btn-xs"
-                            ng-click="disagreeWHItem_manager(table, $index)"
-                            style="color: black">
-                        退回
-                    </button>
-                </div>
-                <div ng-show="table.isManagerCheck">
-                    <button class="btn btn-info editable-table-button btn-xs"
-                            style="color: black">
-                        {{ showProjectManager(table.prjDID)}}
-                        <br>
-                        確認完成
-                    </button>
-                </div>
-            </div>
-            <div ng-show="!isFitManager(table.prjDID)">
-                <div ng-show="rowform1.$waiting || (table.isSendReview && !table.isManagerCheck)">
-                    <button class="btn btn-warning editable-table-button btn-xs"
-                            style="color: black">
-                        {{ showProjectManager(table.prjDID)}}
-                        <br>
-                        確認作業中
-                    </button>
-                </div>
-                <div ng-show="table.isManagerCheck">
-                    <button class="btn btn-info editable-table-button btn-xs"
-                            style="color: black">
-                        {{ showProjectManager(table.prjDID)}}
-                        <br>
-                        確認完成
-                    </button>
-                </div>
-            </div>
         </td>
 
     </tr>

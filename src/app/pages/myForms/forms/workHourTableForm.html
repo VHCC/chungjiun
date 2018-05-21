@@ -5,6 +5,55 @@
     .workAdd {
         cursor: pointer;
     }
+
+    .mytooltip {
+        position: relative;
+        display: inline-block;
+        /*overflow : hidden;*/
+        text-overflow : ellipsis;
+        /*white-space : nowrap;*/
+        width : 240px;
+    }
+
+    /* Tooltip text */
+    .mytooltip .tooltiptext {
+        visibility: hidden;
+        width: 360px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+
+        /* Position the tooltip text */
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -180px;
+
+        /* Fade in tooltip */
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    /* Tooltip arrow */
+    .mytooltip .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    /* Show the tooltip text when you mouse over the tooltip container */
+    .mytooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
 </style>
 
 <uib-tabset active="$tabSetStatus.activeTab">
@@ -41,9 +90,6 @@
                 <hr>
             </div>
         </div>
-        <p class="text-center" ng-show="loading">
-            <span class="fa fa-spinner fa-spin fa-3x"></span>
-        </p>
         <div>
             <button type="button" class="btn btn-default btn-icon" ng-click="decreaseWeek()"><i
                     class="ion-chevron-left"></i></button>
@@ -57,9 +103,9 @@
             <thead>
             <tr>
                 <td rowspan="3" style="vertical-align: inherit; text-align: center">代碼</td>
-                <td rowspan="3" style="vertical-align: inherit; text-align: center">名稱</td>
-                <td rowspan="3" style="vertical-align: inherit; text-align: center">經理</td>
-                <td rowspan="3" style="vertical-align: inherit; text-align: center">類型</td>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center"width="240px">名稱</td>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center" width="80px">經理</td>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center" width="80px">類型</td>
 
                 <td colspan="2" style="vertical-align: inherit; text-align: center">{{monDate}}</td>
                 <td colspan="2" style="vertical-align: inherit; text-align: center">{{tueDate}}</td>
@@ -100,11 +146,13 @@
                     </button>
                 </td>
                 <td rowspan="2" style="vertical-align: inherit; text-align: center">
-                    {{showPrjName(table.prjDID)}}
+                    <p class="mytooltip">{{showPrjName(table.prjDID)}}
+                        <span class="tooltiptext">{{showPrjName(table.prjDID)}}</span>
+                    </p>
                 </td>
 
                 <td rowspan="2" style="vertical-align: inherit; text-align: center">
-                    <span>{{ showMajor(table.prjDID)}}</span>
+                    <span>{{ showProjectManager(table.prjDID)}}</span>
                 </td>
 
                 <td rowspan="2" style="vertical-align: inherit;">
@@ -266,7 +314,7 @@
                     <div ng-show="rowform1.$waiting || (table.isSendReview && !table.isManagerCheck)">
                         <button class="btn btn-warning editable-table-button btn-xs"
                                 style="color: black">
-                            {{ showMajor(table.prjDID)}}
+                            {{ showProjectManager(table.prjDID)}}
                             <br>
                             確認作業中
                         </button>
@@ -274,7 +322,7 @@
                     <div ng-show="table.isManagerCheck">
                         <button class="btn btn-info editable-table-button btn-xs"
                                 style="color: black">
-                            {{ showMajor(table.prjDID)}}
+                            {{ showProjectManager(table.prjDID)}}
                             <br>
                             確認完成
                         </button>
@@ -670,11 +718,14 @@
     <!--<uib-tab heading="個人加班單">-->
         <!--<div ng-include="'app/pages/myForms/forms/workHourTableForm_managerTab.html'"></div>-->
     <!--</uib-tab>-->
-    <uib-tab heading="經理審核" ng-if="roleType === '2'">
+    <uib-tab heading="經理審核" ng-if="roleType === '2' || roleType === '100'">
         <div ng-include="'app/pages/myForms/forms/workHourTableForm_managerTab.html'"></div>
     </uib-tab>
     <uib-tab heading="行政確認" ng-if="roleType === '100'">
         <div ng-include="'app/pages/myForms/forms/workHourTableForm_executiveTab.html'"></div>
+    </uib-tab>
+    <uib-tab heading="歷史檢視" ng-if="roleType === '2' || roleType === '100'">
+        <div ng-include="'app/pages/myForms/forms/workHourTableForm_historyTab.html'"></div>
     </uib-tab>
     <uib-tab heading="加班單核薪" ng-if="roleType === '100'">
         <div ng-include="'app/pages/myForms/forms/workHourTableForm_executive_workAddTab.html'"></div>
