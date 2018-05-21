@@ -1,6 +1,6 @@
 {
   "name": "Ichen_chungjiun",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "devDependencies": {
     "browser-sync-spa": "~1.0.3",
     "chalk": "~1.1.1",
