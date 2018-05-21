@@ -1226,13 +1226,16 @@
             });
         }
 
-        $scope.sendWHDisagree_manager = function (checkingTable, index) {
+        $scope.sendWHDisagree_manager = function (checkingTable, index, rejectMsg) {
+            console.log(rejectMsg);
             $scope.tablesManagerItems.splice(index, 1);
             var formData = {
                 tableID: checkingTable.tableID,
                 isSendReview: false,
                 isManagerCheck: false,
                 isExecutiveCheck: false,
+                isManagerReject: true,
+                managerReject_memo: rejectMsg,
             }
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
