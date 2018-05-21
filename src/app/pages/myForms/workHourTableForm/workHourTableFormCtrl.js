@@ -82,10 +82,10 @@
         //所有專案，資料比對用
         Project.findAll()
             .success(function (allProjects) {
-                $scope.projectData = [];
+                $scope.allProjectData = [];
                 var prjCount = allProjects.length;
                 for (var index = 0; index < prjCount; index++) {
-                    $scope.projectData[index] = {
+                    $scope.allProjectData[index] = {
                         prjDID: allProjects[index]._id,
                         prjCode: allProjects[index].prjCode,
                         mainName: allProjects[index].mainName + " - "
@@ -98,26 +98,23 @@
                 }
             })
 
+        // 所有人，對照資料
         User.getAllUsers()
             .success(function (allUsers) {
                 vm.users = allUsers;
                 vm.managerUsers = allUsers;
                 vm.executiveUsers = allUsers;
-                if ($scope.roleType === '100') {
-                    // vm.executiveUsers = [];
-                    // WorkOffFormUtil.fetchAllExecutiveItem()
-                    //     .success(function (res) {
-                    //         for (var outIndex = 0; outIndex < res.payload.length; outIndex++) {
-                    //             // console.log(res.payload[outIndex]);
-                    //             for (var index = 0; index < allUsers.length; index++) {
-                    //                 if (res.payload[outIndex]._id === allUsers[index]._id) {
-                    //                     allUsers[index].excutive_count = res.payload[outIndex].count;
-                    //                     vm.executiveUsers.push(allUsers[index]);
-                    //                 }
-                    //             }
-                    //         }
-                    //     })
+                vm.historyUsers = allUsers;
+
+                $scope.projectManagers = [];
+                for (var i = 0; i < allUsers.length; i++) {
+                    $scope.projectManagers[i] = {
+                        value: allUsers[i]._id,
+                        name: allUsers[i].name
+                    };
                 }
+
+
             });
         // Manipulate
         $scope.addWorkItem = function (prj) {
@@ -157,17 +154,6 @@
         $scope.saveTemp = function () {
             $scope.createSubmit(500, false);
         }
-
-        User.findManagers()
-            .success(function (allManagers) {
-                $scope.projectManagers = [];
-                for (var i = 0; i < allManagers.length; i++) {
-                    $scope.projectManagers[i] = {
-                        value: allManagers[i]._id,
-                        name: allManagers[i].name
-                    };
-                }
-            });
 
         // Remove Work Hour Check
         $scope.deleteCheck = function (table, index) {
@@ -509,7 +495,7 @@
         $scope.showPrjName = function (prjDID) {
             var selected = [];
             if (prjDID) {
-                selected = $filter('filter')($scope.projectData, {
+                selected = $filter('filter')($scope.allProjectData, {
                     prjDID: prjDID,
                 });
             }
@@ -519,17 +505,17 @@
         $scope.showPrjCode = function (prjDID) {
             var selected = [];
             if (prjDID) {
-                selected = $filter('filter')($scope.projectData, {
+                selected = $filter('filter')($scope.allProjectData, {
                     prjDID: prjDID,
                 });
             }
             return selected.length ? selected[0].prjCode : 'Not Set';
         };
 
-        $scope.showMajor = function (prjDID) {
+        $scope.showProjectManager = function (prjDID) {
             var majorSelected = [];
             if (prjDID) {
-                majorSelected = $filter('filter')($scope.projectData, {
+                majorSelected = $filter('filter')($scope.allProjectData, {
                     prjDID: prjDID
                 });
             }
@@ -543,10 +529,11 @@
             return selected.length ? selected[0].name : 'Not Set';
         };
 
+        // 對應經理
         $scope.isFitManager = function(prjDID) {
             var majorSelected = [];
             if (prjDID) {
-                majorSelected = $filter('filter')($scope.projectData, {
+                majorSelected = $filter('filter')($scope.allProjectData, {
                     prjDID: prjDID
                 });
             }
@@ -1073,7 +1060,7 @@
             initialUserTable(2);
             var getData = {
                 // managerID: cookies.get('userDID'),
-                creatorDID: vm.manager.selected._id,
+                creatorDID: vm.history.selected._id,
                 create_formDate: $scope.firstFullDate_manager,
             }
             // WorkHourUtil.getWorkHourFormForManager(getData)
@@ -1176,7 +1163,7 @@
                                     //     }
                                     // }
                                 }
-                                loadWorkOffTable(vm.manager.selected._id, 2);
+                                loadWorkOffTable(vm.history.selected._id, 2);
                                 loadNH(2);
                                 // console.log($scope.tablesItems);
                             })
@@ -1482,6 +1469,130 @@
                 })
         }
 
+        // ***************** 歷史表單 ****************
+        //專案經理取得相關人員表，以人為選取單位
+        $scope.getTable_history = function () {
+            initialUserTable(2);
+            var getData = {
+                // managerID: cookies.get('userDID'),
+                creatorDID: vm.history.selected._id,
+                create_formDate: $scope.firstFullDate_manager,
+            }
+            // WorkHourUtil.getWorkHourFormForManager(getData)
+            WorkHourUtil.getWorkHourForm(getData)
+                .success(function (res) {
+                    // var relatedPijIDArray = res.prjIDArray;
+                    // console.log(res.prjIDArray);
+                    if (res.payload.length > 0) {
+                        var workItemCount = res.payload[0].formTables.length;
+
+                        var prjIDArray = [];
+                        var workTableIDArray = [];
+                        // 組成 prjID Array, TableID Array，再去Server要資料
+                        for (var index = 0; index < workItemCount; index++) {
+                            workTableIDArray[index] = res.payload[0].formTables[index].tableID;
+                            prjIDArray[index] = res.payload[0].formTables[index].prjDID;
+                        }
+                        formDataTable = {
+                            tableIDArray: workTableIDArray,
+                            isFindSendReview: true,
+                            // isFindManagerCheck: false,
+                            isFindManagerCheck: null,
+                            isFindExecutiveCheck: null
+                        }
+                        // console.log(formDataTable);
+                        // 取得 Table Data
+                        WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
+                            .success(function (res) {
+                                // 填入表單資訊
+                                for (var index = 0; index < res.payload.length; index++) {
+                                    // for (var subIndex = 0; subIndex < relatedPijIDArray.length; subIndex++) {
+                                    //     if (relatedPijIDArray[subIndex] === res.payload[index].prjDID) {
+                                    var detail = {
+                                        tableID: res.payload[index]._id,
+                                        prjDID: res.payload[index].prjDID,
+                                        create_formDate: res.payload[index].create_formDate,
+                                        //MON
+                                        mon_hour: res.payload[index].mon_hour,
+                                        mon_memo: res.payload[index].mon_memo,
+                                        mon_hour_add: res.payload[index].mon_hour_add,
+                                        mon_memo_add: res.payload[index].mon_memo_add,
+                                        //TUE
+                                        tue_hour: res.payload[index].tue_hour,
+                                        tue_memo: res.payload[index].tue_memo,
+                                        tue_hour_add: res.payload[index].tue_hour_add,
+                                        tue_memo_add: res.payload[index].tue_memo_add,
+                                        //WES
+                                        wes_hour: res.payload[index].wes_hour,
+                                        wes_memo: res.payload[index].wes_memo,
+                                        wes_hour_add: res.payload[index].wes_hour_add,
+                                        wes_memo_add: res.payload[index].wes_memo_add,
+                                        //THU
+                                        thu_hour: res.payload[index].thu_hour,
+                                        thu_memo: res.payload[index].thu_memo,
+                                        thu_hour_add: res.payload[index].thu_hour_add,
+                                        thu_memo_add: res.payload[index].thu_memo_add,
+                                        //FRI
+                                        fri_hour: res.payload[index].fri_hour,
+                                        fri_memo: res.payload[index].fri_memo,
+                                        fri_hour_add: res.payload[index].fri_hour_add,
+                                        fri_memo_add: res.payload[index].fri_memo_add,
+                                        //SAT
+                                        sat_hour: res.payload[index].sat_hour,
+                                        sat_memo: res.payload[index].sat_memo,
+                                        sat_hour_add: res.payload[index].sat_hour_add,
+                                        sat_memo_add: res.payload[index].sat_memo_add,
+                                        //SUN
+                                        sun_hour: res.payload[index].sun_hour,
+                                        sun_memo: res.payload[index].sun_memo,
+                                        sun_hour_add: res.payload[index].sun_hour_add,
+                                        sun_memo_add: res.payload[index].sun_memo_add,
+                                        //RIGHT
+                                        isSendReview: res.payload[index].isSendReview,
+                                        isManagerCheck: res.payload[index].isManagerCheck,
+                                        isExecutiveCheck: res.payload[index].isExecutiveCheck,
+
+                                        // Reject
+                                        isManagerReject: res.payload[index].isManagerReject,
+                                        managerReject_memo: res.payload[index].managerReject_memo,
+
+                                        isExecutiveReject: res.payload[index].isExecutiveReject,
+                                        executiveReject_memo: res.payload[index].executiveReject_memo,
+                                        // TOTAL
+                                        hourTotal: res.payload[index].mon_hour +
+                                        res.payload[index].tue_hour +
+                                        res.payload[index].wes_hour +
+                                        res.payload[index].thu_hour +
+                                        res.payload[index].fri_hour +
+                                        res.payload[index].sat_hour +
+                                        res.payload[index].sun_hour,
+                                        hourAddTotal: res.payload[index].mon_hour_add +
+                                        res.payload[index].tue_hour_add +
+                                        res.payload[index].wes_hour_add +
+                                        res.payload[index].thu_hour_add +
+                                        res.payload[index].fri_hour_add +
+                                        res.payload[index].sat_hour_add +
+                                        res.payload[index].sun_hour_add,
+                                    };
+                                    $scope.tablesManagerItems.push(detail);
+                                    //     }
+                                    // }
+                                }
+                                loadWorkOffTable(vm.history.selected._id, 2);
+                                loadNH(2);
+                                // console.log($scope.tablesItems);
+                            })
+                            .error(function () {
+                                console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
+                            })
+                    } else {
+                        $scope.loading = false;
+                    }
+                })
+                .error(function () {
+                    console.log('ERROR WorkHourUtil.getWorkHourForm');
+                })
+        }
 
         function loadNH(type) {
             $scope.nationalHolidayTables = [];
