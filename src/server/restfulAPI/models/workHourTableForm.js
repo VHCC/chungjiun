@@ -123,16 +123,41 @@ module.exports = mongoose.model('WorkHourTableForm', {
         type: Boolean,
         default: false,
     },
-    //經理審核
+    // 經理審核
     isManagerCheck: {
         type: Boolean,
         default: false,
     },
+
+    // 經理是否退回
+    isManagerReject: {
+        type: Boolean,
+        default: false,
+    },
+
+    // 經理退回事由
+    managerReject_memo: {
+        type: String,
+    },
+
     // 行政審核
     isExecutiveCheck: {
         type: Boolean,
         default: false,
-    }
+    },
+
+    // 行政是否退回
+    isExecutiveReject: {
+        type: Boolean,
+        default: false,
+    },
+
+    // 行政退回事由
+    executiveReject_memo: {
+        type: String,
+    },
+
+
 
 
 
