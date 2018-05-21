@@ -246,10 +246,6 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_work_hour_table_total_update_send_review, function (req, res) {
         var findData = [];
         for (var index = 0; index < req.body.tableArray.length; index++) {
-            // var target = {
-            //     _id: req.body.tableArray[index],
-            // }
-            // findData.push(target);
             WorkHourTableForm.update({
                 _id: req.body.tableArray[index],
             }, {
@@ -268,22 +264,6 @@ module.exports = function (app) {
             error: global.status._200,
         })
 
-        // WorkHourTableForm.update({
-        //     // _id: req.body.tableID,
-        //     $or: findData,
-        // }, {
-        //     $set: {
-        //         isSendReview: true,
-        //     }
-        // }, function (err) {
-        //     if (err) {
-        //         res.send(err);
-        //     }
-        //     res.status(200).send({
-        //         code: 200,
-        //         error: global.status._200,
-        //     });
-        // })
     })
 
     // update table executive check
@@ -300,6 +280,7 @@ module.exports = function (app) {
         if (req.body.isExecutiveCheck !== null) {
             setQuery.isExecutiveCheck = req.body.isExecutiveCheck;
         }
+
         WorkHourTableForm.update({
             _id: req.body.tableID,
         }, {

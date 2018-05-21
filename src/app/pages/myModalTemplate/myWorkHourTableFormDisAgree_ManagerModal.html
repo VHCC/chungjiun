@@ -6,9 +6,18 @@
     <div class="modal-body text-center">
         {{checkText}}
     </div>
+    <div class="form-group">
+        <label class="col-sm-12 control-label">退回原因</label>
+
+        <div class="col-sm-12">
+            <input type="text" class="form-control" placeholder="請填寫原因"
+                   ng-model="rejectMsg" required>
+        </div>
+    </div>
+
     <div class="modal-footer">
         <button type="button" class="btn btn-danger"
-                ng-click="closeThisDialog();sendWHDisagree_manager(checkingTable, mIndex)">確定
+                ng-click="closeThisDialog();sendWHDisagree_manager(checkingTable, mIndex, rejectMsg)">確定
         </button>
         <button type="button"
                 class="btn btn-primary"
