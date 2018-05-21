@@ -40,7 +40,7 @@ module.exports = mongoose.model('workOffTableForm', {
         type: Boolean,
         default: false,
     },
-    //主管審核
+    // 主管審核
     isBossCheck: {
         type: Boolean,
         default: false,
@@ -59,7 +59,28 @@ module.exports = mongoose.model('workOffTableForm', {
     // 換算月薪定義：月薪/30/8
     userMonthSalary: {
         type: Number,
+    },
 
-    }
+    // 經理是否退回
+    isBossReject: {
+        type: Boolean,
+        default: false,
+    },
+
+    // 經理退回事由
+    bossReject_memo: {
+        type: String,
+    },
+
+    // 行政是否退回
+    isExecutiveReject: {
+        type: Boolean,
+        default: false,
+    },
+
+    // 行政退回事由
+    executiveReject_memo: {
+        type: String,
+    },
 
 });
