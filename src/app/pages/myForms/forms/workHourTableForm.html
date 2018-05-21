@@ -32,7 +32,7 @@
                         </ui-select-match>
                         <ui-select-choices
                                 ng-model="prjName"
-                                repeat="prjItems in workHourTableCtrlVm.projects | groupSelectpickerOptions: {mainName: $select.search, prjCode: $select.search}"
+                                repeat="prjItems in workHourTableCtrlVm.relatedProjects | groupSelectpickerOptions: {mainName: $select.search, prjCode: $select.search}"
                                 group-by="'mainName'">
                             <span ng-bind-html="prjItems.mainName + ' - ' + prjItems.prjName + ' - ' + prjItems.prjSubName + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
                         </ui-select-choices>
@@ -251,7 +251,7 @@
                         </form>
                         <div class="buttons" ng-show="!rowform1.$visible">
                             <button class="btn btn-info editable-table-button btn-xs"
-                                    ng-click="rowform1.$show();bbbbb()">編輯
+                                    ng-click="rowform1.$show();bindNumberFormat()">編輯
                             </button>
                         </div>
                         <!--<div class="buttons" ng-show="!rowform1.$visible">-->

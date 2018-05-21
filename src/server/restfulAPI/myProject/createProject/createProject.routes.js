@@ -41,7 +41,7 @@ module.exports = function (app) {
     });
 
     app.get(global.apiUrl.get_all_managers, function (req, res) {
-        console.log(global.timeFormat(new Date()) + global.log.i + "AP, getAllManagers");
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, getAllManagers");
         User.find(
             {
                 roleType: 2 // 技師

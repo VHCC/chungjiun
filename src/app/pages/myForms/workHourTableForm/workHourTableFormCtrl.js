@@ -63,8 +63,8 @@
                 $scope.userMonthSalary = user.userMonthSalary;
             })
 
-        //所有專案
-        var allPrj;
+        // 所有與使用者關聯之專案。
+        var allRelatedPrjDatas;
 
         // 主要顯示
         $scope.tablesItems = [];
@@ -75,10 +75,11 @@
         }
         Project.getProjectRelated(formData)
             .success(function (relatedProjects) {
-                allPrj = relatedProjects;
-                vm.projects = relatedProjects;
+                allRelatedPrjDatas = relatedProjects;
+                vm.relatedProjects = relatedProjects;
             });
 
+        //所有專案，資料比對用
         Project.findAll()
             .success(function (allProjects) {
                 $scope.projectData = [];
@@ -313,8 +314,8 @@
                 creatorDID: cookies.get('userDID'),
                 create_formDate: $scope.firstFullDate,
             }
-            if (allPrj !== undefined) {
-                vm.projects = allPrj.slice();
+            if (allRelatedPrjDatas !== undefined) {
+                vm.relatedProjects = allRelatedPrjDatas.slice();
             }
             WorkHourUtil.getWorkHourForm(getData)
                 .success(function (res) {
@@ -335,16 +336,16 @@
                         Project.findPrjByIDArray(formData)
                             .success(function (res) {
                                 $scope.loading = false;
-                                vm.projects = [];
-                                for (var outIndex = 0; outIndex < allPrj.length; outIndex++) {
-                                    var isExitst = true;
+                                vm.relatedProjects = [];
+                                for (var outIndex = 0; outIndex < allRelatedPrjDatas.length; outIndex++) {
+                                    var isExist = true;
                                     for (var index = 0; index < res.payload.length; index++) {
-                                        if (allPrj[outIndex]._id === res.payload[index]._id) {
-                                            isExitst = false;
+                                        if (allRelatedPrjDatas[outIndex]._id === res.payload[index]._id) {
+                                            isExist = false;
                                         }
                                     }
-                                    if (isExitst) {
-                                        vm.projects.push(allPrj[outIndex]);
+                                    if (isExist) {
+                                        vm.relatedProjects.push(allRelatedPrjDatas[outIndex]);
                                     }
                                 }
                             })
@@ -408,6 +409,14 @@
                                         isSendReview: res.payload[index].isSendReview,
                                         isManagerCheck: res.payload[index].isManagerCheck,
                                         isExecutiveCheck: res.payload[index].isExecutiveCheck,
+
+                                        // Reject
+                                        isManagerReject: res.payload[index].isManagerReject,
+                                        managerReject_memo: res.payload[index].managerReject_memo,
+
+                                        isExecutiveReject: res.payload[index].isExecutiveReject,
+                                        executiveReject_memo: res.payload[index].executiveReject_memo,
+
                                         // TOTAL
                                         hourTotal: res.payload[index].mon_hour +
                                         res.payload[index].tue_hour +
@@ -939,6 +948,13 @@
                         isSendReview: $scope.tablesItems[index].isSendReview,
                         isManagerCheck: $scope.tablesItems[index].isManagerCheck,
                         isExecutiveCheck: $scope.tablesItems[index].isExecutiveCheck,
+
+                        // Reject
+                        isManagerReject: $scope.tablesItems[index].isManagerReject,
+                        managerReject_memo: $scope.tablesItems[index].managerReject_memo,
+
+                        isExecutiveReject: $scope.tablesItems[index].isExecutiveReject,
+                        executiveReject_memo: $scope.tablesItems[index].executiveReject_memo,
                     }
                     workHourTableData.push(tableItem);
                 }
@@ -974,7 +990,7 @@
 
         // ************************ REVIEW SUBMIT ***************************
         $scope.reviewFormCheck = function() {
-            console.log($scope.tablesItems);
+            // console.log($scope.tablesItems);
             $scope.checkText = '確定提交 審查？';
             ngDialog.open({
                 template: 'app/pages/myModalTemplate/myWorkHourTableFormReviewModalTotal.html',
@@ -1133,6 +1149,13 @@
                                                 isSendReview: res.payload[index].isSendReview,
                                                 isManagerCheck: res.payload[index].isManagerCheck,
                                                 isExecutiveCheck: res.payload[index].isExecutiveCheck,
+
+                                                // Reject
+                                                isManagerReject: res.payload[index].isManagerReject,
+                                                managerReject_memo: res.payload[index].managerReject_memo,
+
+                                                isExecutiveReject: res.payload[index].isExecutiveReject,
+                                                executiveReject_memo: res.payload[index].executiveReject_memo,
                                                 // TOTAL
                                                 hourTotal: res.payload[index].mon_hour +
                                                 res.payload[index].tue_hour +
@@ -1356,6 +1379,14 @@
                                         isSendReview: res.payload[index].isSendReview,
                                         isManagerCheck: res.payload[index].isManagerCheck,
                                         isExecutiveCheck: res.payload[index].isExecutiveCheck,
+
+                                        // Reject
+                                        isManagerReject: res.payload[index].isManagerReject,
+                                        managerReject_memo: res.payload[index].managerReject_memo,
+
+                                        isExecutiveReject: res.payload[index].isExecutiveReject,
+                                        executiveReject_memo: res.payload[index].executiveReject_memo,
+
                                         // TOTAL
                                         hourTotal: res.payload[index].mon_hour +
                                         res.payload[index].tue_hour +
@@ -1560,6 +1591,14 @@
                                         isSendReview: res.payload[index].isSendReview,
                                         isBossCheck: res.payload[index].isBossCheck,
                                         isExecutiveCheck: res.payload[index].isExecutiveCheck,
+
+                                        // Reject
+                                        isBossReject: res.payload[index].isBossReject,
+                                        bossReject_memo: res.payload[index].bossReject_memo,
+
+                                        isExecutiveReject: res.payload[index].isExecutiveReject,
+                                        executiveReject_memo: res.payload[index].executiveReject_memo,
+
                                         // userHourSalary: res.payload[index].userHourSalary,
                                         userMonthSalary: res.payload[index].userMonthSalary,
                                     };
@@ -1886,7 +1925,7 @@
                 })
         }
 
-        $scope.bbbbb = function () {
+        $scope.bindNumberFormat = function () {
             $('input[type="number"]').mask('H.D', {
                 translation: {
                     'H': {
