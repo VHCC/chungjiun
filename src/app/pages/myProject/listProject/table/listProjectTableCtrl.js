@@ -22,6 +22,7 @@
             [
                 '$scope',
                 '$filter',
+                '$cookies',
                 'User',
                 '$compile',
                 'editableOptions',
@@ -31,6 +32,7 @@
                 'intiProjectsService',
                 function (scope,
                           filter,
+                          $cookies,
                           User,
                           $compile,
                           editableOptions,
@@ -41,6 +43,7 @@
                     return new ListProjectPageCtrl(
                         scope,
                         filter,
+                        $cookies,
                         User,
                         $compile,
                         editableOptions,
@@ -55,6 +58,7 @@
     /** @ngInject */
     function ListProjectPageCtrl($scope,
                                  $filter,
+                                 $cookies,
                                  User,
                                  $compile,
                                  editableOptions,
@@ -150,6 +154,10 @@
             }
             return selected.length ? selected[0].name : 'Not Set';
         };
+
+        $scope.isFitPrjManager = function(managerDID) {
+            return managerDID === $cookies.get('userDID');
+        }
 
         $scope.showMajor = function (project) {
             var selected = [];

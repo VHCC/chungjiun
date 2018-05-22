@@ -63,6 +63,7 @@
                 <button type="button"
                         ng-disabled="rowform.$visible"
                         ng-click="rowform.$show()"
+                        ng-show="isFitPrjManager(prj.managerID)"
                         class="btn btn-primary editable-table-button btn-xs">
                     指派主承辦
                 </button>
