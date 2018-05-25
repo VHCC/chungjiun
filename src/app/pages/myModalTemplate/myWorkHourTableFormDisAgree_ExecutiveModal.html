@@ -4,11 +4,14 @@
         <strong>請確認</strong>
     </div>
     <div class="modal-body text-center">
-        {{checkText}}
+        <!--{{checkText}}-->
+        <label >退回原因</label>
+        <input type="text" class="form-control" placeholder="請填寫原因"
+               ng-model="rejectMsg" required>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-danger"
-                ng-click="closeThisDialog();sendWHDisagree_executive(checkingTable, mIndex)">確定
+                ng-click="closeThisDialog();sendWHDisagree_executive(checkingTable, mIndex, rejectMsg)">確定
         </button>
         <button type="button"
                 class="btn btn-primary"

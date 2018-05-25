@@ -327,6 +327,16 @@
                             確認完成
                         </button>
                     </div>
+                    <div ng-show="!table.isSendReview && table.isManagerReject">
+                        <button class="btn btn-warning editable-table-button btn-xs"
+                                style="color: black">
+                            {{ showProjectManager(table.prjDID)}}
+                            <br>
+                            退回
+                            <br>
+                            原因：{{table.managerReject_memo}}
+                        </button>
+                    </div>
                 </td>
                 <!--行政確認-->
                 <td rowspan="2" style="vertical-align: inherit;">
@@ -344,6 +354,16 @@
                             行政
                             <br>
                             確認完成
+                        </button>
+                    </div>
+                    <div ng-show="!table.isSendReview && table.isExecutiveReject">
+                        <button class="btn btn-warning editable-table-button btn-xs"
+                                style="color: black">
+                            行政
+                            <br>
+                            退回
+                            <br>
+                            原因：{{table.executiveReject_memo}}
                         </button>
                     </div>
                 </td>
