@@ -268,23 +268,35 @@ module.exports = function (app) {
 
     // update table executive check
     app.post(global.apiUrl.post_work_hour_table_update, function (req, res) {
+        console.log(req.body);
+        var keyArray = Object.keys(req.body);
+        var query = {};
+        for (var index = 0; index < keyArray.length; index++) {
+            var evalString = "query.";
+            evalString += keyArray[index];
 
-        var setQuery = {};
+            var evalFooter = "req.body.";
+            evalFooter += keyArray[index];
+            eval(evalString + " = " + evalFooter);
+        }
+        console.log(query);
 
-        if (req.body.isSendReview !== null) {
-            setQuery.isSendReview = req.body.isSendReview;
-        }
-        if (req.body.isManagerCheck !== null) {
-            setQuery.isManagerCheck = req.body.isManagerCheck;
-        }
-        if (req.body.isExecutiveCheck !== null) {
-            setQuery.isExecutiveCheck = req.body.isExecutiveCheck;
-        }
+        // var setQuery = {};
+
+        // if (req.body.isSendReview !== null) {
+        //     setQuery.isSendReview = req.body.isSendReview;
+        // }
+        // if (req.body.isManagerCheck !== null) {
+        //     setQuery.isManagerCheck = req.body.isManagerCheck;
+        // }
+        // if (req.body.isExecutiveCheck !== null) {
+        //     setQuery.isExecutiveCheck = req.body.isExecutiveCheck;
+        // }
 
         WorkHourTableForm.update({
             _id: req.body.tableID,
         }, {
-            $set: setQuery
+            $set: query
         }, function (err) {
             if (err) {
                 res.send(err);

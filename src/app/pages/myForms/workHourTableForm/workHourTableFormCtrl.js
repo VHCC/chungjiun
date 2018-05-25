@@ -1200,9 +1200,9 @@
             // $scope.tablesManagerItems.splice(index, 1);
             var formData = {
                 tableID: checkingTable.tableID,
-                isSendReview: null,
+                // isSendReview: null,
                 isManagerCheck: true,
-                isExecutiveCheck: null,
+                // isExecutiveCheck: null,
             }
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
@@ -1227,7 +1227,7 @@
         }
 
         $scope.sendWHDisagree_manager = function (checkingTable, index, rejectMsg) {
-            console.log(rejectMsg);
+            // console.log(rejectMsg);
             $scope.tablesManagerItems.splice(index, 1);
             var formData = {
                 tableID: checkingTable.tableID,
@@ -1235,6 +1235,7 @@
                 isManagerCheck: false,
                 isExecutiveCheck: false,
                 isManagerReject: true,
+                isExecutiveReject: false,
                 managerReject_memo: rejectMsg,
             }
             WorkHourUtil.updateWHTable(formData)
@@ -1431,8 +1432,8 @@
             // $scope.tablesExecutiveItems.splice(index, 1);
             var formData = {
                 tableID: checkingTable.tableID,
-                isSendReview: null,
-                isManagerCheck: null,
+                // isSendReview: null,
+                // isManagerCheck: null,
                 isExecutiveCheck: true,
             }
             WorkHourUtil.updateWHTable(formData)
@@ -1457,13 +1458,16 @@
             });
         }
 
-        $scope.sendWHDisagree_executive = function (checkingTable, index) {
+        $scope.sendWHDisagree_executive = function (checkingTable, index, rejectMsg) {
             $scope.tablesExecutiveItems.splice(index, 1);
             var formData = {
                 tableID: checkingTable.tableID,
                 isSendReview: false,
                 isManagerCheck: false,
                 isExecutiveCheck: false,
+                isManagerReject: false,
+                isExecutiveReject: true,
+                executiveReject_memo: rejectMsg,
             }
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {

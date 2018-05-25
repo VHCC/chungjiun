@@ -198,7 +198,7 @@
             <div ng-show="rowform1.$waiting || (table.isSendReview && !table.isManagerCheck)">
                 <button class="btn btn-warning editable-table-button btn-xs"
                         style="color: black">
-                    {{ showMajor(table.prjDID)}}
+                    {{ showProjectManager(table.prjDID)}}
                     <br>
                     確認作業中
                 </button>
@@ -206,7 +206,7 @@
             <div ng-show="table.isManagerCheck">
                 <button class="btn btn-info editable-table-button btn-xs"
                         style="color: black">
-                    {{ showMajor(table.prjDID)}}
+                    {{ showProjectManager(table.prjDID)}}
                     <br>
                     確認完成
                 </button>
