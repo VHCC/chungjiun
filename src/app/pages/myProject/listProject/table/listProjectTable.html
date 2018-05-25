@@ -93,7 +93,7 @@
                         <!-- button to show form -->
                         <button type="button" class="btn btn-primary editable-table-button btn-xs"
                                 ng-click="uiSelectForm.$show()"
-                                ng-show="!uiSelectForm.$visible">
+                                ng-show="!uiSelectForm.$visible;isFitPrjManager(prj.managerID)">
                             分派協辦
                         </button>
                         <!-- buttons to submit / cancel form -->
