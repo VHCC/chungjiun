@@ -738,7 +738,7 @@
     <!--<uib-tab heading="個人加班單">-->
         <!--<div ng-include="'app/pages/myForms/forms/workHourTableForm_managerTab.html'"></div>-->
     <!--</uib-tab>-->
-    <uib-tab heading="經理審核" ng-if="roleType === '2' || roleType === '100'">
+    <uib-tab heading="經理審核" ng-if="roleType === '2' || roleType === '100'" ng-click="qwer()">
         <div ng-include="'app/pages/myForms/forms/workHourTableForm_managerTab.html'"></div>
     </uib-tab>
     <uib-tab heading="行政確認" ng-if="roleType === '100'">

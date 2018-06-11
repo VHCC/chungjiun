@@ -127,7 +127,7 @@ module.exports = function (app) {
 
     });
 
-    //get form by date
+    //get form by date, creator DID
     app.post(global.apiUrl.post_work_hour_get, function (req, res) {
         WorkHourForm.find({
             creatorDID: req.body.creatorDID,
@@ -135,6 +135,7 @@ module.exports = function (app) {
         }, function (err, workhourform) {
             if (err) {
                 res.send(err);
+
             }
             res.status(200).send({
                 code: 200,
@@ -143,6 +144,32 @@ module.exports = function (app) {
             });
         });
     });
+
+    // 多組creator, create_formDate
+    app.post(global.apiUrl.post_work_hour_multiple_get, function (req, res) {
+        console.log(req.body);
+        var findData = []
+        for (var index = 0; index < req.body.relatedMembers.length; index++) {
+            var target = {
+                creatorDID: req.body.relatedMembers[index],
+            }
+            findData.push(target);
+
+        }
+
+        WorkHourForm.find({
+            $or: findData,
+        }, function (err, workHourForms) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+                payload: workHourForms,
+            });
+        });
+    })
 
     // get forms for manager
     app.post(global.apiUrl.
@@ -268,7 +295,7 @@ module.exports = function (app) {
 
     // update table executive check
     app.post(global.apiUrl.post_work_hour_table_update, function (req, res) {
-        console.log(req.body);
+        // console.log(req.body);
         var keyArray = Object.keys(req.body);
         var query = {};
         for (var index = 0; index < keyArray.length; index++) {
@@ -279,7 +306,7 @@ module.exports = function (app) {
             evalFooter += keyArray[index];
             eval(evalString + " = " + evalFooter);
         }
-        console.log(query);
+        // console.log(query);
 
         // var setQuery = {};
 

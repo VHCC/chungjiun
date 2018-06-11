@@ -32,6 +32,8 @@ global.apiUrl = {
     post_project_sub_number_find_by_number: '/api/post_project_sub_number_find_by_number',
     post_project_type_find_by_sub_number: '/api/post_project_type_find_by_sub_number',
 
+    // 工時表 經理
+    post_project_all_related_to_manager : '/api/post_project_all_related_to_manager',
 
     // ListProject
     post_project_all_related_to_user : '/api/post_project_all_related_to_user',
@@ -53,6 +55,7 @@ global.apiUrl = {
     //workHourTable Form
     post_work_hour_create_table : '/api/createWorkHourTableForm',
     post_work_hour_get : '/api/getWorkHourForm',
+    post_work_hour_multiple_get : '/api/post_work_hour_multiple_get',
     post_work_hour_get_for_manager : '/api/post_work_hour_get_for_manager',
     post_work_hour_table_find_by_tableid_array : '/api/post_work_hour_table_find_by_tableid_array',
     post_work_hour_table_update_send_review : '/api/updateWorkHourTableFormSendReview',

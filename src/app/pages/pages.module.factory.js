@@ -75,6 +75,11 @@
                     return http.post('/api/post_project_type_find_by_sub_number', formData);
                 },
 
+                //
+                getProjectRelatedToManager: function(formData) {
+                    return http.post('/api/post_project_all_related_to_manager', formData);
+                },
+
                 //ListProject
                 getProjectRelated: function(formData) {
                     return http.post('/api/post_project_all_related_to_user', formData);
@@ -143,6 +148,10 @@
                 },
                 getWorkHourForm: function (formData) {
                     return http.post('/api/getWorkHourForm', formData);
+                },
+                // 多組
+                getWorkHourFormMultiple: function(formData) {
+                    return http.post('/api/post_work_hour_multiple_get', formData);
                 },
                 getWorkHourFormForManager: function (formData) {
                     return http.post('/api/post_work_hour_get_for_manager', formData);
