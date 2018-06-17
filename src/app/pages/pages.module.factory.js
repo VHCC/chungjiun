@@ -80,9 +80,6 @@
                     return http.post('/api/post_project_all_related_to_manager', formData);
                 },
 
-                //TODO
-                // 工時表，行政總管審查
-
                 //ListProject
                 getProjectRelated: function(formData) {
                     return http.post('/api/post_project_all_related_to_user', formData);

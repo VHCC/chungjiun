@@ -1201,7 +1201,7 @@
             // $scope.checkText = '確定 同意：' + vm.manager.selected.name + " " +
             //     $scope.showPrjName(table.prjDID) +
             //     "  ？";
-            $scope.checkText = '確定 同意：' + " " +
+            $scope.checkText = '確定 同意：' +
                 $scope.showPrjName(table.prjDID) +
                 "  ？";
             $scope.checkingForm = form;
@@ -1216,10 +1216,6 @@
         }
 
         $scope.sendWHManagerAgree = function (form, checkingTable, index) {
-            // $scope.tablesManagerItems.splice(index, 1);
-            // forms.splice(index, 1);
-            // console.log(checkingTable);
-            // checkingTable.isManagerCheck = true;
             var formData = {
                 tableID: checkingTable.tableID,
                 // isSendReview: null,
@@ -1229,7 +1225,6 @@
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
                     // console.log(res.code);
-                    // checkingTable.isManagerCheck = true;
                     $scope.showTableOfItem(form, true, null, null);
                 })
         }
@@ -1239,7 +1234,7 @@
             // $scope.checkText = '確定 退回：' + vm.manager.selected.name + " " +
             //     $scope.showPrjName(table.prjDID) +
             //     "  ？";
-            $scope.checkText = '確定 退回：' + " " +
+            $scope.checkText = '確定 退回：' +
                 $scope.showPrjName(table.prjDID) +
                 "  ？";
             $scope.checkingForm = form;
@@ -1253,7 +1248,7 @@
             });
         }
 
-        $scope.sendWHDisagree_manager = function (forms, checkingTable, index, rejectMsg) {
+        $scope.sendWHDisagree_manager = function (form, checkingTable, index, rejectMsg) {
             // console.log(rejectMsg);
             // $scope.tablesManagerItems.splice(index, 1);
             // forms.splice(index, 1);
@@ -1270,7 +1265,7 @@
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
                     console.log(res.code);
-                    $scope.showTableOfItem(forms, true, null, null);
+                    $scope.showTableOfItem(form, true, null, null);
                     // checkingTable.isManagerCheck = true;
                 })
         }
@@ -1293,6 +1288,8 @@
         $scope.satDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 5));
         $scope.sunDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 6));
 
+        $scope.weekShift_manager = 0;
+
         $scope.addWeek_executive = function () {
             $scope.weekShift_executive++;
             $scope.firstFullDate_executive = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_executive));
@@ -1306,7 +1303,8 @@
             $scope.friDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 4));
             $scope.satDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 5));
             $scope.sunDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 6));
-            $scope.getTable_executive();
+            // $scope.getTable_executive();
+            $scope.showRelatedMembersTableReview(typeExecutive);
         }
 
         $scope.decreaceWeek_executive = function () {
@@ -1322,10 +1320,14 @@
             $scope.friDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 4));
             $scope.satDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 5));
             $scope.sunDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 6));
-            $scope.getTable_executive();
+            // $scope.getTable_executive();
+            $scope.showRelatedMembersTableReview(typeExecutive);
         }
 
         //行政取得相關人員表，以人為選取單位
+        /**
+         * @Deprecated
+         */
         $scope.getTable_executive = function () {
             initialUserTable(3);
             var getData = {
@@ -1425,7 +1427,7 @@
                                         res.payload[index].sun_hour_add,
 
                                     };
-                                    $scope.tablesExecutiveItems.push(detail);
+                                    // $scope.tablesExecutiveItems.push(detail);
                                 }
                                 loadWorkOffTable(vm.executive.selected._id, 3);
                                 loadNH(3);
@@ -1444,10 +1446,11 @@
         }
 
         //行政確認
-        $scope.reviewWHExecutiveItem = function (table, index) {
-            $scope.checkText = '確定 同意：' + vm.executive.selected.name + " " +
+        $scope.reviewWHExecutiveItem = function (form, table, index) {
+            $scope.checkText = '確定 同意：' +
                 $scope.showPrjName(table.prjDID) +
                 "  ？";
+            $scope.checkingForm = form;
             $scope.checkingTable = table;
             $scope.mIndex = index;
             ngDialog.open({
@@ -1458,8 +1461,7 @@
             });
         }
 
-        $scope.sendWHExecutiveAgree = function (checkingTable, index) {
-            // $scope.tablesExecutiveItems.splice(index, 1);
+        $scope.sendWHExecutiveAgree = function (form, checkingTable, index) {
             var formData = {
                 tableID: checkingTable.tableID,
                 // isSendReview: null,
@@ -1468,16 +1470,17 @@
             }
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
-                    console.log(res.code);
-                    checkingTable.isExecutiveCheck = true;
+                    // console.log(res.code);
+                    $scope.showTableOfItem(form, true, null, null);
                 })
         }
 
         //行政退回
-        $scope.disagreeWHItem_executive = function (table, index) {
-            $scope.checkText = '確定 退回：' + vm.executive.selected.name + " " +
+        $scope.disagreeWHItem_executive = function (form, table, index) {
+            $scope.checkText = '確定 退回：' +
                 $scope.showPrjName(table.prjDID) +
                 "  ？";
+            $scope.checkingForm = form;
             $scope.checkingTable = table;
             $scope.mIndex = index;
             ngDialog.open({
@@ -1488,8 +1491,8 @@
             });
         }
 
-        $scope.sendWHDisagree_executive = function (checkingTable, index, rejectMsg) {
-            $scope.tablesExecutiveItems.splice(index, 1);
+        $scope.sendWHDisagree_executive = function (form, checkingTable, index, rejectMsg) {
+            // $scope.tablesExecutiveItems.splice(index, 1);
             var formData = {
                 tableID: checkingTable.tableID,
                 isSendReview: false,
@@ -1502,7 +1505,7 @@
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
                     // console.log(res.code);
-                    // checkingTable.isExecutiveCheck = true;
+                    $scope.showTableOfItem(form, true, null, null);
                 })
         }
 
@@ -2145,6 +2148,23 @@
                 })
         }
 
+        //顯示行政審查人員
+        // Fetch Executive Related Members
+        $scope.fetchExecutiveRelatedMembers = function () {
+            $scope.dateChangeMode = reviewMode;
+            var formData = {
+                relatedID: cookies.get('userDID'),
+            }
+            var relatedMembers = [];
+            // 行政總管跟每個人都有關
+            for (var index = 0; index < vm.executiveUsers.length; index ++) {
+                relatedMembers.push(vm.executiveUsers[index]._id);
+            }
+            $scope.mainRelatedMembers = relatedMembers;
+            $scope.showRelatedMembersTableReview(typeExecutive);
+        }
+
+
         var typeManager = 1;
         var typeExecutive = 2;
 
@@ -2153,26 +2173,29 @@
 
             var targetFormData = null;
             var targetList = null;
-            console.log("firstFullDate_manager= " + $scope.firstFullDate_manager);
+
             switch(type) {
                 case typeManager: {
+                    console.log("firstFullDate_manager= " + $scope.firstFullDate_manager);
                     $scope.workHourFormsForManagers = [];
                     targetFormData = $scope.firstFullDate_manager;
                     targetList = $scope.workHourFormsForManagers;
                 } break;
                 case typeExecutive: {
-
-                }break;
+                    console.log("firstFullDate_executive= " + $scope.firstFullDate_executive);
+                    $scope.workHourFormsForExecutive = [];
+                    targetFormData = $scope.firstFullDate_executive;
+                    targetList = $scope.workHourFormsForExecutive;
+                } break;
             }
 
             var getData = {
                 relatedMembers: $scope.mainRelatedMembers,
                 create_formDate: targetFormData,
             }
-
             WorkHourUtil.getWorkHourFormMultiple(getData)
                 .success(function (res) {
-                    // console.log(res.payload);
+                    console.log(res.payload);
                     // $scope.workHourFormsForManagers = [];
                     if (res.payload.length > 0) {
                         $scope.setReviewList(res.payload, 0, targetList, type);
@@ -2312,7 +2335,12 @@
                     }
                 } break;
                 case typeExecutive: {
-
+                    formDataTable = {
+                        tableIDArray: workTableIDArray,
+                        isFindSendReview: true,
+                        isFindManagerCheck: true,
+                        isFindExecutiveCheck: null
+                    }
                 }break;
             }
 
