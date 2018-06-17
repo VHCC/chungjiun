@@ -152,6 +152,7 @@ module.exports = function (app) {
         for (var index = 0; index < req.body.relatedMembers.length; index++) {
             var target = {
                 creatorDID: req.body.relatedMembers[index],
+                create_formDate: req.body.create_formDate,
             }
             findData.push(target);
 

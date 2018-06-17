@@ -738,13 +738,13 @@
     <!--<uib-tab heading="個人加班單">-->
         <!--<div ng-include="'app/pages/myForms/forms/workHourTableForm_managerTab.html'"></div>-->
     <!--</uib-tab>-->
-    <uib-tab heading="經理審核" ng-if="roleType === '2' || roleType === '100'" ng-click="qwer()">
+    <uib-tab heading="經理審核" ng-if="roleType === '2' || roleType === '100'" ng-click="fetchManagerRelatedMembers()">
         <div ng-include="'app/pages/myForms/forms/workHourTableForm_managerTab.html'"></div>
     </uib-tab>
     <uib-tab heading="行政確認" ng-if="roleType === '100'">
         <div ng-include="'app/pages/myForms/forms/workHourTableForm_executiveTab.html'"></div>
     </uib-tab>
-    <uib-tab heading="歷史檢視" ng-if="roleType === '2' || roleType === '100'">
+    <uib-tab heading="歷史檢視" ng-if="roleType === '2' || roleType === '100'" ng-click="turnOnHistoryMode()">
         <div ng-include="'app/pages/myForms/forms/workHourTableForm_historyTab.html'"></div>
     </uib-tab>
     <uib-tab heading="加班單核薪" ng-if="roleType === '100'">
