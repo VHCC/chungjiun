@@ -75,10 +75,13 @@
                     return http.post('/api/post_project_type_find_by_sub_number', formData);
                 },
 
-                //
+                // 工時表，經理審查
                 getProjectRelatedToManager: function(formData) {
                     return http.post('/api/post_project_all_related_to_manager', formData);
                 },
+
+                //TODO
+                // 工時表，行政總管審查
 
                 //ListProject
                 getProjectRelated: function(formData) {

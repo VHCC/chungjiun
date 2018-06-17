@@ -1036,7 +1036,14 @@
             $scope.friDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 4));
             $scope.satDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 5));
             $scope.sunDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 6));
-            $scope.getTable_manager();
+            switch($scope.dateChangeMode) {
+                case reviewMode: {
+                    $scope.showRelatedMembersTableReview(typeManager);
+                } break;
+                case historyMode: {
+                    $scope.showHistoryTable_manager();
+                } break;
+            }
         }
 
         $scope.decreaceWeek_manager = function () {
@@ -1052,12 +1059,18 @@
             $scope.friDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 4));
             $scope.satDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 5));
             $scope.sunDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 6));
-            $scope.getTable_manager();
+            switch($scope.dateChangeMode) {
+                case reviewMode: {
+                    $scope.showRelatedMembersTableReview(typeManager);
+                } break;
+                case historyMode: {
+                    $scope.showHistoryTable_manager();
+                } break;
+            }
         }
 
-        //專案經理取得相關人員表，以人為選取單位
-        // deprecated
-        $scope.getTable_manager = function () {
+        //歷史檢視取得相關人員表，以人為選取單位
+        $scope.showHistoryTable_manager = function () {
             initialUserTable(2);
             var getData = {
                 // managerID: cookies.get('userDID'),
@@ -1181,12 +1194,17 @@
         }
 
         //專案經理確認
-        $scope.reviewWHManagerItem = function (table, index) {
-            console.log(table);
-            console.log($scope.isFitManager(table.prjDID));
-            $scope.checkText = '確定 同意：' + vm.manager.selected.name + " " +
+        $scope.reviewWHManagerItem = function (form, table, index) {
+            // console.log(forms);
+            // console.log(table);
+            // console.log($scope.isFitManager(table.prjDID));
+            // $scope.checkText = '確定 同意：' + vm.manager.selected.name + " " +
+            //     $scope.showPrjName(table.prjDID) +
+            //     "  ？";
+            $scope.checkText = '確定 同意：' + " " +
                 $scope.showPrjName(table.prjDID) +
                 "  ？";
+            $scope.checkingForm = form;
             $scope.checkingTable = table;
             $scope.mIndex = index;
             ngDialog.open({
@@ -1197,8 +1215,11 @@
             });
         }
 
-        $scope.sendWHManagerAgree = function (checkingTable, index) {
+        $scope.sendWHManagerAgree = function (form, checkingTable, index) {
             // $scope.tablesManagerItems.splice(index, 1);
+            // forms.splice(index, 1);
+            // console.log(checkingTable);
+            // checkingTable.isManagerCheck = true;
             var formData = {
                 tableID: checkingTable.tableID,
                 // isSendReview: null,
@@ -1207,16 +1228,21 @@
             }
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
-                    console.log(res.code);
-                    checkingTable.isManagerCheck = true;
+                    // console.log(res.code);
+                    // checkingTable.isManagerCheck = true;
+                    $scope.showTableOfItem(form, true, null, null);
                 })
         }
 
         //專案經理退回
-        $scope.disagreeWHItem_manager = function (table, index) {
-            $scope.checkText = '確定 退回：' + vm.manager.selected.name + " " +
+        $scope.disagreeWHItem_manager = function (form, table, index) {
+            // $scope.checkText = '確定 退回：' + vm.manager.selected.name + " " +
+            //     $scope.showPrjName(table.prjDID) +
+            //     "  ？";
+            $scope.checkText = '確定 退回：' + " " +
                 $scope.showPrjName(table.prjDID) +
                 "  ？";
+            $scope.checkingForm = form;
             $scope.checkingTable = table;
             $scope.mIndex = index;
             ngDialog.open({
@@ -1227,9 +1253,11 @@
             });
         }
 
-        $scope.sendWHDisagree_manager = function (checkingTable, index, rejectMsg) {
+        $scope.sendWHDisagree_manager = function (forms, checkingTable, index, rejectMsg) {
             // console.log(rejectMsg);
-            $scope.tablesManagerItems.splice(index, 1);
+            // $scope.tablesManagerItems.splice(index, 1);
+            // forms.splice(index, 1);
+            // $scope.showTableOfItem(forms, true, null, null);
             var formData = {
                 tableID: checkingTable.tableID,
                 isSendReview: false,
@@ -1242,6 +1270,7 @@
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
                     console.log(res.code);
+                    $scope.showTableOfItem(forms, true, null, null);
                     // checkingTable.isManagerCheck = true;
                 })
         }
@@ -1472,7 +1501,7 @@
             }
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
-                    console.log(res.code);
+                    // console.log(res.code);
                     // checkingTable.isExecutiveCheck = true;
                 })
         }
@@ -1866,7 +1895,10 @@
                 })
         }
 
-
+        /**
+         * 顯示休假單
+         * @param user
+         */
         function showWorkOffTableData(user) {
             // 主要顯示
             $scope.workAddTablesItems = [];
@@ -2068,7 +2100,13 @@
             return selected.length ? selected[0].name : 'Not Set';
         };
 
-        $scope.qwer = function () {
+        // loginUser's relatedMembers.
+        $scope.mainRelatedMembers = null;
+
+        //顯示經理審查人員
+        // Fetch Manager Related Members
+        $scope.fetchManagerRelatedMembers = function () {
+            $scope.dateChangeMode = reviewMode;
             var formData = {
                 relatedID: cookies.get('userDID'),
             }
@@ -2077,10 +2115,11 @@
                 .success(function (relatedProjects) {
                     // console.log(relatedProjects);
                     for(var index = 0; index < relatedProjects.length; index ++) {
-
+                        //主辦
                         if (relatedProjects[index].majorID !== undefined && !relatedMembers.includes(relatedProjects[index].majorID)) {
                             relatedMembers.push(relatedProjects[index].majorID);
                         }
+                        //協辦
                         if (relatedProjects[index].workers.length !== 0) {
                             for (var subIndex = 0; subIndex < relatedProjects[index].workers.length; subIndex ++) {
                                 if (!relatedMembers.includes(relatedProjects[index].workers[subIndex])) {
@@ -2089,23 +2128,63 @@
                             }
                         }
                     }
+                    $scope.mainRelatedMembers = relatedMembers;
+                    $scope.showRelatedMembersTableReview(typeManager);
                     // console.log(relatedMembers);
-                    var getData = {
-                        relatedMembers: relatedMembers,
-                        create_formDate: $scope.firstFullDate_manager,
-                    }
+                    // var getData = {
+                    //     relatedMembers: relatedMembers,
+                    //     create_formDate: $scope.firstFullDate_manager,
+                    // }
+                    //
+                    // WorkHourUtil.getWorkHourFormMultiple(getData)
+                    //     .success(function (res) {
+                    //         // console.log(res.payload);
+                    //         $scope.workHourFormsForManagers = [];
+                    //         $scope.setReviewList(res.payload, 0, $scope.workHourFormsForManagers);
+                    //     })
+                })
+        }
 
-                    WorkHourUtil.getWorkHourFormMultiple(getData)
-                        .success(function (res) {
-                            // console.log(res.payload);
-                            $scope.workHourFormsForManagers = [];
-                            $scope.setManagerList(res.payload, 0, $scope.workHourFormsForManagers);
-                        })
+        var typeManager = 1;
+        var typeExecutive = 2;
+
+        // show Related Members Table Review.
+        $scope.showRelatedMembersTableReview = function(type) {
+
+            var targetFormData = null;
+            var targetList = null;
+            console.log("firstFullDate_manager= " + $scope.firstFullDate_manager);
+            switch(type) {
+                case typeManager: {
+                    $scope.workHourFormsForManagers = [];
+                    targetFormData = $scope.firstFullDate_manager;
+                    targetList = $scope.workHourFormsForManagers;
+                } break;
+                case typeExecutive: {
+
+                }break;
+            }
+
+            var getData = {
+                relatedMembers: $scope.mainRelatedMembers,
+                create_formDate: targetFormData,
+            }
+
+            WorkHourUtil.getWorkHourFormMultiple(getData)
+                .success(function (res) {
+                    // console.log(res.payload);
+                    // $scope.workHourFormsForManagers = [];
+                    if (res.payload.length > 0) {
+                        $scope.setReviewList(res.payload, 0, targetList, type);
+                    }
                 })
         }
 
         // 拿取對應的工時表
-        $scope.qqq = function(form) {
+        $scope.showTableOfItem = function(form
+                                          , isFindSendReviewFlag
+                                          , isFindManagerCheckFlag
+                                          , isFindExecutiveCheck) {
             // console.log(form);
             var workItemCount = form.formTables.length;
 
@@ -2117,9 +2196,9 @@
 
             formDataTable = {
                 tableIDArray: workTableIDArray,
-                isFindSendReview: null,
-                isFindManagerCheck: null,
-                isFindExecutiveCheck: null
+                isFindSendReview: isFindSendReviewFlag,
+                isFindManagerCheck: isFindManagerCheckFlag,
+                isFindExecutiveCheck: isFindExecutiveCheck
             }
             // console.log(formDataTable);
             // 取得 Table Data
@@ -2128,9 +2207,6 @@
                     // 填入表單資訊
                     $scope.tableData = {};
                     var formTables = [];
-                    // var evalString = "$scope.tablesItems" + form.creatorDID + form._id;
-                    // evalString += " = []";
-                    // eval(evalString);
                     for (var index = 0; index < res.payload.length; index++) {
                         var detail = {
                             tableID: res.payload[index]._id,
@@ -2203,19 +2279,21 @@
                     }
                     var evalString = "$scope.tablesItems['" + form.creatorDID + form._id + "'] = formTables";
                     eval(evalString);
-                    console.log($scope);
+                    // console.log($scope);
                 })
                 .error(function () {
                     console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
                 })
         }
 
-        $scope.fetchFormData = function(form) {
-            console.log($scope.tablesItems[form.creatorDID + form._id]);
+        // 資料存取Key Point.
+        $scope.fetchFormDataFromScope = function(form) {
+            // console.log($scope.tablesItems[form.creatorDID + form._id]);
             return $scope.tablesItems[form.creatorDID + form._id];
         }
 
-        $scope.setManagerList = function (forms, index, arrayResult) {
+        // 設置 Review List, recursion.
+        $scope.setReviewList = function (forms, index, arrayResult, type) {
             var workItemCount = forms[index].formTables.length;
 
             var workTableIDArray = [];
@@ -2223,12 +2301,21 @@
             for (var subIndex = 0; subIndex < workItemCount; subIndex++) {
                 workTableIDArray[subIndex] = forms[index].formTables[subIndex].tableID;
             }
-            var formDataTable = {
-                tableIDArray: workTableIDArray,
-                isFindSendReview: true,
-                isFindManagerCheck: false,
-                isFindExecutiveCheck: null
+            var formDataTable = {};
+            switch(type) {
+                case typeManager: {
+                    formDataTable = {
+                        tableIDArray: workTableIDArray,
+                        isFindSendReview: true,
+                        isFindManagerCheck: false,
+                        isFindExecutiveCheck: null
+                    }
+                } break;
+                case typeExecutive: {
+
+                }break;
             }
+
             // console.log(formDataTable);
             // 取得 Table Data
             WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
@@ -2239,10 +2326,18 @@
                         arrayResult.push(forms[index]);
                         index ++;
                         if (index < forms.length) {
-                            $scope.setManagerList(forms, index, arrayResult);
+                            $scope.setReviewList(forms, index, arrayResult, type);
                         }
                     }
                 })
+        }
+
+        $scope.dateChangeMode = 0;
+        var reviewMode = 1000;
+        var historyMode = 2000;
+
+        $scope.turnOnHistoryMode = function() {
+            $scope.dateChangeMode = historyMode;
         }
 
     } // function End line

@@ -39,6 +39,9 @@ module.exports = function (app) {
         })
     })
 
+    //TODO
+    // 工時表，行政總管審查
+
     // 更新承辦人員
     app.post(global.apiUrl.post_project_update_major_id, function (req, res) {
         Project.update({
