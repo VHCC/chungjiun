@@ -114,9 +114,8 @@
                     };
                 }
 
-
             });
-        // Manipulate
+        // ＊＊＊＊＊＊＊ Manipulate ＊＊＊＊＊＊＊
         $scope.addWorkItem = function (prj) {
             vm.prjItems.selected = "";
             var inserted = {
@@ -151,6 +150,7 @@
             $scope.createSubmit(500, true);
         }
 
+        // 暫存表單
         $scope.saveTemp = function () {
             $scope.createSubmit(500, false);
         }
@@ -195,6 +195,7 @@
             return ProjectUtil.getTypeText(type);
         }
 
+        // ＊＊＊＊＊＊＊ Sum Field ＊＊＊＊＊＊＊
         $scope.monOffTotal = 0;
         $scope.tueOffTotal = 0;
         $scope.wesOffTotal = 0;
@@ -219,6 +220,14 @@
         $scope.satOffTotal_manager = 0;
         $scope.sunOffTotal_manager = 0;
 
+        $scope.tueOffTotal_history = 0;
+        $scope.wesOffTotal_history = 0;
+        $scope.thuOffTotal_history = 0;
+        $scope.friOffTotal_history = 0;
+        $scope.satOffTotal_history = 0;
+        $scope.sunOffTotal_history = 0;
+
+        // ＊＊＊＊＊＊＊ National Holiday ＊＊＊＊＊＊＊
         $scope.monNH = 0;
         $scope.tueNH = 0;
         $scope.wesNH = 0;
@@ -243,12 +252,24 @@
         $scope.satNH_manager = 0;
         $scope.sunNH_manager = 0;
 
+        $scope.monNH_history = 0;
+        $scope.tueNH_history = 0;
+        $scope.wesNH_history = 0;
+        $scope.thuNH_history = 0;
+        $scope.friNH_history = 0;
+        $scope.satNH_history = 0;
+        $scope.sunNH_history = 0;
+
         function initialUserTable(type) {
             /**
              *  type
              *  1: user
+             *
+             *  ===== 2,3 Deprecated =====
              *  2: manager
              *  3: executive
+             *
+             *  4: history
              */
             var stringTable = [
                 "$scope.monNH",
@@ -274,16 +295,22 @@
                         eval(stringTable[index] + " = 0");
                     }
                     break;
-                case 2:
-                    $scope.tablesManagerItems = [];
+                // case 2:
+                //     $scope.tablesManagerItems = [];
+                //     for (var index = 0; index < stringTable.length; index++) {
+                //         eval(stringTable[index] + "_manager = 0");
+                //     }
+                //     break;
+                // case 3:
+                //     $scope.tablesExecutiveItems = [];
+                //     for (var index = 0; index < stringTable.length; index++) {
+                //         eval(stringTable[index] + "_executive = 0");
+                //     }
+                //     break;
+                case 4:
+                    $scope.tablesHistoryItems = [];
                     for (var index = 0; index < stringTable.length; index++) {
-                        eval(stringTable[index] + "_manager = 0");
-                    }
-                    break;
-                case 3:
-                    $scope.tablesExecutiveItems = [];
-                    for (var index = 0; index < stringTable.length; index++) {
-                        eval(stringTable[index] + "_executive = 0");
+                        eval(stringTable[index] + "_history = 0");
                     }
                     break;
             }
@@ -549,9 +576,9 @@
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].mon_hour;
                     }
-                    var evalString = "$scope.monNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.monNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
-                    var evalString = "$scope.monOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.monOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
                 }
                     break;
@@ -559,9 +586,9 @@
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].tue_hour;
                     }
-                    var evalString = "$scope.tueNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.tueNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
-                    var evalString = "$scope.tueOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.tueOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
                 }
                     break;
@@ -569,9 +596,9 @@
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].wes_hour;
                     }
-                    var evalString = "$scope.wesNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.wesNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
-                    var evalString = "$scope.wesOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.wesOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
                 }
                     break;
@@ -579,9 +606,9 @@
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].thu_hour;
                     }
-                    var evalString = "$scope.thuNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.thuNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
-                    var evalString = "$scope.thuOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.thuOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
                 }
                     break;
@@ -589,9 +616,9 @@
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].fri_hour;
                     }
-                    var evalString = "$scope.friNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.friNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
-                    var evalString = "$scope.friOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.friOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
                 }
                     break;
@@ -599,9 +626,9 @@
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].sat_hour;
                     }
-                    var evalString = "$scope.satNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.satNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
-                    var evalString = "$scope.satOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.satOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
                 }
                     break;
@@ -609,9 +636,9 @@
                     for (index = 0; index < tables.length; index++) {
                         result += tables[index].sun_hour;
                     }
-                    var evalString = "$scope.sunNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.sunNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
-                    var evalString = "$scope.sunOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.sunOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
                 }
                     break;
@@ -625,35 +652,35 @@
                         result += tables[index].sat_hour;
                         result += tables[index].sun_hour;
                     }
-                    var evalString = "$scope.monNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.monNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
-                    var evalString = "$scope.tueNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.tueNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
-                    var evalString = "$scope.wesNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.wesNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
-                    var evalString = "$scope.thuNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.thuNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
-                    var evalString = "$scope.friNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.friNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
-                    var evalString = "$scope.satNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.satNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
-                    var evalString = "$scope.sunNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.sunNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
 
 
-                    var evalString = "$scope.monOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.monOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
-                    var evalString = "$scope.tueOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.tueOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
-                    var evalString = "$scope.wesOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.wesOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
-                    var evalString = "$scope.thuOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.thuOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
-                    var evalString = "$scope.friOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.friOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
-                    var evalString = "$scope.satOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.satOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
-                    var evalString = "$scope.sunOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                    var evalString = "$scope.sunOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                     eval("result += " + evalString);
                     return result;
                 }
@@ -738,14 +765,12 @@
         }
 
         $scope.sendTable = function (checkingTable, checkingButton) {
-            // console.log(checkingTable);
             checkingButton.rowform1.$waiting = true;
             var formData = {
                 tableID: checkingTable.tableID,
             }
             WorkHourUtil.updateTableSendReview(formData)
                 .success(function (res) {
-                    console.log(res.code);
                 })
         }
 
@@ -790,7 +815,6 @@
                     formTables: data.formTables,
                     oldTables: data.oldTables,
                 }
-                // console.log(formData);
                 WorkHourAddItemUtil.createWorkHourAddItem(formData)
                     .success(function (res) {
                         switch (type) {
@@ -998,16 +1022,15 @@
                 }
                 WorkHourUtil.updateTotalTableSendReview(formData)
                     .success(function (res) {
-                        console.log(res.code);
+                        // console.log(res.code);
                         $scope.getTable();
                     })
             }, 1000);
         }
 
-
         // ********************** 專案經理確認 *****************************
         // 主要顯示
-        $scope.tablesManagerItems = [];
+        // $scope.tablesManagerItems = [];
 
         // -------------------- Week Methods Manager---------------------
         $scope.weekShift_manager = 0;
@@ -1036,14 +1059,7 @@
             $scope.friDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 4));
             $scope.satDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 5));
             $scope.sunDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 6));
-            switch($scope.dateChangeMode) {
-                case reviewMode: {
-                    $scope.showRelatedMembersTableReview(typeManager);
-                } break;
-                case historyMode: {
-                    $scope.showHistoryTable_manager();
-                } break;
-            }
+            $scope.showRelatedMembersTableReview(typeManager);
         }
 
         $scope.decreaceWeek_manager = function () {
@@ -1059,29 +1075,71 @@
             $scope.friDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 4));
             $scope.satDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 5));
             $scope.sunDate_manager = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 6));
-            switch($scope.dateChangeMode) {
-                case reviewMode: {
-                    $scope.showRelatedMembersTableReview(typeManager);
-                } break;
-                case historyMode: {
-                    $scope.showHistoryTable_manager();
-                } break;
-            }
+            $scope.showRelatedMembersTableReview(typeManager);
+        }
+
+        // ********************** 歷史檢視 *****************************
+        // 主要顯示
+        $scope.tablesHistoryItems = [];
+
+        // -------------------- Week Methods Manager---------------------
+        $scope.weekShift_history = 0;
+        $scope.firstFullDate_history = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0);
+        $scope.firstDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0));
+        $scope.lastDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 6));
+
+        $scope.monDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 0));
+        $scope.tueDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 1));
+        $scope.wesDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 2));
+        $scope.thuDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 3));
+        $scope.friDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 4));
+        $scope.satDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 5));
+        $scope.sunDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 6));
+
+        $scope.addWeek_history = function () {
+            $scope.weekShift_history++;
+            $scope.firstFullDate_history = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_history));
+            $scope.firstDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_history)));
+            $scope.lastDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 6));
+
+            $scope.monDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 0));
+            $scope.tueDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 1));
+            $scope.wesDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 2));
+            $scope.thuDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 3));
+            $scope.friDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 4));
+            $scope.satDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 5));
+            $scope.sunDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 6));
+            $scope.showHistoryTable();
+        }
+
+        $scope.decreaseWeek_history = function () {
+            $scope.weekShift_history--;
+            $scope.firstFullDate_history = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_history));
+            $scope.firstDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_history)));
+            $scope.lastDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 6));
+
+            $scope.monDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 0));
+            $scope.tueDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 1));
+            $scope.wesDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 2));
+            $scope.thuDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 3));
+            $scope.friDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 4));
+            $scope.satDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 5));
+            $scope.sunDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 6));
+            $scope.showHistoryTable();
         }
 
         //歷史檢視取得相關人員表，以人為選取單位
-        $scope.showHistoryTable_manager = function () {
-            initialUserTable(2);
+        $scope.showHistoryTable = function () {
+            initialUserTable(4);
             var getData = {
                 // managerID: cookies.get('userDID'),
                 creatorDID: vm.history.selected._id,
-                create_formDate: $scope.firstFullDate_manager,
+                create_formDate: $scope.firstFullDate_history,
             }
             // WorkHourUtil.getWorkHourFormForManager(getData)
             WorkHourUtil.getWorkHourForm(getData)
                 .success(function (res) {
                     // var relatedPijIDArray = res.prjIDArray;
-                    // console.log(res.prjIDArray);
                     if (res.payload.length > 0) {
                         var workItemCount = res.payload[0].formTables.length;
 
@@ -1099,7 +1157,6 @@
                             isFindManagerCheck: null,
                             isFindExecutiveCheck: null
                         }
-                        // console.log(formDataTable);
                         // 取得 Table Data
                         WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                             .success(function (res) {
@@ -1173,13 +1230,12 @@
                                                 res.payload[index].sat_hour_add +
                                                 res.payload[index].sun_hour_add,
                                             };
-                                            $scope.tablesManagerItems.push(detail);
+                                            $scope.tablesHistoryItems.push(detail);
                                     //     }
                                     // }
                                 }
-                                loadWorkOffTable(vm.history.selected._id, 2);
-                                loadNH(2);
-                                // console.log($scope.tablesItems);
+                                loadWorkOffTable(vm.history.selected._id, 4);
+                                loadNH(4);
                             })
                             .error(function () {
                                 console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
@@ -1195,12 +1251,6 @@
 
         //專案經理確認
         $scope.reviewWHManagerItem = function (form, table, index) {
-            // console.log(forms);
-            // console.log(table);
-            // console.log($scope.isFitManager(table.prjDID));
-            // $scope.checkText = '確定 同意：' + vm.manager.selected.name + " " +
-            //     $scope.showPrjName(table.prjDID) +
-            //     "  ？";
             $scope.checkText = '確定 同意：' +
                 $scope.showPrjName(table.prjDID) +
                 "  ？";
@@ -1224,16 +1274,12 @@
             }
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
-                    // console.log(res.code);
                     $scope.showTableOfItem(form, true, null, null);
                 })
         }
 
         //專案經理退回
         $scope.disagreeWHItem_manager = function (form, table, index) {
-            // $scope.checkText = '確定 退回：' + vm.manager.selected.name + " " +
-            //     $scope.showPrjName(table.prjDID) +
-            //     "  ？";
             $scope.checkText = '確定 退回：' +
                 $scope.showPrjName(table.prjDID) +
                 "  ？";
@@ -1249,10 +1295,6 @@
         }
 
         $scope.sendWHDisagree_manager = function (form, checkingTable, index, rejectMsg) {
-            // console.log(rejectMsg);
-            // $scope.tablesManagerItems.splice(index, 1);
-            // forms.splice(index, 1);
-            // $scope.showTableOfItem(forms, true, null, null);
             var formData = {
                 tableID: checkingTable.tableID,
                 isSendReview: false,
@@ -1264,15 +1306,13 @@
             }
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
-                    console.log(res.code);
                     $scope.showTableOfItem(form, true, null, null);
-                    // checkingTable.isManagerCheck = true;
                 })
         }
 
         // ********************** 行政確認 *****************************
         // 主要顯示
-        $scope.tablesExecutiveItems = [];
+        // $scope.tablesExecutiveItems = [];
 
         // -------------------- Week Methods Excutive---------------------
         $scope.weekShift_executive = 0;
@@ -1303,11 +1343,10 @@
             $scope.friDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 4));
             $scope.satDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 5));
             $scope.sunDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 6));
-            // $scope.getTable_executive();
             $scope.showRelatedMembersTableReview(typeExecutive);
         }
 
-        $scope.decreaceWeek_executive = function () {
+        $scope.decreaseWeek_executive = function () {
             $scope.weekShift_executive--;
             $scope.firstFullDate_executive = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_executive));
             $scope.firstDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_executive)));
@@ -1320,129 +1359,7 @@
             $scope.friDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 4));
             $scope.satDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 5));
             $scope.sunDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 6));
-            // $scope.getTable_executive();
             $scope.showRelatedMembersTableReview(typeExecutive);
-        }
-
-        //行政取得相關人員表，以人為選取單位
-        /**
-         * @Deprecated
-         */
-        $scope.getTable_executive = function () {
-            initialUserTable(3);
-            var getData = {
-                creatorDID: vm.executive.selected._id,
-                create_formDate: $scope.firstFullDate_executive,
-            }
-            // console.log($scope.firstFullDate);
-            WorkHourUtil.getWorkHourForm(getData)
-                .success(function (res) {
-                    // console.log(res.payload)
-                    if (res.payload.length > 0) {
-                        var workItemCount = res.payload[0].formTables.length;
-
-                        var prjIDArray = [];
-                        var workTableIDArray = [];
-                        // 組成 prjID Array, TableID Array，再去Server要資料
-                        for (var index = 0; index < workItemCount; index++) {
-                            workTableIDArray[index] = res.payload[0].formTables[index].tableID;
-                            prjIDArray[index] = res.payload[0].formTables[index].prjDID;
-                        }
-                        formDataTable = {
-                            tableIDArray: workTableIDArray,
-                            isFindSendReview: true,
-                            isFindManagerCheck: null, // new flow process 2018/04/28
-                            isFindExecutiveCheck: null
-                        }
-                        // 取得 Table Data
-                        WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
-                            .success(function (res) {
-                                // 填入表單資訊
-                                for (var index = 0; index < res.payload.length; index++) {
-                                    var detail = {
-                                        tableID: res.payload[index]._id,
-                                        prjDID: res.payload[index].prjDID,
-                                        create_formDate: res.payload[index].create_formDate,
-                                        //MON
-                                        mon_hour: res.payload[index].mon_hour,
-                                        mon_memo: res.payload[index].mon_memo,
-                                        mon_hour_add: res.payload[index].mon_hour_add,
-                                        mon_memo_add: res.payload[index].mon_memo_add,
-                                        //TUE
-                                        tue_hour: res.payload[index].tue_hour,
-                                        tue_memo: res.payload[index].tue_memo,
-                                        tue_hour_add: res.payload[index].tue_hour_add,
-                                        tue_memo_add: res.payload[index].tue_memo_add,
-                                        //WES
-                                        wes_hour: res.payload[index].wes_hour,
-                                        wes_memo: res.payload[index].wes_memo,
-                                        wes_hour_add: res.payload[index].wes_hour_add,
-                                        wes_memo_add: res.payload[index].wes_memo_add,
-                                        //THU
-                                        thu_hour: res.payload[index].thu_hour,
-                                        thu_memo: res.payload[index].thu_memo,
-                                        thu_hour_add: res.payload[index].thu_hour_add,
-                                        thu_memo_add: res.payload[index].thu_memo_add,
-                                        //FRI
-                                        fri_hour: res.payload[index].fri_hour,
-                                        fri_memo: res.payload[index].fri_memo,
-                                        fri_hour_add: res.payload[index].fri_hour_add,
-                                        fri_memo_add: res.payload[index].fri_memo_add,
-                                        //SAT
-                                        sat_hour: res.payload[index].sat_hour,
-                                        sat_memo: res.payload[index].sat_memo,
-                                        sat_hour_add: res.payload[index].sat_hour_add,
-                                        sat_memo_add: res.payload[index].sat_memo_add,
-                                        //SUN
-                                        sun_hour: res.payload[index].sun_hour,
-                                        sun_memo: res.payload[index].sun_memo,
-                                        sun_hour_add: res.payload[index].sun_hour_add,
-                                        sun_memo_add: res.payload[index].sun_memo_add,
-                                        //RIGHT
-                                        isSendReview: res.payload[index].isSendReview,
-                                        isManagerCheck: res.payload[index].isManagerCheck,
-                                        isExecutiveCheck: res.payload[index].isExecutiveCheck,
-
-                                        // Reject
-                                        isManagerReject: res.payload[index].isManagerReject,
-                                        managerReject_memo: res.payload[index].managerReject_memo,
-
-                                        isExecutiveReject: res.payload[index].isExecutiveReject,
-                                        executiveReject_memo: res.payload[index].executiveReject_memo,
-
-                                        // TOTAL
-                                        hourTotal: res.payload[index].mon_hour +
-                                        res.payload[index].tue_hour +
-                                        res.payload[index].wes_hour +
-                                        res.payload[index].thu_hour +
-                                        res.payload[index].fri_hour +
-                                        res.payload[index].sat_hour +
-                                        res.payload[index].sun_hour,
-                                        hourAddTotal: res.payload[index].mon_hour_add +
-                                        res.payload[index].tue_hour_add +
-                                        res.payload[index].wes_hour_add +
-                                        res.payload[index].thu_hour_add +
-                                        res.payload[index].fri_hour_add +
-                                        res.payload[index].sat_hour_add +
-                                        res.payload[index].sun_hour_add,
-
-                                    };
-                                    // $scope.tablesExecutiveItems.push(detail);
-                                }
-                                loadWorkOffTable(vm.executive.selected._id, 3);
-                                loadNH(3);
-                            })
-                            .error(function () {
-                                console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
-                            })
-
-                    } else {
-                        $scope.loading = false;
-                    }
-                })
-                .error(function () {
-                    console.log('ERROR WorkHourUtil.getWorkHourForm');
-                })
         }
 
         //行政確認
@@ -1492,7 +1409,6 @@
         }
 
         $scope.sendWHDisagree_executive = function (form, checkingTable, index, rejectMsg) {
-            // $scope.tablesExecutiveItems.splice(index, 1);
             var formData = {
                 tableID: checkingTable.tableID,
                 isSendReview: false,
@@ -1509,131 +1425,7 @@
                 })
         }
 
-        // ***************** 歷史表單 ****************
-        //專案經理取得相關人員表，以人為選取單位
-        $scope.getTable_history = function () {
-            initialUserTable(2);
-            var getData = {
-                // managerID: cookies.get('userDID'),
-                creatorDID: vm.history.selected._id,
-                create_formDate: $scope.firstFullDate_manager,
-            }
-            // WorkHourUtil.getWorkHourFormForManager(getData)
-            WorkHourUtil.getWorkHourForm(getData)
-                .success(function (res) {
-                    // var relatedPijIDArray = res.prjIDArray;
-                    // console.log(res.prjIDArray);
-                    if (res.payload.length > 0) {
-                        var workItemCount = res.payload[0].formTables.length;
-
-                        var prjIDArray = [];
-                        var workTableIDArray = [];
-                        // 組成 prjID Array, TableID Array，再去Server要資料
-                        for (var index = 0; index < workItemCount; index++) {
-                            workTableIDArray[index] = res.payload[0].formTables[index].tableID;
-                            prjIDArray[index] = res.payload[0].formTables[index].prjDID;
-                        }
-                        formDataTable = {
-                            tableIDArray: workTableIDArray,
-                            isFindSendReview: true,
-                            // isFindManagerCheck: false,
-                            isFindManagerCheck: null,
-                            isFindExecutiveCheck: null
-                        }
-                        // console.log(formDataTable);
-                        // 取得 Table Data
-                        WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
-                            .success(function (res) {
-                                // 填入表單資訊
-                                for (var index = 0; index < res.payload.length; index++) {
-                                    // for (var subIndex = 0; subIndex < relatedPijIDArray.length; subIndex++) {
-                                    //     if (relatedPijIDArray[subIndex] === res.payload[index].prjDID) {
-                                    var detail = {
-                                        tableID: res.payload[index]._id,
-                                        prjDID: res.payload[index].prjDID,
-                                        create_formDate: res.payload[index].create_formDate,
-                                        //MON
-                                        mon_hour: res.payload[index].mon_hour,
-                                        mon_memo: res.payload[index].mon_memo,
-                                        mon_hour_add: res.payload[index].mon_hour_add,
-                                        mon_memo_add: res.payload[index].mon_memo_add,
-                                        //TUE
-                                        tue_hour: res.payload[index].tue_hour,
-                                        tue_memo: res.payload[index].tue_memo,
-                                        tue_hour_add: res.payload[index].tue_hour_add,
-                                        tue_memo_add: res.payload[index].tue_memo_add,
-                                        //WES
-                                        wes_hour: res.payload[index].wes_hour,
-                                        wes_memo: res.payload[index].wes_memo,
-                                        wes_hour_add: res.payload[index].wes_hour_add,
-                                        wes_memo_add: res.payload[index].wes_memo_add,
-                                        //THU
-                                        thu_hour: res.payload[index].thu_hour,
-                                        thu_memo: res.payload[index].thu_memo,
-                                        thu_hour_add: res.payload[index].thu_hour_add,
-                                        thu_memo_add: res.payload[index].thu_memo_add,
-                                        //FRI
-                                        fri_hour: res.payload[index].fri_hour,
-                                        fri_memo: res.payload[index].fri_memo,
-                                        fri_hour_add: res.payload[index].fri_hour_add,
-                                        fri_memo_add: res.payload[index].fri_memo_add,
-                                        //SAT
-                                        sat_hour: res.payload[index].sat_hour,
-                                        sat_memo: res.payload[index].sat_memo,
-                                        sat_hour_add: res.payload[index].sat_hour_add,
-                                        sat_memo_add: res.payload[index].sat_memo_add,
-                                        //SUN
-                                        sun_hour: res.payload[index].sun_hour,
-                                        sun_memo: res.payload[index].sun_memo,
-                                        sun_hour_add: res.payload[index].sun_hour_add,
-                                        sun_memo_add: res.payload[index].sun_memo_add,
-                                        //RIGHT
-                                        isSendReview: res.payload[index].isSendReview,
-                                        isManagerCheck: res.payload[index].isManagerCheck,
-                                        isExecutiveCheck: res.payload[index].isExecutiveCheck,
-
-                                        // Reject
-                                        isManagerReject: res.payload[index].isManagerReject,
-                                        managerReject_memo: res.payload[index].managerReject_memo,
-
-                                        isExecutiveReject: res.payload[index].isExecutiveReject,
-                                        executiveReject_memo: res.payload[index].executiveReject_memo,
-                                        // TOTAL
-                                        hourTotal: res.payload[index].mon_hour +
-                                        res.payload[index].tue_hour +
-                                        res.payload[index].wes_hour +
-                                        res.payload[index].thu_hour +
-                                        res.payload[index].fri_hour +
-                                        res.payload[index].sat_hour +
-                                        res.payload[index].sun_hour,
-                                        hourAddTotal: res.payload[index].mon_hour_add +
-                                        res.payload[index].tue_hour_add +
-                                        res.payload[index].wes_hour_add +
-                                        res.payload[index].thu_hour_add +
-                                        res.payload[index].fri_hour_add +
-                                        res.payload[index].sat_hour_add +
-                                        res.payload[index].sun_hour_add,
-                                    };
-                                    $scope.tablesManagerItems.push(detail);
-                                    //     }
-                                    // }
-                                }
-                                loadWorkOffTable(vm.history.selected._id, 2);
-                                loadNH(2);
-                                // console.log($scope.tablesItems);
-                            })
-                            .error(function () {
-                                console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
-                            })
-                    } else {
-                        $scope.loading = false;
-                    }
-                })
-                .error(function () {
-                    console.log('ERROR WorkHourUtil.getWorkHourForm');
-                })
-        }
-
+        //讀取國定假日
         function loadNH(type) {
             $scope.nationalHolidayTables = [];
             var fetchNationalHolidayData = {
@@ -1662,31 +1454,31 @@
                             if (!$scope.nationalHolidayTables[index].isEnable) continue;
                             switch ($scope.nationalHolidayTables[index].day) {
                                 case 1:
-                                    var evalString = "$scope.monNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                    var evalString = "$scope.monNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                                     eval(evalString + " += 8");
                                     break;
                                 case 2:
-                                    var evalString = "$scope.tueNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                    var evalString = "$scope.tueNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                                     eval(evalString + " += 8");
                                     break;
                                 case 3:
-                                    var evalString = "$scope.wesNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                    var evalString = "$scope.wesNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                                     eval(evalString + " += 8");
                                     break;
                                 case 4:
-                                    var evalString = "$scope.thuNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                    var evalString = "$scope.thuNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                                     eval(evalString + " += 8");
                                     break;
                                 case 5:
-                                    var evalString = "$scope.friNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                    var evalString = "$scope.friNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                                     eval(evalString + " += 8");
                                     break;
                                 case 6:
-                                    var evalString = "$scope.satNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                    var evalString = "$scope.satNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                                     eval(evalString + " += 8");
                                     break;
                                 case 0:
-                                    var evalString = "$scope.sunNH" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                    var evalString = "$scope.sunNH" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                                     eval(evalString + " += 8");
                                     break;
                             }
@@ -1697,6 +1489,7 @@
                 })
         }
 
+        // 取得休假單
         function loadWorkOffTable(userDID, type) {
             $scope.loginUserWorkOffTables = [];
             var getData = {
@@ -1719,11 +1512,9 @@
                             tableIDArray: workOffTableIDArray,
                             create_formDate: $scope.firstFullDate,
                         }
-                        // console.log(workOffFormDataTable);
                         // 取得 Table Data
                         WorkOffFormUtil.findWorkOffTableFormByTableIDArrayAndParameters(workOffFormDataTable)
                             .success(function (res) {
-
                                 // 填入表單資訊
                                 $scope.tableData = {};
                                 for (var index = 0; index < res.payload.length; index++) {
@@ -1762,31 +1553,31 @@
                                     var evalFooter = "getHourDiff($scope.loginUserWorkOffTables[index].start_time, $scope.loginUserWorkOffTables[index].end_time)";
                                     switch ($scope.loginUserWorkOffTables[index].day) {
                                         case 1:
-                                            var evalString = "$scope.monOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                            var evalString = "$scope.monOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                                             eval(evalString + " += " + evalFooter);
                                             break;
                                         case 2:
-                                            var evalString = "$scope.tueOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                            var evalString = "$scope.tueOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                                             eval(evalString + " += " + evalFooter);
                                             break;
                                         case 3:
-                                            var evalString = "$scope.wesOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                            var evalString = "$scope.wesOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                                             eval(evalString + " += " + evalFooter);
                                             break;
                                         case 4:
-                                            var evalString = "$scope.thuOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                            var evalString = "$scope.thuOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                                             eval(evalString + " += " + evalFooter);
                                             break;
                                         case 5:
-                                            var evalString = "$scope.friOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                            var evalString = "$scope.friOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                                             eval(evalString + " += " + evalFooter);
                                             break;
                                         case 6:
-                                            var evalString = "$scope.satOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                            var evalString = "$scope.satOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                                             eval(evalString + " += " + evalFooter);
                                             break;
                                         case 0:
-                                            var evalString = "$scope.sunOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : "_executive");
+                                            var evalString = "$scope.sunOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
                                             eval(evalString + " += " + evalFooter);
                                             break;
                                     }
@@ -2109,7 +1900,6 @@
         //顯示經理審查人員
         // Fetch Manager Related Members
         $scope.fetchManagerRelatedMembers = function () {
-            $scope.dateChangeMode = reviewMode;
             var formData = {
                 relatedID: cookies.get('userDID'),
             }
@@ -2133,25 +1923,12 @@
                     }
                     $scope.mainRelatedMembers = relatedMembers;
                     $scope.showRelatedMembersTableReview(typeManager);
-                    // console.log(relatedMembers);
-                    // var getData = {
-                    //     relatedMembers: relatedMembers,
-                    //     create_formDate: $scope.firstFullDate_manager,
-                    // }
-                    //
-                    // WorkHourUtil.getWorkHourFormMultiple(getData)
-                    //     .success(function (res) {
-                    //         // console.log(res.payload);
-                    //         $scope.workHourFormsForManagers = [];
-                    //         $scope.setReviewList(res.payload, 0, $scope.workHourFormsForManagers);
-                    //     })
                 })
         }
 
         //顯示行政審查人員
         // Fetch Executive Related Members
         $scope.fetchExecutiveRelatedMembers = function () {
-            $scope.dateChangeMode = reviewMode;
             var formData = {
                 relatedID: cookies.get('userDID'),
             }
@@ -2193,10 +1970,12 @@
                 relatedMembers: $scope.mainRelatedMembers,
                 create_formDate: targetFormData,
             }
+            console.log(getData);
             WorkHourUtil.getWorkHourFormMultiple(getData)
                 .success(function (res) {
                     console.log(res.payload);
                     // $scope.workHourFormsForManagers = [];
+                    console.log(res.payload.length);
                     if (res.payload.length > 0) {
                         $scope.setReviewList(res.payload, 0, targetList, type);
                     }
@@ -2302,7 +2081,6 @@
                     }
                     var evalString = "$scope.tablesItems['" + form.creatorDID + form._id + "'] = formTables";
                     eval(evalString);
-                    // console.log($scope);
                 })
                 .error(function () {
                     console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
@@ -2312,11 +2090,12 @@
         // 資料存取Key Point.
         $scope.fetchFormDataFromScope = function(form) {
             // console.log($scope.tablesItems[form.creatorDID + form._id]);
-            return $scope.tablesItems[form.creatorDID + form._id];
+            return $scope.tablesItems[form.creatorDID + form._id] === undefined ? [] : $scope.tablesItems[form.creatorDID + form._id];
         }
 
         // 設置 Review List, recursion.
         $scope.setReviewList = function (forms, index, arrayResult, type) {
+            console.log("setReviewList");
             var workItemCount = forms[index].formTables.length;
 
             var workTableIDArray = [];
@@ -2330,7 +2109,7 @@
                     formDataTable = {
                         tableIDArray: workTableIDArray,
                         isFindSendReview: true,
-                        isFindManagerCheck: false,
+                        isFindManagerCheck: null,
                         isFindExecutiveCheck: null
                     }
                 } break;
@@ -2344,13 +2123,10 @@
                 }break;
             }
 
-            // console.log(formDataTable);
             // 取得 Table Data
             WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                 .success(function (subRes) {
                     if (subRes.payload.length > 0) {
-                        // console.log(subRes);
-                        // console.log($scope.tempForm);
                         arrayResult.push(forms[index]);
                         index ++;
                         if (index < forms.length) {
@@ -2358,14 +2134,6 @@
                         }
                     }
                 })
-        }
-
-        $scope.dateChangeMode = 0;
-        var reviewMode = 1000;
-        var historyMode = 2000;
-
-        $scope.turnOnHistoryMode = function() {
-            $scope.dateChangeMode = historyMode;
         }
 
     } // function End line

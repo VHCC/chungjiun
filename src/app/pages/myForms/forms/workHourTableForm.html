@@ -744,7 +744,7 @@
     <uib-tab heading="行政確認" ng-if="roleType === '100'" ng-click="fetchExecutiveRelatedMembers()">
         <div ng-include="'app/pages/myForms/forms/workHourTableForm_executiveTab.html'"></div>
     </uib-tab>
-    <uib-tab heading="歷史檢視" ng-if="roleType === '2' || roleType === '100'" ng-click="turnOnHistoryMode()">
+    <uib-tab heading="歷史檢視" ng-if="roleType === '2' || roleType === '100'">
         <div ng-include="'app/pages/myForms/forms/workHourTableForm_historyTab.html'"></div>
     </uib-tab>
     <uib-tab heading="加班單核薪" ng-if="roleType === '100'">

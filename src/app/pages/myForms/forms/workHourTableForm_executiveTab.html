@@ -1,5 +1,5 @@
 <div >
-    <button type="button" class="btn btn-default btn-icon" ng-click="decreaceWeek_executive()"><i
+    <button type="button" class="btn btn-default btn-icon" ng-click="decreaseWeek_executive()"><i
             class="ion-chevron-left"></i></button>
     {{firstDate_executive}} ~ {{lastDate_executive}}
     <button type="button" class="btn btn-default btn-icon" ng-click="addWeek_executive()"><i
@@ -467,53 +467,53 @@
                 <!--MON-->
                 <td colspan="2" style="text-align: center">
                         <span>
-                            {{showCalculateHour(tablesExecutiveItems, 1, 3)}}
+                            {{showCalculateHour(fetchFormDataFromScope(form), 1, 3)}}
                         </span>
                 </td>
                 <!--TUE-->
                 <td colspan="2" style="text-align: center">
                         <span>
-                            {{showCalculateHour(tablesExecutiveItems, 2, 3)}}
+                            {{showCalculateHour(fetchFormDataFromScope(form), 2, 3)}}
                         </span>
                 </td>
                 <!--WED-->
                 <td colspan="2" style="text-align: center">
                         <span>
-                            {{showCalculateHour(tablesExecutiveItems, 3, 3)}}
+                            {{showCalculateHour(fetchFormDataFromScope(form), 3, 3)}}
                         </span>
                 </td>
                 <!--THU-->
                 <td colspan="2" style="text-align: center">
                         <span>
-                            {{showCalculateHour(tablesExecutiveItems, 4, 3)}}
+                            {{showCalculateHour(fetchFormDataFromScope(form), 4, 3)}}
                         </span>
                 </td>
                 <!--FRI-->
                 <td colspan="2" style="text-align: center">
                         <span>
-                            {{showCalculateHour(tablesExecutiveItems, 5, 3)}}
+                            {{showCalculateHour(fetchFormDataFromScope(form), 5, 3)}}
                         </span>
                 </td>
                 <!--SAT-->
                 <td colspan="2" style="text-align: center">
                         <span>
-                            {{showCalculateHour(tablesExecutiveItems, 6, 3)}}
+                            {{showCalculateHour(fetchFormDataFromScope(form), 6, 3)}}
                         </span>
                 </td>
                 <!--SUN-->
                 <td colspan="2" style="text-align: center">
                         <span>
-                            {{showCalculateHour(tablesExecutiveItems, 7, 3)}}
+                            {{showCalculateHour(fetchFormDataFromScope(form), 7, 3)}}
                         </span>
                 </td>
                 <!-- summation-->
                 <td style="text-align: center">
                         <span>
-                            {{showCalculateHour(tablesExecutiveItems, 1001, 3)}}
+                            {{showCalculateHour(fetchFormDataFromScope(form), 1001, 3)}}
                         </span>
                     <br>
                     <span>
-                            {{showCalculateHour(tablesExecutiveItems, 2001, 3)}}
+                            {{showCalculateHour(fetchFormDataFromScope(form), 2001, 3)}}
                         </span>
                 </td>
             </tr>

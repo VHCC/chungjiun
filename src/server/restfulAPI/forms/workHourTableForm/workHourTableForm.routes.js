@@ -147,7 +147,7 @@ module.exports = function (app) {
 
     // 多組creator, create_formDate
     app.post(global.apiUrl.post_work_hour_multiple_get, function (req, res) {
-        console.log(req.body);
+        // console.log(req.body);
         var findData = []
         for (var index = 0; index < req.body.relatedMembers.length; index++) {
             var target = {
@@ -238,7 +238,7 @@ module.exports = function (app) {
         if (req.body.isFindExecutiveCheck !== null) {
             query.isExecutiveCheck = req.body.isFindExecutiveCheck;
         }
-        // console.log(query)
+        console.log(query);
         WorkHourTableForm.find(query, function (err, tables) {
             if (err) {
                 res.send(err);
