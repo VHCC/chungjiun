@@ -5,7 +5,7 @@
             <ui-select ng-model="workHourTableCtrlVm.history.selected"
                        class="btn-group bootstrap-select form-control"
                        ng-disabled="false"
-                       ng-change="getTable_history()"
+                       ng-change="showHistoryTable()"
                        append-to-body="true"
                        search-enabled="true">
                 <ui-select-match placeholder="選擇員工">
@@ -23,10 +23,10 @@
 <hr/>
 
 <div ng-show="workHourTableCtrlVm.history.selected">
-    <button type="button" class="btn btn-default btn-icon" ng-click="decreaceWeek_manager()"><i
+    <button type="button" class="btn btn-default btn-icon" ng-click="decreaseWeek_history()"><i
             class="ion-chevron-left"></i></button>
-    {{firstDate_manager}} ~ {{lastDate_manager}}
-    <button type="button" class="btn btn-default btn-icon" ng-click="addWeek_manager()"><i
+    {{firstDate_history}} ~ {{lastDate_history}}
+    <button type="button" class="btn btn-default btn-icon" ng-click="addWeek_history()"><i
             class="ion-chevron-right"></i></button>
 </div>
 <br>
@@ -40,13 +40,13 @@
         <td rowspan="3" style="vertical-align: inherit; text-align: center" width="80px">類型</td>
 
 
-        <td colspan="2" style="vertical-align: inherit; text-align: center">{{monDate_manager}}</td>
-        <td colspan="2" style="vertical-align: inherit; text-align: center">{{tueDate_manager}}</td>
-        <td colspan="2" style="vertical-align: inherit; text-align: center">{{wesDate_manager}}</td>
-        <td colspan="2" style="vertical-align: inherit; text-align: center">{{thuDate_manager}}</td>
-        <td colspan="2" style="vertical-align: inherit; text-align: center">{{friDate_manager}}</td>
-        <td colspan="2" style="vertical-align: inherit; text-align: center">{{satDate_manager}}</td>
-        <td colspan="2" style="vertical-align: inherit; text-align: center">{{sunDate_manager}}</td>
+        <td colspan="2" style="vertical-align: inherit; text-align: center">{{monDate_history}}</td>
+        <td colspan="2" style="vertical-align: inherit; text-align: center">{{tueDate_history}}</td>
+        <td colspan="2" style="vertical-align: inherit; text-align: center">{{wesDate_history}}</td>
+        <td colspan="2" style="vertical-align: inherit; text-align: center">{{thuDate_history}}</td>
+        <td colspan="2" style="vertical-align: inherit; text-align: center">{{friDate_history}}</td>
+        <td colspan="2" style="vertical-align: inherit; text-align: center">{{satDate_history}}</td>
+        <td colspan="2" style="vertical-align: inherit; text-align: center">{{sunDate_history}}</td>
 
         <td rowspan="3" style="vertical-align: inherit; text-align: center">合計</td>
     </tr>
@@ -61,7 +61,7 @@
     </tr>
     </thead>
 
-    <tbody ng-repeat="table in tablesManagerItems">
+    <tbody ng-repeat="table in tablesHistoryItems">
     <tr style="vertical-align: inherit; text-align: center">
         <td rowspan="2" style="vertical-align: inherit; text-align: center">
             <span id="prjCode">{{showPrjCode(table.prjDID)}}</span>
@@ -356,31 +356,31 @@
         </td>
         <!--MON-->
         <td colspan="2" style="text-align: center">
-            <span>{{monOffTotal_manager}}</span>
+            <span>{{monOffTotal_history}}</span>
         </td>
         <!--TUE-->
         <td colspan="2" style="text-align: center">
-            <span>{{tueOffTotal_manager}}</span>
+            <span>{{tueOffTotal_history}}</span>
         </td>
         <!--WED-->
         <td colspan="2" style="text-align: center">
-            <span>{{wesOffTotal_manager}}</span>
+            <span>{{wesOffTotal_history}}</span>
         </td>
         <!--THU-->
         <td colspan="2" style="text-align: center">
-            <span>{{thuOffTotal_manager}}</span>
+            <span>{{thuOffTotal_history}}</span>
         </td>
         <!--FRI-->
         <td colspan="2" style="text-align: center">
-            <span>{{friOffTotal_manager}}</span>
+            <span>{{friOffTotal_history}}</span>
         </td>
         <!--SAT-->
         <td colspan="2" style="text-align: center">
-            <span>{{satOffTotal_manager}}</span>
+            <span>{{satOffTotal_history}}</span>
         </td>
         <!--SUN-->
         <td colspan="2" style="text-align: center">
-            <span>{{sunOffTotal_manager}}</span>
+            <span>{{sunOffTotal_history}}</span>
         </td>
     </tr>
 
@@ -394,43 +394,43 @@
         <!--MON-->
         <td colspan="2" style="text-align: center">
                     <span>
-                        {{monNH_manager}}
+                        {{monNH_history}}
                     </span>
         </td>
         <!--TUE-->
         <td colspan="2" style="text-align: center">
                     <span>
-                        {{tueNH_manager}}
+                        {{tueNH_history}}
                     </span>
         </td>
         <!--WED-->
         <td colspan="2" style="text-align: center">
                     <span>
-                        {{wesNH_manager}}
+                        {{wesNH_history}}
                     </span>
         </td>
         <!--THU-->
         <td colspan="2" style="text-align: center">
                     <span>
-                        {{thuNH_manager}}
+                        {{thuNH_history}}
                     </span>
         </td>
         <!--FRI-->
         <td colspan="2" style="text-align: center">
                     <span>
-                        {{friNH_manager}}
+                        {{friNH_history}}
                     </span>
         </td>
         <!--SAT-->
         <td colspan="2" style="text-align: center">
                     <span>
-                        {{satNH_manager}}
+                        {{satNH_history}}
                     </span>
         </td>
         <!--SUN-->
         <td colspan="2" style="text-align: center">
                     <span>
-                        {{sunNH_manager}}
+                        {{sunNH_history}}
                     </span>
         </td>
     </tr>
@@ -445,53 +445,53 @@
         <!--MON-->
         <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(tablesManagerItems, 1, 2)}}
+                        {{showCalculateHour(tablesHistoryItems, 1, 2)}}
                     </span>
         </td>
         <!--TUE-->
         <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(tablesManagerItems, 2, 2)}}
+                        {{showCalculateHour(tablesHistoryItems, 2, 2)}}
                     </span>
         </td>
         <!--WED-->
         <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(tablesManagerItems, 3, 2)}}
+                        {{showCalculateHour(tablesHistoryItems, 3, 2)}}
                     </span>
         </td>
         <!--THU-->
         <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(tablesManagerItems, 4, 2)}}
+                        {{showCalculateHour(tablesHistoryItems, 4, 2)}}
                     </span>
         </td>
         <!--FRI-->
         <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(tablesManagerItems, 5, 2)}}
+                        {{showCalculateHour(tablesHistoryItems, 5, 2)}}
                     </span>
         </td>
         <!--SAT-->
         <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(tablesManagerItems, 6, 2)}}
+                        {{showCalculateHour(tablesHistoryItems, 6, 2)}}
                     </span>
         </td>
         <!--SUN-->
         <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(tablesManagerItems, 7, 2)}}
+                        {{showCalculateHour(tablesHistoryItems, 7, 2)}}
                     </span>
         </td>
         <!-- summation-->
         <td style="text-align: center">
                     <span>
-                        {{showCalculateHour(tablesManagerItems, 1001, 2)}}
+                        {{showCalculateHour(tablesHistoryItems, 1001, 2)}}
                     </span>
             <br>
             <span>
-                        {{showCalculateHour(tablesManagerItems, 2001, 2)}}
+                        {{showCalculateHour(tablesHistoryItems, 2001, 2)}}
                     </span>
         </td>
     </tr>
