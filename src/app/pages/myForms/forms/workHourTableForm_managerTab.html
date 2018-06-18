@@ -10,7 +10,7 @@
 
 <uib-accordion ng-repeat="form in workHourFormsForManagers">
     <uib-accordion-group heading="{{showUser(form.creatorDID)}}"
-                         ng-click="showTableOfItem(form, true, null, null)"
+                         ng-click="showTableOfItem(form, true, null, null, 1)"
                          panel-class="bootstrap-panel accordion-panel panel-default">
         <table class="table table-bordered table-hover table-condensed">
             <thead>
@@ -227,9 +227,7 @@
             <tr class="row1" style="vertical-align: inherit; text-align: center">
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
-                    ng-mouseover="hover = (table.mon_hour_add > 0)"
                     ng-click="showWorkAddCheck(table.mon_hour_add, table, 1)"
-                    ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="table.mon_hour_add"
                           e-form="rowform1"
@@ -252,9 +250,7 @@
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
-                    ng-mouseover="hover = (table.tue_hour_add > 0)"
                     ng-click="showWorkAddCheck(table.tue_hour_add, table, 2)"
-                    ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="table.tue_hour_add"
                           e-form="rowform1"
@@ -271,9 +267,7 @@
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
-                    ng-mouseover="hover = (table.wes_hour_add > 0)"
                     ng-click="showWorkAddCheck(table.wes_hour_add, table, 3)"
-                    ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="table.wes_hour_add"
                           e-form="rowform1"
@@ -290,9 +284,7 @@
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
-                    ng-mouseover="hover = (table.thu_hour_add > 0)"
                     ng-click="showWorkAddCheck(table.thu_hour_add, table, 4)"
-                    ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="table.thu_hour_add"
                           e-form="rowform1"
@@ -309,9 +301,7 @@
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
-                    ng-mouseover="hover = (table.fri_hour_add > 0)"
                     ng-click="showWorkAddCheck(table.fri_hour_add, table, 5)"
-                    ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="table.fri_hour_add"
                           e-form="rowform1"
@@ -328,9 +318,7 @@
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
-                    ng-mouseover="hover = (table.sat_hour_add > 0)"
                     ng-click="showWorkAddCheck(table.sat_hour_add, table, 6)"
-                    ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="table.sat_hour_add"
                           e-form="rowform1"
@@ -347,9 +335,7 @@
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
-                    ng-mouseover="hover = (table.sun_hour_add > 0)"
                     ng-click="showWorkAddCheck(table.sun_hour_add, table, 7)"
-                    ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="table.sun_hour_add"
                           e-form="rowform1"
@@ -385,31 +371,31 @@
                 </td>
                 <!--MON-->
                 <td colspan="2" style="text-align: center">
-                    <span>{{monOffTotal_manager}}</span>
+                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(form), 1)}}</span>
                 </td>
                 <!--TUE-->
                 <td colspan="2" style="text-align: center">
-                    <span>{{tueOffTotal_manager}}</span>
+                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(form), 2)}}</span>
                 </td>
                 <!--WED-->
                 <td colspan="2" style="text-align: center">
-                    <span>{{wesOffTotal_manager}}</span>
+                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(form), 3)}}</span>
                 </td>
                 <!--THU-->
                 <td colspan="2" style="text-align: center">
-                    <span>{{thuOffTotal_manager}}</span>
+                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(form), 4)}}</span>
                 </td>
                 <!--FRI-->
                 <td colspan="2" style="text-align: center">
-                    <span>{{friOffTotal_manager}}</span>
+                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(form), 5)}}</span>
                 </td>
                 <!--SAT-->
                 <td colspan="2" style="text-align: center">
-                    <span>{{satOffTotal_manager}}</span>
+                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(form), 6)}}</span>
                 </td>
                 <!--SUN-->
                 <td colspan="2" style="text-align: center">
-                    <span>{{sunOffTotal_manager}}</span>
+                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(form), 0)}}</span>
                 </td>
             </tr>
 
@@ -423,43 +409,43 @@
                 <!--MON-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{monNH_manager}}
+                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(form), 1)}}
                     </span>
                 </td>
                 <!--TUE-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{tueNH_manager}}
+                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(form), 2)}}
                     </span>
                 </td>
                 <!--WED-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{wesNH_manager}}
+                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(form), 3)}}
                     </span>
                 </td>
                 <!--THU-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{thuNH_manager}}
+                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(form), 4)}}
                     </span>
                 </td>
                 <!--FRI-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{friNH_manager}}
+                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(form), 5)}}
                     </span>
                 </td>
                 <!--SAT-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{satNH_manager}}
+                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(form), 6)}}
                     </span>
                 </td>
                 <!--SUN-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{sunNH_manager}}
+                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(form), 0)}}
                     </span>
                 </td>
             </tr>
@@ -474,53 +460,53 @@
                 <!--MON-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(fetchFormDataFromScope(form), 1, 2)}}
+                        {{showCalculateHour(fetchFormDataFromScope(form), 1, 2, form)}}
                     </span>
                 </td>
                 <!--TUE-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(fetchFormDataFromScope(form), 2, 2)}}
+                        {{showCalculateHour(fetchFormDataFromScope(form), 2, 2, form)}}
                     </span>
                 </td>
                 <!--WED-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(fetchFormDataFromScope(form), 3, 2)}}
+                        {{showCalculateHour(fetchFormDataFromScope(form), 3, 2, form)}}
                     </span>
                 </td>
                 <!--THU-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(fetchFormDataFromScope(form), 4, 2)}}
+                        {{showCalculateHour(fetchFormDataFromScope(form), 4, 2, form)}}
                     </span>
                 </td>
                 <!--FRI-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(fetchFormDataFromScope(form), 5, 2)}}
+                        {{showCalculateHour(fetchFormDataFromScope(form), 5, 2, form)}}
                     </span>
                 </td>
                 <!--SAT-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(fetchFormDataFromScope(form), 6, 2)}}
+                        {{showCalculateHour(fetchFormDataFromScope(form), 6, 2, form)}}
                     </span>
                 </td>
                 <!--SUN-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showCalculateHour(fetchFormDataFromScope(form), 7, 2)}}
+                        {{showCalculateHour(fetchFormDataFromScope(form), 7, 2, form)}}
                     </span>
                 </td>
                 <!-- summation-->
                 <td style="text-align: center">
                     <span>
-                        {{showCalculateHour(fetchFormDataFromScope(form), 1001, 2)}}
+                        {{showCalculateHour(fetchFormDataFromScope(form), 1001, 2, form)}}
                     </span>
                     <br>
                     <span>
-                        {{showCalculateHour(fetchFormDataFromScope(form), 2001, 2)}}
+                        {{showCalculateHour(fetchFormDataFromScope(form), 2001, 2, form)}}
                     </span>
                 </td>
             </tr>
