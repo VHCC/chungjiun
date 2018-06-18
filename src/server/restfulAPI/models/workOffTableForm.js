@@ -6,7 +6,25 @@ module.exports = mongoose.model('workOffTableForm', {
     creatorDID: {
         type: String,
     },
-    // 放假類別
+    /**
+     *
+     * 放假類別
+     *      name: "事假",
+            type: 0
+         },
+         {
+             name: "病假",
+             type: 1
+         },
+         {
+             name: "補休",
+             type: 2
+         },
+         {
+             name: "特休",
+             type: 3
+         },
+     */
     workOffType: {
         type: Number,
         default: -1

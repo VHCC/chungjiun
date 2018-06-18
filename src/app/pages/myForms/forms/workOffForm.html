@@ -234,7 +234,7 @@
                     <td style="vertical-align: inherit; text-align: center">請假扣款</td>
                 </tr>
                 </thead>
-                <tbody ng-repeat="table in loginUserTablesItems">
+                <tbody ng-repeat="table in specificUserTablesItems">
                 <tr style="vertical-align: inherit; text-align: center">
                     <!--序號-->
                     <td style="vertical-align: inherit; text-align: center">
@@ -391,6 +391,7 @@
     </uib-tab>
 
     <uib-tab heading="假期確認" ng-if="roleType === '100'"
+             ng-click="initUser()"
              style="color: blue">
         <div ng-include="'app/pages/myForms/forms/workOffForm_HolidayTab.html'"></div>
     </uib-tab>

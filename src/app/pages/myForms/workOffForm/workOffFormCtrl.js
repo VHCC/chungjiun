@@ -19,6 +19,7 @@
                     'WorkOffTypeUtil',
                     'WorkOffFormUtil',
                     'NationalHolidayUtil',
+                    'toastr',
                     'HolidayDataForms',
                     WorkOffFormCtrl
                 ]);
@@ -35,6 +36,7 @@
                                  WorkOffTypeUtil,
                                  WorkOffFormUtil,
                                  NationalHolidayUtil,
+                                 toastr,
                                  HolidayDataForms) {
 
 
@@ -117,7 +119,7 @@
                 });
 
             // 主要顯示
-            $scope.loginUserTablesItems = [];
+            $scope.specificUserTablesItems = [];
 
             var vm = this;
             var thisYear = new Date().getFullYear() - 1911;
@@ -146,10 +148,10 @@
             }
 
             //取得使用者個人休假表，userDID, 一年的 一個月 只有一張休假表
-            $scope.getWorkOffTable = function () {
-                $scope.loginUserTablesItems = [];
+            $scope.getWorkOffTable = function (userDID) {
+                $scope.specificUserTablesItems = [];
                 var getData = {
-                    creatorDID: $scope.userDID,
+                    creatorDID: userDID === undefined ? $scope.userDID : userDID,
                     year: thisYear,
                     month: thisMonth,
                 }
@@ -168,7 +170,6 @@
                             formDataTable = {
                                 tableIDArray: workOffTableIDArray,
                             }
-                            // console.log(formDataTable);
                             // 取得 Table Data
                             WorkOffFormUtil.findWorkOffTableFormByTableIDArray(formDataTable)
                                 .success(function (res) {
@@ -194,11 +195,10 @@
                                             userMonthSalary: res.payload[index].userMonthSalary,
                                             // userHourSalary: res.payload[index].userHourSalary,
                                         };
-                                        $scope.loginUserTablesItems.push(detail);
-
+                                        $scope.specificUserTablesItems.push(detail);
                                     }
                                     // console.log(workOffTableIDArray);
-                                    // console.log($scope.loginUserTablesItems);
+                                    console.log($scope.specificUserTablesItems);
                                 })
                                 .error(function () {
                                     console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByTableIDArray');
@@ -213,6 +213,54 @@
                     })
             }
 
+            $scope.showWorkOffCount = function(workOffType) {
+                var index = 0;
+                var result = 0;
+                switch (workOffType) {
+                    // 事
+                    case 0: {
+                        for (index = 0; index < $scope.specificUserTablesItems.length; index ++) {
+                            if ($scope.specificUserTablesItems[index].workOffType === workOffType) {
+                                result += $scope.getHourDiffByTime($scope.specificUserTablesItems[index].start_time
+                                    , $scope.specificUserTablesItems[index].end_time);
+                            }
+                        }
+                        return result;
+                    }
+                    // 病
+                    case 1: {
+                        for (index = 0; index < $scope.specificUserTablesItems.length; index ++) {
+                            if ($scope.specificUserTablesItems[index].workOffType === workOffType) {
+                                result += $scope.getHourDiffByTime($scope.specificUserTablesItems[index].start_time
+                                    , $scope.specificUserTablesItems[index].end_time);
+                            }
+                        }
+                        return result;
+                    }
+                    // 補
+                    case 2: {
+                        for (index = 0; index < $scope.specificUserTablesItems.length; index ++) {
+                            if ($scope.specificUserTablesItems[index].workOffType === workOffType) {
+                                result += $scope.getHourDiffByTime($scope.specificUserTablesItems[index].start_time
+                                    , $scope.specificUserTablesItems[index].end_time);
+                            }
+                        }
+                        return result;
+                    }
+                    // 特
+                    case 3: {
+                        for (index = 0; index < $scope.specificUserTablesItems.length; index ++) {
+                            if ($scope.specificUserTablesItems[index].workOffType === workOffType) {
+                                result += $scope.getHourDiffByTime($scope.specificUserTablesItems[index].start_time
+                                    , $scope.specificUserTablesItems[index].end_time);
+                            }
+                        }
+                        return result;
+                    }
+                }
+            }
+
+            // 預設日期
             $scope.firstFullDate = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0);
 
             $scope.addHolidayItem = function () {
@@ -233,14 +281,14 @@
                     // userHourSalary: $scope.userHourSalary,
                     userMonthSalary: $scope.userMonthSalary,
                 };
-                $scope.loginUserTablesItems.push(inserted);
+                $scope.specificUserTablesItems.push(inserted);
 
                 $scope.createSubmit(0);
             }
 
             $scope.removeHolidayItem = function (index) {
                 // console.log(index)
-                $scope.loginUserTablesItems.splice(index, 1);
+                $scope.specificUserTablesItems.splice(index, 1);
                 console.log('removeHolidayItem, Index= ' + index);
                 $scope.createSubmit(0);
             };
@@ -281,6 +329,7 @@
                 dom.$parent.table.workOffType = dom.workOffType.type;
             }
 
+            // 休假規則
             $scope.getHourDiff = function (dom) {
                 if (dom.tableTimeStart && dom.tableTimeEnd) {
                     var difference = Math.abs(toSeconds(dom.tableTimeStart) - toSeconds(dom.tableTimeEnd));
@@ -345,13 +394,13 @@
                 $scope.createSubmit(0);
                 $timeout(function () {
                     // console.log(table)
-                    // console.log($scope.loginUserTablesItems[index]);
+                    // console.log($scope.specificUserTablesItems[index]);
                     $scope.checkText = '確定提交 休假：' +
                         DateUtil.getShiftDatefromFirstDate(
-                            DateUtil.getFirstDayofThisWeek(moment($scope.loginUserTablesItems[index].create_formDate)),
-                            $scope.loginUserTablesItems[index].day === 0 ? 6 : $scope.loginUserTablesItems[index].day - 1) +
+                            DateUtil.getFirstDayofThisWeek(moment($scope.specificUserTablesItems[index].create_formDate)),
+                            $scope.specificUserTablesItems[index].day === 0 ? 6 : $scope.specificUserTablesItems[index].day - 1) +
                         "  審查？";
-                    $scope.checkingTable = $scope.loginUserTablesItems[index];
+                    $scope.checkingTable = $scope.specificUserTablesItems[index];
                     $scope.checkingButton = button;
                     $scope.checkingIndex = index;
                     ngDialog.open({
@@ -372,7 +421,7 @@
                 }
                 WorkOffFormUtil.updateWorkOffTableSendReview(formData)
                     .success(function (res) {
-                        $scope.loginUserTablesItems[checkingIndex].isSendReview = true;
+                        $scope.specificUserTablesItems[checkingIndex].isSendReview = true;
                         console.log(res.code + ", sendWorkOffTable");
                     })
             }
@@ -497,8 +546,8 @@
                 return $timeout(function () {
                     var workOffTableData = [];
 
-                    for (var index = 0; index < $scope.loginUserTablesItems.length; index++) {
-                        var tableItem = $scope.loginUserTablesItems[index];
+                    for (var index = 0; index < $scope.specificUserTablesItems.length; index++) {
+                        var tableItem = $scope.specificUserTablesItems[index];
 
                         var dataItem = {
                             creatorDID: $scope.userDID,
@@ -536,14 +585,14 @@
                                 for (var index = 0; index < res.payload.length; index++) {
                                     // console.log(res.payload[index]);
                                     workOffTableIDArray[index] = res.payload[index].tableID;
-                                    // $scope.loginUserTablesItems[index] = res.payload[index];
-                                    $scope.loginUserTablesItems[index].tableID = res.payload[index].tableID;
+                                    // $scope.specificUserTablesItems[index] = res.payload[index];
+                                    $scope.specificUserTablesItems[index].tableID = res.payload[index].tableID;
                                 }
                             }
                             formDataTable = {
                                 tableIDArray: workOffTableIDArray,
                             };
-                            // console.log($scope.loginUserTablesItems);
+                            // console.log($scope.specificUserTablesItems);
                         })
                         .error(function () {
                             console.log('ERROR WorkOffFormUtil.createWorkOffTableForm');
@@ -632,6 +681,7 @@
                 HolidayDataForms.updateFormByFormDID(formData)
                     .success(function (res) {
                         // console.log(res.code);
+                        toastr['success']('成功', '更新成功');
                     })
             }
 

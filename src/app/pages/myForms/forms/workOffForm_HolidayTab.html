@@ -20,7 +20,9 @@
     </div>
 </div>
 
-<table class="table table-bordered table-hover table-condensed" ng-if="workOffFormCtrlVm.user.selected">
+<table class="table table-bordered table-hover table-condensed"
+       ng-init="getWorkOffTable(workOffFormCtrlVm.user.selected._id)"
+       ng-if="workOffFormCtrlVm.user.selected">
     <thead>
     <tr style="white-space:nowrap">
         <td style="vertical-align: inherit; text-align: center" width="100px"></td>
@@ -159,30 +161,34 @@
         <td style="vertical-align: inherit; text-align: center">
             累積休假
         </td>
-
+        <!-- 病假 -->
         <td class="form-group " style="vertical-align: inherit;">
             <input type="text"
                    class="form-control workOffFormNumberInput input-sm"
                    ng-model="workOffFormCtrlVm.holidayForm.calculate_sick"
-                   value="{{workOffFormCtrlVm.holidayForm.calculate_sick}}">
+                   value="{{showWorkOffCount(1)}}">
+            {{showWorkOffCount(1)}}
         </td>
         <td class="form-group " style="vertical-align: inherit;">
             <input type="text"
                    class="form-control workOffFormNumberInput input-sm"
                    ng-model="workOffFormCtrlVm.holidayForm.calculate_private"
-                   value="{{workOffFormCtrlVm.holidayForm.calculate_private}}">
+                   value="{{showWorkOffCount(0)}}">
+            {{showWorkOffCount(0)}}
         </td>
         <td class="form-group " style="vertical-align: inherit;">
             <input type="text"
                    class="form-control workOffFormNumberInput input-sm"
                    ng-model="workOffFormCtrlVm.holidayForm.calculate_observed"
-                   value="{{workOffFormCtrlVm.holidayForm.calculate_observed}}">
+                   value="{{showWorkOffCount(2)}}">
+            {{showWorkOffCount(2)}}
         </td>
         <td class="form-group " style="vertical-align: inherit;">
             <input type="text"
                    class="form-control workOffFormNumberInput input-sm"
                    ng-model="workOffFormCtrlVm.holidayForm.calculate_special"
-                   value="{{workOffFormCtrlVm.holidayForm.calculate_special}}">
+                   value="{{showWorkOffCount(3)}}">
+            {{showWorkOffCount(3)}}
         </td>
         <td class="form-group " style="vertical-align: inherit;">
             <input type="text"
