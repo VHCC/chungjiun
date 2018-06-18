@@ -64,6 +64,9 @@
     <tbody ng-repeat="table in tablesHistoryItems">
     <tr style="vertical-align: inherit; text-align: center">
         <td rowspan="2" style="vertical-align: inherit; text-align: center">
+            <form editable-form name="rowform1" ng-show="rowform1.$visible"
+                  class="form-buttons form-inline">
+            </form>
             <span id="prjCode">{{showPrjCode(table.prjDID)}}</span>
             <span style="display: none;" id="prjDID">{{table.prjDID}}</span>
             <br>
