@@ -37,7 +37,7 @@
         $scope.workAddTablesItems = [];
 
         var formData = {
-            creatorDID: $scope.userDID,
+            creatorDID: $scope.table.creatorDID,
             prjDID: $scope.table.prjDID,
             create_formDate: $scope.table.create_formDate,
             day: $scope.searchType,

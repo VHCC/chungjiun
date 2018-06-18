@@ -382,6 +382,7 @@
                                     var detail = {
                                         tableID: res.payload[index]._id,
                                         prjDID: res.payload[index].prjDID,
+                                        creatorDID: res.payload[index].creatorDID,
                                         create_formDate: res.payload[index].create_formDate,
                                         //MON
                                         mon_hour: res.payload[index].mon_hour,
@@ -1681,7 +1682,7 @@
                             }
                         }
                     }
-                    console.log($scope.nationalHolidayTablesItems);
+                    // console.log($scope.nationalHolidayTablesItems);
                     showWorkOffTableData(user);
                 })
                 .error(function () {
@@ -1783,7 +1784,7 @@
                 }
             }
             $scope.workAddTablesItems = workAddTable;
-            console.log($scope.workAddTablesItems);
+            // console.log($scope.workAddTablesItems);
         }
 
         Object.size = function (obj) {
@@ -1970,12 +1971,8 @@
                 relatedMembers: $scope.mainRelatedMembers,
                 create_formDate: targetFormData,
             }
-            console.log(getData);
             WorkHourUtil.getWorkHourFormMultiple(getData)
                 .success(function (res) {
-                    console.log(res.payload);
-                    // $scope.workHourFormsForManagers = [];
-                    console.log(res.payload.length);
                     if (res.payload.length > 0) {
                         $scope.setReviewList(res.payload, 0, targetList, type);
                     }
@@ -1987,7 +1984,6 @@
                                           , isFindSendReviewFlag
                                           , isFindManagerCheckFlag
                                           , isFindExecutiveCheck) {
-            // console.log(form);
             var workItemCount = form.formTables.length;
 
             var workTableIDArray = [];
@@ -2002,7 +1998,6 @@
                 isFindManagerCheck: isFindManagerCheckFlag,
                 isFindExecutiveCheck: isFindExecutiveCheck
             }
-            // console.log(formDataTable);
             // 取得 Table Data
             WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                 .success(function (res) {
@@ -2013,6 +2008,7 @@
                         var detail = {
                             tableID: res.payload[index]._id,
                             prjDID: res.payload[index].prjDID,
+                            creatorDID: res.payload[index].creatorDID,
                             create_formDate: res.payload[index].create_formDate,
                             //MON
                             mon_hour: res.payload[index].mon_hour,
@@ -2095,7 +2091,6 @@
 
         // 設置 Review List, recursion.
         $scope.setReviewList = function (forms, index, arrayResult, type) {
-            console.log("setReviewList");
             var workItemCount = forms[index].formTables.length;
 
             var workTableIDArray = [];

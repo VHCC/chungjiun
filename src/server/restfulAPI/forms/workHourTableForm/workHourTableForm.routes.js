@@ -238,7 +238,7 @@ module.exports = function (app) {
         if (req.body.isFindExecutiveCheck !== null) {
             query.isExecutiveCheck = req.body.isFindExecutiveCheck;
         }
-        console.log(query);
+        // console.log(query);
         WorkHourTableForm.find(query, function (err, tables) {
             if (err) {
                 res.send(err);
