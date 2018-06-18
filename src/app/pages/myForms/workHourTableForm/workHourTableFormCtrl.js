@@ -1822,7 +1822,7 @@
          */
         function showWorkOffTableData(user) {
             // 主要顯示
-            $scope.workAddTablesItems = [];
+            $scope.workAddConfirmTablesItems = [];
 
             var formData = {
                 creatorDID: user._id,
@@ -1833,7 +1833,7 @@
             }
             WorkHourAddItemUtil.getWorkHourAddItems(formData)
                 .success(function (res) {
-                    // $scope.workAddTablesItems = res.payload;
+                    // $scope.workAddConfirmTablesItems = res.payload;
                     operateWorkHourAddArray(res.payload);
                 })
                 .error(function () {
@@ -1909,8 +1909,8 @@
                     }
                 }
             }
-            $scope.workAddTablesItems = workAddTable;
-            // console.log($scope.workAddTablesItems);
+            $scope.workAddConfirmTablesItems = workAddTable;
+            // console.log($scope.workAddConfirmTablesItems);
         }
 
         Object.size = function (obj) {
@@ -1935,7 +1935,7 @@
                         result += array[index].restWork;
                         break;
                     case 2:
-                        if (array[index].day < 6) {
+                        if (array[index].day < 6 && !array[index].isNH) {
                             result += array[index].addWork;
                         }
                         break;
@@ -1964,10 +1964,17 @@
                     case 8:
                         // result += (array[index].addWork * array[index].userHourSalary);
                         result += (array[index].addWork * (array[index].userMonthSalary/240));
+                        result = $scope.formatFloat(result, 2);
                         break;
                 }
             }
             return result;
+        }
+
+        //小數點2
+        $scope.formatFloat = function (num, pos) {
+            var size = Math.pow(10, pos);
+            return Math.round(num * size) / size;
         }
 
         $scope.showDay = function (day) {
@@ -1980,6 +1987,7 @@
                 table.day === 0 ? 6 : table.day - 1);
         }
 
+        // 加班單核薪
         $scope.confirmWorkAddItems = function () {
             if ($scope.workAddTablesRawData.length === 0) {
                 toastr.warning('沒有任何加班單', 'Warning');
