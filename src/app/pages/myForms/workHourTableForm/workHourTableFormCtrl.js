@@ -2395,7 +2395,7 @@
                     formDataTable = {
                         tableIDArray: workTableIDArray,
                         isFindSendReview: true,
-                        isFindManagerCheck: null,
+                        isFindManagerCheck: false,
                         isFindExecutiveCheck: null
                     }
                 } break;
@@ -2404,7 +2404,7 @@
                         tableIDArray: workTableIDArray,
                         isFindSendReview: true,
                         isFindManagerCheck: true,
-                        isFindExecutiveCheck: null
+                        isFindExecutiveCheck: false
                     }
                 }break;
             }
@@ -2414,10 +2414,10 @@
                 .success(function (subRes) {
                     if (subRes.payload.length > 0) {
                         arrayResult.push(forms[index]);
-                        index ++;
-                        if (index < forms.length) {
-                            $scope.setReviewList(forms, index, arrayResult, type);
-                        }
+                    }
+                    index ++;
+                    if (index < forms.length) {
+                        $scope.setReviewList(forms, index, arrayResult, type);
                     }
                 })
         }
