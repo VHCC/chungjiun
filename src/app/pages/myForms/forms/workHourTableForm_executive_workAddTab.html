@@ -42,7 +42,7 @@
     </tr>
     </thead>
 
-    <tbody ng-repeat="table in workAddTablesItems">
+    <tbody ng-repeat="table in workAddConfirmTablesItems">
     <tr style="vertical-align: inherit; text-align: center">
         <!--序號-->
         <td rowspan="2" style="vertical-align: inherit; text-align: center">
@@ -67,7 +67,7 @@
         </td>
         <!--工作日-->
         <td class="form-group has-success" style="vertical-align: inherit;">
-            <div ng-show="table.day < 6; !table.isNH">
+            <div ng-show="table.day < 6 && !table.isNH">
                 <div ng-show="table.addWork > 0">
                     <span ng-show="table.addWork <= 2">1.34 * {{table.addWork}}</span>
                     <span ng-show="table.addWork > 2">1.34 * 2</span>
@@ -120,7 +120,7 @@
         <!--加班費-->
         <td class="form-group has-success" style="vertical-align: inherit;">
             <!--{{table.addWork * table.userHourSalary}}-->
-            {{table.addWork * (table.userMonthSalary/240)}}
+            {{formatFloat(table.addWork * (table.userMonthSalary/240), 2)}}
         </td>
     </tr>
     </tbody>
@@ -140,49 +140,49 @@
         <!--時數-->
         <td style="text-align: center">
             <span>
-                {{showCalculateWorkAddTableSum(workAddTablesItems, 1)}}
+                {{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 1)}}
             </span>
         </td>
         <!--工作日-->
         <td style="text-align: center">
             <span>
-                {{showCalculateWorkAddTableSum(workAddTablesItems, 2)}}
+                {{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 2)}}
             </span>
         </td>
         <!--休息日-->
         <td style="text-align: center">
             <span>
-                {{showCalculateWorkAddTableSum(workAddTablesItems, 3)}}
+                {{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 3)}}
             </span>
         </td>
         <!--例假日-->
         <td style="text-align: center">
             <span>
-                {{showCalculateWorkAddTableSum(workAddTablesItems, 4)}}
+                {{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 4)}}
             </span>
         </td>
         <!--國定假日-->
         <td style="text-align: center">
             <span>
-                {{showCalculateWorkAddTableSum(workAddTablesItems, 5)}}
+                {{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 5)}}
             </span>
         </td>
         <!-- 換休-->
         <td style="text-align: center">
             <span>
-                {{showCalculateWorkAddTableSum(workAddTablesItems, 6)}}
+                {{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 6)}}
             </span>
         </td>
         <!-- 加班合計-->
         <td style="text-align: center">
             <span>
-                {{showCalculateWorkAddTableSum(workAddTablesItems, 7)}}
+                {{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 7)}}
             </span>
         </td>
         <!-- 加班費-->
         <td style="text-align: center">
             <span>
-                {{showCalculateWorkAddTableSum(workAddTablesItems, 8)}}
+                {{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 8)}}
             </span>
         </td>
     </tr>
