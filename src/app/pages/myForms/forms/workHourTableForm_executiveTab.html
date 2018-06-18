@@ -9,7 +9,7 @@
 
 <uib-accordion ng-repeat="form in workHourFormsForExecutive">
     <uib-accordion-group heading="{{showUser(form.creatorDID)}}"
-                         ng-click="showTableOfItem(form, true, null, null)"
+                         ng-click="showTableOfItem(form, true, null, null, 2)"
                          panel-class="bootstrap-panel accordion-panel panel-default">
         <table class="table table-bordered table-hover table-condensed">
             <thead>
@@ -467,53 +467,53 @@
                 <!--MON-->
                 <td colspan="2" style="text-align: center">
                         <span>
-                            {{showCalculateHour(fetchFormDataFromScope(form), 1, 3)}}
+                            {{showCalculateHour(fetchFormDataFromScope(form), 1, 3, form)}}
                         </span>
                 </td>
                 <!--TUE-->
                 <td colspan="2" style="text-align: center">
                         <span>
-                            {{showCalculateHour(fetchFormDataFromScope(form), 2, 3)}}
+                            {{showCalculateHour(fetchFormDataFromScope(form), 2, 3, form)}}
                         </span>
                 </td>
                 <!--WED-->
                 <td colspan="2" style="text-align: center">
                         <span>
-                            {{showCalculateHour(fetchFormDataFromScope(form), 3, 3)}}
+                            {{showCalculateHour(fetchFormDataFromScope(form), 3, 3, form)}}
                         </span>
                 </td>
                 <!--THU-->
                 <td colspan="2" style="text-align: center">
                         <span>
-                            {{showCalculateHour(fetchFormDataFromScope(form), 4, 3)}}
+                            {{showCalculateHour(fetchFormDataFromScope(form), 4, 3, form)}}
                         </span>
                 </td>
                 <!--FRI-->
                 <td colspan="2" style="text-align: center">
                         <span>
-                            {{showCalculateHour(fetchFormDataFromScope(form), 5, 3)}}
+                            {{showCalculateHour(fetchFormDataFromScope(form), 5, 3, form)}}
                         </span>
                 </td>
                 <!--SAT-->
                 <td colspan="2" style="text-align: center">
                         <span>
-                            {{showCalculateHour(fetchFormDataFromScope(form), 6, 3)}}
+                            {{showCalculateHour(fetchFormDataFromScope(form), 6, 3, form)}}
                         </span>
                 </td>
                 <!--SUN-->
                 <td colspan="2" style="text-align: center">
                         <span>
-                            {{showCalculateHour(fetchFormDataFromScope(form), 7, 3)}}
+                            {{showCalculateHour(fetchFormDataFromScope(form), 7, 3, form)}}
                         </span>
                 </td>
                 <!-- summation-->
                 <td style="text-align: center">
                         <span>
-                            {{showCalculateHour(fetchFormDataFromScope(form), 1001, 3)}}
+                            {{showCalculateHour(fetchFormDataFromScope(form), 1001, 3, form)}}
                         </span>
                     <br>
                     <span>
-                            {{showCalculateHour(fetchFormDataFromScope(form), 2001, 3)}}
+                            {{showCalculateHour(fetchFormDataFromScope(form), 2001, 3, form)}}
                         </span>
                 </td>
             </tr>
