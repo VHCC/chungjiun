@@ -15,10 +15,10 @@
         <table class="table table-bordered table-hover table-condensed">
             <thead>
             <tr>
-                <td rowspan="3" style="vertical-align: inherit; text-align: center">專案代碼</td>
-                <td rowspan="3" style="vertical-align: inherit; text-align: center">專案名稱</td>
-                <td rowspan="3" style="vertical-align: inherit; text-align: center">經理</td>
-                <td rowspan="3" style="vertical-align: inherit; text-align: center">類型</td>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center">代碼</td>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center"width="240px">名稱</td>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center" width="80px">經理</td>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center" width="80px">類型</td>
 
                 <td colspan="2" style="vertical-align: inherit; text-align: center">{{monDate_manager}}</td>
                 <td colspan="2" style="vertical-align: inherit; text-align: center">{{tueDate_manager}}</td>
@@ -47,14 +47,11 @@
                 <td rowspan="2" style="vertical-align: inherit; text-align: center">
                     <span id="prjCode">{{showPrjCode(table.prjDID)}}</span>
                     <span style="display: none;" id="prjDID">{{table.prjDID}}</span>
-                    <br>
-                    <button class="btn btn-danger editable-table-button btn-xs"
-                            ng-show="!rowform1.$waiting && !table.isSendReview"
-                            ng-click="removeWorkItem($index);">移除
-                    </button>
                 </td>
                 <td rowspan="2" style="vertical-align: inherit; text-align: center">
-                    {{showPrjName(table.prjDID)}}
+                    <p class="mytooltip">{{showPrjName(table.prjDID)}}
+                        <span class="tooltiptext">{{showPrjName(table.prjDID)}}</span>
+                    </p>
                 </td>
 
                 <td rowspan="2" style="vertical-align: inherit; text-align: center">
