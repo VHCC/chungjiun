@@ -89,20 +89,20 @@
 
         // notification
         $scope.changePassword = function () {
-            console.log($scope.password);
-            console.log($('[id="inputConfirmPassword"]')[0].value);
+            console.log("old= " + $scope.password);
+            console.log("new= " + $('[id="inputConfirmPassword"]')[0].value);
             if ($('[id="inputPassword"]')[0].value !== $('[id="inputConfirmPassword"]')[0].value) {
                 toastr['warning']('請確認新密碼輸入是否相同', '儲存失敗');
                 return;
             }
-            if ($scope.password !== $('[id="inputConfirmPassword"]')[0].value) {
+            if ($scope.password === $('[id="inputConfirmPassword"]')[0].value) {
                 toastr['warning']('新密碼與舊密碼相同', '注意');
                 return;
             }
 
             var formData = {
                 userDID: cookies.get('userDID'),
-                password: $scope.password,
+                password: $('[id="inputConfirmPassword"]')[0].value,
             }
 
             User.updatePassword(formData)
