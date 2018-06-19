@@ -192,6 +192,14 @@
                                             isSendReview: res.payload[index].isSendReview,
                                             isBossCheck: res.payload[index].isBossCheck,
                                             isExecutiveCheck: res.payload[index].isExecutiveCheck,
+
+                                            // Reject
+                                            isBossReject: res.payload[index].isBossReject,
+                                            bossReject_memo: res.payload[index].bossReject_memo,
+
+                                            isExecutiveReject: res.payload[index].isExecutiveReject,
+                                            executiveReject_memo: res.payload[index].executiveReject_memo,
+
                                             userMonthSalary: res.payload[index].userMonthSalary,
                                             // userHourSalary: res.payload[index].userHourSalary,
                                         };
@@ -220,7 +228,7 @@
                     // 事
                     case 0: {
                         for (index = 0; index < $scope.specificUserTablesItems.length; index ++) {
-                            if ($scope.specificUserTablesItems[index].workOffType === workOffType) {
+                            if ($scope.specificUserTablesItems[index].workOffType === workOffType && $scope.specificUserTablesItems[index].isExecutiveCheck) {
                                 result += $scope.getHourDiffByTime($scope.specificUserTablesItems[index].start_time
                                     , $scope.specificUserTablesItems[index].end_time);
                             }
@@ -230,7 +238,7 @@
                     // 病
                     case 1: {
                         for (index = 0; index < $scope.specificUserTablesItems.length; index ++) {
-                            if ($scope.specificUserTablesItems[index].workOffType === workOffType) {
+                            if ($scope.specificUserTablesItems[index].workOffType === workOffType && $scope.specificUserTablesItems[index].isExecutiveCheck) {
                                 result += $scope.getHourDiffByTime($scope.specificUserTablesItems[index].start_time
                                     , $scope.specificUserTablesItems[index].end_time);
                             }
@@ -240,7 +248,7 @@
                     // 補
                     case 2: {
                         for (index = 0; index < $scope.specificUserTablesItems.length; index ++) {
-                            if ($scope.specificUserTablesItems[index].workOffType === workOffType) {
+                            if ($scope.specificUserTablesItems[index].workOffType === workOffType && $scope.specificUserTablesItems[index].isExecutiveCheck) {
                                 result += $scope.getHourDiffByTime($scope.specificUserTablesItems[index].start_time
                                     , $scope.specificUserTablesItems[index].end_time);
                             }
@@ -250,7 +258,7 @@
                     // 特
                     case 3: {
                         for (index = 0; index < $scope.specificUserTablesItems.length; index ++) {
-                            if ($scope.specificUserTablesItems[index].workOffType === workOffType) {
+                            if ($scope.specificUserTablesItems[index].workOffType === workOffType && $scope.specificUserTablesItems[index].isExecutiveCheck) {
                                 result += $scope.getHourDiffByTime($scope.specificUserTablesItems[index].start_time
                                     , $scope.specificUserTablesItems[index].end_time);
                             }
@@ -314,13 +322,15 @@
                 return selected.length ? selected[0].name : 'Not Set';
             };
 
-            $scope.changeTableDay = function (dom) {
+            // 變更休假單日期
+            $scope.changeWorkOffItemDay = function (dom) {
                 dom.table.create_formDate = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment(dom.myDT)), 0);
                 dom.table.year = dom.myDT.getFullYear() - 1911;
                 dom.table.month = dom.myDT.getMonth() + 1;
                 dom.table.day = dom.myDT.getDay();
             }
 
+            // 顯示假期名
             $scope.showWorkOffTypeString = function (type) {
                 return WorkOffTypeUtil.getWorkOffString(type);
             }
@@ -329,7 +339,7 @@
                 dom.$parent.table.workOffType = dom.workOffType.type;
             }
 
-            // 休假規則
+            // 休假規則，未滿一小算一小
             $scope.getHourDiff = function (dom) {
                 if (dom.tableTimeStart && dom.tableTimeEnd) {
                     var difference = Math.abs(toSeconds(dom.tableTimeStart) - toSeconds(dom.tableTimeEnd));
@@ -410,19 +420,19 @@
                         showClose: false,
                     });
                 }, 150)
-
             }
-
+            //跟後臺溝通
             $scope.sendWorkOffTable = function (checkingTable, checkingButton, checkingIndex) {
                 // console.log(checkingTable);
                 checkingButton.rowform1.$waiting = true;
                 var formData = {
                     tableID: checkingTable.tableID,
+                    isSendReview: true,
                 }
-                WorkOffFormUtil.updateWorkOffTableSendReview(formData)
+                // WorkOffFormUtil.updateWorkOffTableSendReview(formData)
+                WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
                         $scope.specificUserTablesItems[checkingIndex].isSendReview = true;
-                        console.log(res.code + ", sendWorkOffTable");
                     })
             }
 
@@ -442,15 +452,16 @@
                     showClose: false,
                 });
             }
-
+            //跟後臺溝通
             $scope.sendExecutiveAgree = function (checkingTable, index) {
-                $scope.executiveCheckTablesItems.splice(index, 1);
                 var formData = {
                     tableID: checkingTable.tableID,
+                    isExecutiveCheck: true,
                 }
-                WorkOffFormUtil.updateExecutiveAgree(formData)
+                // WorkOffFormUtil.updateExecutiveAgree(formData)
+                WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-                        console.log(res.code + ", sendExecutiveAgree");
+                        $scope.executiveCheckTablesItems.splice(index, 1);
                     })
             }
 
@@ -470,15 +481,21 @@
                     showClose: false,
                 });
             }
-
-            $scope.sendDisagree_executive = function (checkingTable, index) {
-                $scope.executiveCheckTablesItems.splice(index, 1);
+            //跟後臺溝通
+            $scope.sendDisagree_executive = function (checkingTable, index, rejectMsg) {
                 var formData = {
                     tableID: checkingTable.tableID,
+                    isSendReview: false,
+                    isBossCheck: false,
+                    isExecutiveCheck: false,
+                    isBossReject: false,
+                    isExecutiveReject: true,
+                    executiveReject_memo: rejectMsg,
                 }
-                WorkOffFormUtil.updateDisAgree(formData)
+                // WorkOffFormUtil.updateDisAgree(formData)
+                WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-                        console.log(res.code + ", sendDisagree_executive");
+                        $scope.executiveCheckTablesItems.splice(index, 1);
                     })
             }
 
@@ -498,15 +515,16 @@
                     showClose: false,
                 });
             }
-
+            //跟後臺溝通
             $scope.sendBossAgree = function (checkingTable, index) {
-                $scope.bossCheckTablesItems.splice(index, 1);
                 var formData = {
                     tableID: checkingTable.tableID,
+                    isBossCheck: true,
                 }
-                WorkOffFormUtil.updateBossAgree(formData)
+                // WorkOffFormUtil.updateBossAgree(formData)
+                WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-                        console.log(res.code + ", sendBossAgree");
+                        $scope.bossCheckTablesItems.splice(index, 1);
                     })
             }
 
@@ -526,19 +544,26 @@
                     showClose: false,
                 });
             }
-
-            $scope.sendDisagree_boss = function (checkingTable, index) {
-                $scope.bossCheckTablesItems.splice(index, 1);
+            //跟後臺溝通
+            $scope.sendDisagree_boss = function (checkingTable, index, rejectMsg) {
                 var formData = {
                     tableID: checkingTable.tableID,
+                    isSendReview: false,
+                    isBossCheck: false,
+                    isExecutiveCheck: false,
+                    isBossReject: true,
+                    isExecutiveReject: false,
+                    bossReject_memo: rejectMsg,
                 }
-                WorkOffFormUtil.updateDisAgree(formData)
+                // WorkOffFormUtil.updateDisAgree(formData)
+                WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-                        console.log(res.code + ", sendDisagree_boss");
+                        // console.log(res.code + ", sendDisagree_boss");
+                        $scope.bossCheckTablesItems.splice(index, 1);
                     })
             }
 
-
+            //主要工作Data
             var formDataTable = {};
 
             // Create Form
@@ -675,7 +700,7 @@
                     })
             }
 
-            // ***********************  update holiday Data ************************
+            // ***********************  更新假期確認 ************************
             $scope.updateUserHolidayData = function () {
                 var formData = vm.holidayForm;
                 HolidayDataForms.updateFormByFormDID(formData)
@@ -685,7 +710,7 @@
                     })
             }
 
-            // -------------find form ----------------------
+            // -------------選取 指定人員之 假期確認表 ----------------------
             $scope.findHolidayFormByUserDID = function () {
                 var formData = {
                     year: thisYear,

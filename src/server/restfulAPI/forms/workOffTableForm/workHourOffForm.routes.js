@@ -271,6 +271,37 @@ module.exports = function (app) {
         })
     })
 
+    // 休假單更新
+    // update table executive check
+    app.post(global.apiUrl.post_work_off_table_update, function (req, res) {
+        // console.log(req.body);
+        var keyArray = Object.keys(req.body);
+        var query = {};
+        for (var index = 0; index < keyArray.length; index++) {
+            var evalString = "query.";
+            evalString += keyArray[index];
+
+            var evalFooter = "req.body.";
+            evalFooter += keyArray[index];
+            eval(evalString + " = " + evalFooter);
+        }
+        // console.log(query);
+
+        WorkOffTableForm.update({
+            _id: req.body.tableID,
+        }, {
+            $set: query
+        }, function (err) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        })
+    })
+
     // fetch all executive tables
     app.post(global.apiUrl.post_work_off_table_fetch_all_executive, function (req, res) {
         WorkOffTableForm.aggregate(

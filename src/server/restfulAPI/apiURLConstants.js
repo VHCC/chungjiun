@@ -74,10 +74,16 @@ global.apiUrl = {
     post_work_off_table_find_by_table_id_array_and_parameters : '/api/post_work_off_table_find_by_table_id_array_and_parameters',
     post_work_off_table_item_find_by_user_did_executive : '/api/post_work_off_table_item_find_by_user_did_executive',
     post_work_off_table_item_find_by_user_did_boss : '/api/post_work_off_table_item_find_by_user_did_boss',
+    // @Deprecated
     post_work_off_table_update_send_review : '/api/updateWorkOffTableFormSendReview',
+    // @Deprecated
     post_work_off_table_update_executive_agree : '/api/post_work_off_table_update_executive_agree',
+    // @Deprecated
     post_work_off_table_update_boss_agree : '/api/post_work_off_table_update_boss_agree',
+    // @Deprecated
     post_work_off_table_update_disagree : '/api/post_work_off_table_update_disagree',
+    //***** 請假單更新
+    post_work_off_table_update : '/api/post_work_off_table_update',
     post_work_off_table_fetch_all_user : '/api/fetchUserWorkOffForm',
     post_work_off_table_fetch_all_executive : '/api/post_work_off_table_fetch_all_executive',
     post_work_off_table_fetch_all_boss : '/api/post_work_off_table_fetch_all_boss',
