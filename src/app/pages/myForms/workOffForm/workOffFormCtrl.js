@@ -19,6 +19,7 @@
                     'WorkOffTypeUtil',
                     'WorkOffFormUtil',
                     'NationalHolidayUtil',
+                    'WorkHourAddItemUtil',
                     'toastr',
                     'HolidayDataForms',
                     WorkOffFormCtrl
@@ -36,6 +37,7 @@
                                  WorkOffTypeUtil,
                                  WorkOffFormUtil,
                                  NationalHolidayUtil,
+                                 WorkHourAddItemUtil,
                                  toastr,
                                  HolidayDataForms) {
 
@@ -138,12 +140,17 @@
                     .success(function (res) {
                         if (res.payload.length > 0) {
                             vm.loginUserHolidayForm = res.payload[0];
+                            vm.loginUserHolidayForm.calculate_sick = $scope.showWorkOffCount(1);
+                            vm.loginUserHolidayForm.calculate_private = $scope.showWorkOffCount(0);
+                            vm.loginUserHolidayForm.calculate_observed = $scope.showWorkOffCount(2);
+                            vm.loginUserHolidayForm.calculate_special = $scope.showWorkOffCount(3);
                         } else {
                             HolidayDataForms.createForms(formData)
                                 .success(function (res) {
                                     vm.loginUserHolidayForm = res.payload;
                                 })
                         }
+                        fetchWorkOffTableData($scope.userDID, 1);
                     })
             }
 
@@ -173,7 +180,6 @@
                             // 取得 Table Data
                             WorkOffFormUtil.findWorkOffTableFormByTableIDArray(formDataTable)
                                 .success(function (res) {
-
                                     // 填入表單資訊
                                     $scope.tableData = {};
                                     for (var index = 0; index < res.payload.length; index++) {
@@ -205,16 +211,34 @@
                                         };
                                         $scope.specificUserTablesItems.push(detail);
                                     }
-                                    // console.log(workOffTableIDArray);
                                     console.log($scope.specificUserTablesItems);
+                                    if (userDID !== undefined) {
+                                        $scope.findHolidayFormByUserDID(userDID === undefined ? $scope.userDID : userDID);
+                                    } else {
+                                        $scope.getUserHolidayForm();
+                                    }
                                 })
                                 .error(function () {
                                     console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByTableIDArray');
                                 })
-
                         } else {
                             $scope.loading = false;
+                            if (userDID !== undefined) {
+                                $scope.findHolidayFormByUserDID(userDID === undefined ? $scope.userDID : userDID);
+                            } else {
+                                $scope.getUserHolidayForm();
+                            }
                         }
+                        $('.workOffFormDateInput').mask('100/M0/D0', {
+                            translation: {
+                                'M': {
+                                    pattern: /[01]/,
+                                },
+                                'D': {
+                                    pattern: /[0123]/,
+                                }
+                            }
+                        });
                     })
                     .error(function () {
                         console.log('ERROR WorkOffFormUtil.fetchUserWorkOffForm');
@@ -263,7 +287,7 @@
                                     , $scope.specificUserTablesItems[index].end_time);
                             }
                         }
-                        return result;
+                        return result / 8;
                     }
                 }
             }
@@ -703,35 +727,46 @@
             // ***********************  更新假期確認 ************************
             $scope.updateUserHolidayData = function () {
                 var formData = vm.holidayForm;
+                console.log(vm.holidayForm);
                 HolidayDataForms.updateFormByFormDID(formData)
                     .success(function (res) {
-                        // console.log(res.code);
                         toastr['success']('成功', '更新成功');
                     })
             }
 
             // -------------選取 指定人員之 假期確認表 ----------------------
-            $scope.findHolidayFormByUserDID = function () {
+            $scope.findHolidayFormByUserDID = function (userDID) {
                 var formData = {
                     year: thisYear,
-                    creatorDID: vm.user.selected._id
+                    creatorDID: userDID,
                 };
                 HolidayDataForms.findFormByUserDID(formData)
                     .success(function (res) {
                         if (res.payload.length > 0) {
                             vm.holidayForm = res.payload[0];
+                            console.log(vm.holidayForm);
+                            vm.holidayForm.calculate_sick = $scope.showWorkOffCount(1);
+                            vm.holidayForm.calculate_private = $scope.showWorkOffCount(0);
+                            vm.holidayForm.calculate_observed = $scope.showWorkOffCount(2);
+                            vm.holidayForm.calculate_special = $scope.showWorkOffCount(3);
+                            console.log(vm.holidayForm);
                         } else {
                             HolidayDataForms.createForms(formData)
                                 .success(function (res) {
                                     vm.holidayForm = res.payload;
                                 })
                         }
+                        fetchWorkOffTableData(userDID, 2);
                     })
             }
 
             // --------------- calculator ----------------
             $scope.total = function (a, b) {
                 return parseInt(a) + parseInt(b);
+            }
+
+            $scope.diff = function(a, b) {
+                return parseInt(a) - parseInt(b);
             }
 
             // --------------- document ready -----------------
@@ -754,7 +789,6 @@
                         }
                     }
                 });
-
             });
 
             // ***********************  國定假日設定 ************************
@@ -763,10 +797,6 @@
             $scope.nationalHolidayTablesItems = [];
 
             $scope.fetchNationHolidays = function () {
-                var formData = {
-                    year: thisYear,
-                };
-
                 $scope.nationalHolidayTablesItems = [];
                 var getData = {
                     year: thisYear,
@@ -849,6 +879,48 @@
                         $scope.fetchNationHolidays();
                     })
             }
+
+            /**
+                                 * 顯示加班單，目的找補休
+                                 * @param user
+                                 */
+            function fetchWorkOffTableData(userDID, type) {
+                var formData = {
+                    creatorDID: userDID,
+                    month: thisMonth,
+                }
+                WorkHourAddItemUtil.getWorkHourAddItems(formData)
+                    .success(function (res) {
+                        var tables = res.payload;
+                        var result = 0;
+                        for (var index = 0; index < tables.length; index++) {
+                            switch (tables[index].workAddType) {
+                                case 1:
+                                    break;
+                                case 2:
+                                    result += $scope.getHourDiffByTime(
+                                        tables[index].start_time,
+                                        tables[index].end_time);
+                                    break;
+                            }
+                        }
+                        switch (type) {
+                            // login User
+                            case 1:
+                                vm.loginUserHolidayForm.rest_observed = (result);
+                                break;
+                            // specific user
+                            case 2:
+                                vm.holidayForm.rest_observed = (result);
+                                break;
+                        }
+                        console.log(result);
+                    })
+                    .error(function () {
+                        console.log('ERROR  WorkHourAddItemUtil.getWorkHourAddItems')
+                    })
+            }
+
 
         } // End of function
     }
