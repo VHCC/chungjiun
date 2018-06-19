@@ -308,7 +308,7 @@
                             </div>
                         </div>
                     </td>
-                    <!--經理確認-->
+                    <!--主管確認-->
                     <td rowspan="2" style="vertical-align: inherit;">
                         <div ng-show="rowform1.$waiting || (table.isSendReview && !table.isBossCheck)">
                             <button class="btn btn-warning editable-table-button btn-xs"
@@ -324,6 +324,16 @@
                                 {{ showBoss(bossID)}}
                                 <br>
                                 確認完成
+                            </button>
+                        </div>
+                        <div ng-show="!table.isSendReview && table.isBossReject">
+                            <button class="btn btn-warning editable-table-button btn-xs"
+                                    style="color: black">
+                                {{ showBoss(bossID)}}
+                                <br>
+                                退回
+                                <br>
+                                原因：{{table.bossReject_memo}}
                             </button>
                         </div>
                     </td>
@@ -343,6 +353,16 @@
                                 行政
                                 <br>
                                 確認完成
+                            </button>
+                        </div>
+                        <div ng-show="!table.isSendReview && table.isExecutiveReject">
+                            <button class="btn btn-warning editable-table-button btn-xs"
+                                    style="color: black">
+                                行政
+                                <br>
+                                退回
+                                <br>
+                                原因：{{table.executiveReject_memo}}
                             </button>
                         </div>
                     </td>

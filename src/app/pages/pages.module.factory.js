@@ -192,17 +192,34 @@
                 findWorkOffTableFormByTableIDArray: function (formData) {
                     return http.post('/api/findWorkOffTableFormByTableIDArray', formData);
                 },
+                /**
+                                         * @Deprecated
+                                         */
                 updateWorkOffTableSendReview: function (formData) {
                     return http.post('/api/updateWorkOffTableFormSendReview', formData);
                 },
+                /**
+                                         * @Deprecated
+                                         */
                 updateExecutiveAgree: function(formData) {
                     return http.post('/api/post_work_off_table_update_executive_agree', formData);
                 },
+                /**
+                                         * @Deprecated
+                                         */
                 updateBossAgree: function(formData) {
                     return http.post('/api/post_work_off_table_update_boss_agree', formData);
                 },
+                /**
+                                         * @Deprecated
+                                         */
                 updateDisAgree: function(formData) {
                     return http.post('/api/post_work_off_table_update_disagree', formData);
+                },
+
+                // ***** workOff Item Update *****
+                updateWorkOffItem: function(formData) {
+                    return http.post('/api/post_work_off_table_update', formData);
                 },
                 //get the count for executive check
                 fetchAllExecutiveItem: function (formData) {
