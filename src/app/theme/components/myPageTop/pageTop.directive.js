@@ -12,17 +12,20 @@
           '$cookies',
           'toastr',
           '$window',
+          'NotificationUtil',
           '$document',
           function (scope,
                     cookies,
                     toastr,
                     window,
+                    NotificationUtil,
                     document) {
               return new myPageTopController(
                   scope,
                   cookies,
                   toastr,
                   window,
+                  NotificationUtil,
                   document)
           }]);
 
@@ -38,6 +41,7 @@
                      cookies,
                      toastr,
                      window,
+                     NotificationUtil,
                      document) {
       console.log("cookies.username= " + cookies.get('username'));
       console.log("cookies.userDID= " + cookies.get('userDID'));
@@ -58,6 +62,9 @@
               var entrance = window.document.getElementById('registerEntrance');
               entrance.parentNode.removeChild(entrance);
           }
+
+          NotificationUtil.showMsg('歡迎使用　崇峻系統', '瀏覽器通知系統　已啟用', 1);
+
       };
   }
 

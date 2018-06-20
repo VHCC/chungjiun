@@ -385,6 +385,44 @@
                 }
             }
         }])
+        .factory('NotificationUtil', ['$http', function (http) {
+            return {
+                showMsg: function (title, msg, level) {
+                    var iconPath = "";
+                    var tagLevel = "";
+                    switch (level) {
+                        case 1:
+                            iconPath = '/assets/img/Custom-Icon-Design-Pretty-Office-2-Success.ico'; // 設定 icon
+                            tagLevel = "info";
+                            break;
+                        case 2:
+                            iconPath = '/assets/img/Paomedia-Small-N-Flat-Sign-warning.ico'; // 設定 icon
+                            tagLevel = "notice";
+                            break;
+                        case 3:
+                            break;
+                    }
+
+                    var notifyConfig = {
+                        body: msg, // 設定內容
+                        icon: iconPath, // 設定 icon
+                        tag: tagLevel // 設定標籤
+                    };
+
+                    if (Notification.permission === 'default' || Notification.permission === 'undefined') {
+                        Notification.requestPermission(function (permission) {
+                            // permission 可為「granted」（同意）、「denied」（拒絕）和「default」（未授權）
+                            // 在這裡可針對使用者的授權做處理
+                            if (permission === 'granted') { // 使用者同意授權
+                                new Notification(title, notifyConfig); // 建立通知
+                            }
+                        });
+                    } else {
+                        new Notification(title, notifyConfig); // 建立通知
+                    }
+                }
+            }
+        }])
     ;
 
 
