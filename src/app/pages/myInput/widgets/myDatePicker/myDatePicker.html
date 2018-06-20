@@ -3,7 +3,7 @@
         <input type="text"
                class="form-control myDatePicker"
                uib-datepicker-popup="{{format}}"
-               datepicker-options="options"
+               datepicker-options=myOptions
                ng-model="myDT"
                is-open="opened"
                id="myDT"
@@ -17,7 +17,6 @@
                     ng-click="openDatePicker()">
                 <i class="glyphicon glyphicon-calendar"></i>
             </button>
-
-          </span>
+        </span>
     </my>
 </div>
