@@ -63,8 +63,12 @@
               entrance.parentNode.removeChild(entrance);
           }
 
-          var socket = io();
-          socket.connect('http://localhost:8001');
+          var socket = io('http://localhost:9000');
+
+          socket.on("greet", function (msg) {
+              NotificationUtil.showMsg('Notification', msg, 2);
+
+          });
 
           NotificationUtil.showMsg('歡迎使用　崇峻系統', '瀏覽器通知系統　已啟用', 1);
 

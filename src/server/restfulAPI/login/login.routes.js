@@ -4,11 +4,9 @@ var userModel = require('../models/user');
 module.exports = function(app) {
     'use strict';
 // application -------------------------------------------------------------
-
 // ----- define routes
     // find
     app.post(global.apiUrl.post_login_user_find, function(req, res) {
-
         userModel.find({
             email : req.body.email,
 

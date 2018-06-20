@@ -17,26 +17,41 @@ var bodyParser = require('body-parser');
 // 加入這兩行
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
+const socketPort = 9000;
+
+server.listen(socketPort, function () {
+    console.log("--------- Socket Server Started. http://localhost:" + socketPort + " --------------");
+});
+
+var util = require('util');
+var events = require('events');
+
+var EventEmitter = function() {
+};
+
+util.inherits(EventEmitter, events.EventEmitter);
+
+EventEmitter.prototype.response = function(msg) {
+    this.emit('response', msg);
+};
+
+const mainEventEmitter = new EventEmitter();
+global.qqq = mainEventEmitter;
 
 // 當發生連線事件
 // io.on('connection', connection);
 // 當發生離線事件
 
-// function connection(socket) {
-//     console.log('Hello!');  // 顯示 Hello!
-//     socket.on('disconnect', function () {
-//         console.log('Bye~');  // 顯示 bye~
-//     })
-// }
-
 io.on('connection', function (socket){
-    console.log('connection');
+    console.log('------- Socket Connect Success ------');
+
+    mainEventEmitter.on('response', function(msg) {
+        socket.emit("greet", msg);
+    });
+
     socket.on('disconnect', function () {
         console.log('Bye~');  // 顯示 bye~
     })
-    socket.on('CH01', function (from, msg) {
-        console.log('MSG', from, ' saying ', msg);
-    });
 });
 
 
