@@ -145,9 +145,13 @@
                             vm.loginUserHolidayForm.calculate_private = $scope.showWorkOffCount(0);
                             vm.loginUserHolidayForm.calculate_observed = $scope.showWorkOffCount(2);
                             vm.loginUserHolidayForm.calculate_special = $scope.showWorkOffCount(3);
+                            vm.loginUserHolidayForm.calculate_married = $scope.showWorkOffCount(4);
+                            vm.loginUserHolidayForm.calculate_mourning = $scope.showWorkOffCount(5);
+                            vm.loginUserHolidayForm.calculate_official = $scope.showWorkOffCount(6);
+                            vm.loginUserHolidayForm.calculate_workinjury = $scope.showWorkOffCount(7);
+                            vm.loginUserHolidayForm.calculate_maternity = $scope.showWorkOffCount(8);
+                            vm.loginUserHolidayForm.calculate_paternity = $scope.showWorkOffCount(9);
 
-                            //TODO 處理特別假期
-                            console.log(vm.loginUserHolidayForm);
                         } else {
                             HolidayDataForms.createForms(formData)
                                 .success(function (res) {
@@ -255,47 +259,41 @@
             $scope.showWorkOffCount = function(workOffType) {
                 var index = 0;
                 var result = 0;
+                for (index = 0; index < $scope.specificUserTablesItems.length; index ++) {
+                    if ($scope.specificUserTablesItems[index].workOffType === workOffType && $scope.specificUserTablesItems[index].isExecutiveCheck) {
+                        result += $scope.getHourDiffByTime($scope.specificUserTablesItems[index].start_time
+                            , $scope.specificUserTablesItems[index].end_time);
+                    }
+                }
                 switch (workOffType) {
                     // 事
                     case 0: {
-                        for (index = 0; index < $scope.specificUserTablesItems.length; index ++) {
-                            if ($scope.specificUserTablesItems[index].workOffType === workOffType && $scope.specificUserTablesItems[index].isExecutiveCheck) {
-                                result += $scope.getHourDiffByTime($scope.specificUserTablesItems[index].start_time
-                                    , $scope.specificUserTablesItems[index].end_time);
-                            }
-                        }
                         return result;
                     }
                     // 病
                     case 1: {
-                        for (index = 0; index < $scope.specificUserTablesItems.length; index ++) {
-                            if ($scope.specificUserTablesItems[index].workOffType === workOffType && $scope.specificUserTablesItems[index].isExecutiveCheck) {
-                                result += $scope.getHourDiffByTime($scope.specificUserTablesItems[index].start_time
-                                    , $scope.specificUserTablesItems[index].end_time);
-                            }
-                        }
                         return result;
                     }
                     // 補
                     case 2: {
-                        for (index = 0; index < $scope.specificUserTablesItems.length; index ++) {
-                            if ($scope.specificUserTablesItems[index].workOffType === workOffType && $scope.specificUserTablesItems[index].isExecutiveCheck) {
-                                result += $scope.getHourDiffByTime($scope.specificUserTablesItems[index].start_time
-                                    , $scope.specificUserTablesItems[index].end_time);
-                            }
-                        }
                         return result;
                     }
                     // 特
                     case 3: {
-                        for (index = 0; index < $scope.specificUserTablesItems.length; index ++) {
-                            if ($scope.specificUserTablesItems[index].workOffType === workOffType && $scope.specificUserTablesItems[index].isExecutiveCheck) {
-                                result += $scope.getHourDiffByTime($scope.specificUserTablesItems[index].start_time
-                                    , $scope.specificUserTablesItems[index].end_time);
-                            }
-                        }
                         return result / 8;
                     }
+                    case 4:
+                        return result;
+                    case 5:
+                        return result / 8;
+                    case 6:
+                        return result;
+                    case 7:
+                        return result / 8;
+                    case 8:
+                        return result;
+                    case 9:
+                        return result;
                 }
             }
 
@@ -757,6 +755,12 @@
                             vm.holidayForm.calculate_private = $scope.showWorkOffCount(0);
                             vm.holidayForm.calculate_observed = $scope.showWorkOffCount(2);
                             vm.holidayForm.calculate_special = $scope.showWorkOffCount(3);
+                            vm.holidayForm.calculate_married = $scope.showWorkOffCount(4);
+                            vm.holidayForm.calculate_mourning = $scope.showWorkOffCount(5);
+                            vm.holidayForm.calculate_official = $scope.showWorkOffCount(6);
+                            vm.holidayForm.calculate_workinjury = $scope.showWorkOffCount(7);
+                            vm.holidayForm.calculate_maternity = $scope.showWorkOffCount(8);
+                            vm.holidayForm.calculate_paternity = $scope.showWorkOffCount(9);
                             console.log(vm.holidayForm);
                         } else {
                             HolidayDataForms.createForms(formData)
@@ -913,7 +917,6 @@
                                 vm.holidayForm.rest_observed = (result);
                                 break;
                         }
-                        console.log(result);
                     })
                     .error(function () {
                         console.log('ERROR  WorkHourAddItemUtil.getWorkHourAddItems')

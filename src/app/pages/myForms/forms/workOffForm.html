@@ -149,22 +149,28 @@
                             workOffFormCtrlVm.loginUserHolidayForm.calculate_special)}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_married}}</t>
+                        <t>{{diff(workOffFormCtrlVm.loginUserHolidayForm.rest_married,
+                            workOffFormCtrlVm.loginUserHolidayForm.calculate_married)}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_mourning}}</t>
+                        <t>{{diff(workOffFormCtrlVm.loginUserHolidayForm.rest_mourning,
+                            workOffFormCtrlVm.loginUserHolidayForm.calculate_mourning)}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_official}}</t>
+                        <t>{{diff(workOffFormCtrlVm.loginUserHolidayForm.rest_official,
+                            workOffFormCtrlVm.loginUserHolidayForm.calculate_official)}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_workinjury}}</t>
+                        <t>{{diff(workOffFormCtrlVm.loginUserHolidayForm.rest_workinjury,
+                            workOffFormCtrlVm.loginUserHolidayForm.calculate_workinjury)}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_maternity}}</t>
+                        <t>{{diff(workOffFormCtrlVm.loginUserHolidayForm.rest_maternity,
+                            workOffFormCtrlVm.loginUserHolidayForm.calculate_maternity)}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_paternity}}</t>
+                        <t>{{diff(workOffFormCtrlVm.loginUserHolidayForm.rest_paternity,
+                            workOffFormCtrlVm.loginUserHolidayForm.calculate_paternity)}}</t>
                     </td>
                 </tr>
 
@@ -195,33 +201,27 @@
                         </t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{total(workOffFormCtrlVm.loginUserHolidayForm.calculate_married,
-                            workOffFormCtrlVm.loginUserHolidayForm.rest_married)}}
+                        <t>{{ workOffFormCtrlVm.loginUserHolidayForm.rest_married}}
                         </t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{total(workOffFormCtrlVm.loginUserHolidayForm.calculate_mourning,
-                            workOffFormCtrlVm.loginUserHolidayForm.rest_mourning)}}
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_mourning}}
                         </t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{total(workOffFormCtrlVm.loginUserHolidayForm.calculate_official,
-                            workOffFormCtrlVm.loginUserHolidayForm.rest_official)}}
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_official}}
                         </t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{total(workOffFormCtrlVm.loginUserHolidayForm.calculate_workinjury,
-                            workOffFormCtrlVm.loginUserHolidayForm.rest_workinjury)}}
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_workinjury}}
                         </t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{total(workOffFormCtrlVm.loginUserHolidayForm.calculate_maternity,
-                            workOffFormCtrlVm.loginUserHolidayForm.rest_maternity)}}
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_maternity}}
                         </t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{total(workOffFormCtrlVm.loginUserHolidayForm.calculate_paternity,
-                            workOffFormCtrlVm.loginUserHolidayForm.rest_paternity)}}
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_paternity}}
                         </t>
                     </td>
                 </tr>
