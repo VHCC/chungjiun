@@ -267,6 +267,7 @@ module.exports = function (app) {
                 code: 200,
                 error: global.status._200,
             });
+
         })
     })
 
@@ -286,7 +287,7 @@ module.exports = function (app) {
                 }
             })
         }
-
+        global.qqq.response('good');
         res.status(200).send({
             code: 200,
             error: global.status._200,
