@@ -12,7 +12,33 @@ var path = require('path');
 //var favicon = require('serve-favicon');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
-var http = require('http');
+// var http = require('http');
+
+// 加入這兩行
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+
+// 當發生連線事件
+// io.on('connection', connection);
+// 當發生離線事件
+
+// function connection(socket) {
+//     console.log('Hello!');  // 顯示 Hello!
+//     socket.on('disconnect', function () {
+//         console.log('Bye~');  // 顯示 bye~
+//     })
+// }
+
+io.on('connection', function (socket){
+    console.log('connection');
+    socket.on('disconnect', function () {
+        console.log('Bye~');  // 顯示 bye~
+    })
+    socket.on('CH01', function (from, msg) {
+        console.log('MSG', from, ' saying ', msg);
+    });
+});
+
 
 // var index = require('./routes/index');
 // var users = require('./routes/users');
