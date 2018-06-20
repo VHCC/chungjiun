@@ -89,8 +89,8 @@
 
         // notification
         $scope.changePassword = function () {
-            console.log("old= " + $scope.password);
-            console.log("new= " + $('[id="inputConfirmPassword"]')[0].value);
+            // console.log("old= " + $scope.password);
+            // console.log("new= " + $('[id="inputConfirmPassword"]')[0].value);
             if ($('[id="inputPassword"]')[0].value !== $('[id="inputConfirmPassword"]')[0].value) {
                 toastr['warning']('請確認新密碼輸入是否相同', '儲存失敗');
                 return;
@@ -107,6 +107,7 @@
 
             User.updatePassword(formData)
                 .success(function () {
+                    $scope.password = $('[id="inputConfirmPassword"]')[0].value
                     toastr['success']('成功', '變更密碼');
                 })
         }
