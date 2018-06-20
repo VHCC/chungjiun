@@ -62,6 +62,7 @@
                     vm.projects = allProjects;
                 });
 
+            // 主管審核、行政確認
             $scope.initUser = function () {
                 User.getAllUsers()
                     .success(function (allUsers) {
@@ -144,6 +145,9 @@
                             vm.loginUserHolidayForm.calculate_private = $scope.showWorkOffCount(0);
                             vm.loginUserHolidayForm.calculate_observed = $scope.showWorkOffCount(2);
                             vm.loginUserHolidayForm.calculate_special = $scope.showWorkOffCount(3);
+
+                            //TODO 處理特別假期
+                            console.log(vm.loginUserHolidayForm);
                         } else {
                             HolidayDataForms.createForms(formData)
                                 .success(function (res) {
@@ -229,8 +233,11 @@
                                 $scope.getUserHolidayForm();
                             }
                         }
-                        $('.workOffFormDateInput').mask('100/M0/D0', {
+                        $('.workOffFormDateInput').mask('20Y0/M0/D0', {
                             translation: {
+                                'Y': {
+                                    pattern: /[0123]/,
+                                },
                                 'M': {
                                     pattern: /[01]/,
                                 },
@@ -361,6 +368,7 @@
 
             $scope.changeWorkOffType = function (dom) {
                 dom.$parent.table.workOffType = dom.workOffType.type;
+                dom.$parent.reloadDatePicker(dom.workOffType.type);
             }
 
             // 休假規則，未滿一小算一小
@@ -779,16 +787,7 @@
                         }
                     }
                 });
-                $('.workOffFormDateInput').mask('100/M0/D0', {
-                    translation: {
-                        'M': {
-                            pattern: /[01]/,
-                        },
-                        'D': {
-                            pattern: /[0123]/,
-                        }
-                    }
-                });
+
             });
 
             // ***********************  國定假日設定 ************************

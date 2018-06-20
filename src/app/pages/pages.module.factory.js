@@ -355,6 +355,18 @@
                             return "補休";
                         case 3:
                             return "特休";
+                        case 4:
+                            return "婚假";
+                        case 5:
+                            return "喪假";
+                        case 6:
+                            return "公假";
+                        case 7:
+                            return "公傷假";
+                        case 8:
+                            return "產假";
+                        case 9:
+                            return "陪產假";
                     }
                 }
             }

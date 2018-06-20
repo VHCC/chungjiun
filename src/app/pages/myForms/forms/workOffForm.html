@@ -229,7 +229,7 @@
                 </tbody>
             </table>
         </div>
-        <h3 class="with-line">{{username}} {{year}}年休假單</h3>
+        <h3 class="with-line">{{username}} {{year}}年 休假單</h3>
 
         <div class="row" ng-init="getWorkOffTable()">
             <table class="table table-bordered table-hover table-condensed"
@@ -263,7 +263,7 @@
                     <!--日期-->
                     <td class="form-group" style="vertical-align: inherit; text-align: center">
                         <my ng-show="!rowform1.$waiting && !table.isSendReview">
-                            <my-date-picker qwert="MM/dd" old="{{showDate(table)}}"></my-date-picker>
+                            <my-date-picker formatted="MM/dd" default="{{showDate(table)}}"></my-date-picker>
                         </my>
                         <my ng-show="rowform1.$waiting ||table.isSendReview">
                             {{showDate(table)}}
@@ -277,7 +277,7 @@
                     <!--假別-->
                     <td class="form-group" style="vertical-align: inherit; text-align: center">
                         <my ng-show="!rowform1.$waiting && !table.isSendReview">
-                            <my-selector type="{{table.workOffType}}"></my-selector>
+                            <my-selector type="{{table.workOffType}}" form="{{workOffFormCtrlVm.loginUserHolidayForm}}"></my-selector>
                         </my>
                         <my ng-show="rowform1.$waiting ||table.isSendReview">
                             {{showWorkOffTypeString(table.workOffType)}}
