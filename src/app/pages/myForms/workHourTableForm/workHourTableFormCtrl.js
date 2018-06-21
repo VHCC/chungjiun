@@ -23,6 +23,7 @@
                 'WorkHourAddItemUtil',
                 'WorkOffFormUtil',
                 'NationalHolidayUtil',
+                'WorkAddConfirmFormUtil',
                 'editableOptions',
                 'editableThemes',
                 WorkHourTableCtrl
@@ -44,6 +45,7 @@
                                WorkHourAddItemUtil,
                                WorkOffFormUtil,
                                NationalHolidayUtil,
+                               WorkAddConfirmFormUtil,
                                editableOptions,
                                editableThemes) {
         var vm = this;
@@ -1832,24 +1834,39 @@
          * @param user
          */
         function showWorkOffTableData(user) {
-            // 主要顯示
-            $scope.workAddConfirmTablesItems = [];
-
             var formData = {
-                creatorDID: user._id,
-                // prjDID: null,
-                // create_formDate: null,
-                // day: null,
+                creatorDID: user,
+                year: thisYear,
                 month: thisMonth,
             }
-            WorkHourAddItemUtil.getWorkHourAddItems(formData)
+            WorkAddConfirmFormUtil.fetchWorkAddConfirmFormByUserDID(formData)
                 .success(function (res) {
-                    // $scope.workAddConfirmTablesItems = res.payload;
-                    operateWorkHourAddArray(res.payload);
+                    if (res.payload.length > 0) {
+                        $scope.workAddConfirmTablesFromServerOldID = res.payload[0]._id;
+                        $scope.workAddConfirmTablesFromServer = JSON.parse(res.payload[0].formTables);
+                    }
+                    var formData = {
+                        creatorDID: user._id,
+                        // prjDID: null,
+                        // create_formDate: null,
+                        // day: null,
+                        month: thisMonth,
+                    }
+                    WorkHourAddItemUtil.getWorkHourAddItems(formData)
+                        .success(function (res) {
+                            // $scope.workAddConfirmTablesItems = res.payload;
+                            operateWorkHourAddArray(res.payload);
+                        })
+                        .error(function () {
+                            console.log('ERROR  WorkHourAddItemUtil.getWorkHourAddItems')
+                        })
                 })
-                .error(function () {
-                    console.log('ERROR  WorkHourAddItemUtil.getWorkHourAddItems')
-                })
+            // 主要顯示
+            $scope.workAddConfirmTablesItems = [];
+            $scope.workAddConfirmTablesFromServer = [];
+            $scope.workAddConfirmTablesFromServerOldID = undefined;
+
+
         }
 
         //加班單核薪專用
@@ -1879,6 +1896,11 @@
                     // userHourSalary: 0,
                     // 國定假日
                     isNH: false,
+
+                    // 加班時數分配紀錄
+                    type1_13: 0,
+                    type1_23: 0,
+                    type1_1: 0,
                 }
                 if (workAddTable[$scope.showDate(tables[index])] === undefined) {
                     workAddItem.date = $scope.showDate(tables[index]);
@@ -1921,7 +1943,13 @@
                             break;
                     }
                 }
+                if ($scope.workAddConfirmTablesFromServer[$scope.showDate(tables[index])] !== undefined) {
+                    workAddTable[$scope.showDate(tables[index])].type1_1 = $scope.workAddConfirmTablesFromServer[$scope.showDate(tables[index])].type1_1;
+                    workAddTable[$scope.showDate(tables[index])].type1_13 = $scope.workAddConfirmTablesFromServer[$scope.showDate(tables[index])].type1_13;
+                    workAddTable[$scope.showDate(tables[index])].type1_23 = $scope.workAddConfirmTablesFromServer[$scope.showDate(tables[index])].type1_23;
+                }
             }
+
             $scope.workAddConfirmTablesItems = workAddTable;
             // console.log($scope.workAddConfirmTablesItems);
         }
@@ -1976,7 +2004,9 @@
                         break;
                     case 8:
                         // result += (array[index].addWork * array[index].userHourSalary);
-                        result += (array[index].addWork * (array[index].userMonthSalary/240));
+                        // result += (array[index].addWork * (array[index].userMonthSalary/240));
+                        result += (((array[index].type1_13 * 1.33) + (array[index].type1_23 * 1.66) + (array[index].type1_1 * 2))
+                            * (array[index].userMonthSalary/240));
                         result = $scope.formatFloat(result, 2);
                         break;
                 }
@@ -2441,6 +2471,30 @@
                     if (index < forms.length) {
                         $scope.setReviewList(forms, index, arrayResult, type);
                     }
+                })
+        }
+
+        // ****************  加班核准 點擊版********************
+
+        // 加班單核薪 點擊版
+        $scope.qwer = function () {
+            if ($scope.workAddTablesRawData.length === 0) {
+                toastr.warning('沒有任何加班單', 'Warning');
+            }
+
+            var formData = {
+                creatorDID: vm.workAdd.selected._id,
+                year: thisYear,
+                month: thisMonth,
+                formTables: $scope.workAddConfirmTablesItems,
+                oldFormID: $scope.workAddConfirmTablesFromServerOldID,
+            }
+
+            WorkAddConfirmFormUtil.createWorkAddConfirmForm(formData)
+                .success(function () {
+                    toastr.success('成功', 'Success');
+                })
+                .error(function () {
                 })
         }
 

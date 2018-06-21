@@ -106,4 +106,8 @@ global.apiUrl = {
     post_user_find_by_userdid : '/api/userFindByuserDID',
     post_user_change_password_by_userdid : '/api/userChangePasswordByuserDID',
     post_user_update_profile : '/api/userUpdateProfile',
+
+    // WorkAddConfirmFormUtil
+    post_create_work_add_confirm_form : '/api/post_create_work_add_confirm_form',
+    post_fetch_work_add_confirm_form_by_user_id : '/api/post_fetch_work_add_confirm_form_by_user_id',
 };

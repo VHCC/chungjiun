@@ -274,6 +274,16 @@
                 },
             }
         }])
+        .factory('WorkAddConfirmFormUtil', ['$http', function (http) {
+            return {
+                createWorkAddConfirmForm: function (formData) {
+                    return http.post('/api/post_create_work_add_confirm_form', formData);
+                },
+                fetchWorkAddConfirmFormByUserDID: function (formData) {
+                    return http.post('/api/post_fetch_work_add_confirm_form_by_user_id', formData);
+                }
+            }
+        }])
         .factory('ProjectUtil', function () {
             return {
                 getTypeText: function (type) {
