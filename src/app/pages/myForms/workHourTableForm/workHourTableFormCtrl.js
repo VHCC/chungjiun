@@ -1315,6 +1315,7 @@
                     tableList[index] = $scope.tablesItems[index].tableID;
                 }
                 var formData = {
+                    msgTargetID: cookies.get('bossID'),
                     tableArray: tableList,
                 }
                 WorkHourUtil.updateTotalTableSendReview(formData)

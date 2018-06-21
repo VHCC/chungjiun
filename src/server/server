@@ -8,6 +8,7 @@ require('../app/pages/pages.order');
 require('./restfulAPI/apiURLConstants');
 require('./res/constants/statusCodeString');
 require('./res/constants/logString');
+require('./res/constants/eventString');
 
 //load serverConfig.js
 const app = require('./config/serverConfig');
