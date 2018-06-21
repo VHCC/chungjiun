@@ -1,0 +1,23 @@
+<div>
+    <div class="modal-header bg-info">
+        <i class="ion-android-info modal-icon"></i>
+        <strong>Memo</strong>
+    </div>
+    <div class="modal-body text-center">
+        <label >Memo</label>
+        <input type="text" class="form-control" placeholder="請填寫Memo"
+               value="{{originMemo}}"
+              ng-disabled="!editableFlag"
+               ng-model="originMemo" required>
+
+    </div>
+    <div class="modal-footer" ng-show="editableFlag">
+        <button type="button" class="btn btn-danger"
+                ng-click="saveMemo()">確定
+        </button>
+        <button type="button"
+                class="btn btn-primary"
+                ng-click="closeDialog()">取消
+        </button>
+    </div>
+</div>

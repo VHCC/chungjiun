@@ -2510,5 +2510,34 @@
             return true;
         }
 
+        // 編輯Memo
+        $scope.editMemo = function (table, type, editable) {
+            $scope.showMemoEditor(table, type, editable);
+        }
+
+        $scope.showMemoEditor = function (table, type, editable) {
+            $uibModal.open({
+                animation: true,
+                controller: 'MyWorkHourTable_EditMemoModalCtrl',
+                templateUrl: 'app/pages/myModalTemplate/myWorkHourTableFormEditMemo_Modal.html',
+                resolve: {
+                    table: function () {
+                        return table;
+                    },
+                    parent: function () {
+                        return $scope;
+                    },
+                    memoType: function () {
+                        return type;
+                    },
+                    editableFlag: function () {
+                        return editable;
+                    },
+                }
+            }).result.then(function () {
+                toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
+            });
+        }
+
     } // function End line
 })();
