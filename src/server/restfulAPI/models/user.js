@@ -39,6 +39,11 @@ module.exports = mongoose.model('User', {
     userMonthSalary: {
         type: Number,
         default: 0
+    },
+
+    // 打卡機編號
+    machineDID: {
+        type: String,
     }
 
 
