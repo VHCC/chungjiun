@@ -59,6 +59,7 @@ module.exports = function (app) {
                 name: req.body.userName,
                 userMonthSalary: req.body.userMonthSalary,
                 bossID: req.body.bossID,
+                machineDID: req.body.machineDID,
             }
         }, function (err) {
             if (err) {

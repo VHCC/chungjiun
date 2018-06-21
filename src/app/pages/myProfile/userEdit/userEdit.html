@@ -167,7 +167,7 @@
                         </div>
                     </div>
                 </div>
-                <!--時薪-->
+                <!--月薪-->
                 <div class="row" ng-if="userEditCtrlVm.user.selected">
                     <div class="col-md-6">
                         <div class="form-group row clearfix">
@@ -186,6 +186,22 @@
                                            value=" {{userEditCtrlVm.userMonthSalary}}"
                                            required>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--打卡機編號-->
+                <div class="row" ng-if="userEditCtrlVm.user.selected">
+                    <div class="col-md-6">
+                        <div class="form-group row clearfix">
+                            <label for="inputFirstName" class="col-md-3 control-label">打卡機編號</label>
+                            <div class="col-md-9">
+                                <input type="text"
+                                       ng-model="userEditCtrlVm.machineDID"
+                                       id="userMachineDID"
+                                       class="form-control"
+                                       placeholder="請輸入打卡機編號"
+                                       value=" {{userEditCtrlVm.machineDID}}">
                             </div>
                         </div>
                     </div>

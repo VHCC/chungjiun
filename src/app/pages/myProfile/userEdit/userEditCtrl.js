@@ -143,6 +143,7 @@
                 roleType: vm.userRole.roleType,
                 userMonthSalary: $('#userMonthSalary')[0].value,
                 bossID: vm.userBoss._id,
+                machineDID: $('#userMachineDID')[0].value,
             }
 
             // console.log(formData);
@@ -190,6 +191,7 @@
 
         $scope.selectUserProfile = function (user) {
             vm.userMonthSalary = user.userMonthSalary;
+            vm.machineDID = user.machineDID;
             // user Role
             var selectedRole = [];
             if (user.roleType !== 100) {
