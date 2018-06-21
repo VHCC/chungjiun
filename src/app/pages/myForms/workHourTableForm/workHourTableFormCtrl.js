@@ -438,13 +438,13 @@
                                         executiveReject_memo: res.payload[index].executiveReject_memo,
 
                                         // TOTAL
-                                        hourTotal: res.payload[index].mon_hour +
-                                        res.payload[index].tue_hour +
-                                        res.payload[index].wes_hour +
-                                        res.payload[index].thu_hour +
-                                        res.payload[index].fri_hour +
-                                        res.payload[index].sat_hour +
-                                        res.payload[index].sun_hour,
+                                        hourTotal: parseInt(res.payload[index].mon_hour, 10) +
+                                        parseInt(res.payload[index].tue_hour, 10) +
+                                        parseInt(res.payload[index].wes_hour, 10) +
+                                        parseInt(res.payload[index].thu_hour, 10) +
+                                        parseInt(res.payload[index].fri_hour, 10) +
+                                        parseInt(res.payload[index].sat_hour, 10) +
+                                        parseInt(res.payload[index].sun_hour, 10),
                                         hourAddTotal: res.payload[index].mon_hour_add +
                                         res.payload[index].tue_hour_add +
                                         res.payload[index].wes_hour_add +
@@ -482,16 +482,17 @@
                 "table.sat_hour",
                 "table.sun_hour",
             ]
-            var targetString = obj.$parent.$editable.name
+            var targetString = obj.$parent.$editable.name;
             var result = 0;
+            // 加總非編輯欄位
             for (var index = 0; index < stringtable.length; index++) {
                 if (targetString === stringtable[index]) {
                     continue;
                 }
-                var oldValueString = 'obj.$parent.$parent.' + stringtable[index];
+                var oldValueString = 'parseInt(obj.$parent.$parent.' + stringtable[index] + ', 10)';
                 result += eval(oldValueString);
             }
-            var newValue = obj.$parent.$data;
+            var newValue = parseInt(obj.$parent.$data, 10);
 
             obj.$parent.$parent.table.hourTotal = newValue + result;
 
@@ -2496,6 +2497,17 @@
                 })
                 .error(function () {
                 })
+        }
+
+        $scope.maskInput = function () {
+            $('.inputLimited').mask('M', {
+                translation: {
+                    'M': {
+                        pattern: /[012345678]/,
+                    },
+                }
+            });
+            return true;
         }
 
     } // function End line

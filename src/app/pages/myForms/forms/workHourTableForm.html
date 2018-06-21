@@ -164,11 +164,10 @@
                 </td>
 
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    <span editable-number="table.mon_hour"
+                    <span editable-text="table.mon_hour"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
-                          e-min="0"
-                          e-step="0.5"
+                          e-class="inputLimited"
                           id="mon_hour"
                           e-required>{{ table.mon_hour || 0 }}</span>
                 </td>
@@ -179,11 +178,10 @@
                          e-required>{{ table.mon_memo}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    <span editable-number="table.tue_hour"
+                    <span editable-text="table.tue_hour"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
-                          e-min="0"
-                          e-step="0.5"
+                          e-class="inputLimited"
                           id="tue_hour"
                           e-required>{{ table.tue_hour || 0 }}</span>
                 </td>
@@ -194,11 +192,10 @@
                           e-required>{{ table.tue_memo}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    <span editable-number="table.wes_hour"
+                    <span editable-text="table.wes_hour"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
-                          e-min="0"
-                          e-step="0.5"
+                          e-class="inputLimited"
                           id="wes_hour"
                           e-required>{{ table.wes_hour || 0 }}</span>
                 </td>
@@ -209,11 +206,10 @@
                           e-required>{{ table.wes_memo}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    <span editable-number="table.thu_hour"
+                    <span editable-text="table.thu_hour"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
-                          e-min="0"
-                          e-step="0.5"
+                          e-class="inputLimited"
                           id="thu_hour"
                           e-required>{{ table.thu_hour || 0}}</span>
                 </td>
@@ -224,11 +220,10 @@
                           e-required>{{ table.thu_memo}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    <span editable-number="table.fri_hour"
+                    <span editable-text="table.fri_hour"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
-                          e-min="0"
-                          e-step="0.5"
+                          e-class="inputLimited"
                           id="fri_hour"
                           e-required>{{ table.fri_hour || 0}}</span>
                 </td>
@@ -239,11 +234,10 @@
                          e-required>{{ table.fri_memo}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    <span editable-number="table.sat_hour"
+                    <span editable-text="table.sat_hour"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
-                          e-min="0"
-                          e-step="0.5"
+                          e-class="inputLimited"
                           id="sat_hour"
                           e-required>{{ table.sat_hour || 0}}</span>
                 </td>
@@ -254,11 +248,10 @@
                           e-required>{{ table.sat_memo}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    <span editable-number="table.sun_hour"
+                    <span editable-text="table.sun_hour"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
-                          e-min="0"
-                          e-step="0.5"
+                          e-class="inputLimited"
                           id="sun_hour"
                           e-required>{{ table.sun_hour || 0}}</span>
                 </td>
@@ -562,7 +555,7 @@
             </tr>
             </tbody>
 
-            <tfoot>
+            <tfoot ng-if="maskInput()">
             <!--休假-->
             <tr>
                 <td colspan="2" rowspan="3"></td>
@@ -716,7 +709,7 @@
             </tfoot>
         </table>
         <hr>
-        <section class="col-md-12">
+        <section class="col-md-12" >
             <button progress-button="createSubmit(1500, false)"
                     style="float: inherit;"
                     id="btnCreate"
