@@ -224,7 +224,9 @@
             <tr class="row1" style="vertical-align: inherit; text-align: center">
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.mon_hour_add > 0)"
                     ng-click="showWorkAddCheck(table.mon_hour_add, table, 1)"
+                    ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="table.mon_hour_add"
                           e-form="rowform1"
@@ -247,7 +249,9 @@
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.tue_hour_add > 0)"
                     ng-click="showWorkAddCheck(table.tue_hour_add, table, 2)"
+                    ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="table.tue_hour_add"
                           e-form="rowform1"
@@ -264,7 +268,9 @@
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.wes_hour_add > 0)"
                     ng-click="showWorkAddCheck(table.wes_hour_add, table, 3)"
+                    ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="table.wes_hour_add"
                           e-form="rowform1"
@@ -281,7 +287,9 @@
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.thu_hour_add > 0)"
                     ng-click="showWorkAddCheck(table.thu_hour_add, table, 4)"
+                    ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="table.thu_hour_add"
                           e-form="rowform1"
@@ -298,7 +306,9 @@
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.fri_hour_add > 0)"
                     ng-click="showWorkAddCheck(table.fri_hour_add, table, 5)"
+                    ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="table.fri_hour_add"
                           e-form="rowform1"
@@ -315,7 +325,9 @@
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.sat_hour_add > 0)"
                     ng-click="showWorkAddCheck(table.sat_hour_add, table, 6)"
+                    ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="table.sat_hour_add"
                           e-form="rowform1"
@@ -332,7 +344,9 @@
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
+                    ng-mouseover="hover = (table.sun_hour_add > 0)"
                     ng-click="showWorkAddCheck(table.sun_hour_add, table, 7)"
+                    ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="table.sun_hour_add"
                           e-form="rowform1"

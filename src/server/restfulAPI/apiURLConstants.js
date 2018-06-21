@@ -67,6 +67,7 @@ global.apiUrl = {
     post_work_hour_work_add_get_items : '/api/post_work_hour_work_add_get_items',
     post_work_hour_work_remove_related_work_add_items : '/api/post_work_hour_work_remove_related_work_add_items',
     post_work_hour_work_executive_confirm : '/api/post_work_hour_work_executive_confirm',
+    post_work_hour_work_update_related_work_add_items : '/api/post_work_hour_work_update_related_work_add_items',
 
     //workOffTable Form
     post_work_off_create_table : '/api/createWorkOffTableForm',

@@ -111,6 +111,27 @@ module.exports = function (app) {
         })
     })
 
+    // 更新 加班/補休 單
+    app.post(global.apiUrl.post_work_hour_work_update_related_work_add_items, function (req, res) {
+        WorkHourTableFormWorkAdd.updateMany({
+            creatorDID: req.body.creatorDID,
+            prjDID: req.body.prjDID,
+            create_formDate: req.body.create_formDate,
+        }, {
+            $set: {
+                isExecutiveConfirm: true,
+            }
+        }, function (err) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        })
+    })
+
     // executive confirm
     app.post(global.apiUrl.post_work_hour_work_executive_confirm, function (req, res) {
         var findData = []
@@ -123,7 +144,7 @@ module.exports = function (app) {
                     isExecutiveConfirm: true,
                 }
             }, function (err) {
-                resultCount ++;
+                resultCount++;
                 if (err) {
                     res.send(err);
                 }

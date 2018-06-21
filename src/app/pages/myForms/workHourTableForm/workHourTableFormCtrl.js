@@ -1685,8 +1685,18 @@
             }
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
-                    // console.log(res.code);
-                    $scope.showTableOfItem(form, true, null, null, 2);
+                    //TODO 更新加班/補休單
+                    var formData = {
+                        creatorDID: checkingTable.creatorDID,
+                        prjDID: checkingTable.prjDID,
+                        create_formDate: checkingTable.create_formDate,
+                    }
+                    WorkHourAddItemUtil.updateRelatedAddItemByProject(formData)
+                        .success(function (res) {
+                            $scope.showTableOfItem(form, true, null, null, 2);
+                        })
+                        .error(function () {
+                        })
                 })
         }
 
@@ -1848,9 +1858,11 @@
         // 整理相同日期的加班項目
         function operateWorkHourAddArray(tables) {
             $scope.workAddTablesRawData = tables;
-            // console.log($scope.workAddTablesRawData);
             var workAddTable = {};
             for (var index = 0; index < tables.length; index++) {
+                if (!tables[index].isExecutiveConfirm) {
+                    continue;
+                }
                 var workAddItem = {
                     // 首周
                     date: "",
@@ -2057,6 +2069,7 @@
                             }
                         }
                     }
+                    relatedMembers.push(cookies.get('userDID'));
                     $scope.mainRelatedMembers = relatedMembers;
                     $scope.showRelatedMembersTableReview(typeManager);
                 })
