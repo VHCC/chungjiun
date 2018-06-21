@@ -273,7 +273,6 @@ module.exports = function (app) {
 
     // update all table ***
     app.post(global.apiUrl.post_work_hour_table_total_update_send_review, function (req, res) {
-        var findData = [];
         for (var index = 0; index < req.body.tableArray.length; index++) {
             WorkHourTableForm.update({
                 _id: req.body.tableArray[index],
@@ -287,7 +286,7 @@ module.exports = function (app) {
                 }
             })
         }
-        global.qqq.response('good');
+        global.qqq.response(req.body.msgTargetID, global.eventString._2001);
         res.status(200).send({
             code: 200,
             error: global.status._200,

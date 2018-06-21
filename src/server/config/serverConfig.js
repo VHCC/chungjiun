@@ -31,8 +31,8 @@ var EventEmitter = function() {
 
 util.inherits(EventEmitter, events.EventEmitter);
 
-EventEmitter.prototype.response = function(msg) {
-    this.emit('response', msg);
+EventEmitter.prototype.response = function(targetID, msg) {
+    this.emit('response', targetID, msg);
 };
 
 const mainEventEmitter = new EventEmitter();
@@ -42,11 +42,26 @@ global.qqq = mainEventEmitter;
 // io.on('connection', connection);
 // 當發生離線事件
 
+var memberSocketMap = [];
+
 io.on('connection', function (socket){
     console.log('------- Socket Connect Success ------');
-
-    mainEventEmitter.on('response', function(msg) {
-        socket.emit("greet", msg);
+    // console.log(socket);
+    // console.log('=============' + socket.handshake.headers.cookie + '=============');
+    var cookieArray = socket.handshake.headers.cookie.split(";");
+    cookieArray.forEach(function(ele) {
+        if(ele.includes("userDID")){
+            var userDID = ele.split('=');
+            evalString = "memberSocketMap[\'" + userDID[1] + "\']=socket";
+            eval(evalString);
+        }
+    })
+    mainEventEmitter.on('response', function(targetID, msg) {
+        // socket.emit("greet", msg);
+        // console.log(memberSocketMap[targetID]);
+        if (memberSocketMap[targetID] !== undefined) {
+            memberSocketMap[targetID].emit("greet", msg);
+        }
     });
 
     socket.on('disconnect', function () {
