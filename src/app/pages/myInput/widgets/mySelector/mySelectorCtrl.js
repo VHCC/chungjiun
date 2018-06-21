@@ -42,6 +42,24 @@
         }
 
         $scope.loadUserWorkOffForm = function (table) {
+            $scope.workOffTypeOptions = [
+                {
+                    name: "事假",
+                    type: 0
+                },
+                {
+                    name: "病假",
+                    type: 1
+                },
+                {
+                    name: "補休",
+                    type: 2
+                },
+                {
+                    name: "特休",
+                    type: 3
+                },
+            ];
             $scope.loginUserForm = table;
             if ($scope.loginUserForm.start_married !== undefined && $scope.loginUserForm.start_married !== ""
                 && $scope.loginUserForm.end_married !== undefined && $scope.loginUserForm.end_married !== "") {
