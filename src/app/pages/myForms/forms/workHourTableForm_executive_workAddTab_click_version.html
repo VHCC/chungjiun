@@ -32,10 +32,9 @@
         <td style="vertical-align: inherit; text-align: center">星期</td>
         <td style="vertical-align: inherit; text-align: center">代碼</td>
         <td style="vertical-align: inherit; text-align: center">時數</td>
-        <td style="vertical-align: inherit; text-align: center">1 + 1/3</td>
-        <td style="vertical-align: inherit; text-align: center">1 + 2/3</td>
-        <td style="vertical-align: inherit; text-align: center">1 +  1</td>
-        <td style="vertical-align: inherit; text-align: center">國定假日</td>
+        <td style="vertical-align: inherit; text-align: center" width="80px">1 + 1/3</td>
+        <td style="vertical-align: inherit; text-align: center" width="80px">1 + 2/3</td>
+        <td style="vertical-align: inherit; text-align: center" width="80px">1 + 1</td>
         <td style="vertical-align: inherit; text-align: center">換休</td>
         <td style="vertical-align: inherit; text-align: center">加班合計</td>
         <td style="vertical-align: inherit; text-align: center">加班費</td>
@@ -67,47 +66,48 @@
         </td>
         <!--1 + 1/3-->
         <td class="form-group has-success" style="vertical-align: inherit;">
-            <div ng-show="table.day < 6 && !table.isNH">
+            <!--<div ng-show="table.day < 6 && !table.isNH">-->
                 <div ng-show="table.addWork > 0">
-                    <span ng-show="table.addWork <= 2">1.34 * {{table.addWork}}</span>
-                    <span ng-show="table.addWork > 2">1.34 * 2</span>
-                    <br>
-                    <span ng-show="table.addWork > 2">1.66 * {{table.addWork - 2}}</span>
+                        <input type="text"
+                               ng-model="table.type1_13"
+                               value="{{table.type1_13}}"
+                               class="form-control workOffFormDateInput input-sm">
+                    <!--<span ng-show="table.addWork <= 2">1.34 * {{table.addWork}}</span>-->
+                    <!--<span ng-show="table.addWork > 2">1.34 * 2</span>-->
+                    <!--<br>-->
+                    <!--<span ng-show="table.addWork > 2">1.66 * {{table.addWork - 2}}</span>-->
                 </div>
-            </div>
+            <!--</div>-->
         </td>
         <!--1 + 2/3-->
         <td style="vertical-align: inherit;" style="vertical-align: inherit;">
-            <div ng-show="table.day === 6">
+            <!--<div ng-show="table.day === 6">-->
                 <div ng-show="table.addWork > 0">
-                    <span ng-show="table.addWork <= 2">1.34 * {{table.addWork}}</span>
-                    <span ng-show="table.addWork > 2">1.34 * 2</span>
-                    <br>
-                    <span ng-show="table.addWork > 2">1.66 * {{table.addWork - 2}}</span>
+                        <input type="text"
+                               ng-model="table.type1_23"
+                               value="{{table.type1_23}}"
+                               class="form-control workOffFormDateInput input-sm">
+                    <!--<span ng-show="table.addWork <= 2">1.34 * {{table.addWork}}</span>-->
+                    <!--<span ng-show="table.addWork > 2">1.34 * 2</span>-->
+                    <!--<br>-->
+                    <!--<span ng-show="table.addWork > 2">1.66 * {{table.addWork - 2}}</span>-->
                 </div>
-            </div>
+            <!--</div>-->
         </td>
         <!--1 + 1-->
         <td style="vertical-align: inherit;" style="vertical-align: inherit;">
-            <div ng-show="table.day === 7">
+            <!--<div ng-show="table.day === 7">-->
                 <div ng-show="table.addWork > 0">
-                    <span ng-show="table.addWork <= 2">1.34 * {{table.addWork}}</span>
-                    <span ng-show="table.addWork > 2">1.34 * 2</span>
-                    <br>
-                    <span ng-show="table.addWork > 2">1.66 * {{table.addWork - 2}}</span>
+                    <input type="text"
+                           ng-model="table.type1_1"
+                           value="{{table.type1_1}}"
+                           class="form-control workOffFormDateInput input-sm">
+                    <!--<span ng-show="table.addWork <= 2">1.34 * {{table.addWork}}</span>-->
+                    <!--<span ng-show="table.addWork > 2">1.34 * 2</span>-->
+                    <!--<br>-->
+                    <!--<span ng-show="table.addWork > 2">1.66 * {{table.addWork - 2}}</span>-->
                 </div>
-            </div>
-        </td>
-        <!--國定假日-->
-        <td class="form-group has-success" style="vertical-align: inherit;">
-            <div ng-show="table.isNH">
-                <div ng-show="table.addWork > 0">
-                    <span ng-show="table.addWork <= 2">1.34 * {{table.addWork}}</span>
-                    <span ng-show="table.addWork > 2">1.34 * 2</span>
-                    <br>
-                    <span ng-show="table.addWork > 2">1.66 * {{table.addWork - 2}}</span>
-                </div>
-            </div>
+            <!--</div>-->
         </td>
         <!--換休-->
         <td class="form-group has-success" style="vertical-align: inherit;">
@@ -120,7 +120,8 @@
         <!--加班費-->
         <td class="form-group has-success" style="vertical-align: inherit;">
             <!--{{table.addWork * table.userHourSalary}}-->
-            {{formatFloat(table.addWork * (table.userMonthSalary/240), 2)}}
+            {{formatFloat(((table.type1_13 * 1.33) + (table.type1_23 * 1.66) + (table.type1_1 * 2))
+            * (table.userMonthSalary/240), 2)}}
         </td>
     </tr>
     </tbody>
@@ -161,12 +162,6 @@
                 {{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 4)}}
             </span>
         </td>
-        <!--國定假日-->
-        <td style="text-align: center">
-            <span>
-                {{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 5)}}
-            </span>
-        </td>
         <!-- 換休-->
         <td style="text-align: center">
             <span>
@@ -191,10 +186,10 @@
 
 <hr>
 <section class="col-md-6" ng-show="workHourTableCtrlVm.workAdd.selected">
-    <button progress-button="confirmWorkAddItems()"
+    <button progress-button="qwer()"
             style="float: inherit;"
             pb-style="shrink"
             class="btn btn-warning">
-        核薪加班單確認
+        儲存分配表
     </button>
 </section>
