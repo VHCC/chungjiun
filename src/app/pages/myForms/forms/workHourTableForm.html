@@ -168,26 +168,61 @@
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-class="inputLimited"
+                          e-style="width:70px"
                           id="mon_hour"
                           e-required>{{ table.mon_hour || 0 }}</span>
                 </td>
                 <td style="vertical-align: inherit;">
-                   <span editable-textarea="table.mon_memo"
-                         e-form="rowform1"
-                         id="mon_memo"
-                         e-required>{{ table.mon_memo}}</span>
+                    <my ng-show="table.mon_memo !== undefined && table.mon_memo !== '' && !rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        id="mon_memo"
+                        ng-click="editMemo(table, 1, false)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
+                    <my ng-show="rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        ng-click="editMemo(table, 1, true)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
+                    <span editable-textarea="table.mon_memo"
+                          e-form="rowform1"
+                          style="display: none"
+                          e-style="display: none"
+                          id="mon_memo"
+                          e-required>{{ table.mon_memo}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="table.tue_hour"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-class="inputLimited"
+                          e-style="width:70px"
                           id="tue_hour"
                           e-required>{{ table.tue_hour || 0 }}</span>
                 </td>
                 <td style="vertical-align: inherit;">
+                    <my ng-show="table.tue_memo !== undefined && table.tue_memo !== '' && !rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        id="mon_memo"
+                        ng-click="editMemo(table, 2, false)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
+                    <my ng-show="rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        ng-click="editMemo(table, 2, true)">
+                        <i class="fa fa-pencil"></i>
                     <span editable-textarea="table.tue_memo"
                           e-form="rowform1"
+                          style="display: none"
+                          e-style="display: none"
                           id="tue_memo"
                           e-required>{{ table.tue_memo}}</span>
                 </td>
@@ -196,12 +231,29 @@
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-class="inputLimited"
+                          e-style="width:70px"
                           id="wes_hour"
                           e-required>{{ table.wes_hour || 0 }}</span>
                 </td>
                 <td style="vertical-align: inherit;">
+                    <my ng-show="table.wes_memo !== undefined && table.wes_memo !== '' && !rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        id="mon_memo"
+                        ng-click="editMemo(table, 3, false)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
+                    <my ng-show="rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        ng-click="editMemo(table, 3, true)">
+                        <i class="fa fa-pencil"></i>
                     <span editable-textarea="table.wes_memo"
                           e-form="rowform1"
+                          style="display: none"
+                          e-style="display: none"
                           id="wes_memo"
                           e-required>{{ table.wes_memo}}</span>
                 </td>
@@ -210,12 +262,29 @@
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-class="inputLimited"
+                          e-style="width:70px"
                           id="thu_hour"
                           e-required>{{ table.thu_hour || 0}}</span>
                 </td>
                 <td style="vertical-align: inherit;">
+                    <my ng-show="table.thu_memo !== undefined && table.thu_memo !== '' && !rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        id="mon_memo"
+                        ng-click="editMemo(table, 4, false)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
+                    <my ng-show="rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        ng-click="editMemo(table, 4, true)">
+                        <i class="fa fa-pencil"></i>
                     <span editable-textarea="table.thu_memo"
                           e-form="rowform1"
+                          style="display: none"
+                          e-style="display: none"
                           id="thu_memo"
                           e-required>{{ table.thu_memo}}</span>
                 </td>
@@ -224,12 +293,29 @@
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-class="inputLimited"
+                          e-style="width:70px"
                           id="fri_hour"
                           e-required>{{ table.fri_hour || 0}}</span>
                 </td>
                 <td style="vertical-align: inherit;">
+                    <my ng-show="table.fri_memo !== undefined && table.fri_memo !== '' && !rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        id="mon_memo"
+                        ng-click="editMemo(table, 5, false)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
+                    <my ng-show="rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        ng-click="editMemo(table, 5, true)">
+                        <i class="fa fa-pencil"></i>
                    <span editable-textarea="table.fri_memo"
                          e-form="rowform1"
+                         style="display: none"
+                         e-style="display: none"
                          id="fri_memo"
                          e-required>{{ table.fri_memo}}</span>
                 </td>
@@ -238,12 +324,29 @@
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-class="inputLimited"
+                          e-style="width:70px"
                           id="sat_hour"
                           e-required>{{ table.sat_hour || 0}}</span>
                 </td>
                 <td style="vertical-align: inherit;">
+                    <my ng-show="table.sat_memo !== undefined && table.sat_memo !== '' && !rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        id="mon_memo"
+                        ng-click="editMemo(table, 6, false)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
+                    <my ng-show="rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        ng-click="editMemo(table, 6, true)">
+                        <i class="fa fa-pencil"></i>
                     <span editable-textarea="table.sat_memo"
                           e-form="rowform1"
+                          style="display: none"
+                          e-style="display: none"
                           id="sat_memo"
                           e-required>{{ table.sat_memo}}</span>
                 </td>
@@ -252,12 +355,29 @@
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-class="inputLimited"
+                          e-style="width:70px"
                           id="sun_hour"
                           e-required>{{ table.sun_hour || 0}}</span>
                 </td>
                 <td style="vertical-align: inherit;">
+                    <my ng-show="table.sun_memo !== undefined && table.sun_memo !== '' && !rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        id="mon_memo"
+                        ng-click="editMemo(table, 7, false)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
+                    <my ng-show="rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        ng-click="editMemo(table, 7, true)">
+                        <i class="fa fa-pencil"></i>
                     <span editable-textarea="table.sun_memo"
                           e-form="rowform1"
+                          style="display: none"
+                          e-style="display: none"
                           id="sun_memo"
                           e-required>{{ table.sun_memo}}</span>
                 </td>
@@ -384,9 +504,26 @@
                         {{ table.mon_hour_add || 0}}
                     </button>
                 </td>
-                <td style="vertical-align: inherit;">
+                <td style="vertical-align: inherit; text-align: center">
+                    <my ng-show="table.mon_memo_add !== undefined && table.mon_memo_add !== '' && !rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        id="mon_memo"
+                        ng-click="editMemo(table, 11, false)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
+                    <my ng-show="rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        ng-click="editMemo(table, 11, true)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
                    <span editable-textarea="table.mon_memo_add"
                          e-form="rowform1"
+                         style="display: none"
+                         e-style="display: none"
                          id="mon_memo_add"
                          e-required>{{ table.mon_memo_add}}</span>
                 </td>
@@ -411,8 +548,25 @@
                     </button>
                 </td>
                 <td style="vertical-align: inherit;">
+                    <my ng-show="table.tue_memo_add !== undefined && table.tue_memo_add !== '' && !rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        id="mon_memo"
+                        ng-click="editMemo(table, 12, false)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
+                    <my ng-show="rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        ng-click="editMemo(table, 12, true)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
                     <span editable-textarea="table.tue_memo_add"
                           e-form="rowform1"
+                          style="display: none"
+                          e-style="display: none"
                           id="tue_memo_add"
                           e-required>{{ table.tue_memo_add}}</span>
                 </td>
@@ -437,8 +591,25 @@
                     </button>
                 </td>
                 <td style="vertical-align: inherit;">
+                    <my ng-show="table.wes_memo_add !== undefined && table.wes_memo_add !== '' && !rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        id="mon_memo"
+                        ng-click="editMemo(table, 13, false)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
+                    <my ng-show="rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        ng-click="editMemo(table, 13, true)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
                     <span editable-textarea="table.wes_memo_add"
                           e-form="rowform1"
+                          style="display: none"
+                          e-style="display: none"
                           id="wes_memo_add"
                           e-required>{{ table.wes_memo_add}}</span>
                 </td>
@@ -463,8 +634,25 @@
                     </button>
                 </td>
                 <td style="vertical-align: inherit;">
+                    <my ng-show="table.thu_memo_add !== undefined && table.thu_memo_add !== '' && !rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        id="mon_memo"
+                        ng-click="editMemo(table, 14, false)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
+                    <my ng-show="rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        ng-click="editMemo(table, 14, true)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
                     <span editable-textarea="table.thu_memo_add"
                           e-form="rowform1"
+                          style="display: none"
+                          e-style="display: none"
                           id="thu_memo_add"
                           e-required>{{ table.thu_memo_add}}</span>
                 </td>
@@ -489,8 +677,25 @@
                     </button>
                 </td>
                 <td style="vertical-align: inherit;">
+                    <my ng-show="table.fri_memo_add !== undefined && table.fri_memo_add !== '' && !rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        id="mon_memo"
+                        ng-click="editMemo(table, 15, false)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
+                    <my ng-show="rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        ng-click="editMemo(table, 15, true)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
                    <span editable-textarea="table.fri_memo_add"
                          e-form="rowform1"
+                         style="display: none"
+                         e-style="display: none"
                          id="fri_memo_add"
                          e-required>{{ table.fri_memo_add}}</span>
                 </td>
@@ -515,8 +720,25 @@
                     </button>
                 </td>
                 <td style="vertical-align: inherit;">
+                    <my ng-show="table.sat_memo_add !== undefined && table.sat_memo_add !== '' && !rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        id="mon_memo"
+                        ng-click="editMemo(table, 16, false)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
+                    <my ng-show="rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        ng-click="editMemo(table, 16, true)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
                     <span editable-textarea="table.sat_memo_add"
                           e-form="rowform1"
+                          style="display: none"
+                          e-style="display: none"
                           id="sat_memo_add"
                           e-required>{{ table.sat_memo_add}}</span>
                 </td>
@@ -541,8 +763,25 @@
                     </button>
                 </td>
                 <td style="vertical-align: inherit;">
+                    <my ng-show="table.sun_memo_add !== undefined && table.sun_memo_add !== '' && !rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        id="mon_memo"
+                        ng-click="editMemo(table, 17, false)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
+                    <my ng-show="rowform1.$visible"
+                        ng-class="{workAdd: hover}"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false"
+                        ng-click="editMemo(table, 17, true)">
+                        <i class="fa fa-pencil"></i>
+                    </my>
                     <span editable-textarea="table.sun_memo_add"
                           e-form="rowform1"
+                          style="display: none"
+                          e-style="display: none"
                           id="sun_memo_add"
                           e-required>{{ table.sun_memo_add}}</span>
                 </td>
