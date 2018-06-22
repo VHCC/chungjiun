@@ -103,6 +103,8 @@ module.exports = function (app) {
                     if (resIndex === req.body.formTables.length) {
                         // console.log(formTable);
                         WorkHourForm.create({
+                            year: req.body.year,
+                            month: req.body.month,
                             creatorDID: req.body.creatorDID,
                             create_formDate: req.body.create_formDate,
                             formTables: formTable,
