@@ -1302,7 +1302,13 @@
         // ************************ REVIEW SUBMIT ***************************
         $scope.reviewFormCheck = function() {
             // console.log($scope.tablesItems);
-            $scope.checkText = '確定提交 審查？';
+            if ($scope.showCalculateHour($scope.tablesItems, 1001, 1) < 40) {
+                $scope.titleClass = 'bg-danger';
+                $scope.checkText = '該周工時表時數非 40，確定提交 審查？';
+            } else {
+                $scope.titleClass = 'bg-warning';
+                $scope.checkText = '確定提交 審查？';
+            }
             ngDialog.open({
                 template: 'app/pages/myModalTemplate/myWorkHourTableFormReviewModalTotal.html',
                 className: 'ngdialog-theme-default',
