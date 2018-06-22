@@ -69,6 +69,7 @@
         var allRelatedPrjDatas;
 
         // 主要顯示
+        $scope.tables = [{}];
         $scope.tablesItems = [];
         // 休假列表
         $scope.workOffTablesItems = [];
@@ -1008,13 +1009,11 @@
         $scope.checkIsCrossMonth = function (firstFullDate) {
             console.log(firstFullDate);
             for (var index = 1; index < 7; index ++) {
-                console.log(moment($scope.firstFullDate).day(index).month() + 1);
-                console.log(moment($scope.firstFullDate).day(index + 1).month() + 1);
                 if ((moment($scope.firstFullDate).day(index).month() + 1) !== (moment($scope.firstFullDate).day(index + 1).month() + 1)) {
-                    return true;
+                    return index;
                 }
             }
-            return false;
+            return -1;
             // console.log(moment($scope.firstFullDate).day(1).month() + 1);
             // console.log(moment($scope.firstFullDate).day(2).month() + 1);
             // console.log(moment($scope.firstFullDate).day(3).month() + 1);
@@ -1043,6 +1042,11 @@
             $scope.sunDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 6));
             if (!isInitial) {
                 $scope.getTable();
+            }
+            if ($scope.checkIsCrossMonth($scope.firstFullDate) > 0) {
+                $scope.tables = [{}, {}];
+            } else {
+                $scope.tables = [{}];
             }
             console.log($scope.checkIsCrossMonth($scope.firstFullDate));
         }
