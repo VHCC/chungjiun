@@ -1010,7 +1010,7 @@
             console.log(firstFullDate);
             for (var index = 1; index < 7; index ++) {
                 if ((moment($scope.firstFullDate).day(index).month() + 1) !== (moment($scope.firstFullDate).day(index + 1).month() + 1)) {
-                    return index;
+                    return index + 1;
                 }
             }
             return -1;
@@ -1044,7 +1044,11 @@
                 $scope.getTable();
             }
             if ($scope.checkIsCrossMonth($scope.firstFullDate) > 0) {
-                $scope.tables = [{}, {}];
+                $scope.tables = [{
+                    crossDay: $scope.checkIsCrossMonth($scope.firstFullDate),
+                }, {
+                    crossDay: $scope.checkIsCrossMonth($scope.firstFullDate),
+                }];
             } else {
                 $scope.tables = [{}];
             }
