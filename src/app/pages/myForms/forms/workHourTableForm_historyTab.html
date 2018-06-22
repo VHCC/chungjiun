@@ -611,55 +611,55 @@
         </td>
         <!--MON-->
         <td colspan="2" style="text-align: center">
-                    <span>
-                        {{showCalculateHour(tablesHistoryItems, 1, 4)}}
-                    </span>
+            <span ng-class="showCalculateHour(tablesHistoryItems, 1, 4) > 8 ? 'sumWarning' : 'sunNormal'">
+                {{showCalculateHour(tablesHistoryItems, 1, 4)}}
+            </span>
         </td>
         <!--TUE-->
         <td colspan="2" style="text-align: center">
-                    <span>
-                        {{showCalculateHour(tablesHistoryItems, 2, 4)}}
-                    </span>
+            <span ng-class="showCalculateHour(tablesHistoryItems, 2, 4) > 8 ? 'sumWarning' : 'sunNormal'">
+                {{showCalculateHour(tablesHistoryItems, 2, 4)}}
+            </span>
         </td>
         <!--WED-->
         <td colspan="2" style="text-align: center">
-                    <span>
-                        {{showCalculateHour(tablesHistoryItems, 3, 4)}}
-                    </span>
+            <span ng-class="showCalculateHour(tablesHistoryItems, 3, 4) > 8 ? 'sumWarning' : 'sunNormal'">
+                {{showCalculateHour(tablesHistoryItems, 3, 4)}}
+            </span>
         </td>
         <!--THU-->
         <td colspan="2" style="text-align: center">
-                    <span>
-                        {{showCalculateHour(tablesHistoryItems, 4, 4)}}
-                    </span>
+            <span ng-class="showCalculateHour(tablesHistoryItems, 4, 4) > 8 ? 'sumWarning' : 'sunNormal'">
+                {{showCalculateHour(tablesHistoryItems, 4, 4)}}
+            </span>
         </td>
         <!--FRI-->
         <td colspan="2" style="text-align: center">
-                    <span>
-                        {{showCalculateHour(tablesHistoryItems, 5, 4)}}
-                    </span>
+            <span ng-class="showCalculateHour(tablesHistoryItems, 5, 4) > 8 ? 'sumWarning' : 'sunNormal'">
+                {{showCalculateHour(tablesHistoryItems, 5, 4)}}
+            </span>
         </td>
         <!--SAT-->
         <td colspan="2" style="text-align: center">
-                    <span>
-                        {{showCalculateHour(tablesHistoryItems, 6, 4)}}
-                    </span>
+            <span ng-class="showCalculateHour(tablesHistoryItems, 6, 4) > 8 ? 'sumWarning' : 'sunNormal'">
+                {{showCalculateHour(tablesHistoryItems, 6, 4)}}
+            </span>
         </td>
         <!--SUN-->
         <td colspan="2" style="text-align: center">
-                    <span>
-                        {{showCalculateHour(tablesHistoryItems, 7, 4)}}
-                    </span>
+            <span ng-class="showCalculateHour(tablesHistoryItems, 7, 4) > 8 ? 'sumWarning' : 'sunNormal'">
+                {{showCalculateHour(tablesHistoryItems, 7, 4)}}
+            </span>
         </td>
         <!-- summation-->
         <td style="text-align: center">
-                    <span>
-                        {{showCalculateHour(tablesHistoryItems, 1001, 4)}}
-                    </span>
+                <span ng-class="showCalculateHour(tablesHistoryItems, 1001, 4) !== 40 ? 'sumWarning' : 'sunNormal'">
+                    {{showCalculateHour(tablesHistoryItems, 1001, 4)}}
+                </span>
             <br>
             <span>
-                        {{showCalculateHour(tablesHistoryItems, 2001, 4)}}
-                    </span>
+                    {{showCalculateHour(tablesHistoryItems, 2001, 4)}}
+                </span>
         </td>
     </tr>
     </tfoot>

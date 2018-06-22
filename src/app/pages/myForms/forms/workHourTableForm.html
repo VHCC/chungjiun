@@ -6,6 +6,15 @@
         cursor: pointer;
     }
 
+    .sumWarning {
+        color: red;
+        font-weight: bold;
+    }
+
+    .sumNormal {
+        color: black;
+    }
+
     .mytooltip {
         position: relative;
         display: inline-block;
@@ -927,49 +936,49 @@
                 </td>
                 <!--MON-->
                 <td colspan="2" style="text-align: center">
-                    <span>
+                    <span ng-class="showCalculateHour(tablesItems, 1, 1) > 8 ? 'sumWarning' : 'sunNormal'">
                         {{showCalculateHour(tablesItems, 1, 1)}}
                     </span>
                 </td>
                 <!--TUE-->
                 <td colspan="2" style="text-align: center">
-                    <span>
+                    <span ng-class="showCalculateHour(tablesItems, 2, 1) > 8 ? 'sumWarning' : 'sunNormal'">
                         {{showCalculateHour(tablesItems, 2, 1)}}
                     </span>
                 </td>
                 <!--WED-->
                 <td colspan="2" style="text-align: center">
-                    <span>
+                    <span ng-class="showCalculateHour(tablesItems, 3, 1) > 8 ? 'sumWarning' : 'sunNormal'">
                         {{showCalculateHour(tablesItems, 3, 1)}}
                     </span>
                 </td>
                 <!--THU-->
                 <td colspan="2" style="text-align: center">
-                    <span>
+                    <span ng-class="showCalculateHour(tablesItems, 4, 1) > 8 ? 'sumWarning' : 'sunNormal'">
                         {{showCalculateHour(tablesItems, 4, 1)}}
                     </span>
                 </td>
                 <!--FRI-->
                 <td colspan="2" style="text-align: center">
-                    <span>
+                    <span ng-class="showCalculateHour(tablesItems, 5, 1) > 8 ? 'sumWarning' : 'sunNormal'">
                         {{showCalculateHour(tablesItems, 5, 1)}}
                     </span>
                 </td>
                 <!--SAT-->
                 <td colspan="2" style="text-align: center">
-                    <span>
+                    <span ng-class="showCalculateHour(tablesItems, 6, 1) > 8 ? 'sumWarning' : 'sunNormal'">
                         {{showCalculateHour(tablesItems, 6, 1)}}
                     </span>
                 </td>
                 <!--SUN-->
                 <td colspan="2" style="text-align: center">
-                    <span>
+                    <span ng-class="showCalculateHour(tablesItems, 7, 1) > 8 ? 'sumWarning' : 'sunNormal'">
                         {{showCalculateHour(tablesItems, 7, 1)}}
                     </span>
                 </td>
                 <!-- summation-->
                 <td style="text-align: center">
-                    <span>
+                    <span ng-class="showCalculateHour(tablesItems, 1001, 1) !== 40 ? 'sumWarning' : 'sunNormal'">
                         {{showCalculateHour(tablesItems, 1001, 1)}}
                     </span>
                     <br>

@@ -772,7 +772,6 @@
         $scope.showCalculateHour = function (tables, day, type, form) {
             var index = 0;
             var result = 0;
-
             switch (type) {
                 case 1:
                 case 4: {
@@ -998,9 +997,8 @@
                     }
                 } break;
             }
-
             if (result > 8) {
-                return result + " *";
+                return result;
             } else {
                 return result;
             }
@@ -1302,7 +1300,7 @@
         // ************************ REVIEW SUBMIT ***************************
         $scope.reviewFormCheck = function() {
             // console.log($scope.tablesItems);
-            if ($scope.showCalculateHour($scope.tablesItems, 1001, 1) < 40) {
+            if ($scope.showCalculateHour($scope.tablesItems, 1001, 1) !== 40) {
                 $scope.titleClass = 'bg-danger';
                 $scope.checkText = '該周工時表時數非 40，確定提交 審查？';
             } else {
