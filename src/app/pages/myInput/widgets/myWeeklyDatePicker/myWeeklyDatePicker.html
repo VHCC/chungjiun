@@ -6,16 +6,14 @@
                datepicker-options=myOptions
                ng-model="myDT"
                is-open="opened"
-               ng-change="shiftToFirstDayOfWeek(this)"
+               ng-change="shiftToFirstDayOfWeek(this); callAttrFunction(function1, viewType)"
                ng-required="true"
                style="display: none"
                close-text="Close"
                show-button-bar="false"/>
-        <span class="input-group-btn">
-            <button type="button" class="btn btn-default"
+            <button type="button" class="btn btn-default btn-icon"
                     ng-click="openWeeklyDatePicker()">
                 <i class="glyphicon glyphicon-calendar"></i>
             </button>
-        </span>
     </my>
 </div>

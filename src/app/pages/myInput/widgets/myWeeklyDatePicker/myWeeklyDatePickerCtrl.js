@@ -41,5 +41,15 @@
         $scope.shiftToFirstDayOfWeek = function (dom) {
             $scope.myDT = new Date(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment(dom.myDT)), 0));
         }
+
+        $scope.x = {} ; // better would be to have module create an object
+        $scope.x.f1 = function() {
+            console.log('Call me as a string!');
+        }
+
+        $scope.callAttrFunction = function (methods, para1) {
+            var evalString = "$scope." + methods + "(this, " + para1 + ")";
+            eval(evalString);
+        }
     }
 })();

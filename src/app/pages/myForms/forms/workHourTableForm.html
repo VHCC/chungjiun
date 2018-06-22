@@ -62,6 +62,10 @@
         visibility: visible;
         opacity: 1;
     }
+
+    .uib-datepicker-popup table tbody tr:hover{
+        background-color: #99c7ee;
+    }
 </style>
 
 <uib-tabset active="$tabSetStatus.activeTab">
@@ -99,6 +103,10 @@
             </div>
         </div>
         <div>
+            <my-weekly-date-picker
+                    function1="changeWeeklyDT"
+                    type="1"
+                    formatted="yyyy/MM/dd"></my-weekly-date-picker>
             <button type="button" class="btn btn-default btn-icon" ng-click="decreaseWeek()"><i
                     class="ion-chevron-left"></i></button>
             {{firstDate}} ~ {{lastDate}}
