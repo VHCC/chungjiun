@@ -22,9 +22,11 @@
 
 <hr/>
 
-<my-weekly-date-picker formatted="yyyy/MM/dd"></my-weekly-date-picker>
-
 <div ng-show="workHourTableCtrlVm.history.selected">
+    <my-weekly-date-picker
+            function1="changeWeeklyDT"
+            type="4"
+            formatted="yyyy/MM/dd"></my-weekly-date-picker>
     <button type="button" class="btn btn-default btn-icon" ng-click="decreaseWeek_history()"><i
             class="ion-chevron-left"></i></button>
     {{firstDate_history}} ~ {{lastDate_history}}
