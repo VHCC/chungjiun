@@ -1259,11 +1259,14 @@
                     workHourTableData.push(tableItem);
                 }
                 var formData = {
+                    year: moment($scope.firstFullDate).year() - 1911,
+                    month: moment($scope.firstFullDate).month() + 1,
                     creatorDID: cookies.get('userDID'),
                     create_formDate: $scope.firstFullDate,
                     formTables: workHourTableData,
                     oldTables: formDataTable,
                 }
+                // TODO 跨月
                 WorkHourUtil.createWorkHourTableForm(formData)
                     .success(function (res) {
                         // 更新old Table ID Array
