@@ -1,0 +1,21 @@
+<div>
+    <my class="input-group">
+        <input type="text"
+               class="form-control myWeeklyDatePicker"
+               uib-datepicker-popup="{{format}}"
+               datepicker-options=myOptions
+               ng-model="myDT"
+               is-open="opened"
+               ng-change="shiftToFirstDayOfWeek(this)"
+               ng-required="true"
+               style="display: none"
+               close-text="Close"
+               show-button-bar="false"/>
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-default"
+                    ng-click="openWeeklyDatePicker()">
+                <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+        </span>
+    </my>
+</div>
