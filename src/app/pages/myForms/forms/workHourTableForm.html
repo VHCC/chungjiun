@@ -183,6 +183,7 @@
 
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="item.mon_hour"
+                          ng-if="$parent.$index === 0"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-class="inputLimited"
@@ -217,6 +218,7 @@
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="item.tue_hour"
+                          ng-if="checkIsCrossMonth(firstFullDate) < 0 || (table.crossDay > 2 && $parent.$index === 0)"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-class="inputLimited"
@@ -251,6 +253,7 @@
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="item.wes_hour"
+                          ng-if="checkIsCrossMonth(firstFullDate) < 0 || (table.crossDay > 3 && $parent.$index === 0)"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-class="inputLimited"
@@ -285,6 +288,7 @@
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="item.thu_hour"
+                          ng-if="checkIsCrossMonth(firstFullDate) < 0 || (table.crossDay > 4 && $parent.$index === 0)"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-class="inputLimited"
@@ -319,6 +323,7 @@
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="item.fri_hour"
+                          ng-if="checkIsCrossMonth(firstFullDate) < 0 || (table.crossDay > 5 && $parent.$index === 0)"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-class="inputLimited"
@@ -353,6 +358,7 @@
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="item.sat_hour"
+                          ng-if="checkIsCrossMonth(firstFullDate) < 0 || (table.crossDay > 6 && $parent.$index === 0)"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-class="inputLimited"
@@ -387,6 +393,7 @@
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-text="item.sun_hour"
+                          ng-if="checkIsCrossMonth(firstFullDate) < 0 || (table.crossDay === 7 && $parent.$index === 1)"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-class="inputLimited"
