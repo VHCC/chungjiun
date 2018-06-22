@@ -631,49 +631,49 @@
                 </td>
                 <!--MON-->
                 <td colspan="2" style="text-align: center">
-                        <span>
+                        <span ng-class="showCalculateHour(fetchFormDataFromScope(form), 1, 3, form) > 8 ? 'sumWarning' : 'sunNormal'">
                             {{showCalculateHour(fetchFormDataFromScope(form), 1, 3, form)}}
                         </span>
                 </td>
                 <!--TUE-->
                 <td colspan="2" style="text-align: center">
-                        <span>
+                        <span ng-class="showCalculateHour(fetchFormDataFromScope(form), 2, 3, form) > 8 ? 'sumWarning' : 'sunNormal'">
                             {{showCalculateHour(fetchFormDataFromScope(form), 2, 3, form)}}
                         </span>
                 </td>
                 <!--WED-->
                 <td colspan="2" style="text-align: center">
-                        <span>
+                        <span ng-class="showCalculateHour(fetchFormDataFromScope(form), 3, 3, form) > 8 ? 'sumWarning' : 'sunNormal'">
                             {{showCalculateHour(fetchFormDataFromScope(form), 3, 3, form)}}
                         </span>
                 </td>
                 <!--THU-->
                 <td colspan="2" style="text-align: center">
-                        <span>
+                        <span ng-class="showCalculateHour(fetchFormDataFromScope(form), 4, 3, form) > 8 ? 'sumWarning' : 'sunNormal'">
                             {{showCalculateHour(fetchFormDataFromScope(form), 4, 3, form)}}
                         </span>
                 </td>
                 <!--FRI-->
                 <td colspan="2" style="text-align: center">
-                        <span>
+                        <span ng-class="showCalculateHour(fetchFormDataFromScope(form), 5, 3, form) > 8 ? 'sumWarning' : 'sunNormal'">
                             {{showCalculateHour(fetchFormDataFromScope(form), 5, 3, form)}}
                         </span>
                 </td>
                 <!--SAT-->
                 <td colspan="2" style="text-align: center">
-                        <span>
+                        <span ng-class="showCalculateHour(fetchFormDataFromScope(form), 6, 3, form) > 8 ? 'sumWarning' : 'sunNormal'">
                             {{showCalculateHour(fetchFormDataFromScope(form), 6, 3, form)}}
                         </span>
                 </td>
                 <!--SUN-->
                 <td colspan="2" style="text-align: center">
-                        <span>
+                        <span ng-class="showCalculateHour(fetchFormDataFromScope(form), 7, 3, form) > 8 ? 'sumWarning' : 'sunNormal'">
                             {{showCalculateHour(fetchFormDataFromScope(form), 7, 3, form)}}
                         </span>
                 </td>
                 <!-- summation-->
                 <td style="text-align: center">
-                        <span>
+                        <span ng-class="showCalculateHour(fetchFormDataFromScope(form), 1001, 3, form) !== 40 ? 'sumWarning' : 'sunNormal'">
                             {{showCalculateHour(fetchFormDataFromScope(form), 1001, 3, form)}}
                         </span>
                     <br>
