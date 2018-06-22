@@ -475,9 +475,16 @@
                             <br>
                             退回
                             <br>
-                            原因：{{table.managerReject_memo}}
                         </button>
                     </div>
+                    <my ng-show="!table.isSendReview && table.isManagerReject"
+                        ng-class="{workAdd: hover}"
+                        class="mytooltip"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false">
+                        原因：<i class="ion-clipboard"></i>
+                        <span class="tooltiptext">{{table.managerReject_memo}}</span>
+                    </my>
                 </td>
                 <!--行政確認-->
                 <td rowspan="2" style="vertical-align: inherit;">
@@ -503,10 +510,16 @@
                             行政
                             <br>
                             退回
-                            <br>
-                            原因：{{table.executiveReject_memo}}
                         </button>
                     </div>
+                    <my ng-show="!table.isSendReview && table.isExecutiveReject"
+                        ng-class="{workAdd: hover}"
+                        class="mytooltip"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false">
+                        原因：<i class="ion-clipboard"></i>
+                        <span class="tooltiptext">{{table.executiveReject_memo}}</span>
+                    </my>
                 </td>
 
             </tr>
