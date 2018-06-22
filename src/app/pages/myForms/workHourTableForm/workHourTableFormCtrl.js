@@ -1004,6 +1004,27 @@
             }
         }
 
+        // Examine is cross Month
+        $scope.checkIsCrossMonth = function (firstFullDate) {
+            console.log(firstFullDate);
+            for (var index = 1; index < 7; index ++) {
+                console.log(moment($scope.firstFullDate).day(index).month() + 1);
+                console.log(moment($scope.firstFullDate).day(index + 1).month() + 1);
+                if ((moment($scope.firstFullDate).day(index).month() + 1) !== (moment($scope.firstFullDate).day(index + 1).month() + 1)) {
+                    return true;
+                }
+            }
+            return false;
+            // console.log(moment($scope.firstFullDate).day(1).month() + 1);
+            // console.log(moment($scope.firstFullDate).day(2).month() + 1);
+            // console.log(moment($scope.firstFullDate).day(3).month() + 1);
+            // console.log(moment($scope.firstFullDate).day(4).month() + 1);
+            // console.log(moment($scope.firstFullDate).day(5).month() + 1);
+            // console.log(moment($scope.firstFullDate).day(6).month() + 1);
+            // console.log(moment($scope.firstFullDate).day(7).month() + 1);
+            // console.log(moment($scope.firstFullDate).day(1).format("YYYY/MM/DD"));
+        }
+
         // -------------------- Week Methods ---------------------
         $scope.weekShift = 0;
         $scope.firstFullDate = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0);
@@ -1023,6 +1044,7 @@
             if (!isInitial) {
                 $scope.getTable();
             }
+            console.log($scope.checkIsCrossMonth($scope.firstFullDate));
         }
         $scope.reloadWeek(true);
 
