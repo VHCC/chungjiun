@@ -118,8 +118,9 @@
         <table class="table table-bordered table-hover table-condensed"
                ng-repeat="table in tables">
             <thead>
+
             <tr>
-                <td rowspan="3" style="vertical-align: inherit; text-align: center">代碼</td>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center">代碼 {{$index}} {{table.crossDay}}</td>
                 <td rowspan="3" style="vertical-align: inherit; text-align: center"width="240px">名稱</td>
                 <td rowspan="3" style="vertical-align: inherit; text-align: center" width="80px">經理</td>
                 <td rowspan="3" style="vertical-align: inherit; text-align: center" width="100px">類型</td>
