@@ -157,7 +157,10 @@
             };
 
             // TODO multi tables
-            $scope.tablesItems.push(inserted);
+            for (var index = 0; index< $scope.tables.length; index ++) {
+                $scope.tables[index].tablesItems.push(inserted);
+            }
+            // $scope.tablesItems.push(inserted);
             $scope.createSubmit(500, true);
         }
 
@@ -305,7 +308,7 @@
                     // WHY reset ?
                     // 'cause it's initial function.
                     for (var index = 0; index < $scope.tables.length; index ++) {
-                        $scope.tables[index].tableItems = [];
+                        $scope.tables[index].tablesItems = [];
                     }
                     $scope.tablesItems = [];
                     for (var index = 0; index < stringTable.length; index++) {
@@ -335,6 +338,9 @@
 
         var formDataTable = {};
 
+        // 要刪除的舊Table
+        var needRemoveOldTable = {};
+
         $scope.loading = true;
 
         // 取得使用者個人工時表，userDID,
@@ -353,7 +359,7 @@
             WorkHourUtil.getWorkHourForm(getData)
                 .success(function (res) {
                     if (res.payload.length > 0) {
-
+                        var needUpdateWorkTableIDArray = [];
                         for (var majorIndex = 0; majorIndex < res.payload.length; majorIndex ++) {
                             var tableIndex = 0;
                             var workItemCount = res.payload[majorIndex].formTables.length;
@@ -364,6 +370,7 @@
                             var workTableIDArray = [];
                             // 組成 prjID Array, TableID Array，再去Server要資料
                             for (var index = 0; index < workItemCount; index++) {
+                                needUpdateWorkTableIDArray.push(res.payload[majorIndex].formTables[index].tableID);
                                 workTableIDArray[index] = res.payload[majorIndex].formTables[index].tableID;
                                 prjIDArray[index] = res.payload[majorIndex].formTables[index].prjDID;
                             }
@@ -390,6 +397,10 @@
                                 .error(function () {
                                     console.log('ERROR Project.findPrjByIDArray');
                                 })
+
+                            needRemoveOldTable = {
+                                tableIDArray: needUpdateWorkTableIDArray,
+                            }
 
                             formDataTable = {
                                 tableIDArray: workTableIDArray,
@@ -476,7 +487,7 @@
                                         };
                                         console.log("workIndex= " + workIndex);
                                         // $scope.tablesItems.push(detail);
-                                        $scope.tables[workIndex].tableItems.push(detail);
+                                        $scope.tables[workIndex].tablesItems.push(detail);
                                     }
                                     loadWorkOffTable(cookies.get('userDID'), 1);
                                     loadNH(1);
@@ -498,21 +509,20 @@
         }
 
         $scope.fetchTableItems = function(index) {
-            console.log("fetchTableItems, index= " + index);
-            return $scope.tables[index].tableItems;
+            return $scope.tables[index].tablesItems;
         }
 
         // -------------------------------------
         //Dynamic change
         $scope.hourChange = function (obj) {
             var stringtable = [
-                "table.mon_hour",
-                "table.tue_hour",
-                "table.wes_hour",
-                "table.thu_hour",
-                "table.fri_hour",
-                "table.sat_hour",
-                "table.sun_hour",
+                "item.mon_hour",
+                "item.tue_hour",
+                "item.wes_hour",
+                "item.thu_hour",
+                "item.fri_hour",
+                "item.sat_hour",
+                "item.sun_hour",
             ]
             var targetString = obj.$parent.$editable.name;
             var result = 0;
@@ -521,26 +531,26 @@
                 if (targetString === stringtable[index]) {
                     continue;
                 }
-                var oldValueString = 'parseInt(obj.$parent.$parent.' + stringtable[index] + ', 10)';
+                var oldValueString = 'parseInt(obj.$parent.$parent.$parent.' + stringtable[index] + ', 10)';
                 result += eval(oldValueString);
             }
             var newValue = parseInt(obj.$parent.$data, 10);
 
-            obj.$parent.$parent.table.hourTotal = newValue + result;
+            obj.$parent.$parent.$parent.item.hourTotal = newValue + result;
 
-            var updateString = 'obj.$parent.$parent.' + targetString + " = " + newValue;
+            var updateString = 'obj.$parent.$parent.$parent.' + targetString + " = " + newValue;
             eval(updateString);
         }
 
         $scope.hourAddChange = function (obj) {
             var stringtable = [
-                "table.mon_hour_add",
-                "table.tue_hour_add",
-                "table.wes_hour_add",
-                "table.thu_hour_add",
-                "table.fri_hour_add",
-                "table.sat_hour_add",
-                "table.sun_hour_add",
+                "item.mon_hour_add",
+                "item.tue_hour_add",
+                "item.wes_hour_add",
+                "item.thu_hour_add",
+                "item.fri_hour_add",
+                "item.sat_hour_add",
+                "item.sun_hour_add",
             ]
             var targetString = obj.$parent.$editable.name
             var result = 0;
@@ -1078,14 +1088,14 @@
             if ($scope.checkIsCrossMonth($scope.firstFullDate) > 0) {
                 $scope.tables = [{
                     crossDay: $scope.checkIsCrossMonth($scope.firstFullDate),
-                    tableItems: [],
+                    tablesItems: [],
                 }, {
                     crossDay: $scope.checkIsCrossMonth($scope.firstFullDate),
-                    tableItems: [],
+                    tablesItems: [],
                 }];
             } else {
                 $scope.tables = [{
-                    tableItems: [],
+                    tablesItems: [],
                 }];
             }
             console.log($scope.checkIsCrossMonth($scope.firstFullDate));
@@ -1217,10 +1227,12 @@
         // ************************ CREATE SUBMIT ***************************
         $scope.createSubmit = function (time, isRefreshProjectSelector) {
             return $timeout(function () {
-                for (var tableIndex = 0; tableIndex < $scope.tables.length; tableIndex ++) {
-
+                // 更新old Table ID Array
+                var needUpdateWorkTableIDArray = [];
+                for (var majorIndex = 0; majorIndex < $scope.tables.length; majorIndex ++) {
+                    var tableIndex = 0;
                     // 工時表內的 列表數
-                    var workItemCount = $("tbody[id='tableItemBody" + tableIndex + "']").length;
+                    var workItemCount = $("tbody[id='tableItemBody" + majorIndex + "']").length;
                     // send Data
                     var workHourTableData = [];
 
@@ -1232,72 +1244,72 @@
                         }
                     }
 
-                    for (var index = 0; index < workItemCount; index++) {
-                        var itemPrjCode = $('tbody').find("span[id^='prjCode" + tableIndex + "']")[index].innerText;
-                        var itemPrjDID = $('tbody').find("span[id='prjDID" + tableIndex + "']")[index].innerText;
+                    for (var itemIndex = 0; itemIndex < workItemCount; itemIndex++) {
+                        var itemPrjCode = $('tbody').find("span[id^='prjCode" + majorIndex + "']")[itemIndex].innerText;
+                        var itemPrjDID = $('tbody').find("span[id='prjDID" + majorIndex + "']")[itemIndex].innerText;
                         //MON
-                        var mon_hour = $('tbody').find("span[id='mon_hour" + tableIndex + "']").length === 0 ? 0
-                            : $('tbody').find("span[id='mon_hour" + tableIndex + "']")[index].innerText;
-                        var mon_memo = $('tbody').find("span[id='mon_memo" + tableIndex + "']").length === 0 ? ""
-                            : $('tbody').find("span[id='mon_memo" + tableIndex + "']")[index].innerText;
-                        var mon_hour_add = $('tbody').find("span[id='mon_hour_add" + tableIndex + "']").length === 0 ? 0
-                            : $('tbody').find("span[id='mon_hour_add" + tableIndex + "']")[index].innerText;
-                        var mon_memo_add = $('tbody').find("span[id='mon_memo_add" + tableIndex + "']").length === 0 ? ""
-                            : $('tbody').find("span[id='mon_memo_add" + tableIndex + "']")[index].innerText;
+                        var mon_hour = $('tbody').find("span[id='mon_hour" + majorIndex + "']").length === 0 ? 0
+                            : $('tbody').find("span[id='mon_hour" + majorIndex + "']")[itemIndex].innerText;
+                        var mon_memo = $('tbody').find("span[id='mon_memo" + majorIndex + "']").length === 0 ? ""
+                            : $('tbody').find("span[id='mon_memo" + majorIndex + "']")[itemIndex].innerText;
+                        var mon_hour_add = $('tbody').find("span[id='mon_hour_add" + majorIndex + "']").length === 0 ? 0
+                            : $('tbody').find("span[id='mon_hour_add" + majorIndex + "']")[itemIndex].innerText;
+                        var mon_memo_add = $('tbody').find("span[id='mon_memo_add" + majorIndex + "']").length === 0 ? ""
+                            : $('tbody').find("span[id='mon_memo_add" + majorIndex + "']")[itemIndex].innerText;
                         //TUE
-                        var tue_hour = $('tbody').find("span[id='tue_hour" + tableIndex + "']").length === 0 ? 0
-                            : $('tbody').find("span[id='tue_hour" + tableIndex + "']")[index].innerText;
-                        var tue_memo = $('tbody').find("span[id='tue_memo" + tableIndex + "']").length === 0 ? ""
-                            : $('tbody').find("span[id='tue_memo" + tableIndex + "']")[index].innerText;
-                        var tue_hour_add = $('tbody').find("span[id='tue_hour_add" + tableIndex + "']").length === 0 ? 0
-                            : $('tbody').find("span[id='tue_hour_add" + tableIndex + "']")[index].innerText;
-                        var tue_memo_add = $('tbody').find("span[id='tue_memo_add" + tableIndex + "']").length === 0 ? ""
-                            : $('tbody').find("span[id='tue_memo_add" + tableIndex + "']")[index].innerText;
+                        var tue_hour = $('tbody').find("span[id='tue_hour" + majorIndex + "']").length === 0 ? 0
+                            : $('tbody').find("span[id='tue_hour" + majorIndex + "']")[itemIndex].innerText;
+                        var tue_memo = $('tbody').find("span[id='tue_memo" + majorIndex + "']").length === 0 ? ""
+                            : $('tbody').find("span[id='tue_memo" + majorIndex + "']")[itemIndex].innerText;
+                        var tue_hour_add = $('tbody').find("span[id='tue_hour_add" + majorIndex + "']").length === 0 ? 0
+                            : $('tbody').find("span[id='tue_hour_add" + majorIndex + "']")[itemIndex].innerText;
+                        var tue_memo_add = $('tbody').find("span[id='tue_memo_add" + majorIndex + "']").length === 0 ? ""
+                            : $('tbody').find("span[id='tue_memo_add" + majorIndex + "']")[itemIndex].innerText;
                         //WES
-                        var wes_hour = $('tbody').find("span[id='wes_hour" + tableIndex + "']").length === 0 ? 0
-                            : $('tbody').find("span[id='wes_hour" + tableIndex + "']")[index].innerText;
-                        var wes_memo = $('tbody').find("span[id='wes_memo" + tableIndex + "']").length === 0 ? ""
-                            : $('tbody').find("span[id='wes_memo" + tableIndex + "']")[index].innerText;
-                        var wes_hour_add = $('tbody').find("span[id='wes_hour_add" + tableIndex + "']").length === 0 ? 0
-                            : $('tbody').find("span[id='wes_hour_add" + tableIndex + "']")[index].innerText;
-                        var wes_memo_add = $('tbody').find("span[id='wes_memo_add" + tableIndex + "']").length === 0 ? ""
-                            : $('tbody').find("span[id='wes_memo_add" + tableIndex + "']")[index].innerText;
+                        var wes_hour = $('tbody').find("span[id='wes_hour" + majorIndex + "']").length === 0 ? 0
+                            : $('tbody').find("span[id='wes_hour" + majorIndex + "']")[itemIndex].innerText;
+                        var wes_memo = $('tbody').find("span[id='wes_memo" + majorIndex + "']").length === 0 ? ""
+                            : $('tbody').find("span[id='wes_memo" + majorIndex + "']")[itemIndex].innerText;
+                        var wes_hour_add = $('tbody').find("span[id='wes_hour_add" + majorIndex + "']").length === 0 ? 0
+                            : $('tbody').find("span[id='wes_hour_add" + majorIndex + "']")[itemIndex].innerText;
+                        var wes_memo_add = $('tbody').find("span[id='wes_memo_add" + majorIndex + "']").length === 0 ? ""
+                            : $('tbody').find("span[id='wes_memo_add" + majorIndex + "']")[itemIndex].innerText;
                         //THU
-                        var thu_hour = $('tbody').find("span[id='thu_hour" + tableIndex + "']").length === 0 ? 0
-                            : $('tbody').find("span[id='thu_hour" + tableIndex + "']")[index].innerText;
-                        var thu_memo = $('tbody').find("span[id='thu_memo" + tableIndex + "']").length === 0 ? ""
-                            : $('tbody').find("span[id='thu_memo" + tableIndex + "']")[index].innerText;
-                        var thu_hour_add = $('tbody').find("span[id='thu_hour_add" + tableIndex + "']").length === 0 ? 0
-                            : $('tbody').find("span[id='thu_hour_add" + tableIndex + "']")[index].innerText;
-                        var thu_memo_add = $('tbody').find("span[id='thu_memo_add" + tableIndex + "']").length === 0 ? ""
-                            : $('tbody').find("span[id='thu_memo_add" + tableIndex + "']")[index].innerText;
+                        var thu_hour = $('tbody').find("span[id='thu_hour" + majorIndex + "']").length === 0 ? 0
+                            : $('tbody').find("span[id='thu_hour" + majorIndex + "']")[itemIndex].innerText;
+                        var thu_memo = $('tbody').find("span[id='thu_memo" + majorIndex + "']").length === 0 ? ""
+                            : $('tbody').find("span[id='thu_memo" + majorIndex + "']")[itemIndex].innerText;
+                        var thu_hour_add = $('tbody').find("span[id='thu_hour_add" + majorIndex + "']").length === 0 ? 0
+                            : $('tbody').find("span[id='thu_hour_add" + majorIndex + "']")[itemIndex].innerText;
+                        var thu_memo_add = $('tbody').find("span[id='thu_memo_add" + majorIndex + "']").length === 0 ? ""
+                            : $('tbody').find("span[id='thu_memo_add" + majorIndex + "']")[itemIndex].innerText;
                         //FRI
-                        var fri_hour = $('tbody').find("span[id='fri_hour" + tableIndex + "']").length === 0 ? 0
-                            : $('tbody').find("span[id='fri_hour" + tableIndex + "']")[index].innerText;
-                        var fri_memo = $('tbody').find("span[id='fri_memo" + tableIndex + "']").length === 0 ? ""
-                            : $('tbody').find("span[id='fri_memo" + tableIndex + "']")[index].innerText;
-                        var fri_hour_add = $('tbody').find("span[id='fri_hour_add" + tableIndex + "']").length === 0 ? 0
-                            : $('tbody').find("span[id='fri_hour_add" + tableIndex + "']")[index].innerText;
-                        var fri_memo_add = $('tbody').find("span[id='fri_memo_add" + tableIndex + "']").length === 0 ? ""
-                            : $('tbody').find("span[id='fri_memo_add" + tableIndex + "']")[index].innerText;
+                        var fri_hour = $('tbody').find("span[id='fri_hour" + majorIndex + "']").length === 0 ? 0
+                            : $('tbody').find("span[id='fri_hour" + majorIndex + "']")[itemIndex].innerText;
+                        var fri_memo = $('tbody').find("span[id='fri_memo" + majorIndex + "']").length === 0 ? ""
+                            : $('tbody').find("span[id='fri_memo" + majorIndex + "']")[itemIndex].innerText;
+                        var fri_hour_add = $('tbody').find("span[id='fri_hour_add" + majorIndex + "']").length === 0 ? 0
+                            : $('tbody').find("span[id='fri_hour_add" + majorIndex + "']")[itemIndex].innerText;
+                        var fri_memo_add = $('tbody').find("span[id='fri_memo_add" + majorIndex + "']").length === 0 ? ""
+                            : $('tbody').find("span[id='fri_memo_add" + majorIndex + "']")[itemIndex].innerText;
                         //SAT
-                        var sat_hour = $('tbody').find("span[id='sat_hour" + tableIndex + "']").length === 0 ? 0
-                            : $('tbody').find("span[id='sat_hour" + tableIndex + "']")[index].innerText;
-                        var sat_memo = $('tbody').find("span[id='sat_memo" + tableIndex + "']").length === 0 ? ""
-                            : $('tbody').find("span[id='sat_memo" + tableIndex + "']")[index].innerText;
-                        var sat_hour_add = $('tbody').find("span[id='sat_hour_add" + tableIndex + "']").length === 0 ? 0
-                            : $('tbody').find("span[id='sat_hour_add" + tableIndex + "']")[index].innerText;
-                        var sat_memo_add = $('tbody').find("span[id='sat_memo_add" + tableIndex + "']").length === 0 ? ""
-                            : $('tbody').find("span[id='sat_memo_add" + tableIndex + "']")[index].innerText;
+                        var sat_hour = $('tbody').find("span[id='sat_hour" + majorIndex + "']").length === 0 ? 0
+                            : $('tbody').find("span[id='sat_hour" + majorIndex + "']")[itemIndex].innerText;
+                        var sat_memo = $('tbody').find("span[id='sat_memo" + majorIndex + "']").length === 0 ? ""
+                            : $('tbody').find("span[id='sat_memo" + majorIndex + "']")[itemIndex].innerText;
+                        var sat_hour_add = $('tbody').find("span[id='sat_hour_add" + majorIndex + "']").length === 0 ? 0
+                            : $('tbody').find("span[id='sat_hour_add" + majorIndex + "']")[itemIndex].innerText;
+                        var sat_memo_add = $('tbody').find("span[id='sat_memo_add" + majorIndex + "']").length === 0 ? ""
+                            : $('tbody').find("span[id='sat_memo_add" + majorIndex + "']")[itemIndex].innerText;
                         //SUN
-                        var sun_hour = $('tbody').find("span[id='sun_hour" + tableIndex + "']").length === 0 ? 0
-                            : $('tbody').find("span[id='sun_hour" + tableIndex + "']")[index].innerText;
-                        var sun_memo = $('tbody').find("span[id='sun_memo" + tableIndex + "']").length === 0 ? ""
-                            : $('tbody').find("span[id='sun_memo" + tableIndex + "']")[index].innerText;
-                        var sun_hour_add = $('tbody').find("span[id='sun_hour_add" + tableIndex + "']").length === 0 ? 0
-                            : $('tbody').find("span[id='sun_hour_add" + tableIndex + "']")[index].innerText;
-                        var sun_memo_add = $('tbody').find("span[id='sun_memo_add" + tableIndex + "']").length === 0 ? ""
-                            : $('tbody').find("span[id='sun_memo_add" + tableIndex + "']")[index].innerText;
+                        var sun_hour = $('tbody').find("span[id='sun_hour" + majorIndex + "']").length === 0 ? 0
+                            : $('tbody').find("span[id='sun_hour" + majorIndex + "']")[itemIndex].innerText;
+                        var sun_memo = $('tbody').find("span[id='sun_memo" + majorIndex + "']").length === 0 ? ""
+                            : $('tbody').find("span[id='sun_memo" + majorIndex + "']")[itemIndex].innerText;
+                        var sun_hour_add = $('tbody').find("span[id='sun_hour_add" + majorIndex + "']").length === 0 ? 0
+                            : $('tbody').find("span[id='sun_hour_add" + majorIndex + "']")[itemIndex].innerText;
+                        var sun_memo_add = $('tbody').find("span[id='sun_memo_add" + majorIndex + "']").length === 0 ? ""
+                            : $('tbody').find("span[id='sun_memo_add" + majorIndex + "']")[itemIndex].innerText;
 
                         var tableItem = {
                             creatorDID: cookies.get('userDID'),
@@ -1339,16 +1351,19 @@
                             sun_hour_add: sun_hour_add,
                             sun_memo_add: sun_memo_add,
                             //RIGHT
-                            isSendReview: $scope.tablesItems[index].isSendReview,
-                            isManagerCheck: $scope.tablesItems[index].isManagerCheck,
-                            isExecutiveCheck: $scope.tablesItems[index].isExecutiveCheck,
+                            // isSendReview: $scope.tablesItems[index].isSendReview,
+                            // isManagerCheck: $scope.tablesItems[index].isManagerCheck,
+                            // isExecutiveCheck: $scope.tablesItems[index].isExecutiveCheck,
+                            isSendReview: $scope.tables[majorIndex].tablesItems[itemIndex].isSendReview,
+                            isManagerCheck: $scope.tables[majorIndex].tablesItems[itemIndex].isManagerCheck,
+                            isExecutiveCheck: $scope.tables[majorIndex].tablesItems[itemIndex].isExecutiveCheck,
 
                             // Reject
-                            isManagerReject: $scope.tablesItems[index].isManagerReject,
-                            managerReject_memo: $scope.tablesItems[index].managerReject_memo,
+                            isManagerReject: $scope.tables[majorIndex].tablesItems[itemIndex].isManagerReject,
+                            managerReject_memo: $scope.tables[majorIndex].tablesItems[itemIndex].managerReject_memo,
 
-                            isExecutiveReject: $scope.tablesItems[index].isExecutiveReject,
-                            executiveReject_memo: $scope.tablesItems[index].executiveReject_memo,
+                            isExecutiveReject: $scope.tables[majorIndex].tablesItems[itemIndex].isExecutiveReject,
+                            executiveReject_memo: $scope.tables[majorIndex].tablesItems[itemIndex].executiveReject_memo,
                         }
                         workHourTableData.push(tableItem);
                         // console.log(tableItem);
@@ -1357,7 +1372,7 @@
                     var sendMonth = moment($scope.firstFullDate).month() + 1;
 
 
-                    switch (tableIndex) {
+                    switch (majorIndex) {
                         case 0:
                             sendMonth = moment($scope.firstFullDate).month() + 1;
                             break;
@@ -1374,27 +1389,36 @@
                         create_formDate: $scope.firstFullDate,
                         // workHourTableData 為 []，也要送，作為更新。
                         formTables: workHourTableData,
-                        oldTables: formDataTable,
+                        oldTables: needRemoveOldTable,
                     }
 
                     console.log(formData);
+
                     // TODO 跨月
                     WorkHourUtil.createWorkHourTableForm(formData)
                         .success(function (res) {
-                            // 更新old Table ID Array
-                            var workTableIDArray = [];
+                            var workIndex = tableIndex;
+                            tableIndex++;
+                            // // 更新old Table ID Array
+                            // var workTableIDArray = [];
                             if (res.payload.length > 0) {
                                 for (var index = 0; index < res.payload.length; index++) {
                                     console.log(res.payload[index]);
-                                    workTableIDArray[index] = res.payload[index].tableID;
-                                    console.log($scope.tablesItems);
-                                    $scope.tablesItems[index].tableID = res.payload[index].tableID;
+                                    needUpdateWorkTableIDArray.push(res.payload[index].tableID);
+                                    console.log(tableIndex);
+                                    console.log(workIndex);
+                                    console.log($scope.tables);
+                                    console.log($scope.tables[workIndex].tablesItems);
+                                    // $scope.tablesItems[index].tableID = res.payload[index].tableID;
+                                    $scope.tables[workIndex].tablesItems[index].tableID = res.payload[index].tableID;
                                 }
                             }
-                            formDataTable = {
-                                tableIDArray: workTableIDArray,
-                            };
-                            if (isRefreshProjectSelector) {
+                            // 移除舊有 tableID;
+                            needRemoveOldTable = {
+                                tableIDArray: needUpdateWorkTableIDArray,
+                            }
+
+                            if (isRefreshProjectSelector && tableIndex === $scope.tables.length) {
                                 $scope.getTable();
                             }
                         })
