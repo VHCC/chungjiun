@@ -127,7 +127,7 @@
         // ＊＊＊＊＊＊＊ Manipulate ＊＊＊＊＊＊＊
         $scope.addWorkItem = function (prj) {
             vm.prjItems.selected = "";
-            var inserted = {
+            var newTableItem = {
                 prjDID: prj._id,
                 //MON
                 mon_hour: 0,
@@ -156,9 +156,8 @@
                 isExecutiveCheck: false,
             };
 
-            // TODO multi tables
             for (var index = 0; index< $scope.tables.length; index ++) {
-                $scope.tables[index].tablesItems.push(inserted);
+                $scope.tables[index].tablesItems.push(newTableItem);
             }
             // $scope.tablesItems.push(inserted);
             $scope.createSubmit(500, true);
@@ -170,10 +169,10 @@
         }
 
         // Remove Work Hour Check
-        $scope.deleteCheck = function (table, index) {
-            $scope.checkText = '確定移除 ' + $scope.showPrjName(table.prjDID) + "  ？";
-            $scope.checkingTable = table;
-            $scope.mIndex = index;
+        $scope.deleteCheck = function (item, itemIndex) {
+            $scope.checkText = '確定移除 ' + $scope.showPrjName(item.prjDID) + "  ？";
+            $scope.checkingItem = item;
+            $scope.itemIndex = itemIndex;
             ngDialog.open({
                 template: 'app/pages/myModalTemplate/myWorkHourTableFormDeleteModal.html',
                 className: 'ngdialog-theme-default',
@@ -182,15 +181,15 @@
             });
         }
 
-        $scope.removeWorkItem = function (table, index) {
-            // console.log(index)
-            //TODO multi tables
-            $scope.tablesItems.splice(index, 1);
+        $scope.removeWorkItem = function (item, itemIndex) {
+            for (var index = 0; index< $scope.tables.length; index ++) {
+                $scope.tables[index].tablesItems.splice(itemIndex, 1);
+            }
 
             var formData = {
                 creatorDID: cookies.get('userDID'),
-                prjDID: table.prjDID,
-                create_formDate: table.create_formDate,
+                prjDID: item.prjDID,
+                create_formDate: item.create_formDate,
             }
 
             WorkHourAddItemUtil.removeRelatedAddItemByProject(formData)
@@ -310,7 +309,7 @@
                     for (var index = 0; index < $scope.tables.length; index ++) {
                         $scope.tables[index].tablesItems = [];
                     }
-                    $scope.tablesItems = [];
+                    // $scope.tablesItems = [];
                     for (var index = 0; index < stringTable.length; index++) {
                         eval(stringTable[index] + " = 0");
                     }
@@ -485,18 +484,20 @@
                                             res.payload[index].sat_hour_add +
                                             res.payload[index].sun_hour_add,
                                         };
-                                        console.log("workIndex= " + workIndex);
+                                        // console.log("workIndex= " + workIndex);
                                         // $scope.tablesItems.push(detail);
                                         $scope.tables[workIndex].tablesItems.push(detail);
                                     }
-                                    loadWorkOffTable(cookies.get('userDID'), 1);
-                                    loadNH(1);
+                                    // loadWorkOffTable(cookies.get('userDID'), 1);
+                                    // loadNH(1);
                                 })
                                 .error(function () {
                                     console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
                                 })
                             // manipulate finish.
                         }
+                        loadWorkOffTable(cookies.get('userDID'), 1);
+                        loadNH(1);
 
                     } else {
                         // 無資料
@@ -760,9 +761,7 @@
                                         userMonthSalary: res.payload[index].userMonthSalary,
                                     };
                                     $scope.loginUserWorkOffTables.push(detail);
-
                                 }
-
                                 for (var index = 0; index < $scope.loginUserWorkOffTables.length; index++) {
                                     if (!$scope.loginUserWorkOffTables[index].isBossCheck || !$scope.loginUserWorkOffTables[index].isExecutiveCheck) continue;
                                     var evalFooter = "getHourDiff($scope.loginUserWorkOffTables[index].start_time, $scope.loginUserWorkOffTables[index].end_time)";
@@ -1225,7 +1224,7 @@
         };
 
         // ************************ CREATE SUBMIT ***************************
-        $scope.createSubmit = function (time, isRefreshProjectSelector) {
+        $scope.createSubmit = function (delayTime, isRefreshProjectSelector) {
             return $timeout(function () {
                 // 更新old Table ID Array
                 var needUpdateWorkTableIDArray = [];
@@ -1351,9 +1350,6 @@
                             sun_hour_add: sun_hour_add,
                             sun_memo_add: sun_memo_add,
                             //RIGHT
-                            // isSendReview: $scope.tablesItems[index].isSendReview,
-                            // isManagerCheck: $scope.tablesItems[index].isManagerCheck,
-                            // isExecutiveCheck: $scope.tablesItems[index].isExecutiveCheck,
                             isSendReview: $scope.tables[majorIndex].tablesItems[itemIndex].isSendReview,
                             isManagerCheck: $scope.tables[majorIndex].tablesItems[itemIndex].isManagerCheck,
                             isExecutiveCheck: $scope.tables[majorIndex].tablesItems[itemIndex].isExecutiveCheck,
@@ -1392,7 +1388,7 @@
                         oldTables: needRemoveOldTable,
                     }
 
-                    console.log(formData);
+                    // console.log(formData);
 
                     // TODO 跨月
                     WorkHourUtil.createWorkHourTableForm(formData)
@@ -1403,14 +1399,8 @@
                             // var workTableIDArray = [];
                             if (res.payload.length > 0) {
                                 for (var index = 0; index < res.payload.length; index++) {
-                                    console.log(res.payload[index]);
                                     needUpdateWorkTableIDArray.push(res.payload[index].tableID);
-                                    console.log(tableIndex);
-                                    console.log(workIndex);
-                                    console.log($scope.tables);
-                                    console.log($scope.tables[workIndex].tablesItems);
-                                    // $scope.tablesItems[index].tableID = res.payload[index].tableID;
-                                    $scope.tables[workIndex].tablesItems[index].tableID = res.payload[index].tableID;
+                                    // $scope.tables[workIndex].tablesItems[index].tableID = res.payload[index].tableID;
                                 }
                             }
                             // 移除舊有 tableID;
@@ -1427,18 +1417,20 @@
                         })
 
                 }
-            }, time);
+            }, delayTime);
         }
 
         // ************************ REVIEW SUBMIT ***************************
         $scope.reviewFormCheck = function(tableIndex) {
-            if ($scope.showCalculateHour($scope.tablesItems, 1001, 1) !== 40) {
+            if ($scope.showCalculateHour($scope.tables[tableIndex].tablesItems, 1001, 1) !== 40) {
                 $scope.titleClass = 'bg-danger';
                 $scope.checkText = '該周工時表時數非 40，確定提交 審查？';
             } else {
                 $scope.titleClass = 'bg-warning';
                 $scope.checkText = '確定提交 審查？';
             }
+            $scope.reviewTableIndex = tableIndex;
+
             ngDialog.open({
                 template: 'app/pages/myModalTemplate/myWorkHourTableFormReviewModalTotal.html',
                 className: 'ngdialog-theme-default',
@@ -1447,11 +1439,11 @@
             });
         }
 
-        $scope.reviewForm = function() {
+        $scope.reviewForm = function(tableIndex) {
             $timeout(function () {
                 var tableList = [];
-                for (var index = 0; index < $scope.tablesItems.length; index ++) {
-                    tableList[index] = $scope.tablesItems[index].tableID;
+                for (var index = 0; index < $scope.tables[tableIndex].tablesItems.length; index ++) {
+                    tableList[index] = $scope.tables[tableIndex].tablesItems[index].tableID;
                 }
                 var formData = {
                     msgTargetID: cookies.get('bossID'),
@@ -2381,6 +2373,7 @@
                         };
                         formTables.push(detail);
                     }
+                    //TODO need change to tables, tablesItems design.
                     var evalString = "$scope.tablesItems['" + form.creatorDID + form._id + "'] = formTables";
                     eval(evalString);
 
