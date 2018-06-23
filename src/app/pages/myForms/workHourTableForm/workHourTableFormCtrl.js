@@ -72,7 +72,7 @@
         $scope.tables = [{
             tablesItems: [],
         }];
-        $scope.tablesItems = [];
+        // $scope.tablesItems = [];
         // 休假列表
         $scope.workOffTablesItems = [];
         // 國定假日
@@ -327,7 +327,10 @@
                 //     }
                 //     break;
                 case 4:
-                    $scope.tablesHistoryItems = [];
+                    for (var index = 0; index < $scope.tables_history.length; index ++) {
+                        $scope.tables_history[index].tablesItems = [];
+                    }
+                    // $scope.tablesHistoryItems = [];
                     for (var index = 0; index < stringTable.length; index++) {
                         eval(stringTable[index] + "_history = 0");
                     }
@@ -362,8 +365,7 @@
                         for (var majorIndex = 0; majorIndex < res.payload.length; majorIndex ++) {
                             var tableIndex = 0;
                             var workItemCount = res.payload[majorIndex].formTables.length;
-                            console.log("tables= " + res.payload.length);
-                            // TODO 跨月Fetch
+                            // console.log("tables= " + res.payload.length);
 
                             var prjIDArray = [];
                             var workTableIDArray = [];
@@ -511,6 +513,10 @@
 
         $scope.fetchTableItems = function(index) {
             return $scope.tables[index].tablesItems;
+        }
+
+        $scope.fetchTableItems_history = function(index) {
+            return $scope.tables_history[index].tablesItems;
         }
 
         // -------------------------------------
@@ -1046,10 +1052,10 @@
         }
 
         // Examine is cross Month
-        $scope.checkIsCrossMonth = function (firstFullDate) {
-            // console.log(firstFullDate);
+        $scope.checkIsCrossMonth = function (fullDate) {
+            // console.log(fullDate);
             for (var index = 1; index < 7; index ++) {
-                if ((moment($scope.firstFullDate).day(index).month() + 1) !== (moment($scope.firstFullDate).day(index + 1).month() + 1)) {
+                if ((moment(fullDate).day(index).month() + 1) !== (moment(fullDate).day(index + 1).month() + 1)) {
                     return index + 1;
                 }
             }
@@ -1509,6 +1515,9 @@
 
         // ********************** 歷史檢視 *****************************
         // 主要顯示
+        $scope.tables_history = {
+            tablesItems: [],
+        };
         $scope.tablesHistoryItems = [];
 
         // -------------------- Week Methods Manager---------------------
@@ -1530,19 +1539,29 @@
             if (!isInitial) {
                 $scope.showHistoryTable();
             }
+            if ($scope.checkIsCrossMonth($scope.firstFullDate_history) > 0) {
+                $scope.tables_history = [{
+                    crossDay: $scope.checkIsCrossMonth($scope.firstFullDate_history),
+                    tablesItems: [],
+                }, {
+                    crossDay: $scope.checkIsCrossMonth($scope.firstFullDate_history),
+                    tablesItems: [],
+                }];
+            } else {
+                $scope.tables_history = [{
+                    tablesItems: [],
+                }];
+            }
+            console.log($scope.checkIsCrossMonth($scope.firstFullDate_history));
         }
         $scope.reloadWeek_history(true);
 
         $scope.addWeek_history = function () {
-            // $scope.firstFullDate_history = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_history));
             $scope.firstFullDate_history = moment($scope.firstFullDate_history).day(8).format('YYYY/MM/DD');
-
             $scope.reloadWeek_history(false);
         }
 
         $scope.decreaseWeek_history = function () {
-            // $scope.firstFullDate_history = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_history));
-            // $scope.firstDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_history)));
             $scope.firstFullDate_history = moment($scope.firstFullDate_history).day(-6).format('YYYY/MM/DD');
             $scope.reloadWeek_history(false);
         }
@@ -1551,114 +1570,116 @@
         $scope.showHistoryTable = function () {
             initialUserTable(4);
             var getData = {
-                // managerID: cookies.get('userDID'),
                 creatorDID: vm.history.selected._id,
                 create_formDate: $scope.firstFullDate_history,
             }
-            // WorkHourUtil.getWorkHourFormForManager(getData)
             WorkHourUtil.getWorkHourForm(getData)
                 .success(function (res) {
-                    // var relatedPijIDArray = res.prjIDArray;
                     if (res.payload.length > 0) {
-                        var workItemCount = res.payload[0].formTables.length;
+                        for (var majorIndex = 0; majorIndex < res.payload.length; majorIndex ++) {
+                            var tableIndex = 0;
+                            var workItemCount = res.payload[majorIndex].formTables.length;
 
-                        var prjIDArray = [];
-                        var workTableIDArray = [];
-                        // 組成 prjID Array, TableID Array，再去Server要資料
-                        for (var index = 0; index < workItemCount; index++) {
-                            workTableIDArray[index] = res.payload[0].formTables[index].tableID;
-                            prjIDArray[index] = res.payload[0].formTables[index].prjDID;
+                            var prjIDArray = [];
+                            var workTableIDArray = [];
+                            // 組成 prjID Array, TableID Array，再去Server要資料
+                            for (var index = 0; index < workItemCount; index++) {
+                                workTableIDArray[index] = res.payload[majorIndex].formTables[index].tableID;
+                                prjIDArray[index] = res.payload[majorIndex].formTables[index].prjDID;
+                            }
+                            formDataTable = {
+                                tableIDArray: workTableIDArray,
+                                isFindSendReview: true,
+                                // isFindManagerCheck: false,
+                                isFindManagerCheck: null,
+                                isFindExecutiveCheck: null
+                            }
+
+                            // 取得 Table Data
+                            WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
+                                .success(function (res) {
+                                    var workIndex = tableIndex;
+                                    tableIndex++;
+                                    // 填入表單資訊
+                                    for (var index = 0; index < res.payload.length; index++) {
+                                        var detail = {
+                                            tableID: res.payload[index]._id,
+                                            prjDID: res.payload[index].prjDID,
+                                            create_formDate: res.payload[index].create_formDate,
+                                            //MON
+                                            mon_hour: res.payload[index].mon_hour,
+                                            mon_memo: res.payload[index].mon_memo,
+                                            mon_hour_add: res.payload[index].mon_hour_add,
+                                            mon_memo_add: res.payload[index].mon_memo_add,
+                                            //TUE
+                                            tue_hour: res.payload[index].tue_hour,
+                                            tue_memo: res.payload[index].tue_memo,
+                                            tue_hour_add: res.payload[index].tue_hour_add,
+                                            tue_memo_add: res.payload[index].tue_memo_add,
+                                            //WES
+                                            wes_hour: res.payload[index].wes_hour,
+                                            wes_memo: res.payload[index].wes_memo,
+                                            wes_hour_add: res.payload[index].wes_hour_add,
+                                            wes_memo_add: res.payload[index].wes_memo_add,
+                                            //THU
+                                            thu_hour: res.payload[index].thu_hour,
+                                            thu_memo: res.payload[index].thu_memo,
+                                            thu_hour_add: res.payload[index].thu_hour_add,
+                                            thu_memo_add: res.payload[index].thu_memo_add,
+                                            //FRI
+                                            fri_hour: res.payload[index].fri_hour,
+                                            fri_memo: res.payload[index].fri_memo,
+                                            fri_hour_add: res.payload[index].fri_hour_add,
+                                            fri_memo_add: res.payload[index].fri_memo_add,
+                                            //SAT
+                                            sat_hour: res.payload[index].sat_hour,
+                                            sat_memo: res.payload[index].sat_memo,
+                                            sat_hour_add: res.payload[index].sat_hour_add,
+                                            sat_memo_add: res.payload[index].sat_memo_add,
+                                            //SUN
+                                            sun_hour: res.payload[index].sun_hour,
+                                            sun_memo: res.payload[index].sun_memo,
+                                            sun_hour_add: res.payload[index].sun_hour_add,
+                                            sun_memo_add: res.payload[index].sun_memo_add,
+                                            //RIGHT
+                                            isSendReview: res.payload[index].isSendReview,
+                                            isManagerCheck: res.payload[index].isManagerCheck,
+                                            isExecutiveCheck: res.payload[index].isExecutiveCheck,
+
+                                            // Reject
+                                            isManagerReject: res.payload[index].isManagerReject,
+                                            managerReject_memo: res.payload[index].managerReject_memo,
+
+                                            isExecutiveReject: res.payload[index].isExecutiveReject,
+                                            executiveReject_memo: res.payload[index].executiveReject_memo,
+                                            // TOTAL
+                                            hourTotal: res.payload[index].mon_hour +
+                                            res.payload[index].tue_hour +
+                                            res.payload[index].wes_hour +
+                                            res.payload[index].thu_hour +
+                                            res.payload[index].fri_hour +
+                                            res.payload[index].sat_hour +
+                                            res.payload[index].sun_hour,
+                                            hourAddTotal: res.payload[index].mon_hour_add +
+                                            res.payload[index].tue_hour_add +
+                                            res.payload[index].wes_hour_add +
+                                            res.payload[index].thu_hour_add +
+                                            res.payload[index].fri_hour_add +
+                                            res.payload[index].sat_hour_add +
+                                            res.payload[index].sun_hour_add,
+                                        };
+                                        // console.log("workIndex= " + workIndex);
+                                        $scope.tables_history[workIndex].tablesItems.push(detail);
+                                    }
+                                    // loadWorkOffTable(vm.history.selected._id, 4);
+                                    // loadNH(4);
+                                })
+                                .error(function () {
+                                    console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
+                                })
                         }
-                        formDataTable = {
-                            tableIDArray: workTableIDArray,
-                            isFindSendReview: true,
-                            // isFindManagerCheck: false,
-                            isFindManagerCheck: null,
-                            isFindExecutiveCheck: null
-                        }
-                        // 取得 Table Data
-                        WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
-                            .success(function (res) {
-                                // 填入表單資訊
-                                for (var index = 0; index < res.payload.length; index++) {
-                                    // for (var subIndex = 0; subIndex < relatedPijIDArray.length; subIndex++) {
-                                    //     if (relatedPijIDArray[subIndex] === res.payload[index].prjDID) {
-                                            var detail = {
-                                                tableID: res.payload[index]._id,
-                                                prjDID: res.payload[index].prjDID,
-                                                create_formDate: res.payload[index].create_formDate,
-                                                //MON
-                                                mon_hour: res.payload[index].mon_hour,
-                                                mon_memo: res.payload[index].mon_memo,
-                                                mon_hour_add: res.payload[index].mon_hour_add,
-                                                mon_memo_add: res.payload[index].mon_memo_add,
-                                                //TUE
-                                                tue_hour: res.payload[index].tue_hour,
-                                                tue_memo: res.payload[index].tue_memo,
-                                                tue_hour_add: res.payload[index].tue_hour_add,
-                                                tue_memo_add: res.payload[index].tue_memo_add,
-                                                //WES
-                                                wes_hour: res.payload[index].wes_hour,
-                                                wes_memo: res.payload[index].wes_memo,
-                                                wes_hour_add: res.payload[index].wes_hour_add,
-                                                wes_memo_add: res.payload[index].wes_memo_add,
-                                                //THU
-                                                thu_hour: res.payload[index].thu_hour,
-                                                thu_memo: res.payload[index].thu_memo,
-                                                thu_hour_add: res.payload[index].thu_hour_add,
-                                                thu_memo_add: res.payload[index].thu_memo_add,
-                                                //FRI
-                                                fri_hour: res.payload[index].fri_hour,
-                                                fri_memo: res.payload[index].fri_memo,
-                                                fri_hour_add: res.payload[index].fri_hour_add,
-                                                fri_memo_add: res.payload[index].fri_memo_add,
-                                                //SAT
-                                                sat_hour: res.payload[index].sat_hour,
-                                                sat_memo: res.payload[index].sat_memo,
-                                                sat_hour_add: res.payload[index].sat_hour_add,
-                                                sat_memo_add: res.payload[index].sat_memo_add,
-                                                //SUN
-                                                sun_hour: res.payload[index].sun_hour,
-                                                sun_memo: res.payload[index].sun_memo,
-                                                sun_hour_add: res.payload[index].sun_hour_add,
-                                                sun_memo_add: res.payload[index].sun_memo_add,
-                                                //RIGHT
-                                                isSendReview: res.payload[index].isSendReview,
-                                                isManagerCheck: res.payload[index].isManagerCheck,
-                                                isExecutiveCheck: res.payload[index].isExecutiveCheck,
-
-                                                // Reject
-                                                isManagerReject: res.payload[index].isManagerReject,
-                                                managerReject_memo: res.payload[index].managerReject_memo,
-
-                                                isExecutiveReject: res.payload[index].isExecutiveReject,
-                                                executiveReject_memo: res.payload[index].executiveReject_memo,
-                                                // TOTAL
-                                                hourTotal: res.payload[index].mon_hour +
-                                                res.payload[index].tue_hour +
-                                                res.payload[index].wes_hour +
-                                                res.payload[index].thu_hour +
-                                                res.payload[index].fri_hour +
-                                                res.payload[index].sat_hour +
-                                                res.payload[index].sun_hour,
-                                                hourAddTotal: res.payload[index].mon_hour_add +
-                                                res.payload[index].tue_hour_add +
-                                                res.payload[index].wes_hour_add +
-                                                res.payload[index].thu_hour_add +
-                                                res.payload[index].fri_hour_add +
-                                                res.payload[index].sat_hour_add +
-                                                res.payload[index].sun_hour_add,
-                                            };
-                                            $scope.tablesHistoryItems.push(detail);
-                                    //     }
-                                    // }
-                                }
-                                loadWorkOffTable(vm.history.selected._id, 4);
-                                loadNH(4);
-                            })
-                            .error(function () {
-                                console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
-                            })
+                        loadWorkOffTable(vm.history.selected._id, 4);
+                        loadNH(4);
                     } else {
                         $scope.loading = false;
                     }
