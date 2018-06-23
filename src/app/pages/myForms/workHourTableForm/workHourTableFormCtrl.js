@@ -1007,7 +1007,7 @@
 
         // Examine is cross Month
         $scope.checkIsCrossMonth = function (firstFullDate) {
-            console.log(firstFullDate);
+            // console.log(firstFullDate);
             for (var index = 1; index < 7; index ++) {
                 if ((moment($scope.firstFullDate).day(index).month() + 1) !== (moment($scope.firstFullDate).day(index + 1).month() + 1)) {
                     return index + 1;
@@ -1031,6 +1031,7 @@
         $scope.lastDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 6));
 
         $scope.reloadWeek = function(isInitial) {
+            $scope.firstDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 0));
             $scope.lastDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 6));
 
             $scope.monDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate), 0));
@@ -1057,16 +1058,13 @@
         $scope.reloadWeek(true);
 
         $scope.addWeek = function () {
-            $scope.weekShift++;
-            $scope.firstFullDate = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift));
-            $scope.firstDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift)));
+            // $scope.firstFullDate = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift));
+            $scope.firstFullDate = moment($scope.firstFullDate).day(8).format('YYYY/MM/DD');
             $scope.reloadWeek(false);
         }
 
         $scope.decreaseWeek = function () {
-            $scope.weekShift--;
-            $scope.firstFullDate = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift));
-            $scope.firstDate = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift)));
+            $scope.firstFullDate = moment($scope.firstFullDate).day(-6).format('YYYY/MM/DD');
             $scope.reloadWeek(false);
         }
 
@@ -1417,6 +1415,7 @@
         $scope.firstDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0));
 
         $scope.reloadWeek_history = function(isInitial) {
+            $scope.firstDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 0));
             $scope.lastDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 6));
 
             $scope.monDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_history), 0));
@@ -1433,16 +1432,16 @@
         $scope.reloadWeek_history(true);
 
         $scope.addWeek_history = function () {
-            $scope.weekShift_history++;
-            $scope.firstFullDate_history = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_history));
-            $scope.firstDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_history)));
+            // $scope.firstFullDate_history = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_history));
+            $scope.firstFullDate_history = moment($scope.firstFullDate_history).day(8).format('YYYY/MM/DD');
+
             $scope.reloadWeek_history(false);
         }
 
         $scope.decreaseWeek_history = function () {
-            $scope.weekShift_history--;
-            $scope.firstFullDate_history = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_history));
-            $scope.firstDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_history)));
+            // $scope.firstFullDate_history = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_history));
+            // $scope.firstDate_history = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0 + (7 * $scope.weekShift_history)));
+            $scope.firstFullDate_history = moment($scope.firstFullDate_history).day(-6).format('YYYY/MM/DD');
             $scope.reloadWeek_history(false);
         }
 
