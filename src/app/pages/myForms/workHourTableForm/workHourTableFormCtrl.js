@@ -69,7 +69,9 @@
         var allRelatedPrjDatas;
 
         // 主要顯示
-        $scope.tables = [{}];
+        $scope.tables = [{
+            tablesItems: [],
+        }];
         $scope.tablesItems = [];
         // 休假列表
         $scope.workOffTablesItems = [];
@@ -153,6 +155,8 @@
                 isManagerCheck: false,
                 isExecutiveCheck: false,
             };
+
+            // TODO multi tables
             $scope.tablesItems.push(inserted);
             $scope.createSubmit(500, true);
         }
@@ -177,6 +181,7 @@
 
         $scope.removeWorkItem = function (table, index) {
             // console.log(index)
+            //TODO multi tables
             $scope.tablesItems.splice(index, 1);
 
             var formData = {
@@ -297,6 +302,11 @@
             ]
             switch (type) {
                 case 1:
+                    // WHY reset ?
+                    // 'cause it's initial function.
+                    for (var index = 0; index < $scope.tables.length; index ++) {
+                        $scope.tables[index].tableItems = [];
+                    }
                     $scope.tablesItems = [];
                     for (var index = 0; index < stringTable.length; index++) {
                         eval(stringTable[index] + " = 0");
@@ -327,7 +337,10 @@
 
         $scope.loading = true;
 
-        //取得使用者個人工時表，userDID, 當周第一天日期，一個人只有一張工時表
+        // 取得使用者個人工時表，userDID,
+        // 當周第一天日期，
+        // 唯一碼：creatorDID, create_formDate, month, year
+        // 一個人只有一張工時表
         $scope.getTable = function () {
             initialUserTable(1);
             var getData = {
@@ -340,135 +353,153 @@
             WorkHourUtil.getWorkHourForm(getData)
                 .success(function (res) {
                     if (res.payload.length > 0) {
-                        var workItemCount = res.payload[0].formTables.length;
 
-                        var prjIDArray = [];
-                        var workTableIDArray = [];
-                        // 組成 prjID Array, TableID Array，再去Server要資料
-                        for (var index = 0; index < workItemCount; index++) {
-                            workTableIDArray[index] = res.payload[0].formTables[index].tableID;
-                            prjIDArray[index] = res.payload[0].formTables[index].prjDID;
-                        }
-                        var formData = {
-                            prjIDArray: prjIDArray,
-                        }
-                        // 取得Prj Data
-                        Project.findPrjByIDArray(formData)
-                            .success(function (res) {
-                                $scope.loading = false;
-                                vm.relatedProjects = [];
-                                for (var outIndex = 0; outIndex < allRelatedPrjDatas.length; outIndex++) {
-                                    var isExist = true;
-                                    for (var index = 0; index < res.payload.length; index++) {
-                                        if (allRelatedPrjDatas[outIndex]._id === res.payload[index]._id) {
-                                            isExist = false;
+                        for (var majorIndex = 0; majorIndex < res.payload.length; majorIndex ++) {
+                            var tableIndex = 0;
+                            var workItemCount = res.payload[majorIndex].formTables.length;
+                            console.log("tables= " + res.payload.length);
+                            // TODO 跨月Fetch
+
+                            var prjIDArray = [];
+                            var workTableIDArray = [];
+                            // 組成 prjID Array, TableID Array，再去Server要資料
+                            for (var index = 0; index < workItemCount; index++) {
+                                workTableIDArray[index] = res.payload[majorIndex].formTables[index].tableID;
+                                prjIDArray[index] = res.payload[majorIndex].formTables[index].prjDID;
+                            }
+                            var formData = {
+                                prjIDArray: prjIDArray,
+                            }
+                            // 取得Prj Data
+                            Project.findPrjByIDArray(formData)
+                                .success(function (res) {
+                                    $scope.loading = false;
+                                    vm.relatedProjects = [];
+                                    for (var outIndex = 0; outIndex < allRelatedPrjDatas.length; outIndex++) {
+                                        var isExist = true;
+                                        for (var index = 0; index < res.payload.length; index++) {
+                                            if (allRelatedPrjDatas[outIndex]._id === res.payload[index]._id) {
+                                                isExist = false;
+                                            }
+                                        }
+                                        if (isExist) {
+                                            vm.relatedProjects.push(allRelatedPrjDatas[outIndex]);
                                         }
                                     }
-                                    if (isExist) {
-                                        vm.relatedProjects.push(allRelatedPrjDatas[outIndex]);
+                                })
+                                .error(function () {
+                                    console.log('ERROR Project.findPrjByIDArray');
+                                })
+
+                            formDataTable = {
+                                tableIDArray: workTableIDArray,
+                                isFindSendReview: null,
+                                isFindManagerCheck: null,
+                                isFindExecutiveCheck: null
+                            }
+                            // console.log(formDataTable);
+                            // 取得 Table Data
+                            WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
+                                .success(function (res) {
+                                    var workIndex = tableIndex;
+                                    tableIndex++;
+                                    // 填入表單資訊
+                                    $scope.tableData = {};
+                                    for (var index = 0; index < res.payload.length; index++) {
+                                        var detail = {
+                                            tableID: res.payload[index]._id,
+                                            prjDID: res.payload[index].prjDID,
+                                            creatorDID: res.payload[index].creatorDID,
+                                            create_formDate: res.payload[index].create_formDate,
+                                            //MON
+                                            mon_hour: res.payload[index].mon_hour,
+                                            mon_memo: res.payload[index].mon_memo,
+                                            mon_hour_add: res.payload[index].mon_hour_add,
+                                            mon_memo_add: res.payload[index].mon_memo_add,
+                                            //TUE
+                                            tue_hour: res.payload[index].tue_hour,
+                                            tue_memo: res.payload[index].tue_memo,
+                                            tue_hour_add: res.payload[index].tue_hour_add,
+                                            tue_memo_add: res.payload[index].tue_memo_add,
+                                            //WES
+                                            wes_hour: res.payload[index].wes_hour,
+                                            wes_memo: res.payload[index].wes_memo,
+                                            wes_hour_add: res.payload[index].wes_hour_add,
+                                            wes_memo_add: res.payload[index].wes_memo_add,
+                                            //THU
+                                            thu_hour: res.payload[index].thu_hour,
+                                            thu_memo: res.payload[index].thu_memo,
+                                            thu_hour_add: res.payload[index].thu_hour_add,
+                                            thu_memo_add: res.payload[index].thu_memo_add,
+                                            //FRI
+                                            fri_hour: res.payload[index].fri_hour,
+                                            fri_memo: res.payload[index].fri_memo,
+                                            fri_hour_add: res.payload[index].fri_hour_add,
+                                            fri_memo_add: res.payload[index].fri_memo_add,
+                                            //SAT
+                                            sat_hour: res.payload[index].sat_hour,
+                                            sat_memo: res.payload[index].sat_memo,
+                                            sat_hour_add: res.payload[index].sat_hour_add,
+                                            sat_memo_add: res.payload[index].sat_memo_add,
+                                            //SUN
+                                            sun_hour: res.payload[index].sun_hour,
+                                            sun_memo: res.payload[index].sun_memo,
+                                            sun_hour_add: res.payload[index].sun_hour_add,
+                                            sun_memo_add: res.payload[index].sun_memo_add,
+                                            //RIGHT
+                                            isSendReview: res.payload[index].isSendReview,
+                                            isManagerCheck: res.payload[index].isManagerCheck,
+                                            isExecutiveCheck: res.payload[index].isExecutiveCheck,
+
+                                            // Reject
+                                            isManagerReject: res.payload[index].isManagerReject,
+                                            managerReject_memo: res.payload[index].managerReject_memo,
+
+                                            isExecutiveReject: res.payload[index].isExecutiveReject,
+                                            executiveReject_memo: res.payload[index].executiveReject_memo,
+
+                                            // TOTAL
+                                            hourTotal: parseInt(res.payload[index].mon_hour, 10) +
+                                            parseInt(res.payload[index].tue_hour, 10) +
+                                            parseInt(res.payload[index].wes_hour, 10) +
+                                            parseInt(res.payload[index].thu_hour, 10) +
+                                            parseInt(res.payload[index].fri_hour, 10) +
+                                            parseInt(res.payload[index].sat_hour, 10) +
+                                            parseInt(res.payload[index].sun_hour, 10),
+                                            hourAddTotal: res.payload[index].mon_hour_add +
+                                            res.payload[index].tue_hour_add +
+                                            res.payload[index].wes_hour_add +
+                                            res.payload[index].thu_hour_add +
+                                            res.payload[index].fri_hour_add +
+                                            res.payload[index].sat_hour_add +
+                                            res.payload[index].sun_hour_add,
+                                        };
+                                        console.log("workIndex= " + workIndex);
+                                        // $scope.tablesItems.push(detail);
+                                        $scope.tables[workIndex].tableItems.push(detail);
                                     }
-                                }
-                            })
-                            .error(function () {
-                                console.log('ERROR Project.findPrjByIDArray');
-                            })
-
-                        formDataTable = {
-                            tableIDArray: workTableIDArray,
-                            isFindSendReview: null,
-                            isFindManagerCheck: null,
-                            isFindExecutiveCheck: null
+                                    loadWorkOffTable(cookies.get('userDID'), 1);
+                                    loadNH(1);
+                                })
+                                .error(function () {
+                                    console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
+                                })
+                            // manipulate finish.
                         }
-                        // console.log(formDataTable);
-                        // 取得 Table Data
-                        WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
-                            .success(function (res) {
-                                // 填入表單資訊
-                                $scope.tableData = {};
-                                for (var index = 0; index < res.payload.length; index++) {
-                                    var detail = {
-                                        tableID: res.payload[index]._id,
-                                        prjDID: res.payload[index].prjDID,
-                                        creatorDID: res.payload[index].creatorDID,
-                                        create_formDate: res.payload[index].create_formDate,
-                                        //MON
-                                        mon_hour: res.payload[index].mon_hour,
-                                        mon_memo: res.payload[index].mon_memo,
-                                        mon_hour_add: res.payload[index].mon_hour_add,
-                                        mon_memo_add: res.payload[index].mon_memo_add,
-                                        //TUE
-                                        tue_hour: res.payload[index].tue_hour,
-                                        tue_memo: res.payload[index].tue_memo,
-                                        tue_hour_add: res.payload[index].tue_hour_add,
-                                        tue_memo_add: res.payload[index].tue_memo_add,
-                                        //WES
-                                        wes_hour: res.payload[index].wes_hour,
-                                        wes_memo: res.payload[index].wes_memo,
-                                        wes_hour_add: res.payload[index].wes_hour_add,
-                                        wes_memo_add: res.payload[index].wes_memo_add,
-                                        //THU
-                                        thu_hour: res.payload[index].thu_hour,
-                                        thu_memo: res.payload[index].thu_memo,
-                                        thu_hour_add: res.payload[index].thu_hour_add,
-                                        thu_memo_add: res.payload[index].thu_memo_add,
-                                        //FRI
-                                        fri_hour: res.payload[index].fri_hour,
-                                        fri_memo: res.payload[index].fri_memo,
-                                        fri_hour_add: res.payload[index].fri_hour_add,
-                                        fri_memo_add: res.payload[index].fri_memo_add,
-                                        //SAT
-                                        sat_hour: res.payload[index].sat_hour,
-                                        sat_memo: res.payload[index].sat_memo,
-                                        sat_hour_add: res.payload[index].sat_hour_add,
-                                        sat_memo_add: res.payload[index].sat_memo_add,
-                                        //SUN
-                                        sun_hour: res.payload[index].sun_hour,
-                                        sun_memo: res.payload[index].sun_memo,
-                                        sun_hour_add: res.payload[index].sun_hour_add,
-                                        sun_memo_add: res.payload[index].sun_memo_add,
-                                        //RIGHT
-                                        isSendReview: res.payload[index].isSendReview,
-                                        isManagerCheck: res.payload[index].isManagerCheck,
-                                        isExecutiveCheck: res.payload[index].isExecutiveCheck,
 
-                                        // Reject
-                                        isManagerReject: res.payload[index].isManagerReject,
-                                        managerReject_memo: res.payload[index].managerReject_memo,
-
-                                        isExecutiveReject: res.payload[index].isExecutiveReject,
-                                        executiveReject_memo: res.payload[index].executiveReject_memo,
-
-                                        // TOTAL
-                                        hourTotal: parseInt(res.payload[index].mon_hour, 10) +
-                                        parseInt(res.payload[index].tue_hour, 10) +
-                                        parseInt(res.payload[index].wes_hour, 10) +
-                                        parseInt(res.payload[index].thu_hour, 10) +
-                                        parseInt(res.payload[index].fri_hour, 10) +
-                                        parseInt(res.payload[index].sat_hour, 10) +
-                                        parseInt(res.payload[index].sun_hour, 10),
-                                        hourAddTotal: res.payload[index].mon_hour_add +
-                                        res.payload[index].tue_hour_add +
-                                        res.payload[index].wes_hour_add +
-                                        res.payload[index].thu_hour_add +
-                                        res.payload[index].fri_hour_add +
-                                        res.payload[index].sat_hour_add +
-                                        res.payload[index].sun_hour_add,
-                                    };
-                                    $scope.tablesItems.push(detail);
-                                }
-                                loadWorkOffTable(cookies.get('userDID'), 1);
-                                loadNH(1);
-                            })
-                            .error(function () {
-                                console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
-                            })
                     } else {
+                        // 無資料
                         $scope.loading = false;
                     }
                 })
                 .error(function () {
                     console.log('ERROR WorkHourUtil.getWorkHourForm');
                 })
+        }
+
+        $scope.fetchTableItems = function(index) {
+            console.log("fetchTableItems, index= " + index);
+            return $scope.tables[index].tableItems;
         }
 
         // -------------------------------------
@@ -1047,11 +1078,15 @@
             if ($scope.checkIsCrossMonth($scope.firstFullDate) > 0) {
                 $scope.tables = [{
                     crossDay: $scope.checkIsCrossMonth($scope.firstFullDate),
+                    tableItems: [],
                 }, {
                     crossDay: $scope.checkIsCrossMonth($scope.firstFullDate),
+                    tableItems: [],
                 }];
             } else {
-                $scope.tables = [{}];
+                $scope.tables = [{
+                    tableItems: [],
+                }];
             }
             console.log($scope.checkIsCrossMonth($scope.firstFullDate));
         }
@@ -1203,65 +1238,65 @@
                         //MON
                         var mon_hour = $('tbody').find("span[id='mon_hour" + tableIndex + "']").length === 0 ? 0
                             : $('tbody').find("span[id='mon_hour" + tableIndex + "']")[index].innerText;
-                        var mon_memo = $('tbody').find("span[id='mon_memo" + tableIndex + "']").length === 0 ? 0
+                        var mon_memo = $('tbody').find("span[id='mon_memo" + tableIndex + "']").length === 0 ? ""
                             : $('tbody').find("span[id='mon_memo" + tableIndex + "']")[index].innerText;
                         var mon_hour_add = $('tbody').find("span[id='mon_hour_add" + tableIndex + "']").length === 0 ? 0
                             : $('tbody').find("span[id='mon_hour_add" + tableIndex + "']")[index].innerText;
-                        var mon_memo_add = $('tbody').find("span[id='mon_memo_add" + tableIndex + "']").length === 0 ? 0
+                        var mon_memo_add = $('tbody').find("span[id='mon_memo_add" + tableIndex + "']").length === 0 ? ""
                             : $('tbody').find("span[id='mon_memo_add" + tableIndex + "']")[index].innerText;
                         //TUE
                         var tue_hour = $('tbody').find("span[id='tue_hour" + tableIndex + "']").length === 0 ? 0
                             : $('tbody').find("span[id='tue_hour" + tableIndex + "']")[index].innerText;
-                        var tue_memo = $('tbody').find("span[id='tue_memo" + tableIndex + "']").length === 0 ? 0
+                        var tue_memo = $('tbody').find("span[id='tue_memo" + tableIndex + "']").length === 0 ? ""
                             : $('tbody').find("span[id='tue_memo" + tableIndex + "']")[index].innerText;
                         var tue_hour_add = $('tbody').find("span[id='tue_hour_add" + tableIndex + "']").length === 0 ? 0
                             : $('tbody').find("span[id='tue_hour_add" + tableIndex + "']")[index].innerText;
-                        var tue_memo_add = $('tbody').find("span[id='tue_memo_add" + tableIndex + "']").length === 0 ? 0
+                        var tue_memo_add = $('tbody').find("span[id='tue_memo_add" + tableIndex + "']").length === 0 ? ""
                             : $('tbody').find("span[id='tue_memo_add" + tableIndex + "']")[index].innerText;
                         //WES
                         var wes_hour = $('tbody').find("span[id='wes_hour" + tableIndex + "']").length === 0 ? 0
                             : $('tbody').find("span[id='wes_hour" + tableIndex + "']")[index].innerText;
-                        var wes_memo = $('tbody').find("span[id='wes_memo" + tableIndex + "']").length === 0 ? 0
+                        var wes_memo = $('tbody').find("span[id='wes_memo" + tableIndex + "']").length === 0 ? ""
                             : $('tbody').find("span[id='wes_memo" + tableIndex + "']")[index].innerText;
                         var wes_hour_add = $('tbody').find("span[id='wes_hour_add" + tableIndex + "']").length === 0 ? 0
                             : $('tbody').find("span[id='wes_hour_add" + tableIndex + "']")[index].innerText;
-                        var wes_memo_add = $('tbody').find("span[id='wes_memo_add" + tableIndex + "']").length === 0 ? 0
+                        var wes_memo_add = $('tbody').find("span[id='wes_memo_add" + tableIndex + "']").length === 0 ? ""
                             : $('tbody').find("span[id='wes_memo_add" + tableIndex + "']")[index].innerText;
                         //THU
                         var thu_hour = $('tbody').find("span[id='thu_hour" + tableIndex + "']").length === 0 ? 0
                             : $('tbody').find("span[id='thu_hour" + tableIndex + "']")[index].innerText;
-                        var thu_memo = $('tbody').find("span[id='thu_memo" + tableIndex + "']").length === 0 ? 0
+                        var thu_memo = $('tbody').find("span[id='thu_memo" + tableIndex + "']").length === 0 ? ""
                             : $('tbody').find("span[id='thu_memo" + tableIndex + "']")[index].innerText;
                         var thu_hour_add = $('tbody').find("span[id='thu_hour_add" + tableIndex + "']").length === 0 ? 0
                             : $('tbody').find("span[id='thu_hour_add" + tableIndex + "']")[index].innerText;
-                        var thu_memo_add = $('tbody').find("span[id='thu_memo_add" + tableIndex + "']").length === 0 ? 0
+                        var thu_memo_add = $('tbody').find("span[id='thu_memo_add" + tableIndex + "']").length === 0 ? ""
                             : $('tbody').find("span[id='thu_memo_add" + tableIndex + "']")[index].innerText;
                         //FRI
                         var fri_hour = $('tbody').find("span[id='fri_hour" + tableIndex + "']").length === 0 ? 0
                             : $('tbody').find("span[id='fri_hour" + tableIndex + "']")[index].innerText;
-                        var fri_memo = $('tbody').find("span[id='fri_memo" + tableIndex + "']").length === 0 ? 0
+                        var fri_memo = $('tbody').find("span[id='fri_memo" + tableIndex + "']").length === 0 ? ""
                             : $('tbody').find("span[id='fri_memo" + tableIndex + "']")[index].innerText;
                         var fri_hour_add = $('tbody').find("span[id='fri_hour_add" + tableIndex + "']").length === 0 ? 0
                             : $('tbody').find("span[id='fri_hour_add" + tableIndex + "']")[index].innerText;
-                        var fri_memo_add = $('tbody').find("span[id='fri_memo_add" + tableIndex + "']").length === 0 ? 0
+                        var fri_memo_add = $('tbody').find("span[id='fri_memo_add" + tableIndex + "']").length === 0 ? ""
                             : $('tbody').find("span[id='fri_memo_add" + tableIndex + "']")[index].innerText;
                         //SAT
                         var sat_hour = $('tbody').find("span[id='sat_hour" + tableIndex + "']").length === 0 ? 0
                             : $('tbody').find("span[id='sat_hour" + tableIndex + "']")[index].innerText;
-                        var sat_memo = $('tbody').find("span[id='sat_memo" + tableIndex + "']").length === 0 ? 0
+                        var sat_memo = $('tbody').find("span[id='sat_memo" + tableIndex + "']").length === 0 ? ""
                             : $('tbody').find("span[id='sat_memo" + tableIndex + "']")[index].innerText;
                         var sat_hour_add = $('tbody').find("span[id='sat_hour_add" + tableIndex + "']").length === 0 ? 0
                             : $('tbody').find("span[id='sat_hour_add" + tableIndex + "']")[index].innerText;
-                        var sat_memo_add = $('tbody').find("span[id='sat_memo_add" + tableIndex + "']").length === 0 ? 0
+                        var sat_memo_add = $('tbody').find("span[id='sat_memo_add" + tableIndex + "']").length === 0 ? ""
                             : $('tbody').find("span[id='sat_memo_add" + tableIndex + "']")[index].innerText;
                         //SUN
                         var sun_hour = $('tbody').find("span[id='sun_hour" + tableIndex + "']").length === 0 ? 0
                             : $('tbody').find("span[id='sun_hour" + tableIndex + "']")[index].innerText;
-                        var sun_memo = $('tbody').find("span[id='sun_memo" + tableIndex + "']").length === 0 ? 0
+                        var sun_memo = $('tbody').find("span[id='sun_memo" + tableIndex + "']").length === 0 ? ""
                             : $('tbody').find("span[id='sun_memo" + tableIndex + "']")[index].innerText;
                         var sun_hour_add = $('tbody').find("span[id='sun_hour_add" + tableIndex + "']").length === 0 ? 0
                             : $('tbody').find("span[id='sun_hour_add" + tableIndex + "']")[index].innerText;
-                        var sun_memo_add = $('tbody').find("span[id='sun_memo_add" + tableIndex + "']").length === 0 ? 0
+                        var sun_memo_add = $('tbody').find("span[id='sun_memo_add" + tableIndex + "']").length === 0 ? ""
                             : $('tbody').find("span[id='sun_memo_add" + tableIndex + "']")[index].innerText;
 
                         var tableItem = {
@@ -1316,7 +1351,7 @@
                             executiveReject_memo: $scope.tablesItems[index].executiveReject_memo,
                         }
                         workHourTableData.push(tableItem);
-                        console.log(tableItem);
+                        // console.log(tableItem);
                     }
 
                     var sendMonth = moment($scope.firstFullDate).month() + 1;
@@ -1341,28 +1376,31 @@
                         formTables: workHourTableData,
                         oldTables: formDataTable,
                     }
+
+                    console.log(formData);
                     // TODO 跨月
-                    // WorkHourUtil.createWorkHourTableForm(formData)
-                    //     .success(function (res) {
-                    //         // 更新old Table ID Array
-                    //         var workTableIDArray = [];
-                    //         if (res.payload.length > 0) {
-                    //             for (var index = 0; index < res.payload.length; index++) {
-                    //                 // console.log(res.payload[index]);
-                    //                 workTableIDArray[index] = res.payload[index].tableID;
-                    //                 $scope.tablesItems[index].tableID = res.payload[index].tableID;
-                    //             }
-                    //         }
-                    //         formDataTable = {
-                    //             tableIDArray: workTableIDArray,
-                    //         };
-                    //         if (isRefreshProjectSelector) {
-                    //             $scope.getTable();
-                    //         }
-                    //     })
-                    //     .error(function () {
-                    //         console.log('ERROR WorkHourUtil.createWorkHourTableForm');
-                    //     })
+                    WorkHourUtil.createWorkHourTableForm(formData)
+                        .success(function (res) {
+                            // 更新old Table ID Array
+                            var workTableIDArray = [];
+                            if (res.payload.length > 0) {
+                                for (var index = 0; index < res.payload.length; index++) {
+                                    console.log(res.payload[index]);
+                                    workTableIDArray[index] = res.payload[index].tableID;
+                                    console.log($scope.tablesItems);
+                                    $scope.tablesItems[index].tableID = res.payload[index].tableID;
+                                }
+                            }
+                            formDataTable = {
+                                tableIDArray: workTableIDArray,
+                            };
+                            if (isRefreshProjectSelector) {
+                                $scope.getTable();
+                            }
+                        })
+                        .error(function () {
+                            console.log('ERROR WorkHourUtil.createWorkHourTableForm');
+                        })
 
                 }
             }, time);

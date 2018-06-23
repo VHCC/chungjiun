@@ -151,7 +151,7 @@
             </thead>
 
             <tbody id="tableItemBody{{$parent.$index}}"
-                ng-repeat="item in tablesItems">
+                ng-repeat="item in fetchTableItems($index)">
             <tr style="vertical-align: inherit; text-align: center">
                 <td rowspan="2" style="vertical-align: inherit; text-align: center">
                     <span id="prjCode{{$parent.$index}}">{{showPrjCode(item.prjDID)}}</span>
