@@ -14,6 +14,8 @@ module.exports = function (app) {
         WorkHourForm.remove({
             creatorDID: req.body.creatorDID,
             create_formDate: req.body.create_formDate,
+            year: req.body.year,
+            month: req.body.month,
         }, function (err) {
             if (err) {
                 console.log(err);
