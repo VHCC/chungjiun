@@ -8,11 +8,13 @@
 </div>
 <br>
 
-<uib-accordion ng-repeat="form in workHourFormsForManagers">
-    <uib-accordion-group heading="{{showUser(form.creatorDID)}}"
-                         ng-click="showTableOfItem(form, true, null, null, 1)"
+<!--<uib-accordion ng-repeat="form in workHourFormsForManagers">-->
+<uib-accordion ng-repeat="user in usersReviewForManagers">
+    <uib-accordion-group heading="{{showUser(user.DID)}}"
+                         ng-click="showTableOfItem(user, true, false, null, 1)"
                          panel-class="bootstrap-panel accordion-panel panel-default">
-        <table class="table table-bordered table-hover table-condensed">
+        <table class="table table-bordered table-hover table-condensed"
+               ng-repeat="table in fetchReviewTableFromScope(user)">
             <thead>
             <tr>
                 <td rowspan="3" style="vertical-align: inherit; text-align: center">代碼</td>
@@ -42,20 +44,20 @@
             </tr>
             </thead>
 
-            <tbody ng-repeat="table in fetchFormDataFromScope(form)">
+            <tbody ng-repeat="item in fetchFormDataFromScope(table)">
             <tr style="vertical-align: inherit; text-align: center">
                 <td rowspan="2" style="vertical-align: inherit; text-align: center">
-                    <span id="prjCode">{{showPrjCode(table.prjDID)}}</span>
-                    <span style="display: none;" id="prjDID">{{table.prjDID}}</span>
+                    <span id="prjCode">{{showPrjCode(item.prjDID)}}</span>
+                    <span style="display: none;" id="prjDID">{{item.prjDID}}</span>
                 </td>
                 <td rowspan="2" style="vertical-align: inherit; text-align: center">
-                    <p class="mytooltip">{{showPrjName(table.prjDID)}}
-                        <span class="tooltiptext">{{showPrjName(table.prjDID)}}</span>
+                    <p class="mytooltip">{{showPrjName(item.prjDID)}}
+                        <span class="tooltiptext">{{showPrjName(item.prjDID)}}</span>
                     </p>
                 </td>
 
                 <td rowspan="2" style="vertical-align: inherit; text-align: center">
-                    <span>{{ showProjectManager(table.prjDID)}}</span>
+                    <span>{{ showProjectManager(item.prjDID)}}</span>
                 </td>
 
                 <td rowspan="2" style="vertical-align: inherit;">
@@ -67,235 +69,235 @@
                 </td>
 
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    <span editable-number="table.mon_hour"
+                    <span editable-number="item.mon_hour"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
                           id="mon_hour"
-                          e-required>{{ table.mon_hour || 0 }}</span>
+                          e-required>{{ item.mon_hour || 0 }}</span>
                 </td>
                 <td style="vertical-align: inherit;">
-                    <my ng-show="table.mon_memo !== undefined && table.mon_memo !== '' && !rowform1.$visible"
+                    <my ng-show="item.mon_memo !== undefined && item.mon_memo !== '' && !rowform1.$visible"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
                         ng-mouseleave="hover = false"
                         id="mon_memo"
-                        ng-click="editMemo(table, 1, false)">
+                        ng-click="editMemo(item, 1, false)">
                         <i class="fa fa-pencil"></i>
-                        <span class="tooltiptext">{{table.mon_memo}}</span>
+                        <span class="tooltiptext">{{item.mon_memo}}</span>
                     </my>
-                    <span editable-textarea="table.mon_memo"
+                    <span editable-textarea="item.mon_memo"
                           e-form="rowform1"
                           style="display: none"
                           e-style="display: none"
                           id="mon_memo"
-                          e-required>{{ table.mon_memo}}</span>
+                          e-required>{{ item.mon_memo}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    <span editable-number="table.tue_hour"
+                    <span editable-number="item.tue_hour"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
                           id="tue_hour"
-                          e-required>{{ table.tue_hour || 0 }}</span>
+                          e-required>{{ item.tue_hour || 0 }}</span>
                 </td>
                 <td style="vertical-align: inherit;">
-                    <my ng-show="table.tue_memo !== undefined && table.tue_memo !== '' && !rowform1.$visible"
+                    <my ng-show="item.tue_memo !== undefined && item.tue_memo !== '' && !rowform1.$visible"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
                         ng-mouseleave="hover = false"
                         id="mon_memo"
-                        ng-click="editMemo(table, 2, false)">
+                        ng-click="editMemo(item, 2, false)">
                         <i class="fa fa-pencil"></i>
-                        <span class="tooltiptext">{{table.tue_memo}}</span>
+                        <span class="tooltiptext">{{item.tue_memo}}</span>
                     </my>
-                    <span editable-textarea="table.tue_memo"
+                    <span editable-textarea="item.tue_memo"
                           e-form="rowform1"
                           style="display: none"
                           e-style="display: none"
                           id="tue_memo"
-                          e-required>{{ table.tue_memo}}</span>
+                          e-required>{{ item.tue_memo}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    <span editable-number="table.wes_hour"
+                    <span editable-number="item.wes_hour"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
                           id="wes_hour"
-                          e-required>{{ table.wes_hour || 0 }}</span>
+                          e-required>{{ item.wes_hour || 0 }}</span>
                 </td>
                 <td style="vertical-align: inherit;">
-                    <my ng-show="table.wes_memo !== undefined && table.wes_memo !== '' && !rowform1.$visible"
+                    <my ng-show="item.wes_memo !== undefined && item.wes_memo !== '' && !rowform1.$visible"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
                         ng-mouseleave="hover = false"
                         id="mon_memo"
-                        ng-click="editMemo(table, 3, false)">
+                        ng-click="editMemo(item, 3, false)">
                         <i class="fa fa-pencil"></i>
-                        <span class="tooltiptext">{{table.wes_memo}}</span>
+                        <span class="tooltiptext">{{item.wes_memo}}</span>
                     </my>
-                    <span editable-textarea="table.wes_memo"
+                    <span editable-textarea="item.wes_memo"
                           e-form="rowform1"
                           style="display: none"
                           e-style="display: none"
                           id="wes_memo"
-                          e-required>{{ table.wes_memo}}</span>
+                          e-required>{{ item.wes_memo}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    <span editable-number="table.thu_hour"
+                    <span editable-number="item.thu_hour"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
                           id="thu_hour"
-                          e-required>{{ table.thu_hour || 0}}</span>
+                          e-required>{{ item.thu_hour || 0}}</span>
                 </td>
                 <td style="vertical-align: inherit;">
-                    <my ng-show="table.thu_memo !== undefined && table.thu_memo !== '' && !rowform1.$visible"
+                    <my ng-show="item.thu_memo !== undefined && item.thu_memo !== '' && !rowform1.$visible"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
                         ng-mouseleave="hover = false"
                         id="mon_memo"
-                        ng-click="editMemo(table, 4, false)">
+                        ng-click="editMemo(item, 4, false)">
                         <i class="fa fa-pencil"></i>
-                        <span class="tooltiptext">{{table.thu_memo}}</span>
+                        <span class="tooltiptext">{{item.thu_memo}}</span>
                     </my>
-                    <span editable-textarea="table.thu_memo"
+                    <span editable-textarea="item.thu_memo"
                           e-form="rowform1"
                           style="display: none"
                           e-style="display: none"
                           id="thu_memo"
-                          e-required>{{ table.thu_memo}}</span>
+                          e-required>{{ item.thu_memo}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    <span editable-number="table.fri_hour"
+                    <span editable-number="item.fri_hour"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
                           id="fri_hour"
-                          e-required>{{ table.fri_hour || 0}}</span>
+                          e-required>{{ item.fri_hour || 0}}</span>
                 </td>
                 <td style="vertical-align: inherit;">
-                    <my ng-show="table.fri_memo !== undefined && table.fri_memo !== '' && !rowform1.$visible"
+                    <my ng-show="item.fri_memo !== undefined && item.fri_memo !== '' && !rowform1.$visible"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
                         ng-mouseleave="hover = false"
                         id="mon_memo"
-                        ng-click="editMemo(table, 5, false)">
+                        ng-click="editMemo(item, 5, false)">
                         <i class="fa fa-pencil"></i>
-                        <span class="tooltiptext">{{table.fri_memo}}</span>
+                        <span class="tooltiptext">{{item.fri_memo}}</span>
                     </my>
-                    <span editable-textarea="table.fri_memo"
+                    <span editable-textarea="item.fri_memo"
                           e-form="rowform1"
                           style="display: none"
                           e-style="display: none"
                           id="fri_memo"
-                          e-required>{{ table.fri_memo}}</span>
+                          e-required>{{ item.fri_memo}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    <span editable-number="table.sat_hour"
+                    <span editable-number="item.sat_hour"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
                           id="sat_hour"
-                          e-required>{{ table.sat_hour || 0}}</span>
+                          e-required>{{ item.sat_hour || 0}}</span>
                 </td>
                 <td style="vertical-align: inherit;">
-                    <my ng-show="table.sat_memo !== undefined && table.sat_memo !== '' && !rowform1.$visible"
+                    <my ng-show="item.sat_memo !== undefined && item.sat_memo !== '' && !rowform1.$visible"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
                         ng-mouseleave="hover = false"
                         id="mon_memo"
-                        ng-click="editMemo(table, 6, false)">
+                        ng-click="editMemo(item, 6, false)">
                         <i class="fa fa-pencil"></i>
-                        <span class="tooltiptext">{{table.sat_memo}}</span>
+                        <span class="tooltiptext">{{item.sat_memo}}</span>
                     </my>
-                    <span editable-textarea="table.sat_memo"
+                    <span editable-textarea="item.sat_memo"
                           e-form="rowform1"
                           style="display: none"
                           e-style="display: none"
                           id="sat_memo"
-                          e-required>{{ table.sat_memo}}</span>
+                          e-required>{{ item.sat_memo}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    <span editable-number="table.sun_hour"
+                    <span editable-number="item.sun_hour"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
                           id="sun_hour"
-                          e-required>{{ table.sun_hour || 0}}</span>
+                          e-required>{{ item.sun_hour || 0}}</span>
                 </td>
                 <td style="vertical-align: inherit;">
-                    <my ng-show="table.sun_memo !== undefined && table.sun_memo !== '' && !rowform1.$visible"
+                    <my ng-show="item.sun_memo !== undefined && item.sun_memo !== '' && !rowform1.$visible"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
                         ng-mouseleave="hover = false"
                         id="mon_memo"
-                        ng-click="editMemo(table, 7, false)">
+                        ng-click="editMemo(item, 7, false)">
                         <i class="fa fa-pencil"></i>
-                        <span class="tooltiptext">{{table.sun_memo}}</span>
+                        <span class="tooltiptext">{{item.sun_memo}}</span>
                     </my>
-                    <span editable-textarea="table.sun_memo"
+                    <span editable-textarea="item.sun_memo"
                           e-form="rowform1"
                           style="display: none"
                           e-style="display: none"
                           id="sun_memo"
-                          e-required>{{ table.sun_memo}}</span>
+                          e-required>{{ item.sun_memo}}</span>
                 </td>
 
                 <!--合計-->
                 <td style="vertical-align: inherit;">
                     <span e-form="rowform1"
-                          e-required>{{table.hourTotal}}</span>
+                          e-required>{{item.hourTotal}}</span>
                 </td>
                 <!--經理確認-->
                 <td rowspan="2" style="vertical-align: inherit;">
                     <form editable-form name="rowform1" ng-show="rowform1.$visible"
                           class="form-buttons form-inline">
                     </form>
-                    <div ng-show="isFitManager(table.prjDID)">
-                        <div ng-show="!table.isManagerCheck">
+                    <div ng-show="isFitManager(item.prjDID)">
+                        <div ng-show="!item.isManagerCheck">
                             <button class="btn btn-info editable-table-button btn-xs"
-                                    ng-click="reviewWHManagerItem(form, table, $index)"
+                                    ng-click="reviewWHManagerItem(user, item, $index)"
                                     style="color: black">
                                 同意
                             </button>
                         </div>
-                        <div ng-show="!table.isManagerCheck">
+                        <div ng-show="!item.isManagerCheck">
                             <button class="btn btn-danger editable-table-button btn-xs"
-                                    ng-click="disagreeWHItem_manager(form, table, $index)"
+                                    ng-click="disagreeWHItem_manager(user, item, $index)"
                                     style="color: black">
                                 退回
                             </button>
                         </div>
-                        <div ng-show="table.isManagerCheck">
+                        <div ng-show="item.isManagerCheck">
                             <button class="btn btn-info editable-table-button btn-xs"
                                     style="color: black">
-                                {{ showProjectManager(table.prjDID)}}
+                                {{ showProjectManager(item.prjDID)}}
                                 <br>
                                 確認完成
                             </button>
                         </div>
                     </div>
-                    <div ng-show="!isFitManager(table.prjDID)">
-                        <div ng-show="rowform1.$waiting || (table.isSendReview && !table.isManagerCheck)">
+                    <div ng-show="!isFitManager(item.prjDID)">
+                        <div ng-show="rowform1.$waiting || (item.isSendReview && !item.isManagerCheck)">
                             <button class="btn btn-warning editable-table-button btn-xs"
                                     style="color: black">
-                                {{ showProjectManager(table.prjDID)}}
+                                {{ showProjectManager(item.prjDID)}}
                                 <br>
                                 確認作業中
                             </button>
                         </div>
-                        <div ng-show="table.isManagerCheck">
+                        <div ng-show="item.isManagerCheck">
                             <button class="btn btn-info editable-table-button btn-xs"
                                     style="color: black">
-                                {{ showProjectManager(table.prjDID)}}
+                                {{ showProjectManager(item.prjDID)}}
                                 <br>
                                 確認完成
                             </button>
@@ -308,16 +310,16 @@
             <tr class="row1" style="vertical-align: inherit; text-align: center">
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
-                    ng-mouseover="hover = (table.mon_hour_add > 0)"
-                    ng-click="showWorkAddCheck(table.mon_hour_add, table, 1)"
+                    ng-mouseover="hover = (item.mon_hour_add > 0)"
+                    ng-click="showWorkAddCheck(item.mon_hour_add, item, 1)"
                     ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
-                    <span editable-number="table.mon_hour_add"
+                    <span editable-number="item.mon_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
                           id="mon_hour_add"
-                          e-required>{{ table.mon_hour_add || 0}}</span>
+                          e-required>{{ item.mon_hour_add || 0}}</span>
                     <button type="button" ng-disabled="rowform1.$waiting"
                             ng-show="rowform1.$visible"
                             ng-click="showModal(table)"
@@ -326,213 +328,213 @@
                     </button>
                 </td>
                 <td style="vertical-align: inherit;">
-                    <my ng-show="table.mon_memo_add !== undefined && table.mon_memo_add !== '' && !rowform1.$visible"
+                    <my ng-show="item.mon_memo_add !== undefined && item.mon_memo_add !== '' && !rowform1.$visible"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
                         ng-mouseleave="hover = false"
                         id="mon_memo"
-                        ng-click="editMemo(table, 11, false)">
+                        ng-click="editMemo(item, 11, false)">
                         <i class="fa fa-pencil"></i>
-                        <span class="tooltiptext">{{table.mon_memo_add}}</span>
+                        <span class="tooltiptext">{{item.mon_memo_add}}</span>
                     </my>
-                    <span editable-textarea="table.mon_memo_add"
+                    <span editable-textarea="item.mon_memo_add"
                           e-form="rowform1"
                           style="display: none"
                           e-style="display: none"
                           id="mon_memo_add"
-                          e-required>{{ table.mon_memo_add}}</span>
+                          e-required>{{ item.mon_memo_add}}</span>
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
-                    ng-mouseover="hover = (table.tue_hour_add > 0)"
-                    ng-click="showWorkAddCheck(table.tue_hour_add, table, 2)"
+                    ng-mouseover="hover = (item.tue_hour_add > 0)"
+                    ng-click="showWorkAddCheck(item.tue_hour_add, item, 2)"
                     ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
-                    <span editable-number="table.tue_hour_add"
+                    <span editable-number="item.tue_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
                           id="tue_hour_add"
-                          e-required>{{ table.tue_hour_add || 0}}</span>
+                          e-required>{{ item.tue_hour_add || 0}}</span>
                 </td>
                 <td style="vertical-align: inherit;">
-                    <my ng-show="table.tue_memo_add !== undefined && table.tue_memo_add !== '' && !rowform1.$visible"
+                    <my ng-show="item.tue_memo_add !== undefined && item.tue_memo_add !== '' && !rowform1.$visible"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
                         ng-mouseleave="hover = false"
                         id="mon_memo"
-                        ng-click="editMemo(table, 12, false)">
+                        ng-click="editMemo(item, 12, false)">
                         <i class="fa fa-pencil"></i>
-                        <span class="tooltiptext">{{table.tue_memo_add}}</span>
+                        <span class="tooltiptext">{{item.tue_memo_add}}</span>
                     </my>
-                    <span editable-textarea="table.tue_memo_add"
+                    <span editable-textarea="item.tue_memo_add"
                           e-form="rowform1"
                           style="display: none"
                           e-style="display: none"
                           id="tue_memo_add"
-                          e-required>{{ table.tue_memo_add}}</span>
+                          e-required>{{ item.tue_memo_add}}</span>
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
-                    ng-mouseover="hover = (table.wes_hour_add > 0)"
-                    ng-click="showWorkAddCheck(table.wes_hour_add, table, 3)"
+                    ng-mouseover="hover = (item.wes_hour_add > 0)"
+                    ng-click="showWorkAddCheck(item.wes_hour_add, item, 3)"
                     ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
-                    <span editable-number="table.wes_hour_add"
+                    <span editable-number="item.wes_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
                           id="wes_hour_add"
-                          e-required>{{ table.wes_hour_add || 0}}</span>
+                          e-required>{{ item.wes_hour_add || 0}}</span>
                 </td>
                 <td style="vertical-align: inherit;">
-                    <my ng-show="table.wes_memo_add !== undefined && table.wes_memo_add !== '' && !rowform1.$visible"
+                    <my ng-show="item.wes_memo_add !== undefined && item.wes_memo_add !== '' && !rowform1.$visible"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
                         ng-mouseleave="hover = false"
                         id="mon_memo"
-                        ng-click="editMemo(table, 13, false)">
+                        ng-click="editMemo(item, 13, false)">
                         <i class="fa fa-pencil"></i>
-                        <span class="tooltiptext">{{table.wes_memo_add}}</span>
+                        <span class="tooltiptext">{{item.wes_memo_add}}</span>
                     </my>
-                    <span editable-textarea="table.wes_memo_add"
+                    <span editable-textarea="item.wes_memo_add"
                           e-form="rowform1"
                           style="display: none"
                           e-style="display: none"
                           id="wes_memo_add"
-                          e-required>{{ table.wes_memo_add}}</span>
+                          e-required>{{ item.wes_memo_add}}</span>
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
-                    ng-mouseover="hover = (table.thu_hour_add > 0)"
-                    ng-click="showWorkAddCheck(table.thu_hour_add, table, 4)"
+                    ng-mouseover="hover = (item.thu_hour_add > 0)"
+                    ng-click="showWorkAddCheck(item.thu_hour_add, item, 4)"
                     ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
-                    <span editable-number="table.thu_hour_add"
+                    <span editable-number="item.thu_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
                           id="thu_hour_add"
-                          e-required>{{ table.thu_hour_add || 0}}</span>
+                          e-required>{{ item.thu_hour_add || 0}}</span>
                 </td>
                 <td style="vertical-align: inherit;">
-                    <my ng-show="table.thu_memo_add !== undefined && table.thu_memo_add !== '' && !rowform1.$visible"
+                    <my ng-show="item.thu_memo_add !== undefined && item.thu_memo_add !== '' && !rowform1.$visible"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
                         ng-mouseleave="hover = false"
                         id="mon_memo"
-                        ng-click="editMemo(table, 14, false)">
+                        ng-click="editMemo(item, 14, false)">
                         <i class="fa fa-pencil"></i>
-                        <span class="tooltiptext">{{table.thu_memo_add}}</span>
+                        <span class="tooltiptext">{{item.thu_memo_add}}</span>
                     </my>
-                    <span editable-textarea="table.thu_memo_add"
+                    <span editable-textarea="item.thu_memo_add"
                           e-form="rowform1"
                           style="display: none"
                           e-style="display: none"
                           id="thu_memo_add"
-                          e-required>{{ table.thu_memo_add}}</span>
+                          e-required>{{ item.thu_memo_add}}</span>
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
-                    ng-mouseover="hover = (table.fri_hour_add > 0)"
-                    ng-click="showWorkAddCheck(table.fri_hour_add, table, 5)"
+                    ng-mouseover="hover = (item.fri_hour_add > 0)"
+                    ng-click="showWorkAddCheck(item.fri_hour_add, item, 5)"
                     ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
-                    <span editable-number="table.fri_hour_add"
+                    <span editable-number="item.fri_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
                           id="fri_hour_add"
-                          e-required>{{ table.fri_hour_add || 0}}</span>
+                          e-required>{{ item.fri_hour_add || 0}}</span>
                 </td>
                 <td style="vertical-align: inherit;">
-                    <my ng-show="table.fri_memo_add !== undefined && table.fri_memo_add !== '' && !rowform1.$visible"
+                    <my ng-show="item.fri_memo_add !== undefined && item.fri_memo_add !== '' && !rowform1.$visible"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
                         ng-mouseleave="hover = false"
                         id="mon_memo"
-                        ng-click="editMemo(table, 15, false)">
+                        ng-click="editMemo(item, 15, false)">
                         <i class="fa fa-pencil"></i>
-                        <span class="tooltiptext">{{table.fri_memo_add}}</span>
+                        <span class="tooltiptext">{{item.fri_memo_add}}</span>
                     </my>
-                    <span editable-textarea="table.fri_memo_add"
+                    <span editable-textarea="item.fri_memo_add"
                           e-form="rowform1"
                           style="display: none"
                           e-style="display: none"
                           id="fri_memo_add"
-                          e-required>{{ table.fri_memo_add}}</span>
+                          e-required>{{ item.fri_memo_add}}</span>
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
-                    ng-mouseover="hover = (table.sat_hour_add > 0)"
-                    ng-click="showWorkAddCheck(table.sat_hour_add, table, 6)"
+                    ng-mouseover="hover = (item.sat_hour_add > 0)"
+                    ng-click="showWorkAddCheck(item.sat_hour_add, item, 6)"
                     ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
-                    <span editable-number="table.sat_hour_add"
+                    <span editable-number="item.sat_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
                           id="sat_hour_add"
-                          e-required>{{ table.sat_hour_add || 0}}</span>
+                          e-required>{{ item.sat_hour_add || 0}}</span>
                 </td>
                 <td style="vertical-align: inherit;">
-                    <my ng-show="table.sat_memo_add !== undefined && table.sat_memo_add !== '' && !rowform1.$visible"
+                    <my ng-show="item.sat_memo_add !== undefined && item.sat_memo_add !== '' && !rowform1.$visible"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
                         ng-mouseleave="hover = false"
                         id="mon_memo"
-                        ng-click="editMemo(table, 16, false)">
+                        ng-click="editMemo(item, 16, false)">
                         <i class="fa fa-pencil"></i>
-                        <span class="tooltiptext">{{table.sat_memo_add}}</span>
+                        <span class="tooltiptext">{{item.sat_memo_add}}</span>
                     </my>
-                    <span editable-textarea="table.sat_memo_add"
+                    <span editable-textarea="item.sat_memo_add"
                           e-form="rowform1"
                           style="display: none"
                           e-style="display: none"
                           id="sat_memo_add"
-                          e-required>{{ table.sat_memo_add}}</span>
+                          e-required>{{ item.sat_memo_add}}</span>
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
-                    ng-mouseover="hover = (table.sun_hour_add > 0)"
-                    ng-click="showWorkAddCheck(table.sun_hour_add, table, 7)"
+                    ng-mouseover="hover = (item.sun_hour_add > 0)"
+                    ng-click="showWorkAddCheck(item.sun_hour_add, item, 7)"
                     ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
-                    <span editable-number="table.sun_hour_add"
+                    <span editable-number="item.sun_hour_add"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
                           id="sun_hour_add"
-                          e-required>{{ table.sun_hour_add || 0}}</span>
+                          e-required>{{ item.sun_hour_add || 0}}</span>
                 </td>
                 <td style="vertical-align: inherit;">
-                    <my ng-show="table.sun_memo_add !== undefined && table.sun_memo_add !== '' && !rowform1.$visible"
+                    <my ng-show="item.sun_memo_add !== undefined && item.sun_memo_add !== '' && !rowform1.$visible"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
                         ng-mouseleave="hover = false"
                         id="mon_memo"
-                        ng-click="editMemo(table, 17, false)">
+                        ng-click="editMemo(item, 17, false)">
                         <i class="fa fa-pencil"></i>
-                        <span class="tooltiptext">{{table.sun_memo_add}}</span>
+                        <span class="tooltiptext">{{item.sun_memo_add}}</span>
                     </my>
-                    <span editable-textarea="table.sun_memo_add"
+                    <span ediitem-textarea="item.sun_memo_add"
                           e-form="rowform1"
                           style="display: none"
                           e-style="display: none"
                           id="sun_memo_add"
-                          e-required>{{ table.sun_memo_add}}</span>
+                          e-required>{{ item.sun_memo_add}}</span>
                 </td>
                 <!--合計-->
                 <td style="vertical-align: inherit;">
                     <span e-form="rowform1"
-                          e-required>{{table.hourAddTotal}}</span>
+                          e-required>{{item.hourAddTotal}}</span>
                 </td>
 
             </tr>
@@ -550,31 +552,31 @@
                 </td>
                 <!--MON-->
                 <td colspan="2" style="text-align: center">
-                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(form), 1)}}</span>
+                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(table), 1)}}</span>
                 </td>
                 <!--TUE-->
                 <td colspan="2" style="text-align: center">
-                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(form), 2)}}</span>
+                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(table), 2)}}</span>
                 </td>
                 <!--WED-->
                 <td colspan="2" style="text-align: center">
-                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(form), 3)}}</span>
+                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(table), 3)}}</span>
                 </td>
                 <!--THU-->
                 <td colspan="2" style="text-align: center">
-                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(form), 4)}}</span>
+                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(table), 4)}}</span>
                 </td>
                 <!--FRI-->
                 <td colspan="2" style="text-align: center">
-                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(form), 5)}}</span>
+                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(table), 5)}}</span>
                 </td>
                 <!--SAT-->
                 <td colspan="2" style="text-align: center">
-                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(form), 6)}}</span>
+                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(table), 6)}}</span>
                 </td>
                 <!--SUN-->
                 <td colspan="2" style="text-align: center">
-                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(form), 0)}}</span>
+                    <span>{{showWorkOffCalculateHour(fetchWorkOffTableFormDataFromScope(table), 0)}}</span>
                 </td>
             </tr>
 
@@ -588,43 +590,43 @@
                 <!--MON-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(form), 1)}}
+                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(table), 1)}}
                     </span>
                 </td>
                 <!--TUE-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(form), 2)}}
+                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(table), 2)}}
                     </span>
                 </td>
                 <!--WED-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(form), 3)}}
+                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(table), 3)}}
                     </span>
                 </td>
                 <!--THU-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(form), 4)}}
+                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(table), 4)}}
                     </span>
                 </td>
                 <!--FRI-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(form), 5)}}
+                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(table), 5)}}
                     </span>
                 </td>
                 <!--SAT-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(form), 6)}}
+                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(table), 6)}}
                     </span>
                 </td>
                 <!--SUN-->
                 <td colspan="2" style="text-align: center">
                     <span>
-                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(form), 0)}}
+                        {{showNHCalculateHour(fetchNHTableFormDataFromScope(table), 0)}}
                     </span>
                 </td>
             </tr>
@@ -638,54 +640,54 @@
                 </td>
                 <!--MON-->
                 <td colspan="2" style="text-align: center">
-                    <span ng-class="showCalculateHour(fetchFormDataFromScope(form), 1, 2, form) > 8 ? 'sumWarning' : 'sunNormal'">
-                        {{showCalculateHour(fetchFormDataFromScope(form), 1, 2, form)}}
+                    <span ng-class="showCalculateHour(fetchFormDataFromScope(table), 1, 2, table) > 8 ? 'sumWarning' : 'sunNormal'">
+                        {{showCalculateHour(fetchFormDataFromScope(table), 1, 2, table)}}
                     </span>
                 </td>
                 <!--TUE-->
                 <td colspan="2" style="text-align: center">
-                    <span ng-class="showCalculateHour(fetchFormDataFromScope(form), 2, 2, form) > 8 ? 'sumWarning' : 'sunNormal'">
-                        {{showCalculateHour(fetchFormDataFromScope(form), 2, 2, form)}}
+                    <span ng-class="showCalculateHour(fetchFormDataFromScope(table), 2, 2, table) > 8 ? 'sumWarning' : 'sunNormal'">
+                        {{showCalculateHour(fetchFormDataFromScope(table), 2, 2, table)}}
                     </span>
                 </td>
                 <!--WED-->
                 <td colspan="2" style="text-align: center">
-                    <span ng-class="showCalculateHour(fetchFormDataFromScope(form), 3, 2, form) > 8 ? 'sumWarning' : 'sunNormal'">
-                        {{showCalculateHour(fetchFormDataFromScope(form), 3, 2, form)}}
+                    <span ng-class="showCalculateHour(fetchFormDataFromScope(table), 3, 2, table) > 8 ? 'sumWarning' : 'sunNormal'">
+                        {{showCalculateHour(fetchFormDataFromScope(table), 3, 2, table)}}
                     </span>
                 </td>
                 <!--THU-->
                 <td colspan="2" style="text-align: center">
-                    <span ng-class="showCalculateHour(fetchFormDataFromScope(form), 4, 2, form) > 8 ? 'sumWarning' : 'sunNormal'">
-                        {{showCalculateHour(fetchFormDataFromScope(form), 4, 2, form)}}
+                    <span ng-class="showCalculateHour(fetchFormDataFromScope(table), 4, 2, table) > 8 ? 'sumWarning' : 'sunNormal'">
+                        {{showCalculateHour(fetchFormDataFromScope(table), 4, 2, table)}}
                     </span>
                 </td>
                 <!--FRI-->
                 <td colspan="2" style="text-align: center">
-                    <span ng-class="showCalculateHour(fetchFormDataFromScope(form), 5, 2, form) > 8 ? 'sumWarning' : 'sunNormal'">
-                        {{showCalculateHour(fetchFormDataFromScope(form), 5, 2, form)}}
+                    <span ng-class="showCalculateHour(fetchFormDataFromScope(table), 5, 2, table) > 8 ? 'sumWarning' : 'sunNormal'">
+                        {{showCalculateHour(fetchFormDataFromScope(table), 5, 2, table)}}
                     </span>
                 </td>
                 <!--SAT-->
                 <td colspan="2" style="text-align: center">
-                    <span ng-class="showCalculateHour(fetchFormDataFromScope(form), 6, 2, form) > 8 ? 'sumWarning' : 'sunNormal'">
-                        {{showCalculateHour(fetchFormDataFromScope(form), 6, 2, form)}}
+                    <span ng-class="showCalculateHour(fetchFormDataFromScope(table), 6, 2, table) > 8 ? 'sumWarning' : 'sunNormal'">
+                        {{showCalculateHour(fetchFormDataFromScope(table), 6, 2, table)}}
                     </span>
                 </td>
                 <!--SUN-->
                 <td colspan="2" style="text-align: center">
-                    <span ng-class="showCalculateHour(fetchFormDataFromScope(form), 7, 2, form) > 8 ? 'sumWarning' : 'sunNormal'">
-                        {{showCalculateHour(fetchFormDataFromScope(form), 7, 2, form)}}
+                    <span ng-class="showCalculateHour(fetchFormDataFromScope(table), 7, 2, table) > 8 ? 'sumWarning' : 'sunNormal'">
+                        {{showCalculateHour(fetchFormDataFromScope(table), 7, 2, table)}}
                     </span>
                 </td>
                 <!-- summation-->
                 <td style="text-align: center">
-                    <span ng-class="showCalculateHour(fetchFormDataFromScope(form), 1001, 2, form) !== 40 ? 'sumWarning' : 'sunNormal'">
-                        {{showCalculateHour(fetchFormDataFromScope(form), 1001, 2, form)}}
+                    <span ng-class="showCalculateHour(fetchFormDataFromScope(table), 1001, 2, table) !== 40 ? 'sumWarning' : 'sunNormal'">
+                        {{showCalculateHour(fetchFormDataFromScope(table), 1001, 2, table)}}
                     </span>
                     <br>
                     <span>
-                        {{showCalculateHour(fetchFormDataFromScope(form), 2001, 2, form)}}
+                        {{showCalculateHour(fetchFormDataFromScope(table), 2001, 2, table)}}
                     </span>
                 </td>
             </tr>
