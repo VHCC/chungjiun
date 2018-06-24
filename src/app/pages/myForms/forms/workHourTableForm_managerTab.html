@@ -70,6 +70,7 @@
 
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-number="item.mon_hour"
+                          ng-if="$parent.$index === 0"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
@@ -79,6 +80,7 @@
                 <td style="vertical-align: inherit;">
                     <my ng-show="item.mon_memo !== undefined && item.mon_memo !== '' && !rowform1.$visible"
                         ng-class="{workAdd: hover}"
+                        ng-if="$parent.$index === 0"
                         class="mytooltip"
                         ng-mouseover="hover = true"
                         ng-mouseleave="hover = false"
@@ -87,15 +89,12 @@
                         <i class="fa fa-pencil"></i>
                         <span class="tooltiptext">{{item.mon_memo}}</span>
                     </my>
-                    <span editable-textarea="item.mon_memo"
-                          e-form="rowform1"
-                          style="display: none"
-                          e-style="display: none"
-                          id="mon_memo"
-                          e-required>{{ item.mon_memo}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-number="item.tue_hour"
+                          ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                          || (user.crossDay > 2 && $parent.$index === 0)
+                          || (user.crossDay <= 2 && $parent.$index === 1)"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
@@ -105,6 +104,9 @@
                 <td style="vertical-align: inherit;">
                     <my ng-show="item.tue_memo !== undefined && item.tue_memo !== '' && !rowform1.$visible"
                         ng-class="{workAdd: hover}"
+                        ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                          || (user.crossDay > 2 && $parent.$index === 0)
+                          || (user.crossDay <= 2 && $parent.$index === 1)"
                         class="mytooltip"
                         ng-mouseover="hover = true"
                         ng-mouseleave="hover = false"
@@ -113,15 +115,12 @@
                         <i class="fa fa-pencil"></i>
                         <span class="tooltiptext">{{item.tue_memo}}</span>
                     </my>
-                    <span editable-textarea="item.tue_memo"
-                          e-form="rowform1"
-                          style="display: none"
-                          e-style="display: none"
-                          id="tue_memo"
-                          e-required>{{ item.tue_memo}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-number="item.wes_hour"
+                          ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                      || (user.crossDay > 3 && $parent.$index === 0)
+                      || (user.crossDay <= 3 && $parent.$index === 1)"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
@@ -130,6 +129,9 @@
                 </td>
                 <td style="vertical-align: inherit;">
                     <my ng-show="item.wes_memo !== undefined && item.wes_memo !== '' && !rowform1.$visible"
+                        ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                      || (user.crossDay > 3 && $parent.$index === 0)
+                      || (user.crossDay <= 3 && $parent.$index === 1)"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
@@ -139,15 +141,12 @@
                         <i class="fa fa-pencil"></i>
                         <span class="tooltiptext">{{item.wes_memo}}</span>
                     </my>
-                    <span editable-textarea="item.wes_memo"
-                          e-form="rowform1"
-                          style="display: none"
-                          e-style="display: none"
-                          id="wes_memo"
-                          e-required>{{ item.wes_memo}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-number="item.thu_hour"
+                          ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                      || (user.crossDay > 4 && $parent.$index === 0)
+                      || (user.crossDay <= 4 && $parent.$index === 1)"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
@@ -156,6 +155,9 @@
                 </td>
                 <td style="vertical-align: inherit;">
                     <my ng-show="item.thu_memo !== undefined && item.thu_memo !== '' && !rowform1.$visible"
+                        ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                      || (user.crossDay > 4 && $parent.$index === 0)
+                      || (user.crossDay <= 4 && $parent.$index === 1)"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
@@ -165,15 +167,12 @@
                         <i class="fa fa-pencil"></i>
                         <span class="tooltiptext">{{item.thu_memo}}</span>
                     </my>
-                    <span editable-textarea="item.thu_memo"
-                          e-form="rowform1"
-                          style="display: none"
-                          e-style="display: none"
-                          id="thu_memo"
-                          e-required>{{ item.thu_memo}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-number="item.fri_hour"
+                          ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                      || (user.crossDay > 5 && $parent.$index === 0)
+                      || (user.crossDay <= 5 && $parent.$index === 1)"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
@@ -182,6 +181,9 @@
                 </td>
                 <td style="vertical-align: inherit;">
                     <my ng-show="item.fri_memo !== undefined && item.fri_memo !== '' && !rowform1.$visible"
+                        ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                      || (user.crossDay > 5 && $parent.$index === 0)
+                      || (user.crossDay <= 5 && $parent.$index === 1)"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
@@ -191,15 +193,12 @@
                         <i class="fa fa-pencil"></i>
                         <span class="tooltiptext">{{item.fri_memo}}</span>
                     </my>
-                    <span editable-textarea="item.fri_memo"
-                          e-form="rowform1"
-                          style="display: none"
-                          e-style="display: none"
-                          id="fri_memo"
-                          e-required>{{ item.fri_memo}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-number="item.sat_hour"
+                          ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                      || (user.crossDay > 6 && $parent.$index === 0)
+                      || (user.crossDay <= 6 && $parent.$index === 1)"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
@@ -208,6 +207,9 @@
                 </td>
                 <td style="vertical-align: inherit;">
                     <my ng-show="item.sat_memo !== undefined && item.sat_memo !== '' && !rowform1.$visible"
+                        ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                      || (user.crossDay > 6 && $parent.$index === 0)
+                      || (user.crossDay <= 6 && $parent.$index === 1)"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
@@ -217,15 +219,12 @@
                         <i class="fa fa-pencil"></i>
                         <span class="tooltiptext">{{item.sat_memo}}</span>
                     </my>
-                    <span editable-textarea="item.sat_memo"
-                          e-form="rowform1"
-                          style="display: none"
-                          e-style="display: none"
-                          id="sat_memo"
-                          e-required>{{ item.sat_memo}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     <span editable-number="item.sun_hour"
+                          ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                      || (user.crossDay > 7 && $parent.$index === 0)
+                      || (user.crossDay <= 7 && $parent.$index === 1)"
                           e-form="rowform1"
                           e-ng-change="hourChange(this)"
                           e-min="0"
@@ -234,6 +233,9 @@
                 </td>
                 <td style="vertical-align: inherit;">
                     <my ng-show="item.sun_memo !== undefined && item.sun_memo !== '' && !rowform1.$visible"
+                        ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                      || (user.crossDay > 7 && $parent.$index === 0)
+                      || (user.crossDay <= 7 && $parent.$index === 1)"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
@@ -243,12 +245,6 @@
                         <i class="fa fa-pencil"></i>
                         <span class="tooltiptext">{{item.sun_memo}}</span>
                     </my>
-                    <span editable-textarea="item.sun_memo"
-                          e-form="rowform1"
-                          style="display: none"
-                          e-style="display: none"
-                          id="sun_memo"
-                          e-required>{{ item.sun_memo}}</span>
                 </td>
 
                 <!--合計-->
@@ -315,20 +311,16 @@
                     ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="item.mon_hour_add"
+                          ng-if="$parent.$index === 0"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
                           id="mon_hour_add"
                           e-required>{{ item.mon_hour_add || 0}}</span>
-                    <button type="button" ng-disabled="rowform1.$waiting"
-                            ng-show="rowform1.$visible"
-                            ng-click="showModal(table)"
-                            class="btn btn-primary editable-table-button btn-xs">
-                        新增
-                    </button>
                 </td>
                 <td style="vertical-align: inherit;">
                     <my ng-show="item.mon_memo_add !== undefined && item.mon_memo_add !== '' && !rowform1.$visible"
+                        ng-if="$parent.$index === 0"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
@@ -338,12 +330,6 @@
                         <i class="fa fa-pencil"></i>
                         <span class="tooltiptext">{{item.mon_memo_add}}</span>
                     </my>
-                    <span editable-textarea="item.mon_memo_add"
-                          e-form="rowform1"
-                          style="display: none"
-                          e-style="display: none"
-                          id="mon_memo_add"
-                          e-required>{{ item.mon_memo_add}}</span>
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
@@ -352,6 +338,9 @@
                     ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="item.tue_hour_add"
+                          ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                          || (user.crossDay > 2 && $parent.$index === 0)
+                          || (user.crossDay <= 2 && $parent.$index === 1)"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
@@ -360,6 +349,9 @@
                 </td>
                 <td style="vertical-align: inherit;">
                     <my ng-show="item.tue_memo_add !== undefined && item.tue_memo_add !== '' && !rowform1.$visible"
+                        ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                          || (user.crossDay > 2 && $parent.$index === 0)
+                          || (user.crossDay <= 2 && $parent.$index === 1)"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
@@ -369,12 +361,6 @@
                         <i class="fa fa-pencil"></i>
                         <span class="tooltiptext">{{item.tue_memo_add}}</span>
                     </my>
-                    <span editable-textarea="item.tue_memo_add"
-                          e-form="rowform1"
-                          style="display: none"
-                          e-style="display: none"
-                          id="tue_memo_add"
-                          e-required>{{ item.tue_memo_add}}</span>
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
@@ -383,6 +369,9 @@
                     ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="item.wes_hour_add"
+                          ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                          || (user.crossDay > 3 && $parent.$index === 0)
+                          || (user.crossDay <= 3 && $parent.$index === 1)"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
@@ -391,6 +380,9 @@
                 </td>
                 <td style="vertical-align: inherit;">
                     <my ng-show="item.wes_memo_add !== undefined && item.wes_memo_add !== '' && !rowform1.$visible"
+                        ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                          || (user.crossDay > 3 && $parent.$index === 0)
+                          || (user.crossDay <= 3 && $parent.$index === 1)"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
@@ -400,12 +392,6 @@
                         <i class="fa fa-pencil"></i>
                         <span class="tooltiptext">{{item.wes_memo_add}}</span>
                     </my>
-                    <span editable-textarea="item.wes_memo_add"
-                          e-form="rowform1"
-                          style="display: none"
-                          e-style="display: none"
-                          id="wes_memo_add"
-                          e-required>{{ item.wes_memo_add}}</span>
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
@@ -414,6 +400,9 @@
                     ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="item.thu_hour_add"
+                          ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                          || (user.crossDay > 4 && $parent.$index === 0)
+                          || (user.crossDay <= 4 && $parent.$index === 1)"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
@@ -422,6 +411,9 @@
                 </td>
                 <td style="vertical-align: inherit;">
                     <my ng-show="item.thu_memo_add !== undefined && item.thu_memo_add !== '' && !rowform1.$visible"
+                        ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                          || (user.crossDay > 4 && $parent.$index === 0)
+                          || (user.crossDay <= 4 && $parent.$index === 1)"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
@@ -431,12 +423,6 @@
                         <i class="fa fa-pencil"></i>
                         <span class="tooltiptext">{{item.thu_memo_add}}</span>
                     </my>
-                    <span editable-textarea="item.thu_memo_add"
-                          e-form="rowform1"
-                          style="display: none"
-                          e-style="display: none"
-                          id="thu_memo_add"
-                          e-required>{{ item.thu_memo_add}}</span>
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
@@ -445,6 +431,9 @@
                     ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="item.fri_hour_add"
+                          ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                          || (user.crossDay > 5 && $parent.$index === 0)
+                          || (user.crossDay <= 5 && $parent.$index === 1)"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
@@ -453,6 +442,9 @@
                 </td>
                 <td style="vertical-align: inherit;">
                     <my ng-show="item.fri_memo_add !== undefined && item.fri_memo_add !== '' && !rowform1.$visible"
+                        ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                          || (user.crossDay > 5 && $parent.$index === 0)
+                          || (user.crossDay <= 5 && $parent.$index === 1)"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
@@ -462,12 +454,6 @@
                         <i class="fa fa-pencil"></i>
                         <span class="tooltiptext">{{item.fri_memo_add}}</span>
                     </my>
-                    <span editable-textarea="item.fri_memo_add"
-                          e-form="rowform1"
-                          style="display: none"
-                          e-style="display: none"
-                          id="fri_memo_add"
-                          e-required>{{ item.fri_memo_add}}</span>
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
@@ -476,6 +462,9 @@
                     ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="item.sat_hour_add"
+                          ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                          || (user.crossDay > 6 && $parent.$index === 0)
+                          || (user.crossDay <= 6 && $parent.$index === 1)"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
@@ -484,6 +473,9 @@
                 </td>
                 <td style="vertical-align: inherit;">
                     <my ng-show="item.sat_memo_add !== undefined && item.sat_memo_add !== '' && !rowform1.$visible"
+                        ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                          || (user.crossDay > 6 && $parent.$index === 0)
+                          || (user.crossDay <= 6 && $parent.$index === 1)"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
@@ -493,12 +485,6 @@
                         <i class="fa fa-pencil"></i>
                         <span class="tooltiptext">{{item.sat_memo_add}}</span>
                     </my>
-                    <span editable-textarea="item.sat_memo_add"
-                          e-form="rowform1"
-                          style="display: none"
-                          e-style="display: none"
-                          id="sat_memo_add"
-                          e-required>{{ item.sat_memo_add}}</span>
                 </td>
                 <td class="form-group has-success"
                     ng-class="{workAdd: hover}"
@@ -507,6 +493,9 @@
                     ng-mouseleave="hover = false"
                     style="vertical-align: inherit;">
                     <span editable-number="item.sun_hour_add"
+                          ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                          || (user.crossDay > 7 && $parent.$index === 0)
+                          || (user.crossDay <= 7 && $parent.$index === 1)"
                           e-form="rowform1"
                           e-ng-change="hourAddChange(this)"
                           e-min="0"
@@ -515,6 +504,9 @@
                 </td>
                 <td style="vertical-align: inherit;">
                     <my ng-show="item.sun_memo_add !== undefined && item.sun_memo_add !== '' && !rowform1.$visible"
+                        ng-if="checkIsCrossMonth(firstFullDate_manager) < 0
+                          || (user.crossDay > 7 && $parent.$index === 0)
+                          || (user.crossDay <= 7 && $parent.$index === 1)"
                         ng-class="{workAdd: hover}"
                         class="mytooltip"
                         ng-mouseover="hover = true"
@@ -524,12 +516,6 @@
                         <i class="fa fa-pencil"></i>
                         <span class="tooltiptext">{{item.sun_memo_add}}</span>
                     </my>
-                    <span ediitem-textarea="item.sun_memo_add"
-                          e-form="rowform1"
-                          style="display: none"
-                          e-style="display: none"
-                          id="sun_memo_add"
-                          e-required>{{ item.sun_memo_add}}</span>
                 </td>
                 <!--合計-->
                 <td style="vertical-align: inherit;">
