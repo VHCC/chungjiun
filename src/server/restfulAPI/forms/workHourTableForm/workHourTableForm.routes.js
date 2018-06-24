@@ -251,6 +251,7 @@ module.exports = function (app) {
                 code: 200,
                 error: global.status._200,
                 payload: tables,
+                creatorDID: req.body.creatorDID
             });
         });
     })
