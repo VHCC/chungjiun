@@ -34,11 +34,19 @@
             }
         });
         function showWeeklyDatePicker() {
-            console.log($scope.format);
             $scope.opened = true;
+            switch ($scope.viewType) {
+                case "1":
+                    $scope.myDT = new Date($scope.$parent.$parent.$parent.firstFullDate);
+                    break;
+                case "4":
+                    $scope.myDT = new Date($scope.$parent.$parent.$parent.$parent.$parent.firstFullDate_history);
+                    break;
+            }
         }
 
         $scope.shiftToFirstDayOfWeek = function (dom) {
+            console.log(dom);
             $scope.myDT = new Date(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment(dom.myDT)), 0));
         }
 
