@@ -44,30 +44,30 @@ global.qqq = mainEventEmitter;
 
 var memberSocketMap = [];
 
-io.on('connection', function (socket){
-    console.log('------- Socket Connect Success ------');
-    // console.log(socket);
-    // console.log('=============' + socket.handshake.headers.cookie + '=============');
-    var cookieArray = socket.handshake.headers.cookie.split(";");
-    cookieArray.forEach(function(ele) {
-        if(ele.includes("userDID")){
-            var userDID = ele.split('=');
-            evalString = "memberSocketMap[\'" + userDID[1] + "\']=socket";
-            eval(evalString);
-        }
-    })
-    mainEventEmitter.on('response', function(targetID, msg) {
-        // socket.emit("greet", msg);
-        // console.log(memberSocketMap[targetID]);
-        if (memberSocketMap[targetID] !== undefined) {
-            memberSocketMap[targetID].emit("greet", msg);
-        }
-    });
-
-    socket.on('disconnect', function () {
-        console.log('Bye~');  // 顯示 bye~
-    })
-});
+// io.on('connection', function (socket){
+//     console.log('------- Socket Connect Success ------');
+//     // console.log(socket);
+//     // console.log('=============' + socket.handshake.headers.cookie + '=============');
+//     var cookieArray = socket.handshake.headers.cookie.split(";");
+//     cookieArray.forEach(function(ele) {
+//         if(ele.includes("userDID")){
+//             var userDID = ele.split('=');
+//             evalString = "memberSocketMap[\'" + userDID[1] + "\']=socket";
+//             eval(evalString);
+//         }
+//     })
+//     mainEventEmitter.on('response', function(targetID, msg) {
+//         // socket.emit("greet", msg);
+//         // console.log(memberSocketMap[targetID]);
+//         if (memberSocketMap[targetID] !== undefined) {
+//             memberSocketMap[targetID].emit("greet", msg);
+//         }
+//     });
+//
+//     socket.on('disconnect', function () {
+//         console.log('Bye~');  // 顯示 bye~
+//     })
+// });
 
 
 // var index = require('./routes/index');
