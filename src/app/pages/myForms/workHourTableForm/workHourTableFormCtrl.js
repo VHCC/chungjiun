@@ -2355,7 +2355,6 @@
                                 $scope.checkUserReviewStatus(relatedUsersAndTables, false, null, type);
                                 break;
                             case typeExecutive:
-                                console.log(relatedUsersAndTables);
                                 $scope.checkUserReviewStatus(relatedUsersAndTables, true, false, type);
                                 break;
                         }
@@ -2391,7 +2390,6 @@
                         isFindManagerCheck: isFindManagerCheckFlag,
                         isFindExecutiveCheck: isFindExecutiveCheck
                     }
-                    console.log(formDataTable);
                     // 取得 Table Data
                     WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                         .success(function (res) {
