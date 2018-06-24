@@ -133,20 +133,26 @@ module.exports = function (app) {
 
     //get form by date, creator DID
     app.post(global.apiUrl.post_work_hour_get, function (req, res) {
-        WorkHourForm.find({
+
+        var query = {
             creatorDID: req.body.creatorDID,
             create_formDate: req.body.create_formDate,
-        }, function (err, workhourform) {
-            if (err) {
-                res.send(err);
+        }
 
-            }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-                payload: workhourform,
+        WorkHourForm.find(query)
+            .sort({
+                month: 1,
+            })
+            .exec(function (err, workHourForms) {
+                if (err) {
+                    res.send(err);
+                }
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: workHourForms,
+                });
             });
-        });
     });
 
     // 多組creator, create_formDate
@@ -162,18 +168,38 @@ module.exports = function (app) {
 
         }
 
-        WorkHourForm.find({
+        // WorkHourForm.find({
+        //     $or: findData,
+        // }, function (err, workHourForms) {
+        //     if (err) {
+        //         res.send(err);
+        //     }
+        //     res.status(200).send({
+        //         code: 200,
+        //         error: global.status._200,
+        //         payload: workHourForms,
+        //     });
+        // });
+
+        var query = {
             $or: findData,
-        }, function (err, workHourForms) {
-            if (err) {
-                res.send(err);
-            }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-                payload: workHourForms,
+        }
+
+        WorkHourForm.find(query)
+            .sort({
+                month: 1,
+            })
+            .exec(function (err, workHourForms) {
+                if (err) {
+                    res.send(err);
+                }
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: workHourForms,
+                });
             });
-        });
+
     })
 
     // get forms for manager
