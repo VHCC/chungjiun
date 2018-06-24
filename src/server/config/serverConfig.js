@@ -15,13 +15,13 @@ var bodyParser = require('body-parser');
 // var http = require('http');
 
 // 加入這兩行
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
-const socketPort = 9000;
-
-server.listen(socketPort, function () {
-    console.log("--------- Socket Server Started. http://localhost:" + socketPort + " --------------");
-});
+// const server = require('http').Server(app);
+// const io = require('socket.io')(server);
+// const socketPort = 9000;
+//
+// server.listen(socketPort, function () {
+//     console.log("--------- Socket Server Started. http://localhost:" + socketPort + " --------------");
+// });
 
 var util = require('util');
 var events = require('events');
