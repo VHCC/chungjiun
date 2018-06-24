@@ -2286,7 +2286,7 @@
                 case typeExecutive: {
                     console.log("firstFullDate_executive= " + $scope.firstFullDate_executive);
 
-                    $scope.workHourFormsForExecutive = [];
+                    $scope.usersReviewForExecutive = [];
 
                     targetFormFullDate = $scope.firstFullDate_executive;
                 } break;
@@ -2309,7 +2309,14 @@
                             eval(evalString);
                             // customized
                             userObject.DID = res.payload[formIndex].creatorDID;
-                            userObject.crossDay = $scope.checkIsCrossMonth($scope.firstFullDate_manager);
+                            switch (type) {
+                                case typeManager:
+                                    userObject.crossDay = $scope.checkIsCrossMonth($scope.firstFullDate_manager);
+                                    break;
+                                case typeExecutive:
+                                    userObject.crossDay = $scope.checkIsCrossMonth($scope.firstFullDate_executive);
+                                    break;
+                            }
                             if (!existDIDArray.includes(res.payload[formIndex].creatorDID)) {
                                 relatedUsersAndTables.push(userObject);
                                 existDIDArray.push(res.payload[formIndex].creatorDID);
@@ -2345,10 +2352,11 @@
                         }
                         switch (type) {
                             case typeManager:
-                                $scope.checkUserReviewStatus(relatedUsersAndTables, false, null);
+                                $scope.checkUserReviewStatus(relatedUsersAndTables, false, null, type);
                                 break;
                             case typeExecutive:
-                                $scope.checkUserReviewStatus(relatedUsersAndTables, true, false);
+                                console.log(relatedUsersAndTables);
+                                $scope.checkUserReviewStatus(relatedUsersAndTables, true, false, type);
                                 break;
                         }
 
@@ -2359,7 +2367,8 @@
         // 檢查該使用者是否有提交合規則的表單
         $scope.checkUserReviewStatus = function(userTables
                                                 , isFindManagerCheckFlag
-                                                , isFindExecutiveCheck) {
+                                                , isFindExecutiveCheck
+                                                , type) {
             var userResult = [];
             var userDIDExistArray = [];
             for (var userIndex = 0; userIndex < userTables.length; userIndex ++) {
@@ -2382,11 +2391,11 @@
                         isFindManagerCheck: isFindManagerCheckFlag,
                         isFindExecutiveCheck: isFindExecutiveCheck
                     }
+                    console.log(formDataTable);
                     // 取得 Table Data
                     WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                         .success(function (res) {
                             // 填入表單資訊
-
                             var mUser = $scope.fetchReviewUserFromScope(res.creatorDID);
                             if (res.payload.length > 0) {
                                 if (!userDIDExistArray.includes(mUser.DID)) {
@@ -2394,7 +2403,15 @@
                                     userDIDExistArray.push(mUser.DID);
                                 }
                             }
-                            $scope.usersReviewForManagers = userResult;
+                            switch (type) {
+                                case typeManager:
+                                    $scope.usersReviewForManagers = userResult;
+                                    break;
+                                case typeExecutive:
+                                    $scope.usersReviewForExecutive = userResult;
+                                    break;
+                            }
+
                         })
                 }
             }
@@ -2506,14 +2523,7 @@
                             };
                             formTables.push(detail);
                         }
-                        var evalString = "";
-                        switch (type) {
-                            case typeManager:
-                                evalString = "$scope.tables_review.tablesItems['" + userData[userData.DID][workIndex].creatorDID + userData[userData.DID][workIndex]._id + "'] = formTables";
-                                break;
-                            case typeExecutive:
-                                break;
-                        }
+                        var evalString = "$scope.tables_review.tablesItems['" + userData[userData.DID][workIndex].creatorDID + userData[userData.DID][workIndex]._id + "'] = formTables";
                         eval(evalString);
                     })
                     .error(function () {
@@ -2522,8 +2532,6 @@
                 $scope.fetchWorkOffReviewTables(userData.DID, type);
                 $scope.fetchNHReviewTables(userData.DID, type);
             }
-
-
         }
 
         // get work Off tables
