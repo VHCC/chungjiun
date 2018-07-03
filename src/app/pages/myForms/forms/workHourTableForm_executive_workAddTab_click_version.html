@@ -32,6 +32,7 @@
         <td style="vertical-align: inherit; text-align: center">星期</td>
         <td style="vertical-align: inherit; text-align: center">代碼</td>
         <td style="vertical-align: inherit; text-align: center">時數</td>
+        <td style="vertical-align: inherit; text-align: center">月薪</td>
         <td style="vertical-align: inherit; text-align: center" width="80px">1 + 1/3</td>
         <td style="vertical-align: inherit; text-align: center" width="80px">1 + 2/3</td>
         <td style="vertical-align: inherit; text-align: center" width="80px">1 + 1</td>
@@ -62,7 +63,11 @@
         </td>
         <!--時數-->
         <td rowspan="2" style="vertical-align: inherit;">
-            {{table.addWork + table.restWork}}
+            {{showAddAndRestByType(table, 1)}}
+            <!--{{table.addWork + table.restWork}}-->
+        </td>
+        <td rowspan="2" style="vertical-align: inherit;">
+            {{table.userMonthSalary}}
         </td>
         <!--1 + 1/3-->
         <td class="form-group has-success" style="vertical-align: inherit;">
@@ -111,11 +116,11 @@
         </td>
         <!--換休-->
         <td class="form-group has-success" style="vertical-align: inherit;">
-            <span>{{table.restWork}}</span>
+            <span>{{showAddAndRestByType(table, 3)}}</span>
         </td>
         <!--加班合計-->
         <td style="vertical-align: inherit;">
-            <span>{{table.addWork}}</span>
+            <span>{{showAddAndRestByType(table, 2)}}</span>
         </td>
         <!--加班費-->
         <td class="form-group has-success" style="vertical-align: inherit;">
@@ -141,37 +146,42 @@
         <!--時數-->
         <td style="text-align: center">
             <span>
-                {{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 1)}}
+                <!--{{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 1)}}-->
             </span>
         </td>
-        <!--工作日-->
+        <!--月薪-->
         <td style="text-align: center">
             <span>
-                {{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 2)}}
             </span>
         </td>
-        <!--休息日-->
+        <!--1 + 1/3-->
         <td style="text-align: center">
             <span>
-                {{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 3)}}
+                <!--{{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 2)}}-->
             </span>
         </td>
-        <!--例假日-->
+        <!--1 + 2/3-->
         <td style="text-align: center">
             <span>
-                {{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 4)}}
+                <!--{{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 3)}}-->
+            </span>
+        </td>
+        <!--1 + 1-->
+        <td style="text-align: center">
+            <span>
+                <!--{{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 4)}}-->
             </span>
         </td>
         <!-- 換休-->
         <td style="text-align: center">
             <span>
-                {{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 6)}}
+                <!--{{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 6)}}-->
             </span>
         </td>
         <!-- 加班合計-->
         <td style="text-align: center">
             <span>
-                {{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 7)}}
+                <!--{{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 7)}}-->
             </span>
         </td>
         <!-- 加班費-->
@@ -186,7 +196,7 @@
 
 <hr>
 <section class="col-md-6" ng-show="workHourTableCtrlVm.workAdd.selected">
-    <button progress-button="qwer()"
+    <button progress-button="saveAddWorkFormToServer()"
             style="float: inherit;"
             pb-style="shrink"
             class="btn btn-warning">

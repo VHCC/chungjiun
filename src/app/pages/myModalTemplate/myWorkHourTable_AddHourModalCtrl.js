@@ -11,6 +11,7 @@
                 '$scope',
                 '$cookies',
                 '$uibModalInstance',
+                'TimeUtil',
                 'WorkHourAddItemUtil',
                 MyWorkHourTableAddHourModalCtrl
             ]);
@@ -19,6 +20,7 @@
     function MyWorkHourTableAddHourModalCtrl($scope,
                                              cookies,
                                              $uibModalInstance,
+                                             TimeUtil,
                                              WorkHourAddItemUtil) {
         // Main Data
         $scope.parent = $scope.$resolve.parent;
@@ -84,11 +86,13 @@
             table.workAddType = type;
         }
 
+        // 累積所有項目
         $scope.showTotalAddHour = function (tables) {
             var result = 0;
             for (var index = 0; index < tables.length; index++) {
-                result += $scope.getHourDiffByTime(tables[index].start_time, tables[index].end_time)
+                result += parseInt(TimeUtil.getCalculateHourDiffByTime(tables[index].start_time, tables[index].end_time));
             }
+            result = result % 60 < 30 ? Math.round(result / 60) : Math.round(result / 60) - 0.5;
             $scope.table.totalHourTemp = result;
             return result;
         }
@@ -97,7 +101,7 @@
         // time calculate
         $scope.getHourDiff = function (dom) {
             if (dom.tableTimeStart && dom.tableTimeEnd) {
-                var difference = Math.abs(toSeconds(dom.tableTimeStart) - toSeconds(dom.tableTimeEnd));
+                var difference = Math.abs(TimeUtil.toSeconds(dom.tableTimeStart) - TimeUtil.toSeconds(dom.tableTimeEnd));
                 dom.table.start_time = dom.tableTimeStart;
                 dom.table.end_time = dom.tableTimeEnd;
                 // compute hours, minutes and seconds
@@ -124,7 +128,7 @@
         // 加班，規則
         $scope.getHourDiffByTime = function (start, end) {
             if (start && end) {
-                var difference = Math.abs(toSeconds(start) - toSeconds(end));
+                var difference = Math.abs(TimeUtil.toSeconds(start) - TimeUtil.toSeconds(end));
                 // compute hours, minutes and seconds
                 var result = [
                     // an hour has 3600 seconds so we have to compute how often 3600 fits
@@ -144,15 +148,6 @@
                 result = result[0] + (result[1] < 30 ? 0 : result[1] === 0 ? 0 : 0.5);
                 return result < 1 ? 0 : result >= 8 ? 8 : result;
             }
-        }
-
-        function toSeconds(time_str) {
-            // Extract hours, minutes and seconds
-            var parts = time_str.split(':');
-            // compute  and return total seconds
-            return parts[0] * 3600 +  // an hour has 3600 seconds
-                parts[1] * 60         // a minute has 60 seconds
-            // +parts[2];         // seconds
         }
 
         // **************** time section ********************

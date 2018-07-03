@@ -2,6 +2,21 @@
 <!--<button class="btn btn-primary" ng-click="addWorkItem()">新增項目</button>-->
 <!--</div>-->
 <style type='text/css'>
+
+    .modal::before {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+        margin-right: -4px;
+    }
+
+    .modal-dialog {
+        display: inline-block;
+        text-align: left;
+        vertical-align: middle;
+    }
+
     .workAdd {
         cursor: pointer;
     }
@@ -120,7 +135,7 @@
             <thead>
 
             <tr>
-                <td rowspan="3" style="vertical-align: inherit; text-align: center">代碼 {{$index}} {{table.crossDay}}</td>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center">代碼</td>
                 <td rowspan="3" style="vertical-align: inherit; text-align: center"width="240px">名稱</td>
                 <td rowspan="3" style="vertical-align: inherit; text-align: center" width="80px">經理</td>
                 <td rowspan="3" style="vertical-align: inherit; text-align: center" width="100px">類型</td>
