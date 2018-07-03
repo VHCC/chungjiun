@@ -356,6 +356,31 @@
                 }
             }
         })
+        .factory('TimeUtil', ['$http', function (http) {
+            return {
+                toSeconds: function (time_str) {
+                    // Extract hours, minutes and seconds
+                    var parts = time_str.split(':');
+                    // compute  and return total seconds
+                    return parts[0] * 3600 +  // an hour has 3600 seconds
+                        parts[1] * 60         // a minute has 60 seconds
+                    // +parts[2];         // seconds
+                },
+                // 加班累積規則
+                getCalculateHourDiffByTime: function (start, end) {
+                    if (start && end) {
+                        var difference = Math.abs(this.toSeconds(start) - this.toSeconds(end));
+                        // compute hours, minutes and seconds
+                        var result = [
+                            Math.floor(difference / 60), // MINS
+                        ];
+                        return result;
+                    }
+                }
+
+
+            }
+        }])
         .factory('WorkOffTypeUtil', ['$http', function (http) {
             return {
                 getWorkOffString: function (type) {

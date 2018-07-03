@@ -16,6 +16,7 @@
                     'Project',
                     'User',
                     'DateUtil',
+                    'TimeUtil',
                     'WorkOffTypeUtil',
                     'WorkOffFormUtil',
                     'NationalHolidayUtil',
@@ -34,6 +35,7 @@
                                  Project,
                                  User,
                                  DateUtil,
+                                 TimeUtil,
                                  WorkOffTypeUtil,
                                  WorkOffFormUtil,
                                  NationalHolidayUtil,
@@ -372,7 +374,7 @@
             // 休假規則，未滿一小算一小
             $scope.getHourDiff = function (dom) {
                 if (dom.tableTimeStart && dom.tableTimeEnd) {
-                    var difference = Math.abs(toSeconds(dom.tableTimeStart) - toSeconds(dom.tableTimeEnd));
+                    var difference = Math.abs(TimeUtil.toSeconds(dom.tableTimeStart) - TimeUtil.toSeconds(dom.tableTimeEnd));
                     dom.table.start_time = dom.tableTimeStart;
                     dom.table.end_time = dom.tableTimeEnd;
                     // compute hours, minutes and seconds
@@ -398,7 +400,7 @@
 
             $scope.getHourDiffByTime = function (start, end) {
                 if (start && end) {
-                    var difference = Math.abs(toSeconds(start) - toSeconds(end));
+                    var difference = Math.abs(TimeUtil.toSeconds(start) - TimeUtil.toSeconds(end));
                     // compute hours, minutes and seconds
                     var result = [
                         // an hour has 3600 seconds so we have to compute how often 3600 fits
@@ -418,15 +420,6 @@
                     result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
                     return result <= 1 ? 1 : result >= 8 ? 8 : result;
                 }
-            }
-
-            function toSeconds(time_str) {
-                // Extract hours, minutes and seconds
-                var parts = time_str.split(':');
-                // compute  and return total seconds
-                return parts[0] * 3600 +  // an hour has 3600 seconds
-                    parts[1] * 60         // a minute has 60 seconds
-                // +parts[2];         // seconds
             }
 
             // Send WorkOffTable to Review

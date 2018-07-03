@@ -19,6 +19,7 @@
                 'Project',
                 'ProjectUtil',
                 'DateUtil',
+                'TimeUtil',
                 'WorkHourUtil',
                 'WorkHourAddItemUtil',
                 'WorkOffFormUtil',
@@ -41,6 +42,7 @@
                                Project,
                                ProjectUtil,
                                DateUtil,
+                               TimeUtil,
                                WorkHourUtil,
                                WorkHourAddItemUtil,
                                WorkOffFormUtil,
@@ -1877,7 +1879,7 @@
 
         function getHourDiff(start, end) {
             if (start && end) {
-                var difference = Math.abs(toSeconds(start) - toSeconds(end));
+                var difference = Math.abs(TimeUtil.toSeconds(start) - TimeUtil.toSeconds(end));
                 // compute hours, minutes and seconds
                 var result = [
                     // an hour has 3600 seconds so we have to compute how often 3600 fits
@@ -1901,7 +1903,7 @@
 
         $scope.getHourDiffByTime = function (start, end) {
             if (start && end) {
-                var difference = Math.abs(toSeconds(start) - toSeconds(end));
+                var difference = Math.abs(TimeUtil.toSeconds(start) - TimeUtil.toSeconds(end));
                 // compute hours, minutes and seconds
                 var result = [
                     // an hour has 3600 seconds so we have to compute how often 3600 fits
@@ -1921,15 +1923,6 @@
                 result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
                 return result <= 1 ? 1 : result >= 8 ? 8 : result;
             }
-        }
-
-        function toSeconds(time_str) {
-            // Extract hours, minutes and seconds
-            var parts = time_str.split(':');
-            // compute  and return total seconds
-            return parts[0] * 3600 +  // an hour has 3600 seconds
-                parts[1] * 60         // a minute has 60 seconds
-            // +parts[2];         // seconds
         }
 
         // **************** 表定假日 ****************
@@ -2055,33 +2048,35 @@
                     workAddItem.day = tables[index].day;
                     // workAddItem.userHourSalary = tables[index].userHourSalary;
                     workAddItem.userMonthSalary = tables[index].userMonthSalary;
+                    var result = 0;
                     switch (tables[index].workAddType) {
                         case 1:
-                            workAddItem.addWork += $scope.getHourDiffByTime(
+                            workAddItem.addWork += parseInt(TimeUtil.getCalculateHourDiffByTime(
                                 tables[index].start_time,
-                                tables[index].end_time);
+                                tables[index].end_time));
                             break;
                         case 2:
-                            workAddItem.restWork += $scope.getHourDiffByTime(
+                            workAddItem.restWork += parseInt(TimeUtil.getCalculateHourDiffByTime(
                                 tables[index].start_time,
-                                tables[index].end_time);
+                                tables[index].end_time));
                             break;
                     }
-
                     workAddTable[$scope.showDate(tables[index])] = workAddItem;
                 } else {
                     switch (tables[index].workAddType) {
                         case 1:
-                            workAddTable[$scope.showDate(tables[index])].addWork += $scope.getHourDiffByTime(
+                            workAddTable[$scope.showDate(tables[index])].addWork += parseInt(TimeUtil.getCalculateHourDiffByTime(
                                 tables[index].start_time,
-                                tables[index].end_time);
+                                tables[index].end_time));
                             break;
                         case 2:
-                            workAddTable[$scope.showDate(tables[index])].restWork += $scope.getHourDiffByTime(
+                            workAddTable[$scope.showDate(tables[index])].restWork += parseInt(TimeUtil.getCalculateHourDiffByTime(
                                 tables[index].start_time,
-                                tables[index].end_time);
+                                tables[index].end_time));
                             break;
                     }
+
+
                 }
                 if ($scope.workAddConfirmTablesFromServer[$scope.showDate(tables[index])] !== undefined) {
                     workAddTable[$scope.showDate(tables[index])].type1_1 = $scope.workAddConfirmTablesFromServer[$scope.showDate(tables[index])].type1_1;
@@ -2090,8 +2085,31 @@
                 }
             }
 
+
             $scope.workAddConfirmTablesItems = workAddTable;
             // console.log($scope.workAddConfirmTablesItems);
+        }
+
+        // 顯示加班＋換休時數
+        // 1: add + rest
+        // 2: add only
+        // 3: rest only
+        $scope.showAddAndRestByType = function(table, type) {
+            var result = 0
+            switch (type) {
+                case 1:
+                    result = table.addWork + table.restWork;
+                    break;
+                case 2:
+                    result = table.addWork;
+                    break;
+                case 3:
+                    result = table.restWork;
+                    break;
+            }
+
+            result = result % 60 < 30 ? Math.round(result / 60) : Math.round(result / 60) - 0.5;
+            return result;
         }
 
         Object.size = function (obj) {
@@ -2711,7 +2729,7 @@
         // ****************  加班核准 點擊版********************
 
         // 加班單核薪 點擊版
-        $scope.qwer = function () {
+        $scope.saveAddWorkFormToServer = function () {
             if ($scope.workAddTablesRawData.length === 0) {
                 toastr.warning('沒有任何加班單', 'Warning');
             }
