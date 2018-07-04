@@ -63,7 +63,7 @@
 
                         console.log('cookies.username= ' + cookies.username);
                         console.log('cookies.username= ' + cookies.get('username'));
-                        window.location.href = 'https://test.ichenprocin.dsmynas.com';
+                        window.location.href = 'https://erm.chongjun.myds.me';
 
                         scope.todos = data; // assign our new list of todos
                     })
