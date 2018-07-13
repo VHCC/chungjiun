@@ -24,6 +24,21 @@ gulp.task('default', ['clean', 'load', 'serve'], function () {
     console.log('------------- Server Begin --------------');
 });
 
+gulp.task('ttt', function () {
+    console.log('-------------  Load File --------------');
+    nodemon({
+        // the script to run the app
+        script: './src/server/test',
+        // this listens to changes in any of these files/routes and restarts the application
+        env: {
+            'NODE_ENV': 'development'
+        },
+        ext: 'js'
+        // Below i'm using es6 arrow functions but you can remove the arrow and have it a normal .on('restart', function() { // then place your stuff in here }
+    }).on('start', function() {
+        console.log('---------File Load Started.---------')
+    });
+});
 
 var nodemon = require('gulp-nodemon');
 gulp.task('load', function() {
