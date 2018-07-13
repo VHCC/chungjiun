@@ -1,7 +1,8 @@
 var fs = require('fs');
 const readline = require('readline');
+var moment = require('moment');
 
-var fileDate = '20180711'
+var fileDate = moment().format('YYYYMMDD').toString();
 
 var fReadName = '../HR/CARD/' + fileDate + '.txt';
 var fRead = fs.createReadStream(fReadName);
@@ -52,18 +53,18 @@ fs.readFile(fReadName, function (err, data) {
                     break;
             }
         }
-        hrMAchineModel.create({
-            location: tempObject.location,
-            did: tempObject.did,
-            date: tempObject.date,
-            time: tempObject.time,
-            workType: tempObject.workType,
-            printType: tempObject.printType,
-        }, function (err) {
-            if (err) {
-                res.send(err);
-            }
-        })
+        // hrMAchineModel.create({
+        //     location: tempObject.location,
+        //     did: tempObject.did,
+        //     date: tempObject.date,
+        //     time: tempObject.time,
+        //     workType: tempObject.workType,
+        //     printType: tempObject.printType,
+        // }, function (err) {
+        //     if (err) {
+        //         res.send(err);
+        //     }
+        // })
         index ++;
     });
 
