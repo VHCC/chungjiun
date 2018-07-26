@@ -110,4 +110,7 @@ global.apiUrl = {
     // WorkAddConfirmFormUtil
     post_create_work_add_confirm_form : '/api/post_create_work_add_confirm_form',
     post_fetch_work_add_confirm_form_by_user_id : '/api/post_fetch_work_add_confirm_form_by_user_id',
+
+    //hrMachine
+    post_fetch_hrmachine_data_by_machine_did : '/api/post_fetch_hrmachine_data_by_machine_did',
 };

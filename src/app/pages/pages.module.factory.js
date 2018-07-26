@@ -284,6 +284,13 @@
                 }
             }
         }])
+        .factory('HrMachineUtil', ['$http', function (http) {
+            return {
+                fetchUserHrMachineDataByMachineDID: function (formData) {
+                    return http.post('/api/post_fetch_hrmachine_data_by_machine_did', formData);
+                },
+            }
+        }])
         .factory('ProjectUtil', function () {
             return {
                 getTypeText: function (type) {
