@@ -8,7 +8,7 @@ var fReadName = '../HR/CARD/' + fileDate + '.txt';
 
 var fRead = fs.createReadStream(fReadName);
 
-var hrMAchineModel = require('../server/restfulAPI/models/hrmachine')(fileDate);
+var hrMAchineModel = require('../server/restfulAPI/models/hrMachine')(fileDate);
 
 try {
     var fileContents = fs.readFileSync(fReadName);

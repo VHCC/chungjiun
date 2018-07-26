@@ -13,7 +13,7 @@
                     '$cookies',
                     '$timeout',
                     'ngDialog',
-                    'Project',
+                    'HrMachineUtil',
                     'User',
                     'DateUtil',
                     'TimeUtil',
@@ -27,7 +27,7 @@
                                  cookies,
                                  $timeout,
                                  ngDialog,
-                                 Project,
+                                 HrMachineUtil,
                                  User,
                                  DateUtil,
                                  TimeUtil,
@@ -47,11 +47,21 @@
             var thisDay = new Date().getDay();
             // ***********************  個人填寫 ************************
 
-            console.log($scope.username)
-            console.log($scope.userDID)
-            console.log($scope.roleType)
-            console.log($scope.machineDID)
+            console.log($scope.username);
+            console.log($scope.userDID);
+            console.log($scope.roleType);
+            console.log($scope.machineDID);
 
+            var formData = {
+                machineDID: $scope.machineDID,
+            }
+
+            console.log(formData)
+
+            HrMachineUtil.fetchUserHrMachineDataByMachineDID(formData)
+                .success(function (res) {
+                    console.log(res);
+                })
 
 
         } // End of function
