@@ -24,6 +24,7 @@ global.pages = {
     cgWorkManage_userEdit: 100,
     cgWorkManage_workHourTable  : 200,
     cgWorkManage_workOff  : 300,
+    cgWorkManage_hrMachine  : 500,
     //
     cgAccountingManage : 300,
     cgAccountingManage_paymentForm  : 100,

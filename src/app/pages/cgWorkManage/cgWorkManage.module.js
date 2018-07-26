@@ -64,5 +64,16 @@
                         order: 500,
                     },
                 })
+            .state('cgWorkManage.hrMachine',
+                {
+                    url: '/hrMachine',
+                    templateUrl: 'app/pages/myForms/hrMachine/hrMachinePage.html',
+                    controller: 'hrMachineCtrl',
+                    controllerAs: 'hrMachineCtrlVm',
+                    title: '打卡機',
+                    sidebarMeta: {
+                        order: global.pages.cgWorkManage_hrMachine,
+                    },
+                })
     }
 })();
