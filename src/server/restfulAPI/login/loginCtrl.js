@@ -60,6 +60,7 @@
                         cookies.put('userDID', data[0]._id);
                         cookies.put('bossID', data[0].bossID);
                         cookies.put('userMonthSalary', data[0].userMonthSalary);
+                        cookies.put('machineDID', data[0].machineDID);
 
                         console.log('cookies.username= ' + cookies.username);
                         console.log('cookies.username= ' + cookies.get('username'));
@@ -89,6 +90,7 @@
             cookies.put('userDID', null);
             cookies.put('bossID', null);
             cookies.put('userMonthSalary', null);
+            cookies.put('machineDID', null);
             window.signOutSucess();
         }
 
@@ -101,6 +103,7 @@
             cookies.put('userDID', null);
             cookies.put('bossID', null);
             cookies.put('userMonthSalary', null);
+            cookies.put('machineDID', null);
         };
 
     }
