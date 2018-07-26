@@ -3,14 +3,26 @@ const readline = require('readline');
 var moment = require('moment');
 
 var fileDate = moment().format('YYYYMMDD').toString();
-
+fileDate = '20180712';
 var fReadName = '../HR/CARD/' + fileDate + '.txt';
+
 var fRead = fs.createReadStream(fReadName);
 
 var hrMAchineModel = require('../server/restfulAPI/models/hrmachine')(fileDate);
 
+try {
+    var fileContents = fs.readFileSync(fReadName);
+} catch (err) {
+    // Here you get the error when the file was not found,
+    // but you also get any other error
+    // 無檔案處理
+    console['log'](err && err['stack'] ? err['stack'] : err);
+}
+
 fs.readFile(fReadName, function (err, data) {
-    if (err) throw err;
+    if (err) {
+        throw err;
+    }
     console.log("Readline start !!!");
 
     hrMAchineModel.remove({
@@ -53,18 +65,18 @@ fs.readFile(fReadName, function (err, data) {
                     break;
             }
         }
-        // hrMAchineModel.create({
-        //     location: tempObject.location,
-        //     did: tempObject.did,
-        //     date: tempObject.date,
-        //     time: tempObject.time,
-        //     workType: tempObject.workType,
-        //     printType: tempObject.printType,
-        // }, function (err) {
-        //     if (err) {
-        //         res.send(err);
-        //     }
-        // })
+        hrMAchineModel.create({
+            location: tempObject.location,
+            did: tempObject.did,
+            date: tempObject.date,
+            time: tempObject.time,
+            workType: tempObject.workType,
+            printType: tempObject.printType,
+        }, function (err) {
+            if (err) {
+                res.send(err);
+            }
+        })
         index ++;
     });
 
