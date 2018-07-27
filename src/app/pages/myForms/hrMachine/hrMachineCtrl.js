@@ -54,8 +54,8 @@
 
             var formData = {
                 machineDID: $scope.machineDID,
-                startDate: '20180712',
-                endDate: '20180713',
+                startDate: '20180711',
+                endDate: '20180727',
             }
 
             console.log(formData)
@@ -65,6 +65,24 @@
                     console.log(res);
                 })
 
+            $scope.loadHrMachineDate = function (dom) {
+                if (moment(dom.myDT).format('YYYYMMDD') === "Invalid date") {
+                    toastr.error('請檢察日期', 'Error');
+                    return;
+                }
+                var fileDate = moment(dom.myDT).format('YYYYMMDD')
+                console.log(fileDate);
+                var formData = {
+                    loadDate: fileDate,
+                }
+                HrMachineUtil.loadHrMachineDataByDate(formData)
+                    .success(function () {
+                        toastr.success('讀取完成', 'Success');
+                    })
+                    .error(function () {
+                        toastr.error('讀取失敗', '機器無該日期檔案');
+                    })
+            }
 
         } // End of function
     }
