@@ -54,6 +54,8 @@
 
             var formData = {
                 machineDID: $scope.machineDID,
+                startDate: '20180712',
+                endDate: '20180713',
             }
 
             console.log(formData)
