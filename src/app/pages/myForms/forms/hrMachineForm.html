@@ -1,8 +1,41 @@
 <uib-tabset active="$tabSetStatus.activeTab">
     <uib-tab heading="個人打卡機資訊" >
+
+        <div class="row">
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                <tr style="white-space:nowrap">
+                    <td style="vertical-align: inherit; text-align: center" width="100px"></td>
+                    <td style="vertical-align: inherit; text-align: center">病假(時)</td>
+                    <td style="vertical-align: inherit; text-align: center">事假(時)</td>
+                    <td style="vertical-align: inherit; text-align: center">補假(時)</td>
+
+                </tr>
+                </thead>
+
+                <tbody>
+                <!-- 1 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+                    <td style="vertical-align: inherit; text-align: center">
+                        起始日
+                    </td>
+
+                    <td class="form-group" style="vertical-align: inherit;">
+                    </td>
+                    <td style="vertical-align: inherit;">
+                    </td>
+                    <td style="vertical-align: inherit;">
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
     </uib-tab>
     <uib-tab heading="打卡機檔案讀取" ng-if="roleType === '100'"
              style="color: blue">
+        <div ng-include="'app/pages/myForms/forms/hrMachineForm_LoadTab.html'"></div>
     </uib-tab>
 </uib-tabset>
 

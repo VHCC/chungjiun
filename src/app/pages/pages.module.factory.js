@@ -289,6 +289,9 @@
                 fetchUserHrMachineDataByMachineDID: function (formData) {
                     return http.post('/api/post_fetch_hrmachine_data_by_machine_did', formData);
                 },
+                loadHrMachineDataByDate: function (formData) {
+                    return http.post('/api/post_load_hrmachine_data_by_date', formData);
+                },
             }
         }])
         .factory('ProjectUtil', function () {

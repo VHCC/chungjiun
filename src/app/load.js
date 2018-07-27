@@ -1,9 +1,9 @@
 var fs = require('fs');
-const readline = require('readline');
+var readline = require('readline');
 var moment = require('moment');
 
 var fileDate = moment().format('YYYYMMDD').toString();
-fileDate = '20180712';
+fileDate = '20180713';
 var fReadName = '../HR/CARD/' + fileDate + '.txt';
 
 var fRead = fs.createReadStream(fReadName);
