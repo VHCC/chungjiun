@@ -52,18 +52,40 @@
             console.log($scope.roleType);
             console.log($scope.machineDID);
 
-            var formData = {
-                machineDID: $scope.machineDID,
-                startDate: '20180711',
-                endDate: '20180727',
+            // 主要顯示
+            $scope.hrMachineTable = [];
+
+            $scope.fetchData = function() {
+                var formData = {
+                    machineDID: $scope.machineDID,
+                    startDate: '20180711',
+                    endDate: '20180727',
+                }
+
+                console.log(formData)
+
+                HrMachineUtil.fetchUserHrMachineDataByMachineDID(formData)
+                    .success(function (res) {
+                        var arrayResult = res.payload;
+                        arrayResult.sort(sortFunction);
+                        $scope.hrMachineTable = arrayResult;
+                        console.log(arrayResult);
+                    })
             }
 
-            console.log(formData)
+            function sortFunction(a, b){
+                var dateA = new Date(convertDate(a[0].date)).getTime();
+                var dateB = new Date(convertDate(b[0].date)).getTime();
+                return dateA > dateB ? 1 : -1;
+            };
 
-            HrMachineUtil.fetchUserHrMachineDataByMachineDID(formData)
-                .success(function (res) {
-                    console.log(res);
-                })
+            function convertDate(mString) {
+                var resultString = "";
+                resultString += String(parseInt(mString.substring(0,3),10) + 1911) + "/";
+                resultString += mString.substring(3, 5) + "/";
+                resultString += mString.substring(5, 7);
+                return resultString;
+            }
 
             $scope.loadHrMachineDate = function (dom) {
                 if (moment(dom.myDT).format('YYYYMMDD') === "Invalid date") {

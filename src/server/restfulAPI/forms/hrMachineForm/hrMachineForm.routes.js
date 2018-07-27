@@ -23,7 +23,7 @@ module.exports = function (app) {
         startDate.add(-1, 'days');
         for (var index = 0; index < daysCount + 1; index ++) {
             var workDate = startDate.add(1, 'days').format('YYYYMMDD');
-            console.log(index + ", " + workDate);
+            // console.log(index + ", " + workDate);
 
             var HrMachineForm = require('../../models/hrMachine')(workDate);
 
@@ -35,7 +35,11 @@ module.exports = function (app) {
                     res.send(err);
                 }
                 // console.log(formDataResponse);
-                resultArry.push(formDataResponse);
+                // console.log(formDataResponse.length);
+                if (formDataResponse.length > 0) {
+                    resultArry.push(formDataResponse);
+                }
+
                 // console.log(resultCount);
 
                 if (resultCount === daysCount + 1) {
