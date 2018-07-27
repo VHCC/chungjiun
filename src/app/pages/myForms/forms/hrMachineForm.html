@@ -1,30 +1,37 @@
 <uib-tabset active="$tabSetStatus.activeTab">
-    <uib-tab heading="個人打卡機資訊" >
+    <uib-tab heading="個人打卡機資訊"
+             ng-init="fetchData()"
+             ng-click="fetchData()">
 
         <div class="row">
             <table class="table table-bordered table-hover table-condensed">
                 <thead>
                 <tr style="white-space:nowrap">
-                    <td style="vertical-align: inherit; text-align: center" width="100px"></td>
-                    <td style="vertical-align: inherit; text-align: center">病假(時)</td>
-                    <td style="vertical-align: inherit; text-align: center">事假(時)</td>
-                    <td style="vertical-align: inherit; text-align: center">補假(時)</td>
+                    <td style="vertical-align: inherit; text-align: center" width="100px">日期</td>
+                    <td style="vertical-align: inherit; text-align: center">上班</td>
+                    <td style="vertical-align: inherit; text-align: center">下班</td>
+                    <td style="vertical-align: inherit; text-align: center">類型</td>
 
                 </tr>
                 </thead>
 
-                <tbody>
+                <tbody ng-repeat="tableIteam in hrMachineTable">
                 <!-- 1 row-->
                 <tr style="vertical-align: inherit; text-align: center">
                     <td style="vertical-align: inherit; text-align: center">
-                        起始日
+                        {{tableIteam[0].date}}
                     </td>
 
                     <td class="form-group" style="vertical-align: inherit;">
+                        {{tableIteam[0].time}}
+                    </td>
+                    <td style="vertical-align: inherit;" >
+                        <span ng-if="tableIteam.length > 1">
+                            {{tableIteam[tableIteam.length - 1].time}}
+                        </span>
                     </td>
                     <td style="vertical-align: inherit;">
-                    </td>
-                    <td style="vertical-align: inherit;">
+                        {{tableIteam[0].printType}}
                     </td>
                 </tr>
 
