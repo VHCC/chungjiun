@@ -443,8 +443,12 @@
         <div ng-include="'app/pages/myForms/forms/workOffForm_HolidayTab.html'"></div>
     </uib-tab>
 
-    <uib-tab heading="國定假日設定" ng-if="roleType === '100'":>
+    <uib-tab heading="國定假日設定" ng-if="roleType === '100'">
         <div ng-include="'app/pages/myForms/forms/workOffForm_NationalHolidayTab.html'"></div>
+    </uib-tab>
+
+    <uib-tab heading="補班日設定" ng-if="roleType === '100'">
+        <div ng-include="'app/pages/myForms/forms/workOffForm_OverTimeDayTab.html'"></div>
     </uib-tab>
 </uib-tabset>
 
