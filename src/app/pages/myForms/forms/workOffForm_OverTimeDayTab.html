@@ -1,6 +1,6 @@
 <h3 class="with-line">{{year}}年 補班日表</h3>
 
-<div class="row" ng-init="fetchNationHolidays()">
+<div class="row" ng-init="fetchOverTimeDays()">
     <table class="table table-bordered table-hover table-condensed">
         <thead>
         <tr style="white-space:nowrap">
@@ -9,21 +9,21 @@
             <td style="vertical-align: inherit; text-align: center">星期</td>
         </tr>
         </thead>
-        <tbody ng-repeat="table in nationalHolidayTablesItems">
+        <tbody ng-repeat="table in overTimeDayTablesItems">
         <tr style="vertical-align: inherit; text-align: center">
             <!--序號-->
             <td style="vertical-align: inherit; text-align: center">
                 <span id="prjCode">{{$index + 1}}</span>
                 <button class="btn btn-danger editable-table-button btn-xs"
                         ng-show="table.isEnable"
-                        ng-click="removeNationalHoliday(table);">
+                        ng-click="removeOverTimeDay(table);">
                     移除
                 </button>
                 <!--提交-->
                 <div ng-show="!table.isEnable">
                     <div class="buttons" ng-show="!table.isEnable">
                         <button class="btn btn-info editable-table-button btn-xs"
-                                ng-click="saveNationalHoliday(table, this) ">
+                                ng-click="saveOverTimeDay(table, this) ">
                             設定
                         </button>
                     </div>
@@ -49,7 +49,7 @@
 
 <div class="row">
     <button type="button"
-            ng-click="addNationalHolidayItem()"
+            ng-click="addOverTimeDayItem()"
             class="btn btn-info btn-icon">
         <i class="ion-plus-round"/>
     </button>
