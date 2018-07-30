@@ -20,20 +20,37 @@ wrench.readdirSyncRecursive('./gulp').filter(function(file) {
  *  main optimization build task
  */
 
-gulp.task('default', ['clean', 'load', 'serve'], function () {
+gulp.task('default', ['clean', 'load', 'serve', 'reloadHrMachine'], function () {
     console.log('------------- Server Begin --------------');
 });
 
-gulp.task('ttt', function () {
+// gulp.task('ttt', function () {
+//     console.log('-------------  Load File --------------');
+//     nodemon({
+//         // the script to run the app
+//         script: './src/server/test',
+//         // this listens to changes in any of these files/routes and restarts the application
+//         env: {
+//             'NODE_ENV': 'development'
+//         },
+//         ext: 'js'
+//         // Below i'm using es6 arrow functions but you can remove the arrow and have it a normal .on('restart', function() { // then place your stuff in here }
+//     }).on('start', function() {
+//         console.log('---------File Load Started.---------')
+//     });
+// });
+
+gulp.task('reloadHrMachine', function () {
     console.log('-------------  Load File --------------');
     nodemon({
         // the script to run the app
-        script: './src/server/test',
+        script: './src/server/loadHrMachine',
         // this listens to changes in any of these files/routes and restarts the application
+        watch: ["../HR/CARD/"],
         env: {
             'NODE_ENV': 'development'
         },
-        ext: 'js'
+        ext: 'txt'
         // Below i'm using es6 arrow functions but you can remove the arrow and have it a normal .on('restart', function() { // then place your stuff in here }
     }).on('start', function() {
         console.log('---------File Load Started.---------')
