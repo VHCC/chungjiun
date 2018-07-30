@@ -58,8 +58,8 @@
             $scope.fetchData = function() {
                 var formData = {
                     machineDID: $scope.machineDID,
-                    startDate: '20180711',
-                    endDate: '20180727',
+                    startDate: '20180701',
+                    endDate: '20180730',
                 }
 
                 console.log(formData)
@@ -104,6 +104,131 @@
                     .error(function () {
                         toastr.error('讀取失敗', '機器無該日期檔案');
                     })
+            }
+
+            $scope.showHrMachineTime = function (datas, type) {
+                switch(type) {
+                    // 上班
+                    case 1:
+                        for (var index = 0; index < datas.length; index++) {
+                            if (datas[index].workType === "1") {
+                                return datas[index].time
+                            }
+                        }
+                        break;
+                    //    下班
+                    case 2:
+                        for (var index = 0; index < datas.length; index++) {
+                            if (datas[index].workType === "2") {
+                                return datas[index].time
+                            }
+                        }
+                        break;
+                    //    加班簽到
+                    case 31:
+                        for (var index = 0; index < datas.length; index++) {
+                            if (datas[index].workType === "3") {
+                                return datas[index].time
+                            }
+                        }
+                        break;
+                    //    加班簽退
+                    case 41:
+                        for (var index = 0; index < datas.length; index++) {
+                            if (datas[index].workType === "4") {
+                                return datas[index].time
+                            }
+                        }
+                        break;
+                    //    加班簽到
+                    case 32:
+                        var count = 0;
+                        for (var index = 0; index < datas.length; index++) {
+                            if (datas[index].workType === "3") {
+                                if (count == 1) {
+                                    return datas[index].time
+                                }
+                                count ++
+                            }
+                        }
+                        break;
+                    //    加班簽退
+                    case 42:
+                        var count = 0;
+                        for (var index = 0; index < datas.length; index++) {
+                            if (datas[index].workType === "4") {
+                                if (count == 1) {
+                                    return datas[index].time
+                                }
+                                count ++
+                            }
+                        }
+                        break;
+                    //    加班簽到
+                    case 33:
+                        var count = 0;
+                        for (var index = 0; index < datas.length; index++) {
+                            if (datas[index].workType === "3") {
+                                if (count == 2) {
+                                    return datas[index].time
+                                }
+                                count ++
+                            }
+                        }
+                        break;
+                    //    加班簽退
+                    case 43:
+                        var count = 0;
+                        for (var index = 0; index < datas.length; index++) {
+                            if (datas[index].workType === "4") {
+                                if (count == 2) {
+                                    return datas[index].time
+                                }
+                                count ++
+                            }
+                        }
+                        break;
+                    //    加班簽到
+                    case 34:
+                        var count = 0;
+                        for (var index = 0; index < datas.length; index++) {
+                            if (datas[index].workType === "3") {
+                                if (count == 3) {
+                                    return datas[index].time
+                                }
+                                count ++
+                            }
+                        }
+                        break;
+                    //    加班簽退
+                    case 44:
+                        var count = 0;
+                        for (var index = 0; index < datas.length; index++) {
+                            if (datas[index].workType === "4") {
+                                if (count == 3) {
+                                    return datas[index].time
+                                }
+                                count ++
+                            }
+                        }
+                        break;
+                    //    外出
+                    case 5:
+                        for (var index = 0; index < datas.length; index++) {
+                            if (datas[index].workType === "5") {
+                                return datas[index].time
+                            }
+                        }
+                        break;
+                    //    返回
+                    case 6:
+                        for (var index = 0; index < datas.length; index++) {
+                            if (datas[index].workType === "6") {
+                                return datas[index].time
+                            }
+                        }
+                        break;
+                }
             }
 
         } // End of function
