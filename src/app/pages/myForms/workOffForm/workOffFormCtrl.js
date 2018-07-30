@@ -20,6 +20,7 @@
                     'WorkOffTypeUtil',
                     'WorkOffFormUtil',
                     'NationalHolidayUtil',
+                    'OverTimeDayUtil',
                     'WorkHourAddItemUtil',
                     'toastr',
                     'HolidayDataForms',
@@ -39,6 +40,7 @@
                                  WorkOffTypeUtil,
                                  WorkOffFormUtil,
                                  NationalHolidayUtil,
+                                 OverTimeDayUtil,
                                  WorkHourAddItemUtil,
                                  toastr,
                                  HolidayDataForms) {
@@ -793,7 +795,6 @@
             $scope.nationalHolidayTablesItems = [];
 
             $scope.fetchNationHolidays = function () {
-                $scope.nationalHolidayTablesItems = [];
                 var getData = {
                     year: thisYear,
                 }
@@ -801,6 +802,7 @@
                     .success(function (res) {
                         // console.log(res.payload);
                         if (res.payload.length > 0) {
+                            $scope.nationalHolidayTablesItems = [];
                             // 取得 Table Data
                             for (var index = 0; index < res.payload.length; index++) {
                                 var detail = {
@@ -814,6 +816,7 @@
                                 };
                                 $scope.nationalHolidayTablesItems.push(detail);
                             }
+                            // console.log($scope.nationalHolidayTablesItems);
                         }
                     })
                     .error(function () {
@@ -916,6 +919,94 @@
                     })
             }
 
+            // ***********************  補班日設定 ************************
+
+            // 主要顯示
+            $scope.overTimeDayTablesItems = [];
+
+            $scope.fetchOverTimeDays = function () {
+                var getData = {
+                    year: thisYear,
+                }
+                OverTimeDayUtil.fetchAllOverTimeDays(getData)
+                    .success(function (res) {
+                        // console.log(res.payload);
+                        if (res.payload.length > 0) {
+                            $scope.overTimeDayTablesItems = [];
+                            // 取得 Table Data
+                            for (var index = 0; index < res.payload.length; index++) {
+                                var detail = {
+                                    tableID: res.payload[index]._id,
+
+                                    create_formDate: res.payload[index].create_formDate,
+                                    year: res.payload[index].year,
+                                    month: res.payload[index].month,
+                                    day: res.payload[index].day,
+                                    isEnable: res.payload[index].isEnable,
+                                };
+                                $scope.overTimeDayTablesItems.push(detail);
+                            }
+                            console.log($scope.overTimeDayTablesItems);
+                        }
+                    })
+                    .error(function () {
+                        console.log('ERROR OverTimeDayUtil.fetchAllOverTimeDays');
+                    })
+            }
+
+            $scope.addOverTimeDayItem = function () {
+                var inserted = {
+                    create_formDate: $scope.firstFullDate,
+                    year: thisYear,
+                    month: thisMonth,
+                    day: thisDay,
+                    //RIGHT
+                    myDay: DateUtil.getDay(new Date().getDay()),
+                };
+                $scope.createOverTimeDayTable(inserted);
+            }
+
+            $scope.createOverTimeDayTable = function (table) {
+                return $timeout(function () {
+                    var formData = {
+                        create_formDate: table.create_formDate,
+                        year: table.year,
+                        month: table.month,
+                        day: table.day,
+                    }
+                    OverTimeDayUtil.createOverTimeDay(formData)
+                        .success(function (res) {
+                            $scope.fetchOverTimeDays();
+                        })
+                        .error(function () {
+                            console.log('ERROR NationalHolidayUtil.createNationalHoliday');
+                        })
+                }, 300);
+            }
+
+            $scope.saveOverTimeDay = function (checkingTable, checkingButton) {
+                var formData = {
+                    tableID: checkingTable.tableID,
+                    create_formDate: checkingTable.create_formDate,
+                    year: checkingTable.year,
+                    month: checkingTable.month,
+                    day: checkingTable.day,
+                }
+                OverTimeDayUtil.updateOverTimeDay(formData)
+                    .success(function (res) {
+                        checkingTable.isEnable = true;
+                    })
+            }
+
+            $scope.removeOverTimeDay = function (table) {
+                var formData = {
+                    tableID: table.tableID,
+                }
+                OverTimeDayUtil.removeOverTimeDay(formData)
+                    .success(function (res) {
+                        $scope.fetchNationHolidays();
+                    })
+            }
 
         } // End of function
     }

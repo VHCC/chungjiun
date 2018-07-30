@@ -255,6 +255,22 @@
                 },
             }
         }])
+        .factory('OverTimeDayUtil', ['$http', function (http) {
+            return {
+                createOverTimeDay: function (formData) {
+                    return http.post('/api/post_over_time_day_data_form_create', formData);
+                },
+                fetchAllOverTimeDays: function (formData) {
+                    return http.post('/api/post_over_time_day_data_form_fetch_all', formData);
+                },
+                updateOverTimeDay: function (formData) {
+                    return http.post('/api/post_over_time_day_data_form_update', formData);
+                },
+                removeOverTimeDay: function (formData) {
+                    return http.post('/api/post_over_time_day_data_form_remove', formData);
+                },
+            }
+        }])
         .factory('WorkHourAddItemUtil', ['$http', function (http) {
             return {
                 createWorkHourAddItem: function (formData) {
