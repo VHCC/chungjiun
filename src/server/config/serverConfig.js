@@ -76,6 +76,8 @@ io.on('connection', function (socket){
 // configuration ===============================================================
 mongoose.connect(database.localUrl);
 
+require('../../app/load');
+
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'hogan');
 

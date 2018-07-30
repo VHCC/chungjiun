@@ -20,10 +20,10 @@ wrench.readdirSyncRecursive('./gulp').filter(function(file) {
  *  main optimization build task
  */
 
-gulp.task('default', ['clean', 'load', 'serve', 'reloadHrMachine'], function () {
+gulp.task('default', ['clean', 'load', 'serve'], function () {
     console.log('------------- Server Begin --------------');
 });
-
+var nodemon = require('gulp-nodemon');
 // gulp.task('ttt', function () {
 //     console.log('-------------  Load File --------------');
 //     nodemon({
@@ -57,7 +57,7 @@ gulp.task('reloadHrMachine', function () {
     });
 });
 
-var nodemon = require('gulp-nodemon');
+
 gulp.task('load', function() {
     // nodemon({
     //     script: './src/app/server', // 忽略部分对程序运行无影响的文件的改动，nodemon只监视js文件，可用ext项来扩展别的文件类型
@@ -70,12 +70,12 @@ gulp.task('load', function() {
         // the script to run the app
         script: './src/server/server',
         // this listens to changes in any of these files/routes and restarts the application
-        watch: ["server.js", "app.js", "restfulAPI/"],
+        watch: ["server.js", "app.js", "restfulAPI/", "../HR/CARD/"],
         ignore: ["gulpfile.js", "node_modules/"],
         env: {
             'NODE_ENV': 'development'
         },
-        ext: 'js'
+        ext: 'js txt'
         // Below i'm using es6 arrow functions but you can remove the arrow and have it a normal .on('restart', function() { // then place your stuff in here }
     }).on('start', function() {
         console.log('---------Node Server Started.---------')
