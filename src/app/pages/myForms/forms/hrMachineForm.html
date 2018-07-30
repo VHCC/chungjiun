@@ -28,23 +28,59 @@
                 </tr>
                 </thead>
 
-                <tbody ng-repeat="tableIteam in hrMachineTable">
+                <tbody ng-repeat="tableItem in hrMachineTable">
                 <!-- 1 row-->
                 <tr style="vertical-align: inherit; text-align: center">
                     <td style="vertical-align: inherit; text-align: center">
-                        {{tableIteam[0].date}}
+                        {{tableItem[0].date}}
                     </td>
-
+                    <!--上班-->
                     <td class="form-group" style="vertical-align: inherit;">
-                        {{tableIteam[0].time}}
+                        {{showHrMachineTime(tableItem, 1)}}
                     </td>
+                    <!--外出-->
                     <td style="vertical-align: inherit;" >
-                        <span ng-if="tableIteam.length > 1">
-                            {{tableIteam[tableIteam.length - 1].time}}
-                        </span>
+                        {{showHrMachineTime(tableItem, 5)}}
                     </td>
+                    <!--返回-->
                     <td style="vertical-align: inherit;">
-                        {{tableIteam[0].printType}}
+                        {{showHrMachineTime(tableItem, 6)}}
+                    </td>
+                    <!--下班-->
+                    <td class="form-group" style="vertical-align: inherit;">
+                        {{showHrMachineTime(tableItem, 2)}}
+                    </td>
+                    <!--加班1-->
+                    <td class="form-group" style="vertical-align: inherit;">
+                        {{showHrMachineTime(tableItem, 31)}}
+                    </td>
+                    <!--加退1-->
+                    <td class="form-group" style="vertical-align: inherit;">
+                        {{showHrMachineTime(tableItem, 41)}}
+                    </td>
+                    <!--加班2-->
+                    <td class="form-group" style="vertical-align: inherit;">
+                        {{showHrMachineTime(tableItem, 32)}}
+                    </td>
+                    <!--加退2-->
+                    <td class="form-group" style="vertical-align: inherit;">
+                        {{showHrMachineTime(tableItem, 42)}}
+                    </td>
+                    <!--加班3-->
+                    <td class="form-group" style="vertical-align: inherit;">
+                        {{showHrMachineTime(tableItem, 33)}}
+                    </td>
+                    <!--加退3-->
+                    <td class="form-group" style="vertical-align: inherit;">
+                        {{showHrMachineTime(tableItem, 43)}}
+                    </td>
+                    <!--加班4-->
+                    <td class="form-group" style="vertical-align: inherit;">
+                        {{showHrMachineTime(tableItem, 34)}}
+                    </td>
+                    <!--加退4-->
+                    <td class="form-group" style="vertical-align: inherit;">
+                        {{showHrMachineTime(tableItem, 44)}}
                     </td>
                 </tr>
 
