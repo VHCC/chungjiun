@@ -24,6 +24,7 @@
                 'WorkHourAddItemUtil',
                 'WorkOffFormUtil',
                 'NationalHolidayUtil',
+                'OverTimeDayUtil',
                 'WorkAddConfirmFormUtil',
                 'editableOptions',
                 'editableThemes',
@@ -47,6 +48,7 @@
                                WorkHourAddItemUtil,
                                WorkOffFormUtil,
                                NationalHolidayUtil,
+                               OverTimeDayUtil,
                                WorkAddConfirmFormUtil,
                                editableOptions,
                                editableThemes) {
@@ -502,7 +504,7 @@
                         }
                         loadWorkOffTable(cookies.get('userDID'), 1);
                         loadNH(1);
-
+                        loadOT(1);
                     } else {
                         // 無資料
                         $scope.loading = false;
@@ -703,6 +705,46 @@
         }
 
         //讀取補班日
+        function loadOT(type) {
+            $scope.overTimeTables = [];
+            var fetchOverTimeData = {}
+            switch (type) {
+                case 1: {
+                    fetchOverTimeData = {
+                        create_formDate: $scope.firstFullDate,
+                        year: thisYear,
+                    }
+                } break;
+                case 4: {
+                    fetchOverTimeData = {
+                        create_formDate: $scope.firstFullDate_history,
+                        year: thisYear,
+                    }
+                } break;
+            }
+
+            OverTimeDayUtil.fetchAllOverTimeDaysWithParameter(fetchOverTimeData)
+                .success(function (res) {
+                    if (res.payload.length > 0) {
+                        // 填入表單資訊
+                        for (var index = 0; index < res.payload.length; index++) {
+                            var detail = {
+                                tableID: res.payload[index]._id,
+
+                                create_formDate: res.payload[index].create_formDate,
+                                year: res.payload[index].year,
+                                month: res.payload[index].month,
+                                day: res.payload[index].day,
+                                isEnable: res.payload[index].isEnable,
+                            };
+                            $scope.overTimeTables.push(detail);
+                        }
+                    } else {
+                        // res.payload.length == 0
+                    }
+                })
+        }
+
 
         // 取得休假單
         function loadWorkOffTable(userDID, type) {
@@ -1433,18 +1475,72 @@
         // ************************ REVIEW SUBMIT ***************************
         $scope.reviewFormCheck = function(tableIndex) {
 
+            // 國定假日
             var NHCount = 0;
+            var NHCount_befor_cross = 0;
+            var NHCount_after_cross = 0;
+            console.log($scope.nationalHolidayTables);
             for (var index = 0; index < $scope.nationalHolidayTables.length; index ++) {
                 if ($scope.nationalHolidayTables[index].isEnable) {
                     NHCount++
+                    if ($scope.nationalHolidayTables[index].day >= $scope.checkIsCrossMonth($scope.firstFullDate) || $scope.nationalHolidayTables[index].day === 0) {
+                        NHCount_after_cross ++;
+                    } else {
+                        NHCount_befor_cross ++;
+                    }
                 }
             }
             console.log("National Holiday counts= " + NHCount);
 
+            // 補班日
+            var OTCount = 0;
+            var OTCount_befor_cross = 0;
+            var OTCount_after_cross = 0;
+            console.log($scope.overTimeTables);
+            for (var index = 0; index < $scope.overTimeTables.length; index ++) {
+                console.log($scope.overTimeTables[index].day === 0);
+                console.log($scope.overTimeTables[index].day);
+                if ($scope.overTimeTables[index].isEnable) {
+                    OTCount++
+                    console.log();
+                    if ($scope.overTimeTables[index].day >= $scope.checkIsCrossMonth($scope.firstFullDate) || $scope.overTimeTables[index].day === 0) {
+                        OTCount_after_cross ++;
+                    } else {
+                        OTCount_befor_cross ++;
+                    }
+                }
+            }
+            console.log("Over Time counts= " + OTCount);
 
-            if ($scope.showCalculateHour($scope.tables[tableIndex].tablesItems, 1001, 1) !== 40) {
+            // 每周工作天 = 5
+            var weeklyWorkDay = 5;
+            var reviewWorkDay = weeklyWorkDay + OTCount - NHCount;
+
+            // 有跨週情形
+            console.log("checkIsCrossMonth= " + $scope.checkIsCrossMonth($scope.firstFullDate));
+            if ($scope.checkIsCrossMonth($scope.firstFullDate) > 0) {
+                switch(tableIndex) {
+                    case 0:
+                        // console.log("cross work day= " + ($scope.checkIsCrossMonth($scope.firstFullDate) > 5 ? 5 : $scope.checkIsCrossMonth($scope.firstFullDate) - 1));
+                        weeklyWorkDay = ($scope.checkIsCrossMonth($scope.firstFullDate) > 5 ? 5 : $scope.checkIsCrossMonth($scope.firstFullDate) - 1);
+                        console.log("OTCount_befor_cross= " + OTCount_befor_cross);
+                        console.log("NHCount_befor_cross= " + NHCount_befor_cross);
+                        reviewWorkDay = weeklyWorkDay + OTCount_befor_cross - NHCount_befor_cross;
+                        break;
+                    case 1:
+                        // console.log("cross work day= " + ($scope.checkIsCrossMonth($scope.firstFullDate) > 5 ? 0 : (weeklyWorkDay - ($scope.checkIsCrossMonth($scope.firstFullDate)) + 1)));
+                        weeklyWorkDay =  ($scope.checkIsCrossMonth($scope.firstFullDate) > 5 ? 0 : (weeklyWorkDay - ($scope.checkIsCrossMonth($scope.firstFullDate)) + 1));
+                        console.log("OTCount_after_cross= " + OTCount_after_cross);
+                        console.log("NHCount_after_cross= " + NHCount_after_cross);
+                        reviewWorkDay = weeklyWorkDay + OTCount_after_cross - NHCount_after_cross;
+                        break;
+                }
+            }
+            console.log("reviewWorkDay counts= " + reviewWorkDay);
+
+            if ($scope.showCalculateHour($scope.tables[tableIndex].tablesItems, 1001, 1) !== (reviewWorkDay * 8)) {
                 $scope.titleClass = 'bg-danger';
-                $scope.checkText = '該周工時表時數非 40，確定提交 審查？';
+                $scope.checkText = '該周工時表時數非 ' + (reviewWorkDay * 8) + '，確定提交 審查？';
             } else {
                 $scope.titleClass = 'bg-warning';
                 $scope.checkText = '確定提交 審查？';
@@ -1566,7 +1662,7 @@
                     tablesItems: [],
                 }];
             }
-            console.log($scope.checkIsCrossMonth($scope.firstFullDate_history));
+            // console.log($scope.checkIsCrossMonth($scope.firstFullDate_history));
         }
         $scope.reloadWeek_history(true);
 
@@ -1694,6 +1790,7 @@
                         }
                         loadWorkOffTable(vm.history.selected._id, 4);
                         loadNH(4);
+                        loadOT(4);
                     } else {
                         $scope.loading = false;
                     }

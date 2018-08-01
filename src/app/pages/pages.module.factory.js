@@ -269,6 +269,9 @@
                 removeOverTimeDay: function (formData) {
                     return http.post('/api/post_over_time_day_data_form_remove', formData);
                 },
+                fetchAllOverTimeDaysWithParameter: function (formData) {
+                    return http.post('/api/post_over_time_day_data_form_fetch_with_parameters', formData);
+                },
             }
         }])
         .factory('WorkHourAddItemUtil', ['$http', function (http) {
