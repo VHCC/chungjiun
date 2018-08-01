@@ -702,6 +702,8 @@
                 })
         }
 
+        //讀取補班日
+
         // 取得休假單
         function loadWorkOffTable(userDID, type) {
             $scope.loginUserWorkOffTables = [];
@@ -1430,6 +1432,16 @@
 
         // ************************ REVIEW SUBMIT ***************************
         $scope.reviewFormCheck = function(tableIndex) {
+
+            var NHCount = 0;
+            for (var index = 0; index < $scope.nationalHolidayTables.length; index ++) {
+                if ($scope.nationalHolidayTables[index].isEnable) {
+                    NHCount++
+                }
+            }
+            console.log("National Holiday counts= " + NHCount);
+
+
             if ($scope.showCalculateHour($scope.tables[tableIndex].tablesItems, 1001, 1) !== 40) {
                 $scope.titleClass = 'bg-danger';
                 $scope.checkText = '該周工時表時數非 40，確定提交 審查？';
@@ -1954,7 +1966,6 @@
                             }
                         }
                     }
-                    // console.log($scope.nationalHolidayTablesItems);
                     showWorkOffTableData(user);
                 })
                 .error(function () {
