@@ -1,0 +1,19 @@
+<div>
+    <my class="input-group">
+        <input type="text"
+               class="form-control myMonthPicker"
+               uib-datepicker-popup="{{format}}"
+               datepicker-options=myOptions
+               ng-model="myMonth"
+               is-open="opened"
+               ng-change="shiftHrMachineMonth(this)"
+               ng-required="true"
+               style="display: none"
+               close-text="Close"
+               show-button-bar="false"/>
+            <button type="button" class="btn btn-default btn-icon"
+                    ng-click="openMonthPicker()">
+                <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+    </my>
+</div>
