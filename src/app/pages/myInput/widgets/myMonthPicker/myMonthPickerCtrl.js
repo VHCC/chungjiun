@@ -21,8 +21,6 @@
         $scope.myMonth = moment(new Date()).format('YYYY/MM');
         $scope.opened = false;
         $scope.myOptions = {
-            showWeeks: false,
-            startingDay: 1,
             minMode: 'month',
         };
         $('.myMonthPicker').mask('M0', {
@@ -37,10 +35,9 @@
         }
 
         $scope.shiftHrMachineMonth = function (dom) {
-            console.log(dom);
-            // $scope.myDT = new Date(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment(dom.myDT)), 0));
             $scope.myMonth = moment($scope.myMonth).format('YYYY/MM');
             $scope.myDT = moment(dom.myMonth);
+            $scope.fetchData($scope.myMonth);
         }
     }
 })();

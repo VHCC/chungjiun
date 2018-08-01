@@ -25,6 +25,7 @@ require('./restfulAPI/forms/workHourTableFormWorkAdd/workHourTableFormWorkAdd.ro
 require('./restfulAPI/forms/workOffTableForm/workHourOffForm.routes')(app);
 require('./restfulAPI/forms/holidayDataForm/holidayDataForm.routes')(app);
 require('./restfulAPI/forms/nationalHolidayForm/nationalHolidayForm.routes')(app);
+require('./restfulAPI/forms/overTimeDayForm/overTimeDayForm.routes')(app);
 require('./restfulAPI/userEdit/userEdit.routes')(app);
 require('./restfulAPI/forms/workAddConfirmForm/workAddConfirmForm.routes')(app);
 require('./restfulAPI/forms/hrMachineForm/hrMachineForm.routes')(app);
