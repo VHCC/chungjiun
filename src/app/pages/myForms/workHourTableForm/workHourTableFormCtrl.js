@@ -873,8 +873,8 @@
                             for (index = 0; index < tables.length; index++) {
                                 result += tables[index].mon_hour;
                             }
-                            var evalString = "$scope.monNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
+                            // var evalString = "$scope.monNH" + (type === 1 ? "" : "_history");
+                            // eval("result += " + evalString);
                             var evalString = "$scope.monOffTotal" + (type === 1 ? "" : "_history");
                             eval("result += " + evalString);
                         } break;
@@ -882,8 +882,8 @@
                             for (index = 0; index < tables.length; index++) {
                                 result += tables[index].tue_hour;
                             }
-                            var evalString = "$scope.tueNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
+                            // var evalString = "$scope.tueNH" + (type === 1 ? "" : "_history");
+                            // eval("result += " + evalString);
                             var evalString = "$scope.tueOffTotal" + (type === 1 ? "" : "_history");
                             eval("result += " + evalString);
                         } break;
@@ -891,8 +891,8 @@
                             for (index = 0; index < tables.length; index++) {
                                 result += tables[index].wes_hour;
                             }
-                            var evalString = "$scope.wesNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
+                            // var evalString = "$scope.wesNH" + (type === 1 ? "" : "_history");
+                            // eval("result += " + evalString);
                             var evalString = "$scope.wesOffTotal" + (type === 1 ? "" : "_history");
                             eval("result += " + evalString);
                         } break;
@@ -900,8 +900,8 @@
                             for (index = 0; index < tables.length; index++) {
                                 result += tables[index].thu_hour;
                             }
-                            var evalString = "$scope.thuNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
+                            // var evalString = "$scope.thuNH" + (type === 1 ? "" : "_history");
+                            // eval("result += " + evalString);
                             var evalString = "$scope.thuOffTotal" + (type === 1 ? "" : "_history");
                             eval("result += " + evalString);
                         } break;
@@ -909,8 +909,8 @@
                             for (index = 0; index < tables.length; index++) {
                                 result += tables[index].fri_hour;
                             }
-                            var evalString = "$scope.friNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
+                            // var evalString = "$scope.friNH" + (type === 1 ? "" : "_history");
+                            // eval("result += " + evalString);
                             var evalString = "$scope.friOffTotal" + (type === 1 ? "" : "_history");
                             eval("result += " + evalString);
                         } break;
@@ -918,8 +918,8 @@
                             for (index = 0; index < tables.length; index++) {
                                 result += tables[index].sat_hour;
                             }
-                            var evalString = "$scope.satNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
+                            // var evalString = "$scope.satNH" + (type === 1 ? "" : "_history");
+                            // eval("result += " + evalString);
                             var evalString = "$scope.satOffTotal" + (type === 1 ? "" : "_history");
                             eval("result += " + evalString);
                         } break;
@@ -927,8 +927,8 @@
                             for (index = 0; index < tables.length; index++) {
                                 result += tables[index].sun_hour;
                             }
-                            var evalString = "$scope.sunNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
+                            // var evalString = "$scope.sunNH" + (type === 1 ? "" : "_history");
+                            // eval("result += " + evalString);
                             var evalString = "$scope.sunOffTotal" + (type === 1 ? "" : "_history");
                             eval("result += " + evalString);
                         } break;
@@ -942,20 +942,20 @@
                                 result += tables[index].sat_hour;
                                 result += tables[index].sun_hour;
                             }
-                            var evalString = "$scope.monNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
-                            var evalString = "$scope.tueNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
-                            var evalString = "$scope.wesNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
-                            var evalString = "$scope.thuNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
-                            var evalString = "$scope.friNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
-                            var evalString = "$scope.satNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
-                            var evalString = "$scope.sunNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
+                            // var evalString = "$scope.monNH" + (type === 1 ? "" : "_history");
+                            // eval("result += " + evalString);
+                            // var evalString = "$scope.tueNH" + (type === 1 ? "" : "_history");
+                            // eval("result += " + evalString);
+                            // var evalString = "$scope.wesNH" + (type === 1 ? "" : "_history");
+                            // eval("result += " + evalString);
+                            // var evalString = "$scope.thuNH" + (type === 1 ? "" : "_history");
+                            // eval("result += " + evalString);
+                            // var evalString = "$scope.friNH" + (type === 1 ? "" : "_history");
+                            // eval("result += " + evalString);
+                            // var evalString = "$scope.satNH" + (type === 1 ? "" : "_history");
+                            // eval("result += " + evalString);
+                            // var evalString = "$scope.sunNH" + (type === 1 ? "" : "_history");
+                            // eval("result += " + evalString);
 
 
                             var evalString = "$scope.monOffTotal" + (type === 1 ? "" : "_history");
