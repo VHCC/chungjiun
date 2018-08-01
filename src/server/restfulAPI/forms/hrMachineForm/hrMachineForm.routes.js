@@ -16,7 +16,7 @@ module.exports = function (app) {
         var endDate = moment(req.body.endDate);
 
         var daysCount = endDate.diff(startDate, 'days');
-        console.log("daysCount= " + daysCount);
+        console.log("daysCount= " + (daysCount + 1));
 
         var resultCount = 0;
 
