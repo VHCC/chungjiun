@@ -26,7 +26,7 @@ module.exports = function (app) {
 
     // fetch all data
     app.post(global.apiUrl.post_over_time_day_data_form_fetch_all, function (req, res) {
-        console.log(JSON.stringify(req.body));
+        // console.log(JSON.stringify(req.body));
         OverTimeDay.find({
             year: req.body.year,
         }, function (err, tables) {
