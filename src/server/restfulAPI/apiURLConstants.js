@@ -106,6 +106,7 @@ global.apiUrl = {
     post_over_time_day_data_form_fetch_all : '/api/post_over_time_day_data_form_fetch_all',
     post_over_time_day_data_form_update : '/api/post_over_time_day_data_form_update',
     post_over_time_day_data_form_remove : '/api/post_over_time_day_data_form_remove',
+    post_over_time_day_data_form_fetch_with_parameters : '/api/post_over_time_day_data_form_fetch_with_parameters',
 
     //userEdit
     post_upload_user_avatatr : '/api/uploadUserAvatar',
