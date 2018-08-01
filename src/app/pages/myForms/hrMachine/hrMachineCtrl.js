@@ -55,21 +55,30 @@
             // 主要顯示
             $scope.hrMachineTable = [];
 
-            $scope.fetchData = function() {
-                var formData = {
-                    machineDID: $scope.machineDID,
-                    startDate: '20180701',
-                    endDate: '20180731',
+            $scope.fetchData = function(month) {
+                $scope.hrMachineTable = [];
+                var startDate = moment().format('YYYYMM') + "01";
+                var endDate = moment().format('YYYYMM') + moment().daysInMonth();
+
+                if (month !== undefined) {
+                    startDate = moment(month).format('YYYYMM') + "01";
+                    endDate = moment(month).format('YYYYMM') + moment().daysInMonth();
                 }
 
-                console.log(formData)
+                var formData = {
+                    machineDID: $scope.machineDID,
+                    startDate: startDate,
+                    endDate: endDate,
+                }
+
+                // console.log(formData)
 
                 HrMachineUtil.fetchUserHrMachineDataByMachineDID(formData)
                     .success(function (res) {
                         var arrayResult = res.payload;
                         arrayResult.sort(sortFunction);
                         $scope.hrMachineTable = arrayResult;
-                        console.log(arrayResult);
+                        // console.log(arrayResult);
                     })
             }
 
@@ -88,10 +97,9 @@
             }
 
             $scope.changeHrMachineMonth = function(changeCount, dom) {
-                console.log(changeCount);
-                console.log(dom);
                 dom.myMonth = moment(dom.myDT).add(changeCount, 'M').format('YYYY/MM');
                 dom.myDT = moment(dom.myDT).add(changeCount, 'M');
+                $scope.fetchData(dom.myMonth);
             }
 
             $scope.loadHrMachineDate = function (dom) {
@@ -100,7 +108,7 @@
                     return;
                 }
                 var fileDate = moment(dom.myDT).format('YYYYMMDD')
-                console.log(fileDate);
+                // console.log(fileDate);
                 var formData = {
                     loadDate: fileDate,
                 }
