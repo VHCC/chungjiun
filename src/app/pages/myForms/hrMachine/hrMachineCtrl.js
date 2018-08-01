@@ -59,7 +59,7 @@
                 var formData = {
                     machineDID: $scope.machineDID,
                     startDate: '20180701',
-                    endDate: '20180730',
+                    endDate: '20180731',
                 }
 
                 console.log(formData)
@@ -85,6 +85,13 @@
                 resultString += mString.substring(3, 5) + "/";
                 resultString += mString.substring(5, 7);
                 return resultString;
+            }
+
+            $scope.changeHrMachineMonth = function(changeCount, dom) {
+                console.log(changeCount);
+                console.log(dom);
+                dom.myMonth = moment(dom.myDT).add(changeCount, 'M').format('YYYY/MM');
+                dom.myDT = moment(dom.myDT).add(changeCount, 'M');
             }
 
             $scope.loadHrMachineDate = function (dom) {
