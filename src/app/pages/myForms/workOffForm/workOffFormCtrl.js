@@ -931,8 +931,8 @@
                 OverTimeDayUtil.fetchAllOverTimeDays(getData)
                     .success(function (res) {
                         // console.log(res.payload);
+                        $scope.overTimeDayTablesItems = [];
                         if (res.payload.length > 0) {
-                            $scope.overTimeDayTablesItems = [];
                             // 取得 Table Data
                             for (var index = 0; index < res.payload.length; index++) {
                                 var detail = {
@@ -1004,7 +1004,7 @@
                 }
                 OverTimeDayUtil.removeOverTimeDay(formData)
                     .success(function (res) {
-                        $scope.fetchNationHolidays();
+                        $scope.fetchOverTimeDays();
                     })
             }
 
