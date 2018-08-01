@@ -62,7 +62,7 @@
 
                 if (month !== undefined) {
                     startDate = moment(month).format('YYYYMM') + "01";
-                    endDate = moment(month).format('YYYYMM') + moment().daysInMonth();
+                    endDate = moment(month).format('YYYYMM') + moment(month).daysInMonth();
                 }
 
                 var formData = {
