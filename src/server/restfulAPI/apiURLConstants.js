@@ -120,5 +120,6 @@ global.apiUrl = {
 
     //hrMachine
     post_fetch_hrmachine_data_by_machine_did : '/api/post_fetch_hrmachine_data_by_machine_did',
+    post_fetch_hrmachine_data_one_day_by_machine_did : '/api/post_fetch_hrmachine_data_one_day_by_machine_did',
     post_load_hrmachine_data_by_date : '/api/post_load_hrmachine_data_by_date',
 };
