@@ -16,7 +16,7 @@ module.exports = function (app) {
         var endDate = moment(req.body.endDate);
 
         var daysCount = endDate.diff(startDate, 'days');
-        console.log("daysCount= " + (daysCount + 1));
+        console.log("daysCount= " + (daysCount + 1) + ", startDate= " + req.body.startDate + ", endDate= " + req.body.endDate);
 
         var resultCount = 0;
 
@@ -52,6 +52,70 @@ module.exports = function (app) {
                 }
             })
         }
+    });
+
+    // fetch one Day
+    app.post(global.apiUrl.post_fetch_hrmachine_data_one_day_by_machine_did, function (req, res) {
+        var resultArry = [];
+        // console.log(req.body);
+        var today = req.body.today;
+
+        console.log("today= " + today);
+
+        var resultCount = 0;
+
+        var HrMachineForm = require('../../models/hrMachine')(today);
+
+        // HrMachineForm.find({
+        //     did: req.body.machineDID,
+        // }, function (err, formDataResponse) {
+        //     resultCount++;
+        //     if (err) {
+        //         res.send(err);
+        //     }
+        //     // console.log(formDataResponse);
+        //     // console.log(formDataResponse.length);
+        //     if (formDataResponse.length > 0) {
+        //         resultArry.push(formDataResponse);
+        //     }
+        //
+        //     // console.log(resultCount);
+        //
+        //     // console.log(resultArry);
+        //     res.status(200).send({
+        //         code: 200,
+        //         error: global.status._200,
+        //         payload: resultArry,
+        //     });
+        // })
+
+        HrMachineForm.find({
+            did: req.body.machineDID
+        })
+            .sort({
+                date: 1
+            })
+            .exec(function (err, formDataResponse) {
+                resultCount++;
+                if (err) {
+                    res.send(err);
+                }
+                // console.log(formDataResponse);
+                // console.log(formDataResponse.length);
+                if (formDataResponse.length > 0) {
+                    resultArry.push(formDataResponse);
+                }
+
+                // console.log(resultCount);
+
+                // console.log(resultArry);
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: resultArry,
+                });
+            });
+
     });
 
     // Load Date File

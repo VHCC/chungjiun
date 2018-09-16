@@ -59,32 +59,88 @@
                 $scope.hrMachineTable = [];
                 var startDate = moment().format('YYYYMM') + "01";
                 var endDate = moment().format('YYYYMM') + moment().daysInMonth();
+                var today = moment().format('YYYYMMDD');
 
                 if (month !== undefined) {
                     startDate = moment(month).format('YYYYMM') + "01";
                     endDate = moment(month).format('YYYYMM') + moment(month).daysInMonth();
                 }
 
-                var formData = {
-                    machineDID: $scope.machineDID,
-                    startDate: startDate,
-                    endDate: endDate,
-                }
+                // var formData = {
+                //     machineDID: $scope.machineDID,
+                //     startDate: startDate,
+                //     endDate: endDate,
+                // }
 
                 // console.log(formData)
 
-                HrMachineUtil.fetchUserHrMachineDataByMachineDID(formData)
+                // HrMachineUtil.fetchUserHrMachineDataByMachineDID(formData)
+                //     .success(function (res) {
+                //         var arrayResult = res.payload;
+                //         arrayResult.sort(sortFunction);
+                //         $scope.hrMachineTable = arrayResult;
+                //         console.log(arrayResult);
+                //     })
+
+                var formData = {
+                    machineDID: $scope.machineDID,
+                    today: today,
+                }
+
+
+                HrMachineUtil.fetchUserHrMachineDataOneDayByMachineDID(formData)
                     .success(function (res) {
                         var arrayResult = res.payload;
-                        arrayResult.sort(sortFunction);
-                        $scope.hrMachineTable = arrayResult;
-                        // console.log(arrayResult);
+                        // arrayResult.sort(sortFunction());
+                        // $scope.hrMachineTable = arrayResult;
+
+                        var hrMachineTableSorted = {};
+
+                        for (var index = 0; index < arrayResult[0].length; index++) {
+                            // console.log(arrayResult[0][index]);
+                            var hrMachineItem = {
+                                date: "",
+                                did: "",
+                                location: "",
+                                printType: "",
+                                time: "",
+                                workType: ""
+                            }
+                            if (hrMachineTableSorted[arrayResult[0][index].date] === undefined) {
+                                hrMachineItem.date = arrayResult[0][index].date;
+                                hrMachineItem.did = arrayResult[0][index].did;
+                                hrMachineItem.location = arrayResult[0][index].location;
+                                hrMachineItem.printType = arrayResult[0][index].printType;
+                                hrMachineItem.time = arrayResult[0][index].time;
+                                hrMachineItem.workType = arrayResult[0][index].workType;
+
+                                var hrMachineCollection = [];
+                                hrMachineCollection.push(hrMachineItem);
+                                hrMachineTableSorted[arrayResult[0][index].date] = hrMachineCollection;
+                            } else {
+                                hrMachineItem.date = arrayResult[0][index].date;
+                                hrMachineItem.did = arrayResult[0][index].did;
+                                hrMachineItem.location = arrayResult[0][index].location;
+                                hrMachineItem.printType = arrayResult[0][index].printType;
+                                hrMachineItem.time = arrayResult[0][index].time;
+                                hrMachineItem.workType = arrayResult[0][index].workType;
+                                hrMachineTableSorted[arrayResult[0][index].date].push(hrMachineItem);
+                                console.log(hrMachineTableSorted[arrayResult[0][index].date]);
+                            }
+                        }
+                        console.log(hrMachineTableSorted)
+                        $scope.hrMachineTable = hrMachineTableSorted;
                     })
             }
 
             function sortFunction(a, b){
+                console.log("a= " + a[0].date + ", b= " + b[0].date);
+
                 var dateA = new Date(convertDate(a[0].date)).getTime();
                 var dateB = new Date(convertDate(b[0].date)).getTime();
+
+                console.log("dateA= " + dateA + ", dateB= " + dateB);
+
                 return dateA > dateB ? 1 : -1;
             };
 
