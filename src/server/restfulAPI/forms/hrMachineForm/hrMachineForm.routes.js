@@ -121,7 +121,7 @@ module.exports = function (app) {
     // Load Date File
     app.post(global.apiUrl.post_load_hrmachine_data_by_date, function (req, res) {
         var fileDate = req.body.loadDate;
-        var fReadName = '../HR/CARD/' + fileDate + '.txt';
+        var fReadName = '../../HR/CARD/' + fileDate + '.txt';
 
         fs.stat(fReadName, function(err, stat) {
             if(err == null) {

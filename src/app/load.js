@@ -3,7 +3,7 @@ var readline = require('readline');
 var moment = require('moment');
 
 var fileDate = moment().format('YYYYMMDD').toString();
-var fReadName = '../HR/CARD/' + fileDate + '.txt';
+var fReadName = '../../HR/CARD/' + fileDate + '.txt';
 
 var fRead = fs.createReadStream(fReadName);
 
