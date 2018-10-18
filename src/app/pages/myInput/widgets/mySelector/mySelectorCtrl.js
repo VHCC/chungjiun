@@ -32,6 +32,10 @@
                 name: "特休",
                 type: 3
             },
+            {
+                name: "特殊假",
+                type: 1001
+            },
         ];
         $scope.workOffTypeChange = function (inputType) {
             var selectedRole = [];
@@ -58,6 +62,10 @@
                 {
                     name: "特休",
                     type: 3
+                },
+                {
+                    name: "特殊假",
+                    type: 1001
                 },
             ];
             $scope.loginUserForm = table;

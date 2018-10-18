@@ -437,6 +437,8 @@
                             return "產假";
                         case 9:
                             return "陪產假";
+                        case 1001:
+                            return "特殊假";
                     }
                 }
             }

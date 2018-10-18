@@ -43,6 +43,7 @@
                 case 1:
                 case 2:
                 case 3:
+                case 1001:
                     $scope.myDT = new Date();
                     $scope.myOptions = {
                         showWeeks: false,
