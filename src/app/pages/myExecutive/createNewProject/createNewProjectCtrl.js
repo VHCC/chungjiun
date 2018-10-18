@@ -44,9 +44,15 @@
         Project.findAllByGroup()
             .success(function (allProjects) {
                 console.log(allProjects);
-                allProjects.push({mainName: "新總案", code: ""});
-                allProjects.push({mainName: "建立總案 (自訂編號)", code: "9999"});
-                vm.projects = allProjects;
+                var projectsSorted = [];
+                // allProjects.push({mainName: "新總案", code: ""});
+                // allProjects.push({mainName: "建立總案 (自訂編號)", code: "9999"});
+                projectsSorted.push({mainName: "新總案", code: ""});
+                projectsSorted.push({mainName: "建立總案 (自訂編號)", code: "9999"});
+                for (var index = 0; index < allProjects.length; index ++) {
+                    projectsSorted.push({mainName: allProjects[index].mainName, code: allProjects[index].code});
+                }
+                vm.projects = projectsSorted;
                 $scope.year = new Date().getFullYear() - 1911;
             });
 
