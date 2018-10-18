@@ -179,19 +179,43 @@
 
             $scope.showHrMachineTime = function (datas, type) {
                 switch(type) {
-                    // 上班
-                    case 1:
+                    // 上班 1
+                    case 11:
                         for (var index = 0; index < datas.length; index++) {
                             if (datas[index].workType === "1") {
                                 return datas[index].time
                             }
                         }
                         break;
-                    //    下班
-                    case 2:
+                    // 下班 1
+                    case 21:
                         for (var index = 0; index < datas.length; index++) {
                             if (datas[index].workType === "2") {
                                 return datas[index].time
+                            }
+                        }
+                        break;
+                    // 上班 2
+                    case 12:
+                        var count = 0;
+                        for (var index = 0; index < datas.length; index++) {
+                            if (datas[index].workType === "1") {
+                                if (count == 1) {
+                                    return datas[index].time
+                                }
+                                count ++
+                            }
+                        }
+                        break;
+                    // 下班 2
+                    case 22:
+                        var count = 0;
+                        for (var index = 0; index < datas.length; index++) {
+                            if (datas[index].workType === "2") {
+                                if (count == 1) {
+                                    return datas[index].time
+                                }
+                                count ++
                             }
                         }
                         break;
