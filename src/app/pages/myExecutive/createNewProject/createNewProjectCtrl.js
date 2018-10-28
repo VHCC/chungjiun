@@ -118,14 +118,14 @@
                 $scope.users = allUsers;
             });
 
-        //Prj Name Check whether is new or not.　總案名稱變更
+        //Prj Name Check whether is new or not.　”總案名稱“變更
         $scope.triggerChangeMainProject = function () {
             this.mainProject.number = null;
             this.mainProject.subNumber = null;
             this.mainProject.type = null;
-            window.document.getElementById('newPrjNumberDiv').style.display = "none";
+            window.document.getElementById('newPrjNumberDiv').style.display =  "none";
             window.document.getElementById('newPrjSubNumberDiv').style.display = "none";
-            window.document.getElementById('prjCode').style.display = "block";
+            window.document.getElementById('prjCode').style.visibility = "inherit";
             // window.document.getElementById('prjCodeSet').style.display = "none";
             $scope.changeSubmitBtnStatus(false, "建立專案");
             // console.log('triggerChangePrjName');
@@ -147,9 +147,11 @@
             } else if (this.mainProject.selected.code === "9999") {
                 window.document.getElementById('newPrjNameDiv').style.display = "block";
                 window.document.getElementById('setPrjCodeDiv').style.display = "block";
-                window.document.getElementById('prjCode').style.display = "none";
+                window.document.getElementById('prjCode').style.visibility  = "hidden";
                 // window.document.getElementById('prjCodeSet').style.display = "block";
                 $scope.mainProject.setCode = "";
+                $scope.mainProject.new = "";
+                $scope.resetPrjNumber();
             } else {
                 // 專案已存在
                 $scope.mainProject.new = $scope.mainProject.selected.mainName;
@@ -161,7 +163,8 @@
                 }
                 Project.findPrjByName(data)
                     .success(function (prj) {
-                            // console.log(JSON.stringify(prj));
+                            console.log(JSON.stringify(prj));
+
                             $scope.mainProject.code = prj.code;
                             $scope.year = prj.year;
                             vm.branch = $scope.showPrjBranch(prj.branch);
@@ -367,8 +370,24 @@
                 }
                 var totalCode = "";
                 if (window.document.getElementById('setPrjCodeDiv').style.display === 'block') {
-                    console.log(123);
+                    //自訂專案
                     totalCode = $scope.mainProject.setCode;
+                    var createData = {
+                        branch: totalCode.substring(0,1),
+                        year: String(totalCode.substring(1,4)),
+                        code: String(totalCode.substring(4,6)),
+                        type: String(totalCode.substring(10,11)),
+                        mainName: $scope.mainProject.new,
+                        // majorID: $scope.mainProject.manager._id,
+                        managerID: $scope.mainProject.manager._id,
+                        prjCode: totalCode,
+                        technician: prjTechs,
+                        // endDate: req.body.prjEndDate,
+                        prjNumber: String(totalCode.substring(6,8)),
+                        prjName: $scope.mainProject.numberNew,
+                        prjSubNumber: String(totalCode.substring(8,10)),
+                        prjSubName: $scope.mainProject.subNumberNew,
+                    }
                 } else {
                     totalCode = vm.branch.value +
                         String($scope.year) +
@@ -376,23 +395,40 @@
                         String($scope.mainProject.number.code) +
                         String($scope.mainProject.subNumber.code) +
                         $scope.mainProject.type.selected.value;
+
+                    var createData = {
+                        branch: vm.branch.value,
+                        year: String($scope.year),
+                        code: String($scope.mainProject.code),
+                        type: $scope.mainProject.type.selected.value,
+                        mainName: $scope.mainProject.new,
+                        // majorID: $scope.mainProject.manager._id,
+                        managerID: $scope.mainProject.manager._id,
+                        prjCode: totalCode,
+                        technician: prjTechs,
+                        // endDate: req.body.prjEndDate,
+                        prjNumber: $scope.mainProject.number.code,
+                        prjName: $scope.mainProject.numberNew,
+                        prjSubNumber: $scope.mainProject.subNumber.code,
+                        prjSubName: $scope.mainProject.subNumberNew,
+                    }
                 }
-                var createData = {
-                    branch: vm.branch.value,
-                    year: String($scope.year),
-                    code: String($scope.mainProject.code),
-                    type: $scope.mainProject.type.selected.value,
-                    mainName: $scope.mainProject.new,
-                    // majorID: $scope.mainProject.manager._id,
-                    managerID: $scope.mainProject.manager._id,
-                    prjCode: totalCode,
-                    technician: prjTechs,
-                    // endDate: req.body.prjEndDate,
-                    prjNumber: $scope.mainProject.number.code,
-                    prjName: $scope.mainProject.numberNew,
-                    prjSubNumber: $scope.mainProject.subNumber.code,
-                    prjSubName: $scope.mainProject.subNumberNew,
-                }
+                // var createData = {
+                //     branch: vm.branch.value,
+                //     year: String($scope.year),
+                //     code: String($scope.mainProject.code),
+                //     type: $scope.mainProject.type.selected.value,
+                //     mainName: $scope.mainProject.new,
+                //     // majorID: $scope.mainProject.manager._id,
+                //     managerID: $scope.mainProject.manager._id,
+                //     prjCode: totalCode,
+                //     technician: prjTechs,
+                //     // endDate: req.body.prjEndDate,
+                //     prjNumber: $scope.mainProject.number.code,
+                //     prjName: $scope.mainProject.numberNew,
+                //     prjSubNumber: $scope.mainProject.subNumber.code,
+                //     prjSubName: $scope.mainProject.subNumberNew,
+                // }
             } catch (err) {
                 toastr['warning']('輸入資訊未完整 !', '建立失敗');
                 return;
