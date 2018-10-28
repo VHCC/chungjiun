@@ -1,121 +1,121 @@
 <div class="widgets">
 
-    <div class="row">
-        <div class="col-md-12">
-            <div ba-panel ba-panel-title="專案建立" ba-panel-class="with-scroll">
-                <ba-wizard>
-                    <ba-wizard-step title="承辦資訊" form="cC.majorInfo">
-                        <form form="cC.majorInfo" novalidate>
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div class="form-group has-feedback">
-                                        <label>專案建置 經理</label>
-                                        <br>
-                                        <b id="projectCreator">{{username}}</b>
-                                    </div>
-                                    <div class="form-group has-feedback">
-                                        <label>指定承辦人員</label>
-                                        <select class="form-control"
-                                                id="projectMajor"
-                                                name="majorName"
-                                                ng-model="cC.mjr.majorName"
-                                                required>
-                                            <option ng-repeat="user in users" id="{{user._id}}">{{user.name}}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </ba-wizard-step>
-                    <ba-wizard-step title="專案資訊" form="cC.projectInfo">
-                        <form name="cC.projectInfo" novalidate>
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div class="form-group has-feedback"
-                                         ng-class="{'has-error': cC.projectInfo.productName.$invalid &&
-                                         (cC.projectInfo.productName.$dirty || cC.projectInfo.$submitted)}">
-                                        <label for="productName">專案名稱</label>
-                                        <input type="text" class="form-control" id="productName" name="productName"
-                                               placeholder="Product name" ng-model="cC.prj.productName"
-                                               required>
-                                        <span class="help-block error-block basic-block">Required</span>
-                                    </div>
-                                    <div class="form-group"
-                                         ng-class="{'has-error': cC.projectInfo.projectCode.$invalid &&
-                                         (cC.projectInfo.projectCode.$dirty || cC.projectInfo.$submitted)}">
-                                        <label for="projectCode">專案編號</label>
-                                        <input type="text" class="form-control" id="projectCode" name="projectCode"
-                                               placeholder="productId" ng-model="cC.prj.projectCode"
-                                               required>
-                                        <span class="help-block error-block basic-block">Required</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>技師</label>
-                                        <select class="form-control" title="Category" selectpicker>
-                                            <option selected>Ａ技師</option>
-                                            <option>Ｂ技師</option>
-                                        </select>
-                                    </div>
-                                </div>
+    <!--<div class="row">-->
+        <!--<div class="col-md-12">-->
+            <!--<div ba-panel ba-panel-title="專案建立" ba-panel-class="with-scroll">-->
+                <!--<ba-wizard>-->
+                    <!--<ba-wizard-step title="承辦資訊" form="cC.majorInfo">-->
+                        <!--<form form="cC.majorInfo" novalidate>-->
+                            <!--<div class="row">-->
+                                <!--<div class="col-md-8">-->
+                                    <!--<div class="form-group has-feedback">-->
+                                        <!--<label>專案建置 經理</label>-->
+                                        <!--<br>-->
+                                        <!--<b id="projectCreator">{{username}}</b>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group has-feedback">-->
+                                        <!--<label>指定承辦人員</label>-->
+                                        <!--<select class="form-control"-->
+                                                <!--id="projectMajor"-->
+                                                <!--name="majorName"-->
+                                                <!--ng-model="cC.mjr.majorName"-->
+                                                <!--required>-->
+                                            <!--<option ng-repeat="user in users" id="{{user._id}}">{{user.name}}</option>-->
+                                        <!--</select>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</form>-->
+                    <!--</ba-wizard-step>-->
+                    <!--<ba-wizard-step title="專案資訊" form="cC.projectInfo">-->
+                        <!--<form name="cC.projectInfo" novalidate>-->
+                            <!--<div class="row">-->
+                                <!--<div class="col-md-8">-->
+                                    <!--<div class="form-group has-feedback"-->
+                                         <!--ng-class="{'has-error': cC.projectInfo.productName.$invalid &&-->
+                                         <!--(cC.projectInfo.productName.$dirty || cC.projectInfo.$submitted)}">-->
+                                        <!--<label for="productName">專案名稱</label>-->
+                                        <!--<input type="text" class="form-control" id="productName" name="productName"-->
+                                               <!--placeholder="Product name" ng-model="cC.prj.productName"-->
+                                               <!--required>-->
+                                        <!--<span class="help-block error-block basic-block">Required</span>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group"-->
+                                         <!--ng-class="{'has-error': cC.projectInfo.projectCode.$invalid &&-->
+                                         <!--(cC.projectInfo.projectCode.$dirty || cC.projectInfo.$submitted)}">-->
+                                        <!--<label for="projectCode">專案編號</label>-->
+                                        <!--<input type="text" class="form-control" id="projectCode" name="projectCode"-->
+                                               <!--placeholder="productId" ng-model="cC.prj.projectCode"-->
+                                               <!--required>-->
+                                        <!--<span class="help-block error-block basic-block">Required</span>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group">-->
+                                        <!--<label>技師</label>-->
+                                        <!--<select class="form-control" title="Category" selectpicker>-->
+                                            <!--<option selected>Ａ技師</option>-->
+                                            <!--<option>Ｂ技師</option>-->
+                                        <!--</select>-->
+                                    <!--</div>-->
+                                <!--</div>-->
 
-                                <!--<div class="col-md-6">-->
-                                <!--<div class="form-group">-->
-                                <!--<label>技師</label>-->
-                                <!--<select class="form-control" title="Category" selectpicker>-->
-                                <!--<option selected>Ａ技師</option>-->
-                                <!--<option>Ｂ技師</option>-->
-                                <!--</select>-->
+                                <!--&lt;!&ndash;<div class="col-md-6">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<div class="form-group">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<label>技師</label>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<select class="form-control" title="Category" selectpicker>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<option selected>Ａ技師</option>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<option>Ｂ技師</option>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</select>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--</div>-->
+                        <!--</form>-->
+                    <!--</ba-wizard-step>-->
+                    <!--<ba-wizard-step title="Finish">-->
+                        <!--<div ng-init="preCreateProject()">-->
+                            <!--<div class="form-group">-->
+                                <!--<label>專案建置 經理</label>-->
+                                <!--<br>-->
+                                <!--<b>-->
+                                    <!--{{username}}-->
+                                <!--</b>-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label>指定承辦人員</label>-->
+                                <!--<br>-->
+                                <!--<div style="text-align: center">-->
+                                    <!--<span>-->
+                                        <!--{{cC.mjr.majorName}}-->
+                                    <!--</span>-->
                                 <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label>專案名稱</label>-->
+                                <!--<br>-->
+                                <!--<div style="text-align: center">-->
+                                    <!--<span>-->
+                                        <!--{{cC.prj.productName}}-->
+                                    <!--</span>-->
                                 <!--</div>-->
-                            </div>
-                        </form>
-                    </ba-wizard-step>
-                    <ba-wizard-step title="Finish">
-                        <div ng-init="preCreateProject()">
-                            <div class="form-group">
-                                <label>專案建置 經理</label>
-                                <br>
-                                <b>
-                                    {{username}}
-                                </b>
-                            </div>
-                            <div class="form-group">
-                                <label>指定承辦人員</label>
-                                <br>
-                                <div style="text-align: center">
-                                    <span>
-                                        {{cC.mjr.majorName}}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>專案名稱</label>
-                                <br>
-                                <div style="text-align: center">
-                                    <span>
-                                        {{cC.prj.productName}}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>專案編號</label>
-                                <br>
-                                <div style="text-align: center">
-                                    <span>
-                                        {{cC.prj.projectCode}}
-                                    </span>
-                                </div>
-                            </div>
-                            <div ng-controller="ModalsPageCtrl" style="text-align: center">
-                                <button type="button" class="btn btn-info" data-toggle="modal"
-                                        ng-click="openProgressDialog()">
-                                    Save Project
-                                </button>
-                            </div>
-                        </div>
-                    </ba-wizard-step>
-                </ba-wizard>
-            </div>
-        </div>
-    </div>
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label>專案編號</label>-->
+                                <!--<br>-->
+                                <!--<div style="text-align: center">-->
+                                    <!--<span>-->
+                                        <!--{{cC.prj.projectCode}}-->
+                                    <!--</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div ng-controller="ModalsPageCtrl" style="text-align: center">-->
+                                <!--<button type="button" class="btn btn-info" data-toggle="modal"-->
+                                        <!--ng-click="openProgressDialog()">-->
+                                    <!--Save Project-->
+                                <!--</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</ba-wizard-step>-->
+                <!--</ba-wizard>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
 </div>
