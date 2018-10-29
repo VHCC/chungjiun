@@ -204,6 +204,7 @@
                         $scope.changeSubmitBtnStatus(true, "專案名稱已存在，請檢查！");
                     } else {
                         $scope.changeSubmitBtnStatus(false, "建立專案");
+                        $scope.triggerChangePrjCode();
                     }
                 })
         }
@@ -211,11 +212,14 @@
         // Code Check　自訂編號
         $scope.triggerChangePrjCode = function () {
             // console.log('triggerChangePrjNewName');
-            if ($scope.mainProject.setCode.length !== 11) {
-                $scope.changeSubmitBtnStatus(true, "請確認 自訂總案編號為 11 碼！");
-                return;
-            } else {
-                $scope.changeSubmitBtnStatus(false, "建立專案");
+
+            if (this.mainProject.selected.code === "9999") {
+                if ($scope.mainProject.setCode.length !== 10) {
+                    $scope.changeSubmitBtnStatus(true, "請確認 自訂總案編號為 10 碼！");
+                    return;
+                } else {
+                    $scope.changeSubmitBtnStatus(false, "建立專案");
+                }
             }
 
             var formData = {
@@ -240,6 +244,7 @@
             window.document.getElementById('newPrjNumberDiv').style.display = "none";
             window.document.getElementById('newPrjSubNumberDiv').style.display = "none";
             $scope.changeSubmitBtnStatus(false, "建立專案");
+            $scope.triggerChangePrjCode();
             if (this.mainProject.selected.code === "") {
                 window.document.getElementById('newPrjNumberDiv').style.display = "block";
                 //新總案，必新專案 00
@@ -296,6 +301,7 @@
         $scope.triggerChangePrjSubNumber = function() {
             this.mainProject.type = null;
             $scope.changeSubmitBtnStatus(false, "建立專案");
+            $scope.triggerChangePrjCode();
             if (this.mainProject.number.selected.value === "") {
                 window.document.getElementById('newPrjSubNumberDiv').style.display = "block";
                 //新專案，必新子案 00
@@ -344,6 +350,7 @@
                             $scope.changeSubmitBtnStatus(true, "此類型子案已存在，請檢察！");
                         } else {
                             $scope.changeSubmitBtnStatus(false, "建立專案");
+                            $scope.triggerChangePrjCode();
                         }
                     }
                 );
@@ -373,19 +380,19 @@
                     //自訂專案
                     totalCode = $scope.mainProject.setCode;
                     var createData = {
-                        branch: totalCode.substring(0,1),
-                        year: String(totalCode.substring(1,4)),
-                        code: String(totalCode.substring(4,6)),
-                        type: String(totalCode.substring(10,11)),
+                        branch: vm.branch.value,
+                        year: String(totalCode.substring(0,3)),
+                        code: String(totalCode.substring(3,5)),
+                        type: String(totalCode.substring(9,10)),
                         mainName: $scope.mainProject.new,
                         // majorID: $scope.mainProject.manager._id,
                         managerID: $scope.mainProject.manager._id,
                         prjCode: totalCode,
                         technician: prjTechs,
                         // endDate: req.body.prjEndDate,
-                        prjNumber: String(totalCode.substring(6,8)),
+                        prjNumber: String(totalCode.substring(5,7)),
                         prjName: $scope.mainProject.numberNew,
-                        prjSubNumber: String(totalCode.substring(8,10)),
+                        prjSubNumber: String(totalCode.substring(7,9)),
                         prjSubName: $scope.mainProject.subNumberNew,
                     }
                 } else {
