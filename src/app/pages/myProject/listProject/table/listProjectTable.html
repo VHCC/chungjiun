@@ -2,56 +2,35 @@
     <table class="table table-hover" st-table="projects">
         <thead>
         <tr class="sortable">
-            <th class="table-id" st-sort="prjCode" st-sort-default="true">代碼</th>
-            <th st-sort="mainName">總案名稱</th>
-            <th st-sort="prjName">專案名稱</th>
-            <th st-sort="prjSubName">子案名稱</th>
-            <th st-sort="type">類型名稱</th>
-            <th st-sort="managerID">經理</th>
-            <th st-sort="majorID">主承辦</th>
-            <th st-sort="creator">協辦人員</th>
-            <th st-sort="age">技師</th>
+            <th class="table-id" st-sort="prjCode" st-sort-default="true" style="width: 5%">代碼</th>
+            <th st-sort="mainName" style="width: 25%">總案名稱</th>
+            <th st-sort="prjName" style="width: 10%">專案名稱</th>
+            <th st-sort="prjSubName" style="width: 5%">子案名稱</th>
+            <th st-sort="type" style="width: 5%">類型名稱</th>
+            <th st-sort="managerID" style="width: 5%">經理</th>
+            <th st-sort="majorID" style="width: 5%">主承辦</th>
+            <th st-sort="creator" style="width: 25%">協辦人員</th>
+            <th st-sort="age" style="width: 5%">技師</th>
         </tr>
-        <tr>
-            <th><input st-search="prjCode"
-                       placeholder="尋找代碼"
-                       class="input-sm form-control search-input"
-                       type="search"/>
-            </th>
-            <th><input st-search="mainName"
-                       placeholder="輸入總案"
-                       class="input-sm form-control search-input"
-                       type="search"/>
-            </th>
-            <th><input st-search="prjName"
-                       placeholder="輸入專案"
-                       class="input-sm form-control search-input"
-                       type="search"/>
-            </th>
-            <th><input st-search="prjSubName"
-                       placeholder="輸入子案"
-                       class="input-sm form-control search-input"
-                       type="search"/>
-            </th>
-        </tr>
+
         </thead>
         <tbody>
 
         <tr ng-repeat="prj in projects" class="editable-tr-wrap">
             <!--全代碼-->
-            <td class="table-id">{{prj.prjCode}}</td>
+            <td class="table-id" style="width: 5%">{{prj.prjCode}}</td>
             <!--總案名稱-->
-            <td>{{prj.mainName}}</td>
+            <td style="width: 25%">{{prj.mainName}}</td>
             <!--專案名稱-->
-            <td>{{prj.prjName}}</td>
+            <td style="width: 10%">{{prj.prjName}}</td>
             <!--子案名稱-->
-            <td>{{prj.prjSubName}}</td>
+            <td style="width: 5%">{{prj.prjSubName}}</td>
             <!--類型-->
-            <td>{{prjTypeToName(prj.type)}}</td>
+            <td style="width: 5%">{{prjTypeToName(prj.type)}}</td>
             <!--經理-->
-            <td>{{ showManager(prj) }}</td>
+            <td style="width: 5%">{{ showManager(prj) }}</td>
             <!--主承辦-->
-            <td class="select-td">
+            <td class="select-td" style="width: 5%">
                 <span editable-select="prj.majorID"
                       e-name="majorID"
                       e-form="rowform"
@@ -70,7 +49,7 @@
             </td>
             <!--<td>{{prj.workers}}</td>-->
             <!--協辦-->
-            <td class="select-td">
+            <td class="select-td" style="width: 25%">
                 <form data-editable-form
                       name="uiSelectForm">
                     <div editable-ui-select="prj.workers"
@@ -113,7 +92,8 @@
                     </div>
                 </form>
             </td>
-            <td>{{showTechs(prj.technician)}}</td>
+            <!--技師-->
+            <td style="width: 5%">{{showTechs(prj.technician)}}</td>
 
         </tr>
         </tbody>
