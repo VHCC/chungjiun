@@ -51,7 +51,7 @@
                             </ui-select-match>
                             <ui-select-choices
                                     repeat="prjItems in createNewProjectCtrlVm.projects | groupSelectpickerOptions: {mainName: $select.search}"
-                                    group-by="'mainName'">
+                                    >
                                 <span ng-bind-html="prjItems.mainName| highlight: $select.search"></span>
                             </ui-select-choices>
                         </ui-select>
