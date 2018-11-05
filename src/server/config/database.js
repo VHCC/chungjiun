@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var localDB = 'mongodb://localhost:27017/wp001';
+var localDB = 'mongodb://192.168.1.151:27017/wp001';
 var remoteDB = 'mongodb://ichenprocin.dsmynas.com:27017/wp001';
 
 module.exports = {
