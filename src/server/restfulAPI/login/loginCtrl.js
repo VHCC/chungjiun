@@ -64,7 +64,7 @@
 
                         console.log('cookies.username= ' + cookies.username);
                         console.log('cookies.username= ' + cookies.get('username'));
-                        window.location.href = 'http://localhost:4000';
+                        window.location.href = 'http://192.168.1.151:4000';
 
                         scope.todos = data; // assign our new list of todos
                     })
