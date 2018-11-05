@@ -59,8 +59,8 @@
           }
 
           // if (roleType !== '100') {
-          //     var entrance = window.document.getElementById('registerEntrance');
-          //     entrance.parentNode.removeChild(entrance);
+              var entrance = window.document.getElementById('registerEntrance');
+              entrance.parentNode.removeChild(entrance);
           // }
 
           // var socket = io('http://localhost:9000');
