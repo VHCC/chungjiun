@@ -58,19 +58,19 @@
               toastr['error']('您的系統資訊未設定完全，請聯絡 行政人員 設定 !', '系統初步設定 不完全');
           }
 
-          if (roleType !== '100') {
-              var entrance = window.document.getElementById('registerEntrance');
-              entrance.parentNode.removeChild(entrance);
-          }
+          // if (roleType !== '100') {
+          //     var entrance = window.document.getElementById('registerEntrance');
+          //     entrance.parentNode.removeChild(entrance);
+          // }
 
-          var socket = io('http://localhost:9000');
+          // var socket = io('http://localhost:9000');
 
-          socket.on("greet", function (msg) {
-              NotificationUtil.showMsg('Notification', msg, 2);
+          // socket.on("greet", function (msg) {
+          //     NotificationUtil.showMsg('Notification', msg, 2);
+          //
+          // });
 
-          });
-
-          NotificationUtil.showMsg('歡迎使用　崇峻系統', '瀏覽器通知系統　已啟用', 1);
+          // NotificationUtil.showMsg('歡迎使用　崇峻系統', '瀏覽器通知系統　已啟用', 1);
 
       };
   }
