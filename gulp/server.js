@@ -38,7 +38,7 @@ function browserSyncInit(baseDir, browser) {
   var proxy = require('http-proxy-middleware')
 
   var proxyTableAPI = {
-      'localhost:3000/api': 'http://localhost:16788'
+      'localhost:4000/api': 'http://localhost:16788'
   }
   // 设置代理
   var apiProxy = proxy('/api', {
