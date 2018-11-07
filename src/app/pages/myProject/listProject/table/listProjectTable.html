@@ -12,11 +12,35 @@
             <th st-sort="creator" style="width: 25%">協辦人員</th>
             <th st-sort="age" style="width: 5%">技師</th>
         </tr>
+        <tr>
+            <th><input st-search="prjCode"
+                       placeholder="尋找代碼"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+            <th><input st-search="mainName"
+                       placeholder="輸入總案"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+            <th><input st-search="prjName"
+                       placeholder="輸入專案"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+            <th><input st-search="prjSubName"
+                       placeholder="輸入子案"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+
+        </tr>
 
         </thead>
         <tbody>
 
         <tr ng-repeat="prj in projects" class="editable-tr-wrap">
+
             <!--全代碼-->
             <td class="table-id" style="width: 5%">{{prj.prjCode}}</td>
             <!--總案名稱-->
