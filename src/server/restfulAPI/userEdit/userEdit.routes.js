@@ -60,6 +60,7 @@ module.exports = function (app) {
                 userMonthSalary: req.body.userMonthSalary,
                 bossID: req.body.bossID,
                 machineDID: req.body.machineDID,
+                workStatus: req.body.workStatus,
             }
         }, function (err) {
             if (err) {

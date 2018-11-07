@@ -7,6 +7,7 @@
 
     angular.module('BlurAdmin.pages.myProfile')
         .controller('userEditCtrl', [
+            '$compile',
             '$scope',
             '$cookies',
             '$http',
@@ -20,7 +21,8 @@
         ]);
 
     /** @ngInject */
-    function UserEditCtrl($scope,
+    function UserEditCtrl($compile,
+                          $scope,
                           cookies,
                           $http,
                           fileReader,
@@ -29,6 +31,8 @@
                           toastr,
                           User,
                           UserEditUtil) {
+
+
         $scope.username = cookies.get('username');
         $scope.roleType = cookies.get('roletype');
 
@@ -144,6 +148,7 @@
                 userMonthSalary: $('#userMonthSalary')[0].value,
                 bossID: vm.userBoss._id,
                 machineDID: $('#userMachineDID')[0].value,
+                workStatus: vm.workStatus,
             }
 
             // console.log(formData);
@@ -192,6 +197,7 @@
         $scope.selectUserProfile = function (user) {
             vm.userMonthSalary = user.userMonthSalary;
             vm.machineDID = user.machineDID;
+
             // user Role
             var selectedRole = [];
             if (user.roleType !== 100) {
@@ -215,6 +221,9 @@
                 });
             }
             vm.userBoss = selectedBoss.length ? selectedBoss[0] : undefined;
+
+            vm.workStatus = user.workStatus;
+
         }
 
         $scope.showUserStatus = function (user) {

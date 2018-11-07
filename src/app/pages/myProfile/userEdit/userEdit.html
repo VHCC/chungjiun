@@ -78,8 +78,11 @@
                     ng-click="changePassword()"
                     class="btn btn-primary btn-with-icon save-profile ">儲存密碼
             </button>
+
         </uib-tab>
         <uib-tab heading="人事輸入" ng-if="roleType === '100'" ng-click="fetchAllUsers()">
+
+            <!--<div ng-include="'app/pages/myProfile/userEdit/userEdit_manage.html'"></div>-->
             <form>
                 <div class="row">
                     <div class="col-md-12">
@@ -108,10 +111,11 @@
                 <div class="row" ng-if="userEditCtrlVm.user.selected">
                     <div class="col-md-6">
                         <div class="form-group row clearfix">
-                            <label for="inputFirstName" class="col-md-3 control-label">姓名</label>
+                            <label class="col-md-3 control-label">姓名</label>
 
                             <div class="col-md-9">
                                 <input type="text"
+                                       ng-change="selectUserProfile(userEditCtrlVm.user.selected)"
                                        id="userNewName"
                                        class="form-control"
                                        placeholder=""
@@ -147,7 +151,8 @@
                 <div class="row" ng-if="userEditCtrlVm.user.selected">
                     <div class="col-md-6">
                         <div class="form-group row clearfix">
-                            <label class="col-md-3 control-label" style="color:red">{{userEditCtrlVm.user.selected.name}} 的主管</label>
+                            <label class="col-md-3 control-label" style="color:red">{{userEditCtrlVm.user.selected.name}}
+                                的主管</label>
                             <div class="col-md-9">
                                 <ui-select ng-model="userEditCtrlVm.userBoss"
                                            class="btn-group bootstrap-select form-control"
@@ -171,7 +176,7 @@
                 <div class="row" ng-if="userEditCtrlVm.user.selected">
                     <div class="col-md-6">
                         <div class="form-group row clearfix">
-                            <label for="inputFirstName" class="col-md-3 control-label">月薪</label>
+                            <label class="col-md-3 control-label">月薪</label>
                             <div class="col-md-9">
                                 <div class="input-group">
                                     <span class="input-group-addon addon-left input-group-addon-success">NTD</span>
@@ -194,7 +199,7 @@
                 <div class="row" ng-if="userEditCtrlVm.user.selected">
                     <div class="col-md-6">
                         <div class="form-group row clearfix">
-                            <label for="inputFirstName" class="col-md-3 control-label">打卡機編號</label>
+                            <label class="col-md-3 control-label">打卡機編號</label>
                             <div class="col-md-9">
                                 <input type="text"
                                        ng-model="userEditCtrlVm.machineDID"
@@ -207,6 +212,24 @@
                     </div>
                 </div>
 
+                <!--ERM狀態-->
+                <div class="row" ng-if="userEditCtrlVm.user.selected">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 control-label" style="color:blue">ERM狀態</label>
+                            <div class="col-md-9" >
+                                <switch
+                                        class="wide"
+                                        ng-model="userEditCtrlVm.workStatus"
+                                        on="可登入"
+                                        off="不可登入"
+                                        value="{{userEditCtrlVm.workStatus}}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <h3 class="with-line"></h3>
                 <div class="form-group">
                     <button type="submit"
@@ -214,10 +237,13 @@
                             class="btn btn-info">儲存人事資料
                     </button>
                 </div>
+
             </form>
         </uib-tab>
     </uib-tabset>
 </div>
+
+
 
 
 

@@ -55,6 +55,11 @@
                             return;
                         }
 
+                        if (data[0].roleType != 100 && data[0].workStatus == false) {
+                            window.userNoActivate();
+                            return;
+                        }
+
                         cookies.put('username', data[0].name);
                         cookies.put('roletype', data[0].roleType);
                         cookies.put('userDID', data[0]._id);
