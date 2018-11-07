@@ -17,7 +17,7 @@
         'BlurAdmin.pages.form',
         'BlurAdmin.pages.tables',
         'BlurAdmin.pages.charts',
-        'BlurAdmin.pages.maps',
+        // 'BlurAdmin.pages.maps',
         'BlurAdmin.pages.profile',
         'BlurAdmin.pages.myNewPage',
         'BlurAdmin.pages.myCalender',

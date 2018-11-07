@@ -44,8 +44,13 @@ module.exports = mongoose.model('User', {
     // 打卡機編號
     machineDID: {
         type: String,
-    }
+    },
 
+    // 在職狀態
+    workStatus: {
+        type: Boolean,
+        default: false
+    }
 
 
 });
