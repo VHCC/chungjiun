@@ -1,24 +1,24 @@
 /**
  * @author Ichen.chu
- * created on 15.02.2018
+ * created on 07.11.2018
  */
 (function () {
     'use strict';
 
     angular.module('BlurAdmin.pages.myProject')
-        .service('intiProjectsService', function ($http, $cookies) {
+        .service('intiProjectsAllService', function ($http, $cookies) {
 
             // console.log($cookies.get('userDID'));
-            var formData = {
-                relatedID: $cookies.get('userDID'),
-            }
-            var promise = $http.post('/api/post_project_all_related_to_user', formData)
+            // var formData = {
+            //     relatedID: $cookies.get('userDID'),
+            // }
+            var promise = $http.get('/api/projectFindAll')
                 .success(function (allProjects) {
                     return allProjects;
                 });
             return promise;
         })
-        .controller('listProjectTableCtrl',
+        .controller('listProjectAllTableCtrl',
             [
                 '$scope',
                 '$filter',
@@ -29,7 +29,7 @@
                 'editableThemes',
                 'Project',
                 'ProjectUtil',
-                'intiProjectsService',
+                'intiProjectsAllService',
                 function (scope,
                           filter,
                           $cookies,
@@ -39,7 +39,7 @@
                           editableThemes,
                           Project,
                           ProjectUtil,
-                          intiProjectsService) {
+                          intiProjectsAllService) {
                     return new ListProjectPageCtrl(
                         scope,
                         filter,
@@ -50,7 +50,7 @@
                         editableThemes,
                         Project,
                         ProjectUtil,
-                        intiProjectsService
+                        intiProjectsAllService
                     );
                 }])
     ;
@@ -65,11 +65,11 @@
                                  editableThemes,
                                  Project,
                                  ProjectUtil,
-                                 intiProjectsService) {
+                                 intiProjectsAllService) {
         $scope.loading = true;
 
-        intiProjectsService.then(function (resp) {
-            // console.log(resp.data);
+        intiProjectsAllService.then(function (resp) {
+            console.log(resp.data);
             $scope.projects = resp.data;
             $scope.projects.slice(0, resp.data.length);
 
@@ -77,11 +77,11 @@
                 document.getElementById('includeHead'))
                 .append($compile(
                     "<div ba-panel ba-panel-title=" +
-                    "'專案列表 - " + resp.data.length + "'" +
+                    "'所有專案列表 - " + resp.data.length + "'" +
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
-                    "ng-include=\"'app/pages/myProject/listProject/table/listProjectTable.html'\">" +
+                    "ng-include=\"'app/pages/myProject/listProjectAll/table/listProjectAllTable.html'\">" +
                     "</div>" +
                     "</div>"
                 )($scope));
