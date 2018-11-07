@@ -16,6 +16,7 @@ global.pages = {
     myProject  : 100,
     myProject_createProject  : 100,
     myProject_listProject  : 200,
+    myProject_listProjectAll  : 210,
     myProject_endProject  : 300,
     myProject_projectIncome  : 400,
     myProject_projectFinancial  : 500,
