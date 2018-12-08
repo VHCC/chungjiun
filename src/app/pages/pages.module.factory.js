@@ -327,13 +327,13 @@
                         case "2":
                             return "監造"
                         case "3":
-                            return "服務"
+                            return "規劃"
                         case "4":
-                            return "行政"
+                            return "服務"
                         case "5":
-                            return "投標"
-                        case "6":
                             return "總案"
+                        case "6":
+                            return "專案管理"
                         case "7":
                             return "其他"
                         default:
