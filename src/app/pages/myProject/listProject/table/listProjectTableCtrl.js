@@ -113,8 +113,12 @@
         User.getAllUsers()
             .success(function (allUsers) {
                 $scope.projectManagers = [];
+                $scope.projectManagers[0] = {
+                    value: "",
+                    name: "None"
+                };
                 for (var i = 0; i < allUsers.length; i++) {
-                    $scope.projectManagers[i] = {
+                    $scope.projectManagers[i+1] = {
                         value: allUsers[i]._id,
                         name: allUsers[i].name
                     };
