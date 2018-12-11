@@ -60,7 +60,6 @@ function RegisterCtrl(scope,
                 window.errorText('Email已存在');
                 return;
             }
-            return;
             // // call the create function from our service (returns a promise object)
             Register.create(scope.formData)
 
