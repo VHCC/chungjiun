@@ -243,6 +243,19 @@
             }
             return resault;
         }
+
+        $scope.changePrjStatus = function (table) {
+            var formData = {
+                prjID: table.prj._id,
+                enable: table.prj.enable,
+            }
+            Project.updateStatus(formData)
+                .success(function (res) {
+                    console.log(res.code);
+                })
+                .error(function () {
+                })
+        }
     }
 
 })();

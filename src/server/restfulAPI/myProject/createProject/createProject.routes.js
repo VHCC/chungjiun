@@ -110,6 +110,20 @@ module.exports = function (app) {
         })
     });
 
+    app.get(global.apiUrl.get_project_find_all_enable, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, get projects");
+        Project.find(
+            {
+                enable: true
+            },
+            function (err, projects) {
+            if (err) {
+                res.send(err);
+            }
+            res.json(projects);
+        })
+    });
+
     app.get(global.apiUrl.get_project_find_all_by_group, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, find all project by group");
         Project.aggregate([

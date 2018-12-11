@@ -11,6 +11,7 @@
             <th st-sort="majorID" style="width: 5%">主承辦</th>
             <th st-sort="creator" style="width: 25%">協辦人員</th>
             <th st-sort="age" style="width: 5%">技師</th>
+            <th st-sort="status" style="width: 5%">專案狀態</th>
         </tr>
         <tr>
             <th><input st-search="prjCode"
@@ -118,6 +119,14 @@
             </td>
             <!--技師-->
             <td style="width: 5%">{{showTechs(prj.technician)}}</td>
+            <!--專案上線-->
+            <td style="width: 5%; padding-top: 5px">
+                <ba-switcher
+                        ng-click="changePrjStatus(this)"
+                        ng-model="prj.status"
+                        switcher-style="primary"
+                         switcher-value="prj.enable"/>
+            </td>
 
         </tr>
         </tbody>

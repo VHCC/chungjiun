@@ -77,4 +77,24 @@ module.exports = function (app) {
         })
     })
 
+    // 更新專案狀態
+    app.post(global.apiUrl.post_project_update_status, function (req, res) {
+        Project.update({
+            _id: req.body.prjID,
+        }, {
+            $set: {
+                enable: req.body.enable,
+            }
+        }, function (err) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        })
+    })
+
+
 }

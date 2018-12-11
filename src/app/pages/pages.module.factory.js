@@ -37,6 +37,9 @@
                 findAll: function () {
                     return http.get('/api/projectFindAll');
                 },
+                findAllEnable: function () {
+                    return http.get('/api/projectFindAllEnable');
+                },
                 create: function (projectData) {
                     return http.post('/api/projectCreate', projectData);
                 },
@@ -89,6 +92,9 @@
                 },
                 updateWorkers: function(formData) {
                     return http.post('/api/post_project_update_workers', formData);
+                },
+                updateStatus: function(formData) {
+                    return http.post('/api/post_project_update_status', formData);
                 },
 
             }
