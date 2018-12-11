@@ -12,7 +12,7 @@
             // var formData = {
             //     relatedID: $cookies.get('userDID'),
             // }
-            var promise = $http.get('/api/projectFindAll')
+            var promise = $http.get('/api/projectFindAllEnable')
                 .success(function (allProjects) {
                     return allProjects;
                 });

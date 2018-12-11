@@ -15,6 +15,7 @@ global.apiUrl = {
     get_all_techs : '/api/getAllTechs',
     get_all_managers : '/api/getAllManagers',
     get_project_find_all : '/api/projectFindAll',
+    get_project_find_all_enable : '/api/projectFindAllEnable',
     get_project_find_all_by_group : '/api/projectFindAllByGroup',
     post_project_find_by_name : '/api/projectFindByName',
     post_project_find_by_code : '/api/post_project_find_by_code',
@@ -41,6 +42,7 @@ global.apiUrl = {
     // Update
     post_project_update_major_id: '/api/post_project_update_major_id',
     post_project_update_workers: '/api/post_project_update_workers',
+    post_project_update_status: '/api/post_project_update_status',
 
 
 
