@@ -8,6 +8,7 @@ global.apiUrl = {
     post_login_user_find : '/api/loginfind',
     //register
     post_register_user : '/api/register',
+    post_find_user_by_email : '/api/findUserByEmail',
 
     //create project
     get_all_users : '/api/getAllUsers',

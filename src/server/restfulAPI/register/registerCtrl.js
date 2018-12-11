@@ -24,6 +24,10 @@ angular.module('registerCtrl', ['ngCookies'])
         return {
             create: function (userData) {
                 return http.post('/api/register', userData);
+            },
+
+            findByEmail: function (userData) {
+                return http.post('/api/findUserByEmail', userData);
             }
         }
     }]);
@@ -50,7 +54,14 @@ function RegisterCtrl(scope,
                 window.errorText('請選擇員工角色');
                 return;
             }
-            // call the create function from our service (returns a promise object)
+
+            if (!scope.checkNewUserEmail(scope)) {
+                scope.loading = false;
+                window.errorText('Email已存在');
+                return;
+            }
+            return;
+            // // call the create function from our service (returns a promise object)
             Register.create(scope.formData)
 
             // if successful creation, call our get function to get all the new todos
@@ -62,6 +73,19 @@ function RegisterCtrl(scope,
                 });
         }
     };
+
+
+    scope.checkNewUserEmail = function (node) {
+        Register.findByEmail(scope.formData)
+        // if successful creation, call our get function to get all the new todos
+            .success(function (data) {
+                console.log(data)
+                if (data.length > 0) {
+                    return false;
+                }
+            });
+        return true;
+    }
 
     scope.initReg = function () {
         console.log("initReg.");
