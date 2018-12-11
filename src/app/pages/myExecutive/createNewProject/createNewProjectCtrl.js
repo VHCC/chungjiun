@@ -221,10 +221,16 @@
                     $scope.changeSubmitBtnStatus(false, "建立專案");
                 }
             }
+            console.log(vm.branch);
+            if (vm.branch === undefined) {
+                $scope.changeSubmitBtnStatus(true, "請確認 分支主題，再次輸入總案編號！");
+                return;
+            }
 
             var formData = {
-                prjCode: $scope.mainProject.setCode,
+                prjCode: vm.branch.value + String($scope.mainProject.setCode.substring(0,10))
             }
+            console.log(formData);
             Project.findPrjByCode(formData)
                 .success(function (prj) {
                     // console.log(JSON.stringify(prj));
@@ -387,7 +393,7 @@
                         mainName: $scope.mainProject.new,
                         // majorID: $scope.mainProject.manager._id,
                         managerID: $scope.mainProject.manager._id,
-                        prjCode: totalCode,
+                        prjCode: vm.branch.value + String(totalCode.substring(0,10)),
                         technician: prjTechs,
                         // endDate: req.body.prjEndDate,
                         prjNumber: String(totalCode.substring(5,7)),
@@ -440,7 +446,7 @@
                 toastr['warning']('輸入資訊未完整 !', '建立失敗');
                 return;
             }
-
+            $scope.changeSubmitBtnStatus(true, "建立專案中，請稍待！");
             Project.create(createData)
                 .success(function (res) {
                     // console.log('createSubmit 2');
