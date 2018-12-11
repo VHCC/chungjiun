@@ -108,8 +108,9 @@
                         </ui-select-match>
                         <ui-select-choices
                                 ng-model="prjName"
-                                repeat="prjItems in workHourTableCtrlVm.relatedProjects | groupSelectpickerOptions: {mainName: $select.search, prjCode: $select.search}">
-                            <span ng-bind-html="prjItems.mainName + ' - ' + prjItems.prjName + ' - ' + prjItems.prjSubName + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
+                                repeat="prjItems in workHourTableCtrlVm.relatedProjects | groupSelectpickerOptions: {mainName: $select.search, prjCode: $select.search}"
+                                group-by="'mainName'">
+                        <span ng-bind-html="prjItems.prjName + ' - ' + prjItems.prjSubName + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
                 </div>
