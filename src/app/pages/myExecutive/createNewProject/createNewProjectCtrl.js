@@ -220,27 +220,29 @@
                 } else {
                     $scope.changeSubmitBtnStatus(false, "建立專案");
                 }
-            }
-            console.log(vm.branch);
-            if (vm.branch === undefined) {
-                $scope.changeSubmitBtnStatus(true, "請確認 分支主題，再次輸入總案編號！");
-                return;
+
+                console.log(vm.branch);
+                if (vm.branch === undefined) {
+                    $scope.changeSubmitBtnStatus(true, "請確認 分支主題，再次輸入總案編號！");
+                    return;
+                }
+
+                var formData = {
+                    prjCode: vm.branch.value + String($scope.mainProject.setCode.substring(0,10))
+                }
+                console.log(formData);
+                Project.findPrjByCode(formData)
+                    .success(function (prj) {
+                        // console.log(JSON.stringify(prj));
+                        if (prj !== null) {
+                            $scope.changeSubmitBtnStatus(true, "專案編號已存在，請檢查！");
+                        } else {
+                            // $scope.mainProject.code = $scope.mainProject.setCode;
+                            $scope.changeSubmitBtnStatus(false, "建立專案");
+                        }
+                    })
             }
 
-            var formData = {
-                prjCode: vm.branch.value + String($scope.mainProject.setCode.substring(0,10))
-            }
-            console.log(formData);
-            Project.findPrjByCode(formData)
-                .success(function (prj) {
-                    // console.log(JSON.stringify(prj));
-                    if (prj !== null) {
-                        $scope.changeSubmitBtnStatus(true, "專案編號已存在，請檢查！");
-                    } else {
-                        // $scope.mainProject.code = $scope.mainProject.setCode;
-                        $scope.changeSubmitBtnStatus(false, "建立專案");
-                    }
-                })
         }
 
         // Number Check 專案
