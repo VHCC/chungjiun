@@ -157,7 +157,11 @@ module.exports = mongoose.model('WorkHourTableForm', {
         type: String,
     },
 
-
+    // 月薪
+    // 換算月薪定義：月薪/30/8
+    userMonthSalary: {
+        type: Number,
+    },
 
 
 
