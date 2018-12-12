@@ -158,11 +158,16 @@
                 isSendReview: false,
                 isManagerCheck: false,
                 isExecutiveCheck: false,
+
+                userMonthSalary: $scope.userMonthSalary
+
             };
 
             for (var index = 0; index< $scope.tables.length; index ++) {
                 $scope.tables[index].tablesItems.push(newTableItem);
             }
+            console.log(newTableItem);
+
             // $scope.tablesItems.push(inserted);
             $scope.createSubmit(500, true);
         }
@@ -473,6 +478,9 @@
 
                                             isExecutiveReject: res.payload[index].isExecutiveReject,
                                             executiveReject_memo: res.payload[index].executiveReject_memo,
+
+                                            userMonthSalary: res.payload[index].userMonthSalary,
+
 
                                             // TOTAL
                                             hourTotal: parseFloat(res.payload[index].mon_hour) +
@@ -1412,6 +1420,8 @@
 
                             isExecutiveReject: $scope.tables[majorIndex].tablesItems[itemIndex].isExecutiveReject,
                             executiveReject_memo: $scope.tables[majorIndex].tablesItems[itemIndex].executiveReject_memo,
+
+                            userMonthSalary: $scope.tables[majorIndex].tablesItems[itemIndex].userMonthSalary,
                         }
                         workHourTableData.push(tableItem);
                         // console.log(tableItem);
@@ -2628,6 +2638,8 @@
 
                                 isExecutiveReject: res.payload[index].isExecutiveReject,
                                 executiveReject_memo: res.payload[index].executiveReject_memo,
+
+                                userMonthSalary: res.payload[index].userMonthSalary,
 
                                 // TOTAL
                                 hourTotal: res.payload[index].mon_hour +

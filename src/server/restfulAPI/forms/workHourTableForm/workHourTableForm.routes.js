@@ -93,6 +93,8 @@ module.exports = function (app) {
                     isManagerCheck: req.body.formTables[index].isManagerCheck,
                     isExecutiveCheck: req.body.formTables[index].isExecutiveCheck,
 
+                    userMonthSalary: req.body.formTables[index].userMonthSalary,
+
                 }, function (err, workTable) {
                     resIndex++;
                     // workHourForm formTables 的參數
