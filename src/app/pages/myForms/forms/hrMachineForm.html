@@ -103,6 +103,14 @@
         </div>
 
     </uib-tab>
+    <uib-tab heading="打卡機補登"
+             style="color: blue">
+        <div ng-include="'app/pages/myForms/forms/hrMachineForm_LoadTab.html'"></div>
+    </uib-tab>
+    <uib-tab heading="打卡機補登審核"
+             style="color: blue">
+        <div ng-include="'app/pages/myForms/forms/hrMachineForm_LoadTab.html'"></div>
+    </uib-tab>
     <uib-tab heading="打卡機檔案讀取" ng-if="roleType === '100'"
              style="color: blue">
         <div ng-include="'app/pages/myForms/forms/hrMachineForm_LoadTab.html'"></div>
