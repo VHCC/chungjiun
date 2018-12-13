@@ -194,6 +194,7 @@ module.exports = function (app) {
     // 找總案代碼下的專案總數
     app.post(global.apiUrl.post_project_number_find_by_code_distinct, function (req, res) {
         Project.find({
+            year: req.body.year,
             code: req.body.code,
         }).distinct('prjNumber', function (err, projects) {
             if (err) {
