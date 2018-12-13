@@ -475,13 +475,13 @@
                                             executiveReject_memo: res.payload[index].executiveReject_memo,
 
                                             // TOTAL
-                                            hourTotal: parseInt(res.payload[index].mon_hour, 10) +
-                                            parseInt(res.payload[index].tue_hour, 10) +
-                                            parseInt(res.payload[index].wes_hour, 10) +
-                                            parseInt(res.payload[index].thu_hour, 10) +
-                                            parseInt(res.payload[index].fri_hour, 10) +
-                                            parseInt(res.payload[index].sat_hour, 10) +
-                                            parseInt(res.payload[index].sun_hour, 10),
+                                            hourTotal: parseFloat(res.payload[index].mon_hour) +
+                                            parseFloat(res.payload[index].tue_hour) +
+                                            parseFloat(res.payload[index].wes_hour) +
+                                            parseFloat(res.payload[index].thu_hour) +
+                                            parseFloat(res.payload[index].fri_hour) +
+                                            parseFloat(res.payload[index].sat_hour) +
+                                            parseFloat(res.payload[index].sun_hour),
                                             hourAddTotal: res.payload[index].mon_hour_add +
                                             res.payload[index].tue_hour_add +
                                             res.payload[index].wes_hour_add +
@@ -542,10 +542,10 @@
                 if (targetString === stringtable[index]) {
                     continue;
                 }
-                var oldValueString = 'parseInt(obj.$parent.$parent.$parent.' + stringtable[index] + ', 10)';
+                var oldValueString = 'parseFloat(obj.$parent.$parent.$parent.' + stringtable[index] + ')';
                 result += eval(oldValueString);
             }
-            var newValue = parseInt(obj.$parent.$data, 10);
+            var newValue = parseFloat(obj.$parent.$data);
 
             obj.$parent.$parent.$parent.item.hourTotal = newValue + result;
 
@@ -2859,10 +2859,13 @@
         }
 
         $scope.maskInput = function () {
-            $('.inputLimited').mask('M', {
+            $('.inputLimited').mask('M.D', {
                 translation: {
                     'M': {
                         pattern: /[012345678]/,
+                    },
+                    'D': {
+                        pattern: /[05]/,
                     },
                 }
             });
