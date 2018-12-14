@@ -254,6 +254,14 @@
                                 }
                             }
                         });
+                        $('.workOffFormNumberInput').mask('00.Z', {
+                            translation: {
+                                'Z': {
+                                    pattern: /[05]/,
+                                }
+                            }
+                        });
+
                     })
                     .error(function () {
                         console.log('ERROR WorkOffFormUtil.fetchUserWorkOffForm');
@@ -778,16 +786,15 @@
 
             // --------------- document ready -----------------
 
-            $(document).ready(function () {
-                $('.workOffFormNumberInput').mask('00.Z', {
-                    translation: {
-                        'Z': {
-                            pattern: /[05]/,
-                        }
-                    }
-                });
-
-            });
+            // $(document).ready(function () {
+            //     $('.workOffFormNumberInput').mask('00.Z', {
+            //         translation: {
+            //             'Z': {
+            //                 pattern: /[05]/,
+            //             }
+            //         }
+            //     });
+            // });
 
             // ***********************  國定假日設定 ************************
 
