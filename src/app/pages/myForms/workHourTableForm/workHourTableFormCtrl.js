@@ -1435,7 +1435,7 @@
                             sendMonth = moment($scope.firstFullDate).month() + 1;
                             break;
                         case 1:
-                            sendMonth = (moment($scope.firstFullDate).month() + 2) === 12 ? 1
+                            sendMonth = (moment($scope.firstFullDate).month()) === 11 ? 0
                                 : (moment($scope.firstFullDate).month() + 2);
                             break;
                     }
