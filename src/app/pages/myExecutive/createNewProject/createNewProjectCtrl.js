@@ -133,11 +133,12 @@
                 //新總案case
                 window.document.getElementById('newPrjNameDiv').style.display = "block";
                 window.document.getElementById('setPrjCodeDiv').style.display = "none";
-                Project.findPrjDistinctByName()
+                Project.findPrjDistinctByCode()
                     .success(function (prjs) {
                             console.log(JSON.stringify(prjs));
+                            console.log(prjs.length);
                             // 總案編號自動跳號 +1
-                            $scope.mainProject.code = prjs.length + 1 > 10 ? prjs.length : "0" + (prjs.length);
+                            $scope.mainProject.code = prjs.length + 1 > 10 ? prjs.length + 1: "0" + (prjs.length + 1);
                             $scope.mainProject.new = "";
                             $scope.year = new Date().getFullYear() - 1911;
                         }
@@ -269,7 +270,7 @@
                     code: $scope.mainProject.code
                 }
                 console.log(data)
-                Project.findPrjNumberDistinctByCode(data)
+                Project.findPrjNumberDistinctByPrjNumber(data)
                     .success(function (prjs) {
                             console.log(JSON.stringify(prjs));
                             // 專案案編號自動跳號 +1

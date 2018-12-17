@@ -50,11 +50,11 @@
                 findPrjByCode: function (prjCode) {
                     return http.post('/api/post_project_find_by_code', prjCode);
                 },
-                findPrjDistinctByName: function () { // 以名稱為區隔，尋找總案數
-                    return http.get('/api/projectFindByNameDistinct');
+                findPrjDistinctByCode: function () { // 以總案代碼為區隔，尋找總案數
+                    return http.get('/api/projectFindByCodeDistinct');
                 },
-                findPrjNumberDistinctByCode: function (formData) { // 以總案代碼為區隔，尋找專案數
-                    return http.post('/api/post_project_number_find_by_code_distinct', formData);
+                findPrjNumberDistinctByPrjNumber: function (formData) { // 以專案代碼為區隔，尋找專案數
+                    return http.post('/api/post_project_number_find_by_prj_number_distinct', formData);
                 },
                 findPrjSubNumberDistinctByNumber: function (formData) { // 以子案代碼為區隔，尋找子案數
                     return http.post('/api/post_project_sub_number_find_by_number_distinct', formData);

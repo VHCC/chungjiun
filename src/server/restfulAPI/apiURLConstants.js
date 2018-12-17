@@ -19,8 +19,8 @@ global.apiUrl = {
     post_project_find_by_name : '/api/projectFindByName',
     post_project_find_by_code : '/api/post_project_find_by_code',
     // 尋找總數
-    get_project_find_by_name_distinct : '/api/projectFindByNameDistinct',
-    post_project_number_find_by_code_distinct : '/api/post_project_number_find_by_code_distinct',
+    get_project_find_by_code_distinct : '/api/projectFindByCodeDistinct',
+    post_project_number_find_by_prj_number_distinct : '/api/post_project_number_find_by_prj_number_distinct',
     post_project_sub_number_find_by_number_distinct : '/api/post_project_sub_number_find_by_number_distinct',
 
     get_project_find_by_prjid : '/api/projectFindByPrjID',
