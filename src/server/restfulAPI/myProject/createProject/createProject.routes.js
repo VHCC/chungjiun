@@ -170,9 +170,12 @@ module.exports = function (app) {
         })
     });
 
-    app.get(global.apiUrl.get_project_find_by_name_distinct, function (req, res) {
-        console.log(global.timeFormat(new Date()) + global.log.i + "API, get projects by name distonct.");
-        Project.find().distinct('mainName', function (err, projects) {
+    app.get(global.apiUrl.get_project_find_by_code_distinct, function (req, res) {
+        var date = new Date();
+        console.log(global.timeFormat(date) + global.log.i + "API, get projects by name distinct.");
+        Project.find({
+            year: date.getFullYear() - 1911
+        }).distinct('code', function (err, projects) {
             if (err) {
                 res.send(err);
             }
@@ -206,7 +209,7 @@ module.exports = function (app) {
     });
 
     // 找總案代碼下的專案總數
-    app.post(global.apiUrl.post_project_number_find_by_code_distinct, function (req, res) {
+    app.post(global.apiUrl.post_project_number_find_by_prj_number_distinct, function (req, res) {
         Project.find({
             year: req.body.year,
             code: req.body.code,

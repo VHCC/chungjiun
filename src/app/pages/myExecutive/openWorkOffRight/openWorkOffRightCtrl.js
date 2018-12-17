@@ -95,7 +95,7 @@
             if (this.formData.prj.name.selected.code === "") {
                 //新總案case
                 window.document.getElementById('newPrjNameDiv').style.display = "block";
-                Project.findPrjDistinctByName()
+                Project.findPrjDistinctByCode()
                     .success(function (prjs) {
                             console.log(JSON.stringify(prjs));
                             scope.formData.prj.code = prjs.length + 1;
