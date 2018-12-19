@@ -403,8 +403,19 @@
                     // result = result.map(function (v) {
                     //     return v < 10 ? '0' + v : v;
                     // }).join(':');
-                    result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
-                    dom.table.myHourDiff = result <= 1 ? 1 : result >= 8 ? 8 : result;
+                    console.log(TimeUtil.getHour(dom.table.end_time) == 12);
+                    if (TimeUtil.getHour(dom.table.end_time) == 12) {
+                        result = result[0];
+                        console.log(result)
+                    } else {
+                        result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
+                    }
+
+                    if (TimeUtil.getHour(dom.table.start_time) <= 12 && TimeUtil.getHour(dom.table.end_time) >= 13) {
+                        dom.table.myHourDiff = result <= 1 ? 0 : result >= 8 ? 8 : result - 1 < 1 ? 1 : result -1;
+                    } else {
+                        dom.table.myHourDiff = result <= 1 ? 1 : result >= 8 ? 8 : result;
+                    }
                 }
             }
 

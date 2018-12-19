@@ -22,7 +22,8 @@
                 'D': {
                     pattern: /[012345]/,
                 }
-            }
+            },
+            placeholder: "__ : __"
         });
 
         // $('.disableTimeRangesExample').timepicker({

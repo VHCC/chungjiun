@@ -414,6 +414,12 @@
                         ];
                         return result;
                     }
+                },
+                getHour: function (timeFormatted) {
+                    // Extract hours, minutes and seconds
+                    var parts = timeFormatted.split(':');
+                    // compute  and return total seconds
+                    return parts[0]
                 }
 
 
