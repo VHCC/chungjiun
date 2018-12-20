@@ -403,7 +403,6 @@
                     // result = result.map(function (v) {
                     //     return v < 10 ? '0' + v : v;
                     // }).join(':');
-                    console.log(TimeUtil.getHour(dom.table.end_time) == 12);
                     if (TimeUtil.getHour(dom.table.end_time) == 12) {
                         result = result[0];
                         console.log(result)
@@ -412,7 +411,8 @@
                     }
 
                     if (TimeUtil.getHour(dom.table.start_time) <= 12 && TimeUtil.getHour(dom.table.end_time) >= 13) {
-                        dom.table.myHourDiff = result <= 1 ? 0 : result >= 8 ? 8 : result - 1 < 1 ? 1 : result -1;
+                        console.log(result);
+                        dom.table.myHourDiff = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 1 : result -1;
                     } else {
                         dom.table.myHourDiff = result <= 1 ? 1 : result >= 8 ? 8 : result;
                     }
