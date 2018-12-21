@@ -384,9 +384,13 @@
             // 休假規則，未滿一小算一小
             $scope.getHourDiff = function (dom) {
                 if (dom.tableTimeStart && dom.tableTimeEnd) {
-                    var difference = Math.abs(TimeUtil.toSeconds(dom.tableTimeStart) - TimeUtil.toSeconds(dom.tableTimeEnd));
                     dom.table.start_time = dom.tableTimeStart;
                     dom.table.end_time = dom.tableTimeEnd;
+                    if (TimeUtil.getHour(dom.tableTimeEnd) == 12) {
+                        dom.table.end_time = "12:00";
+                    }
+
+                    var difference = Math.abs(TimeUtil.toSeconds(dom.table.start_time) - TimeUtil.toSeconds(dom.table.end_time));
                     // compute hours, minutes and seconds
                     var result = [
                         // an hour has 3600 seconds so we have to compute how often 3600 fits
@@ -404,7 +408,9 @@
                     //     return v < 10 ? '0' + v : v;
                     // }).join(':');
                     if (TimeUtil.getHour(dom.table.end_time) == 12) {
-                        result = result[0];
+                        console.log(result[0])
+                        console.log(result[1])
+                        result = result[0] + (result[1] > 0 ? 0.5 : 0);
                         console.log(result)
                     } else {
                         result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
