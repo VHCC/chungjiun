@@ -421,100 +421,105 @@
                                 isFindExecutiveCheck: null
                             }
                             console.log(formDataTable);
-                            // 取得 Table Data
-                            WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
-                                .success(function (res) {
-                                    var workIndex = tableIndex;
-                                    console.log("AAA" + workIndex);
-                                    // tableIndex++;
-                                    // 填入表單資訊
-                                    $scope.tableData = {};
-                                    for (var index = 0; index < res.payload.length; index++) {
-                                        console.log(res.payload[index]._id);
-                                        var detail = {
-                                            tableID: res.payload[index]._id,
-                                            prjDID: res.payload[index].prjDID,
-                                            creatorDID: res.payload[index].creatorDID,
-                                            create_formDate: res.payload[index].create_formDate,
-                                            //MON
-                                            mon_hour: res.payload[index].mon_hour,
-                                            mon_memo: res.payload[index].mon_memo,
-                                            mon_hour_add: res.payload[index].mon_hour_add,
-                                            mon_memo_add: res.payload[index].mon_memo_add,
-                                            //TUE
-                                            tue_hour: res.payload[index].tue_hour,
-                                            tue_memo: res.payload[index].tue_memo,
-                                            tue_hour_add: res.payload[index].tue_hour_add,
-                                            tue_memo_add: res.payload[index].tue_memo_add,
-                                            //WES
-                                            wes_hour: res.payload[index].wes_hour,
-                                            wes_memo: res.payload[index].wes_memo,
-                                            wes_hour_add: res.payload[index].wes_hour_add,
-                                            wes_memo_add: res.payload[index].wes_memo_add,
-                                            //THU
-                                            thu_hour: res.payload[index].thu_hour,
-                                            thu_memo: res.payload[index].thu_memo,
-                                            thu_hour_add: res.payload[index].thu_hour_add,
-                                            thu_memo_add: res.payload[index].thu_memo_add,
-                                            //FRI
-                                            fri_hour: res.payload[index].fri_hour,
-                                            fri_memo: res.payload[index].fri_memo,
-                                            fri_hour_add: res.payload[index].fri_hour_add,
-                                            fri_memo_add: res.payload[index].fri_memo_add,
-                                            //SAT
-                                            sat_hour: res.payload[index].sat_hour,
-                                            sat_memo: res.payload[index].sat_memo,
-                                            sat_hour_add: res.payload[index].sat_hour_add,
-                                            sat_memo_add: res.payload[index].sat_memo_add,
-                                            //SUN
-                                            sun_hour: res.payload[index].sun_hour,
-                                            sun_memo: res.payload[index].sun_memo,
-                                            sun_hour_add: res.payload[index].sun_hour_add,
-                                            sun_memo_add: res.payload[index].sun_memo_add,
-                                            //RIGHT
-                                            isSendReview: res.payload[index].isSendReview,
-                                            isManagerCheck: res.payload[index].isManagerCheck,
-                                            isExecutiveCheck: res.payload[index].isExecutiveCheck,
 
-                                            // Reject
-                                            isManagerReject: res.payload[index].isManagerReject,
-                                            managerReject_memo: res.payload[index].managerReject_memo,
+                            (function(formDataTable){      //立刻執行函數
+                                setTimeout(function (){
+                                    // 取得 Table Data
+                                    WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
+                                        .success(function (res) {
+                                            var workIndex = tableIndex;
+                                            console.log("AAA" + workIndex);
+                                            // tableIndex++;
+                                            // 填入表單資訊
+                                            $scope.tableData = {};
+                                            for (var index = 0; index < res.payload.length; index++) {
+                                                console.log(res.payload[index]._id);
+                                                var detail = {
+                                                    tableID: res.payload[index]._id,
+                                                    prjDID: res.payload[index].prjDID,
+                                                    creatorDID: res.payload[index].creatorDID,
+                                                    create_formDate: res.payload[index].create_formDate,
+                                                    //MON
+                                                    mon_hour: res.payload[index].mon_hour,
+                                                    mon_memo: res.payload[index].mon_memo,
+                                                    mon_hour_add: res.payload[index].mon_hour_add,
+                                                    mon_memo_add: res.payload[index].mon_memo_add,
+                                                    //TUE
+                                                    tue_hour: res.payload[index].tue_hour,
+                                                    tue_memo: res.payload[index].tue_memo,
+                                                    tue_hour_add: res.payload[index].tue_hour_add,
+                                                    tue_memo_add: res.payload[index].tue_memo_add,
+                                                    //WES
+                                                    wes_hour: res.payload[index].wes_hour,
+                                                    wes_memo: res.payload[index].wes_memo,
+                                                    wes_hour_add: res.payload[index].wes_hour_add,
+                                                    wes_memo_add: res.payload[index].wes_memo_add,
+                                                    //THU
+                                                    thu_hour: res.payload[index].thu_hour,
+                                                    thu_memo: res.payload[index].thu_memo,
+                                                    thu_hour_add: res.payload[index].thu_hour_add,
+                                                    thu_memo_add: res.payload[index].thu_memo_add,
+                                                    //FRI
+                                                    fri_hour: res.payload[index].fri_hour,
+                                                    fri_memo: res.payload[index].fri_memo,
+                                                    fri_hour_add: res.payload[index].fri_hour_add,
+                                                    fri_memo_add: res.payload[index].fri_memo_add,
+                                                    //SAT
+                                                    sat_hour: res.payload[index].sat_hour,
+                                                    sat_memo: res.payload[index].sat_memo,
+                                                    sat_hour_add: res.payload[index].sat_hour_add,
+                                                    sat_memo_add: res.payload[index].sat_memo_add,
+                                                    //SUN
+                                                    sun_hour: res.payload[index].sun_hour,
+                                                    sun_memo: res.payload[index].sun_memo,
+                                                    sun_hour_add: res.payload[index].sun_hour_add,
+                                                    sun_memo_add: res.payload[index].sun_memo_add,
+                                                    //RIGHT
+                                                    isSendReview: res.payload[index].isSendReview,
+                                                    isManagerCheck: res.payload[index].isManagerCheck,
+                                                    isExecutiveCheck: res.payload[index].isExecutiveCheck,
 
-                                            isExecutiveReject: res.payload[index].isExecutiveReject,
-                                            executiveReject_memo: res.payload[index].executiveReject_memo,
+                                                    // Reject
+                                                    isManagerReject: res.payload[index].isManagerReject,
+                                                    managerReject_memo: res.payload[index].managerReject_memo,
 
-                                            userMonthSalary: res.payload[index].userMonthSalary,
+                                                    isExecutiveReject: res.payload[index].isExecutiveReject,
+                                                    executiveReject_memo: res.payload[index].executiveReject_memo,
+
+                                                    userMonthSalary: res.payload[index].userMonthSalary,
 
 
-                                            // TOTAL
-                                            hourTotal: parseFloat(res.payload[index].mon_hour) +
-                                            parseFloat(res.payload[index].tue_hour) +
-                                            parseFloat(res.payload[index].wes_hour) +
-                                            parseFloat(res.payload[index].thu_hour) +
-                                            parseFloat(res.payload[index].fri_hour) +
-                                            parseFloat(res.payload[index].sat_hour) +
-                                            parseFloat(res.payload[index].sun_hour),
-                                            hourAddTotal: res.payload[index].mon_hour_add +
-                                            res.payload[index].tue_hour_add +
-                                            res.payload[index].wes_hour_add +
-                                            res.payload[index].thu_hour_add +
-                                            res.payload[index].fri_hour_add +
-                                            res.payload[index].sat_hour_add +
-                                            res.payload[index].sun_hour_add,
-                                        };
-                                        // console.log("workIndex= " + workIndex);
-                                        // $scope.tablesItems.push(detail);
-                                        console.log("BBB" + workIndex);
-                                        $scope.tables[workIndex].tablesItems.push(detail);
-                                    }
-                                    tableIndex++;
-                                    // loadWorkOffTable(cookies.get('userDID'), 1);
-                                    // loadNH(1);
-                                })
-                                .error(function () {
-                                    console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
-                                })
-                            // manipulate finish.
+                                                    // TOTAL
+                                                    hourTotal: parseFloat(res.payload[index].mon_hour) +
+                                                    parseFloat(res.payload[index].tue_hour) +
+                                                    parseFloat(res.payload[index].wes_hour) +
+                                                    parseFloat(res.payload[index].thu_hour) +
+                                                    parseFloat(res.payload[index].fri_hour) +
+                                                    parseFloat(res.payload[index].sat_hour) +
+                                                    parseFloat(res.payload[index].sun_hour),
+                                                    hourAddTotal: res.payload[index].mon_hour_add +
+                                                    res.payload[index].tue_hour_add +
+                                                    res.payload[index].wes_hour_add +
+                                                    res.payload[index].thu_hour_add +
+                                                    res.payload[index].fri_hour_add +
+                                                    res.payload[index].sat_hour_add +
+                                                    res.payload[index].sun_hour_add,
+                                                };
+                                                // console.log("workIndex= " + workIndex);
+                                                // $scope.tablesItems.push(detail);
+                                                console.log("BBB" + workIndex);
+                                                $scope.tables[workIndex].tablesItems.push(detail);
+                                            }
+                                            tableIndex++;
+                                            // loadWorkOffTable(cookies.get('userDID'), 1);
+                                            // loadNH(1);
+                                        })
+                                        .error(function () {
+                                            console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
+                                        })
+                                    // manipulate finish.
+                                },200);
+                            })(formDataTable);
 
                         }
                         loadWorkOffTable(cookies.get('userDID'), 1);
