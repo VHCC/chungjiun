@@ -419,7 +419,7 @@
                                 isFindManagerCheck: null,
                                 isFindExecutiveCheck: null
                             }
-                            // console.log(formDataTable);
+                            console.log(formDataTable);
                             // 取得 Table Data
                             WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                                 .success(function (res) {
