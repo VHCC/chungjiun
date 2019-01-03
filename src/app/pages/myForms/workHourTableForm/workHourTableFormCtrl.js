@@ -373,6 +373,7 @@
                         var needUpdateWorkTableIDArray = [];
                         for (var majorIndex = 0; majorIndex < res.payload.length; majorIndex ++) {
                             var tableIndex = 0;
+                            console.log(res.payload);
                             var workItemCount = res.payload[majorIndex].formTables.length;
                             // console.log("tables= " + res.payload.length);
 
