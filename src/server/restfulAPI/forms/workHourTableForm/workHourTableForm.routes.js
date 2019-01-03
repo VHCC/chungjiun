@@ -143,7 +143,7 @@ module.exports = function (app) {
 
         WorkHourForm.find(query)
             .sort({
-                month: 1,
+                month: -1,
             })
             .exec(function (err, workHourForms) {
                 if (err) {
@@ -270,7 +270,6 @@ module.exports = function (app) {
         if (req.body.isFindExecutiveCheck !== null) {
             query.isExecutiveCheck = req.body.isFindExecutiveCheck;
         }
-        // console.log(query);
         WorkHourTableForm.find(query, function (err, tables) {
             if (err) {
                 res.send(err);
