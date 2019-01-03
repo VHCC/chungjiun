@@ -430,6 +430,7 @@
                                     // 填入表單資訊
                                     $scope.tableData = {};
                                     for (var index = 0; index < res.payload.length; index++) {
+                                        console.log(res.payload[index]._id);
                                         var detail = {
                                             tableID: res.payload[index]._id,
                                             prjDID: res.payload[index].prjDID,
