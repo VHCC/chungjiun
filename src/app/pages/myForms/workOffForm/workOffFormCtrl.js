@@ -87,7 +87,7 @@
                                 })
                         }
 
-                        if ($scope.roleType === '2') {
+                        if ($scope.roleType === '2' || $scope.roleType === '100') {
                             var underling = []
                             for (var x = 0; x < allUsers.length; x++) {
                                 if (allUsers[x].bossID === cookies.get('userDID')) {
@@ -114,11 +114,11 @@
                     });
             }
 
-            User.findManagers()
+            User.getAllUsers()
                 .success(function (allManagers) {
-                    $scope.projectManagers = [];
+                    $scope.usersBosses = [];
                     for (var i = 0; i < allManagers.length; i++) {
-                        $scope.projectManagers[i] = {
+                        $scope.usersBosses[i] = {
                             value: allManagers[i]._id,
                             name: allManagers[i].name
                         };
@@ -274,7 +274,7 @@
                 for (index = 0; index < $scope.specificUserTablesItems.length; index ++) {
                     if ($scope.specificUserTablesItems[index].workOffType === workOffType && $scope.specificUserTablesItems[index].isExecutiveCheck) {
                         result += $scope.getHourDiffByTime($scope.specificUserTablesItems[index].start_time
-                            , $scope.specificUserTablesItems[index].end_time);
+                            , $scope.specificUserTablesItems[index].end_time, $scope.specificUserTablesItems[index].workOffType);
                     }
                 }
                 switch (workOffType) {
@@ -286,7 +286,7 @@
                     case 1: {
                         return result;
                     }
-                    // 補
+                    // 補休
                     case 2: {
                         return result;
                     }
@@ -294,18 +294,24 @@
                     case 3: {
                         return result / 8;
                     }
+                    // 婚
                     case 4:
-                        return result;
+                        return result / 8;
+                    // 喪
                     case 5:
                         return result / 8;
+                    // 公
                     case 6:
                         return result;
+                    // 公傷
                     case 7:
                         return result / 8;
+                    // 產
                     case 8:
-                        return result;
+                        return result / 8;
+                    // 陪產
                     case 9:
-                        return result;
+                        return result / 8;
                 }
             }
 
@@ -355,7 +361,7 @@
             $scope.showBoss = function (bossID) {
                 var selected = [];
                 if (bossID) {
-                    selected = $filter('filter')($scope.projectManagers, {
+                    selected = $filter('filter')($scope.usersBosses, {
                         value: bossID
                     });
                 }
@@ -407,27 +413,36 @@
                     // result = result.map(function (v) {
                     //     return v < 10 ? '0' + v : v;
                     // }).join(':');
+
                     if (TimeUtil.getHour(dom.table.end_time) == 12) {
-                        console.log(result[0])
-                        console.log(result[1])
+                        // console.log(result[0])
+                        // console.log(result[1])
                         result = result[0] + (result[1] > 0 ? 0.5 : 0);
-                        console.log(result)
+                        // console.log(result)
                     } else {
                         result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
                     }
-
+                    var resultFinal;
                     if (TimeUtil.getHour(dom.table.start_time) <= 12 && TimeUtil.getHour(dom.table.end_time) >= 13) {
-                        console.log(result);
-                        dom.table.myHourDiff = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 1 : result -1;
+                        resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 1 : result -1;
                     } else {
-                        dom.table.myHourDiff = result <= 1 ? 1 : result >= 8 ? 8 : result;
+                        resultFinal = result <= 1 ? 1 : result >= 8 ? 8 : result;
                     }
+
+                    dom.table.myHourDiff = resultFinal;
+                    if (dom.table.workOffType == 3 || dom.table.workOffType == 4 || dom.table.workOffType == 5
+                        || dom.table.workOffType == 7 ||dom.table.workOffType == 8 || dom.table.workOffType == 9) {
+
+                        dom.table.myHourDiff = resultFinal <= 4 ? 4 : 8;
+                    }
+
                 }
             }
 
-            $scope.getHourDiffByTime = function (start, end) {
+            $scope.getHourDiffByTime = function (start, end, type) {
                 if (start && end) {
                     var difference = Math.abs(TimeUtil.toSeconds(start) - TimeUtil.toSeconds(end));
+
                     // compute hours, minutes and seconds
                     var result = [
                         // an hour has 3600 seconds so we have to compute how often 3600 fits
@@ -444,8 +459,54 @@
                     // result = result.map(function (v) {
                     //     return v < 10 ? '0' + v : v;
                     // }).join(':');
-                    result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
-                    return result <= 1 ? 1 : result >= 8 ? 8 : result;
+
+                    // result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
+                    // return result <= 1 ? 1 : result >= 8 ? 8 : result;
+
+                    if (TimeUtil.getHour(end) == 12) {
+                        // console.log(result[0])
+                        // console.log(result[1])
+                        result = result[0] + (result[1] > 0 ? 0.5 : 0);
+                        // console.log(result)
+                    } else {
+                        result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
+                    }
+                    var resultFinal;
+                    if (TimeUtil.getHour(start) <= 12 && TimeUtil.getHour(end) >= 13) {
+                        resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 1 : result -1;
+                    } else {
+                        resultFinal = result <= 1 ? 1 : result >= 8 ? 8 : result;
+                    }
+
+                    if (this.workOffType !== undefined) {
+                        // 請假單
+                        if (this.workOffType.type == 3 || this.workOffType.type == 4 || this.workOffType.type == 5
+                            || this.workOffType.type == 7 || this.workOffType.type == 8 || this.workOffType.type == 9) {
+
+                            resultFinal = result <= 4 ? 4 : 8;
+                        }
+
+                        return resultFinal;
+                    } else if (this.table != undefined) {
+                        // 主管審核、行政審核
+                        if (this.table.workOffType == 3 || this.table.workOffType == 4 || this.table.workOffType == 5
+                            || this.table.workOffType == 7 || this.table.workOffType == 8 || this.table.workOffType == 9) {
+
+                            resultFinal = result <= 4 ? 4 : 8;
+                        }
+
+                        return resultFinal;
+                    } else {
+                        // 總攬
+                        if (type == 3 || type == 4 || type == 5
+                            || type == 7 || type == 8 || type == 9) {
+
+                            resultFinal = result <= 4 ? 4 : 8;
+                        }
+
+                        return resultFinal;
+                    }
+
                 }
             }
 
