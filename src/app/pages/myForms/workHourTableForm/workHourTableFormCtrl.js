@@ -371,7 +371,8 @@
                 .success(function (res) {
                     if (res.payload.length > 0) {
                         var needUpdateWorkTableIDArray = [];
-                        for (var majorIndex = 0; majorIndex < res.payload.length; majorIndex ++) {
+                        var majorIndex = 0
+                        for (majorIndex = 0; majorIndex < res.payload.length; majorIndex ++) {
                             var tableIndex = 0;
                             console.log(res.payload);
                             var workItemCount = res.payload[majorIndex].formTables.length;
@@ -424,7 +425,8 @@
                             WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                                 .success(function (res) {
                                     var workIndex = tableIndex;
-                                    tableIndex++;
+                                    console.log("AAA" + workIndex);
+                                    // tableIndex++;
                                     // 填入表單資訊
                                     $scope.tableData = {};
                                     for (var index = 0; index < res.payload.length; index++) {
@@ -501,8 +503,10 @@
                                         };
                                         // console.log("workIndex= " + workIndex);
                                         // $scope.tablesItems.push(detail);
+                                        console.log("BBB" + workIndex);
                                         $scope.tables[workIndex].tablesItems.push(detail);
                                     }
+                                    tableIndex++;
                                     // loadWorkOffTable(cookies.get('userDID'), 1);
                                     // loadNH(1);
                                 })
@@ -510,6 +514,7 @@
                                     console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
                                 })
                             // manipulate finish.
+
                         }
                         loadWorkOffTable(cookies.get('userDID'), 1);
                         loadNH(1);
