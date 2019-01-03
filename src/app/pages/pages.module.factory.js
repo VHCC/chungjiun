@@ -424,25 +424,25 @@
                 getWorkOffString: function (type) {
                     switch (type) {
                         case 0:
-                            return "事假";
+                            return "事假"; // Hour
                         case 1:
-                            return "病假";
+                            return "病假"; // Hour
                         case 2:
-                            return "補休";
+                            return "補休"; // Hour
                         case 3:
-                            return "特休";
+                            return "特休"; // Day
                         case 4:
-                            return "婚假";
+                            return "婚假"; // Day
                         case 5:
-                            return "喪假";
+                            return "喪假"; // Day
                         case 6:
-                            return "公假";
+                            return "公假"; // Hour
                         case 7:
-                            return "公傷假";
+                            return "公傷假"; // Day
                         case 8:
-                            return "產假";
+                            return "產假"; // Day
                         case 9:
-                            return "陪產假";
+                            return "陪產假"; // Day
                         case 1001:
                             return "特殊假";
                     }

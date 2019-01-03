@@ -8,15 +8,15 @@
                     <td style="vertical-align: inherit; text-align: center" width="100px"></td>
                     <td style="vertical-align: inherit; text-align: center">病假(時)</td>
                     <td style="vertical-align: inherit; text-align: center">事假(時)</td>
-                    <td style="vertical-align: inherit; text-align: center">補假(時)</td>
+                    <td style="vertical-align: inherit; text-align: center">補休(時)</td>
 
                     <td style="vertical-align: inherit; text-align: center">特休(天)</td>
-                    <td style="vertical-align: inherit; text-align: center">婚假(時)</td>
+                    <td style="vertical-align: inherit; text-align: center">婚假(天)</td>
                     <td style="vertical-align: inherit; text-align: center">喪假(天)</td>
                     <td style="vertical-align: inherit; text-align: center">公假(時)</td>
                     <td style="vertical-align: inherit; text-align: center">公傷假(天)</td>
-                    <td style="vertical-align: inherit; text-align: center">產假(時)</td>
-                    <td style="vertical-align: inherit; text-align: center">陪產假(時)</td>
+                    <td style="vertical-align: inherit; text-align: center">產假(天)</td>
+                    <td style="vertical-align: inherit; text-align: center">陪產假(天)</td>
                 </tr>
                 </thead>
 
@@ -191,7 +191,7 @@
                             <!--workOffFormCtrlVm.loginUserHolidayForm.rest_private)}}-->
                         <!--</t>-->
                     </td>
-                    <!--補假(時)-->
+                    <!--補休(時)-->
                     <td class="form-group " style="vertical-align: inherit;">
                         <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_observed}}
                         </t>
@@ -242,7 +242,7 @@
                     <td style="vertical-align: inherit; text-align: center">假別</td>
 
                     <td style="vertical-align: inherit; text-align: center" width="180px">時間</td>
-                    <td style="vertical-align: inherit; text-align: center">時數／天數</td>
+                    <td style="vertical-align: inherit; text-align: center">時數</td>
                     <td style="vertical-align: inherit; text-align: center">狀態</td>
                     <td style="vertical-align: inherit; text-align: center">經理確認</td>
                     <td style="vertical-align: inherit; text-align: center">行政確認</td>
@@ -427,7 +427,7 @@
         </section>
 
     </uib-tab>
-    <uib-tab heading="主管審核" ng-if="roleType === '2'"
+    <uib-tab heading="主管審核" ng-if="roleType === '2' || roleType === '100'"
              ng-click="initUser()">
         <div ng-include="'app/pages/myForms/forms/workOffForm_BossTab.html'"></div>
     </uib-tab>
