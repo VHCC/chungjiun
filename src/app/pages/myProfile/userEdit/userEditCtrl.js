@@ -197,6 +197,8 @@
         $scope.selectUserProfile = function (user) {
             vm.userMonthSalary = user.userMonthSalary;
             vm.machineDID = user.machineDID;
+            vm.residualRestHour = user.residualRestHour;
+            vm.isSetResidualRestHour = user.isSetResidualRestHour;
 
             // user Role
             var selectedRole = [];
@@ -236,6 +238,22 @@
             } else {
                 return user.name;
             }
+        }
+
+        $scope.setUserResidualRestHour = function () {
+            var formData = {
+                userDID: vm.user.selected._id,
+                residualRestHour: vm.residualRestHour,
+                isSetResidualRestHour: true,
+            }
+
+            User.setUserResidualRestHour(formData)
+                .success(function (res) {
+                    toastr['success'](vm.user.selected.name + '人員 補休設定完成', '人事資料變更');
+                    vm.isSetResidualRestHour = true;
+                    $scope.fetchAllUsers();
+                })
+
         }
     }
 

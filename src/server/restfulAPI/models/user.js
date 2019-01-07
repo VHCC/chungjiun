@@ -50,7 +50,18 @@ module.exports = mongoose.model('User', {
     workStatus: {
         type: Boolean,
         default: false
-    }
+    },
 
+    // 補休
+    residualRestHour: {
+        type: String,
+        default: 0
+    },
+
+    // 設定過補休
+    isSetResidualRestHour: {
+        type: Boolean,
+        default: false
+    },
 
 });

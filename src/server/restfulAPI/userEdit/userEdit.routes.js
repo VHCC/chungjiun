@@ -72,4 +72,24 @@ module.exports = function (app) {
             });
         })
     })
+
+
+    app.post(global.apiUrl.post_user_set_residual_rest_hour, function (req, res) {
+        User.update({
+            _id: req.body.userDID,
+        }, {
+            $set: {
+                residualRestHour: req.body.residualRestHour,
+                isSetResidualRestHour: req.body.isSetResidualRestHour,
+            }
+        }, function (err) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        })
+    })
 }

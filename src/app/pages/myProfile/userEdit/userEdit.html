@@ -212,6 +212,36 @@
                     </div>
                 </div>
 
+                <!--補休-->
+                <div class="row" ng-if="userEditCtrlVm.user.selected">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 control-label" style="color:blue">補休預設時數</label>
+                            <div class="col-md-3" >
+                                <input type="text"
+                                       ng-model="userEditCtrlVm.residualRestHour"
+                                       id="userResidualRestHour"
+                                       ng-disabled="userEditCtrlVm.isSetResidualRestHour"
+                                       class="form-control"
+                                       placeholder="請輸入補休預設時數"
+                                       value=" {{userEditCtrlVm.residualRestHour}}">
+                            </div>
+                            <label class="col-md-6 control-label"
+                                   ng-show="userEditCtrlVm.isSetResidualRestHour"
+                                   style="color:red">
+                                已設定過，不可更改
+                            </label>
+                            <div class="col-md-3" ng-if="!userEditCtrlVm.isSetResidualRestHour">
+                                <button type="button" class="btn btn-danger btn-with-icon"
+                                ng-click="setUserResidualRestHour()">
+                                    <i class="ion-android-warning"></i>
+                                    設定（注意：設定後即不可更動）
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!--ERM狀態-->
                 <div class="row" ng-if="userEditCtrlVm.user.selected">
                     <div class="col-md-6">
