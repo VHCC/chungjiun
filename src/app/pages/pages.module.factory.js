@@ -26,6 +26,10 @@
                 },
                 updateUserProfile: function (formData) {
                     return http.post('/api/userUpdateProfile', formData);
+                },
+
+                setUserResidualRestHour: function (formData) {
+                    return http.post('/api/setUserResidualRestHour', formData)
                 }
             }
         }])
