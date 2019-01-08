@@ -58,6 +58,7 @@
                     // $scope.userHourSalary = user.userHourSalary;
                     $scope.userMonthSalary = user.userMonthSalary;
                     $scope.bossID = user.bossID;
+                    $scope.residualRestHour = user.residualRestHour;
                 })
 
             Project.findAll()
@@ -155,6 +156,7 @@
                             vm.loginUserHolidayForm.calculate_workinjury = $scope.showWorkOffCount(7);
                             vm.loginUserHolidayForm.calculate_maternity = $scope.showWorkOffCount(8);
                             vm.loginUserHolidayForm.calculate_paternity = $scope.showWorkOffCount(9);
+                            vm.loginUserHolidayForm.person_residual_rest_hour = parseInt($scope.residualRestHour);
 
                         } else {
                             HolidayDataForms.createForms(formData)
@@ -288,7 +290,8 @@
                     }
                     // 補休
                     case 2: {
-                        return result;
+                         ;
+                        return result ;
                     }
                     // 特
                     case 3: {
