@@ -138,7 +138,7 @@
                             console.log(JSON.stringify(prjs));
                             console.log(prjs.length);
                             // 總案編號自動跳號 +1
-                            $scope.mainProject.code = prjs.length + 1 > 10 ? prjs.length + 1: "0" + (prjs.length + 1);
+                            $scope.mainProject.code = prjs.length >= 10 ? prjs.length : "0" + (prjs.length);
                             $scope.mainProject.new = "";
                             $scope.year = new Date().getFullYear() - 1911;
                         }
