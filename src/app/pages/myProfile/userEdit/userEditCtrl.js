@@ -226,6 +226,14 @@
 
             vm.workStatus = user.workStatus;
 
+            $('.workOffFormNumberInput').mask('00.Z', {
+                translation: {
+                    'Z': {
+                        pattern: /[05]/,
+                    }
+                }
+            });
+
         }
 
         $scope.showUserStatus = function (user) {

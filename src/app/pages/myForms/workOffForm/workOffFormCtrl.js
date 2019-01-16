@@ -156,7 +156,7 @@
                             vm.loginUserHolidayForm.calculate_workinjury = $scope.showWorkOffCount(7);
                             vm.loginUserHolidayForm.calculate_maternity = $scope.showWorkOffCount(8);
                             vm.loginUserHolidayForm.calculate_paternity = $scope.showWorkOffCount(9);
-                            vm.loginUserHolidayForm.person_residual_rest_hour = parseInt($scope.residualRestHour);
+                            vm.loginUserHolidayForm.person_residual_rest_hour = parseFloat($scope.residualRestHour);
 
                         } else {
                             HolidayDataForms.createForms(formData)
@@ -827,32 +827,43 @@
             // -------------選取 指定人員之 假期確認表 ----------------------
             $scope.findHolidayFormByUserDID = function (userDID) {
                 var formData = {
-                    year: thisYear,
-                    creatorDID: userDID,
-                };
-                HolidayDataForms.findFormByUserDID(formData)
-                    .success(function (res) {
-                        if (res.payload.length > 0) {
-                            vm.holidayForm = res.payload[0];
-                            console.log(vm.holidayForm);
-                            vm.holidayForm.calculate_sick = $scope.showWorkOffCount(1);
-                            vm.holidayForm.calculate_private = $scope.showWorkOffCount(0);
-                            vm.holidayForm.calculate_observed = $scope.showWorkOffCount(2);
-                            vm.holidayForm.calculate_special = $scope.showWorkOffCount(3);
-                            vm.holidayForm.calculate_married = $scope.showWorkOffCount(4);
-                            vm.holidayForm.calculate_mourning = $scope.showWorkOffCount(5);
-                            vm.holidayForm.calculate_official = $scope.showWorkOffCount(6);
-                            vm.holidayForm.calculate_workinjury = $scope.showWorkOffCount(7);
-                            vm.holidayForm.calculate_maternity = $scope.showWorkOffCount(8);
-                            vm.holidayForm.calculate_paternity = $scope.showWorkOffCount(9);
-                            console.log(vm.holidayForm);
-                        } else {
-                            HolidayDataForms.createForms(formData)
-                                .success(function (res) {
-                                    vm.holidayForm = res.payload;
-                                })
-                        }
-                        fetchWorkOffTableData(userDID, 2);
+                    userDID: userDID,
+                }
+                User.findUserByUserDID(formData)
+                    .success(function (user) {
+                        // $scope.userHourSalary = user.userHourSalary;
+                        $scope.preciseResidualRestHour = user.residualRestHour;
+
+                        var formData = {
+                            year: thisYear,
+                            creatorDID: userDID,
+                        };
+                        HolidayDataForms.findFormByUserDID(formData)
+                            .success(function (res) {
+                                if (res.payload.length > 0) {
+                                    vm.holidayForm = res.payload[0];
+                                    console.log(vm.holidayForm);
+                                    vm.holidayForm.calculate_sick = $scope.showWorkOffCount(1);
+                                    vm.holidayForm.calculate_private = $scope.showWorkOffCount(0);
+                                    vm.holidayForm.calculate_observed = $scope.showWorkOffCount(2);
+                                    vm.holidayForm.calculate_special = $scope.showWorkOffCount(3);
+                                    vm.holidayForm.calculate_married = $scope.showWorkOffCount(4);
+                                    vm.holidayForm.calculate_mourning = $scope.showWorkOffCount(5);
+                                    vm.holidayForm.calculate_official = $scope.showWorkOffCount(6);
+                                    vm.holidayForm.calculate_workinjury = $scope.showWorkOffCount(7);
+                                    vm.holidayForm.calculate_maternity = $scope.showWorkOffCount(8);
+                                    vm.holidayForm.calculate_paternity = $scope.showWorkOffCount(9);
+                                    vm.holidayForm.person_residual_rest_hour = parseFloat($scope.preciseResidualRestHour);
+                                    console.log(vm.holidayForm);
+                                } else {
+                                    HolidayDataForms.createForms(formData)
+                                        .success(function (res) {
+                                            vm.holidayForm = res.payload;
+                                        })
+                                }
+                                fetchWorkOffTableData(userDID, 2);
+                            })
+
                     })
             }
 
