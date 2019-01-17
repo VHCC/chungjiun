@@ -21,6 +21,8 @@ module.exports = mongoose.model('Project', {
         required: true,
     },
     // 類型：
+
+
     // O
     // 設計 01
     // 監造 02
@@ -29,6 +31,19 @@ module.exports = mongoose.model('Project', {
     // 總案 05
     // 專案管理 06
     // 其他 07
+
+    // ======= 20190117
+    // 1.設計
+    // 2.監造
+    // 3.規劃
+    // 4.專管
+    // 5.總案
+    // 6.服務
+    // 7.行政
+    // 8.(空白)
+    // 9.其他
+
+
     type: {
         type: String,
         required: true,
