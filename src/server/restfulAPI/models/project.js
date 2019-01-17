@@ -40,7 +40,7 @@ module.exports = mongoose.model('Project', {
     // 5.總案
     // 6.服務
     // 7.行政
-    // 8.(空白)
+    // 8.投標
     // 9.其他
 
 

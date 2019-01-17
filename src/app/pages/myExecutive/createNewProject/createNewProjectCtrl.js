@@ -88,7 +88,7 @@
             {label: '總案-5', value: '5'},
             {label: '服務-6', value: '6'},
             {label: '行政-7', value: '7'},
-            {label: '(空白)-8', value: '8'},
+            {label: '投標-8', value: '8'},
             {label: '其他-9', value: '9'},
         ];
 
