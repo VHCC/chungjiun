@@ -331,7 +331,7 @@
                         // 5.總案
                         // 6.服務
                         // 7.行政
-                        // 8.(空白)
+                        // 8.投標
                         // 9.其他
 
                         // case "0":
@@ -351,7 +351,7 @@
                         case "7":
                             return "行政"
                         case "8":
-                            return ""
+                            return "投標"
                         case "9":
                             return "其他"
                         default:
