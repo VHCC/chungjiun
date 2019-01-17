@@ -72,13 +72,24 @@
 
         vm.prjTypes = [
             // {label: '規劃-0', type: '0'},
+            // 1.設計
+            // 2.監造
+            // 3.規劃
+            // 4.專管
+            // 5.總案
+            // 6.服務
+            // 7.行政
+            // 8.(空白)
+            // 9.其他
             {label: '設計-1', value: '1'},
             {label: '監造-2', value: '2'},
             {label: '規劃-3', value: '3'},
-            {label: '服務-4', value: '4'},
+            {label: '專管-4', value: '4'},
             {label: '總案-5', value: '5'},
-            {label: '專案管理-6', value: '6'},
-            {label: '其他-7', value: '7'},
+            {label: '服務-6', value: '6'},
+            {label: '行政-7', value: '7'},
+            {label: '(空白)-8', value: '8'},
+            {label: '其他-9', value: '9'},
         ];
 
         $scope.resetPrjNumber = function() {
