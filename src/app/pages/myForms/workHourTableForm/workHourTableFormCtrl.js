@@ -518,7 +518,7 @@
                                             console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
                                         })
                                     // manipulate finish.
-                                },200);
+                                },400);
                             })(formDataTable);
 
                         }
