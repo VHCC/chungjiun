@@ -368,6 +368,8 @@
                 vm.relatedProjects = allRelatedPrjDatas.slice();
             }
 
+            var tableSort = [];
+
             WorkHourUtil.getWorkHourForm(getData)
                 .success(function (res) {
                     if (res.payload.length > 0) {
@@ -422,11 +424,13 @@
                                 isFindExecutiveCheck: null
                             };
 
+                            tableSort.push(workTableIDArray);
+                            console.log(tableSort);
+
                             console.log(formDataTable);
                             // 取得 Table Data
                             WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                                 .success(function (res) {
-                                    sleep(3000);
                                     var workIndex = tableIndex;
                                     console.log("AAA" + workIndex);
                                     // tableIndex++;
@@ -509,7 +513,12 @@
                                         // console.log("workIndex= " + workIndex);
                                         // $scope.tablesItems.push(detail);
                                         console.log("BBB" + workIndex);
-                                        $scope.tables[workIndex].tablesItems.push(detail);
+
+                                        if (tableSort[0].indexOf(res.payload[index]._id)) {
+                                            $scope.tables[0].tablesItems.push(detail);
+                                        } else {
+                                            $scope.tables[1].tablesItems.push(detail);
+                                        }
                                     }
                                     tableIndex++;
                                     // loadWorkOffTable(cookies.get('userDID'), 1);
