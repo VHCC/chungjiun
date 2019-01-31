@@ -31,8 +31,7 @@ module.exports = function (app) {
                     create_formDate: req.body.create_formDate,
                 }
                 findData.push(target);
-            }
-            ;
+            };
             // console.log(findData);
             // 刪除既有 工時表格
             WorkHourTableForm.remove(
