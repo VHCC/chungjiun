@@ -367,6 +367,8 @@
             if (allRelatedPrjDatas !== undefined) {
                 vm.relatedProjects = allRelatedPrjDatas.slice();
             }
+
+            var test = [];
             WorkHourUtil.getWorkHourForm(getData)
                 .success(function (res) {
                     if (res.payload.length > 0) {
@@ -419,9 +421,9 @@
                                 isFindSendReview: null,
                                 isFindManagerCheck: null,
                                 isFindExecutiveCheck: null
-                            }
+                            };
 
-                            console.log(formDataTable);
+                            // console.log(formDataTable);
 
                             (function(formDataTable){      //立刻執行函數
                                 setTimeout(function (){
@@ -515,7 +517,7 @@
                                                     tableIndex++;
                                                     // loadWorkOffTable(cookies.get('userDID'), 1);
                                                     // loadNH(1);
-                                                    sleep(1000);
+                                                    sleep(500);
                                                 })
                                                 .error(function () {
                                                     console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
@@ -1462,9 +1464,7 @@
                         // workHourTableData 為 []，也要送，作為更新。
                         formTables: workHourTableData,
                         oldTables: needRemoveOldTable,
-                    }
-
-                    // console.log(formData);
+                    };
 
                     // TODO 跨月
                     WorkHourUtil.createWorkHourTableForm(formData)
@@ -1491,7 +1491,7 @@
                         .error(function () {
                             console.log('ERROR WorkHourUtil.createWorkHourTableForm');
                         })
-
+                    sleep(500);
                 }
             }, delayTime);
         }
