@@ -141,20 +141,41 @@ module.exports = function (app) {
             create_formDate: req.body.create_formDate,
         }
 
-        WorkHourForm.find(query)
-            .sort({
-                id: 1,
-            })
-            .exec(function (err, workHourForms) {
-                if (err) {
-                    res.send(err);
-                }
-                res.status(200).send({
-                    code: 200,
-                    error: global.status._200,
-                    payload: workHourForms,
+        console.log(query);
+        var d = new Date(req.body.create_formDate);
+        if (d.getMonth() == 11) {
+            WorkHourForm.find(query)
+                .sort({
+                    month: -1,
+                })
+                .exec(function (err, workHourForms) {
+                    if (err) {
+                        res.send(err);
+                    }
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: workHourForms,
+                    });
                 });
-            });
+        } else {
+            WorkHourForm.find(query)
+                .sort({
+                    month: 1,
+                })
+                .exec(function (err, workHourForms) {
+                    if (err) {
+                        res.send(err);
+                    }
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: workHourForms,
+                    });
+                });
+        }
+
+
     });
 
     // 多組creator, create_formDate
