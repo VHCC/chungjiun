@@ -389,7 +389,6 @@
                             var formData = {
                                 prjIDArray: prjIDArray,
                             }
-                            console.log(formData);
                             // 取得Prj Data
                             Project.findPrjByIDArray(formData)
                                 .success(function (res) {
@@ -421,6 +420,7 @@
                                 isFindManagerCheck: null,
                                 isFindExecutiveCheck: null
                             }
+
                             console.log(formDataTable);
 
                             (function(formDataTable){      //立刻執行函數
@@ -515,12 +515,13 @@
                                                     tableIndex++;
                                                     // loadWorkOffTable(cookies.get('userDID'), 1);
                                                     // loadNH(1);
+                                                    sleep(1000);
                                                 })
                                                 .error(function () {
                                                     console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
                                                 })
                                             // manipulate finish.
-                                        },1500);
+                                        },100);
                                     })(formDataTable);
                         }
                         loadWorkOffTable(cookies.get('userDID'), 1);
@@ -2940,6 +2941,16 @@
                     $scope.reloadWeek_history(false);
                 } break;
             }
+        }
+
+        function sleep(ms){
+
+            var starttime= new Date().getTime();
+
+            do{
+
+            }while((new Date().getTime()-starttime)<ms)
+
         }
 
     } // function End line
