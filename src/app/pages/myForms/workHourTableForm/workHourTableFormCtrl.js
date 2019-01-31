@@ -425,8 +425,8 @@
 
                             console.log(formDataTable);
 
-                            (function(formDataTable){      //立刻執行函數
-                                setTimeout(function (){
+                            // (function(formDataTable){      //立刻執行函數
+                            //     setTimeout(function (){
                                     // 取得 Table Data
                                     WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                                         .success(function (res) {
@@ -522,9 +522,10 @@
                                                 .error(function () {
                                                     console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
                                                 })
+                                    sleep(500);
                                             // manipulate finish.
-                                        },100);
-                                    })(formDataTable);
+                                    //     },100);
+                                    // })(formDataTable);
                         }
                         loadWorkOffTable(cookies.get('userDID'), 1);
                         loadNH(1);
