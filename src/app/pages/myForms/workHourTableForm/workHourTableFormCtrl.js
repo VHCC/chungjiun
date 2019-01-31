@@ -514,7 +514,7 @@
                                         // $scope.tablesItems.push(detail);
                                         console.log("BBB" + workIndex);
 
-                                        if (tableSort[0].indexOf(res.payload[index]._id)) {
+                                        if (tableSort[0].indexOf(res.payload[index]._id) >= 0) {
                                             $scope.tables[0].tablesItems.push(detail);
                                         } else {
                                             $scope.tables[1].tablesItems.push(detail);
