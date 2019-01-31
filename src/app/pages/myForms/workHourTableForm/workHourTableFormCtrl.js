@@ -368,7 +368,6 @@
                 vm.relatedProjects = allRelatedPrjDatas.slice();
             }
 
-            var test = [];
             WorkHourUtil.getWorkHourForm(getData)
                 .success(function (res) {
                     if (res.payload.length > 0) {
@@ -376,7 +375,7 @@
                         var majorIndex = 0
                         for (majorIndex = 0; majorIndex < res.payload.length; majorIndex ++) {
                             var tableIndex = 0;
-                            console.log(res.payload);
+                            // console.log(res.payload);
                             var workItemCount = res.payload[majorIndex].formTables.length;
                             // console.log("tables= " + res.payload.length);
 
@@ -522,7 +521,7 @@
                                         .error(function () {
                                             console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
                                         })
-                            sleep(1000);
+                            sleep(3000);
                                             // manipulate finish.
                                     //     },100);
                                     // })(formDataTable);
