@@ -101,8 +101,9 @@
                             vm.bossUsers = [];
                             WorkOffFormUtil.fetchAllBossItem(formData)
                                 .success(function (res) {
+                                    console.log(res.payload);
                                     for (var outIndex = 0; outIndex < res.payload.length; outIndex++) {
-                                        // console.log(res.payload[outIndex]);
+                                        console.log(res.payload[outIndex]);
                                         for (var index = 0; index < allUsers.length; index++) {
                                             if (res.payload[outIndex]._id === allUsers[index]._id) {
                                                 allUsers[index].boss_count = res.payload[outIndex].count;
