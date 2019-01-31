@@ -423,7 +423,7 @@
                                 isFindExecutiveCheck: null
                             };
 
-                            // console.log(formDataTable);
+                            console.log(formDataTable);
 
                             (function(formDataTable){      //立刻執行函數
                                 setTimeout(function (){
