@@ -517,7 +517,7 @@
                                                     tableIndex++;
                                                     // loadWorkOffTable(cookies.get('userDID'), 1);
                                                     // loadNH(1);
-                                                    sleep(500);
+                                                    sleep(200);
                                                 })
                                                 .error(function () {
                                                     console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
@@ -1466,6 +1466,8 @@
                         oldTables: needRemoveOldTable,
                     };
 
+                    // console.log(formData);
+
                     // TODO 跨月
                     WorkHourUtil.createWorkHourTableForm(formData)
                         .success(function (res) {
@@ -1483,7 +1485,7 @@
                             needRemoveOldTable = {
                                 tableIDArray: needUpdateWorkTableIDArray,
                             }
-
+                            sleep(500);
                             if (isRefreshProjectSelector && tableIndex === $scope.tables.length) {
                                 $scope.getTable();
                             }
@@ -1491,7 +1493,7 @@
                         .error(function () {
                             console.log('ERROR WorkHourUtil.createWorkHourTableForm');
                         })
-                    sleep(500);
+
                 }
             }, delayTime);
         }
