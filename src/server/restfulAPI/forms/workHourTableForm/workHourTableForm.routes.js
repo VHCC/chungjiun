@@ -143,7 +143,7 @@ module.exports = function (app) {
 
         WorkHourForm.find(query)
             .sort({
-                month: -1,
+                id: 1,
             })
             .exec(function (err, workHourForms) {
                 if (err) {
