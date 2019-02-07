@@ -181,8 +181,10 @@
                 WorkOffFormUtil.findWorkOffTableFormByUserDID(getData)
                     .success(function (res) {
                         // 填入表單資訊
+                        var workOffTableIDArray = [];
                         $scope.tableData = {};
                         for (var index = 0; index < res.payload.length; index++) {
+                            workOffTableIDArray[index] = res.payload[index]._id;
                             var detail = {
                                 tableID: res.payload[index]._id,
 
@@ -217,6 +219,10 @@
                         } else {
                             $scope.getUserHolidayForm();
                         }
+
+                        formDataTable = {
+                            tableIDArray: workOffTableIDArray,
+                        };
 
                         $('.workOffFormDateInput').mask('20Y0/M0/D0', {
                             translation: {

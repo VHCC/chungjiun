@@ -10,7 +10,7 @@
 
     /** @ngInject */
     function myDatePickerCtrl($scope) {
-
+        console.log("QQQ");
         $scope.openDatePicker = openDatePicker;
         $scope.myDT = new Date();
         $scope.opened = false;
@@ -44,7 +44,7 @@
                 case 2:
                 case 3:
                 case 1001:
-                    $scope.myDT = new Date();
+                    // $scope.myDT = new Date();
                     $scope.myOptions = {
                         showWeeks: false,
                         startingDay: 0,
