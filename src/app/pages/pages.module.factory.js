@@ -238,6 +238,11 @@
                 findWorkOffTableFormByTableIDArrayAndParameters: function (formData) {
                     return http.post('/api/post_work_off_table_find_by_table_id_array_and_parameters', formData);
                 },
+
+                // find specify create form date
+                findWorkOffTableFormByUserDID: function (formData) {
+                    return http.post('/api/post_work_off_table_find_by_user_did', formData);
+                },
             }
         }])
         .factory('NationalHolidayUtil', ['$http', function (http) {

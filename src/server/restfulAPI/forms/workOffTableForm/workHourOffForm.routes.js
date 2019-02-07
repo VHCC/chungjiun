@@ -114,11 +114,16 @@ module.exports = function (app) {
 
     //get form by date
     app.post(global.apiUrl.post_work_off_table_fetch_all_user, function (req, res) {
-        WorkOffForm.find({
-            creatorDID: req.body.creatorDID,
-            year: req.body.year,
-            month: req.body.month,
-        }, function (err, workOffForm) {
+        // console.log(req.body);
+        var query = {};
+        if (req.body.month !== null) {
+            query.month = req.body.month;
+        }
+        query.creatorDID = req.body.creatorDID;
+        query.year = req.body.year;
+
+        // console.log(query);
+        WorkOffForm.find(query, function (err, workOffForm) {
             if (err) {
                 res.send(err);
             }
@@ -128,6 +133,21 @@ module.exports = function (app) {
                 payload: workOffForm,
             });
         });
+
+        // WorkOffForm.find({
+        //     creatorDID: req.body.creatorDID,
+        //     year: req.body.year,
+        //     month: req.body.month,
+        // }, function (err, workOffForm) {
+        //     if (err) {
+        //         res.send(err);
+        //     }
+        //     res.status(200).send({
+        //         code: 200,
+        //         error: global.status._200,
+        //         payload: workOffForm,
+        //     });
+        // });
     });
 
     // find table by tableid array
@@ -350,6 +370,7 @@ module.exports = function (app) {
                 {
                     $match: {
                         $or: findData,
+                        year:108,
                         isSendReview: true,
                         isBossCheck: false
                     }
@@ -391,6 +412,32 @@ module.exports = function (app) {
         WorkOffTableForm.find({
             $or: findData,
         }, function (err, tables) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+                payload: tables,
+            });
+        });
+    })
+
+    // 20190201 add
+    // find table by tableid array
+    app.post(global.apiUrl.post_work_off_table_find_by_user_did, function (req, res) {
+        console.log("AAA");
+        console.log(req.body);
+
+        var query = {};
+        if (req.body.month !== null) {
+            query.month = req.body.month;
+        }
+        query.creatorDID = req.body.creatorDID;
+        query.year = req.body.year;
+
+        // console.log(query);
+        WorkOffTableForm.find(query, function (err, tables) {
             if (err) {
                 res.send(err);
             }
