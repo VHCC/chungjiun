@@ -775,21 +775,152 @@
 
         // 取得休假單
         function loadWorkOffTable(userDID, type) {
-            $scope.loginUserWorkOffTables = [];
+
             var getData = {
                 creatorDID: userDID,
                 year: thisYear,
-                month: thisMonth,
+                month: null
             }
-            WorkOffFormUtil.fetchUserWorkOffForm(getData)
+
+            WorkOffFormUtil.findWorkOffTableFormByUserDID(getData)
                 .success(function (res) {
                     if (res.payload.length > 0) {
-                        var workItemCount = res.payload[0].formTables.length;
+                        var workOffTableIDArray = [];
+                        // 組成 TableID Array，再去Server要資料
+                        for (var index = 0; index < res.payload.length; index++) {
+                            workOffTableIDArray[index] = res.payload[index]._id;
+                        }
+
+                        // var workItemCount = res.payload[0].formTables.length;
+
+                        // var workOffTableIDArray = [];
+                        // 組成 TableID Array，再去Server要資料
+                        // for (var index = 0; index < workItemCount; index++) {
+                        //     workOffTableIDArray[index] = res.payload[index]._id;
+                        // }
+
+                        var workOffFormDataTable = {};
+                        switch (type) {
+                            case 1: {
+                                workOffFormDataTable = {
+                                    tableIDArray: workOffTableIDArray,
+                                    create_formDate: $scope.firstFullDate,
+                                }
+                            } break;
+                            case 4: {
+                                workOffFormDataTable = {
+                                    tableIDArray: workOffTableIDArray,
+                                    create_formDate: $scope.firstFullDate_history,
+                                }
+                            } break;
+                        }
+                        // 取得 Table Data
+                        WorkOffFormUtil.findWorkOffTableFormByTableIDArrayAndParameters(workOffFormDataTable)
+                            .success(function (res) {
+                                // 填入表單資訊
+                                $scope.tableData = {};
+                                for (var index = 0; index < res.payload.length; index++) {
+                                    var detail = {
+                                        tableID: res.payload[index]._id,
+
+                                        workOffType: res.payload[index].workOffType,
+                                        create_formDate: res.payload[index].create_formDate,
+                                        year: res.payload[index].year,
+                                        month: res.payload[index].month,
+                                        day: res.payload[index].day,
+                                        start_time: res.payload[index].start_time,
+                                        end_time: res.payload[index].end_time,
+
+                                        //RIGHT
+                                        isSendReview: res.payload[index].isSendReview,
+                                        isBossCheck: res.payload[index].isBossCheck,
+                                        isExecutiveCheck: res.payload[index].isExecutiveCheck,
+
+                                        // Reject
+                                        isBossReject: res.payload[index].isBossReject,
+                                        bossReject_memo: res.payload[index].bossReject_memo,
+
+                                        isExecutiveReject: res.payload[index].isExecutiveReject,
+                                        executiveReject_memo: res.payload[index].executiveReject_memo,
+
+                                        // userHourSalary: res.payload[index].userHourSalary,
+                                        userMonthSalary: res.payload[index].userMonthSalary,
+                                    };
+                                    $scope.loginUserWorkOffTables.push(detail);
+                                }
+                                for (var index = 0; index < $scope.loginUserWorkOffTables.length; index++) {
+                                    if (!$scope.loginUserWorkOffTables[index].isBossCheck || !$scope.loginUserWorkOffTables[index].isExecutiveCheck) continue;
+                                    var evalFooter = "getHourDiff($scope.loginUserWorkOffTables[index].start_time, $scope.loginUserWorkOffTables[index].end_time)";
+                                    switch ($scope.loginUserWorkOffTables[index].day) {
+                                        case 1:
+                                            var evalString = "$scope.monOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
+                                            eval(evalString + " += " + evalFooter);
+                                            break;
+                                        case 2:
+                                            var evalString = "$scope.tueOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
+                                            eval(evalString + " += " + evalFooter);
+                                            break;
+                                        case 3:
+                                            var evalString = "$scope.wesOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
+                                            eval(evalString + " += " + evalFooter);
+                                            break;
+                                        case 4:
+                                            var evalString = "$scope.thuOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
+                                            eval(evalString + " += " + evalFooter);
+                                            break;
+                                        case 5:
+                                            var evalString = "$scope.friOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
+                                            eval(evalString + " += " + evalFooter);
+                                            break;
+                                        case 6:
+                                            var evalString = "$scope.satOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
+                                            eval(evalString + " += " + evalFooter);
+                                            break;
+                                        case 0:
+                                            var evalString = "$scope.sunOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
+                                            eval(evalString + " += " + evalFooter);
+                                            break;
+                                    }
+                                }
+                            })
+                            .error(function () {
+                                console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByTableIDArrayAndParameters');
+                            })
+                    } else {
+                        // res.payload.length == 0
+                    }
+                }
+
+            $scope.loginUserWorkOffTables = [];
+
+            var getData = {
+                creatorDID: userDID,
+                year: thisYear,
+                month: null
+            }
+
+            // var getData = {
+            //     creatorDID: userDID,
+            //     year: thisYear,
+            //     month: thisMonth,
+            // }
+
+            // WorkOffFormUtil.fetchUserWorkOffForm(getData)
+            WorkOffFormUtil.findWorkOffTableFormByUserDID(getData)
+                .success(function (res) {
+                    if (res.payload.length > 0) {
+                        // var workItemCount = res.payload[0].formTables.length;
+
+                        // var workOffTableIDArray = [];
+                        // // 組成 TableID Array，再去Server要資料
+                        // for (var index = 0; index < workItemCount; index++) {
+                        //     workOffTableIDArray[index] = res.payload[0].formTables[index].tableID;
+                        // }
 
                         var workOffTableIDArray = [];
                         // 組成 TableID Array，再去Server要資料
-                        for (var index = 0; index < workItemCount; index++) {
-                            workOffTableIDArray[index] = res.payload[0].formTables[index].tableID;
+                        for (var index = 0; index < res.payload.length; index++) {
+                            workOffTableIDArray[index] = res.payload[index]._id;
                         }
 
                         var workOffFormDataTable = {};
@@ -884,7 +1015,7 @@
                     }
                 })
                 .error(function () {
-                    console.log('ERROR WorkOffFormUtil.fetchUserWorkOffForm');
+                    console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByUserDID');
                 })
         }
 
@@ -2692,22 +2823,34 @@
 
         // get work Off tables
         $scope.fetchWorkOffReviewTables = function(userDID, type) {
-            // console.log("fetchWorkOffReviewTables");
+
             var getData = {
                 creatorDID: userDID,
                 year: thisYear,
-                month: thisMonth,
+                month: null
             }
-            WorkOffFormUtil.fetchUserWorkOffForm(getData)
+
+            // var getData = {
+            //     creatorDID: userDID,
+            //     year: thisYear,
+            //     month: thisMonth,
+            // }
+
+            WorkOffFormUtil.findWorkOffTableFormByUserDID(getData)
                 .success(function (res) {
                     var formTables = [];
                     if (res.payload.length > 0) {
-                        var workItemCount = res.payload[0].formTables.length;
-
+                        // var workItemCount = res.payload[0].formTables.length;
+                        //
+                        // var workOffTableIDArray = [];
+                        // // 組成 TableID Array，再去Server要資料
+                        // for (var index = 0; index < workItemCount; index++) {
+                        //     workOffTableIDArray[index] = res.payload[0].formTables[index].tableID;
+                        // }
                         var workOffTableIDArray = [];
                         // 組成 TableID Array，再去Server要資料
-                        for (var index = 0; index < workItemCount; index++) {
-                            workOffTableIDArray[index] = res.payload[0].formTables[index].tableID;
+                        for (var index = 0; index < res.payload.length; index++) {
+                            workOffTableIDArray[index] = res.payload[index]._id;
                         }
 
                         var workOffFormDataTable = {};
@@ -2771,7 +2914,7 @@
                     }
                 })
                 .error(function () {
-                    console.log('ERROR WorkOffFormUtil.fetchUserWorkOffForm');
+                    console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByUserDID');
                 })
         }
 
