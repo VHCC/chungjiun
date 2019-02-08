@@ -6,6 +6,18 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.myForms')
+        .service('intiWorkOffAllService', function ($http, $cookies) {
+
+            // console.log($cookies.get('userDID'));
+            // var formData = {
+            //     relatedID: $cookies.get('userDID'),
+            // }
+            var promise = $http.get('/api/projectFindAllEnable')
+                .success(function (allProjects) {
+                    return allProjects;
+                });
+            return promise;
+        })
         .controller('workHourTableCtrl',
             [
                 '$scope',
@@ -14,6 +26,7 @@
                 '$cookies',
                 '$timeout',
                 '$uibModal',
+                '$compile',
                 'ngDialog',
                 'User',
                 'Project',
@@ -28,6 +41,7 @@
                 'WorkAddConfirmFormUtil',
                 'editableOptions',
                 'editableThemes',
+                'intiWorkOffAllService',
                 WorkHourTableCtrl
             ]);
 
@@ -38,6 +52,7 @@
                                cookies,
                                $timeout,
                                $uibModal,
+                               $compile,
                                ngDialog,
                                User,
                                Project,
@@ -51,7 +66,29 @@
                                OverTimeDayUtil,
                                WorkAddConfirmFormUtil,
                                editableOptions,
-                               editableThemes) {
+                               editableThemes,
+                               intiWorkOffAllService) {
+
+        intiWorkOffAllService.then(function (resp) {
+            console.log(resp.data);
+            $scope.projects = resp.data;
+            $scope.projects.slice(0, resp.data.length);
+
+            angular.element(
+                document.getElementById('includeHead'))
+                .append($compile(
+                    "<div ba-panel ba-panel-title=" +
+                    "'所有專案列表 - " + resp.data.length + "'" +
+                    "ba-panel-class= " +
+                    "'with-scroll'" + ">" +
+                    "<div " +
+                    "ng-include=\"'app/pages/myProject/listProjectAll/table/listProjectAllTable.html'\">" +
+                    "</div>" +
+                    "</div>"
+                )($scope));
+        })
+
+
         var vm = this;
         var thisYear = new Date().getFullYear() - 1911;
         var thisMonth = new Date().getMonth() + 1; //January is 0!;
