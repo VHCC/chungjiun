@@ -230,7 +230,7 @@
                 </tbody>
             </table>
         </div>
-        <h3 class="with-line">{{username}} {{year}}年 休假單</h3>
+        <h3 class="with-line">{{username}} 休假單</h3>
 
         <div class="row" ng-init="getWorkOffTable()">
             <table class="table table-bordered table-hover table-condensed"
@@ -264,7 +264,7 @@
                     <!--日期-->
                     <td class="form-group" style="vertical-align: inherit; text-align: center">
                         <my ng-show="!rowform1.$waiting && !table.isSendReview">
-                            <my-date-picker formatted="MM/dd" default="{{showDate(table)}}"></my-date-picker>
+                            <my-date-picker formatted="yyyy/MM/dd" default="{{showDate(table)}}"></my-date-picker>
                         </my>
                         <my ng-show="rowform1.$waiting ||table.isSendReview">
                             {{showDate(table)}}

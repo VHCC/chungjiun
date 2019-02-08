@@ -174,7 +174,7 @@
                 $scope.specificUserTablesItems = [];
                 var getData = {
                     creatorDID: userDID === undefined ? $scope.userDID : userDID,
-                    year: thisYear,
+                    year: null,
                     month: null
                 }
 

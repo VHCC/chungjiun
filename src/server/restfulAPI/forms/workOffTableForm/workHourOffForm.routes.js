@@ -426,15 +426,15 @@ module.exports = function (app) {
     // 20190201 add
     // find table by tableid array
     app.post(global.apiUrl.post_work_off_table_find_by_user_did, function (req, res) {
-        console.log("AAA");
-        console.log(req.body);
-
         var query = {};
         if (req.body.month !== null) {
             query.month = req.body.month;
         }
+
+        if (req.body.year !== null) {
+            query.year = req.body.year;
+        }
         query.creatorDID = req.body.creatorDID;
-        query.year = req.body.year;
 
         // console.log(query);
         WorkOffTableForm.find(query, function (err, tables) {

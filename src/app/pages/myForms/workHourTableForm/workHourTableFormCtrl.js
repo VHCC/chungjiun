@@ -778,7 +778,7 @@
 
             var getData = {
                 creatorDID: userDID,
-                year: thisYear,
+                year: null,
                 month: null
             }
 
@@ -806,13 +806,15 @@
                                     tableIDArray: workOffTableIDArray,
                                     create_formDate: $scope.firstFullDate,
                                 }
-                            } break;
+                            }
+                                break;
                             case 4: {
                                 workOffFormDataTable = {
                                     tableIDArray: workOffTableIDArray,
                                     create_formDate: $scope.firstFullDate_history,
                                 }
-                            } break;
+                            }
+                                break;
                         }
                         // 取得 Table Data
                         WorkOffFormUtil.findWorkOffTableFormByTableIDArrayAndParameters(workOffFormDataTable)
@@ -889,13 +891,14 @@
                     } else {
                         // res.payload.length == 0
                     }
-                }
+                })
+
 
             $scope.loginUserWorkOffTables = [];
 
             var getData = {
                 creatorDID: userDID,
-                year: thisYear,
+                year: null,
                 month: null
             }
 
@@ -2826,7 +2829,7 @@
 
             var getData = {
                 creatorDID: userDID,
-                year: thisYear,
+                year: null,
                 month: null
             }
 
