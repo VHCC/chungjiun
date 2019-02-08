@@ -47,6 +47,8 @@
                     $scope.myOptions = {
                         showWeeks: false,
                         startingDay: 0,
+                        minDate: $scope.loginUserForm.start_others,
+                        maxDate: $scope.loginUserForm.end_others
                     };
                     return;
                 case 4:

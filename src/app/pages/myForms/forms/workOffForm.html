@@ -17,6 +17,7 @@
                     <td style="vertical-align: inherit; text-align: center">公傷假(天)</td>
                     <td style="vertical-align: inherit; text-align: center">產假(天)</td>
                     <td style="vertical-align: inherit; text-align: center">陪產假(天)</td>
+                    <td style="vertical-align: inherit; text-align: center">其他(時)</td>
                 </tr>
                 </thead>
 
@@ -54,6 +55,9 @@
                     <td style="vertical-align: inherit;">
                         <t>{{workOffFormCtrlVm.loginUserHolidayForm.start_paternity}}</t>
                     </td>
+                    <td style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.start_others}}</t>
+                    </td>
                 </tr>
                 <!--2 row-->
                 <tr style="vertical-align: inherit; text-align: center">
@@ -87,6 +91,9 @@
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
                         <t>{{workOffFormCtrlVm.loginUserHolidayForm.end_paternity}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.end_others}}</t>
                     </td>
                 </tr>
 
@@ -125,6 +132,9 @@
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
                         <t>{{workOffFormCtrlVm.loginUserHolidayForm.calculate_paternity}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.calculate_others}}</t>
                     </td>
                 </tr>
 
@@ -172,6 +182,10 @@
                     <td class="form-group " style="vertical-align: inherit;">
                         <t>{{diff(workOffFormCtrlVm.loginUserHolidayForm.rest_paternity,
                             workOffFormCtrlVm.loginUserHolidayForm.calculate_paternity)}}</t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{diff(workOffFormCtrlVm.loginUserHolidayForm.rest_others,
+                            workOffFormCtrlVm.loginUserHolidayForm.calculate_others)}}</t>
                     </td>
                 </tr>
 
@@ -223,6 +237,10 @@
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
                         <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_paternity}}
+                        </t>
+                    </td>
+                    <td class="form-group " style="vertical-align: inherit;">
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_others}}
                         </t>
                     </td>
                 </tr>
@@ -400,7 +418,7 @@
                         <div ng-show="(table.isBossCheck && table.isExecutiveCheck)">
                             <span>
                                 <!-- -{{(table.userHourSalary) * table.myHourDiff}}-->
-                                -{{(table.userMonthSalary/240) * table.myHourDiff}}
+                                -{{formatFloat((table.userMonthSalary/240) * table.myHourDiff, 2)}}
                             </span>
                         </div>
                     </td>

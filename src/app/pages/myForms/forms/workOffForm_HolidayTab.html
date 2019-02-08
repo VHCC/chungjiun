@@ -36,6 +36,7 @@
         <td style="vertical-align: inherit; text-align: center">公傷假(天)</td>
         <td style="vertical-align: inherit; text-align: center">產假(天)</td>
         <td style="vertical-align: inherit; text-align: center">陪產假(天)</td>
+        <td style="vertical-align: inherit; text-align: center">其他(時)</td>
     </tr>
     </thead>
 
@@ -103,6 +104,12 @@
                    value="{{workOffFormCtrlVm.holidayForm.start_paternity}}"
                    class="form-control workOffFormDateInput input-sm">
         </td>
+        <td style="vertical-align: inherit;">
+            <input type="text"
+                   ng-model="workOffFormCtrlVm.holidayForm.start_others"
+                   value="{{workOffFormCtrlVm.holidayForm.start_others}}"
+                   class="form-control workOffFormDateInput input-sm">
+        </td>
     </tr>
     <!--2 row-->
     <tr style="vertical-align: inherit; text-align: center">
@@ -167,6 +174,12 @@
                    value="{{workOffFormCtrlVm.holidayForm.end_paternity}}"
                    class="form-control workOffFormDateInput input-sm">
         </td>
+        <td class="form-group " style="vertical-align: inherit;">
+            <input type="text"
+                   ng-model="workOffFormCtrlVm.holidayForm.end_others"
+                   value="{{workOffFormCtrlVm.holidayForm.end_others}}"
+                   class="form-control workOffFormDateInput input-sm">
+        </td>
     </tr>
 
     <!--3 row-->
@@ -223,6 +236,9 @@
         </td>
         <td class="form-group " style="vertical-align: inherit;">
             {{showWorkOffCount(9)}}
+        </td>
+        <td class="form-group " style="vertical-align: inherit;">
+            {{showWorkOffCount(1001)}}
         </td>
     </tr>
 
@@ -281,6 +297,10 @@
         <td class="form-group " style="vertical-align: inherit;">
             {{diff(workOffFormCtrlVm.holidayForm.rest_paternity,
             workOffFormCtrlVm.holidayForm.calculate_paternity)}}
+        </td>
+        <td class="form-group " style="vertical-align: inherit;">
+            {{diff(workOffFormCtrlVm.holidayForm.rest_others,
+            workOffFormCtrlVm.holidayForm.calculate_others)}}
         </td>
     </tr>
 
@@ -346,6 +366,12 @@
                    class="form-control workOffFormNumberInput input-sm"
                    ng-model="workOffFormCtrlVm.holidayForm.rest_paternity"
                    value="{{workOffFormCtrlVm.holidayForm.rest_paternity}}">
+        </td>
+        <td class="form-group " style="vertical-align: inherit;">
+            <input type="text"
+                   class="form-control workOffFormNumberInput input-sm"
+                   ng-model="workOffFormCtrlVm.holidayForm.rest_others"
+                   value="{{workOffFormCtrlVm.holidayForm.rest_others}}">
         </td>
     </tr>
 

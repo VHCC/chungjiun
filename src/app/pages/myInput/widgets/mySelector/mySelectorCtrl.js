@@ -32,10 +32,6 @@
                 name: "特休",
                 type: 3
             },
-            {
-                name: "其他",
-                type: 1001
-            },
         ];
         $scope.workOffTypeChange = function (inputType) {
             var selectedRole = [];
@@ -62,10 +58,6 @@
                 {
                     name: "特休",
                     type: 3
-                },
-                {
-                    name: "其他",
-                    type: 1001
                 },
             ];
             $scope.loginUserForm = table;
@@ -101,7 +93,6 @@
                 && $scope.loginUserForm.end_official !== ""
                 && $scope.loginUserForm.end_official !== null
             ) {
-                console.log("QQQ");
                 $scope.workOffTypeOptions.push({
                     name: "公假",
                     type: 6
@@ -141,6 +132,19 @@
                 $scope.workOffTypeOptions.push({
                     name: "陪產假",
                     type: 9
+                })
+            }
+
+            if ($scope.loginUserForm.start_others !== undefined
+                && $scope.loginUserForm.start_others !== ""
+                && $scope.loginUserForm.start_others !== null
+                && $scope.loginUserForm.end_others !== undefined
+                && $scope.loginUserForm.end_others !== ""
+                && $scope.loginUserForm.end_others !== null
+            ) {
+                $scope.workOffTypeOptions.push({
+                    name: "其他",
+                    type: 1001
                 })
             }
         }
