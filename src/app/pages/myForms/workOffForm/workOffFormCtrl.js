@@ -157,6 +157,7 @@
                             vm.loginUserHolidayForm.calculate_workinjury = $scope.showWorkOffCount(7);
                             vm.loginUserHolidayForm.calculate_maternity = $scope.showWorkOffCount(8);
                             vm.loginUserHolidayForm.calculate_paternity = $scope.showWorkOffCount(9);
+                            vm.loginUserHolidayForm.calculate_others = $scope.showWorkOffCount(1001);
                             vm.loginUserHolidayForm.person_residual_rest_hour = parseFloat($scope.residualRestHour);
 
                         } else {
@@ -399,6 +400,8 @@
                     // 陪產
                     case 9:
                         return result / 8;
+                    case 1001:
+                        return result;
                 }
             }
 
@@ -476,6 +479,7 @@
 
             // 休假規則，未滿一小算一小
             $scope.getHourDiff = function (dom) {
+                console.log("A");
                 if (dom.tableTimeStart && dom.tableTimeEnd) {
                     dom.table.start_time = dom.tableTimeStart;
                     dom.table.end_time = dom.tableTimeEnd;
@@ -937,6 +941,7 @@
                                     vm.holidayForm.calculate_workinjury = $scope.showWorkOffCount(7);
                                     vm.holidayForm.calculate_maternity = $scope.showWorkOffCount(8);
                                     vm.holidayForm.calculate_paternity = $scope.showWorkOffCount(9);
+                                    vm.holidayForm.calculate_others = $scope.showWorkOffCount(1001);
                                     vm.holidayForm.person_residual_rest_hour = parseFloat($scope.preciseResidualRestHour);
                                     console.log(vm.holidayForm);
                                 } else {
@@ -1189,6 +1194,12 @@
                     .success(function (res) {
                         $scope.fetchOverTimeDays();
                     })
+            }
+
+            //小數點2
+            $scope.formatFloat = function (num, pos) {
+                var size = Math.pow(10, pos);
+                return Math.round(num * size) / size;
             }
 
         } // End of function
