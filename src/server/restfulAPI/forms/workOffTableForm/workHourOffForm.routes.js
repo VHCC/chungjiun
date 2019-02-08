@@ -7,6 +7,7 @@ module.exports = function (app) {
     // ----- define routes
     // create Form
     app.post(global.apiUrl.post_work_off_create_table, function (req, res) {
+        console.log(JSON.stringify(req.body));
         // 刪除既有休假表
         WorkOffForm.remove({
             creatorDID: req.body.creatorDID,
@@ -114,7 +115,7 @@ module.exports = function (app) {
 
     //get form by date
     app.post(global.apiUrl.post_work_off_table_fetch_all_user, function (req, res) {
-        // console.log(req.body);
+        console.log(JSON.stringify(req.body));
         var query = {};
         if (req.body.month !== null) {
             query.month = req.body.month;
@@ -152,6 +153,7 @@ module.exports = function (app) {
 
     // find table by tableid array
     app.post(global.apiUrl.post_work_off_table_find_by_table_id_array, function (req, res) {
+        console.log(JSON.stringify(req.body));
         var tableCount = req.body.tableIDArray.length;
         var findData = []
         for (var index = 0; index < tableCount; index++) {
@@ -176,6 +178,7 @@ module.exports = function (app) {
 
     // update table form send review
     app.post(global.apiUrl.post_work_off_table_update_send_review, function (req, res) {
+        console.log(JSON.stringify(req.body));
         WorkOffTableForm.update({
             _id: req.body.tableID,
         }, {
@@ -195,6 +198,7 @@ module.exports = function (app) {
 
     // find table item by user DID to executive
     app.post(global.apiUrl.post_work_off_table_item_find_by_user_did_executive, function (req, res) {
+        console.log(JSON.stringify(req.body));
         WorkOffTableForm.find({
             creatorDID: req.body.creatorDID,
             year: req.body.year,
@@ -215,6 +219,7 @@ module.exports = function (app) {
 
     // find table item by user DID to boss
     app.post(global.apiUrl.post_work_off_table_item_find_by_user_did_boss, function (req, res) {
+        console.log(JSON.stringify(req.body));
         WorkOffTableForm.find({
             creatorDID: req.body.creatorDID,
             year: req.body.year,
@@ -234,6 +239,7 @@ module.exports = function (app) {
 
     // executive agree
     app.post(global.apiUrl.post_work_off_table_update_executive_agree, function (req, res) {
+        console.log(JSON.stringify(req.body));
         WorkOffTableForm.update({
             _id: req.body.tableID,
         }, {
@@ -253,6 +259,7 @@ module.exports = function (app) {
 
     // boss agree
     app.post(global.apiUrl.post_work_off_table_update_boss_agree, function (req, res) {
+        console.log(JSON.stringify(req.body));
         WorkOffTableForm.update({
             _id: req.body.tableID,
         }, {
@@ -272,6 +279,7 @@ module.exports = function (app) {
 
     // disagree
     app.post(global.apiUrl.post_work_off_table_update_disagree, function (req, res) {
+        console.log(JSON.stringify(req.body));
         WorkOffTableForm.update({
             _id: req.body.tableID,
         }, {
@@ -294,7 +302,7 @@ module.exports = function (app) {
     // 休假單更新
     // update table executive check
     app.post(global.apiUrl.post_work_off_table_update, function (req, res) {
-        // console.log(req.body);
+        console.log(JSON.stringify(req.body));
         var keyArray = Object.keys(req.body);
         var query = {};
         for (var index = 0; index < keyArray.length; index++) {
@@ -324,6 +332,7 @@ module.exports = function (app) {
 
     // fetch all executive tables
     app.post(global.apiUrl.post_work_off_table_fetch_all_executive, function (req, res) {
+        console.log(JSON.stringify(req.body));
         WorkOffTableForm.aggregate(
             [
                 {
@@ -356,6 +365,7 @@ module.exports = function (app) {
 
     // fetch all boss tables
     app.post(global.apiUrl.post_work_off_table_fetch_all_boss, function (req, res) {
+        console.log(JSON.stringify(req.body));
         var underlingCount = req.body.underlingArray.length;
         var findData = []
         for (var index = 0; index < underlingCount; index++) {
@@ -399,6 +409,7 @@ module.exports = function (app) {
 
     // find table by table id array and parameters
     app.post(global.apiUrl.post_work_off_table_find_by_table_id_array_and_parameters, function (req, res) {
+        console.log(JSON.stringify(req.body));
         var tableCount = req.body.tableIDArray.length;
         var findData = [];
         for (var index = 0; index < tableCount; index++) {
@@ -426,6 +437,7 @@ module.exports = function (app) {
     // 20190201 add
     // find table by tableid array
     app.post(global.apiUrl.post_work_off_table_find_by_user_did, function (req, res) {
+        console.log(JSON.stringify(req.body));
         var query = {};
         if (req.body.month !== null) {
             query.month = req.body.month;
@@ -436,11 +448,12 @@ module.exports = function (app) {
         }
         query.creatorDID = req.body.creatorDID;
 
-        // console.log(query);
+        console.log(query);
         WorkOffTableForm.find(query, function (err, tables) {
             if (err) {
                 res.send(err);
             }
+            console.log(tables.length);
             res.status(200).send({
                 code: 200,
                 error: global.status._200,
