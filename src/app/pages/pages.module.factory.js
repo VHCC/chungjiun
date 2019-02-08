@@ -473,7 +473,7 @@
                         case 9:
                             return "陪產假"; // Day
                         case 1001:
-                            return "特殊假";
+                            return "其他";
                     }
                 }
             }

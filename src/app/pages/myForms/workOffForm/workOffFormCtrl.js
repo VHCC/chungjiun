@@ -177,7 +177,6 @@
                     year: null,
                     month: null
                 }
-
                 WorkOffFormUtil.findWorkOffTableFormByUserDID(getData)
                     .success(function (res) {
                         // 填入表單資訊
@@ -188,6 +187,7 @@
                             var detail = {
                                 tableID: res.payload[index]._id,
 
+                                creatorDID: res.payload[index].creatorDID,
                                 workOffType: res.payload[index].workOffType,
                                 create_formDate: res.payload[index].create_formDate,
                                 year: res.payload[index].year,

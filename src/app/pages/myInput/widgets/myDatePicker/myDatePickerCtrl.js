@@ -10,7 +10,6 @@
 
     /** @ngInject */
     function myDatePickerCtrl($scope) {
-        console.log("QQQ");
         $scope.openDatePicker = openDatePicker;
         $scope.myDT = new Date();
         $scope.opened = false;
