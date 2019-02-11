@@ -6,6 +6,23 @@
         'use strict';
 
         angular.module('BlurAdmin.pages.myForms')
+            .service('intiWorkOffAllService', function ($http, $cookies) {
+
+                var formData = {
+                    creatorDID: $cookies.get('userDID'),
+                    year: null,
+                    month: null,
+                    isSendReview: true,
+                    isBossCheck: true,
+                    isExecutiveCheck: true
+                }
+
+                var promise = $http.post('/api/post_work_off_table_find_by_user_did', formData)
+                    .success(function (workOffTables) {
+                        return workOffTables;
+                    });
+                return promise;
+            })
             .controller('workOffFormCtrl',
                 [
                     '$scope',
@@ -13,6 +30,7 @@
                     '$cookies',
                     '$timeout',
                     'ngDialog',
+                    '$compile',
                     'Project',
                     'User',
                     'DateUtil',
@@ -24,6 +42,7 @@
                     'WorkHourAddItemUtil',
                     'toastr',
                     'HolidayDataForms',
+                    'intiWorkOffAllService',
                     WorkOffFormCtrl
                 ]);
 
@@ -33,6 +52,7 @@
                                  cookies,
                                  $timeout,
                                  ngDialog,
+                                 $compile,
                                  Project,
                                  User,
                                  DateUtil,
@@ -43,8 +63,26 @@
                                  OverTimeDayUtil,
                                  WorkHourAddItemUtil,
                                  toastr,
-                                 HolidayDataForms) {
+                                 HolidayDataForms,
+                                 intiWorkOffAllService) {
 
+            intiWorkOffAllService.then(function (resp) {
+                console.log(resp.data.payload);
+                $scope.workOffTables = resp.data.payload;
+
+                angular.element(
+                    document.getElementById('includeHead'))
+                    .append($compile(
+                        "<div ba-panel ba-panel-title=" +
+                        "'所有請假單列表 - " + resp.data.payload.length + "'" +
+                        "ba-panel-class= " +
+                        "'with-scroll'" + ">" +
+                        "<div " +
+                        "ng-include=\"'app/pages/myForms/forms/workOffForm_AllHistory.html'\">" +
+                        "</div>" +
+                        "</div>"
+                    )($scope));
+            })
 
             $scope.username = cookies.get('username');
             $scope.userDID = cookies.get('userDID');
@@ -176,7 +214,10 @@
                 var getData = {
                     creatorDID: userDID === undefined ? $scope.userDID : userDID,
                     year: null,
-                    month: null
+                    month: null,
+                    isSendReview: null,
+                    isBossCheck: null,
+                    isExecutiveCheck: null
                 }
                 WorkOffFormUtil.findWorkOffTableFormByUserDID(getData)
                     .success(function (res) {

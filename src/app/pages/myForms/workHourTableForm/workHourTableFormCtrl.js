@@ -6,18 +6,6 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.myForms')
-        .service('intiWorkOffAllService', function ($http, $cookies) {
-
-            // console.log($cookies.get('userDID'));
-            // var formData = {
-            //     relatedID: $cookies.get('userDID'),
-            // }
-            var promise = $http.get('/api/projectFindAllEnable')
-                .success(function (allProjects) {
-                    return allProjects;
-                });
-            return promise;
-        })
         .controller('workHourTableCtrl',
             [
                 '$scope',
@@ -41,7 +29,6 @@
                 'WorkAddConfirmFormUtil',
                 'editableOptions',
                 'editableThemes',
-                'intiWorkOffAllService',
                 WorkHourTableCtrl
             ]);
 
@@ -66,28 +53,7 @@
                                OverTimeDayUtil,
                                WorkAddConfirmFormUtil,
                                editableOptions,
-                               editableThemes,
-                               intiWorkOffAllService) {
-
-        intiWorkOffAllService.then(function (resp) {
-            console.log(resp.data);
-            $scope.projects = resp.data;
-            $scope.projects.slice(0, resp.data.length);
-
-            angular.element(
-                document.getElementById('includeHead'))
-                .append($compile(
-                    "<div ba-panel ba-panel-title=" +
-                    "'所有專案列表 - " + resp.data.length + "'" +
-                    "ba-panel-class= " +
-                    "'with-scroll'" + ">" +
-                    "<div " +
-                    "ng-include=\"'app/pages/myProject/listProjectAll/table/listProjectAllTable.html'\">" +
-                    "</div>" +
-                    "</div>"
-                )($scope));
-        })
-
+                               editableThemes,) {
 
         var vm = this;
         var thisYear = new Date().getFullYear() - 1911;
@@ -816,7 +782,10 @@
             var getData = {
                 creatorDID: userDID,
                 year: null,
-                month: null
+                month: null,
+                isSendReview: null,
+                isBossCheck: null,
+                isExecutiveCheck: null
             }
 
             WorkOffFormUtil.findWorkOffTableFormByUserDID(getData)
@@ -2873,7 +2842,10 @@
             var getData = {
                 creatorDID: userDID,
                 year: null,
-                month: null
+                month: null,
+                isSendReview: null,
+                isBossCheck: null,
+                isExecutiveCheck: null
             }
 
             // var getData = {

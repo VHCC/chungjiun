@@ -446,6 +446,19 @@ module.exports = function (app) {
         if (req.body.year !== null) {
             query.year = req.body.year;
         }
+
+        if (req.body.isSendReview !== null) {
+            query.isSendReview = req.body.isSendReview;
+        }
+
+        if (req.body.isBossCheck !== null) {
+            query.isBossCheck = req.body.isBossCheck;
+        }
+
+        if (req.body.isExecutiveCheck !== null) {
+            query.isExecutiveCheck = req.body.isExecutiveCheck;
+        }
+
         query.creatorDID = req.body.creatorDID;
 
         console.log(query);
