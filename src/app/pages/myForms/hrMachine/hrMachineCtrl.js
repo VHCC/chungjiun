@@ -98,6 +98,7 @@
 
                         for (var index = 0; index < arrayResult[0].length; index++) {
                             // console.log(arrayResult[0][index]);
+
                             var hrMachineItem = {
                                 date: "",
                                 did: "",
@@ -125,7 +126,7 @@
                                 hrMachineItem.time = arrayResult[0][index].time;
                                 hrMachineItem.workType = arrayResult[0][index].workType;
                                 hrMachineTableSorted[arrayResult[0][index].date].push(hrMachineItem);
-                                console.log(hrMachineTableSorted[arrayResult[0][index].date]);
+                                // console.log(hrMachineTableSorted[arrayResult[0][index].date]);
                             }
                         }
                         console.log(hrMachineTableSorted)
@@ -324,6 +325,16 @@
                         }
                         break;
                 }
+            }
+
+            $scope.showDay = function (date) {
+                // console.log(date);
+                // console.log(parseInt(date.substring(0,3)) + 1911);
+                // console.log(date.substring(3,7));
+                // console.log(parseInt(date.substring(0,3)) + 1911 + date.substring(3,7));
+                // console.log(moment(parseInt(date.substring(0,3)) + 1911 + date.substring(3,7)));
+                // console.log(moment(parseInt(date.substring(0,3)) + 1911 + date.substring(3,7)).day());
+                return DateUtil.getDay(moment(parseInt(date.substring(0,3)) + 1911 + date.substring(3,7)).day())
             }
 
         } // End of function
