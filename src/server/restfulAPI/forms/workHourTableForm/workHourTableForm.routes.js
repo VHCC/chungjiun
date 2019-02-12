@@ -207,20 +207,54 @@ module.exports = function (app) {
             $or: findData,
         }
 
-        WorkHourForm.find(query)
-            .sort({
-                month: -1,
-            })
-            .exec(function (err, workHourForms) {
-                if (err) {
-                    res.send(err);
-                }
-                res.status(200).send({
-                    code: 200,
-                    error: global.status._200,
-                    payload: workHourForms,
+        // WorkHourForm.find(query)
+        //     .sort({
+        //         month: -1,
+        //     })
+        //     .exec(function (err, workHourForms) {
+        //         if (err) {
+        //             res.send(err);
+        //         }
+        //         res.status(200).send({
+        //             code: 200,
+        //             error: global.status._200,
+        //             payload: workHourForms,
+        //         });
+        //     });
+
+
+        var d = new Date(req.body.create_formDate);
+        if (d.getMonth() == 11) {
+            WorkHourForm.find(query)
+                .sort({
+                    month: -1,
+                })
+                .exec(function (err, workHourForms) {
+                    if (err) {
+                        res.send(err);
+                    }
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: workHourForms,
+                    });
                 });
-            });
+        } else {
+            WorkHourForm.find(query)
+                .sort({
+                    month: 1,
+                })
+                .exec(function (err, workHourForms) {
+                    if (err) {
+                        res.send(err);
+                    }
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: workHourForms,
+                    });
+                });
+        }
 
     })
 
@@ -278,6 +312,9 @@ module.exports = function (app) {
             }
             findData.push(target);
         }
+
+        console.log("findData");
+        console.log(findData);
 
         var query = {};
         query.$or = findData;
@@ -338,7 +375,7 @@ module.exports = function (app) {
                 }
             })
         }
-        global.qqq.response(req.body.msgTargetID, global.eventString._2001);
+        // global.qqq.response(req.body.msgTargetID, global.eventString._2001);
         res.status(200).send({
             code: 200,
             error: global.status._200,
