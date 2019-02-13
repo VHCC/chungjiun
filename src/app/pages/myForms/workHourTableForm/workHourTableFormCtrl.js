@@ -2598,6 +2598,9 @@
                 relatedMembers: $scope.mainRelatedMembers,
                 create_formDate: targetFormFullDate,
             }
+
+            console.log(getData);
+            
             WorkHourUtil.getWorkHourFormMultiple(getData)
                 .success(function (res) {
                     var relatedUsersAndTables = [];
