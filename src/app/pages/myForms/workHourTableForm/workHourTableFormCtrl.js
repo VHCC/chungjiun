@@ -2517,6 +2517,8 @@
         // loginUser's relatedMembers.
         $scope.mainRelatedMembers = null;
 
+        var managersRelatedProjects = [];
+
         //顯示經理審查人員
         // Fetch Manager Related Members
         $scope.fetchManagerRelatedMembers = function () {
@@ -2526,8 +2528,9 @@
             var relatedMembers = [];
             Project.getProjectRelatedToManager(formData)
                 .success(function (relatedProjects) {
-                    // console.log(relatedProjects);
                     for(var index = 0; index < relatedProjects.length; index ++) {
+                        // 相關專案
+                        managersRelatedProjects.push(relatedProjects[index]._id);
                         //主辦
                         if (relatedProjects[index].majorID !== undefined && !relatedMembers.includes(relatedProjects[index].majorID)) {
                             relatedMembers.push(relatedProjects[index].majorID);
@@ -2599,8 +2602,8 @@
                 create_formDate: targetFormFullDate,
             }
 
-            console.log(getData);
-            
+            // console.log(getData);
+
             WorkHourUtil.getWorkHourFormMultiple(getData)
                 .success(function (res) {
                     var relatedUsersAndTables = [];
@@ -2609,6 +2612,7 @@
                     if (res.payload.length > 0) {
                         console.log("forms= " + res.payload.length);
                         for (var formIndex = 0; formIndex < res.payload.length; formIndex ++) {
+
                             var userObject = undefined;
                             var evalString = "userObject = {'" + res.payload[formIndex].creatorDID + "': []}";
                             eval(evalString);
@@ -2636,24 +2640,29 @@
                         }
                         existDIDArray = [];
                         for (var formIndex = 0; formIndex < res.payload.length; formIndex ++) {
-                            for(var userIndex = 0; userIndex < relatedUsersAndTables.length; userIndex ++) {
-                                if (res.payload[formIndex].creatorDID === relatedUsersAndTables[userIndex].DID) {
-                                    var manipulateObject = undefined;
-                                    var evalString = "manipulateObject = relatedUsersAndTables[" + userIndex +"]['" + res.payload[formIndex].creatorDID + "']";
-                                    eval(evalString);
-                                    manipulateObject.push(res.payload[formIndex]);
-                                    evalString = "manipulateObject = $scope.tables_review['" + res.payload[formIndex].creatorDID + "']";
-                                    eval(evalString);
-                                    manipulateObject.push(res.payload[formIndex]);
 
-                                    if (!existDIDArray.includes(res.payload[formIndex].creatorDID)) {
-                                        existDIDArray.push(res.payload[formIndex].creatorDID);
-                                        evalString = "$scope.userMap_review['" + res.payload[formIndex].creatorDID + "'] = relatedUsersAndTables[userIndex]";
-                                        eval(evalString);
+                            for (var tablesIndex = 0; tablesIndex < res.payload[formIndex].formTables.length; tablesIndex ++) {
+                                if (managersRelatedProjects.includes(res.payload[formIndex].formTables[tablesIndex].prjDID) || type == 2) { // 行政總管跟每個人都有關, 經理只跟專案掛鉤
+                                    for(var userIndex = 0; userIndex < relatedUsersAndTables.length; userIndex ++) {
+                                        if (res.payload[formIndex].creatorDID === relatedUsersAndTables[userIndex].DID) {
+                                            var manipulateObject = undefined;
+                                            var evalString = "manipulateObject = relatedUsersAndTables[" + userIndex +"]['" + res.payload[formIndex].creatorDID + "']";
+                                            eval(evalString);
+                                            manipulateObject.push(res.payload[formIndex]);
+                                            evalString = "manipulateObject = $scope.tables_review['" + res.payload[formIndex].creatorDID + "']";
+                                            eval(evalString);
+                                            manipulateObject.push(res.payload[formIndex]);
+
+                                            if (!existDIDArray.includes(res.payload[formIndex].creatorDID)) {
+                                                existDIDArray.push(res.payload[formIndex].creatorDID);
+                                                evalString = "$scope.userMap_review['" + res.payload[formIndex].creatorDID + "'] = relatedUsersAndTables[userIndex]";
+                                                eval(evalString);
+                                            }
+                                        }
                                     }
-
                                 }
                             }
+
                         }
                         switch (type) {
                             case typeManager:
