@@ -2748,6 +2748,8 @@
             //TODO Multiple
             var tablesLength = userData[userData.DID].length;
 
+
+            var tableSort = [];
             for (var majorIndex = 0; majorIndex < tablesLength; majorIndex ++) {
                 var tableIndex = 0;
                 console.log("table= " + majorIndex + ", tableItems= " + userData[userData.DID][majorIndex].formTables.length);
@@ -2765,7 +2767,11 @@
                     isFindManagerCheck: isFindManagerCheckFlag,
                     isFindExecutiveCheck: isFindExecutiveCheck
                 }
+                console.log(formDataTable);
                 // 取得 Table Data
+
+                tableSort.push(workTableIDArray);
+                console.log(tableSort);
                 WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                     .success(function (res) {
                         var workIndex = tableIndex;
@@ -2773,6 +2779,7 @@
                         // 填入表單資訊
                         $scope.tableData = {};
                         var formTables = [];
+                        var isFirstRaw = false;
                         for (var index = 0; index < res.payload.length; index++) {
                             var detail = {
                                 tableID: res.payload[index]._id,
@@ -2845,9 +2852,20 @@
                                 res.payload[index].sun_hour_add,
                             };
                             formTables.push(detail);
+                            if (tableSort[0].indexOf(res.payload[index]._id) >= 0) {
+                                isFirstRaw = true;
+                            }
                         }
-                        var evalString = "$scope.tables_review.tablesItems['" + userData[userData.DID][workIndex].creatorDID + userData[userData.DID][workIndex]._id + "'] = formTables";
-                        eval(evalString);
+                        if(isFirstRaw) {
+                            var evalString = "$scope.tables_review.tablesItems['" + userData[userData.DID][workIndex].creatorDID + userData[userData.DID][0]._id + "'] = formTables";
+                            eval(evalString);
+                        } else {
+                            var evalString = "$scope.tables_review.tablesItems['" + userData[userData.DID][workIndex].creatorDID + userData[userData.DID][1]._id + "'] = formTables";
+                            eval(evalString);
+                        }
+
+
+
                     })
                     .error(function () {
                         console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
