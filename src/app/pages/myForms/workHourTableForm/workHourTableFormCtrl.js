@@ -2611,6 +2611,7 @@
                     var existDIDArray = [];
                     if (res.payload.length > 0) {
                         console.log("forms= " + res.payload.length);
+                        // users
                         for (var formIndex = 0; formIndex < res.payload.length; formIndex ++) {
 
                             var userObject = undefined;
@@ -2639,29 +2640,37 @@
                             }
                         }
                         existDIDArray = [];
-                        for (var formIndex = 0; formIndex < res.payload.length; formIndex ++) {
+                        // push items
 
+                        for (var formIndex = 0; formIndex < res.payload.length; formIndex ++) {
+                            var isProjectIncluded = false;
+                            inter:
                             for (var tablesIndex = 0; tablesIndex < res.payload[formIndex].formTables.length; tablesIndex ++) {
                                 if (managersRelatedProjects.includes(res.payload[formIndex].formTables[tablesIndex].prjDID) || type == 2) { // 行政總管跟每個人都有關, 經理只跟專案掛鉤
-                                    for(var userIndex = 0; userIndex < relatedUsersAndTables.length; userIndex ++) {
-                                        if (res.payload[formIndex].creatorDID === relatedUsersAndTables[userIndex].DID) {
-                                            var manipulateObject = undefined;
-                                            var evalString = "manipulateObject = relatedUsersAndTables[" + userIndex +"]['" + res.payload[formIndex].creatorDID + "']";
-                                            eval(evalString);
-                                            manipulateObject.push(res.payload[formIndex]);
-                                            evalString = "manipulateObject = $scope.tables_review['" + res.payload[formIndex].creatorDID + "']";
-                                            eval(evalString);
-                                            manipulateObject.push(res.payload[formIndex]);
+                                    isProjectIncluded = true;
+                                    break inter;
+                                }
+                            }
+                            if (isProjectIncluded) {
+                                for(var userIndex = 0; userIndex < relatedUsersAndTables.length; userIndex ++) {
+                                    if (res.payload[formIndex].creatorDID === relatedUsersAndTables[userIndex].DID) {
+                                        var manipulateObject = undefined;
+                                        var evalString = "manipulateObject = relatedUsersAndTables[" + userIndex +"]['" + res.payload[formIndex].creatorDID + "']";
+                                        eval(evalString);
+                                        manipulateObject.push(res.payload[formIndex]);
+                                        evalString = "manipulateObject = $scope.tables_review['" + res.payload[formIndex].creatorDID + "']";
+                                        eval(evalString);
+                                        manipulateObject.push(res.payload[formIndex]);
 
-                                            if (!existDIDArray.includes(res.payload[formIndex].creatorDID)) {
-                                                existDIDArray.push(res.payload[formIndex].creatorDID);
-                                                evalString = "$scope.userMap_review['" + res.payload[formIndex].creatorDID + "'] = relatedUsersAndTables[userIndex]";
-                                                eval(evalString);
-                                            }
+                                        if (!existDIDArray.includes(res.payload[formIndex].creatorDID)) {
+                                            existDIDArray.push(res.payload[formIndex].creatorDID);
+                                            evalString = "$scope.userMap_review['" + res.payload[formIndex].creatorDID + "'] = relatedUsersAndTables[userIndex]";
+                                            eval(evalString);
                                         }
                                     }
                                 }
                             }
+
 
                         }
                         switch (type) {
