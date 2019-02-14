@@ -102,39 +102,42 @@
                     <td style="vertical-align: inherit; text-align: center">
                         已休假
                     </td>
-
+                    <!-- 病假 -->
                     <td class="form-group " style="vertical-align: inherit;">
                         <t>{{showWorkOffCount(1)}}</t>
                     </td>
+                    <!-- 事假 -->
                     <td class="form-group " style="vertical-align: inherit;">
                         <t>{{showWorkOffCount(0)}}</t>
                     </td>
+                    <!-- 補休 -->
                     <td class="form-group " style="vertical-align: inherit;">
                         <t>{{showWorkOffCount(2)}}</t>
                     </td>
+                    <!-- 特休 -->
                     <td class="form-group " style="vertical-align: inherit;">
                         <t>{{showWorkOffCount(3)}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.calculate_married}}</t>
+                        <t>{{showWorkOffCount(4)}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.calculate_mourning}}</t>
+                        <t>{{showWorkOffCount(5)}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.calculate_official}}</t>
+                        <t>{{showWorkOffCount(6)}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.calculate_workinjury}}</t>
+                        <t>{{showWorkOffCount(7)}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.calculate_maternity}}</t>
+                        <t>{{showWorkOffCount(8)}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.calculate_paternity}}</t>
+                        <t>{{showWorkOffCount(9)}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.calculate_others}}</t>
+                        <t>{{showWorkOffCount(1001)}}</t>
                     </td>
                 </tr>
 
@@ -151,9 +154,7 @@
                         <!--<t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_private}}</t>-->
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{diff(workOffFormCtrlVm.loginUserHolidayForm.rest_observed,
-                            workOffFormCtrlVm.loginUserHolidayForm.calculate_observed)
-                            + workOffFormCtrlVm.loginUserHolidayForm.person_residual_rest_hour}}</t>
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.person_residual_rest_hour - showWorkOffCount(2)}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
                         <t>{{diff(workOffFormCtrlVm.loginUserHolidayForm.rest_special,
