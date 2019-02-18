@@ -54,6 +54,7 @@
                                WorkAddConfirmFormUtil,
                                editableOptions,
                                editableThemes,) {
+        console.log = function() {}
 
         var vm = this;
         var thisYear = new Date().getFullYear() - 1911;
@@ -2602,7 +2603,7 @@
                 create_formDate: targetFormFullDate,
             }
 
-            // console.log(getData);
+            console.log(getData);
 
             WorkHourUtil.getWorkHourFormMultiple(getData)
                 .success(function (res) {
@@ -2611,6 +2612,7 @@
                     var existDIDArray = [];
                     if (res.payload.length > 0) {
                         console.log("forms= " + res.payload.length);
+                        console.log(res.payload);
                         // users
                         for (var formIndex = 0; formIndex < res.payload.length; formIndex ++) {
 
@@ -2713,25 +2715,35 @@
                         isFindManagerCheck: isFindManagerCheckFlag,
                         isFindExecutiveCheck: isFindExecutiveCheck
                     }
+                    console.log(formDataTable);
                     // 取得 Table Data
                     WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                         .success(function (res) {
                             // 填入表單資訊
-                            var mUser = $scope.fetchReviewUserFromScope(res.creatorDID);
-                            if (res.payload.length > 0) {
-                                if (!userDIDExistArray.includes(mUser.DID)) {
-                                    userResult.push(mUser);
-                                    userDIDExistArray.push(mUser.DID);
+                            console.log(res.payload);
+
+                            for (var index = 0; index < res.payload.length; index++) {
+                                console.log(res.payload[index].prjDID);
+                                if (managersRelatedProjects.includes(res.payload[index].prjDID) || type == 2) {
+                                    var mUser = $scope.fetchReviewUserFromScope(res.creatorDID);
+                                    if (res.payload.length > 0) {
+                                        if (!userDIDExistArray.includes(mUser.DID)) {
+                                            userResult.push(mUser);
+                                            userDIDExistArray.push(mUser.DID);
+                                        }
+                                    }
+                                    switch (type) {
+                                        case typeManager:
+                                            console.log(userResult);
+                                            $scope.usersReviewForManagers = userResult;
+                                            break;
+                                        case typeExecutive:
+                                            $scope.usersReviewForExecutive = userResult;
+                                            break;
+                                    }
                                 }
                             }
-                            switch (type) {
-                                case typeManager:
-                                    $scope.usersReviewForManagers = userResult;
-                                    break;
-                                case typeExecutive:
-                                    $scope.usersReviewForExecutive = userResult;
-                                    break;
-                            }
+
 
                         })
                 }
@@ -2781,79 +2793,91 @@
                         var formTables = [];
                         var isFirstRaw = false;
                         for (var index = 0; index < res.payload.length; index++) {
-                            var detail = {
-                                tableID: res.payload[index]._id,
-                                prjDID: res.payload[index].prjDID,
-                                creatorDID: res.payload[index].creatorDID,
-                                create_formDate: res.payload[index].create_formDate,
-                                //MON
-                                mon_hour: res.payload[index].mon_hour,
-                                mon_memo: res.payload[index].mon_memo,
-                                mon_hour_add: res.payload[index].mon_hour_add,
-                                mon_memo_add: res.payload[index].mon_memo_add,
-                                //TUE
-                                tue_hour: res.payload[index].tue_hour,
-                                tue_memo: res.payload[index].tue_memo,
-                                tue_hour_add: res.payload[index].tue_hour_add,
-                                tue_memo_add: res.payload[index].tue_memo_add,
-                                //WES
-                                wes_hour: res.payload[index].wes_hour,
-                                wes_memo: res.payload[index].wes_memo,
-                                wes_hour_add: res.payload[index].wes_hour_add,
-                                wes_memo_add: res.payload[index].wes_memo_add,
-                                //THU
-                                thu_hour: res.payload[index].thu_hour,
-                                thu_memo: res.payload[index].thu_memo,
-                                thu_hour_add: res.payload[index].thu_hour_add,
-                                thu_memo_add: res.payload[index].thu_memo_add,
-                                //FRI
-                                fri_hour: res.payload[index].fri_hour,
-                                fri_memo: res.payload[index].fri_memo,
-                                fri_hour_add: res.payload[index].fri_hour_add,
-                                fri_memo_add: res.payload[index].fri_memo_add,
-                                //SAT
-                                sat_hour: res.payload[index].sat_hour,
-                                sat_memo: res.payload[index].sat_memo,
-                                sat_hour_add: res.payload[index].sat_hour_add,
-                                sat_memo_add: res.payload[index].sat_memo_add,
-                                //SUN
-                                sun_hour: res.payload[index].sun_hour,
-                                sun_memo: res.payload[index].sun_memo,
-                                sun_hour_add: res.payload[index].sun_hour_add,
-                                sun_memo_add: res.payload[index].sun_memo_add,
-                                //RIGHT
-                                isSendReview: res.payload[index].isSendReview,
-                                isManagerCheck: res.payload[index].isManagerCheck,
-                                isExecutiveCheck: res.payload[index].isExecutiveCheck,
+                            if (managersRelatedProjects.includes(res.payload[index].prjDID) || type == 2) { // 行政總管跟每個人都有關, 經理只跟專案掛鉤
+                                var detail = {
+                                    tableID: res.payload[index]._id,
+                                    prjDID: res.payload[index].prjDID,
+                                    creatorDID: res.payload[index].creatorDID,
+                                    create_formDate: res.payload[index].create_formDate,
+                                    //MON
+                                    mon_hour: res.payload[index].mon_hour,
+                                    mon_memo: res.payload[index].mon_memo,
+                                    mon_hour_add: res.payload[index].mon_hour_add,
+                                    mon_memo_add: res.payload[index].mon_memo_add,
+                                    //TUE
+                                    tue_hour: res.payload[index].tue_hour,
+                                    tue_memo: res.payload[index].tue_memo,
+                                    tue_hour_add: res.payload[index].tue_hour_add,
+                                    tue_memo_add: res.payload[index].tue_memo_add,
+                                    //WES
+                                    wes_hour: res.payload[index].wes_hour,
+                                    wes_memo: res.payload[index].wes_memo,
+                                    wes_hour_add: res.payload[index].wes_hour_add,
+                                    wes_memo_add: res.payload[index].wes_memo_add,
+                                    //THU
+                                    thu_hour: res.payload[index].thu_hour,
+                                    thu_memo: res.payload[index].thu_memo,
+                                    thu_hour_add: res.payload[index].thu_hour_add,
+                                    thu_memo_add: res.payload[index].thu_memo_add,
+                                    //FRI
+                                    fri_hour: res.payload[index].fri_hour,
+                                    fri_memo: res.payload[index].fri_memo,
+                                    fri_hour_add: res.payload[index].fri_hour_add,
+                                    fri_memo_add: res.payload[index].fri_memo_add,
+                                    //SAT
+                                    sat_hour: res.payload[index].sat_hour,
+                                    sat_memo: res.payload[index].sat_memo,
+                                    sat_hour_add: res.payload[index].sat_hour_add,
+                                    sat_memo_add: res.payload[index].sat_memo_add,
+                                    //SUN
+                                    sun_hour: res.payload[index].sun_hour,
+                                    sun_memo: res.payload[index].sun_memo,
+                                    sun_hour_add: res.payload[index].sun_hour_add,
+                                    sun_memo_add: res.payload[index].sun_memo_add,
+                                    //RIGHT
+                                    isSendReview: res.payload[index].isSendReview,
+                                    isManagerCheck: res.payload[index].isManagerCheck,
+                                    isExecutiveCheck: res.payload[index].isExecutiveCheck,
 
-                                // Reject
-                                isManagerReject: res.payload[index].isManagerReject,
-                                managerReject_memo: res.payload[index].managerReject_memo,
+                                    // Reject
+                                    isManagerReject: res.payload[index].isManagerReject,
+                                    managerReject_memo: res.payload[index].managerReject_memo,
 
-                                isExecutiveReject: res.payload[index].isExecutiveReject,
-                                executiveReject_memo: res.payload[index].executiveReject_memo,
+                                    isExecutiveReject: res.payload[index].isExecutiveReject,
+                                    executiveReject_memo: res.payload[index].executiveReject_memo,
 
-                                userMonthSalary: res.payload[index].userMonthSalary,
+                                    userMonthSalary: res.payload[index].userMonthSalary,
 
-                                // TOTAL
-                                hourTotal: res.payload[index].mon_hour +
-                                res.payload[index].tue_hour +
-                                res.payload[index].wes_hour +
-                                res.payload[index].thu_hour +
-                                res.payload[index].fri_hour +
-                                res.payload[index].sat_hour +
-                                res.payload[index].sun_hour,
-                                hourAddTotal: res.payload[index].mon_hour_add +
-                                res.payload[index].tue_hour_add +
-                                res.payload[index].wes_hour_add +
-                                res.payload[index].thu_hour_add +
-                                res.payload[index].fri_hour_add +
-                                res.payload[index].sat_hour_add +
-                                res.payload[index].sun_hour_add,
-                            };
-                            formTables.push(detail);
-                            if (tableSort[0].indexOf(res.payload[index]._id) >= 0) {
-                                isFirstRaw = true;
+                                    // TOTAL
+                                    hourTotal: res.payload[index].mon_hour +
+                                    res.payload[index].tue_hour +
+                                    res.payload[index].wes_hour +
+                                    res.payload[index].thu_hour +
+                                    res.payload[index].fri_hour +
+                                    res.payload[index].sat_hour +
+                                    res.payload[index].sun_hour,
+                                    hourAddTotal: res.payload[index].mon_hour_add +
+                                    res.payload[index].tue_hour_add +
+                                    res.payload[index].wes_hour_add +
+                                    res.payload[index].thu_hour_add +
+                                    res.payload[index].fri_hour_add +
+                                    res.payload[index].sat_hour_add +
+                                    res.payload[index].sun_hour_add,
+                                };
+                                formTables.push(detail);
+                                if (tableSort[0].indexOf(res.payload[index]._id) >= 0) {
+                                    isFirstRaw = true;
+                                }
+                            }
+
+                        }
+                        console.log(formTables);
+                        console.log(formTables.length);
+                        if (formTables.length == 0) {
+                            for (var index = 0; index < $scope.usersReviewForManagers.length; index ++) {
+                                if(userData[userData.DID][workIndex].creatorDID === $scope.usersReviewForManagers[index].DID) {
+                                    console.log(index);
+                                }
                             }
                         }
                         if(isFirstRaw) {
