@@ -1157,6 +1157,8 @@
                         }
                     }
                 } break;
+                // 經理審核
+                // 行政審核
                 case 2:
                 case 3: {
                     switch (day) {
@@ -1198,7 +1200,6 @@
                             }
                             result += $scope.showWorkOffCalculateHour($scope.fetchWorkOffTableFormDataFromScope(form), 5);
                             result += $scope.showNHCalculateHour($scope.fetchNHTableFormDataFromScope(form), 5);
-
                         } break;
                         case 6: {
                             for (index = 0; index < $scope.fetchFormDataFromScope(form).length; index++) {
@@ -3061,17 +3062,19 @@
 
         // get National Holidays Tables in scope.
         $scope.fetchNHTableFormDataFromScope = function(table) {
-            // console.log($scope.workNHTablesItems[form.creatorDID + form._id]);
+            // console.log($scope.workNHTablesItems[table.creatorDID + table._id]);
             return $scope.workNHTablesItems[table.creatorDID] === undefined ? [] : $scope.workNHTablesItems[table.creatorDID];
         }
 
         // show 國定假日
         $scope.showNHCalculateHour = function (tables, day) {
+            var NHresult = 0;
             for (var index = 0; index < tables.length; index++) {
-                if (day !== tables[index].day) return 0;
-                return 8;
+                if (day === tables[index].day) {
+                    NHresult = 8;
+                }
             }
-            return 0;
+            return NHresult;
         }
 
         $scope.fetchReviewUserFromScope = function (userDID) {
