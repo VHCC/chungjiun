@@ -154,39 +154,41 @@
                         <!--<t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_private}}</t>-->
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.person_residual_rest_hour - showWorkOffCount(2)}}</t>
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_observed+
+                            workOffFormCtrlVm.loginUserHolidayForm.person_residual_rest_hour -
+                            showWorkOffCount(2)}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{diff(workOffFormCtrlVm.loginUserHolidayForm.rest_special,
-                            workOffFormCtrlVm.loginUserHolidayForm.calculate_special)}}</t>
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_special-
+                            workOffFormCtrlVm.loginUserHolidayForm.calculate_special}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{diff(workOffFormCtrlVm.loginUserHolidayForm.rest_married,
-                            workOffFormCtrlVm.loginUserHolidayForm.calculate_married)}}</t>
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_married-
+                            workOffFormCtrlVm.loginUserHolidayForm.calculate_married}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{diff(workOffFormCtrlVm.loginUserHolidayForm.rest_mourning,
-                            workOffFormCtrlVm.loginUserHolidayForm.calculate_mourning)}}</t>
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_mourning-
+                            workOffFormCtrlVm.loginUserHolidayForm.calculate_mourning}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{diff(workOffFormCtrlVm.loginUserHolidayForm.rest_official,
-                            workOffFormCtrlVm.loginUserHolidayForm.calculate_official)}}</t>
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_official-
+                            workOffFormCtrlVm.loginUserHolidayForm.calculate_official}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{diff(workOffFormCtrlVm.loginUserHolidayForm.rest_workinjury,
-                            workOffFormCtrlVm.loginUserHolidayForm.calculate_workinjury)}}</t>
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_workinjury-
+                            workOffFormCtrlVm.loginUserHolidayForm.calculate_workinjury}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{diff(workOffFormCtrlVm.loginUserHolidayForm.rest_maternity,
-                            workOffFormCtrlVm.loginUserHolidayForm.calculate_maternity)}}</t>
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_maternity-
+                            workOffFormCtrlVm.loginUserHolidayForm.calculate_maternity}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{diff(workOffFormCtrlVm.loginUserHolidayForm.rest_paternity,
-                            workOffFormCtrlVm.loginUserHolidayForm.calculate_paternity)}}</t>
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_paternity-
+                            workOffFormCtrlVm.loginUserHolidayForm.calculate_paternity}}</t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{diff(workOffFormCtrlVm.loginUserHolidayForm.rest_others,
-                            workOffFormCtrlVm.loginUserHolidayForm.calculate_others)}}</t>
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_others-
+                            workOffFormCtrlVm.loginUserHolidayForm.calculate_others}}</t>
                     </td>
                 </tr>
 
@@ -209,7 +211,8 @@
                     </td>
                     <!--補休(時)-->
                     <td class="form-group " style="vertical-align: inherit;">
-                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_observed}}
+                        <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_observed+
+                            workOffFormCtrlVm.loginUserHolidayForm.person_residual_rest_hour}}
                         </t>
                     </td>
                     <td class="form-group " style="vertical-align: inherit;">
