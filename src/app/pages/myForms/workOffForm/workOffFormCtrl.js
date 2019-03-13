@@ -520,7 +520,7 @@
 
             // 休假規則，未滿一小算一小
             $scope.getHourDiff = function (dom) {
-                console.log("A");
+                console.log(dom);
                 if (dom.tableTimeStart && dom.tableTimeEnd) {
                     dom.table.start_time = dom.tableTimeStart;
                     dom.table.end_time = dom.tableTimeEnd;
@@ -540,11 +540,6 @@
                         // the remainder is the number of seconds
                         // difference % 60 // SECONDS
                     ];
-
-                    // formatting (0 padding and concatenation)
-                    // result = result.map(function (v) {
-                    //     return v < 10 ? '0' + v : v;
-                    // }).join(':');
 
                     if (TimeUtil.getHour(dom.table.end_time) == 12) {
                         // console.log(result[0])
@@ -572,6 +567,7 @@
             }
 
             $scope.getHourDiffByTime = function (start, end, type) {
+                // console.log("- workOffFormCtrl, start= " + start + ", end= " + end + ", type= " + type);
                 if (start && end) {
                     var difference = Math.abs(TimeUtil.toSeconds(start) - TimeUtil.toSeconds(end));
 
@@ -615,7 +611,7 @@
                         if (this.workOffType.type == 3 || this.workOffType.type == 4 || this.workOffType.type == 5
                             || this.workOffType.type == 7 || this.workOffType.type == 8 || this.workOffType.type == 9) {
 
-                            resultFinal = result <= 4 ? 4 : 8;
+                            resultFinal = resultFinal <= 4 ? 4 : 8;
                         }
 
                         return resultFinal;
@@ -624,7 +620,7 @@
                         if (this.table.workOffType == 3 || this.table.workOffType == 4 || this.table.workOffType == 5
                             || this.table.workOffType == 7 || this.table.workOffType == 8 || this.table.workOffType == 9) {
 
-                            resultFinal = result <= 4 ? 4 : 8;
+                            resultFinal = resultFinal <= 4 ? 4 : 8;
                         }
 
                         return resultFinal;
@@ -633,7 +629,7 @@
                         if (type == 3 || type == 4 || type == 5
                             || type == 7 || type == 8 || type == 9) {
 
-                            resultFinal = result <= 4 ? 4 : 8;
+                            resultFinal = resultFinal <= 4 ? 4 : 8;
                         }
 
                         return resultFinal;
@@ -838,6 +834,7 @@
                         workOffTableData.push(dataItem);
                     }
                     // console.log(formDataTable);
+                    console.log(workOffTableData);
                     var formData = {
                         creatorDID: $scope.userDID,
                         year: thisYear,
@@ -1128,7 +1125,7 @@
                                 case 2:
                                     result += $scope.getHourDiffByTime(
                                         tables[index].start_time,
-                                        tables[index].end_time);
+                                        tables[index].end_time, tables[index].workAddType);
                                     break;
                             }
                         }

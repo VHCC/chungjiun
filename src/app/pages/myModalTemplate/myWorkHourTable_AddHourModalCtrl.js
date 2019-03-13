@@ -126,7 +126,8 @@
         }
 
         // 加班，規則
-        $scope.getHourDiffByTime = function (start, end) {
+        $scope.getHourDiffByTime = function (start, end, type) {
+            console.log("- MyWorkHourTableAddHourModalCtrl, start= " + start + ", end= " + end + ", type= " + type);
             if (start && end) {
                 var difference = Math.abs(TimeUtil.toSeconds(start) - TimeUtil.toSeconds(end));
                 // compute hours, minutes and seconds

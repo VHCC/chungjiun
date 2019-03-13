@@ -419,7 +419,9 @@
                     <!--請假扣款-->
                     <td style="vertical-align: inherit;">
                         <!--審查完成-->
-                        <div ng-show="(table.isBossCheck && table.isExecutiveCheck)">
+                        <div ng-show="(table.isBossCheck && table.isExecutiveCheck &&
+                        (table.workOffType === 0 || table.workOffType === 1))">
+                            <!--只有事假、病假要扣錢 20190312-->
                             <span>
                                 <!-- -{{(table.userHourSalary) * table.myHourDiff}}-->
                                 -{{formatFloat((table.userMonthSalary/240) * table.myHourDiff, 2)}}

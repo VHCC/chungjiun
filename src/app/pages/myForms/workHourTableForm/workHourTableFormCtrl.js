@@ -54,7 +54,7 @@
                                WorkAddConfirmFormUtil,
                                editableOptions,
                                editableThemes,) {
-        console.log = function() {}
+        // console.log = function() {}
 
         var vm = this;
         var thisYear = new Date().getFullYear() - 1911;
@@ -860,7 +860,8 @@
                                 }
                                 for (var index = 0; index < $scope.loginUserWorkOffTables.length; index++) {
                                     if (!$scope.loginUserWorkOffTables[index].isBossCheck || !$scope.loginUserWorkOffTables[index].isExecutiveCheck) continue;
-                                    var evalFooter = "getHourDiffByTime($scope.loginUserWorkOffTables[index].start_time, $scope.loginUserWorkOffTables[index].end_time)";
+                                    var evalFooter = "getHourDiffByTime($scope.loginUserWorkOffTables[index].start_time, $scope.loginUserWorkOffTables[index].end_time, " +
+                                        "$scope.loginUserWorkOffTables[index].workOffType)";
                                     switch ($scope.loginUserWorkOffTables[index].day) {
                                         case 1:
                                             var evalString = "$scope.monOffTotal" + (type === 1 ? "" : type === 2 ? "_manager" : type === 3 ? "_executive" : "_history");
@@ -1031,7 +1032,7 @@
         }
 
         // 計算小計
-        $scope.showCalculateHour = function (tables, day, type, form) {
+        $scope.showCalculateHour = function (tableIndex, tables, day, type, form) {
             var index = 0;
             var result = 0;
             switch (type) {
@@ -1102,6 +1103,7 @@
                             eval("result += " + evalString);
                         } break;
                         case 1001: {
+                            //正常工時表
                             for (index = 0; index < tables.length; index++) {
                                 result += tables[index].mon_hour;
                                 result += tables[index].tue_hour;
@@ -1111,39 +1113,149 @@
                                 result += tables[index].sat_hour;
                                 result += tables[index].sun_hour;
                             }
-                            var evalString = "$scope.monNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
-                            var evalString = "$scope.tueNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
-                            var evalString = "$scope.wesNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
-                            var evalString = "$scope.thuNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
-                            var evalString = "$scope.friNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
-                            var evalString = "$scope.satNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
-                            var evalString = "$scope.sunNH" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
+
+                            if (tableIndex === 0) {
+                                //國定假日
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) > 7
+                                    || $scope.checkIsCrossMonth($scope.firstFullDate) < 0) {
+                                    var evalString = "$scope.sunNH" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) > 6
+                                    || $scope.checkIsCrossMonth($scope.firstFullDate) < 0) {
+                                    var evalString = "$scope.satNH" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) > 5
+                                    || $scope.checkIsCrossMonth($scope.firstFullDate) < 0) {
+                                    var evalString = "$scope.friNH" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) > 4
+                                    || $scope.checkIsCrossMonth($scope.firstFullDate) < 0) {
+                                    var evalString = "$scope.thuNH" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) > 3
+                                    || $scope.checkIsCrossMonth($scope.firstFullDate) < 0) {
+                                    var evalString = "$scope.wesNH" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) > 2
+                                    || $scope.checkIsCrossMonth($scope.firstFullDate) < 0) {
+                                    var evalString = "$scope.tueNH" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) > 1
+                                    || $scope.checkIsCrossMonth($scope.firstFullDate) < 0) {
+                                    var evalString = "$scope.monNH" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+
+                                // 休假
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) > 7
+                                    || $scope.checkIsCrossMonth($scope.firstFullDate) < 0) {
+                                    var evalString = "$scope.sunOffTotal" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) > 6
+                                    || $scope.checkIsCrossMonth($scope.firstFullDate) < 0) {
+                                    var evalString = "$scope.satOffTotal" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) > 5
+                                    || $scope.checkIsCrossMonth($scope.firstFullDate) < 0) {
+                                    var evalString = "$scope.friOffTotal" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) > 4
+                                    || $scope.checkIsCrossMonth($scope.firstFullDate) < 0) {
+                                    var evalString = "$scope.thuOffTotal" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) > 3
+                                    || $scope.checkIsCrossMonth($scope.firstFullDate) < 0) {
+                                    var evalString = "$scope.wesOffTotal" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) > 2
+                                    || $scope.checkIsCrossMonth($scope.firstFullDate) < 0) {
+                                    var evalString = "$scope.tueOffTotal" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) > 1
+                                    || $scope.checkIsCrossMonth($scope.firstFullDate) < 0) {
+                                    var evalString = "$scope.monOffTotal" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                            } else {
+                                //跨月表（下）
+                                //國定假日
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) <= 7) {
+                                    var evalString = "$scope.sunNH" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) <= 6) {
+                                    var evalString = "$scope.satNH" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) <= 5) {
+                                    var evalString = "$scope.friNH" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) <= 4) {
+                                    var evalString = "$scope.thuNH" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) <= 3) {
+                                    var evalString = "$scope.wesNH" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) <= 2) {
+                                    var evalString = "$scope.tueNH" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) <= 1) {
+                                    var evalString = "$scope.monNH" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+
+                                // 休假
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) <= 7) {
+                                    var evalString = "$scope.sunOffTotal" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) <= 6) {
+                                    var evalString = "$scope.satOffTotal" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) <= 5) {
+                                    var evalString = "$scope.friOffTotal" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) <= 4) {
+                                    var evalString = "$scope.thuOffTotal" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) <= 3) {
+                                    var evalString = "$scope.wesOffTotal" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) <= 2) {
+                                    var evalString = "$scope.tueOffTotal" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                                if ($scope.checkIsCrossMonth($scope.firstFullDate) <= 1) {
+                                    var evalString = "$scope.monOffTotal" + (type === 1 ? "" : "_history");
+                                    eval("result += " + evalString);
+                                }
+                            }
 
 
-                            var evalString = "$scope.monOffTotal" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
-                            var evalString = "$scope.tueOffTotal" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
-                            var evalString = "$scope.wesOffTotal" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
-                            var evalString = "$scope.thuOffTotal" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
-                            var evalString = "$scope.friOffTotal" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
-                            var evalString = "$scope.satOffTotal" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
-                            var evalString = "$scope.sunOffTotal" + (type === 1 ? "" : "_history");
-                            eval("result += " + evalString);
                             return result;
                         }
                         case 2001: {
+                            // 加班時數
                             for (index = 0; index < tables.length; index++) {
                                 result += tables[index].mon_hour_add;
                                 result += tables[index].tue_hour_add;
@@ -1662,7 +1774,7 @@
                     }
                 }
             }
-            console.log("National Holiday counts= " + NHCount);
+            console.log("National Holiday (國定假日) counts= " + NHCount);
 
             // 補班日
             var OTCount = 0;
@@ -1682,40 +1794,40 @@
                     }
                 }
             }
-            console.log("Over Time counts= " + OTCount);
+            console.log("Over Time (補班日) counts= " + OTCount);
 
             // 每周工作天 = 5
             var weeklyWorkDay = 5;
             var reviewWorkDay = weeklyWorkDay + OTCount - NHCount;
 
-            // 有跨週情形
-            console.log("checkIsCrossMonth= " + $scope.checkIsCrossMonth($scope.firstFullDate));
+            // 有跨週情形，跨週日
+            console.log("checkIsCrossMonth (跨週日)= " + $scope.checkIsCrossMonth($scope.firstFullDate));
             if ($scope.checkIsCrossMonth($scope.firstFullDate) > 0) {
                 switch(tableIndex) {
                     case 0:
                         // console.log("cross work day= " + ($scope.checkIsCrossMonth($scope.firstFullDate) > 5 ? 5 : $scope.checkIsCrossMonth($scope.firstFullDate) - 1));
                         weeklyWorkDay = ($scope.checkIsCrossMonth($scope.firstFullDate) > 5 ? 5 : $scope.checkIsCrossMonth($scope.firstFullDate) - 1);
-                        console.log("OTCount_befor_cross= " + OTCount_befor_cross);
-                        console.log("NHCount_befor_cross= " + NHCount_befor_cross);
+                        console.log("上表單，OTCount_befor_cross= " + OTCount_befor_cross);
+                        console.log("上表單，NHCount_befor_cross= " + NHCount_befor_cross);
                         reviewWorkDay = weeklyWorkDay + OTCount_befor_cross - NHCount_befor_cross;
                         break;
                     case 1:
                         // console.log("cross work day= " + ($scope.checkIsCrossMonth($scope.firstFullDate) > 5 ? 0 : (weeklyWorkDay - ($scope.checkIsCrossMonth($scope.firstFullDate)) + 1)));
                         weeklyWorkDay =  ($scope.checkIsCrossMonth($scope.firstFullDate) > 5 ? 0 : (weeklyWorkDay - ($scope.checkIsCrossMonth($scope.firstFullDate)) + 1));
-                        console.log("OTCount_after_cross= " + OTCount_after_cross);
-                        console.log("NHCount_after_cross= " + NHCount_after_cross);
+                        console.log("下表單，OTCount_after_cross= " + OTCount_after_cross);
+                        console.log("下表單，NHCount_after_cross= " + NHCount_after_cross);
                         reviewWorkDay = weeklyWorkDay + OTCount_after_cross - NHCount_after_cross;
                         break;
                 }
             }
-            console.log("reviewWorkDay counts= " + reviewWorkDay);
+            console.log("reviewWorkDay (工作日) counts= " + reviewWorkDay);
 
-            if ($scope.showCalculateHour($scope.tables[tableIndex].tablesItems, 1001, 1) !== (reviewWorkDay * 8)) {
+            if ($scope.showCalculateHour(tableIndex, $scope.tables[tableIndex].tablesItems, 1001, 1) !== (reviewWorkDay * 8)) {
                 $scope.titleClass = 'bg-danger';
                 $scope.checkText = '該周工時表時數非 ' + (reviewWorkDay * 8) + '，確定提交 審查？';
             } else {
                 $scope.titleClass = 'bg-warning';
-                $scope.checkText = '確定提交 審查？';
+                $scope.checkText = '工作時數確認正確 ' + (reviewWorkDay * 8) +' ，確定提交 審查？';
             }
             $scope.reviewTableIndex = tableIndex;
 
@@ -2159,10 +2271,12 @@
                 })
         }
 
-        function getHourDiffByTime(start, end) {
+        // function
+        function getHourDiffByTime(start, end, type) {
+            console.log("- function WorkHourTableFormCtrl, start= " + start + ", end= " + end + ", type= " + type);
             if (start && end) {
-                console.log("BB");
                 var difference = Math.abs(TimeUtil.toSeconds(start) - TimeUtil.toSeconds(end));
+
                 // compute hours, minutes and seconds
                 var result = [
                     // an hour has 3600 seconds so we have to compute how often 3600 fits
@@ -2175,17 +2289,35 @@
                     // difference % 60 // SECONDS
                 ];
 
-                // formatting (0 padding and concatenation)
-                // result = result.map(function (v) {
-                //     return v < 10 ? '0' + v : v;
-                // }).join(':');
-                result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
-                return result <= 1 ? 1 : result >= 8 ? 8 : result;
+                if (TimeUtil.getHour(end) == 12) {
+                    // console.log(result[0])
+                    // console.log(result[1])
+                    result = result[0] + (result[1] > 0 ? 0.5 : 0);
+                    // console.log(result)
+                } else {
+                    result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
+                }
+                var resultFinal;
+                if (TimeUtil.getHour(start) <= 12 && TimeUtil.getHour(end) >= 13) {
+                    resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 1 : result -1;
+                } else {
+                    resultFinal = result <= 1 ? 1 : result >= 8 ? 8 : result;
+                }
+
+                // 總攬
+                if (type == 3 || type == 4 || type == 5
+                    || type == 7 || type == 8 || type == 9) {
+
+                    resultFinal = resultFinal <= 4 ? 4 : 8;
+                }
+
+                return resultFinal;
 
             }
         }
 
         $scope.getHourDiffByTime = function (start, end) {
+            console.log("- WorkHourTableFormCtrl, start= " + start + ", end= " + end + ", type= " + type);
             if (start && end) {
                 var difference = Math.abs(TimeUtil.toSeconds(start) - TimeUtil.toSeconds(end));
 
@@ -3009,7 +3141,7 @@
         $scope.showWorkOffCalculateHour = function (tables, day) {
             for (var index = 0; index < tables.length; index++) {
                 if (day !== tables[index].day || (!tables[index].isBossCheck || !tables[index].isExecutiveCheck)) return 0;
-                return getHourDiffByTime(tables[index].start_time, tables[index].end_time);
+                return getHourDiffByTime(tables[index].start_time, tables[index].end_time, tables[index].workOffType);
             }
             return 0;
         }
