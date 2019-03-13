@@ -23,7 +23,7 @@
             <!--時間-->
             <td style="width: 10%">{{tableItem.start_time}} - {{tableItem.end_time}}</td></td>
             <!--休假時數-->
-            <td style="width: 5%">{{getHourDiffByTime(tableItem.start_time, tableItem.end_time)}}</td>
+            <td style="width: 5%">{{getHourDiffByTime(tableItem.start_time, tableItem.end_time, tableItem.workOffType)}}</td>
             <!--年度累積-->
             <!--<td class="select-td" style="width: 5%">-->
         </tr>
