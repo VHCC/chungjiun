@@ -1172,75 +1172,75 @@
                 </td>
                 <!--MON-->
                 <td colspan="2" style="text-align: center">
-                    <span ng-class="showCalculateHour($parent.$index, fetchTableItems($parent.$index), 1, 1) > 8 ? 'sumWarning' : 'sunNormal'"
+                    <span ng-class="showCalculateHour($parent.$index, firstFullDate, fetchTableItems($parent.$index), 1, 1) > 8 ? 'sumWarning' : 'sunNormal'"
                           ng-if="checkIsCrossMonth(firstFullDate) < 0
                           || (table.crossDay > 1 && $parent.$index === 0)
                           || (table.crossDay <= 1 && $parent.$index === 1)">
-                        {{showCalculateHour($parent.$index, fetchTableItems($parent.$index), 1, 1)}}
+                        {{showCalculateHour($parent.$index, firstFullDate, fetchTableItems($parent.$index), 1, 1)}}
                     </span>
                 </td>
                 <!--TUE-->
                 <td colspan="2" style="text-align: center">
-                    <span ng-class="showCalculateHour($parent.$index, fetchTableItems($parent.$index), 2, 1) > 8 ? 'sumWarning' : 'sunNormal'"
+                    <span ng-class="showCalculateHour($parent.$index, firstFullDate, fetchTableItems($parent.$index), 2, 1) > 8 ? 'sumWarning' : 'sunNormal'"
                           ng-if="checkIsCrossMonth(firstFullDate) < 0
                           || (table.crossDay > 2 && $parent.$index === 0)
                           || (table.crossDay <= 2 && $parent.$index === 1)">
-                        {{showCalculateHour($parent.$index, fetchTableItems($parent.$index), 2, 1)}}
+                        {{showCalculateHour($parent.$index, firstFullDate, fetchTableItems($parent.$index), 2, 1)}}
                     </span>
                 </td>
                 <!--WED-->
                 <td colspan="2" style="text-align: center">
-                    <span ng-class="showCalculateHour($parent.$index, fetchTableItems($parent.$index), 3, 1) > 8 ? 'sumWarning' : 'sunNormal'"
+                    <span ng-class="showCalculateHour($parent.$index, firstFullDate, fetchTableItems($parent.$index), 3, 1) > 8 ? 'sumWarning' : 'sunNormal'"
                           ng-if="checkIsCrossMonth(firstFullDate) < 0
                           || (table.crossDay > 3 && $parent.$index === 0)
                           || (table.crossDay <= 3 && $parent.$index === 1)">
-                        {{showCalculateHour($parent.$index, fetchTableItems($parent.$index), 3, 1)}}
+                        {{showCalculateHour($parent.$index, firstFullDate, fetchTableItems($parent.$index), 3, 1)}}
                     </span>
                 </td>
                 <!--THU-->
                 <td colspan="2" style="text-align: center">
-                    <span ng-class="showCalculateHour($parent.$index, fetchTableItems($parent.$index), 4, 1) > 8 ? 'sumWarning' : 'sunNormal'"
+                    <span ng-class="showCalculateHour($parent.$index, firstFullDate, fetchTableItems($parent.$index), 4, 1) > 8 ? 'sumWarning' : 'sunNormal'"
                           ng-if="checkIsCrossMonth(firstFullDate) < 0
                           || (table.crossDay > 4 && $parent.$index === 0)
                           || (table.crossDay <= 4 && $parent.$index === 1)">
-                        {{showCalculateHour($parent.$index, fetchTableItems($parent.$index), 4, 1)}}
+                        {{showCalculateHour($parent.$index, firstFullDate, fetchTableItems($parent.$index), 4, 1)}}
                     </span>
                 </td>
                 <!--FRI-->
                 <td colspan="2" style="text-align: center">
-                    <span ng-class="showCalculateHour($parent.$index, fetchTableItems($parent.$index), 5, 1) > 8 ? 'sumWarning' : 'sunNormal'"
+                    <span ng-class="showCalculateHour($parent.$index, firstFullDate, fetchTableItems($parent.$index), 5, 1) > 8 ? 'sumWarning' : 'sunNormal'"
                           ng-if="checkIsCrossMonth(firstFullDate) < 0
                           || (table.crossDay > 5 && $parent.$index === 0)
                           || (table.crossDay <= 5 && $parent.$index === 1)">
-                        {{showCalculateHour($parent.$index, fetchTableItems($parent.$index), 5, 1)}}
+                        {{showCalculateHour($parent.$index, firstFullDate, fetchTableItems($parent.$index), 5, 1)}}
                     </span>
                 </td>
                 <!--SAT-->
                 <td colspan="2" style="text-align: center">
-                    <span ng-class="showCalculateHour($parent.$index, fetchTableItems($parent.$index), 6, 1) > 8 ? 'sumWarning' : 'sunNormal'"
+                    <span ng-class="showCalculateHour($parent.$index, firstFullDate, fetchTableItems($parent.$index), 6, 1) > 8 ? 'sumWarning' : 'sunNormal'"
                           ng-if="checkIsCrossMonth(firstFullDate) < 0
                           || (table.crossDay > 6 && $parent.$index === 0)
                           || (table.crossDay <= 6 && $parent.$index === 1)">
-                        {{showCalculateHour($parent.$index, fetchTableItems($parent.$index), 6, 1)}}
+                        {{showCalculateHour($parent.$index, firstFullDate, fetchTableItems($parent.$index), 6, 1)}}
                     </span>
                 </td>
                 <!--SUN-->
                 <td colspan="2" style="text-align: center">
-                    <span ng-class="showCalculateHour($parent.$index, fetchTableItems($parent.$index), 7, 1) > 8 ? 'sumWarning' : 'sunNormal'"
+                    <span ng-class="showCalculateHour($parent.$index, firstFullDate, fetchTableItems($parent.$index), 7, 1) > 8 ? 'sumWarning' : 'sunNormal'"
                           ng-if="checkIsCrossMonth(firstFullDate) < 0
                           || (table.crossDay > 7 && $parent.$index === 0)
                           || (table.crossDay <= 7 && $parent.$index === 1)">
-                        {{showCalculateHour($parent.$index, fetchTableItems($parent.$index), 7, 1)}}
+                        {{showCalculateHour($parent.$index, firstFullDate, fetchTableItems($parent.$index), 7, 1)}}
                     </span>
                 </td>
                 <!-- summation-->
                 <td style="text-align: center">
-                    <span ng-class="showCalculateHour($parent.$index, fetchTableItems($parent.$index), 1001, 1) !== 40 ? 'sumWarning' : 'sunNormal'">
-                        {{showCalculateHour($parent.$index, fetchTableItems($parent.$index), 1001, 1)}}
+                    <span ng-class="showCalculateHour($parent.$index, firstFullDate, fetchTableItems($parent.$index), 1001, 1) !== 40 ? 'sumWarning' : 'sunNormal'">
+                        {{showCalculateHour($parent.$index, firstFullDate, fetchTableItems($parent.$index), 1001, 1)}}
                     </span>
                     <br>
                     <span>
-                        {{showCalculateHour($parent.$index, fetchTableItems($parent.$index), 2001, 1)}}
+                        {{showCalculateHour($parent.$index, firstFullDate, fetchTableItems($parent.$index), 2001, 1)}}
                     </span>
                 </td>
             </tr>
