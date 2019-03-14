@@ -1818,14 +1818,14 @@
                         break;
                 }
             }
-            console.log("reviewWorkDay (工作日) counts= " + reviewWorkDay);
+            console.log("reviewWorkDay (工作日) counts= " + reviewWorkDay + ", hours= " + $scope.showCalculateHour(tableIndex, $scope.firstFullDate, $scope.tables[tableIndex].tablesItems, 1001, 1));
 
-            if ($scope.showCalculateHour(tableIndex, $scope.tables[tableIndex].tablesItems, 1001, 1) !== (reviewWorkDay * 8)) {
+            if ($scope.showCalculateHour(tableIndex, $scope.firstFullDate, $scope.tables[tableIndex].tablesItems, 1001, 1) !== ((reviewWorkDay + NHCount_after_cross - OTCount_after_cross) * 8)) {
                 $scope.titleClass = 'bg-danger';
-                $scope.checkText = '該周工時表時數非 ' + (reviewWorkDay * 8) + '，確定提交 審查？';
+                $scope.checkText = '該周工時表時數非 ' + ((reviewWorkDay + NHCount_after_cross - OTCount_after_cross)  * 8) + '，確定提交 審查？';
             } else {
                 $scope.titleClass = 'bg-warning';
-                $scope.checkText = '工作時數確認正確 ' + (reviewWorkDay * 8) +' ，確定提交 審查？';
+                $scope.checkText = '工作時數確認正確 ' + ((reviewWorkDay + NHCount_after_cross - OTCount_after_cross)  * 8) +' ，確定提交 審查？';
             }
             $scope.reviewTableIndex = tableIndex;
 
