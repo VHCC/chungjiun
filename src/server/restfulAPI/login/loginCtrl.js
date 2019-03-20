@@ -61,6 +61,7 @@
                         }
 
                         cookies.put('username', data[0].name);
+                        cookies.put('email', data[0].email);
                         cookies.put('roletype', data[0].roleType);
                         cookies.put('userDID', data[0]._id);
                         cookies.put('bossID', data[0].bossID);
@@ -96,6 +97,7 @@
             cookies.put('bossID', null);
             cookies.put('userMonthSalary', null);
             cookies.put('machineDID', null);
+            cookies.put('email', null);
             window.signOutSucess();
         }
 
@@ -109,6 +111,7 @@
             cookies.put('bossID', null);
             cookies.put('userMonthSalary', null);
             cookies.put('machineDID', null);
+            cookies.put('email', null);
         };
 
     }

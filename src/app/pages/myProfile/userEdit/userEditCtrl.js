@@ -35,6 +35,10 @@
 
         $scope.username = cookies.get('username');
         $scope.roleType = cookies.get('roletype');
+        $scope.email = cookies.get('email');
+        $scope.machineDID = cookies.get('machineDID');
+        $scope.bossID = cookies.get('bossID');
+        $scope.userMonthSalary = cookies.get('userMonthSalary');
 
 
         var formData = {
@@ -124,6 +128,7 @@
             User.getAllUsers()
                 .success(function (allUsers) {
                     vm.users = allUsers;
+
                 });
         }
 
@@ -133,6 +138,15 @@
             .success(function (managers) {
                 // console.log(JSON.stringify(managers));
                 vm.managersList = managers;
+
+                // user Boss
+                var userBoss = [];
+                if ($scope.bossID) {
+                    userBoss = $filter('filter')(vm.managersList, {
+                        _id: $scope.bossID,
+                    });
+                }
+                $scope.userBoss = userBoss[0].name;
             })
 
         $scope.updateUser = function () {
@@ -208,11 +222,13 @@
                     roleType: user.roleType,
                 });
             } else if (user.roleType === 100) {
+                console.log(vm.roleOptions_executive);
                 vm.roleOptions = vm.roleOptions_executive;
                 selectedRole = $filter('filter')(vm.roleOptions_executive, {
                     roleType: user.roleType,
                 });
             }
+            console.log(selectedRole[0]);
             vm.userRole = selectedRole[0];
 
             // user Boss
@@ -261,8 +277,26 @@
                     vm.isSetResidualRestHour = true;
                     $scope.fetchAllUsers();
                 })
-
         }
+
+
+        // 個人檔案
+        // user Role
+        var userRole = [];
+        console.log($scope.roleType);
+        if ($scope.roleType != 100) {
+            $scope.roleOptions = options_ragular;
+            userRole = $filter('filter')(vm.roleOptions, {
+                roleType: $scope.roleType,
+            });
+        } else if ($scope.roleType == 100) {
+            $scope.roleOptions = vm.roleOptions_executive;
+            userRole = $filter('filter')(vm.roleOptions_executive, {
+                roleType: $scope.roleType,
+            });
+        }
+        $scope.userRole = userRole[0].name;
+
     }
 
 })();
