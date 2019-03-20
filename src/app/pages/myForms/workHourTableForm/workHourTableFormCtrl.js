@@ -1566,7 +1566,7 @@
                     var workItemCount = $("tbody[id='tableItemBody" + majorIndex + "']").length;
                     // send Data
                     var workHourTableData = [];
-
+                    // console.log("isRefreshProjectSelector= " + isRefreshProjectSelector);
                     if (workItemCount === 0) {
                         if (isRefreshProjectSelector) {
                             $timeout(function () {
@@ -1734,7 +1734,7 @@
                             if (res.payload.length > 0) {
                                 for (var index = 0; index < res.payload.length; index++) {
                                     needUpdateWorkTableIDArray.push(res.payload[index].tableID);
-                                    // $scope.tables[workIndex].tablesItems[index].tableID = res.payload[index].tableID;
+                                    $scope.tables[workIndex].tablesItems[index].tableID = res.payload[index].tableID; // for send to review.
                                 }
                             }
                             // 移除舊有 tableID;
@@ -1847,6 +1847,7 @@
                     msgTargetID: cookies.get('bossID'),
                     tableArray: tableList,
                 }
+                // console.log(formData);
                 WorkHourUtil.updateTotalTableSendReview(formData)
                     .success(function (res) {
                         // console.log(res.code);
