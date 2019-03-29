@@ -17,9 +17,10 @@
             link: function ($scope, elem, attrs) {
                 $scope.tableTimeStart = attrs.start;
                 $scope.tableTimeEnd = attrs.end;
-                $scope.table.myHourDiff = $scope.getHourDiffByTime($scope.tableTimeStart, $scope.tableTimeEnd, $scope.workOffType.type);
-                // console.log("MyTimePickerCtrl, type= " + $scope.workOffType.type + ", myHourDiff= " + $scope.table.myHourDiff);
-
+                if ($scope.workOffType) {
+                    $scope.table.myHourDiff = $scope.getHourDiffByTime($scope.tableTimeStart, $scope.tableTimeEnd, $scope.workOffType.type);
+                    console.log("MyTimePickerCtrl, type= " + $scope.workOffType.type + ", myHourDiff= " + $scope.table.myHourDiff);
+                }
             },
             templateUrl: 'app/pages/myInput/widgets/myTimePicker/myTimePicker.html',
         };
