@@ -9,15 +9,15 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_work_off_create_table, function (req, res) {
         console.log(JSON.stringify(req.body));
         // 刪除既有休假表
-        WorkOffForm.remove({
-            creatorDID: req.body.creatorDID,
-            year: req.body.year,
-            month: req.body.month,
-        }, function (err) {
-            if (err) {
-                console.log(err);
-            }
-        })
+        // WorkOffForm.remove({
+        //     creatorDID: req.body.creatorDID,
+        //     year: req.body.year,
+        //     month: req.body.month,
+        // }, function (err) {
+        //     if (err) {
+        //         console.log(err);
+        //     }
+        // })
         // console.log(req.body.oldTables);
         if (req.body.oldTables.hasOwnProperty('tableIDArray')) {
             var findData = []
@@ -43,6 +43,7 @@ module.exports = function (app) {
         var formTable = [];
         var resultTable = [];
         var resIndex = 0;
+        // New Items
         for (var index = 0; index < req.body.formTables.length; index++) {
             try {
                 WorkOffTableForm.create({
@@ -72,36 +73,55 @@ module.exports = function (app) {
                     }
                     formTable.push(tableItem);
                     if (resIndex === req.body.formTables.length) {
-                        WorkOffForm.create({
+                        // WorkOffForm.create({
+                        //     creatorDID: req.body.creatorDID,
+                        //     year: req.body.year,
+                        //     month: req.body.month,
+                        //     formTables: formTable,
+                        // }, function (err) {
+                        //     if (err) {
+                        //         res.send(err);
+                        //     }
+                        //     WorkOffTableForm.find({
+                        //         creatorDID: req.body.creatorDID,
+                        //         year: req.body.year,
+                        //     }, function (err, workOffForms) {
+                        //         if (err) {
+                        //             res.send(err);
+                        //         }
+                        //         for (var x= 0; x < workOffForms.length; x++) {
+                        //             var tableItem = {
+                        //                 tableID: workOffForms[x]._id,
+                        //             }
+                        //             resultTable.push(tableItem);
+                        //         }
+                        //         res.status(200).send({
+                        //             code: 200,
+                        //             error: global.status._200,
+                        //             payload: resultTable,
+                        //         });
+                        //     })
+                        // });
+                        WorkOffTableForm.find({
                             creatorDID: req.body.creatorDID,
                             year: req.body.year,
-                            month: req.body.month,
-                            formTables: formTable,
-                        }, function (err) {
+                        }, function (err, workOffForms) {
                             if (err) {
                                 res.send(err);
                             }
-                            WorkOffTableForm.find({
-                                creatorDID: req.body.creatorDID,
-                                year: req.body.year,
-                            }, function (err, workOffForms) {
-                                if (err) {
-                                    res.send(err);
+                            for (var x= 0; x < workOffForms.length; x++) {
+                                var tableItem = {
+                                    tableID: workOffForms[x]._id,
                                 }
-                                for (var x= 0; x < workOffForms.length; x++) {
-                                    var tableItem = {
-                                        tableID: workOffForms[x]._id,
-                                    }
-                                    resultTable.push(tableItem);
-                                }
-                                res.status(200).send({
-                                    code: 200,
-                                    error: global.status._200,
-                                    payload: resultTable,
-                                });
-                            })
-                        });
-                    }
+                                resultTable.push(tableItem);
+                            }
+                            res.status(200).send({
+                                code: 200,
+                                error: global.status._200,
+                                payload: resultTable,
+                            });
+                        })
+                }
                 });
             } catch (err) {
                 if (err) {
@@ -114,6 +134,7 @@ module.exports = function (app) {
     });
 
     //get form by date
+    //@Deprecated
     app.post(global.apiUrl.post_work_off_table_fetch_all_user, function (req, res) {
         console.log(JSON.stringify(req.body));
         var query = {};

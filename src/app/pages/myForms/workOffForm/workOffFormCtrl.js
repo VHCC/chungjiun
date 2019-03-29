@@ -520,7 +520,7 @@
 
             // 休假規則，未滿一小算一小
             $scope.getHourDiff = function (dom) {
-                console.log(dom);
+                // console.log(dom);
                 if (dom.tableTimeStart && dom.tableTimeEnd) {
                     dom.table.start_time = dom.tableTimeStart;
                     dom.table.end_time = dom.tableTimeEnd;
@@ -640,7 +640,7 @@
 
             // Send WorkOffTable to Review
             $scope.reviewWorkOffTable = function (table, button, index) {
-                $scope.createSubmit(0);
+                // $scope.createSubmit(0);
                 $timeout(function () {
                     // console.log(table)
                     // console.log($scope.specificUserTablesItems[index]);
@@ -662,7 +662,6 @@
             }
             //跟後臺溝通
             $scope.sendWorkOffTable = function (checkingTable, checkingButton, checkingIndex) {
-                // console.log(checkingTable);
                 checkingButton.rowform1.$waiting = true;
                 var formData = {
                     tableID: checkingTable.tableID,
@@ -842,13 +841,14 @@
                         formTables: workOffTableData,
                         oldTables: formDataTable,
                     }
+                    console.log(formDataTable);
                     WorkOffFormUtil.createWorkOffTableForm(formData)
                         .success(function (res) {
                             // 更新old Table ID Array
                             var workOffTableIDArray = [];
                             if (res.payload.length > 0) {
                                 for (var index = 0; index < res.payload.length; index++) {
-                                    // console.log(res.payload[index]);
+                                    console.log(res.payload[index]);
                                     workOffTableIDArray[index] = res.payload[index].tableID;
                                     // $scope.specificUserTablesItems[index] = res.payload[index];
                                     $scope.specificUserTablesItems[index].tableID = res.payload[index].tableID;
