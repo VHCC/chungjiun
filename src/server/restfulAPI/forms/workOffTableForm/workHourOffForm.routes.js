@@ -5,7 +5,7 @@ module.exports = function (app) {
     'use strict';
 
     // ----- define routes
-    // create Form
+    // create table item
     app.post(global.apiUrl.post_work_off_create_table, function (req, res) {
         console.log(JSON.stringify(req.body));
         // 刪除既有休假表
@@ -105,13 +105,13 @@ module.exports = function (app) {
                         WorkOffTableForm.find({
                             creatorDID: req.body.creatorDID,
                             year: req.body.year,
-                        }, function (err, workOffForms) {
+                        }, function (err, workOffTables) {
                             if (err) {
                                 res.send(err);
                             }
-                            for (var x= 0; x < workOffForms.length; x++) {
+                            for (var index = 0; index < workOffTables.length; index++) {
                                 var tableItem = {
-                                    tableID: workOffForms[x]._id,
+                                    tableID: workOffTables[index]._id,
                                 }
                                 resultTable.push(tableItem);
                             }
@@ -133,96 +133,99 @@ module.exports = function (app) {
 
     });
 
-    //get form by date
+    //get Work Off Form by date
     //@Deprecated
-    app.post(global.apiUrl.post_work_off_table_fetch_all_user, function (req, res) {
-        console.log(JSON.stringify(req.body));
-        var query = {};
-        if (req.body.month !== null) {
-            query.month = req.body.month;
-        }
-        query.creatorDID = req.body.creatorDID;
-        query.year = req.body.year;
+    // app.post(global.apiUrl.post_work_off_table_fetch_all_user, function (req, res) {
+    //     console.log(JSON.stringify(req.body));
+    //     var query = {};
+    //     if (req.body.month !== null) {
+    //         query.month = req.body.month;
+    //     }
+    //     query.creatorDID = req.body.creatorDID;
+    //     query.year = req.body.year;
+    //
+    //     // console.log(query);
+    //     WorkOffForm.find(query, function (err, workOffForm) {
+    //         if (err) {
+    //             res.send(err);
+    //         }
+    //         res.status(200).send({
+    //             code: 200,
+    //             error: global.status._200,
+    //             payload: workOffForm,
+    //         });
+    //     });
+    //
+    //     // WorkOffForm.find({
+    //     //     creatorDID: req.body.creatorDID,
+    //     //     year: req.body.year,
+    //     //     month: req.body.month,
+    //     // }, function (err, workOffForm) {
+    //     //     if (err) {
+    //     //         res.send(err);
+    //     //     }
+    //     //     res.status(200).send({
+    //     //         code: 200,
+    //     //         error: global.status._200,
+    //     //         payload: workOffForm,
+    //     //     });
+    //     // });
+    // });
 
-        // console.log(query);
-        WorkOffForm.find(query, function (err, workOffForm) {
-            if (err) {
-                res.send(err);
-            }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-                payload: workOffForm,
-            });
-        });
+    // find table by table Id array
+    //@Deprecated
+    // app.post(global.apiUrl.post_work_off_table_find_by_table_id_array, function (req, res) {
+    //     console.log(JSON.stringify(req.body));
+    //     var tableCount = req.body.tableIDArray.length;
+    //     var findData = []
+    //     for (var index = 0; index < tableCount; index++) {
+    //         var target = {
+    //             _id: req.body.tableIDArray[index],
+    //         }
+    //         findData.push(target);
+    //     }
+    //     WorkOffTableForm.find({
+    //         $or: findData,
+    //     }, function (err, tables) {
+    //         if (err) {
+    //             res.send(err);
+    //         }
+    //         res.status(200).send({
+    //             code: 200,
+    //             error: global.status._200,
+    //             payload: tables,
+    //         });
+    //     });
+    // })
 
-        // WorkOffForm.find({
-        //     creatorDID: req.body.creatorDID,
-        //     year: req.body.year,
-        //     month: req.body.month,
-        // }, function (err, workOffForm) {
-        //     if (err) {
-        //         res.send(err);
-        //     }
-        //     res.status(200).send({
-        //         code: 200,
-        //         error: global.status._200,
-        //         payload: workOffForm,
-        //     });
-        // });
-    });
-
-    // find table by tableid array
-    app.post(global.apiUrl.post_work_off_table_find_by_table_id_array, function (req, res) {
-        console.log(JSON.stringify(req.body));
-        var tableCount = req.body.tableIDArray.length;
-        var findData = []
-        for (var index = 0; index < tableCount; index++) {
-            var target = {
-                _id: req.body.tableIDArray[index],
-            }
-            findData.push(target);
-        }
-        WorkOffTableForm.find({
-            $or: findData,
-        }, function (err, tables) {
-            if (err) {
-                res.send(err);
-            }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-                payload: tables,
-            });
-        });
-    })
-
-    // update table form send review
-    app.post(global.apiUrl.post_work_off_table_update_send_review, function (req, res) {
-        console.log(JSON.stringify(req.body));
-        WorkOffTableForm.update({
-            _id: req.body.tableID,
-        }, {
-            $set: {
-                isSendReview: true,
-            }
-        }, function (err) {
-            if (err) {
-                res.send(err);
-            }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-            });
-        })
-    })
+    // update table item send review
+    //@Deprecated
+    // app.post(global.apiUrl.post_work_off_table_update_send_review, function (req, res) {
+    //     console.log(JSON.stringify(req.body));
+    //     WorkOffTableForm.update({
+    //         _id: req.body.tableID,
+    //     }, {
+    //         $set: {
+    //             isSendReview: true,
+    //         }
+    //     }, function (err) {
+    //         if (err) {
+    //             res.send(err);
+    //         }
+    //         res.status(200).send({
+    //             code: 200,
+    //             error: global.status._200,
+    //         });
+    //     })
+    // })
 
     // find table item by user DID to executive
+    // 請假單行政確認
     app.post(global.apiUrl.post_work_off_table_item_find_by_user_did_executive, function (req, res) {
         console.log(JSON.stringify(req.body));
         WorkOffTableForm.find({
             creatorDID: req.body.creatorDID,
-            year: req.body.year,
+            // year: req.body.year, // 年度
             isSendReview: true,
             isBossCheck: true,
             isExecutiveCheck: false,
@@ -239,11 +242,12 @@ module.exports = function (app) {
     })
 
     // find table item by user DID to boss
+    // 請假單主管確認
     app.post(global.apiUrl.post_work_off_table_item_find_by_user_did_boss, function (req, res) {
         console.log(JSON.stringify(req.body));
         WorkOffTableForm.find({
             creatorDID: req.body.creatorDID,
-            year: req.body.year,
+            // year: req.body.year, // 年度
             isSendReview: true,
             isBossCheck: false,
         }, function (err, tables) {
@@ -259,69 +263,72 @@ module.exports = function (app) {
     })
 
     // executive agree
-    app.post(global.apiUrl.post_work_off_table_update_executive_agree, function (req, res) {
-        console.log(JSON.stringify(req.body));
-        WorkOffTableForm.update({
-            _id: req.body.tableID,
-        }, {
-            $set: {
-                isExecutiveCheck: true,
-            }
-        }, function (err) {
-            if (err) {
-                res.send(err);
-            }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-            });
-        })
-    })
+    //@Deprecated
+    // app.post(global.apiUrl.post_work_off_table_update_executive_agree, function (req, res) {
+    //     console.log(JSON.stringify(req.body));
+    //     WorkOffTableForm.update({
+    //         _id: req.body.tableID,
+    //     }, {
+    //         $set: {
+    //             isExecutiveCheck: true,
+    //         }
+    //     }, function (err) {
+    //         if (err) {
+    //             res.send(err);
+    //         }
+    //         res.status(200).send({
+    //             code: 200,
+    //             error: global.status._200,
+    //         });
+    //     })
+    // })
 
     // boss agree
-    app.post(global.apiUrl.post_work_off_table_update_boss_agree, function (req, res) {
-        console.log(JSON.stringify(req.body));
-        WorkOffTableForm.update({
-            _id: req.body.tableID,
-        }, {
-            $set: {
-                isBossCheck: true,
-            }
-        }, function (err) {
-            if (err) {
-                res.send(err);
-            }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-            });
-        })
-    })
+    //@Deprecated
+    // app.post(global.apiUrl.post_work_off_table_update_boss_agree, function (req, res) {
+    //     console.log(JSON.stringify(req.body));
+    //     WorkOffTableForm.update({
+    //         _id: req.body.tableID,
+    //     }, {
+    //         $set: {
+    //             isBossCheck: true,
+    //         }
+    //     }, function (err) {
+    //         if (err) {
+    //             res.send(err);
+    //         }
+    //         res.status(200).send({
+    //             code: 200,
+    //             error: global.status._200,
+    //         });
+    //     })
+    // })
 
     // disagree
-    app.post(global.apiUrl.post_work_off_table_update_disagree, function (req, res) {
-        console.log(JSON.stringify(req.body));
-        WorkOffTableForm.update({
-            _id: req.body.tableID,
-        }, {
-            $set: {
-                isSendReview: false,
-                isExecutiveCheck: false,
-                isBossCheck: false
-            }
-        }, function (err) {
-            if (err) {
-                res.send(err);
-            }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-            });
-        })
-    })
+    //@Deprecated
+    // app.post(global.apiUrl.post_work_off_table_update_disagree, function (req, res) {
+    //     console.log(JSON.stringify(req.body));
+    //     WorkOffTableForm.update({
+    //         _id: req.body.tableID,
+    //     }, {
+    //         $set: {
+    //             isSendReview: false,
+    //             isExecutiveCheck: false,
+    //             isBossCheck: false
+    //         }
+    //     }, function (err) {
+    //         if (err) {
+    //             res.send(err);
+    //         }
+    //         res.status(200).send({
+    //             code: 200,
+    //             error: global.status._200,
+    //         });
+    //     })
+    // })
 
     // 休假單更新
-    // update table executive check
+    // update table by parameters
     app.post(global.apiUrl.post_work_off_table_update, function (req, res) {
         console.log(JSON.stringify(req.body));
         var keyArray = Object.keys(req.body);
@@ -401,7 +408,7 @@ module.exports = function (app) {
                 {
                     $match: {
                         $or: findData,
-                        year:108,
+                        // year:108,
                         isSendReview: true,
                         isBossCheck: false
                     }
@@ -456,7 +463,7 @@ module.exports = function (app) {
     })
 
     // 20190201 add
-    // find table by tableid array
+    // find table by table id array and creatorDID
     app.post(global.apiUrl.post_work_off_table_find_by_user_did, function (req, res) {
         console.log(JSON.stringify(req.body));
         var query = {};

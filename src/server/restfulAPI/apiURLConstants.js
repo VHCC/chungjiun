@@ -62,6 +62,7 @@ global.apiUrl = {
     post_work_hour_table_update_send_review : '/api/updateWorkHourTableFormSendReview',
     post_work_hour_table_total_update_send_review : '/api/post_work_hour_table_total_update_send_review',
     post_work_hour_table_update : '/api/post_work_hour_table_update',
+    post_work_hour_table_update_array : '/api/post_work_hour_table_update_array',
 
     //workHourTable Form Work Add
     post_work_hour_work_add_create_item : '/api/post_work_hour_work_add_create_item',
@@ -72,22 +73,18 @@ global.apiUrl = {
 
     //workOffTable Form
     post_work_off_create_table : '/api/createWorkOffTableForm',
-    post_work_off_table_find_by_table_id_array : '/api/findWorkOffTableFormByTableIDArray',
+    post_work_off_table_find_by_table_id_array : '/api/findWorkOffTableFormByTableIDArray', //@Deprecated
     post_work_off_table_find_by_table_id_array_and_parameters : '/api/post_work_off_table_find_by_table_id_array_and_parameters',
     post_work_off_table_find_by_user_did : '/api/post_work_off_table_find_by_user_did',
     post_work_off_table_item_find_by_user_did_executive : '/api/post_work_off_table_item_find_by_user_did_executive',
     post_work_off_table_item_find_by_user_did_boss : '/api/post_work_off_table_item_find_by_user_did_boss',
-    // @Deprecated
-    post_work_off_table_update_send_review : '/api/updateWorkOffTableFormSendReview',
-    // @Deprecated
-    post_work_off_table_update_executive_agree : '/api/post_work_off_table_update_executive_agree',
-    // @Deprecated
-    post_work_off_table_update_boss_agree : '/api/post_work_off_table_update_boss_agree',
-    // @Deprecated
-    post_work_off_table_update_disagree : '/api/post_work_off_table_update_disagree',
+    post_work_off_table_update_send_review : '/api/updateWorkOffTableFormSendReview', //@Deprecated
+    post_work_off_table_update_executive_agree : '/api/post_work_off_table_update_executive_agree', //@Deprecated
+    post_work_off_table_update_boss_agree : '/api/post_work_off_table_update_boss_agree', //@Deprecated
+    post_work_off_table_update_disagree : '/api/post_work_off_table_update_disagree', //@Deprecated
     //***** 請假單更新
     post_work_off_table_update : '/api/post_work_off_table_update',
-    post_work_off_table_fetch_all_user : '/api/fetchUserWorkOffForm',
+    post_work_off_table_fetch_all_user : '/api/fetchUserWorkOffForm', //@Deprecated
     post_work_off_table_fetch_all_executive : '/api/post_work_off_table_fetch_all_executive',
     post_work_off_table_fetch_all_boss : '/api/post_work_off_table_fetch_all_boss',
 
