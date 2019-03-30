@@ -15,11 +15,14 @@
             restrict: 'E',
             controller: 'MyTimePickerCtrl',
             link: function ($scope, elem, attrs) {
+                // console.log(attrs.start);
+                // console.log(attrs.end);
                 $scope.tableTimeStart = attrs.start;
                 $scope.tableTimeEnd = attrs.end;
+                $scope.table.myHourDiff = "-";
                 if ($scope.workOffType) {
                     $scope.table.myHourDiff = $scope.getHourDiffByTime($scope.tableTimeStart, $scope.tableTimeEnd, $scope.workOffType.type);
-                    console.log("MyTimePickerCtrl, type= " + $scope.workOffType.type + ", myHourDiff= " + $scope.table.myHourDiff);
+                    // console.log("MyTimePickerCtrl, type= " + $scope.workOffType.type + ", myHourDiff= " + $scope.table.myHourDiff);
                 }
             },
             templateUrl: 'app/pages/myInput/widgets/myTimePicker/myTimePicker.html',

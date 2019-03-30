@@ -177,8 +177,11 @@
                 updateTotalTableSendReview: function (formData) {
                     return http.post('/api/post_work_hour_table_total_update_send_review', formData);
                 },
-                updateWHTable: function(formData) {
+                updateWHTable: function(formData) { // 單筆
                     return http.post('/api/post_work_hour_table_update', formData);
+                },
+                updateWHTableArray: function(formData) { // 一鍵完成
+                    return http.post('/api/post_work_hour_table_update_array', formData);
                 },
             }
         }])
@@ -199,6 +202,7 @@
                     return http.post('/api/post_work_off_table_item_find_by_user_did_boss', formData);
                 },
 
+                //@Deprecated
                 findWorkOffTableFormByTableIDArray: function (formData) {
                     return http.post('/api/findWorkOffTableFormByTableIDArray', formData);
                 },
@@ -474,6 +478,8 @@
                             return "陪產假"; // Day
                         case 1001:
                             return "其他"; // Hour as 公假 20190208
+                        case -1:
+                            return "[假別沒選擇]"
                     }
                 }
             }

@@ -67,6 +67,7 @@
                                  intiWorkOffAllService) {
 
             intiWorkOffAllService.then(function (resp) {
+                console.log("===intiWorkOffAllService===");
                 console.log(resp.data.payload);
                 $scope.workOffTables = resp.data.payload;
 
@@ -178,7 +179,7 @@
 
             $scope.getUserHolidayForm = function () {
                 var formData = {
-                    year: thisYear,
+                    year: thisYear, // 年度
                     creatorDID: $scope.userDID,
                 };
                 HolidayDataForms.findFormByUserDID(formData)
@@ -208,7 +209,7 @@
                     })
             }
 
-            //取得使用者個人休假表，userDID, 一年的 一個月 只有一張休假表
+            //取得使用者個人休假表，userDID
             $scope.getWorkOffTable = function (userDID) {
                 $scope.specificUserTablesItems = [];
                 var getData = {
@@ -255,7 +256,7 @@
                             };
                             $scope.specificUserTablesItems.push(detail);
                         }
-                        console.log($scope.specificUserTablesItems);
+                        // console.log($scope.specificUserTablesItems);
                         if (userDID !== undefined) {
                             $scope.findHolidayFormByUserDID(userDID === undefined ? $scope.userDID : userDID);
                         } else {
@@ -568,6 +569,9 @@
 
             $scope.getHourDiffByTime = function (start, end, type) {
                 // console.log("- workOffFormCtrl, start= " + start + ", end= " + end + ", type= " + type);
+                if (isNaN(parseInt(start)) || isNaN(parseInt(end))) {
+                    return "輸入格式錯誤";
+                }
                 if (start && end) {
                     var difference = Math.abs(TimeUtil.toSeconds(start) - TimeUtil.toSeconds(end));
 
@@ -643,8 +647,9 @@
                 // $scope.createSubmit(0);
                 $timeout(function () {
                     // console.log(table)
-                    // console.log($scope.specificUserTablesItems[index]);
-                    $scope.checkText = '確定提交 休假：' +
+                    console.log($scope.specificUserTablesItems[index]);
+                    var workOffString = $scope.showWorkOffTypeString($scope.specificUserTablesItems[index].workOffType);
+                    $scope.checkText = '確定提交 ' + workOffString + '：' +
                         DateUtil.getShiftDatefromFirstDate(
                             DateUtil.getFirstDayofThisWeek(moment($scope.specificUserTablesItems[index].create_formDate)),
                             $scope.specificUserTablesItems[index].day === 0 ? 6 : $scope.specificUserTablesItems[index].day - 1) +
@@ -833,7 +838,7 @@
                         workOffTableData.push(dataItem);
                     }
                     // console.log(formDataTable);
-                    console.log(workOffTableData);
+                    // console.log(workOffTableData);
                     var formData = {
                         creatorDID: $scope.userDID,
                         year: thisYear,
@@ -841,14 +846,14 @@
                         formTables: workOffTableData,
                         oldTables: formDataTable,
                     }
-                    console.log(formDataTable);
+                    // console.log(formDataTable);
                     WorkOffFormUtil.createWorkOffTableForm(formData)
                         .success(function (res) {
                             // 更新old Table ID Array
                             var workOffTableIDArray = [];
                             if (res.payload.length > 0) {
                                 for (var index = 0; index < res.payload.length; index++) {
-                                    console.log(res.payload[index]);
+                                    // console.log(res.payload[index]);
                                     workOffTableIDArray[index] = res.payload[index].tableID;
                                     // $scope.specificUserTablesItems[index] = res.payload[index];
                                     $scope.specificUserTablesItems[index].tableID = res.payload[index].tableID;
