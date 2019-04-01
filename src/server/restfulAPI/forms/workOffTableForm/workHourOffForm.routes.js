@@ -71,7 +71,7 @@ module.exports = function (app) {
                     var tableItem = {
                         tableID: workOffTable._id,
                     }
-                    formTable.push(tableItem);
+                    // formTable.push(tableItem);
                     if (resIndex === req.body.formTables.length) {
                         // WorkOffForm.create({
                         //     creatorDID: req.body.creatorDID,
@@ -102,25 +102,51 @@ module.exports = function (app) {
                         //         });
                         //     })
                         // });
-                        WorkOffTableForm.find({
+                        // WorkOffTableForm.find({
+                        //     creatorDID: req.body.creatorDID,
+                        //     year: req.body.year,
+                        // }, function (err, workOffTables) {
+                        //     if (err) {
+                        //         res.send(err);
+                        //     }
+                        //     for (var index = 0; index < workOffTables.length; index++) {
+                        //         var tableItem = {
+                        //             tableID: workOffTables[index]._id,
+                        //         }
+                        //         resultTable.push(tableItem);
+                        //     }
+                        //     res.status(200).send({
+                        //         code: 200,
+                        //         error: global.status._200,
+                        //         payload: resultTable,
+                        //     });
+                        // })
+
+                        var query = {
                             creatorDID: req.body.creatorDID,
                             year: req.body.year,
-                        }, function (err, workOffTables) {
-                            if (err) {
-                                res.send(err);
-                            }
-                            for (var index = 0; index < workOffTables.length; index++) {
-                                var tableItem = {
-                                    tableID: workOffTables[index]._id,
+                        }
+
+                        WorkOffTableForm.find(query)
+                            .sort({
+                                _id: 1,
+                            })
+                            .exec(function (err, workOffTables) {
+                                if (err) {
+                                    res.send(err);
                                 }
-                                resultTable.push(tableItem);
-                            }
-                            res.status(200).send({
-                                code: 200,
-                                error: global.status._200,
-                                payload: resultTable,
+                                for (var index = 0; index < workOffTables.length; index++) {
+                                    var tableItem = {
+                                        tableID: workOffTables[index]._id,
+                                    }
+                                    resultTable.push(tableItem);
+                                }
+                                res.status(200).send({
+                                    code: 200,
+                                    error: global.status._200,
+                                    payload: resultTable,
+                                });
                             });
-                        })
                 }
                 });
             } catch (err) {
@@ -463,7 +489,7 @@ module.exports = function (app) {
     })
 
     // 20190201 add
-    // find table by table id array and creatorDID
+    // find table by creatorDID
     app.post(global.apiUrl.post_work_off_table_find_by_user_did, function (req, res) {
         console.log(JSON.stringify(req.body));
         var query = {};
@@ -490,17 +516,35 @@ module.exports = function (app) {
         query.creatorDID = req.body.creatorDID;
 
         console.log(query);
-        WorkOffTableForm.find(query, function (err, tables) {
-            if (err) {
-                res.send(err);
-            }
-            console.log(tables.length);
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-                payload: tables,
+
+        WorkOffTableForm.find(query)
+            .sort({
+                _id: 1,
+            })
+            .exec(function (err, tables) {
+                if (err) {
+                    res.send(err);
+                }
+                console.log(tables.length);
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: tables,
+                });
             });
-        });
+
+
+        // WorkOffTableForm.find(query, function (err, tables) {
+        //     if (err) {
+        //         res.send(err);
+        //     }
+        //     console.log(tables.length);
+        //     res.status(200).send({
+        //         code: 200,
+        //         error: global.status._200,
+        //         payload: tables,
+        //     });
+        // });
     })
 
 }

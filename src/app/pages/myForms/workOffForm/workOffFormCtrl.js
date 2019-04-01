@@ -256,7 +256,7 @@
                             };
                             $scope.specificUserTablesItems.push(detail);
                         }
-                        // console.log($scope.specificUserTablesItems);
+                        console.log($scope.specificUserTablesItems);
                         if (userDID !== undefined) {
                             $scope.findHolidayFormByUserDID(userDID === undefined ? $scope.userDID : userDID);
                         } else {
@@ -644,7 +644,7 @@
 
             // Send WorkOffTable to Review
             $scope.reviewWorkOffTable = function (table, button, index) {
-                // $scope.createSubmit(0);
+                $scope.createSubmit(0);
                 $timeout(function () {
                     // console.log(table)
                     console.log($scope.specificUserTablesItems[index]);
@@ -850,10 +850,11 @@
                     WorkOffFormUtil.createWorkOffTableForm(formData)
                         .success(function (res) {
                             // 更新old Table ID Array
+                            // $scope.getWorkOffTable();
                             var workOffTableIDArray = [];
                             if (res.payload.length > 0) {
                                 for (var index = 0; index < res.payload.length; index++) {
-                                    // console.log(res.payload[index]);
+                                    console.log(res.payload[index]);
                                     workOffTableIDArray[index] = res.payload[index].tableID;
                                     // $scope.specificUserTablesItems[index] = res.payload[index];
                                     $scope.specificUserTablesItems[index].tableID = res.payload[index].tableID;
@@ -862,7 +863,7 @@
                             formDataTable = {
                                 tableIDArray: workOffTableIDArray,
                             };
-                            // console.log($scope.specificUserTablesItems);
+                            console.log($scope.specificUserTablesItems);
                         })
                         .error(function () {
                             console.log('ERROR WorkOffFormUtil.createWorkOffTableForm');
