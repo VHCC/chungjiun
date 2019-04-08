@@ -65,14 +65,14 @@
                     <!--請假時數-->
                     <td style="vertical-align: inherit; text-align: center">請假時數</td>
 
-                    <!--是否遲到-->
-                    <td style="vertical-align: inherit; text-align: center">遲到</td>
-
                     <!--上班分鐘數-->
                     <td style="vertical-align: inherit; text-align: center">上班分鐘數</td>
 
                     <!--加班總時數-->
                     <td style="vertical-align: inherit; text-align: center">加班總時數</td>
+
+                    <!--是否遲到-->
+                    <td style="vertical-align: inherit; text-align: center">遲到</td>
                 </tr>
                 </thead>
 
@@ -162,14 +162,6 @@
                         {{workOffHour(tableItem)}}
                     </td>
 
-                    <!--遲到-->
-                    <td ng-class="isLate(tableItem) ? 'sumWarning' : 'sunNormal'"
-                        style="vertical-align: inherit;">
-                        <div ng-show="isLate(tableItem)">
-                            遲
-                        </div>
-                    </td>
-
                     <!--上班分鐘-->
                     <td class="form-group" style="vertical-align: inherit;">
                         {{workHour(tableItem)}}
@@ -180,6 +172,14 @@
                         {{showHrMachineTime(tableItem, 51) +
                         showHrMachineTime(tableItem, 52) +
                         showHrMachineTime(tableItem, 53)}}
+                    </td>
+
+                    <!--遲到-->
+                    <td ng-class="isLate(tableItem) ? 'sumWarning' : 'sunNormal'"
+                        style="vertical-align: inherit;">
+                        <div ng-show="isLate(tableItem)">
+                            遲
+                        </div>
                     </td>
                 </tr>
 
