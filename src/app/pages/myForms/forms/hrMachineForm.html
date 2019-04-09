@@ -110,7 +110,8 @@
                     </td>
                     <!--加班時數1-->
                     <!--<td class="form-group" style="vertical-align: inherit;">-->
-                        <!--{{showHrMachineTime(tableItem, 51)}}-->
+                        <!--{{showWorkOverHour(showHrMachineTime(tableItem, 31),-->
+                        <!--showHrMachineTime(tableItem, 41))}}-->
                     <!--</td>-->
                     <!--加班2-->
                     <td class="form-group" style="vertical-align: inherit;">
@@ -122,7 +123,8 @@
                     </td>
                     <!--加班時數2-->
                     <!--<td class="form-group" style="vertical-align: inherit;">-->
-                        <!--{{showHrMachineTime(tableItem, 52)}}-->
+                        <!--{{showWorkOverHour(showHrMachineTime(tableItem, 32),-->
+                        <!--showHrMachineTime(tableItem, 42))}}-->
                     <!--</td>-->
                     <!--加班3-->
                     <td class="form-group" style="vertical-align: inherit;">
@@ -134,13 +136,15 @@
                     </td>
                     <!--加班時數3-->
                     <!--<td class="form-group" style="vertical-align: inherit;">-->
-                        <!--{{showHrMachineTime(tableItem, 53)}}-->
+                        <!--{{showWorkOverHour(showHrMachineTime(tableItem, 33),-->
+                        <!--showHrMachineTime(tableItem, 43))}}-->
                     <!--</td>-->
-                    <!--&lt;!&ndash;加班4&ndash;&gt;-->
+
+                    <!--加班4-->
                     <!--<td class="form-group" style="vertical-align: inherit;">-->
                         <!--{{showHrMachineTime(tableItem, 34)}}-->
                     <!--</td>-->
-                    <!--&lt;!&ndash;加退4&ndash;&gt;-->
+                    <!--加退4-->
                     <!--<td class="form-group" style="vertical-align: inherit;">-->
                         <!--{{showHrMachineTime(tableItem, 44)}}-->
                     <!--</td>-->
@@ -181,9 +185,16 @@
 
                     <!--加班時數-->
                     <td class="form-group" style="vertical-align: inherit;">
-                        {{showHrMachineTime(tableItem, 51) +
-                        showHrMachineTime(tableItem, 52) +
-                        showHrMachineTime(tableItem, 53)}}
+                        <!--{{showHrMachineTime(tableItem, 51) +-->
+                        <!--showHrMachineTime(tableItem, 52) +-->
+                        <!--showHrMachineTime(tableItem, 53)}}-->
+
+                        {{showWorkOverHour(showHrMachineTime(tableItem, 31),
+                        showHrMachineTime(tableItem, 41)) +
+                        showWorkOverHour(showHrMachineTime(tableItem, 32),
+                        showHrMachineTime(tableItem, 42)) +
+                        showWorkOverHour(showHrMachineTime(tableItem, 33),
+                        showHrMachineTime(tableItem, 43))}}
                     </td>
 
                     <!--遲到-->
