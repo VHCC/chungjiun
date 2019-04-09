@@ -148,10 +148,18 @@
                     <!--上班時數-->
                     <td ng-class="workOffHour(tableItem) != '' ? 'sumWarning' : 'sunNormal'"
                             style="vertical-align: inherit;">
-                        <div ng-show="workHour(tableItem) != undefined">
+                        <div ng-show="showWorkHour(tableItem,
+                        showHrMachineTime(tableItem, 11),
+                        showHrMachineTime(tableItem, 21),
+                        showHrMachineTime(tableItem, 12),
+                        showHrMachineTime(tableItem, 22)) != undefined">
                             {{8 - workOffHour(tableItem)}}
                         </div>
-                        <div ng-show="workHour(tableItem) == undefined">
+                        <div ng-show="showWorkHour(tableItem,
+                        showHrMachineTime(tableItem, 11),
+                        showHrMachineTime(tableItem, 21),
+                        showHrMachineTime(tableItem, 12),
+                        showHrMachineTime(tableItem, 22)) == undefined">
 
                         </div>
 
@@ -164,7 +172,11 @@
 
                     <!--上班分鐘-->
                     <td class="form-group" style="vertical-align: inherit;">
-                        {{workHour(tableItem)}}
+                        {{showWorkHour(tableItem,
+                        showHrMachineTime(tableItem, 11),
+                        showHrMachineTime(tableItem, 21),
+                        showHrMachineTime(tableItem, 12),
+                        showHrMachineTime(tableItem, 22))}}
                     </td>
 
                     <!--加班時數-->
