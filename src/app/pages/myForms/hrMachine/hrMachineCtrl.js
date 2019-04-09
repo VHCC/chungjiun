@@ -234,7 +234,7 @@
                         var isSecondWorkOn = false;
                         for (var index = 0; index < datas.length; index++) {
                             if (datas[index].workType === "2") {
-                                isSecondWorkOn = true;
+                                isSecondWorkOverOn = true;
                             }
                             if (datas[index].workType === "1") {
                                 if (isSecondWorkOn) {
@@ -254,7 +254,7 @@
                         var workOffArray = [];
                         for (var index = 0; index < datas.length; index++) {
                             if (datas[index].workType === "2") {
-                                isSecondWorkOn = true;
+                                isSecondWorkOverOn = true;
                             }
                             if (datas[index].workType === "1") {
                                 if (isSecondWorkOn) {
@@ -269,23 +269,42 @@
                             return workOffArray[workOffArray.length - 1].time;
                         }
                         break;
-                    //  加班簽到1
+                    // 加班簽到 1
+                    // 連續多筆type=3，以第一筆為主
                     case 31:
+                        var workOverOnArray = [];
                         for (var index = 0; index < datas.length; index++) {
                             if (datas[index].workType === "3") {
-                                return datas[index].time
+                                workOverOnArray.push(datas[index]);
+                                // return datas[index].time
                             }
                         }
+                        if (workOverOnArray.length > 0) {
+                            return workOverOnArray[0].time;
+                        }
                         break;
-                    //  加班簽退1
+                    // 加班簽退 1
+                    // 連續多筆type=4，以最後一筆為主
+                    // 遇到 加班簽退 2 就停止
                     case 41:
+                        var workOverOffArray = [];
+                        var isFirstWorkOverOff = false;
                         for (var index = 0; index < datas.length; index++) {
                             if (datas[index].workType === "4") {
-                                return datas[index].time
+                                workOverOffArray.push(datas[index]);
+                                isFirstWorkOverOff = true;
+                                // return datas[index].time
                             }
+                            if (isFirstWorkOverOff && datas[index].workType === "3") {
+                                break;
+                            }
+                        }
+                        if (workOverOffArray.length > 0) {
+                            return workOverOffArray[workOverOffArray.length - 1].time;
                         }
                         break;
                     //  加班時數1
+                    // Deprecated
                     case 51:
                         var workOnHour;
                         var workOnMin;
@@ -338,35 +357,52 @@
                         }
                         break;
                     //  加班簽到2
+                    // 一定要有 加班簽退 1
                     case 32:
-                        var count = 0;
-                        var OverOnTime;
+                        var workOverOnArray = [];
+                        var isSecondWorkOverOn = false;
                         for (var index = 0; index < datas.length; index++) {
-                            if (datas[index].workType === "3") {
-                                if (count == 1) {
-                                    if (datas[index].time != OverOnTime) {
-                                        return datas[index].time
-                                    }
-                                }
-                                count ++
-                                OverOnTime = datas[index].time;
+                            if (datas[index].workType === "4") {
+                                isSecondWorkOverOn = true;
                             }
+                            if (datas[index].workType === "3" && datas[index].time != "0000") {
+                                if (isSecondWorkOverOn) {
+                                    workOverOnArray.push(datas[index]);
+                                }
+                            }
+                        }
+                        if (workOverOnArray.length > 0) {
+                            return workOverOnArray[0].time;
                         }
                         break;
                     //  加班簽退2
+                    // 一定要有 加班簽到 2
                     case 42:
-                        var count = 0;
-                        var OverOffTime;
+                        var workOverOnArray = [];
+                        var isSecondWorkOverOn = false;
+                        var workOverOffArray = [];
+                        var isSecondWorkOffOn = false;
                         for (var index = 0; index < datas.length; index++) {
+
                             if (datas[index].workType === "4") {
-                                if (count == 1) {
-                                    if (datas[index].time != OverOffTime) {
-                                        return datas[index].time
-                                    }
-                                }
-                                count ++
-                                OverOffTime = datas[index].time;
+                                isSecondWorkOverOn = true;
                             }
+                            if (datas[index].workType === "3" && datas[index].time != "0000") {
+                                if (isSecondWorkOverOn) {
+                                    workOverOnArray.push(datas[index]);
+                                }
+                                if (isSecondWorkOffOn) {
+                                    break;
+                                }
+
+                            }
+                            if (workOverOnArray.length > 0 && datas[index].workType === "4") {
+                                workOverOffArray.push(datas[index]);
+                                isSecondWorkOffOn = true;
+                            }
+                        }
+                        if (workOverOffArray.length > 0) {
+                            return workOverOffArray[workOverOffArray.length - 1].time;
                         }
                         break;
                     //  加班時數2
@@ -405,35 +441,69 @@
                         }
                         break;
                     //  加班簽到3
+                    // 一定要有 加班簽退 2
                     case 33:
-                        var count = 0;
-                        var OverOnTime;
+                        var workOverOnArray = [];
+                        var isSecondWorkOverOn = false;
+                        var workOverOffArray = [];
+                        var isSecondWorkOffOn = false;
+                        var workOverOnThirdArray = [];
                         for (var index = 0; index < datas.length; index++) {
-                            if (datas[index].workType === "3") {
-                                if (count == 2) {
-                                    if (datas[index].time != OverOnTime) {
-                                        return datas[index].time
-                                    }
-                                }
-                                count ++
-                                OverOnTime = datas[index].time;
+                            if (datas[index].workType === "4") {
+                                isSecondWorkOverOn = true;
                             }
+                            if (datas[index].workType === "3" && datas[index].time != "0000") {
+                                if (isSecondWorkOverOn) {
+                                    workOverOnArray.push(datas[index]);
+                                }
+                                if (isSecondWorkOffOn) {
+                                    workOverOnThirdArray.push(datas[index]);
+                                }
+                            }
+                            if (workOverOnArray.length > 0 && datas[index].workType === "4") {
+                                workOverOffArray.push(datas[index]);
+                                isSecondWorkOffOn = true;
+                            }
+                        }
+                        if (workOverOnThirdArray.length > 0) {
+                            return workOverOnThirdArray[0].time;
                         }
                         break;
                     //  加班簽退3
                     case 43:
-                        var count = 0;
-                        var OverOffTime;
+                        var workOverOnArray = [];
+                        var isSecondWorkOverOn = false;
+                        var workOverOffArray = [];
+                        var isSecondWorkOffOn = false;
+                        var workOverOnThirdArray = [];
+                        var isThirdWorkOffOn = false;
+                        var workOverOffThirdArray = [];
                         for (var index = 0; index < datas.length; index++) {
                             if (datas[index].workType === "4") {
-                                if (count == 2) {
-                                    if (datas[index].time != OverOffTime) {
-                                        return datas[index].time
-                                    }
-                                }
-                                count ++
-                                OverOffTime = datas[index].time;
+                                isSecondWorkOverOn = true;
                             }
+                            if (datas[index].workType === "3" && datas[index].time != "0000") {
+                                if (isSecondWorkOverOn) {
+                                    workOverOnArray.push(datas[index]);
+                                }
+                                if (isSecondWorkOffOn) {
+                                    workOverOnThirdArray.push(datas[index]);
+                                }
+                                if (isThirdWorkOffOn) {
+                                    break;
+                                }
+                            }
+                            if (workOverOnArray.length > 0 && datas[index].workType === "4") {
+                                workOverOffArray.push(datas[index]);
+                                isSecondWorkOffOn = true;
+                            }
+                            if (workOverOnThirdArray.length > 0 && datas[index].workType === "4") {
+                                workOverOffThirdArray.push(datas[index]);
+                                isThirdWorkOffOn = true;
+                            }
+                        }
+                        if (workOverOffThirdArray.length > 0) {
+                            return workOverOffThirdArray[workOverOffThirdArray.length - 1].time;
                         }
                         break;
                     //  加班時數3
@@ -738,11 +808,11 @@
                         workOffHour = 12;
                         workOffMin = 0;
                     }
-                    console.log("isLate= " + $scope.isLate(tableItem)
-                        + ", "
-                        + workOnHour + ":" + workOnMin
-                        + ", "
-                        + workOffHour + ":" + workOffMin);
+                    // console.log("isLate= " + $scope.isLate(tableItem)
+                    //     + ", "
+                    //     + workOnHour + ":" + workOnMin
+                    //     + ", "
+                    //     + workOffHour + ":" + workOffMin);
 
                     if (workOffHour >= 13) {
                         isAfterNoon = true;
@@ -751,11 +821,11 @@
                     if (isAfterNoon && isBeforeNoon) {
                         // console.log(parseInt(workOffHour) - parseInt(workOnHour) - 1);
                         result =  parseInt((workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin));
-                        console.log("A result:" + result);
+                        // console.log("A result:" + result);
                     } else {
                         // console.log((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
                         result =  parseInt((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
-                        console.log("B result:" + result);
+                        // console.log("B result:" + result);
                     }
                     isAfterNoon = false;
                     isBeforeNoon = false;
@@ -805,22 +875,22 @@
                         isAfterNoon = true;
                     }
 
-                    console.log("Sec, "
-                        + "isBeforeNoon= " + isBeforeNoon
-                        + ", isAfterNoon= " + isAfterNoon + ", "
-                        + workOnHour + ":" + workOnMin
-                        + ", "
-                        + workOffHour + ":" + workOffMin);
+                    // console.log("Sec, "
+                    //     + "isBeforeNoon= " + isBeforeNoon
+                    //     + ", isAfterNoon= " + isAfterNoon + ", "
+                    //     + workOnHour + ":" + workOnMin
+                    //     + ", "
+                    //     + workOffHour + ":" + workOffMin);
 
                     if (isAfterNoon && isBeforeNoon) {
                         // console.log(workOffHour - workOnHour - 1);
                         result +=  parseInt((workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin));
-                        console.log("C result:" + result);
+                        // console.log("C result:" + result);
 
                     } else {
                         // console.log((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
                         result += parseInt((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
-                        console.log("D result:" + result);
+                        // console.log("D result:" + result);
                     }
                 }
 
@@ -832,7 +902,56 @@
                 }
             }
 
-        } // End of function
+            // 加班時數
+            $scope.showWorkOverHour = function (workOverOn, workOverOff) {
+                var workOnHour;
+                var workOnMin;
+                var workOffHour;
+                var workOffMin;
+                if (workOverOn && workOverOff) {
+                    // console.log("A " + datas[index].time);
+                    workOnHour = parseInt(workOverOn.substr(0,2));
+                    workOnMin = parseInt(workOverOn.substr(2,4));
+                    // console.log("AA " + workOnHour + ":" + workOnMin);
+
+                    // console.log("B " + datas[index].time);
+                    workOffHour = parseInt(workOverOff.substr(0,2));
+                    workOffMin = parseInt(workOverOff.substr(2,4));
+                    // console.log("BB " + workOffHour + ":" + workOffMin);
+
+                    if (workOnHour && workOffHour) {
+                        // console.log("C " + workOnHour + ":" + workOnMin);
+                        // console.log("D " + workOffHour + ":" + workOffMin);
+                        var hour = Math.floor(((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))/60);
+                        var min = (((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))%60) / 60 >= 0.5 ? 0.5 : 0;
+                        return parseInt(hour) + min;
+                        // return parseInt(hour);
+                        // return min;
+                    }
+
+                    if (workOnHour == 0 && workOffHour) {
+                        // console.log("CC " + workOnHour + ":" + workOnMin);
+                        // console.log("DD " + workOffHour + ":" + workOffMin);
+                        var hour = Math.floor(((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))/60);
+                        var min = (((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))%60) / 60 >= 0.5 ? 0.5 : 0;
+                        return parseInt(hour) + min;
+                        // return parseInt(hour);
+                        // return min;
+                    }
+
+                    if (workOnHour == 0 && workOffHour == 0) {
+                        // console.log("CCC " + workOnHour + ":" + workOnMin);
+                        // console.log("DDD " + workOffHour + ":" + workOffMin);
+                        var hour = Math.floor(((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))/60);
+                        var min = (((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))%60) / 60 >= 0.5 ? 0.5 : 0;
+                        return parseInt(hour) + min;
+                        // return parseInt(hour);
+                        // return min;
+                    }
+                }
+            }
+
+            } // End of function
     }
 )();
 
