@@ -92,6 +92,7 @@
         }
         Project.getProjectRelated(formData)
             .success(function (relatedProjects) {
+                console.log(relatedProjects);
                 allRelatedPrjDatas = relatedProjects;
                 vm.relatedProjects = relatedProjects;
             });
@@ -425,7 +426,9 @@
                                 tableIDArray: workTableIDArray,
                                 isFindSendReview: null,
                                 isFindManagerCheck: null,
-                                isFindExecutiveCheck: null
+                                isFindExecutiveCheck: null,
+                                isFindManagerReject: null,
+                                isFindExecutiveReject: null
                             };
 
                             tableSort.push(workTableIDArray);
@@ -527,7 +530,7 @@
                                     tableIndex++;
                                     // loadWorkOffTable(cookies.get('userDID'), 1);
                                     // loadNH(1);
-                                    sleep(200);
+                                    // sleep(200);
                                 })
                                 .error(function () {
                                     console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
@@ -618,7 +621,9 @@
                     prjDID: prjDID,
                 });
             }
-            return selected.length ? selected[0].mainName : 'Not Set';
+
+            if (!selected) return 'Not Set'
+            return selected.length > 0 ? selected[0].mainName : 'Not Set';
         };
 
         $scope.showPrjCode = function (prjDID) {
@@ -628,7 +633,8 @@
                     prjDID: prjDID,
                 });
             }
-            return selected.length ? selected[0].prjCode : 'Not Set';
+            if (!selected) return 'Not Set'
+            return selected.length > 0 ? selected[0].prjCode : 'Not Set';
         };
 
         $scope.showProjectManager = function (prjDID) {
@@ -645,7 +651,8 @@
                     value: managerDID
                 });
             }
-            return selected.length ? selected[0].name : 'Not Set';
+            if (!selected) return 'Not Set'
+            return selected.length > 0 ? selected[0].name : 'Not Set';
         };
 
         // 對應經理
@@ -1032,7 +1039,7 @@
         }
 
         // 計算小計
-        $scope.showCalculateHour = function (tableIndex, firstFullDate, tables, day, type, form) {
+        $scope.showCalculateHour = function (tableIndex, firstFullDate, tables, day, type, tableForm) {
             var index = 0;
             var result = 0;
             switch (type) {
@@ -1273,97 +1280,97 @@
                 case 3: {
                     switch (day) {
                         case 1: {
-                            for (index = 0; index < $scope.fetchFormDataFromScope(form).length; index++) {
-                                result += $scope.fetchFormDataFromScope(form)[index].mon_hour;
+                            for (index = 0; index < $scope.fetchFormDataFromScope(tableForm).length; index++) {
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].mon_hour;
                             }
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(form), 1);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(form), 1);
+                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 1);
+                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 1);
 
                         } break;
                         case 2: {
-                            for (index = 0; index < $scope.fetchFormDataFromScope(form).length; index++) {
-                                result += $scope.fetchFormDataFromScope(form)[index].tue_hour;
+                            for (index = 0; index < $scope.fetchFormDataFromScope(tableForm).length; index++) {
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].tue_hour;
                             }
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(form), 2);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(form), 2);
+                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 2);
+                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 2);
 
                         } break;
                         case 3: {
-                            for (index = 0; index < $scope.fetchFormDataFromScope(form).length; index++) {
-                                result += $scope.fetchFormDataFromScope(form)[index].wes_hour;
+                            for (index = 0; index < $scope.fetchFormDataFromScope(tableForm).length; index++) {
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].wes_hour;
                             }
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(form), 3);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(form), 3);
+                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 3);
+                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 3);
 
                         } break;
                         case 4: {
-                            for (index = 0; index < $scope.fetchFormDataFromScope(form).length; index++) {
-                                result += $scope.fetchFormDataFromScope(form)[index].thu_hour;
+                            for (index = 0; index < $scope.fetchFormDataFromScope(tableForm).length; index++) {
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].thu_hour;
                             }
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(form), 4);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(form), 4);
+                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 4);
+                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 4);
 
                         } break;
                         case 5: {
-                            for (index = 0; index < $scope.fetchFormDataFromScope(form).length; index++) {
-                                result += $scope.fetchFormDataFromScope(form)[index].fri_hour;
+                            for (index = 0; index < $scope.fetchFormDataFromScope(tableForm).length; index++) {
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].fri_hour;
                             }
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(form), 5);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(form), 5);
+                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 5);
+                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 5);
                         } break;
                         case 6: {
-                            for (index = 0; index < $scope.fetchFormDataFromScope(form).length; index++) {
-                                result += $scope.fetchFormDataFromScope(form)[index].sat_hour;
+                            for (index = 0; index < $scope.fetchFormDataFromScope(tableForm).length; index++) {
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].sat_hour;
                             }
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(form), 6);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(form), 6);
+                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 6);
+                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 6);
 
                         } break;
                         case 7: {
-                            for (index = 0; index < $scope.fetchFormDataFromScope(form).length; index++) {
-                                result += $scope.fetchFormDataFromScope(form)[index].sun_hour;
+                            for (index = 0; index < $scope.fetchFormDataFromScope(tableForm).length; index++) {
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].sun_hour;
                             }
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(form), 0);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(form), 0);
+                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 0);
+                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 0);
 
                         } break;
                         case 1001: {
-                            for (index = 0; index < $scope.fetchFormDataFromScope(form).length; index++) {
-                                result += $scope.fetchFormDataFromScope(form)[index].mon_hour;
-                                result += $scope.fetchFormDataFromScope(form)[index].tue_hour;
-                                result += $scope.fetchFormDataFromScope(form)[index].wes_hour;
-                                result += $scope.fetchFormDataFromScope(form)[index].thu_hour;
-                                result += $scope.fetchFormDataFromScope(form)[index].fri_hour;
-                                result += $scope.fetchFormDataFromScope(form)[index].sat_hour;
-                                result += $scope.fetchFormDataFromScope(form)[index].sun_hour;
+                            for (index = 0; index < $scope.fetchFormDataFromScope(tableForm).length; index++) {
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].mon_hour;
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].tue_hour;
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].wes_hour;
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].thu_hour;
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].fri_hour;
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].sat_hour;
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].sun_hour;
                             }
 
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(form), 1);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(form), 2);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(form), 3);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(form), 4);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(form), 5);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(form), 6);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(form), 0);
+                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 1);
+                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 2);
+                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 3);
+                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 4);
+                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 5);
+                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 6);
+                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 0);
 
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(form), 1);
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(form), 2);
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(form), 3);
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(form), 4);
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(form), 5);
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(form), 6);
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(form), 0);
+                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 1);
+                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 2);
+                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 3);
+                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 4);
+                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 5);
+                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 6);
+                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 0);
                             return result;
                         }
                         case 2001: {
-                            for (index = 0; index < $scope.fetchFormDataFromScope(form).length; index++) {
-                                result += $scope.fetchFormDataFromScope(form)[index].mon_hour_add;
-                                result += $scope.fetchFormDataFromScope(form)[index].tue_hour_add;
-                                result += $scope.fetchFormDataFromScope(form)[index].wes_hour_add;
-                                result += $scope.fetchFormDataFromScope(form)[index].thu_hour_add;
-                                result += $scope.fetchFormDataFromScope(form)[index].fri_hour_add;
-                                result += $scope.fetchFormDataFromScope(form)[index].sat_hour_add;
-                                result += $scope.fetchFormDataFromScope(form)[index].sun_hour_add;
+                            for (index = 0; index < $scope.fetchFormDataFromScope(tableForm).length; index++) {
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].mon_hour_add;
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].tue_hour_add;
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].wes_hour_add;
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].thu_hour_add;
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].fri_hour_add;
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].sat_hour_add;
+                                result += $scope.fetchFormDataFromScope(tableForm)[index].sun_hour_add;
                             }
                             return result;
                         }
@@ -1696,7 +1703,7 @@
                             userMonthSalary: $scope.tables[majorIndex].tablesItems[itemIndex].userMonthSalary,
                         }
                         workHourTableData.push(tableItem);
-                        // console.log(tableItem);
+                        console.log(tableItem);
                     }
 
                     var sendMonth = moment($scope.firstFullDate).month() + 1;
@@ -1985,7 +1992,9 @@
                                 isFindSendReview: true,
                                 // isFindManagerCheck: false,
                                 isFindManagerCheck: null,
-                                isFindExecutiveCheck: null
+                                isFindExecutiveCheck: null,
+                                isFindManagerReject: null,
+                                isFindExecutiveReject: null
                             }
 
                             // 取得 Table Data
@@ -2084,7 +2093,7 @@
                 })
         }
 
-        //專案經理確認
+        //專案經理確認 -1
         $scope.reviewWHManagerItem = function (user, item, index) {
             $scope.checkText = '確定 同意：' +
                 $scope.showPrjName(item.prjDID) +
@@ -2099,7 +2108,7 @@
                 showClose: false,
             });
         }
-
+        //專案經理確認 -2
         $scope.sendWHManagerAgree = function (user, item, index) {
             var formData = {
                 tableID: item.tableID,
@@ -2109,11 +2118,58 @@
             }
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
-                    $scope.showTableOfItem(user, true, null, null, 1);
+                    $scope.showTableOfItem(user, null, null, null, null, null, 1);
                 })
         }
 
-        //專案經理退回
+        //專案經理一鍵確認 -1
+        $scope.reviewWHManagerAll = function (user, form, index) {
+            // console.log(user);
+            // console.log(form[0]);
+            // console.log($scope.fetchFormDataFromScope(form[0]));
+            // $scope.checkText = '確定 同意： ' + '\n';
+            for (var index = 0; index < $scope.fetchFormDataFromScope(form[0]).length; index ++) {
+                if (managersRelatedProjects.includes($scope.fetchFormDataFromScope(form[0])[index].prjDID)) { // 只跟自己有關的專案
+                    // console.log($scope.fetchFormDataFromScope(form[0])[index].prjDID);
+                }
+            }
+            $scope.checkText = "確定 同意： 全部 ？";
+            $scope.checkingForm = user;
+            $scope.checkingTable = form;
+            $scope.mIndex = index;
+            ngDialog.open({
+                template: 'app/pages/myModalTemplate/myWorkHourTableFormAgree_ManagerAllModal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+        //專案經理一鍵確認 -2
+        $scope.sendWHManagerAllAgree = function (user, form, index) {
+            var updateTables = [];
+            for (var index = 0; index < $scope.fetchFormDataFromScope(form[0]).length; index ++) {
+                if (managersRelatedProjects.includes($scope.fetchFormDataFromScope(form[0])[index].prjDID)) { // 只跟自己有關的專案
+                    // console.log($scope.fetchFormDataFromScope(form[0])[index].prjDID);
+                    if ($scope.fetchFormDataFromScope(form[0])[index].isSendReview) { // 已經送審的才更新
+                        updateTables.push($scope.fetchFormDataFromScope(form[0])[index].tableID);
+                    }
+                }
+            }
+            var formData = {
+                tableIDs: updateTables,
+                // isSendReview: null,
+                isManagerCheck: true,
+                // isExecutiveCheck: null,
+            }
+            // console.log(formData);
+            WorkHourUtil.updateWHTableArray(formData)
+                .success(function (res) {
+                    $scope.fetchManagerRelatedMembers();
+                    // $scope.showTableOfItem(user, null, null, null, null, null, 1);
+                })
+        }
+
+        //專案經理退回 -1
         $scope.disagreeWHItem_manager = function (user, item, index) {
             $scope.checkText = '確定 退回：' +
                 $scope.showPrjName(item.prjDID) +
@@ -2129,6 +2185,7 @@
             });
         }
 
+        // 專案經理退回 -2
         $scope.sendWHDisagree_manager = function (user, item, index, rejectMsg) {
             var formData = {
                 tableID: item.tableID,
@@ -2141,7 +2198,7 @@
             }
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
-                    $scope.showTableOfItem(user, true, null, null, 1);
+                    $scope.showTableOfItem(user, null, null, null, null, null, 1);
                 })
         }
 
@@ -2197,7 +2254,7 @@
             $scope.showRelatedMembersTableReview(typeExecutive);
         }
 
-        //行政確認
+        //行政確認 -1
         $scope.reviewWHExecutiveItem = function (form, table, index) {
             $scope.checkText = '確定 同意：' +
                 $scope.showPrjName(table.prjDID) +
@@ -2212,7 +2269,7 @@
                 showClose: false,
             });
         }
-
+        //行政確認 -2
         $scope.sendWHExecutiveAgree = function (form, checkingTable, index) {
             var formData = {
                 tableID: checkingTable.tableID,
@@ -2230,14 +2287,14 @@
                     }
                     WorkHourAddItemUtil.updateRelatedAddItemByProject(formData)
                         .success(function (res) {
-                            $scope.showTableOfItem(form, true, null, null, 2);
+                            $scope.showTableOfItem(form, null, null, null, null, null, 2);
                         })
                         .error(function () {
                         })
                 })
         }
 
-        //行政退回
+        //行政總管退回 -1
         $scope.disagreeWHItem_executive = function (form, table, index) {
             $scope.checkText = '確定 退回：' +
                 $scope.showPrjName(table.prjDID) +
@@ -2252,7 +2309,7 @@
                 showClose: false,
             });
         }
-
+        //行政總管退回 -2
         $scope.sendWHDisagree_executive = function (form, checkingTable, index, rejectMsg) {
             var formData = {
                 tableID: checkingTable.tableID,
@@ -2266,7 +2323,55 @@
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
                     // console.log(res.code);
-                    $scope.showTableOfItem(form, true, null, null, 2);
+                    $scope.showTableOfItem(form, null, null, null, null, null, 2);
+                })
+        }
+
+        //行政總管一鍵確認 -1
+        $scope.reviewWHExecutiveAll = function (user, form, index) {
+            console.log(form);
+            console.log(user);
+            for (var index = 0; index < $scope.fetchFormDataFromScope(form[0]).length; index ++) {
+                // 行政總管跟所有專案有關
+                if ($scope.fetchFormDataFromScope(form[0])[index].isManagerCheck) { // 經理審查過的的才更新
+                    // updateTables.push(form[0].formTables[index].tableID);
+                    // console.log($scope.fetchFormDataFromScope(form[0])[index].tableID);
+                }
+            }
+            $scope.checkText = "確定 同意： 全部 ？";
+            $scope.checkingForm = user;
+            $scope.checkingTable = form;
+            $scope.mIndex = index;
+            ngDialog.open({
+                template: 'app/pages/myModalTemplate/myWorkHourTableFormAgree_ExecutiveAllModal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+        //行政總管一鍵確認 -2
+        $scope.sendWHExecutiveAllAgree = function (user, form, index) {
+            console.log(form);
+            var updateTables = [];
+            for (var index = 0; index < $scope.fetchFormDataFromScope(form[0]).length; index ++) {
+                // 行政總管跟所有專案有關
+                if ($scope.fetchFormDataFromScope(form[0])[index].isManagerCheck) { // 經理審查過的的才更新
+                    updateTables.push($scope.fetchFormDataFromScope(form[0])[index].tableID);
+                }
+            }
+            console.log(form[0]);
+            var formData = {
+                tableIDs: updateTables,
+                // isSendReview: null,
+                // isManagerCheck: true,
+                isExecutiveCheck: true,
+            }
+            console.log(formData);
+            WorkHourUtil.updateWHTableArray(formData)
+                .success(function (res) {
+                    // $scope.fetchManagerRelatedMembers();
+                    $scope.fetchExecutiveRelatedMembers();
+                    // $scope.showTableOfItem(user, null, null, null, null, null, 2);
                 })
         }
 
@@ -2845,7 +2950,9 @@
                         tableIDArray: workTableIDArray,
                         isFindSendReview: true,
                         isFindManagerCheck: isFindManagerCheckFlag,
-                        isFindExecutiveCheck: isFindExecutiveCheck
+                        isFindExecutiveCheck: isFindExecutiveCheck,
+                        isFindManagerReject: null,
+                        isFindExecutiveReject: null
                     }
                     console.log(formDataTable);
                     // 取得 Table Data
@@ -2855,7 +2962,7 @@
                             console.log(res.payload);
 
                             for (var index = 0; index < res.payload.length; index++) {
-                                console.log(res.payload[index].prjDID);
+                                // console.log(res.payload[index].prjDID);
                                 if (managersRelatedProjects.includes(res.payload[index].prjDID) || type == 2) {
                                     var mUser = $scope.fetchReviewUserFromScope(res.creatorDID);
                                     if (res.payload.length > 0) {
@@ -2888,6 +2995,8 @@
                                           , isFindSendReviewFlag
                                           , isFindManagerCheckFlag
                                           , isFindExecutiveCheck
+                                          , isFindManagerReject
+                                          , isFindExecutiveReject
                                           , type) {
             //TODO Multiple
             var tablesLength = userData[userData.DID].length;
@@ -2909,7 +3018,9 @@
                     tableIDArray: workTableIDArray,
                     isFindSendReview: isFindSendReviewFlag,
                     isFindManagerCheck: isFindManagerCheckFlag,
-                    isFindExecutiveCheck: isFindExecutiveCheck
+                    isFindExecutiveCheck: isFindExecutiveCheck,
+                    isFindManagerReject: isFindManagerReject,
+                    isFindExecutiveReject: isFindExecutiveReject
                 }
                 console.log(formDataTable);
                 // 取得 Table Data
@@ -2918,6 +3029,8 @@
                 console.log(tableSort);
                 WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                     .success(function (res) {
+                        var isNeedToReview = false;
+                        console.log(res.payload);
                         var workIndex = tableIndex;
                         tableIndex++;
                         // 填入表單資訊
@@ -2926,98 +3039,113 @@
                         var isFirstRaw = false;
                         for (var index = 0; index < res.payload.length; index++) {
                             if (managersRelatedProjects.includes(res.payload[index].prjDID) || type == 2) { // 行政總管跟每個人都有關, 經理只跟專案掛鉤
-                                var detail = {
-                                    tableID: res.payload[index]._id,
-                                    prjDID: res.payload[index].prjDID,
-                                    creatorDID: res.payload[index].creatorDID,
-                                    create_formDate: res.payload[index].create_formDate,
-                                    //MON
-                                    mon_hour: res.payload[index].mon_hour,
-                                    mon_memo: res.payload[index].mon_memo,
-                                    mon_hour_add: res.payload[index].mon_hour_add,
-                                    mon_memo_add: res.payload[index].mon_memo_add,
-                                    //TUE
-                                    tue_hour: res.payload[index].tue_hour,
-                                    tue_memo: res.payload[index].tue_memo,
-                                    tue_hour_add: res.payload[index].tue_hour_add,
-                                    tue_memo_add: res.payload[index].tue_memo_add,
-                                    //WES
-                                    wes_hour: res.payload[index].wes_hour,
-                                    wes_memo: res.payload[index].wes_memo,
-                                    wes_hour_add: res.payload[index].wes_hour_add,
-                                    wes_memo_add: res.payload[index].wes_memo_add,
-                                    //THU
-                                    thu_hour: res.payload[index].thu_hour,
-                                    thu_memo: res.payload[index].thu_memo,
-                                    thu_hour_add: res.payload[index].thu_hour_add,
-                                    thu_memo_add: res.payload[index].thu_memo_add,
-                                    //FRI
-                                    fri_hour: res.payload[index].fri_hour,
-                                    fri_memo: res.payload[index].fri_memo,
-                                    fri_hour_add: res.payload[index].fri_hour_add,
-                                    fri_memo_add: res.payload[index].fri_memo_add,
-                                    //SAT
-                                    sat_hour: res.payload[index].sat_hour,
-                                    sat_memo: res.payload[index].sat_memo,
-                                    sat_hour_add: res.payload[index].sat_hour_add,
-                                    sat_memo_add: res.payload[index].sat_memo_add,
-                                    //SUN
-                                    sun_hour: res.payload[index].sun_hour,
-                                    sun_memo: res.payload[index].sun_memo,
-                                    sun_hour_add: res.payload[index].sun_hour_add,
-                                    sun_memo_add: res.payload[index].sun_memo_add,
-                                    //RIGHT
-                                    isSendReview: res.payload[index].isSendReview,
-                                    isManagerCheck: res.payload[index].isManagerCheck,
-                                    isExecutiveCheck: res.payload[index].isExecutiveCheck,
-
-                                    // Reject
-                                    isManagerReject: res.payload[index].isManagerReject,
-                                    managerReject_memo: res.payload[index].managerReject_memo,
-
-                                    isExecutiveReject: res.payload[index].isExecutiveReject,
-                                    executiveReject_memo: res.payload[index].executiveReject_memo,
-
-                                    userMonthSalary: res.payload[index].userMonthSalary,
-
-                                    // TOTAL
-                                    hourTotal: res.payload[index].mon_hour +
-                                    res.payload[index].tue_hour +
-                                    res.payload[index].wes_hour +
-                                    res.payload[index].thu_hour +
-                                    res.payload[index].fri_hour +
-                                    res.payload[index].sat_hour +
-                                    res.payload[index].sun_hour,
-                                    hourAddTotal: res.payload[index].mon_hour_add +
-                                    res.payload[index].tue_hour_add +
-                                    res.payload[index].wes_hour_add +
-                                    res.payload[index].thu_hour_add +
-                                    res.payload[index].fri_hour_add +
-                                    res.payload[index].sat_hour_add +
-                                    res.payload[index].sun_hour_add,
-                                };
-                                formTables.push(detail);
-                                if (tableSort[0].indexOf(res.payload[index]._id) >= 0) {
-                                    isFirstRaw = true;
+                                if(!res.payload[index].isManagerCheck) {
+                                    isNeedToReview = true;
                                 }
+                            }
+                        }
+
+                        console.log("isNeedToReview= " + isNeedToReview);
+
+                        if (isNeedToReview) {
+
+                            for (var index = 0; index < res.payload.length; index++) {
+                                // if (managersRelatedProjects.includes(res.payload[index].prjDID) || type == 2) { // 行政總管跟每個人都有關, 經理只跟專案掛鉤
+                                    var detail = {
+                                        tableID: res.payload[index]._id,
+                                        prjDID: res.payload[index].prjDID,
+                                        creatorDID: res.payload[index].creatorDID,
+                                        create_formDate: res.payload[index].create_formDate,
+                                        //MON
+                                        mon_hour: res.payload[index].mon_hour,
+                                        mon_memo: res.payload[index].mon_memo,
+                                        mon_hour_add: res.payload[index].mon_hour_add,
+                                        mon_memo_add: res.payload[index].mon_memo_add,
+                                        //TUE
+                                        tue_hour: res.payload[index].tue_hour,
+                                        tue_memo: res.payload[index].tue_memo,
+                                        tue_hour_add: res.payload[index].tue_hour_add,
+                                        tue_memo_add: res.payload[index].tue_memo_add,
+                                        //WES
+                                        wes_hour: res.payload[index].wes_hour,
+                                        wes_memo: res.payload[index].wes_memo,
+                                        wes_hour_add: res.payload[index].wes_hour_add,
+                                        wes_memo_add: res.payload[index].wes_memo_add,
+                                        //THU
+                                        thu_hour: res.payload[index].thu_hour,
+                                        thu_memo: res.payload[index].thu_memo,
+                                        thu_hour_add: res.payload[index].thu_hour_add,
+                                        thu_memo_add: res.payload[index].thu_memo_add,
+                                        //FRI
+                                        fri_hour: res.payload[index].fri_hour,
+                                        fri_memo: res.payload[index].fri_memo,
+                                        fri_hour_add: res.payload[index].fri_hour_add,
+                                        fri_memo_add: res.payload[index].fri_memo_add,
+                                        //SAT
+                                        sat_hour: res.payload[index].sat_hour,
+                                        sat_memo: res.payload[index].sat_memo,
+                                        sat_hour_add: res.payload[index].sat_hour_add,
+                                        sat_memo_add: res.payload[index].sat_memo_add,
+                                        //SUN
+                                        sun_hour: res.payload[index].sun_hour,
+                                        sun_memo: res.payload[index].sun_memo,
+                                        sun_hour_add: res.payload[index].sun_hour_add,
+                                        sun_memo_add: res.payload[index].sun_memo_add,
+                                        //RIGHT
+                                        isSendReview: res.payload[index].isSendReview,
+                                        isManagerCheck: res.payload[index].isManagerCheck,
+                                        isExecutiveCheck: res.payload[index].isExecutiveCheck,
+
+                                        // Reject
+                                        isManagerReject: res.payload[index].isManagerReject,
+                                        managerReject_memo: res.payload[index].managerReject_memo,
+
+                                        isExecutiveReject: res.payload[index].isExecutiveReject,
+                                        executiveReject_memo: res.payload[index].executiveReject_memo,
+
+                                        userMonthSalary: res.payload[index].userMonthSalary,
+
+                                        // TOTAL
+                                        hourTotal: res.payload[index].mon_hour +
+                                        res.payload[index].tue_hour +
+                                        res.payload[index].wes_hour +
+                                        res.payload[index].thu_hour +
+                                        res.payload[index].fri_hour +
+                                        res.payload[index].sat_hour +
+                                        res.payload[index].sun_hour,
+                                        hourAddTotal: res.payload[index].mon_hour_add +
+                                        res.payload[index].tue_hour_add +
+                                        res.payload[index].wes_hour_add +
+                                        res.payload[index].thu_hour_add +
+                                        res.payload[index].fri_hour_add +
+                                        res.payload[index].sat_hour_add +
+                                        res.payload[index].sun_hour_add,
+                                    };
+                                    formTables.push(detail);
+                                    if (tableSort[0].indexOf(res.payload[index]._id) >= 0) {
+                                        isFirstRaw = true;
+                                    }
+                                // }
                             }
 
                         }
+
                         console.log(formTables);
-                        console.log(formTables.length);
                         if (formTables.length == 0) {
+                            console.log("$scope.usersReviewForManagers.length= " + $scope.usersReviewForManagers.length);
                             for (var index = 0; index < $scope.usersReviewForManagers.length; index ++) {
                                 if(userData[userData.DID][workIndex].creatorDID === $scope.usersReviewForManagers[index].DID) {
                                     console.log(index);
                                 }
                             }
-                        }
-                        if(isFirstRaw) {
-                            var evalString = "$scope.tables_review.tablesItems['" + userData[userData.DID][workIndex].creatorDID + userData[userData.DID][0]._id + "'] = formTables";
-                            eval(evalString);
                         } else {
-                            var evalString = "$scope.tables_review.tablesItems['" + userData[userData.DID][workIndex].creatorDID + userData[userData.DID][1]._id + "'] = formTables";
-                            eval(evalString);
+                            if(isFirstRaw) {
+                                var evalString = "$scope.tables_review.tablesItems['" + userData[userData.DID][workIndex].creatorDID + userData[userData.DID][0]._id + "'] = formTables";
+                                eval(evalString);
+                            } else {
+                                var evalString = "$scope.tables_review.tablesItems['" + userData[userData.DID][workIndex].creatorDID + userData[userData.DID][1]._id + "'] = formTables";
+                                eval(evalString);
+                            }
                         }
 
 
@@ -3276,6 +3404,11 @@
             // console.log($scope.tables_review.tablesItems[table.creatorDID + table._id]);
             // return $scope.tablesItems[form.creatorDID + form._id] === undefined ? [] : $scope.tablesItems[form.creatorDID + form._id];
             return $scope.tables_review.tablesItems[table.creatorDID + table._id] === undefined ? [] : $scope.tables_review.tablesItems[table.creatorDID + table._id];
+        }
+
+        // 資料存取TableItem.
+        $scope.fetchFormDataFromScopeByDID = function(creatorDID, tableID) {
+            return $scope.tables_review.tablesItems[creatorDID + tableID] === undefined ? [] : $scope.tables_review.tablesItems[table.creatorDID + table._id];
         }
 
         // ****************  加班核准 點擊版********************

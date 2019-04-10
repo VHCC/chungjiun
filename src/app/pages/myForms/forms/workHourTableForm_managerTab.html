@@ -11,7 +11,7 @@
 <!--<uib-accordion ng-repeat="form in workHourFormsForManagers">-->
 <uib-accordion ng-repeat="user in usersReviewForManagers">
     <uib-accordion-group heading="{{showUser(user.DID)}}"
-                         ng-click="showTableOfItem(user, true, false, null, 1)"
+                         ng-click="showTableOfItem(user, null, null, null, null, null, 1)"
                          panel-class="bootstrap-panel accordion-panel panel-default">
         <table class="table table-bordered table-hover table-condensed"
                ng-repeat="table in fetchReviewTableFromScope(user)">
@@ -257,14 +257,14 @@
                     <form editable-form name="rowform1" ng-show="rowform1.$visible"
                           class="form-buttons form-inline">
                     </form>
-                    <div ng-show="isFitManager(item.prjDID)">
-                        <div ng-show="!item.isManagerCheck">
-                            <button class="btn btn-info editable-table-button btn-xs"
-                                    ng-click="reviewWHManagerItem(user, item, $index)"
-                                    style="color: black">
-                                同意
-                            </button>
-                        </div>
+                    <div ng-show="isFitManager(item.prjDID) && item.isSendReview">
+                        <!--<div ng-show="!item.isManagerCheck">-->
+                            <!--<button class="btn btn-info editable-table-button btn-xs"-->
+                                    <!--ng-click="reviewWHManagerItem(user, item, $index)"-->
+                                    <!--style="color: black">-->
+                                <!--同意-->
+                            <!--</button>-->
+                        <!--</div>-->
                         <div ng-show="!item.isManagerCheck">
                             <button class="btn btn-danger editable-table-button btn-xs"
                                     ng-click="disagreeWHItem_manager(user, item, $index)"
@@ -281,6 +281,14 @@
                             </button>
                         </div>
                     </div>
+
+                    <div ng-show="!item.isSendReview">
+                        <button class="btn btn-warning editable-table-button btn-xs">
+                            編輯中
+                        </button>
+                    </div>
+
+
                     <div ng-show="!isFitManager(item.prjDID)">
                         <div ng-show="rowform1.$waiting || (item.isSendReview && !item.isManagerCheck)">
                             <button class="btn btn-warning editable-table-button btn-xs"
@@ -737,6 +745,19 @@
                     <span>
                         {{showCalculateHour($index, firstFullDate_manager, fetchFormDataFromScope(table), 2001, 2, table)}}
                     </span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="22">
+                    <section class="col-md-12" >
+                        <button ng-click="reviewWHManagerAll(user, fetchReviewTableFromScope(user), $index)"
+                                style="float: right; padding: 0 60px; line-height: 4"
+                                id="btnReview"
+                                pb-style="shrink"
+                                class="btn btn-primary">
+                            全部確認
+                        </button>
+                    </section>
                 </td>
             </tr>
             </tfoot>
