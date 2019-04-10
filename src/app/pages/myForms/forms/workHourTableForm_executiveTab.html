@@ -9,7 +9,7 @@
 
 <uib-accordion ng-repeat="user in usersReviewForExecutive">
     <uib-accordion-group heading="{{showUser(user.DID)}}"
-                         ng-click="showTableOfItem(user, true, true, false, 2)"
+                         ng-click="showTableOfItem(user, null, null, null, null, null, 2)"
                          panel-class="bootstrap-panel accordion-panel panel-default">
         <table class="table table-bordered table-hover table-condensed"
                ng-repeat="table in fetchReviewTableFromScope(user)">
@@ -276,11 +276,11 @@
                           class="form-buttons form-inline">
                     </form>
                     <div ng-show="!item.isExecutiveCheck && item.isManagerCheck">
-                        <button class="btn btn-info editable-table-button btn-xs"
-                                ng-click="reviewWHExecutiveItem(user, item, $index)"
-                                style="color: black">
-                            同意
-                        </button>
+                        <!--<button class="btn btn-info editable-table-button btn-xs"-->
+                                <!--ng-click="reviewWHExecutiveItem(user, item, $index)"-->
+                                <!--style="color: black">-->
+                            <!--同意-->
+                        <!--</button>-->
                     </div>
                     <div ng-show="!item.isExecutiveCheck && item.isManagerCheck">
                         <button class="btn btn-danger editable-table-button btn-xs"
@@ -295,6 +295,11 @@
                             行政
                             <br>
                             確認完成
+                        </button>
+                    </div>
+                    <div ng-show="!item.isSendReview">
+                        <button class="btn btn-warning editable-table-button btn-xs">
+                            編輯中
                         </button>
                     </div>
                 </td>
@@ -736,6 +741,19 @@
                     <span>
                             {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 2001, 3, table)}}
                         </span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="22">
+                    <section class="col-md-12" >
+                        <button ng-click="reviewWHExecutiveAll(user, fetchReviewTableFromScope(user), $index)"
+                                style="float: right; padding: 0 60px; line-height: 4"
+                                id="btnReview"
+                                pb-style="shrink"
+                                class="btn btn-primary">
+                            全部確認
+                        </button>
+                    </section>
                 </td>
             </tr>
             </tfoot>

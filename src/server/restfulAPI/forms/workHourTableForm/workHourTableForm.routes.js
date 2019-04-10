@@ -92,6 +92,13 @@ module.exports = function (app) {
                     isManagerCheck: req.body.formTables[index].isManagerCheck,
                     isExecutiveCheck: req.body.formTables[index].isExecutiveCheck,
 
+                    // Reject
+                    isManagerReject: req.body.formTables[index].isManagerReject,
+                    managerReject_memo: req.body.formTables[index].managerReject_memo,
+
+                    isExecutiveReject: req.body.formTables[index].isExecutiveReject,
+                    executiveReject_memo: req.body.formTables[index].executiveReject_memo,
+
                     userMonthSalary: req.body.formTables[index].userMonthSalary,
 
                 }, function (err, workTable) {
@@ -327,6 +334,15 @@ module.exports = function (app) {
         if (req.body.isFindExecutiveCheck !== null) {
             query.isExecutiveCheck = req.body.isFindExecutiveCheck;
         }
+        if (req.body.isFindManagerReject !== null) {
+            query.isManagerReject = req.body.isFindManagerReject;
+        }
+        if (req.body.isFindExecutiveReject !== null) {
+            query.isExecutiveReject = req.body.isFindExecutiveReject;
+        }
+
+        console.log(query);
+
         WorkHourTableForm.find(query, function (err, tables) {
             if (err) {
                 res.send(err);
@@ -383,7 +399,7 @@ module.exports = function (app) {
 
     })
 
-    // update table executive check
+    // update table one item
     app.post(global.apiUrl.post_work_hour_table_update, function (req, res) {
         // console.log(req.body);
         var keyArray = Object.keys(req.body);
@@ -396,7 +412,7 @@ module.exports = function (app) {
             evalFooter += keyArray[index];
             eval(evalString + " = " + evalFooter);
         }
-        // console.log(query);
+        console.log(query);
 
         // var setQuery = {};
 
@@ -423,6 +439,40 @@ module.exports = function (app) {
                 error: global.status._200,
             });
         })
+    })
+
+    // update table array
+    app.post(global.apiUrl.post_work_hour_table_update_array, function (req, res) {
+        console.log("update table array");
+        console.log(req.body);
+        var keyArray = Object.keys(req.body);
+        var query = {};
+        for (var index = 0; index < keyArray.length; index++) {
+            var evalString = "query.";
+            evalString += keyArray[index];
+
+            var evalFooter = "req.body.";
+            evalFooter += keyArray[index];
+            eval(evalString + " = " + evalFooter);
+        }
+        console.log(query);
+
+        for (var index = 0; index < req.body.tableIDs.length; index++) {
+            WorkHourTableForm.update({
+                _id: req.body.tableIDs[index],
+            }, {
+                $set: query
+            }, function (err) {
+                if (err) {
+                    res.send(err);
+                }
+            })
+        }
+        res.status(200).send({
+            code: 200,
+            error: global.status._200,
+        })
+
     })
 
 }
