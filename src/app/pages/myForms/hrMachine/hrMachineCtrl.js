@@ -18,11 +18,11 @@
                     'DateUtil',
                     'TimeUtil',
                     'toastr',
-                    ＨrMachineCtrl
+                    HrMachineCtrl
                 ]);
 
         /** @ngInject */
-        function ＨrMachineCtrl($scope,
+        function HrMachineCtrl($scope,
                                  $filter,
                                  cookies,
                                  $timeout,
@@ -52,11 +52,22 @@
             console.log($scope.roleType);
             console.log($scope.machineDID);
 
+            // 行政總管專屬
+            if ($scope.roleType == 100 || $scope.roleType == 2) {
+                // 所有人，對照資料
+                User.getAllUsers()
+                    .success(function (allUsers) {
+                        vm.users = allUsers;
+                    });
+            }
+
             // 主要顯示
             $scope.hrMachineTable = [];
+            $scope.hrMachineTable_specific = [];
 
-            $scope.fetchData = function(month) {
+            $scope.fetchData = function(machineDID, month) {
                 $scope.hrMachineTable = [];
+                $scope.hrMachineTable_specific = [];
                 var startDate = moment().format('YYYYMM') + "01";
                 var endDate = moment().format('YYYYMM') + moment().daysInMonth();
                 var today = moment().format('YYYYMMDD');
@@ -67,7 +78,7 @@
                 }
 
                 var formData = {
-                    machineDID: $scope.machineDID,
+                    machineDID: machineDID == undefined ? $scope.machineDID : machineDID,
                     today: today,
                 }
 
@@ -151,8 +162,12 @@
                                 lastDate = arrayResult[0][index].date;
                             }
                         }
-                        // console.log(hrMachineTableSorted);
-                        $scope.hrMachineTable = hrMachineTableSorted;
+                        if (machineDID) {
+                            $scope.hrMachineTable_specific = hrMachineTableSorted;
+                        } else {
+                            // console.log(hrMachineTableSorted);
+                            $scope.hrMachineTable = hrMachineTableSorted;
+                        }
                     })
             }
 
@@ -951,7 +966,7 @@
                 }
             }
 
-            } // End of function
+        } // End of function
     }
 )();
 

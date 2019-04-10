@@ -211,6 +211,10 @@
         </div>
 
     </uib-tab>
+    <uib-tab heading="打卡機檢視" ng-if="roleType === '2' || roleType === '100'"
+             style="color: blue">
+        <div ng-include="'app/pages/myForms/forms/hrMachineForm_UserDataFind.html'"></div>
+    </uib-tab>
     <uib-tab heading="打卡機補登" ng-if=false
              style="color: blue">
         <div ng-include="'app/pages/myForms/forms/hrMachineForm_LoadTab.html'"></div>
