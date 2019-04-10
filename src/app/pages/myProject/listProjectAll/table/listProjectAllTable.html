@@ -1,16 +1,21 @@
 <div class="horizontal-scroll">
     <table class="table table-hover" st-table="projects">
         <thead>
+        <tr>
+            <td colspan="6" class="text-center">
+                <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
+            </td>
+        </tr>
         <tr class="sortable">
             <th class="table-id" st-sort="prjCode" st-sort-default="true" style="width: 5%">代碼</th>
             <th st-sort="mainName" style="width: 25%">總案名稱</th>
-            <th st-sort="prjName" style="width: 10%">專案名稱</th>
-            <th st-sort="prjSubName" style="width: 5%">子案名稱</th>
+            <th st-sort="prjName" style="width: 20%">專案名稱</th>
+            <th st-sort="prjSubName" style="width: 10%">子案名稱</th>
             <th st-sort="type" style="width: 5%">類型名稱</th>
             <th st-sort="managerID" style="width: 5%">經理</th>
-            <th st-sort="majorID" style="width: 5%">主承辦</th>
-            <th st-sort="creator" style="width: 25%">協辦人員</th>
-            <th st-sort="age" style="width: 5%">技師</th>
+            <th st-sort="workers" style="width: 5%">主承辦</th>
+            <th st-sort="creator" style="width: 10%">協辦人員</th>
+            <th st-sort="technician" style="width: 5%">技師</th>
         </tr>
         <tr>
             <th><input st-search="prjCode"
@@ -45,9 +50,9 @@
             <!--總案名稱-->
             <td style="width: 25%">{{prj.mainName}}</td>
             <!--專案名稱-->
-            <td style="width: 10%">{{prj.prjName}}</td>
+            <td style="width: 20%">{{prj.prjName}}</td>
             <!--子案名稱-->
-            <td style="width: 5%">{{prj.prjSubName}}</td>
+            <td style="width: 10%">{{prj.prjSubName}}</td>
             <!--類型-->
             <td style="width: 5%">{{prjTypeToName(prj.type)}}</td>
             <!--經理-->
@@ -72,7 +77,7 @@
             </td>
             <!--<td>{{prj.workers}}</td>-->
             <!--協辦-->
-            <td class="select-td" style="width: 25%">
+            <td class="select-td" style="width: 10%">
                 <form data-editable-form
                       name="uiSelectForm">
                     <div editable-ui-select="prj.workers"
@@ -80,7 +85,7 @@
                          data-e-form="uiSelectForm"
                          data-e-name="workers"
                          name="workers"
-                         data-e-style="min-width:150px;max-width:500px"
+                         data-e-style="min-width:100px;max-width:500px"
                          data-e-ng-model="prj.workers">
                         {{showWorkersName(prj.workers)}}
                         <editable-ui-select-match placeholder="請選擇協辦人員">

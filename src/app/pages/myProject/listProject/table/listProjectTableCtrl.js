@@ -12,7 +12,7 @@
             var formData = {
                 relatedID: $cookies.get('userDID'),
             }
-            var promise = $http.post('/api/post_project_all_related_to_user', formData)
+            var promise = $http.post('/api/post_project_all_related_to_user_with_disabled', formData)
                 .success(function (allProjects) {
                     return allProjects;
                 });
@@ -123,18 +123,6 @@
                         name: allUsers[i].name
                     };
                 }
-                // Project.findAll()
-                //     .success(function (allProjects) {
-                //         console.log('rep - GET ALL Project, SUCCESS');
-                //         console.log(allProjects);
-                //         $scope.loading = false;
-                //         $scope.projects = allProjects
-                //
-                //         $scope.editableTableData = $scope.smartTableData.slice(0, 36);
-                //
-                //         $scope.qq = $scope.projects.slice(0, 2);
-                //
-                //     });
             });
 
         User.findTechs()

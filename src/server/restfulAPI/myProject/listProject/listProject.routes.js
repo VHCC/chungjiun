@@ -7,8 +7,26 @@ module.exports = function (app) {
 
 // ----- define routes
 
-    //
     app.post(global.apiUrl.post_project_all_related_to_user, function (req, res) {
+        var findDataOr = [];
+        findDataOr.push({managerID: req.body.relatedID});
+        findDataOr.push({majorID: req.body.relatedID});
+        findDataOr.push({workers: req.body.relatedID});
+        var findDataAnd = [];
+        findDataAnd.push({enable: true});
+        Project.find({
+            // enable: true,
+            $or: findDataOr,
+            $and: findDataAnd
+        }, function (err, projects) {
+            if (err) {
+                res.send(err);
+            }
+            res.json(projects);
+        })
+    })
+
+    app.post(global.apiUrl.post_project_all_related_to_user_with_disabled, function (req, res) {
         var findData = [];
         findData.push({managerID: req.body.relatedID});
         findData.push({majorID: req.body.relatedID});
