@@ -8,14 +8,14 @@
         </tr>
         <tr class="sortable">
             <th class="table-id" st-sort="prjCode" st-sort-default="true" style="width: 5%">代碼</th>
-            <th st-sort="mainName" style="width: 25%">總案名稱</th>
+            <th st-sort="mainName" style="width: 20%">總案名稱</th>
             <th st-sort="prjName" style="width: 20%">專案名稱</th>
-            <th st-sort="prjSubName" style="width: 10%">子案名稱</th>
-            <th st-sort="type" style="width: 5%">類型名稱</th>
-            <th st-sort="managerID" style="width: 5%">經理</th>
+            <th st-sort="prjSubName" style="width: 13%">子案名稱</th>
+            <th st-sort="type" style="width: 4%">類型名稱</th>
+            <th st-sort="managerID" style="width: 4%">經理</th>
             <th st-sort="workers" style="width: 5%">主承辦</th>
-            <th st-sort="creator" style="width: 10%">協辦人員</th>
-            <th st-sort="technician" style="width: 5%">技師</th>
+            <th st-sort="creator" style="width: 20%">協辦人員</th>
+            <th st-sort="technician" style="width: 4%">技師</th>
         </tr>
         <tr>
             <th><input st-search="prjCode"
@@ -48,15 +48,15 @@
             <!--全代碼-->
             <td class="table-id" style="width: 5%">{{prj.prjCode}}</td>
             <!--總案名稱-->
-            <td style="width: 25%">{{prj.mainName}}</td>
+            <td style="width: 20%">{{prj.mainName}}</td>
             <!--專案名稱-->
             <td style="width: 20%">{{prj.prjName}}</td>
             <!--子案名稱-->
-            <td style="width: 10%">{{prj.prjSubName}}</td>
+            <td style="width: 13%">{{prj.prjSubName}}</td>
             <!--類型-->
-            <td style="width: 5%">{{prjTypeToName(prj.type)}}</td>
+            <td style="width: 4%">{{prjTypeToName(prj.type)}}</td>
             <!--經理-->
-            <td style="width: 5%">{{ showManager(prj) }}</td>
+            <td style="width: 4%">{{ showManager(prj) }}</td>
             <!--主承辦-->
             <td class="select-td" style="width: 5%">
                 <span editable-select="prj.majorID"
@@ -77,7 +77,7 @@
             </td>
             <!--<td>{{prj.workers}}</td>-->
             <!--協辦-->
-            <td class="select-td" style="width: 10%">
+            <td class="select-td" style="width: 20%">
                 <form data-editable-form
                       name="uiSelectForm">
                     <div editable-ui-select="prj.workers"
@@ -121,7 +121,7 @@
                 </form>
             </td>
             <!--技師-->
-            <td style="width: 5%">{{showTechs(prj.technician)}}</td>
+            <td style="width: 4%">{{showTechs(prj.technician)}}</td>
 
         </tr>
         </tbody>
