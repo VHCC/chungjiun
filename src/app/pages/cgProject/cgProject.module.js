@@ -65,7 +65,7 @@
                     url: '/listProjectAll',
                     templateUrl: 'app/pages/myProject/listProjectAll/listProjectAll.html',
                     controller: 'listProjectAllCtrl',
-                    title: '所有專案',
+                    title: '專案總表',
                     accessLevel: [1,2,3,100],
                     sidebarMeta: {
                         order: global.pages.myProject_listProjectAll,
