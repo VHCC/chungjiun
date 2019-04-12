@@ -8,20 +8,21 @@
         angular.module('BlurAdmin.pages.myForms')
             .service('intiWorkOffAllService', function ($http, $cookies) {
 
-                var formData = {
-                    creatorDID: $cookies.get('userDID'),
-                    year: null,
-                    month: null,
-                    isSendReview: true,
-                    isBossCheck: true,
-                    isExecutiveCheck: true
-                }
-
-                var promise = $http.post('/api/post_work_off_table_find_by_user_did', formData)
-                    .success(function (workOffTables) {
-                        return workOffTables;
-                    });
-                return promise;
+                // var formData = {
+                //     creatorDID: $cookies.get('userDID'),
+                //     year: null,
+                //     month: null,
+                //     isSendReview: true,
+                //     isBossCheck: true,
+                //     isExecutiveCheck: true
+                // }
+                //
+                // var promise = $http.post('/api/post_work_off_table_find_by_user_did', formData)
+                //     .success(function (workOffTables) {
+                //         return workOffTables;
+                //     });
+                // return promise;
+                return "";
             })
             .controller('workOffFormCtrl',
                 [
@@ -66,28 +67,37 @@
                                  HolidayDataForms,
                                  intiWorkOffAllService) {
 
-            intiWorkOffAllService.then(function (resp) {
-                console.log("===intiWorkOffAllService===");
-                console.log(resp.data.payload);
-                $scope.workOffTables = resp.data.payload;
-
-                angular.element(
-                    document.getElementById('includeHead'))
-                    .append($compile(
-                        "<div ba-panel ba-panel-title=" +
-                        "'所有請假單列表 - " + resp.data.payload.length + "'" +
-                        "ba-panel-class= " +
-                        "'with-scroll'" + ">" +
-                        "<div " +
-                        "ng-include=\"'app/pages/myForms/forms/workOffForm_AllHistory.html'\">" +
-                        "</div>" +
-                        "</div>"
-                    )($scope));
-            })
+            // intiWorkOffAllService.then(function (resp) {
+            //     console.log("===intiWorkOffAllService===");
+                // console.log(resp.data.payload);
+                // $scope.workOffTables = resp.data.payload;
+                //
+                // angular.element(
+                //     document.getElementById('includeHead'))
+                //     .append($compile(
+                //         "<div ba-panel ba-panel-title=" +
+                //         "'所有請假單列表 - " + resp.data.payload.length + "'" +
+                //         "ba-panel-class= " +
+                //         "'with-scroll'" + ">" +
+                //         "<div " +
+                //         "ng-include=\"'app/pages/myForms/forms/workOffForm_AllHistory.html'\">" +
+                //         "</div>" +
+                //         "</div>"
+                //     )($scope));
+            // })
 
             $scope.username = cookies.get('username');
             $scope.userDID = cookies.get('userDID');
             $scope.roleType = cookies.get('roletype');
+
+            // 行政總管、經理專屬
+            if ($scope.roleType == 100 || $scope.roleType == 2) {
+                // 所有人，對照資料
+                User.getAllUsers()
+                    .success(function (allUsers) {
+                        vm.users = allUsers;
+                    });
+            }
 
             var formData = {
                 userDID: cookies.get('userDID'),
@@ -155,17 +165,6 @@
                     });
             }
 
-            User.getAllUsers()
-                .success(function (allManagers) {
-                    $scope.usersBosses = [];
-                    for (var i = 0; i < allManagers.length; i++) {
-                        $scope.usersBosses[i] = {
-                            value: allManagers[i]._id,
-                            name: allManagers[i].name
-                        };
-                    }
-                });
-
             // 主要顯示
             $scope.specificUserTablesItems = [];
 
@@ -175,6 +174,19 @@
             $scope.year = thisYear;
             $scope.month = thisMonth;
             var thisDay = new Date().getDay();
+
+            User.getAllUsers()
+                .success(function (allManagers) {
+                    $scope.usersBosses = [];
+                    vm.usersReview = allManagers;
+                    for (var i = 0; i < allManagers.length; i++) {
+                        $scope.usersBosses[i] = {
+                            value: allManagers[i]._id,
+                            name: allManagers[i].name
+                        };
+                    }
+                });
+
             // ***********************  個人填寫 ************************
 
             $scope.getUserHolidayForm = function () {
@@ -210,12 +222,12 @@
             }
 
             //取得使用者個人休假表，userDID
-            $scope.getWorkOffTable = function (userDID) {
+            $scope.getWorkOffTable = function (userDID, month) {
                 $scope.specificUserTablesItems = [];
                 var getData = {
-                    creatorDID: userDID === undefined ? $scope.userDID : userDID,
+                    creatorDID: (userDID === undefined || userDID == null)? $scope.userDID : userDID,
                     year: null,
-                    month: null,
+                    month: month === undefined ? null : month,
                     isSendReview: null,
                     isBossCheck: null,
                     isExecutiveCheck: null
@@ -1113,9 +1125,9 @@
             }
 
             /**
-                                 * 顯示加班單，目的找補休
-                                 * @param user
-                                 */
+             * 顯示加班單，目的找補休
+             * @param user
+             */
             function fetchWorkOffTableData(userDID, type) {
                 var formData = {
                     creatorDID: userDID,
@@ -1245,6 +1257,135 @@
             $scope.formatFloat = function (num, pos) {
                 var size = Math.pow(10, pos);
                 return Math.round(num * size) / size;
+            }
+
+            $scope.changeWorkOffHistoryMonth = function(changeCount, dom) {
+                $scope.monthPicker = dom;
+
+                document.getElementById('includeHead').innerHTML = "";
+
+                dom.myMonth = moment(dom.myDT).add(changeCount, 'M').format('YYYY/MM');
+                dom.myDT = moment(dom.myDT).add(changeCount, 'M');
+                console.log("dom.myMonth= " + dom.myMonth);
+
+                var year = parseInt(dom.myDT.year()) - 1911;
+                var month = parseInt(dom.myDT.month()) + 1;
+
+                var formData = {
+                    creatorDID: vm.userSelected == undefined ? $scope.userDID : vm.userSelected._id,
+                    year: year,
+                    month: month,
+                    isSendReview: true,
+                    isBossCheck: true,
+                    isExecutiveCheck: true
+                }
+                // console.log(formData);
+                WorkOffFormUtil.findWorkOffTableFormByUserDID(formData)
+                    .success(function (workOffTables) {
+                        // console.log(workOffTables.payload);
+                        $scope.workOffTables = workOffTables.payload;
+                        angular.element(
+                            document.getElementById('includeHead'))
+                            .append($compile(
+                                "<div ba-panel ba-panel-title=" +
+                                "'" + (vm.userSelected == undefined ? $scope.username : vm.userSelected.name) + " "+ year + "年" +
+                                month + "月" +
+                                "請假單列表 - " + workOffTables.payload.length + "'" +
+                                "ba-panel-class= " +
+                                "'with-scroll'" + ">" +
+                                "<div " +
+                                "ng-include=\"'app/pages/myForms/forms/workOffForm_AllHistory.html'\">" +
+                                "</div>" +
+                                "</div>"
+                            )($scope));
+
+                    });
+            }
+
+            $scope.$watch('myMonth',function(newValue, oldValue) {
+                // console.log(oldValue);
+                // console.log(newValue);
+                if ($scope.isShiftMonthSelect) {
+                    $scope.isShiftMonthSelect = false;
+                    $scope.changeWorkOffHistoryMonth(0, $scope.monthPickerDom);
+                }
+            });
+
+            $scope.changeWorkOffHistoryUserDID = function(user) {
+                document.getElementById('includeHead').innerHTML = "";
+
+                var year = thisYear;
+                var month = thisMonth;
+                if ($scope.monthPicker != undefined) {
+                    year = parseInt($scope.monthPicker.myDT.year()) - 1911;
+                    month = parseInt($scope.monthPicker.myDT.month()) + 1;
+                }
+
+                vm.userSelected = user;
+
+                var formData = {
+                    creatorDID: user._id,
+                    year: year,
+                    month: month,
+                    isSendReview: true,
+                    isBossCheck: true,
+                    isExecutiveCheck: true
+                }
+                // console.log(formData);
+                WorkOffFormUtil.findWorkOffTableFormByUserDID(formData)
+                    .success(function (workOffTables) {
+                        // console.log(workOffTables.payload);
+                        $scope.workOffTables = workOffTables.payload;
+                        angular.element(
+                            document.getElementById('includeHead'))
+                            .append($compile(
+                                "<div ba-panel ba-panel-title=" +
+                                "'" + user.name + " " + year + "年" +
+                                month + "月" +
+                                "請假單列表 - " + workOffTables.payload.length + "'" +
+                                "ba-panel-class= " +
+                                "'with-scroll'" + ">" +
+                                "<div " +
+                                "ng-include=\"'app/pages/myForms/forms/workOffForm_AllHistory.html'\">" +
+                                "</div>" +
+                                "</div>"
+                            )($scope));
+
+                    });
+            }
+
+            $scope.initWorkOffMonthCheck = function () {
+                document.getElementById('includeHead').innerHTML = "";
+                var formData = {
+                    creatorDID: $scope.userDID,
+                    year: null,
+                    month: null,
+                    isSendReview: true,
+                    isBossCheck: true,
+                    isExecutiveCheck: true
+                }
+
+                WorkOffFormUtil.findWorkOffTableFormByUserDID(formData)
+                    .success(function (workOffTables) {
+                        // console.log(workOffTables.payload);
+                        $scope.workOffTables = workOffTables.payload;
+                        angular.element(
+                            document.getElementById('includeHead'))
+                            .append($compile(
+                                "<div ba-panel ba-panel-title=" +
+                                "'" + $scope.username + " " +
+                                "所有請假單列表 - " + workOffTables.payload.length + "'" +
+                                "ba-panel-class= " +
+                                "'with-scroll'" + ">" +
+                                "<div " +
+                                "ng-include=\"'app/pages/myForms/forms/workOffForm_AllHistory.html'\">" +
+                                "</div>" +
+                                "</div>"
+                            )($scope));
+
+                    });
+
+
             }
 
         } // End of function

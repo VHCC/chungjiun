@@ -1,4 +1,42 @@
 <div class="row" ng-controller="workOffFormCtrl">
+
+    <div class="row" ng-if="roleType === '2' || roleType === '100'">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>選擇員工</label>
+                <ui-select ng-model="workOffFormCtrlVm.userReview.selected"
+                           class="btn-group bootstrap-select form-control"
+                           ng-disabled="false"
+                           ng-change="changeWorkOffHistoryUserDID(workOffFormCtrlVm.userReview.selected)"
+                           append-to-body="true"
+                           search-enabled="true">
+                    <ui-select-match placeholder="選擇員工">
+                        {{$select.selected.name}}
+                    </ui-select-match>
+                    <ui-select-choices
+                            repeat="user in workOffFormCtrlVm.usersReview | groupSelectpickerOptions: {name: $select.search}">
+                        <span ng-bind-html="user.name| highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-12">
+        <my-month-picker
+                formatted="MM">
+
+        </my-month-picker>
+        <button type="button" class="btn btn-default btn-icon" ng-click="changeWorkOffHistoryMonth(-1, this)">
+            <i class="ion-chevron-left"></i>
+        </button>
+        {{myMonth}}
+        <button type="button" class="btn btn-default btn-icon" ng-click="changeWorkOffHistoryMonth(1, this)">
+            <i class="ion-chevron-right"></i>
+        </button>
+    </div>
+
     <div class="col-md-12" id="includeHead">
     </div>
 </div>

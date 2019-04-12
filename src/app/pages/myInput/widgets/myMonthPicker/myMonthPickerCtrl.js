@@ -31,13 +31,15 @@
             }
         });
         function showMonthPicker() {
+            $scope.monthPickerDom = this;
             $scope.opened = true;
         }
 
-        $scope.shiftHrMachineMonth = function (dom) {
+        $scope.shiftMonth = function (dom) {
+            $scope.isShiftMonthSelect = true;
             $scope.myMonth = moment($scope.myMonth).format('YYYY/MM');
             $scope.myDT = moment(dom.myMonth);
-            $scope.fetchData($scope.myMonth);
+            console.log($scope);
         }
     }
 })();
