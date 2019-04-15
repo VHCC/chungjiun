@@ -13,7 +13,8 @@
                     {{$select.selected.name}} [{{$select.selected.machineDID}}]
                 </ui-select-match>
                 <ui-select-choices
-                        repeat="user in hrMachineCtrlVm.users | groupSelectpickerOptions: {name: $select.search, machineDID: $select.search}">
+                        repeat="user in hrMachineCtrlVm.users | groupSelectpickerOptions: {name: $select.search}"
+                        >
                     <span ng-bind-html="user.name + ' [' + user.machineDID + ']'| highlight: $select.search"></span>
                 </ui-select-choices>
             </ui-select>
