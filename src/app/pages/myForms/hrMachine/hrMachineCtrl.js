@@ -938,6 +938,9 @@
                         // console.log("C " + workOnHour + ":" + workOnMin);
                         // console.log("D " + workOffHour + ":" + workOffMin);
                         var hour = Math.floor(((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))/60);
+                        if (hour == 0 ) {
+                            return 0;
+                        }
                         var min = (((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))%60) / 60 >= 0.5 ? 0.5 : 0;
                         return parseInt(hour) + min;
                         // return parseInt(hour);
@@ -948,6 +951,9 @@
                         // console.log("CC " + workOnHour + ":" + workOnMin);
                         // console.log("DD " + workOffHour + ":" + workOffMin);
                         var hour = Math.floor(((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))/60);
+                        if (hour == 0 ) {
+                            return 0;
+                        }
                         var min = (((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))%60) / 60 >= 0.5 ? 0.5 : 0;
                         return parseInt(hour) + min;
                         // return parseInt(hour);
@@ -958,6 +964,9 @@
                         // console.log("CCC " + workOnHour + ":" + workOnMin);
                         // console.log("DDD " + workOffHour + ":" + workOffMin);
                         var hour = Math.floor(((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))/60);
+                        if (hour == 0 ) {
+                            return 0;
+                        }
                         var min = (((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))%60) / 60 >= 0.5 ? 0.5 : 0;
                         return parseInt(hour) + min;
                         // return parseInt(hour);
