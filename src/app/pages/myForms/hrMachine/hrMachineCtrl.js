@@ -249,7 +249,7 @@
                         var isSecondWorkOn = false;
                         for (var index = 0; index < datas.length; index++) {
                             if (datas[index].workType === "2") {
-                                isSecondWorkOverOn = true;
+                                isSecondWorkOn = true;
                             }
                             if (datas[index].workType === "1") {
                                 if (isSecondWorkOn) {
@@ -257,6 +257,7 @@
                                 }
                             }
                         }
+                        console.log(workOnArray)
                         if (workOnArray.length > 0) {
                             return workOnArray[0].time;
                         }
@@ -269,7 +270,7 @@
                         var workOffArray = [];
                         for (var index = 0; index < datas.length; index++) {
                             if (datas[index].workType === "2") {
-                                isSecondWorkOverOn = true;
+                                isSecondWorkOn = true;
                             }
                             if (datas[index].workType === "1") {
                                 if (isSecondWorkOn) {
@@ -280,6 +281,7 @@
                                 workOffArray.push(datas[index]);
                             }
                         }
+                        console.log(workOffArray)
                         if (workOffArray.length > 0) {
                             return workOffArray[workOffArray.length - 1].time;
                         }
