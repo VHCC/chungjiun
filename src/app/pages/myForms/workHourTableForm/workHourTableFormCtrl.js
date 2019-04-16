@@ -3022,11 +3022,11 @@
                     isFindManagerReject: isFindManagerReject,
                     isFindExecutiveReject: isFindExecutiveReject
                 }
-                console.log(formDataTable);
+                // console.log(formDataTable);
                 // 取得 Table Data
 
                 tableSort.push(workTableIDArray);
-                console.log(tableSort);
+                // console.log(tableSort);
                 WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                     .success(function (res) {
                         var isNeedToReview = false;
@@ -3039,7 +3039,7 @@
                         var isFirstRaw = false;
                         for (var index = 0; index < res.payload.length; index++) {
                             if (managersRelatedProjects.includes(res.payload[index].prjDID) || type == 2) { // 行政總管跟每個人都有關, 經理只跟專案掛鉤
-                                if(!res.payload[index].isManagerCheck) {
+                                if(!res.payload[index].isManagerCheck || type == 2) {
                                     isNeedToReview = true;
                                 }
                             }
@@ -3130,14 +3130,14 @@
 
                         }
 
-                        console.log(formTables);
+                        // console.log(formTables);
                         if (formTables.length == 0) {
-                            console.log("$scope.usersReviewForManagers.length= " + $scope.usersReviewForManagers.length);
-                            for (var index = 0; index < $scope.usersReviewForManagers.length; index ++) {
-                                if(userData[userData.DID][workIndex].creatorDID === $scope.usersReviewForManagers[index].DID) {
-                                    console.log(index);
-                                }
-                            }
+                            // console.log("$scope.usersReviewForManagers.length= " + $scope.usersReviewForManagers.length);
+                            // for (var index = 0; index < $scope.usersReviewForManagers.length; index ++) {
+                            //     if(userData[userData.DID][workIndex].creatorDID === $scope.usersReviewForManagers[index].DID) {
+                            //         console.log(index);
+                            //     }
+                            // }
                         } else {
                             if(isFirstRaw) {
                                 var evalString = "$scope.tables_review.tablesItems['" + userData[userData.DID][workIndex].creatorDID + userData[userData.DID][0]._id + "'] = formTables";
