@@ -864,6 +864,7 @@
                             // 更新old Table ID Array
                             // $scope.getWorkOffTable();
                             var workOffTableIDArray = [];
+                            console.log(res.payload);
                             if (res.payload.length > 0) {
                                 for (var index = 0; index < res.payload.length; index++) {
                                     console.log(res.payload[index]);
