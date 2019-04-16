@@ -124,7 +124,7 @@ module.exports = function (app) {
 
                         var query = {
                             creatorDID: req.body.creatorDID,
-                            year: req.body.year,
+                            // year: req.body.year,
                         }
 
                         WorkOffTableForm.find(query)
