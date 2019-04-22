@@ -2840,7 +2840,7 @@
                 create_formDate: targetFormFullDate,
             }
 
-            console.log(getData);
+            // console.log(getData);
 
             WorkHourUtil.getWorkHourFormMultiple(getData)
                 .success(function (res) {
@@ -2848,8 +2848,8 @@
                     // 一個UserDID只有一個物件
                     var existDIDArray = [];
                     if (res.payload.length > 0) {
-                        console.log("forms= " + res.payload.length);
-                        console.log(res.payload);
+                        // console.log("forms= " + res.payload.length);
+                        // console.log(res.payload);
                         // users
                         for (var formIndex = 0; formIndex < res.payload.length; formIndex ++) {
 
@@ -2954,12 +2954,12 @@
                         isFindManagerReject: null,
                         isFindExecutiveReject: null
                     }
-                    console.log(formDataTable);
+                    // console.log(formDataTable);
                     // 取得 Table Data
                     WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                         .success(function (res) {
                             // 填入表單資訊
-                            console.log(res.payload);
+                            // console.log(res.payload);
 
                             for (var index = 0; index < res.payload.length; index++) {
                                 // console.log(res.payload[index].prjDID);
@@ -2973,7 +2973,7 @@
                                     }
                                     switch (type) {
                                         case typeManager:
-                                            console.log(userResult);
+                                            // console.log(userResult);
                                             $scope.usersReviewForManagers = userResult;
                                             break;
                                         case typeExecutive:

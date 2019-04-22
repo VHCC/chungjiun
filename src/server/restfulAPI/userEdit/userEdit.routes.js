@@ -57,6 +57,7 @@ module.exports = function (app) {
             $set: {
                 roleType: req.body.roleType,
                 name: req.body.userName,
+                email: req.body.email,
                 userMonthSalary: req.body.userMonthSalary,
                 bossID: req.body.bossID,
                 machineDID: req.body.machineDID,
