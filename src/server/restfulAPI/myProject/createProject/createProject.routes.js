@@ -11,7 +11,9 @@ module.exports = function (app) {
     app.get(global.apiUrl.get_all_users, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, getAllUsers");
         User.find(
-            {},
+            {
+                workStatus:true
+            },
             {
                 password: 0
             },
@@ -22,6 +24,24 @@ module.exports = function (app) {
                 res.json(users);
             });
     });
+
+
+    app.get(global.apiUrl.get_all_users_with_unregister, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, getAllUsersWithUnRegister");
+        User.find(
+            {
+            },
+            {
+                password: 0
+            },
+            function (err, users) {
+                if (err) {
+                    res.send(err);
+                }
+                res.json(users);
+            });
+    });
+
 
     app.get(global.apiUrl.get_all_techs, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "AP, getAllTechs");

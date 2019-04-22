@@ -12,6 +12,9 @@
                 getAllUsers: function () {
                     return http.get('/api/getAllUsers');
                 },
+                getAllUsersWithSignOut: function () {
+                    return http.get('/api/getAllUsersWithSignOut');
+                },
                 findTechs: function () {
                     return http.get('/api/getAllTechs');
                 },

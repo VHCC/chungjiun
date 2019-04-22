@@ -125,7 +125,7 @@
 
 
         $scope.fetchAllUsers = function () {
-            User.getAllUsers()
+            User.getAllUsersWithSignOut()
                 .success(function (allUsers) {
                     vm.users = allUsers;
 
@@ -158,6 +158,7 @@
             var formData = {
                 userDID: vm.user.selected._id,
                 userName: $('#userNewName')[0].value,
+                email: vm.email,
                 roleType: vm.userRole.roleType,
                 userMonthSalary: $('#userMonthSalary')[0].value,
                 bossID: vm.userBoss._id,
@@ -210,6 +211,7 @@
 
         $scope.selectUserProfile = function (user) {
             vm.userMonthSalary = user.userMonthSalary;
+            vm.email = user.email;
             vm.machineDID = user.machineDID;
             vm.residualRestHour = user.residualRestHour;
             vm.isSetResidualRestHour = user.isSetResidualRestHour;
@@ -253,14 +255,15 @@
         }
 
         $scope.showUserStatus = function (user) {
+            var workStatus = user.workStatus ? "" : "(無法登入)"
             if (!user.bossID && user.userMonthSalary === 0) {
-                return user.name + " (未設定主管、薪水)"
+                return user.name + " (未設定主管、薪水)" + workStatus
             } else if (!user.bossID) {
-                return user.name + " (未設定主管)"
+                return user.name + " (未設定主管)" + workStatus
             } else if (user.userMonthSalary === 0) {
-                return user.name + " (未設定薪水)"
+                return user.name + " (未設定薪水)" + workStatus
             } else {
-                return user.name;
+                return user.name + workStatus;
             }
         }
 

@@ -919,7 +919,49 @@
                 }
             }
 
+            $scope.showWorkOverMin = function (workOverOn, workOverOff) {
+                var workOnHour;
+                var workOnMin;
+                var workOffHour;
+                var workOffMin;
+                if (workOverOn && workOverOff) {
+                    // console.log("A " + datas[index].time);
+                    workOnHour = parseInt(workOverOn.substr(0,2));
+                    workOnMin = parseInt(workOverOn.substr(2,4));
+                    // console.log("AA " + workOnHour + ":" + workOnMin);
+
+                    // console.log("B " + datas[index].time);
+                    workOffHour = parseInt(workOverOff.substr(0,2));
+                    workOffMin = parseInt(workOverOff.substr(2,4));
+                    // console.log("BB " + workOffHour + ":" + workOffMin);
+
+                    if ((workOnHour && workOffHour) || (workOnHour == 0 && workOffHour) || (workOnHour == 0 && workOffHour == 0)) {
+                        // console.log("C " + workOnHour + ":" + workOnMin);
+                        // console.log("D " + workOffHour + ":" + workOffMin);
+                        var min = ((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))
+                        return min;
+                    }
+                }
+            }
+
             // 加班時數
+            $scope.showWorkOverHourFromMin = function (workOverTotalMin) {
+                // console.log(workOverTotalMin);
+                if (workOverTotalMin) {
+                    // console.log("C " + workOnHour + ":" + workOnMin);
+                    // console.log("D " + workOffHour + ":" + workOffMin);
+                    var hour = Math.floor(workOverTotalMin/60);
+                    console.log(hour);
+                    if (hour == 0 ) {
+                        return 0;
+                    }
+                    var min = ((workOverTotalMin)%60) / 60 >= 0.5 ? 0.5 : 0;
+                    return parseInt(hour) + min;
+                }
+            }
+
+            // 加班時數
+            // Deprecated
             $scope.showWorkOverHour = function (workOverOn, workOverOff) {
                 var workOnHour;
                 var workOnMin;
@@ -936,35 +978,9 @@
                     workOffMin = parseInt(workOverOff.substr(2,4));
                     // console.log("BB " + workOffHour + ":" + workOffMin);
 
-                    if (workOnHour && workOffHour) {
+                    if ((workOnHour && workOffHour) || (workOnHour == 0 && workOffHour) || (workOnHour == 0 && workOffHour == 0)) {
                         // console.log("C " + workOnHour + ":" + workOnMin);
                         // console.log("D " + workOffHour + ":" + workOffMin);
-                        var hour = Math.floor(((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))/60);
-                        if (hour == 0 ) {
-                            return 0;
-                        }
-                        var min = (((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))%60) / 60 >= 0.5 ? 0.5 : 0;
-                        return parseInt(hour) + min;
-                        // return parseInt(hour);
-                        // return min;
-                    }
-
-                    if (workOnHour == 0 && workOffHour) {
-                        // console.log("CC " + workOnHour + ":" + workOnMin);
-                        // console.log("DD " + workOffHour + ":" + workOffMin);
-                        var hour = Math.floor(((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))/60);
-                        if (hour == 0 ) {
-                            return 0;
-                        }
-                        var min = (((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))%60) / 60 >= 0.5 ? 0.5 : 0;
-                        return parseInt(hour) + min;
-                        // return parseInt(hour);
-                        // return min;
-                    }
-
-                    if (workOnHour == 0 && workOffHour == 0) {
-                        // console.log("CCC " + workOnHour + ":" + workOnMin);
-                        // console.log("DDD " + workOffHour + ":" + workOffMin);
                         var hour = Math.floor(((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))/60);
                         if (hour == 0 ) {
                             return 0;
