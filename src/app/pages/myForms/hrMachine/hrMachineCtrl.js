@@ -88,8 +88,9 @@
 
                         var hrMachineTableSorted = {};
                         var lastDate = "";
+
                         for (var index = 0; index < arrayResult[0].length; index++) {
-                            // console.log(arrayResult[0][index]);
+                            console.log(arrayResult[0][index]);
 
                             var hrMachineItem = {
                                 date: "",
@@ -99,6 +100,7 @@
                                 time: "",
                                 workType: ""
                             }
+                            console.log(hrMachineTableSorted);
                             if (hrMachineTableSorted[arrayResult[0][index].date] === undefined) {
                                 hrMachineItem.date = arrayResult[0][index].date;
                                 hrMachineItem.did = arrayResult[0][index].did;
@@ -109,6 +111,7 @@
 
                                 var hrMachineCollection = [];
                                 hrMachineCollection.push(hrMachineItem);
+                                console.log(hrMachineCollection);
                                 hrMachineTableSorted[arrayResult[0][index].date] = hrMachineCollection;
 
                                 if (arrayResult[0][index].workType == 4) {
@@ -127,6 +130,9 @@
                                     hrMachineItemTemp.time = "0000";
                                     hrMachineItemTemp.workType = "3";
                                     hrMachineTableSorted[arrayResult[0][index].date].push(hrMachineItemTemp);
+
+                                    console.log(lastDate);
+                                    console.log(hrMachineTableSorted[lastDate]);
 
                                     if (hrMachineTableSorted[lastDate] !== undefined) {
 
@@ -148,6 +154,8 @@
 
                                     }
                                 }
+
+                                lastDate = arrayResult[0][index].date;
 
                             } else {
                                 hrMachineItem.date = arrayResult[0][index].date;
@@ -257,7 +265,7 @@
                                 }
                             }
                         }
-                        console.log(workOnArray)
+                        // console.log(workOnArray)
                         if (workOnArray.length > 0) {
                             return workOnArray[0].time;
                         }
@@ -281,7 +289,7 @@
                                 workOffArray.push(datas[index]);
                             }
                         }
-                        console.log(workOffArray)
+                        // console.log(workOffArray)
                         if (workOffArray.length > 0) {
                             return workOffArray[workOffArray.length - 1].time;
                         }
@@ -951,7 +959,7 @@
                     // console.log("C " + workOnHour + ":" + workOnMin);
                     // console.log("D " + workOffHour + ":" + workOffMin);
                     var hour = Math.floor(workOverTotalMin/60);
-                    console.log(hour);
+                    // console.log(hour);
                     if (hour == 0 ) {
                         return 0;
                     }
