@@ -582,6 +582,7 @@ module.exports = function (app) {
 
         WorkOffTableForm.find(query)
             .sort({
+                create_formDate: 1,
                 _id: 1,
             })
             .exec(function (err, tables) {
