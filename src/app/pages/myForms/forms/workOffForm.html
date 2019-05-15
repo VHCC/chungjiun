@@ -441,7 +441,7 @@
             </button>
         </div>
         <hr>
-        <section class="col-md-6">
+        <section class="col-md-6" ng-show="false">
             <button progress-button="createSubmit(2000)"
                     style="float: inherit;"
                     id="btnCreate"
@@ -477,6 +477,18 @@
 
     <uib-tab heading="補班日設定" ng-if="roleType === '100'">
         <div ng-include="'app/pages/myForms/forms/workOffForm_OverTimeDayTab.html'"></div>
+    </uib-tab>
+
+    <uib-tab heading="補休特休兌換" ng-click="getWorkOffExchangeTable()" ng-show="false">
+        <div ng-include="'app/pages/myForms/forms/workOffForm_ExchangeCashTab.html'"></div>
+    </uib-tab>
+
+    <uib-tab heading="補休特休兌換(主管審核)" ng-show="false">
+        <div ng-include="'app/pages/myForms/forms/workOffForm_ExchangeCashBossTab.html'"></div>
+    </uib-tab>
+
+    <uib-tab heading="補休特休兌換(行政確認)" ng-show="false">
+        <div ng-include="'app/pages/myForms/forms/workOffForm_ExchangeCashExecutiveTab.html'"></div>
     </uib-tab>
 </uib-tabset>
 

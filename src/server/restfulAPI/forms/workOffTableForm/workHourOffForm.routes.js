@@ -159,6 +159,69 @@ module.exports = function (app) {
 
     });
 
+    // 20190515
+    // insert work off item
+    app.post(global.apiUrl.post_work_off_table_insert_item, function (req, res) {
+        console.log(JSON.stringify(req.body));
+        // New Items
+            try {
+            WorkOffTableForm.create({
+                creatorDID: req.body.dataItem.creatorDID,
+
+                workOffType: req.body.dataItem.workOffType,
+                create_formDate: req.body.dataItem.create_formDate,
+                year: req.body.dataItem.year,
+                month: req.body.dataItem.month,
+                day: req.body.dataItem.day,
+                start_time: req.body.dataItem.start_time,
+                end_time: req.body.dataItem.end_time,
+
+                //RIGHT
+                isSendReview: req.body.dataItem.isSendReview,
+                isBossCheck: req.body.dataItem.isBossCheck,
+                isExecutiveCheck: req.body.dataItem.isExecutiveCheck,
+
+                userMonthSalary: req.body.dataItem.userMonthSalary,
+
+            }, function (err, workOffTable) {
+                var tableItem = {
+                    tableID: workOffTable._id,
+                }
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: tableItem,
+                });
+            });
+        } catch (err) {
+            if (err) {
+                res.send(err);
+            }
+        }
+    });
+
+    // remove table item
+    app.post(global.apiUrl.post_work_off_table_remove_item, function (req, res) {
+        console.log(req.body);
+
+        try {
+            WorkOffTableForm.remove({
+                creatorDID: req.body.creatorDID,
+                _id: req.body.tableID
+            }, function (err, workOffExchangeItem) {
+
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
+            });
+        } catch (err) {
+            if (err) {
+                res.send(err);
+            }
+        }
+    });
+
     //get Work Off Form by date
     //@Deprecated
     // app.post(global.apiUrl.post_work_off_table_fetch_all_user, function (req, res) {

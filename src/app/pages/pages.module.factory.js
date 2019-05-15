@@ -194,6 +194,13 @@
                 createWorkOffTableForm: function (formData) {
                     return http.post('/api/createWorkOffTableForm', formData);
                 },
+                // Insert Work Off Item 20190515
+                insertWorkOffTableItem: function (formData) {
+                    return http.post('/api/post_work_off_table_insert_item', formData);
+                },
+                removeWorkOffTableItem: function (formData) {
+                    return http.post('/api/post_work_off_table_remove_item', formData);
+                },
                 // get form default
                 fetchUserWorkOffForm: function (formData) {
                     return http.post('/api/fetchUserWorkOffForm', formData);
@@ -255,6 +262,24 @@
                 // find specify user did form date
                 findWorkOffTableFormByUserDID: function (formData) {
                     return http.post('/api/post_work_off_table_find_by_user_did', formData);
+                },
+            }
+        }])
+        .factory('WorkOffExchangeFormUtil', ['$http', function (http) {
+            return {
+                // insert new Exchange item
+                insertWorkOffExchangeTableForm: function (formData) {
+                    return http.post('/api/post_work_off_exchange_table_insert_item', formData);
+                },
+                findWorkOffExchangeTableFormByUserDID: function (formData) {
+                    return http.post('/api/post_work_off_exchange_table_find_by_creatorDID', formData);
+                },
+                removeWorkOffExchangeTableFormByItemID: function (formData) {
+                    return http.post('/api/post_work_off_exchange_table_remove_by_itemID', formData);
+                },
+                // ***** workOffExchange Item Update *****
+                updateWorkOffExchangeItem: function(formData) {
+                    return http.post('/api/post_work_off_exchange_table_update', formData);
                 },
             }
         }])

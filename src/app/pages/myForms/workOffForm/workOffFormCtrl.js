@@ -38,6 +38,7 @@
                     'TimeUtil',
                     'WorkOffTypeUtil',
                     'WorkOffFormUtil',
+                    'WorkOffExchangeFormUtil',
                     'NationalHolidayUtil',
                     'OverTimeDayUtil',
                     'WorkHourAddItemUtil',
@@ -60,6 +61,7 @@
                                  TimeUtil,
                                  WorkOffTypeUtil,
                                  WorkOffFormUtil,
+                                 WorkOffExchangeFormUtil,
                                  NationalHolidayUtil,
                                  OverTimeDayUtil,
                                  WorkHourAddItemUtil,
@@ -482,14 +484,30 @@
                 };
                 $scope.specificUserTablesItems.push(inserted);
 
-                $scope.createSubmit(0);
+                // $scope.createSubmit(0);
+                $scope.insertWorkOffItem(0);
             }
 
             $scope.removeHolidayItem = function (index) {
                 // console.log(index)
-                $scope.specificUserTablesItems.splice(index, 1);
+                // $scope.specificUserTablesItems.splice(index, 1);
                 console.log('removeHolidayItem, Index= ' + index);
-                $scope.createSubmit(0);
+
+                var formData = {
+                    creatorDID: $scope.userDID,
+                    tableID: $scope.specificUserTablesItems[index].tableID
+                }
+
+                WorkOffFormUtil.removeWorkOffTableItem(formData)
+                    .success(function (res) {
+                        $scope.specificUserTablesItems.splice(index, 1);
+                        console.log($scope.specificUserTablesItems);
+                    })
+                    .error(function () {
+                        console.log('ERROR WorkOffFormUtil.removeWorkOffTableItem');
+                    })
+
+                // $scope.createSubmit(0);
             };
 
             $scope.showDate = function (table) {
@@ -528,7 +546,9 @@
 
             $scope.changeWorkOffType = function (dom) {
                 dom.$parent.table.workOffType = dom.workOffType.type;
-                dom.$parent.reloadDatePicker(dom.workOffType.type);
+                if (dom.$parent.reloadDatePicker != null) {
+                    dom.$parent.reloadDatePicker(dom.workOffType.type);
+                }
             }
 
             // 休假規則，未滿一小算一小
@@ -656,7 +676,7 @@
 
             // Send WorkOffTable to Review
             $scope.reviewWorkOffTable = function (table, button, index) {
-                $scope.createSubmit(0);
+                // $scope.createSubmit(0);
                 $timeout(function () {
                     // console.log(table)
                     console.log($scope.specificUserTablesItems[index]);
@@ -682,6 +702,16 @@
                 checkingButton.rowform1.$waiting = true;
                 var formData = {
                     tableID: checkingTable.tableID,
+
+                    workOffType: checkingTable.workOffType,
+                    create_formDate: checkingTable.create_formDate,
+                    year: checkingTable.year,
+                    month: checkingTable.month,
+                    day: checkingTable.day,
+                    start_time: checkingTable.start_time,
+                    end_time: checkingTable.end_time,
+
+                    userMonthSalary: checkingTable.userMonthSalary,
                     isSendReview: true,
                 }
                 // WorkOffFormUtil.updateWorkOffTableSendReview(formData)
@@ -822,6 +852,7 @@
             var formDataTable = {};
 
             // Create Form
+            // @Deprecated
             $scope.createSubmit = function (time) {
                 return $timeout(function () {
                     var workOffTableData = [];
@@ -864,10 +895,10 @@
                             // 更新old Table ID Array
                             // $scope.getWorkOffTable();
                             var workOffTableIDArray = [];
-                            console.log(res.payload);
+                            // console.log(res.payload);
                             if (res.payload.length > 0) {
                                 for (var index = 0; index < res.payload.length; index++) {
-                                    console.log(res.payload[index]);
+                                    // console.log(res.payload[index]);
                                     workOffTableIDArray[index] = res.payload[index].tableID;
                                     // $scope.specificUserTablesItems[index] = res.payload[index];
                                     $scope.specificUserTablesItems[index].tableID = res.payload[index].tableID;
@@ -876,6 +907,48 @@
                             formDataTable = {
                                 tableIDArray: workOffTableIDArray,
                             };
+                            console.log($scope.specificUserTablesItems);
+                        })
+                        .error(function () {
+                            console.log('ERROR WorkOffFormUtil.createWorkOffTableForm');
+                        })
+
+                }, time);
+            }
+
+            // Insert WorkOff Item
+            $scope.insertWorkOffItem = function (time) {
+                return $timeout(function () {
+                    var tableItem = $scope.specificUserTablesItems[$scope.specificUserTablesItems.length - 1];
+
+                    var dataItem = {
+                        creatorDID: $scope.userDID,
+
+                        workOffType: tableItem.workOffType,
+                        create_formDate: tableItem.create_formDate,
+                        year: tableItem.year,
+                        month: tableItem.month,
+                        day: tableItem.day,
+                        start_time: tableItem.start_time,
+                        end_time: tableItem.end_time,
+
+                        //RIGHT
+                        isSendReview: tableItem.isSendReview,
+                        isBossCheck: tableItem.isBossCheck,
+                        isExecutiveCheck: tableItem.isExecutiveCheck,
+                        // userHourSalary: tableItem.userHourSalary,
+                        userMonthSalary: tableItem.userMonthSalary,
+                    }
+                    var formData = {
+                        creatorDID: $scope.userDID,
+                        year: thisYear,
+                        month: thisMonth,
+                        dataItem: dataItem,
+                    }
+                    WorkOffFormUtil.insertWorkOffTableItem(formData)
+                        .success(function (res) {
+                            // console.log(res.payload);
+                            $scope.specificUserTablesItems[$scope.specificUserTablesItems.length - 1].tableID = res.payload.tableID;
                             console.log($scope.specificUserTablesItems);
                         })
                         .error(function () {
@@ -1386,6 +1459,191 @@
                     });
 
 
+            }
+
+
+            // ***********************  特休補休 兌換 ************************
+
+            // 兌換單主要顯示
+            $scope.specificUserExchangeTablesItems = [];
+
+            //取得使用者個人休假表，userDID
+            $scope.getWorkOffExchangeTable = function (userDID, month) {
+                $scope.specificUserExchangeTablesItems = [];
+                var getData = {
+                    creatorDID: (userDID === undefined || userDID == null)? $scope.userDID : userDID,
+                    year: null,
+                    month: month === undefined ? null : month,
+                    isSendReview: null,
+                    isBossCheck: null,
+                    isExecutiveCheck: null
+                }
+                WorkOffExchangeFormUtil.findWorkOffExchangeTableFormByUserDID(getData)
+                    .success(function (res) {
+                        // 填入表單資訊
+                        var workOffExchangeTableIDArray = [];
+                        $scope.tableData = {};
+                        for (var index = 0; index < res.payload.length; index++) {
+                            workOffExchangeTableIDArray[index] = res.payload[index]._id;
+                            var detail = {
+                                tableID: res.payload[index]._id,
+                                index: index,
+                                creatorDID: res.payload[index].creatorDID,
+                                workOffType: res.payload[index].workOffType,
+                                create_formDate: res.payload[index].create_formDate,
+                                year: res.payload[index].year,
+                                month: res.payload[index].month,
+                                day: res.payload[index].day,
+                                value: res.payload[index].value,
+
+                                //RIGHT
+                                isSendReview: res.payload[index].isSendReview,
+                                isBossCheck: res.payload[index].isBossCheck,
+                                isExecutiveCheck: res.payload[index].isExecutiveCheck,
+
+                                // Reject
+                                isBossReject: res.payload[index].isBossReject,
+                                bossReject_memo: res.payload[index].bossReject_memo,
+
+                                isExecutiveReject: res.payload[index].isExecutiveReject,
+                                executiveReject_memo: res.payload[index].executiveReject_memo,
+
+                                userMonthSalary: res.payload[index].userMonthSalary,
+                            };
+                            $scope.specificUserExchangeTablesItems.push(detail);
+                        }
+                        console.log(" *** getWorkOffExchangeTable done *** ")
+                        console.log($scope.specificUserExchangeTablesItems);
+                    })
+                    .error(function () {
+                        console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByUserDID');
+                    })
+            }
+
+            $scope.addExchangeItem = function () {
+                var inserted = {
+                    creatorDID: $scope.userDID,
+                    workOffType: -1,
+                    create_formDate: $scope.firstFullDate,
+                    year: thisYear,
+                    month: thisMonth,
+                    day: thisDay,
+                    value: "0",
+                    //RIGHT
+                    isSendReview: false,
+                    isBossCheck: false,
+                    isExecutiveCheck: false,
+                    myDay: DateUtil.getDay(new Date().getDay()),
+                    // userHourSalary: $scope.userHourSalary,
+                    userMonthSalary: $scope.userMonthSalary,
+                };
+                $scope.specificUserExchangeTablesItems.push(inserted);
+
+                $scope.insertExchangeItem(10);
+            }
+
+            // Create Form
+            $scope.insertExchangeItem = function (time) {
+                return $timeout(function () {
+                    var tableItem = $scope.specificUserExchangeTablesItems[$scope.specificUserExchangeTablesItems.length - 1];
+
+                    var dataItem = {
+                        creatorDID: $scope.userDID,
+
+                        workOffType: tableItem.workOffType,
+                        create_formDate: tableItem.create_formDate,
+                        year: tableItem.year,
+                        month: tableItem.month,
+                        day: tableItem.day,
+                        value: tableItem.value,
+
+                        //RIGHT
+                        isSendReview: tableItem.isSendReview,
+                        isBossCheck: tableItem.isBossCheck,
+                        isExecutiveCheck: tableItem.isExecutiveCheck,
+                        userMonthSalary: tableItem.userMonthSalary,
+                    }
+
+                    var formData = {
+                        creatorDID: $scope.userDID,
+                        year: thisYear,
+                        month: thisMonth,
+                        dataItem: dataItem,
+                        // oldTables: formDataTable,
+                    }
+                    console.log(dataItem);
+                    WorkOffExchangeFormUtil.insertWorkOffExchangeTableForm(formData)
+                        .success(function (res) {
+                            $scope.specificUserExchangeTablesItems[$scope.specificUserExchangeTablesItems.length - 1].tableID = res.payload.tableID;
+                            $scope.specificUserExchangeTablesItems[$scope.specificUserExchangeTablesItems.length - 1].index = $scope.specificUserExchangeTablesItems.length - 1;
+                            console.log($scope.specificUserExchangeTablesItems);
+                        })
+                        .error(function () {
+                            console.log('ERROR WorkOffExchangeFormUtil.insertWorkOffExchangeTableForm');
+                        })
+
+                }, time);
+
+            }
+
+            $scope.removeExchangeItem = function (index) {
+                console.log('removeExchangeItem, Index= ' + index);
+                console.log($scope.specificUserExchangeTablesItems[index]);
+
+                var formData = {
+                    creatorDID: $scope.userDID,
+                    tableID: $scope.specificUserExchangeTablesItems[index].tableID
+                }
+
+                WorkOffExchangeFormUtil.removeWorkOffExchangeTableFormByItemID(formData)
+                    .success(function (res) {
+                        $scope.specificUserExchangeTablesItems.splice(index, 1);
+                        console.log($scope.specificUserExchangeTablesItems);
+                    })
+                    .error(function () {
+                        console.log('ERROR WorkOffExchangeFormUtil.removeWorkOffExchangeTableFormByItemID');
+                    })
+            };
+
+            // Send WorkOffExchangeTable to Review
+            $scope.reviewWorkOffExchangeTable = function (table, button, index) {
+                console.log($scope.specificUserExchangeTablesItems[index]);
+                var workOffString = $scope.showWorkOffTypeString($scope.specificUserExchangeTablesItems[index].workOffType);
+                $scope.checkText = '確定提交 ' + workOffString + '：' +
+                    $scope.specificUserExchangeTablesItems[index].value +
+                    "小時 審查？";
+                $scope.checkingTable = $scope.specificUserExchangeTablesItems[index];
+                $scope.checkingButton = button;
+                $scope.checkingIndex = index;
+                ngDialog.open({
+                    template: 'app/pages/myModalTemplate/myWorkOffExchangeTableFormReviewModal.html',
+                    className: 'ngdialog-theme-default',
+                    scope: $scope,
+                    showClose: false,
+                });
+            }
+            //跟後臺溝通
+            $scope.sendWorkOffExchangeTable = function (checkingTable, checkingButton, checkingIndex) {
+                var formData = {
+                    tableID: checkingTable.tableID,
+                    workOffType: checkingTable.workOffType,
+                    create_formDate: $scope.firstFullDate,
+                    year: thisYear,
+                    month: thisMonth,
+                    day: thisDay,
+                    value: checkingTable.value,
+                    userMonthSalary: $scope.userMonthSalary,
+
+                    isSendReview: true,
+                }
+                WorkOffExchangeFormUtil.updateWorkOffExchangeItem(formData)
+                    .success(function (res) {
+                        checkingButton.rowform1.$waiting = true;
+                        $scope.specificUserTablesItems[checkingIndex].isSendReview = true;
+                    })
+                    .error(function () {
+                        console.log('ERROR WorkOffExchangeFormUtil.sendWorkOffExchangeTable');
+                    })
             }
 
         } // End of function
