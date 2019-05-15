@@ -77,6 +77,8 @@ global.apiUrl = {
 
     //workOffTable Form
     post_work_off_create_table : '/api/createWorkOffTableForm',
+    post_work_off_table_insert_item : '/api/post_work_off_table_insert_item', // 20190515
+    post_work_off_table_remove_item : '/api/post_work_off_table_remove_item', // 20190515
     post_work_off_table_find_by_table_id_array : '/api/findWorkOffTableFormByTableIDArray', //@Deprecated
     post_work_off_table_find_by_table_id_array_and_parameters : '/api/post_work_off_table_find_by_table_id_array_and_parameters',
     post_work_off_table_find_by_user_did : '/api/post_work_off_table_find_by_user_did',
@@ -91,6 +93,12 @@ global.apiUrl = {
     post_work_off_table_fetch_all_user : '/api/fetchUserWorkOffForm', //@Deprecated
     post_work_off_table_fetch_all_executive : '/api/post_work_off_table_fetch_all_executive',
     post_work_off_table_fetch_all_boss : '/api/post_work_off_table_fetch_all_boss',
+
+    //workOffExchangeTable Form
+    post_work_off_exchange_table_insert_item : '/api/post_work_off_exchange_table_insert_item',
+    post_work_off_exchange_table_find_by_creatorDID : '/api/post_work_off_exchange_table_find_by_creatorDID',
+    post_work_off_exchange_table_remove_by_itemID : '/api/post_work_off_exchange_table_remove_by_itemID',
+    post_work_off_exchange_table_update : '/api/post_work_off_exchange_table_update',
 
     // holidayDataForm
     post_holiday_data_form_create : '/api/createHolidayDataForm',
