@@ -53,7 +53,7 @@
                                OverTimeDayUtil,
                                WorkAddConfirmFormUtil,
                                editableOptions,
-                               editableThemes,) {
+                               editableThemes) {
         // console.log = function() {}
 
         var vm = this;

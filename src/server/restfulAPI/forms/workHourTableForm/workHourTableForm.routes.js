@@ -320,8 +320,8 @@ module.exports = function (app) {
             findData.push(target);
         }
 
-        console.log("findData");
-        console.log(findData);
+        // console.log("findData");
+        // console.log(findData);
 
         var query = {};
         query.$or = findData;
@@ -341,7 +341,7 @@ module.exports = function (app) {
             query.isExecutiveReject = req.body.isFindExecutiveReject;
         }
 
-        console.log(query);
+        // console.log(query);
 
         WorkHourTableForm.find(query, function (err, tables) {
             if (err) {
