@@ -3285,7 +3285,7 @@
                 }
                 break;
                 case 1:{
-                    console.log(tables);
+                    // console.log(tables);
                     if (day >= crossDay || day === 0) {
                         for (var index = 0; index < tables.length; index++) {
                             // console.log("day= " + day);
