@@ -70,7 +70,7 @@
           //
           // });
 
-          NotificationUtil.showMsg('歡迎使用　崇峻系統', '瀏覽器通知系統　已啟用', 1);
+          //NotificationUtil.showMsg('歡迎使用　崇峻系統', '瀏覽器通知系統　已啟用', 1);
 
       };
   }

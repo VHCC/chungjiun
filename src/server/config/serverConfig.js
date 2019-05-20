@@ -42,7 +42,7 @@ var events = require('events');
 // io.on('connection', connection);
 // 當發生離線事件
 
-var memberSocketMap = [];
+// var memberSocketMap = [];
 
 // io.on('connection', function (socket){
 //     console.log('------- Socket Connect Success ------');
