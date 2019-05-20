@@ -61,8 +61,6 @@
     "angular-file-saver": "latest",
     "jquery-mask-plugin": "latest",
     "timepicker": "latest",
-//    "socket.io": "2.0.4",
-//    "socket.io-client": "2.0.4",
     "angular-ui-switch": "^0.1.1"
   },
   "resolutions": {
