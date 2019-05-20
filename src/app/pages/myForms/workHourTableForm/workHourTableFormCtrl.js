@@ -2377,7 +2377,7 @@
 
         // function
         function getHourDiffByTime(start, end, type) {
-            console.log("- function WorkHourTableFormCtrl, start= " + start + ", end= " + end + ", type= " + type);
+            // console.log("- function WorkHourTableFormCtrl, start= " + start + ", end= " + end + ", type= " + type);
             if (start && end) {
                 var difference = Math.abs(TimeUtil.toSeconds(start) - TimeUtil.toSeconds(end));
 
@@ -2932,6 +2932,8 @@
                                                 , type) {
             var userResult = [];
             var userDIDExistArray = [];
+            var userCount = 0;
+            console.log("userTables.length= " + userTables.length);
             for (var userIndex = 0; userIndex < userTables.length; userIndex ++) {
                 var user = userTables[userIndex];
 
@@ -2971,17 +2973,23 @@
                                             userDIDExistArray.push(mUser.DID);
                                         }
                                     }
-                                    switch (type) {
-                                        case typeManager:
-                                            // console.log(userResult);
-                                            $scope.usersReviewForManagers = userResult;
-                                            break;
-                                        case typeExecutive:
-                                            $scope.usersReviewForExecutive = userResult;
-                                            break;
-                                    }
+
                                 }
                             }
+                            if (userCount + 1  == userTables.length || (userCount + 1 == userTables.length * 2)) {
+                                switch (type) {
+                                    case typeManager:
+                                        // console.log(userResult);
+                                        $scope.usersReviewForManagers = userResult;
+                                        break;
+                                    case typeExecutive:
+                                        console.log("userCount= " + userCount);
+                                        $scope.usersReviewForExecutive = userResult;
+                                        break;
+                                }
+                            }
+
+                            userCount ++;
 
 
                         })
