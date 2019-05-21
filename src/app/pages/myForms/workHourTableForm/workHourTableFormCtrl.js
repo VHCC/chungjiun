@@ -2948,7 +2948,7 @@
                                                 , type) {
 
             const aaa = async (formDataTable) => {
-                console.log(formDataTable);
+                // console.log(formDataTable);
                 // 取得 Table Data
                 WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                     .success(function (res) {
@@ -2993,7 +2993,7 @@
             var userDIDExistArray = [];
             var userCount = 0;
             console.log("userTables.length= " + userTables.length);
-            console.log(userTables);
+            // console.log(userTables);
             for (var userIndex = 0; userIndex < userTables.length; userIndex ++) {
                 var user = userTables[userIndex];
 
@@ -3018,7 +3018,7 @@
                     }
 
                     aaa(formDataTable).then(res => {
-                        console.log(res);
+                        // console.log(res);
                     })
 
                     // console.log(formDataTable);

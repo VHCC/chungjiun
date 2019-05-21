@@ -1,5 +1,6 @@
 // set up ======================================================================
 var express = require('express');
+var timeout = require('connect-timeout')
 const app = express();
 
 var database = require('./database');           // load the database config
@@ -88,6 +89,8 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(bodyParser.json({type: 'application/vnd.api+json'})); // parse application/vnd.api+json as json
+
+app.use(timeout('10s'))
 
 // view engine setup
 // uncomment after placing your favicon in /public
