@@ -58,7 +58,7 @@ function browserSyncInit(baseDir, browser) {
     ghostMode: false,
     middleware: [apiProxy],
     socket: {
-            clients: { heartbeatTimeout: 200000 }
+            clients: { heartbeatTimeout: 3600000 }
         }
   });
 }
