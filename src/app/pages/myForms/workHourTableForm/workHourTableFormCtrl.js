@@ -2947,46 +2947,43 @@
                                                 , isFindExecutiveCheck
                                                 , type) {
 
-            const aaa = async (formDataTable) => {
+            const getData = async (formDataTable) => {
                 // console.log(formDataTable);
                 // 取得 Table Data
-                setTimeout(function () {
-                    WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
-                        .success(function (res) {
-                            // 填入表單資訊
-                            // console.log(res.payload);
+                WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
+                    .success(function (res) {
+                        // 填入表單資訊
+                        // console.log(res.payload);
 
-                            for (var index = 0; index < res.payload.length; index++) {
-                                // console.log(res.payload[index].prjDID);
-                                if (managersRelatedProjects.includes(res.payload[index].prjDID) || type == 2) {
-                                    var mUser = $scope.fetchReviewUserFromScope(res.creatorDID);
-                                    if (res.payload.length > 0) {
-                                        if (!userDIDExistArray.includes(mUser.DID)) {
-                                            userResult.push(mUser);
-                                            userDIDExistArray.push(mUser.DID);
-                                        }
+                        for (var index = 0; index < res.payload.length; index++) {
+                            // console.log(res.payload[index].prjDID);
+                            if (managersRelatedProjects.includes(res.payload[index].prjDID) || type == 2) {
+                                var mUser = $scope.fetchReviewUserFromScope(res.creatorDID);
+                                if (res.payload.length > 0) {
+                                    if (!userDIDExistArray.includes(mUser.DID)) {
+                                        userResult.push(mUser);
+                                        userDIDExistArray.push(mUser.DID);
                                     }
-
                                 }
+
                             }
+                        }
 
-                            userCount ++;
-                            // if (userCount == userTables.length || (userCount == userTables.length * 2)) {
-                            switch (type) {
-                                case typeManager:
-                                    // console.log(userResult);
-                                    $scope.usersReviewForManagers = userResult;
-                                    break;
-                                case typeExecutive:
-                                    console.log("response userCount= " + userCount);
-                                    $scope.usersReviewForExecutive = userResult;
-                                    break;
-                            }
-                            // }
+                        userCount ++;
+                        // if (userCount == userTables.length || (userCount == userTables.length * 2)) {
+                        switch (type) {
+                            case typeManager:
+                                // console.log(userResult);
+                                $scope.usersReviewForManagers = userResult;
+                                break;
+                            case typeExecutive:
+                                console.log("response userCount= " + userCount);
+                                $scope.usersReviewForExecutive = userResult;
+                                break;
+                        }
+                        // }
 
-                        })
-                }, 500, formDataTable);
-
+                    })
                 return 'aaa';
             }
 
@@ -3029,7 +3026,7 @@
                     }
 
                     // worker.postMessage(formDataTable); // 將字串 "Hello" 傳給 worker
-                    aaa(formDataTable).then(res => {
+                    getData(formDataTable).then(res => {
                         // console.log(res);
                     })
 
