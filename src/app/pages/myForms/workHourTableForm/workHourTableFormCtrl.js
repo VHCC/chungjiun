@@ -2948,7 +2948,7 @@
                                                 , type) {
 
             const aaa = async (formDataTable) => {
-                // console.log(formDataTable);
+                console.log(formDataTable);
                 // 取得 Table Data
                 WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                     .success(function (res) {
@@ -2970,7 +2970,7 @@
                         }
 
                         userCount ++;
-                        if (userCount == userTables.length || (userCount == userTables.length * 2)) {
+                        // if (userCount == userTables.length || (userCount == userTables.length * 2)) {
                             switch (type) {
                                 case typeManager:
                                     // console.log(userResult);
@@ -2981,13 +2981,11 @@
                                     $scope.usersReviewForExecutive = userResult;
                                     break;
                             }
-                        }
+                        // }
 
                     })
-                return 'async';
+                return 'aaa';
             }
-
-
 
             var userResult = [];
             var userDIDExistArray = [];
@@ -2995,6 +2993,16 @@
             console.log("userTables.length= " + userTables.length);
             // console.log(userTables);
             for (var userIndex = 0; userIndex < userTables.length; userIndex ++) {
+
+                var worker = new Worker("app/webWorkers/worker.js"); // 創建一個 worker 物件
+
+                worker.onmessage = function(e) { // 設定 worker 的監聽事件
+                    aaa(e.data).then(res => {
+                        console.log(res);
+                    })
+                    worker.terminate(); // 結束 worker
+                }
+
                 var user = userTables[userIndex];
 
                 var tablesLength = user[user.DID].length;
@@ -3017,49 +3025,10 @@
                         isFindExecutiveReject: null
                     }
 
-                    aaa(formDataTable).then(res => {
-                        // console.log(res);
-                    })
-
-                    // console.log(formDataTable);
-                    // // 取得 Table Data
-                    // WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
-                    //     .success(function (res) {
-                    //         // 填入表單資訊
-                    //         // console.log(res.payload);
-                    //
-                    //         for (var index = 0; index < res.payload.length; index++) {
-                    //             // console.log(res.payload[index].prjDID);
-                    //             if (managersRelatedProjects.includes(res.payload[index].prjDID) || type == 2) {
-                    //                 var mUser = $scope.fetchReviewUserFromScope(res.creatorDID);
-                    //                 if (res.payload.length > 0) {
-                    //                     if (!userDIDExistArray.includes(mUser.DID)) {
-                    //                         userResult.push(mUser);
-                    //                         userDIDExistArray.push(mUser.DID);
-                    //                     }
-                    //                 }
-                    //
-                    //             }
-                    //         }
-                    //
-                    //         userCount ++;
-                    //         if (userCount == userTables.length || (userCount == userTables.length * 2)) {
-                    //             switch (type) {
-                    //                 case typeManager:
-                    //                     // console.log(userResult);
-                    //                     $scope.usersReviewForManagers = userResult;
-                    //                     break;
-                    //                 case typeExecutive:
-                    //                     console.log("response userCount= " + userCount);
-                    //                     $scope.usersReviewForExecutive = userResult;
-                    //                     break;
-                    //             }
-                    //         }
-                    //
-                    //
-                    //
-                    //
-                    //     })
+                    worker.postMessage(formDataTable); // 將字串 "Hello" 傳給 worker
+                    // aaa(formDataTable).then(res => {
+                    //     // console.log(res);
+                    // })
                 }
             }
 
