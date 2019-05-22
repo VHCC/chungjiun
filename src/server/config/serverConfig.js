@@ -27,17 +27,17 @@ var bodyParser = require('body-parser');
 var util = require('util');
 var events = require('events');
 
-// var EventEmitter = function() {
-// };
+var EventEmitter = function() {
+};
 
-// util.inherits(EventEmitter, events.EventEmitter);
+util.inherits(EventEmitter, events.EventEmitter);
 
-// EventEmitter.prototype.response = function(targetID, msg) {
-//     this.emit('response', targetID, msg);
-// };
+EventEmitter.prototype.response = function(targetID, msg) {
+    this.emit('response', targetID, msg);
+};
 
-// const mainEventEmitter = new EventEmitter();
-// global.qqq = mainEventEmitter;
+const mainEventEmitter = new EventEmitter();
+global.qqq = mainEventEmitter;
 
 // 當發生連線事件
 // io.on('connection', connection);
