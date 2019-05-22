@@ -19,7 +19,7 @@ var bodyParser = require('body-parser');
 // const server = require('http').Server(app);
 // const io = require('socket.io')(server);
 // const socketPort = 9000;
-//
+
 // server.listen(socketPort, function () {
 //     console.log("--------- Socket Server Started. http://localhost:" + socketPort + " --------------");
 // });
@@ -27,23 +27,23 @@ var bodyParser = require('body-parser');
 var util = require('util');
 var events = require('events');
 
-//var EventEmitter = function() {
-//};
+var EventEmitter = function() {
+};
 
-//util.inherits(EventEmitter, events.EventEmitter);
+util.inherits(EventEmitter, events.EventEmitter);
 
-//EventEmitter.prototype.response = function(targetID, msg) {
-//    this.emit('response', targetID, msg);
-//};
+EventEmitter.prototype.response = function(targetID, msg) {
+    this.emit('response', targetID, msg);
+};
 
-//const mainEventEmitter = new EventEmitter();
-//global.qqq = mainEventEmitter;
+const mainEventEmitter = new EventEmitter();
+global.qqq = mainEventEmitter;
 
 // 當發生連線事件
 // io.on('connection', connection);
 // 當發生離線事件
 
-// var memberSocketMap = [];
+var memberSocketMap = [];
 
 // io.on('connection', function (socket){
 //     console.log('------- Socket Connect Success ------');
