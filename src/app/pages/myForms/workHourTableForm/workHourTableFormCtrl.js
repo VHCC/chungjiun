@@ -2977,7 +2977,7 @@
                                 $scope.usersReviewForManagers = userResult;
                                 break;
                             case typeExecutive:
-                                console.log("response userCount= " + userCount);
+                                // console.log("response userCount= " + userCount);
                                 $scope.usersReviewForExecutive = userResult;
                                 break;
                         }
@@ -2990,7 +2990,7 @@
             var userResult = [];
             var userDIDExistArray = [];
             var userCount = 0;
-            console.log("userTables.length= " + userTables.length);
+            // console.log("userTables.length= " + userTables.length);
             // console.log(userTables);
             for (var userIndex = 0; userIndex < userTables.length; userIndex ++) {
 
@@ -3075,7 +3075,7 @@
                 WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                     .success(function (res) {
                         var isNeedToReview = false;
-                        console.log(res.payload);
+                        // console.log(res.payload);
                         var workIndex = tableIndex;
                         tableIndex++;
                         // 填入表單資訊
@@ -3316,7 +3316,7 @@
             // console.log("tableIndex= " + tableIndex);
             switch (tableIndex) {
                 case 0: {
-                    if (day < crossDay) {
+                    if (day < crossDay || crossDay == -1) {
                         for (var index = 0; index < tables.length; index++) {
                             // console.log("day= " + day);
                             // console.log("index= " + index);
@@ -3366,6 +3366,7 @@
                         create_formDate: $scope.firstFullDate_executive,
                         year: thisYear,
                     }
+                    // console.log(fetchNationalHolidayData);
                 } break;
             }
             NationalHolidayUtil.fetchAllNationalHolidaysWithParameter(fetchNationalHolidayData)
@@ -3387,6 +3388,7 @@
                         }
                         var evalString = "$scope.workNHTablesItems['" + userDID + "'] = formTables";
                         eval(evalString);
+                        // console.log($scope.workNHTablesItems);
                     } else {
                         // res.payload.length == 0
                     }
@@ -3399,6 +3401,7 @@
         // get National Holidays Tables in scope.
         $scope.fetchNHTableFormDataFromScope = function(table) {
             // console.log($scope.workNHTablesItems[table.creatorDID + table._id]);
+            // console.log(table);
             return $scope.workNHTablesItems[table.creatorDID] === undefined ? [] : $scope.workNHTablesItems[table.creatorDID];
         }
 
@@ -3411,7 +3414,7 @@
             var NHresult = 0;
             switch (tableIndex) {
                 case 0: {
-                    if (day < crossDay) {
+                    if (day < crossDay || crossDay == -1) {
                         for (var index = 0; index < tables.length; index++) {
                             if (day == tables[index].day) {
                                 NHresult = 8;
