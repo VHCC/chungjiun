@@ -673,7 +673,8 @@
                     if (result <= 60) {
                         return 1;
                     } else {
-                        return Math.floor(result/60) + (((result % 60) / 60 > 0.5) ? 1 : 0.5);
+                        console.log(result);
+                        return Math.floor(result/60) + (((result % 60) / 60 > 0.5) ? 1 : (result % 60) == 0 ? 0 : 0.5);
                         // return result;
                         // return Math.floor(result/60);
                     }
