@@ -2124,15 +2124,23 @@
 
         //專案經理一鍵確認 -1
         $scope.reviewWHManagerAll = function (user, form, index) {
-            // console.log(user);
+            console.log(user);
+            console.log(form);
             // console.log(form[0]);
             // console.log($scope.fetchFormDataFromScope(form[0]));
             // $scope.checkText = '確定 同意： ' + '\n';
-            for (var index = 0; index < $scope.fetchFormDataFromScope(form[0]).length; index ++) {
-                if (managersRelatedProjects.includes($scope.fetchFormDataFromScope(form[0])[index].prjDID)) { // 只跟自己有關的專案
-                    // console.log($scope.fetchFormDataFromScope(form[0])[index].prjDID);
+            for (var formIndex = 0; formIndex < form.length; formIndex ++) {
+                for (var index = 0; index < $scope.fetchFormDataFromScope(form[formIndex]).length; index ++) {
+                    if (managersRelatedProjects.includes($scope.fetchFormDataFromScope(form[formIndex])[index].prjDID)) { // 只跟自己有關的專案
+                        // console.log($scope.fetchFormDataFromScope(form[formIndex])[index].prjDID);
+                    }
                 }
             }
+            // for (var index = 0; index < $scope.fetchFormDataFromScope(form[0]).length; index ++) {
+            //     if (managersRelatedProjects.includes($scope.fetchFormDataFromScope(form[0])[index].prjDID)) { // 只跟自己有關的專案
+            //         // console.log($scope.fetchFormDataFromScope(form[0])[index].prjDID);
+            //     }
+            // }
             $scope.checkText = "確定 同意： 全部 ？";
             $scope.checkingForm = user;
             $scope.checkingTable = form;
@@ -2147,21 +2155,31 @@
         //專案經理一鍵確認 -2
         $scope.sendWHManagerAllAgree = function (user, form, index) {
             var updateTables = [];
-            for (var index = 0; index < $scope.fetchFormDataFromScope(form[0]).length; index ++) {
-                if (managersRelatedProjects.includes($scope.fetchFormDataFromScope(form[0])[index].prjDID)) { // 只跟自己有關的專案
-                    // console.log($scope.fetchFormDataFromScope(form[0])[index].prjDID);
-                    if ($scope.fetchFormDataFromScope(form[0])[index].isSendReview) { // 已經送審的才更新
-                        updateTables.push($scope.fetchFormDataFromScope(form[0])[index].tableID);
+            for (var formIndex = 0; formIndex < form.length; formIndex ++) {
+                for (var index = 0; index < $scope.fetchFormDataFromScope(form[formIndex]).length; index ++) {
+                    if (managersRelatedProjects.includes($scope.fetchFormDataFromScope(form[formIndex])[index].prjDID)) { // 只跟自己有關的專案
+                        // console.log($scope.fetchFormDataFromScope(form[0])[index].prjDID);
+                        if ($scope.fetchFormDataFromScope(form[formIndex])[index].isSendReview) { // 已經送審的才更新
+                            updateTables.push($scope.fetchFormDataFromScope(form[formIndex])[index].tableID);
+                        }
                     }
                 }
             }
+            // for (var index = 0; index < $scope.fetchFormDataFromScope(form[0]).length; index ++) {
+            //     if (managersRelatedProjects.includes($scope.fetchFormDataFromScope(form[0])[index].prjDID)) { // 只跟自己有關的專案
+            //         // console.log($scope.fetchFormDataFromScope(form[0])[index].prjDID);
+            //         if ($scope.fetchFormDataFromScope(form[0])[index].isSendReview) { // 已經送審的才更新
+            //             updateTables.push($scope.fetchFormDataFromScope(form[0])[index].tableID);
+            //         }
+            //     }
+            // }
             var formData = {
                 tableIDs: updateTables,
                 // isSendReview: null,
                 isManagerCheck: true,
                 // isExecutiveCheck: null,
             }
-            // console.log(formData);
+            console.log(formData);
             WorkHourUtil.updateWHTableArray(formData)
                 .success(function (res) {
                     $scope.fetchManagerRelatedMembers();
