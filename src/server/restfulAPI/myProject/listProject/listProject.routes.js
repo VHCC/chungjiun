@@ -57,6 +57,63 @@ module.exports = function (app) {
         })
     })
 
+    // 更新總案名
+    app.post(global.apiUrl.post_project_update_main_name, function (req, res) {
+        Project.update({
+            _id: req.body.prjID,
+        }, {
+            $set: {
+                mainName: req.body.mainName,
+            }
+        }, function (err) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        })
+    })
+
+    // 更新專案名
+    app.post(global.apiUrl.post_project_update_prj_name, function (req, res) {
+        Project.update({
+            _id: req.body.prjID,
+        }, {
+            $set: {
+                prjName: req.body.prjName,
+            }
+        }, function (err) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        })
+    })
+
+    // 更新子案名
+    app.post(global.apiUrl.post_project_update_prj_sub_name, function (req, res) {
+        Project.update({
+            _id: req.body.prjID,
+        }, {
+            $set: {
+                prjSubName: req.body.prjSubName,
+            }
+        }, function (err) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        })
+    })
+
     // 更新承辦人員
     app.post(global.apiUrl.post_project_update_major_id, function (req, res) {
         Project.update({

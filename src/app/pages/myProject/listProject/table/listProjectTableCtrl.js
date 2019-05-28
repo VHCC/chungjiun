@@ -242,6 +242,66 @@
                 })
         }
 
+        // 更新總案名稱
+        $scope.changeMainName = function (form, table) {
+            try {
+                var formData = {
+                    prjID: table.prj._id,
+                    mainName: form.$data.mainName,
+                }
+                Project.updateMainName(formData)
+                    .success(function (res) {
+                        console.log(res.code);
+                    })
+                    .error(function () {
+
+                    })
+            } catch (err) {
+                toastr['warning']('變更總案名 !', '更新失敗');
+                return;
+            }
+        }
+
+        // 更新專案名稱
+        $scope.changePrjName = function (form, table) {
+            try {
+                var formData = {
+                    prjID: table.prj._id,
+                    prjName: form.$data.prjName,
+                }
+                Project.updatePrjName(formData)
+                    .success(function (res) {
+                        console.log(res.code);
+                    })
+                    .error(function () {
+
+                    })
+            } catch (err) {
+                toastr['warning']('變更專案名 !', '更新失敗');
+                return;
+            }
+        }
+
+        // 更新子案名稱
+        $scope.changePrjSubName = function (form, table) {
+            try {
+                var formData = {
+                    prjID: table.prj._id,
+                    prjSubName: form.$data.prjSubName,
+                }
+                Project.updatePrjSubName(formData)
+                    .success(function (res) {
+                        console.log(res.code);
+                    })
+                    .error(function () {
+
+                    })
+            } catch (err) {
+                toastr['warning']('變更子案名 !', '更新失敗');
+                return;
+            }
+        }
+
         $scope.updateWorkers = function (form, table) {
             try {
                 var workers = [];

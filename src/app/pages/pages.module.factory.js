@@ -103,6 +103,15 @@
                 updateStatus: function(formData) {
                     return http.post('/api/post_project_update_status', formData);
                 },
+                updateMainName: function(formData) {
+                    return http.post('/api/post_project_update_main_name', formData);
+                },
+                updatePrjName: function(formData) {
+                    return http.post('/api/post_project_update_prj_name', formData);
+                },
+                updatePrjSubName: function(formData) {
+                    return http.post('/api/post_project_update_prj_sub_name', formData);
+                },
 
             }
         }])
