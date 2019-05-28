@@ -45,6 +45,9 @@ global.apiUrl = {
     post_project_update_major_id: '/api/post_project_update_major_id',
     post_project_update_workers: '/api/post_project_update_workers',
     post_project_update_status: '/api/post_project_update_status',
+    post_project_update_main_name: '/api/post_project_update_main_name',
+    post_project_update_prj_name: '/api/post_project_update_prj_name',
+    post_project_update_prj_sub_name: '/api/post_project_update_prj_sub_name',
 
 
 
