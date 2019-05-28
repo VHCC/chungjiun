@@ -156,7 +156,7 @@
                 </div>
 
                 <div class="form-group" ng-show="mainProject.type.selected">
-                    <label for="projectManager" class="col-md-2 control-label">承辦經理</label>
+                    <label for="projectManager" class="col-md-2 control-label">承辦經理/主任</label>
                     <div class="col-md-10">
                         <ui-select ng-model="mainProject.manager"
                                    class="btn-group bootstrap-select form-control"
@@ -165,7 +165,7 @@
                                    ng-disabled="false"
                                    append-to-body="true"
                                    search-enabled="true">
-                            <ui-select-match placeholder="請選擇承辦經理">
+                            <ui-select-match placeholder="請選擇承辦經理/主任">
                                 {{$select.selected.name}}
                             </ui-select-match>
                             <ui-select-choices

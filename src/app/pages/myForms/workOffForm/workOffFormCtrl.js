@@ -92,7 +92,7 @@
             $scope.userDID = cookies.get('userDID');
             $scope.roleType = cookies.get('roletype');
 
-            // 行政總管、經理專屬
+            // 行政總管、經理專屬，主任無權
             if ($scope.roleType == 100 || $scope.roleType == 2) {
                 // 所有人，對照資料
                 User.getAllUsers()

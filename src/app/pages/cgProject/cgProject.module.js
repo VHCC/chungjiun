@@ -55,7 +55,7 @@
                 templateUrl: 'app/pages/myProject/listProject/listProject.html',
                 controller: 'listProjectCtrl',
                 title: '執行專案',
-                accessLevel: [2, 100],
+                accessLevel: [2,6, 100],
                 sidebarMeta: {
                     order: global.pages.myProject_listProject,
                 },
@@ -66,7 +66,7 @@
                     templateUrl: 'app/pages/myProject/listProjectAll/listProjectAll.html',
                     controller: 'listProjectAllCtrl',
                     title: '專案總表',
-                    accessLevel: [1,2,3,100],
+                    accessLevel: [1,2,3,6,100],
                     sidebarMeta: {
                         order: global.pages.myProject_listProjectAll,
                     },

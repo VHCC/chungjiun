@@ -136,7 +136,7 @@
             <tr>
                 <td rowspan="3" style="vertical-align: inherit; text-align: center">代碼</td>
                 <td rowspan="3" style="vertical-align: inherit; text-align: center"width="240px">名稱</td>
-                <td rowspan="3" style="vertical-align: inherit; text-align: center" width="80px">經理</td>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center" width="80px">經理/主任</td>
                 <td rowspan="3" style="vertical-align: inherit; text-align: center" width="100px">類型</td>
 
                 <td colspan="2" style="vertical-align: inherit; text-align: center">{{monDate}}</td>
@@ -149,7 +149,7 @@
 
                 <td rowspan="3" style="vertical-align: inherit; text-align: center">合計</td>
                 <td rowspan="3" style="vertical-align: inherit; text-align: center">狀態</td>
-                <td rowspan="3" style="vertical-align: inherit; text-align: center">經理確認</td>
+                <td rowspan="3" style="vertical-align: inherit; text-align: center">經理/主任確認</td>
                 <td rowspan="3" style="vertical-align: inherit; text-align: center">行政確認</td>
             </tr>
             <tr>
@@ -1274,7 +1274,7 @@
     <!--<uib-tab heading="個人加班單">-->
         <!--<div ng-include="'app/pages/myForms/forms/workHourTableForm_managerTab.html'"></div>-->
     <!--</uib-tab>-->
-    <uib-tab heading="經理審核" ng-if="roleType === '2' || roleType === '100'" ng-click="fetchManagerRelatedMembers()">
+    <uib-tab heading="經理/主任審核" ng-if="roleType === '2' || roleType === '100' || roleType === '6'" ng-click="fetchManagerRelatedMembers()">
         <div ng-include="'app/pages/myForms/forms/workHourTableForm_managerTab.html'"></div>
     </uib-tab>
     <uib-tab heading="行政確認" ng-if="roleType === '100'" ng-click="fetchExecutiveRelatedMembers()">
