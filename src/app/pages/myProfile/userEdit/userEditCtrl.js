@@ -198,6 +198,10 @@
                 name: "工讀生",
                 roleType: 5
             },
+            {
+                name: "主任",
+                roleType: 6
+            },
         ];
 
         vm.roleOptions = options_ragular;

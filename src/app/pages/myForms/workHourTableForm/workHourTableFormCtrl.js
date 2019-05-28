@@ -2943,7 +2943,7 @@
                             var isProjectIncluded = false;
                             inter:
                             for (var tablesIndex = 0; tablesIndex < res.payload[formIndex].formTables.length; tablesIndex ++) {
-                                if (managersRelatedProjects.includes(res.payload[formIndex].formTables[tablesIndex].prjDID) || type == 2) { // 行政總管跟每個人都有關, 經理只跟專案掛鉤
+                                if (managersRelatedProjects.includes(res.payload[formIndex].formTables[tablesIndex].prjDID) || type == 2 || type == 6) { // 行政總管跟每個人都有關, 經理只跟專案掛鉤
                                     isProjectIncluded = true;
                                     break inter;
                                 }
@@ -3141,8 +3141,8 @@
                         var formTables = [];
                         var isFirstRaw = false;
                         for (var index = 0; index < res.payload.length; index++) {
-                            if (managersRelatedProjects.includes(res.payload[index].prjDID) || type == 2) { // 行政總管跟每個人都有關, 經理只跟專案掛鉤
-                                if(!res.payload[index].isManagerCheck || type == 2) {
+                            if (managersRelatedProjects.includes(res.payload[index].prjDID) || type == 2 || type == 6) { // 行政總管跟每個人都有關, 經理只跟專案掛鉤
+                                if(!res.payload[index].isManagerCheck || type == 2 || type == 6) {
                                     isNeedToReview = true;
                                 }
                             }
