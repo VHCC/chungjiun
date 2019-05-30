@@ -1044,6 +1044,7 @@
 
             // -------------選取 指定人員之 假期確認表 ----------------------
             $scope.findHolidayFormByUserDID = function (userDID) {
+                console.log("假期確認表");
                 var formData = {
                     userDID: userDID,
                 }
@@ -1204,15 +1205,21 @@
             function fetchWorkOffTableData(userDID, type) {
                 var formData = {
                     creatorDID: userDID,
-                    month: thisMonth,
+                    workAddType: 2
+                    // month: thisMonth,
                 }
                 WorkHourAddItemUtil.getWorkHourAddItems(formData)
                     .success(function (res) {
                         var tables = res.payload;
                         var result = 0;
+                        // console.log(tables);
                         for (var index = 0; index < tables.length; index++) {
+                            if (!tables[index].isExecutiveConfirm) {
+                                continue;
+                            }
                             switch (tables[index].workAddType) {
                                 case 1:
+                                    // 加班不使用
                                     break;
                                 case 2:
                                     result += $scope.getHourDiffByTime(
