@@ -2411,7 +2411,7 @@
                     }
                 }
             }
-            console.log(form[index]);
+            // console.log(form[index]);
             var formData = {
                 tableIDs: updateTables,
                 // isSendReview: null,
@@ -2900,6 +2900,7 @@
                     bsLoadingOverlayService.start({
                         referenceId: 'executive'
                     });
+
                     console.log("firstFullDate_executive= " + $scope.firstFullDate_executive);
 
                     $scope.firstDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 0));
@@ -2929,6 +2930,7 @@
 
             WorkHourUtil.getWorkHourFormMultiple(getData)
                 .success(function (res) {
+                    // console.log(res);
                     var relatedUsersAndTables = [];
                     // 一個UserDID只有一個物件
                     var existDIDArray = [];
@@ -3006,6 +3008,19 @@
                                 break;
                         }
 
+                    } else {
+                        switch (type) {
+                            case typeManager:
+                                bsLoadingOverlayService.stop({
+                                    referenceId: 'manager'
+                                });
+                                break;
+                            case typeExecutive:
+                                bsLoadingOverlayService.stop({
+                                    referenceId: 'executive'
+                                });
+                                break;
+                        }
                     }
                 })
         }
@@ -3031,7 +3046,7 @@
                                                 , isFindManagerCheckFlag
                                                 , isFindExecutiveCheck
                                                 , type) {
-
+            // console.log(userTables);
             const getData = async (formDataTable) => {
                 // console.log(formDataTable);
                 // 取得 Table Data
@@ -3059,14 +3074,20 @@
                         switch (type) {
                             case typeManager:
                                 // console.log(userResult);
+                                // console.log($scope.checkIsCrossMonth($scope.firstFullDate_manager));
                                 $scope.usersReviewForManagers = userResult;
                                 break;
                             case typeExecutive:
                                 // console.log("response userCount= " + userCount);
+                                // console.log($scope.checkIsCrossMonth($scope.firstFullDate_executive));
                                 $scope.usersReviewForExecutive = userResult;
                                 break;
                         }
-                        if (userCount == userTables.length || (userCount == userTables.length * 2)) {
+
+                        var finalCount = $scope.checkIsCrossMonth(type == typeManager ? $scope.firstFullDate_manager : $scope.firstFullDate_executive) > 0 ? userTables.length * 2 : userTables.length;
+                        // console.log("response userCount= " + userCount);
+                        // console.log(finalCount);
+                        if (userCount > finalCount*0.8) {
                             switch (type) {
                                 case typeManager:
                                     bsLoadingOverlayService.stop({
@@ -3088,21 +3109,22 @@
                 return 'aaa';
             }
 
+            var worker = new Worker("app/webWorkers/worker.js"); // 創建一個 worker 物件
+
+            worker.onmessage = function(e) { // 設定 worker 的監聽事件
+                console.log(e);
+                getData(e.data).then(res => {
+                    // console.log(res);
+                })
+                // worker.terminate(); // 結束 worker
+            }
+
             var userResult = [];
             var userDIDExistArray = [];
             var userCount = 0;
             // console.log("userTables.length= " + userTables.length);
             // console.log(userTables);
             for (var userIndex = 0; userIndex < userTables.length; userIndex ++) {
-
-                // var worker = new Worker("app/webWorkers/worker.js"); // 創建一個 worker 物件
-                //
-                // worker.onmessage = function(e) { // 設定 worker 的監聽事件
-                //     aaa(e.data).then(res => {
-                //         console.log(res);
-                //     })
-                //     worker.terminate(); // 結束 worker
-                // }
 
                 var user = userTables[userIndex];
 
