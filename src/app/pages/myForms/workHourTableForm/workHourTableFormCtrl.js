@@ -29,6 +29,7 @@
                 'WorkAddConfirmFormUtil',
                 'editableOptions',
                 'editableThemes',
+                'bsLoadingOverlayService',
                 WorkHourTableCtrl
             ]);
 
@@ -53,7 +54,8 @@
                                OverTimeDayUtil,
                                WorkAddConfirmFormUtil,
                                editableOptions,
-                               editableThemes) {
+                               editableThemes,
+                               bsLoadingOverlayService) {
         // console.log = function() {}
 
         var vm = this;
@@ -2871,6 +2873,10 @@
 
             switch(type) {
                 case typeManager: {
+
+                    bsLoadingOverlayService.start({
+                        referenceId: 'manager'
+                    });
                     console.log("firstFullDate_manager= " + $scope.firstFullDate_manager);
 
                     $scope.firstDate_manager= DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_manager), 0));
@@ -2890,6 +2896,10 @@
                     targetFormFullDate = $scope.firstFullDate_manager;
                 } break;
                 case typeExecutive: {
+
+                    bsLoadingOverlayService.start({
+                        referenceId: 'executive'
+                    });
                     console.log("firstFullDate_executive= " + $scope.firstFullDate_executive);
 
                     $scope.firstDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 0));
@@ -3056,6 +3066,22 @@
                                 $scope.usersReviewForExecutive = userResult;
                                 break;
                         }
+                        if (userCount == userTables.length || (userCount == userTables.length * 2)) {
+                            switch (type) {
+                                case typeManager:
+                                    bsLoadingOverlayService.stop({
+                                        referenceId: 'manager'
+                                    });
+                                    break;
+                                case typeExecutive:
+                                    bsLoadingOverlayService.stop({
+                                        referenceId: 'executive'
+                                    });
+                                    break;
+                            }
+
+                        }
+
                         // }
 
                     })
