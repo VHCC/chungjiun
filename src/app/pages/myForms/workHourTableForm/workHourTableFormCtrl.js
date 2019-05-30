@@ -2305,6 +2305,18 @@
         }
         //行政確認 -2
         $scope.sendWHExecutiveAgree = function (form, checkingTable, index) {
+
+            // var formData = {
+            //     formTables: $scope.workAddTablesRawData,
+            // }
+            // WorkHourAddItemUtil.executiveConfirm(formData)
+            //     .success(function () {
+            //         // toastr.success('確認成功', 'Success');
+            //     })
+            //     .error(function () {
+            //
+            //     })
+
             var formData = {
                 tableID: checkingTable.tableID,
                 // isSendReview: null,
@@ -2365,11 +2377,13 @@
         $scope.reviewWHExecutiveAll = function (user, form, index) {
             console.log(form);
             console.log(user);
-            for (var index = 0; index < $scope.fetchFormDataFromScope(form[0]).length; index ++) {
-                // 行政總管跟所有專案有關
-                if ($scope.fetchFormDataFromScope(form[0])[index].isManagerCheck) { // 經理審查過的的才更新
-                    // updateTables.push(form[0].formTables[index].tableID);
-                    // console.log($scope.fetchFormDataFromScope(form[0])[index].tableID);
+            for (var formIndex = 0; formIndex < form.length; formIndex ++) {
+                for (var index = 0; index < $scope.fetchFormDataFromScope(form[formIndex]).length; index++) {
+                    // 行政總管跟所有專案有關
+                    if ($scope.fetchFormDataFromScope(form[formIndex])[index].isManagerCheck) { // 經理審查過的的才更新
+                        // updateTables.push(form[0].formTables[index].tableID);
+                        // console.log($scope.fetchFormDataFromScope(form[0])[index].tableID);
+                    }
                 }
             }
             $scope.checkText = "確定 同意： 全部 ？";
@@ -2387,13 +2401,15 @@
         $scope.sendWHExecutiveAllAgree = function (user, form, index) {
             console.log(form);
             var updateTables = [];
-            for (var index = 0; index < $scope.fetchFormDataFromScope(form[0]).length; index ++) {
-                // 行政總管跟所有專案有關
-                if ($scope.fetchFormDataFromScope(form[0])[index].isManagerCheck) { // 經理審查過的的才更新
-                    updateTables.push($scope.fetchFormDataFromScope(form[0])[index].tableID);
+            for (var formIndex = 0; formIndex < form.length; formIndex ++) {
+                for (var index = 0; index < $scope.fetchFormDataFromScope(form[formIndex]).length; index++) {
+                    // 行政總管跟所有專案有關
+                    if ($scope.fetchFormDataFromScope(form[formIndex])[index].isManagerCheck) { // 經理審查過的的才更新
+                        updateTables.push($scope.fetchFormDataFromScope(form[formIndex])[index].tableID);
+                    }
                 }
             }
-            console.log(form[0]);
+            console.log(form[index]);
             var formData = {
                 tableIDs: updateTables,
                 // isSendReview: null,
@@ -2404,8 +2420,8 @@
             WorkHourUtil.updateWHTableArray(formData)
                 .success(function (res) {
                     // $scope.fetchManagerRelatedMembers();
-                    $scope.fetchExecutiveRelatedMembers();
-                    // $scope.showTableOfItem(user, null, null, null, null, null, 2);
+                    // $scope.fetchExecutiveRelatedMembers();
+                    $scope.showTableOfItem(user, null, null, null, null, null, 2);
                 })
         }
 
@@ -2563,6 +2579,7 @@
 
         // 整理相同日期的加班項目
         function operateWorkHourAddArray(tables) {
+            // console.log("operateWorkHourAddArray")
             $scope.workAddTablesRawData = tables;
             var workAddTable = {};
             for (var index = 0; index < tables.length; index++) {
@@ -3259,6 +3276,27 @@
                     })
                 $scope.fetchWorkOffReviewTables(userData.DID, type);
                 $scope.fetchNHReviewTables(userData.DID, type);
+
+                //
+                // var formData = {
+                //     creatorDID: userData.DID,
+                //     create_formDate: $scope.firstFullDate_executive,
+                // }
+                //
+                // var workAddTableIDArray = [];
+                // WorkHourAddItemUtil.getWorkHourAddItems(formData)
+                //     .success(function (res) {
+                //         $scope.workAddTablesItems = res.payload;
+                //         workAddTableIDArray = [];
+                //         // 組成 prjID Array, TableID Array，再去Server要資料
+                //         for (var index = 0; index < res.payload.length; index++) {
+                //             workAddTableIDArray[index] = res.payload[index]._id;
+                //         }
+                //         console.log(workAddTableIDArray);
+                //     })
+                //     .error(function () {
+                //         console.log('ERROR  WorkHourAddItemUtil.getWorkHourAddItems')
+                //     })
             }
         }
 
