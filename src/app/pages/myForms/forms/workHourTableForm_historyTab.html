@@ -78,6 +78,13 @@
                 </form>
                 <span id="prjCode">{{showPrjCode(item.prjDID)}}</span>
                 <span style="display: none;" id="prjDID">{{item.prjDID}}</span>
+                <br>
+                <button class="btn btn-danger editable-table-button btn-xs"
+                        ng-show="!rowform1.$waiting && item.isSendReview && item.isManagerCheck && item.isExecutiveCheck"
+                        ng-click="repentWHItem_executive(workHourTableCtrlVm.history.selected, item, $index);">
+
+                    核定後退回
+                </button>
             </td>
             <td rowspan="2" style="vertical-align: inherit; text-align: center">
                 <p class="mytooltip">{{showPrjName(item.prjDID)}}

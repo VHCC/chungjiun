@@ -25,7 +25,7 @@
         // Main Data
         $scope.parent = $scope.$resolve.parent;
         $scope.table = $scope.$resolve.table;
-        $scope.searchType = $scope.$resolve.searchType;
+        $scope.day = $scope.$resolve.searchType;
         $scope.userMonthSalary = $scope.$resolve.userMonthSalary;
         // $scope.userHourSalary = $scope.$resolve.userHourSalary;
         $scope.editableFlag = $scope.$resolve.editableFlag;
@@ -38,17 +38,20 @@
         // 主要顯示
         $scope.workAddTablesItems = [];
 
+        console.log($scope.table);
+
         var formData = {
             creatorDID: $scope.table.creatorDID,
             prjDID: $scope.table.prjDID,
             create_formDate: $scope.table.create_formDate,
-            day: $scope.searchType,
+            day: $scope.day,
         }
-        // console.log(formData);
+        console.log(formData);
         // console.log($scope.table);
         var workAddTableIDArray = [];
         WorkHourAddItemUtil.getWorkHourAddItems(formData)
             .success(function (res) {
+                console.log(res.payload);
                 $scope.workAddTablesItems = res.payload;
                 workAddTableIDArray = [];
                 // 組成 prjID Array, TableID Array，再去Server要資料
@@ -68,7 +71,7 @@
                 create_formDate: $scope.table.create_formDate,
                 prjDID: $scope.table.prjDID,
                 month: (new Date($scope.table.create_formDate).getMonth() + 1),
-                day: $scope.searchType,
+                day: $scope.day,
                 start_time: "",
                 end_time: "",
                 reason: "事由",
