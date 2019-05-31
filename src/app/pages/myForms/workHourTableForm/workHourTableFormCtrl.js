@@ -3213,11 +3213,11 @@
                         console.log("response userTables.length= " + userTables.length);
                         console.log("response userTotalLength= " + userTotalLength);
                         console.log("crossDay= " + $scope.checkIsCrossMonth(type == typeManager ? $scope.firstFullDate_manager : $scope.firstFullDate_executive));
-                        var finalCount = $scope.checkIsCrossMonth(type == typeManager ? $scope.firstFullDate_manager : $scope.firstFullDate_executive) > 0 ?
-                            userTotalLength * 2 : userTotalLength;
+                        // var finalCount = $scope.checkIsCrossMonth(type == typeManager ? $scope.firstFullDate_manager : $scope.firstFullDate_executive) > 0 ?
+                        //     userTotalLength * 2 : userTotalLength;
                         console.log("response userCount= " + userCount);
-                        console.log("finalCount= " + finalCount);
-                        if (userCount > finalCount * 0.7) {
+                        console.log("finalCount= " + userTotalLength);
+                        if (userCount == userTotalLength) {
                             switch (type) {
                                 case typeManager:
                                     $timeout(function () {
@@ -3282,7 +3282,8 @@
                 var tablesLength = user[user.DID].length;
 
                 if (tablesLength > 0) {
-                    userTotalLength++;
+                    console.log("tablesLength= " + tablesLength);
+                    userTotalLength += tablesLength;
                 }
 
                 for (var majorIndex = 0; majorIndex < tablesLength; majorIndex ++) {
