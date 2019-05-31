@@ -3206,7 +3206,24 @@
                         // }
                     })
                     .error(function () {
-                        console.log('WorkHourUtil.findWorkHourTableFormByTableIDArray');
+                        switch (type) {
+                            case typeManager:
+                                $timeout(function () {
+                                    bsLoadingOverlayService.stop({
+                                        referenceId: 'manager_workHour'
+                                    });
+                                }, 500);
+                                break;
+                            case typeExecutive:
+                                $timeout(function () {
+                                    bsLoadingOverlayService.stop({
+                                        referenceId: 'executive_workHour'
+                                    });
+                                }, 500);
+                                break;
+                        }
+                        console.log('Error, WorkHourUtil.findWorkHourTableFormByTableIDArray');
+                        toastr.error('Server忙碌中，資料有誤，請再次讀取表單', '錯誤');
                     })
                 return 'aaa';
             }
