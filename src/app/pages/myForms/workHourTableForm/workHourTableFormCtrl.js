@@ -421,7 +421,13 @@
                                     }
                                 })
                                 .error(function () {
+                                    $timeout(function () {
+                                        bsLoadingOverlayService.stop({
+                                            referenceId: 'mainPage_workHour'
+                                        });
+                                    }, 500)
                                     console.log('ERROR Project.findPrjByIDArray');
+                                    toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
                                 })
 
                             needRemoveOldTable = {
@@ -545,7 +551,13 @@
 
                                 })
                                 .error(function () {
+                                    $timeout(function () {
+                                        bsLoadingOverlayService.stop({
+                                            referenceId: 'mainPage_workHour'
+                                        });
+                                    }, 500)
                                     console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
+                                    toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
                                 })
                         }
                         loadWorkOffTable(cookies.get('userDID'), 1);
@@ -2121,7 +2133,13 @@
                                     }, 500)
                                 })
                                 .error(function () {
+                                    $timeout(function () {
+                                        bsLoadingOverlayService.stop({
+                                            referenceId: 'history_workHour'
+                                        });
+                                    }, 500)
                                     console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
+                                    toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
                                 })
                         }
                         loadWorkOffTable(vm.history.selected._id, 4);
