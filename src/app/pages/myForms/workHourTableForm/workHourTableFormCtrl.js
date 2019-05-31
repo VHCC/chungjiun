@@ -3217,7 +3217,7 @@
                             userTotalLength * 2 : userTotalLength;
                         console.log("response userCount= " + userCount);
                         console.log("finalCount= " + finalCount);
-                        if (userCount == finalCount) {
+                        if (userCount > finalCount * 0.7) {
                             switch (type) {
                                 case typeManager:
                                     $timeout(function () {
