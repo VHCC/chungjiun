@@ -22,21 +22,30 @@
         </div>
     </div>
 
+    <div bs-loading-overlay
+         bs-loading-overlay-reference-id="allHistory_workHour">
 
-    <div class="col-md-12">
-        <my-month-picker
-                formatted="MM">
+        <div class="col-md-12">
+            <my-month-picker
+                    formatted="YYYY/MM">
 
-        </my-month-picker>
-        <button type="button" class="btn btn-default btn-icon" ng-click="changeWorkOffHistoryMonth(-1, this)">
-            <i class="ion-chevron-left"></i>
-        </button>
-        {{myMonth}}
-        <button type="button" class="btn btn-default btn-icon" ng-click="changeWorkOffHistoryMonth(1, this)">
-            <i class="ion-chevron-right"></i>
-        </button>
+            </my-month-picker>
+            <button type="button" class="btn btn-default"
+                    ng-click="initWorkOffMonthCheck(workOffFormCtrlVm.userReview.selected)">
+                所有請假單
+            </button>
+            <br>
+            <button type="button" class="btn btn-default btn-icon" ng-click="changeWorkOffHistoryMonth(-1, this)">
+                <i class="ion-chevron-left"></i>
+            </button>
+            {{myMonth}}
+            <button type="button" class="btn btn-default btn-icon" ng-click="changeWorkOffHistoryMonth(1, this)">
+                <i class="ion-chevron-right"></i>
+            </button>
+        </div>
+
+        <div class="col-md-12" id="includeHead">
+        </div>
     </div>
 
-    <div class="col-md-12" id="includeHead">
-    </div>
 </div>

@@ -375,6 +375,10 @@
                 vm.relatedProjects = allRelatedPrjDatas.slice();
             }
 
+            bsLoadingOverlayService.start({
+                referenceId: 'mainPage_workHour'
+            });
+
             var tableSort = [];
 
             WorkHourUtil.getWorkHourForm(getData)
@@ -533,6 +537,12 @@
                                     // loadWorkOffTable(cookies.get('userDID'), 1);
                                     // loadNH(1);
                                     // sleep(200);
+                                    $timeout(function () {
+                                        bsLoadingOverlayService.stop({
+                                            referenceId: 'mainPage_workHour'
+                                        });
+                                    }, 500)
+
                                 })
                                 .error(function () {
                                     console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
@@ -544,6 +554,10 @@
                     } else {
                         // 無資料
                         $scope.loading = false;
+
+                        bsLoadingOverlayService.stop({
+                            referenceId: 'mainPage_workHour'
+                        });
                     }
                 })
                 .error(function () {
@@ -1981,6 +1995,11 @@
         //歷史檢視取得相關人員表，以人為選取單位
         $scope.showHistoryTable = function () {
             initialUserTable(4);
+
+            bsLoadingOverlayService.start({
+                referenceId: 'history_workHour'
+            });
+
             var getData = {
                 creatorDID: vm.history.selected._id,
                 create_formDate: $scope.firstFullDate_history,
@@ -2087,17 +2106,26 @@
                                     }
                                     // loadWorkOffTable(vm.history.selected._id, 4);
                                     // loadNH(4);
+
+                                    $timeout(function () {
+                                        bsLoadingOverlayService.stop({
+                                            referenceId: 'history_workHour'
+                                        });
+                                    }, 500)
                                 })
                                 .error(function () {
                                     console.log('ERROR WorkHourUtil.findWorkHourTableFormByTableIDArray');
                                 })
-                            sleep(500);
                         }
                         loadWorkOffTable(vm.history.selected._id, 4);
                         loadNH(4);
                         loadOT(4);
                     } else {
                         $scope.loading = false;
+
+                        bsLoadingOverlayService.stop({
+                            referenceId: 'history_workHour'
+                        });
                     }
                 })
                 .error(function () {
@@ -2875,7 +2903,7 @@
                 case typeManager: {
 
                     bsLoadingOverlayService.start({
-                        referenceId: 'manager'
+                        referenceId: 'manager_workHour'
                     });
                     console.log("firstFullDate_manager= " + $scope.firstFullDate_manager);
 
@@ -2898,7 +2926,7 @@
                 case typeExecutive: {
 
                     bsLoadingOverlayService.start({
-                        referenceId: 'executive'
+                        referenceId: 'executive_workHour'
                     });
 
                     console.log("firstFullDate_executive= " + $scope.firstFullDate_executive);
@@ -3012,12 +3040,12 @@
                         switch (type) {
                             case typeManager:
                                 bsLoadingOverlayService.stop({
-                                    referenceId: 'manager'
+                                    referenceId: 'manager_workHour'
                                 });
                                 break;
                             case typeExecutive:
                                 bsLoadingOverlayService.stop({
-                                    referenceId: 'executive'
+                                    referenceId: 'executive_workHour'
                                 });
                                 break;
                         }
@@ -3090,14 +3118,18 @@
                         if (userCount > finalCount*0.8) {
                             switch (type) {
                                 case typeManager:
-                                    bsLoadingOverlayService.stop({
-                                        referenceId: 'manager'
-                                    });
+                                    $timeout(function () {
+                                        bsLoadingOverlayService.stop({
+                                            referenceId: 'manager_workHour'
+                                        });
+                                    }, 500);
                                     break;
                                 case typeExecutive:
-                                    bsLoadingOverlayService.stop({
-                                        referenceId: 'executive'
-                                    });
+                                    $timeout(function () {
+                                        bsLoadingOverlayService.stop({
+                                            referenceId: 'executive_workHour'
+                                        });
+                                    }, 500);
                                     break;
                             }
 
