@@ -14,7 +14,7 @@
     ])
         .run(function(bsLoadingOverlayService) {
             bsLoadingOverlayService.setGlobalConfig({
-                templateUrl: 'loading-overlay-template.html'
+                templateUrl: 'components/loading-overlay-template.html'
                 // templateUrl: 'bsLoadingOverlaySpinJs'
             });
         })

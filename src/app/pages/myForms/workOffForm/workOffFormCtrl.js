@@ -44,6 +44,7 @@
                     'WorkHourAddItemUtil',
                     'toastr',
                     'HolidayDataForms',
+                    'bsLoadingOverlayService',
                     'intiWorkOffAllService',
                     WorkOffFormCtrl
                 ]);
@@ -67,6 +68,7 @@
                                  WorkHourAddItemUtil,
                                  toastr,
                                  HolidayDataForms,
+                                 bsLoadingOverlayService,
                                  intiWorkOffAllService) {
 
             // intiWorkOffAllService.then(function (resp) {
@@ -234,6 +236,11 @@
                     isBossCheck: null,
                     isExecutiveCheck: null
                 }
+
+                bsLoadingOverlayService.start({
+                    referenceId: 'mainPage_workOff'
+                });
+
                 WorkOffFormUtil.findWorkOffTableFormByUserDID(getData)
                     .success(function (res) {
                         // 填入表單資訊
@@ -302,6 +309,11 @@
                             }
                         });
 
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'mainPage_workOff'
+                            });
+                        },1000);
 
                     })
                     .error(function () {
@@ -1340,6 +1352,11 @@
             }
 
             $scope.changeWorkOffHistoryMonth = function(changeCount, dom) {
+
+                bsLoadingOverlayService.start({
+                    referenceId: 'allHistory_workHour'
+                });
+
                 $scope.monthPicker = dom;
 
                 document.getElementById('includeHead').innerHTML = "";
@@ -1379,6 +1396,12 @@
                                 "</div>"
                             )($scope));
 
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'allHistory_workHour'
+                            });
+                        } ,300);
+
                     });
             }
 
@@ -1392,6 +1415,11 @@
             });
 
             $scope.changeWorkOffHistoryUserDID = function(user) {
+
+                bsLoadingOverlayService.start({
+                    referenceId: 'allHistory_workHour'
+                });
+
                 document.getElementById('includeHead').innerHTML = "";
 
                 var year = thisYear;
@@ -1431,13 +1459,26 @@
                                 "</div>"
                             )($scope));
 
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'allHistory_workHour'
+                            });
+                        }, 300);
+
+
                     });
             }
 
-            $scope.initWorkOffMonthCheck = function () {
+            $scope.initWorkOffMonthCheck = function (specificUser) {
+                console.log(specificUser);
+                bsLoadingOverlayService.start({
+                    referenceId: 'allHistory_workHour'
+                });
+
                 document.getElementById('includeHead').innerHTML = "";
                 var formData = {
-                    creatorDID: $scope.userDID,
+                    // creatorDID: $scope.userDID,
+                    creatorDID: specificUser == undefined ? $scope.userDID : specificUser._id,
                     year: null,
                     month: null,
                     isSendReview: true,
@@ -1453,7 +1494,7 @@
                             document.getElementById('includeHead'))
                             .append($compile(
                                 "<div ba-panel ba-panel-title=" +
-                                "'" + $scope.username + " " +
+                                "'" + (specificUser == null ? $scope.username : specificUser.name) + " " +
                                 "所有請假單列表 - " + workOffTables.payload.length + "'" +
                                 "ba-panel-class= " +
                                 "'with-scroll'" + ">" +
@@ -1463,6 +1504,11 @@
                                 "</div>"
                             )($scope));
 
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'allHistory_workHour'
+                            });
+                        }, 300);
                     });
 
 
