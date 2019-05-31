@@ -561,7 +561,13 @@
                     }
                 })
                 .error(function () {
+                    $timeout(function () {
+                        bsLoadingOverlayService.stop({
+                            referenceId: 'mainPage_workHour'
+                        });
+                    }, 500)
                     console.log('ERROR WorkHourUtil.getWorkHourForm');
+                    toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
                 })
         }
 
@@ -2130,7 +2136,13 @@
                     }
                 })
                 .error(function () {
+                    $timeout(function () {
+                        bsLoadingOverlayService.stop({
+                            referenceId: 'history_workHour'
+                        });
+                    }, 500)
                     console.log('ERROR WorkHourUtil.getWorkHourForm');
+                    toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
                 })
         }
 
@@ -3114,6 +3126,27 @@
                         }
                     }
                 })
+                .error(function () {
+                    switch (type) {
+                        case typeManager:
+                            $timeout(function () {
+                                bsLoadingOverlayService.stop({
+                                    referenceId: 'manager_workHour'
+                                });
+                            }, 500);
+                            break;
+                        case typeExecutive:
+                            $timeout(function () {
+                                bsLoadingOverlayService.stop({
+                                    referenceId: 'executive_workHour'
+                                });
+                            }, 500);
+                            break;
+                    }
+                    console.log('Error, WorkHourUtil.getWorkHourFormMultiple');
+                    toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
+                })
+
         }
 
         let runPromise = (someone, timer, success = true) => {
@@ -3223,7 +3256,7 @@
                                 break;
                         }
                         console.log('Error, WorkHourUtil.findWorkHourTableFormByTableIDArray');
-                        toastr.error('Server忙碌中，資料有誤，請再次讀取表單', '錯誤');
+                        toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
                     })
                 return 'aaa';
             }
