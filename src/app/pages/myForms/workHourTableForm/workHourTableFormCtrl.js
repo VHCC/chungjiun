@@ -3205,6 +3205,9 @@
                         }
                         // }
                     })
+                    .error(function () {
+                        console.log('WorkHourUtil.findWorkHourTableFormByTableIDArray');
+                    })
                 return 'aaa';
             }
 
@@ -3220,8 +3223,8 @@
             var userResult = [];
             var userDIDExistArray = [];
             var userCount = 0;
-            // console.log("userTables.length= " + userTables.length);
-            // console.log(userTables);
+            console.log("userTables.length= " + userTables.length);
+            console.log(userTables);
             for (var userIndex = 0; userIndex < userTables.length; userIndex ++) {
 
                 var user = userTables[userIndex];
@@ -3256,6 +3259,24 @@
                         // console.log(res);
                     })
 
+                }
+            }
+            if (userTotalLength == 0) {
+                switch (type) {
+                    case typeManager:
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'manager_workHour'
+                            });
+                        }, 500);
+                        break;
+                    case typeExecutive:
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'executive_workHour'
+                            });
+                        }, 500);
+                        break;
                 }
             }
 
