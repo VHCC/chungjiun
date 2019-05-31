@@ -136,9 +136,10 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_work_hour_work_executive_confirm, function (req, res) {
         var findData = []
         var resultCount = 0
+        console.log(req.body.formTables);
         for (var index = 0; index < req.body.formTables.length; index++) {
             WorkHourTableFormWorkAdd.update({
-                _id: req.body.formTables[index]._id,
+                _id: req.body.formTables[index],
             }, {
                 $set: {
                     isExecutiveConfirm: true,
@@ -158,4 +159,32 @@ module.exports = function (app) {
         }
     })
 
+    // update work add item
+    app.post(global.apiUrl.post_work_hour_work_add_item_update, function (req, res) {
+
+        var keyArray = Object.keys(req.body);
+        var query = {};
+        for (var index = 0; index < keyArray.length; index++) {
+            var evalString = "query.";
+            evalString += keyArray[index];
+
+            var evalFooter = "req.body.";
+            evalFooter += keyArray[index];
+            eval(evalString + " = " + evalFooter);
+        }
+
+        WorkHourTableFormWorkAdd.updateMany(query, {
+            $set: {
+                isExecutiveConfirm: false,
+            }
+        }, function (err) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        })
+    });
 }

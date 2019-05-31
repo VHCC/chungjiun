@@ -662,6 +662,8 @@
                             resultFinal = resultFinal <= 4 ? 4 : 8;
                         }
 
+                        console.log("this.workOffType= " + this.workOffType + ", resultFinal= " + resultFinal);
+
                         return resultFinal;
                     } else if (this.table != undefined) {
                         // 主管審核、行政審核
@@ -670,6 +672,8 @@
 
                             resultFinal = resultFinal <= 4 ? 4 : 8;
                         }
+
+                        console.log("workOffType= " + this.table.workOffType + ", resultFinal= " + resultFinal);
 
                         return resultFinal;
                     } else {
@@ -683,6 +687,35 @@
                         return resultFinal;
                     }
 
+                }
+            }
+
+            // 換休換算專用
+            $scope.getHourDiffByTime_for_work_add = function (start, end, type) {
+                // console.log("- workOffFormCtrl, start= " + start + ", end= " + end + ", type= " + type);
+                if (isNaN(parseInt(start)) || isNaN(parseInt(end))) {
+                    return "輸入格式錯誤";
+                }
+                if (start && end) {
+                    var difference = Math.abs(TimeUtil.toSeconds(start) - TimeUtil.toSeconds(end));
+                    // compute hours, minutes and seconds
+                    var result = [
+                        // an hour has 3600 seconds so we have to compute how often 3600 fits
+                        // into the total number of seconds
+                        Math.floor(difference / 3600), // HOURS
+                        // similar for minutes, but we have to "remove" the hours first;
+                        // this is easy with the modulus operator
+                        Math.floor((difference % 3600) / 60) // MINUTES
+                        // the remainder is the number of seconds
+                        // difference % 60 // SECONDS
+                    ];
+
+                    // formatting (0 padding and concatenation)
+                    // result = result.map(function (v) {
+                    //     return v < 10 ? '0' + v : v;
+                    // }).join(':');
+                    result = result[0] + (result[1] < 30 ? 0 : result[1] === 0 ? 0 : 0.5);
+                    return result < 1 ? 0 : result >= 8 ? 8 : result;
                 }
             }
 
@@ -1224,7 +1257,7 @@
                     .success(function (res) {
                         var tables = res.payload;
                         var result = 0;
-                        // console.log(tables);
+                        console.log(tables);
                         for (var index = 0; index < tables.length; index++) {
                             if (!tables[index].isExecutiveConfirm) {
                                 continue;
@@ -1234,9 +1267,15 @@
                                     // 加班不使用
                                     break;
                                 case 2:
-                                    result += $scope.getHourDiffByTime(
+                                    console.log(tables[index]);
+                                    // result += $scope.getHourDiffByTime(
+                                    //     tables[index].start_time,
+                                    //     tables[index].end_time, tables[index].workAddType);
+                                    // getHourDiffByTime_for_work_add
+                                    result += $scope.getHourDiffByTime_for_work_add(
                                         tables[index].start_time,
                                         tables[index].end_time, tables[index].workAddType);
+                                    console.log(result);
                                     break;
                             }
                         }

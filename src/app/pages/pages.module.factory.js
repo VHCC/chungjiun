@@ -344,6 +344,9 @@
                 executiveConfirm: function (formData) {
                     return http.post('/api/post_work_hour_work_executive_confirm', formData);
                 },
+                updateItem: function (formData) {
+                    return http.post('/api/post_work_hour_work_add_item_update', formData);
+                },
                 updateRelatedAddItemByProject: function (formData) {
                     return http.post('/api/post_work_hour_work_update_related_work_add_items', formData);
                 },
