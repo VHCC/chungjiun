@@ -70,10 +70,9 @@ gulp.task('reloadHrMachine', function () {
     console.log('-------------  Load File --------------');
     nodemon({
         // the script to run the app
-        script: './src/server/loadHrMachine',
+        script: './src/server/loadHrMachine.js',
         // this listens to changes in any of these files/routes and restarts the application
-        watch: ["../../HR/CARD/"],
-        ignore: ["gulpfile.js", "node_modules/"],
+        watch: ["../HR/CARD/"],
         env: {
             'NODE_ENV': 'development'
         },
