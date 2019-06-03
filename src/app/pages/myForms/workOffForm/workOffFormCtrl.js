@@ -317,7 +317,13 @@
 
                     })
                     .error(function () {
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'mainPage_workOff'
+                            });
+                        }, 500)
                         console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByUserDID');
+                        toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
                     })
 
                 // Deprecate 20190201
@@ -1393,7 +1399,7 @@
             $scope.changeWorkOffHistoryMonth = function(changeCount, dom) {
 
                 bsLoadingOverlayService.start({
-                    referenceId: 'allHistory_workHour'
+                    referenceId: 'allHistory_workOff'
                 });
 
                 $scope.monthPicker = dom;
@@ -1437,10 +1443,19 @@
 
                         $timeout(function () {
                             bsLoadingOverlayService.stop({
-                                referenceId: 'allHistory_workHour'
+                                referenceId: 'allHistory_workOff'
                             });
                         } ,300);
 
+                    })
+                    .error(function () {
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'allHistory_workOff'
+                            });
+                        }, 500)
+                        console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByUserDID');
+                        toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
                     });
             }
 
@@ -1456,7 +1471,7 @@
             $scope.changeWorkOffHistoryUserDID = function(user) {
 
                 bsLoadingOverlayService.start({
-                    referenceId: 'allHistory_workHour'
+                    referenceId: 'allHistory_workOff'
                 });
 
                 document.getElementById('includeHead').innerHTML = "";
@@ -1500,18 +1515,26 @@
 
                         $timeout(function () {
                             bsLoadingOverlayService.stop({
-                                referenceId: 'allHistory_workHour'
+                                referenceId: 'allHistory_workOff'
                             });
                         }, 300);
-
-
+                    })
+                    .error(function () {
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'allHistory_workOff'
+                            });
+                        }, 500)
+                        console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByUserDID');
+                        toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
                     });
+                ;
             }
 
             $scope.initWorkOffMonthCheck = function (specificUser) {
                 console.log(specificUser);
                 bsLoadingOverlayService.start({
-                    referenceId: 'allHistory_workHour'
+                    referenceId: 'allHistory_workOff'
                 });
 
                 document.getElementById('includeHead').innerHTML = "";
@@ -1545,10 +1568,20 @@
 
                         $timeout(function () {
                             bsLoadingOverlayService.stop({
-                                referenceId: 'allHistory_workHour'
+                                referenceId: 'allHistory_workOff'
                             });
                         }, 300);
-                    });
+                    })
+                    .error(function () {
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'allHistory_workOff'
+                            });
+                        }, 300)
+                        console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByUserDID');
+                        toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
+                    })
+                ;
 
 
             }

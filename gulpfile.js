@@ -20,7 +20,7 @@ wrench.readdirSyncRecursive('./gulp').filter(function(file) {
  *  main optimization build task
  */
 
-gulp.task('default', ['clean', 'load', 'serve'], function () {
+gulp.task('default', ['load'], function () {
     console.log('------------- Server Begin --------------');
 });
 var nodemon = require('gulp-nodemon');
