@@ -77,7 +77,7 @@ var memberSocketMap = [];
 // configuration ===============================================================
 mongoose.connect(database.localUrl);
 
-require('../../app/load');
+// require('../../app/load');
 
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'hogan');
