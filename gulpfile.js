@@ -20,7 +20,7 @@ wrench.readdirSyncRecursive('./gulp').filter(function(file) {
  *  main optimization build task
  */
 
-gulp.task('default', ['load'], function () {
+gulp.task('default', ['apiserver', 'reloadHrMachine'], function () {
     console.log('------------- Server Begin --------------');
 });
 var nodemon = require('gulp-nodemon');
@@ -57,8 +57,7 @@ gulp.task('reloadHrMachine', function () {
     });
 });
 
-
-gulp.task('load', function() {
+gulp.task('apiserver', function() {
     // nodemon({
     //     script: './src/app/server', // 忽略部分对程序运行无影响的文件的改动，nodemon只监视js文件，可用ext项来扩展别的文件类型
     //     ignore: ["gulpfile.js", "node_modules/", "public/**/*.*"],
@@ -70,7 +69,7 @@ gulp.task('load', function() {
         // the script to run the app
         script: './src/server/server',
         // this listens to changes in any of these files/routes and restarts the application
-        watch: ["server.js", "app.js", "src/server/restfulAPI/", "../../HR/CARD/"],
+        watch: ["server.js", "app.js", "src/server/restfulAPI/"],
         ignore: ["gulpfile.js", "node_modules/"],
         env: {
             'NODE_ENV': 'development'
