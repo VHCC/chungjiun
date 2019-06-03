@@ -701,6 +701,11 @@
             return managerDID === cookies.get('userDID');
         }
 
+        // 對應行政總管
+        $scope.isFitExecutive = function () {
+            return ($scope.roleType == 100)
+        }
+
         //讀取國定假日
         function loadNH(type) {
             $scope.nationalHolidayTables = [];
