@@ -20,7 +20,7 @@ wrench.readdirSyncRecursive('./gulp').filter(function(file) {
  *  main optimization build task
  */
 
-gulp.task('default', ['apiserver', 'reloadHrMachine'], function () {
+gulp.task('default', ['apiserver'], function () {
     console.log('------------- Server Begin --------------');
 });
 var nodemon = require('gulp-nodemon');
@@ -40,22 +40,7 @@ var nodemon = require('gulp-nodemon');
 //     });
 // });
 
-gulp.task('reloadHrMachine', function () {
-    console.log('-------------  Load File --------------');
-    nodemon({
-        // the script to run the app
-        script: './src/server/loadHrMachine',
-        // this listens to changes in any of these files/routes and restarts the application
-        watch: ["../../HR/CARD/"],
-        env: {
-            'NODE_ENV': 'development'
-        },
-        ext: 'txt'
-        // Below i'm using es6 arrow functions but you can remove the arrow and have it a normal .on('restart', function() { // then place your stuff in here }
-    }).on('start', function() {
-        console.log('---------File Load Started.---------')
-    });
-});
+
 
 gulp.task('apiserver', function() {
     // nodemon({
@@ -78,6 +63,24 @@ gulp.task('apiserver', function() {
         // Below i'm using es6 arrow functions but you can remove the arrow and have it a normal .on('restart', function() { // then place your stuff in here }
     }).on('start', function() {
         console.log('---------Node Server Started.---------')
+    });
+});
+
+gulp.task('reloadHrMachine', function () {
+    console.log('-------------  Load File --------------');
+    nodemon({
+        // the script to run the app
+        script: './src/server/loadHrMachine',
+        // this listens to changes in any of these files/routes and restarts the application
+        watch: ["../../HR/CARD/"],
+        ignore: ["gulpfile.js", "node_modules/"],
+        env: {
+            'NODE_ENV': 'development'
+        },
+        ext: 'txt'
+        // Below i'm using es6 arrow functions but you can remove the arrow and have it a normal .on('restart', function() { // then place your stuff in here }
+    }).on('start', function() {
+        console.log('---------File Load Started.---------')
     });
 });
 
