@@ -491,7 +491,7 @@ module.exports = function (app) {
             }
             findData.push(target);
         }
-        // console.log(findData)
+        console.log(findData);
         WorkOffTableForm.aggregate(
             [
                 {
@@ -511,14 +511,17 @@ module.exports = function (app) {
                     }
                 }
             ], function (err, tables) {
+                console.log(tables);
                 if (err) {
+                    console.log(err);
                     res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: tables,
+                    });
                 }
-                res.status(200).send({
-                    code: 200,
-                    error: global.status._200,
-                    payload: tables,
-                });
             }
         )
     })
