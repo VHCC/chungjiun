@@ -96,6 +96,11 @@
                 result += parseInt(TimeUtil.getCalculateHourDiffByTime(tables[index].start_time, tables[index].end_time));
             }
             result = result % 60 < 30 ? Math.round(result / 60) : Math.round(result / 60) - 0.5;
+            if (result < 1) {
+                $scope.table.totalHourTemp = 0;
+                return 0;
+            }
+
             $scope.table.totalHourTemp = result;
             return result;
         }
@@ -150,7 +155,7 @@
                 //     return v < 10 ? '0' + v : v;
                 // }).join(':');
                 result = result[0] + (result[1] < 30 ? 0 : result[1] === 0 ? 0 : 0.5);
-                return result;
+                return result; // 『每30分鐘足分，計0.5，無加班上限制』
             }
         }
 
