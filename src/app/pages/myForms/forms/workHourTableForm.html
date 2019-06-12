@@ -90,7 +90,7 @@
     <uib-tabset active="$tabSetStatus.activeTab">
         <uib-tab heading="個人填寫" ng-click="getTable()">
             <div class="row"
-                 ng-init="getTable()"
+                 ng-init="getTable();fetchRelatedMembers()"
                  id="rowHead">
                 <div class="col-md-12"
                      id="colHead">
@@ -126,10 +126,10 @@
                         function1="changeWeeklyDT"
                         type="1"
                         formatted="yyyy/MM/dd"></my-weekly-date-picker>
-                <button type="button" class="btn btn-default btn-icon" ng-click="decreaseWeek()"><i
+                <button type="button" class="btn btn-default btn-icon" ng-click="decreaseWeek(1)"><i
                         class="ion-chevron-left"></i></button>
                 {{firstDate}} ~ {{lastDate}}
-                <button type="button" class="btn btn-default btn-icon" ng-click="addWeek()"><i
+                <button type="button" class="btn btn-default btn-icon" ng-click="addWeek(1)"><i
                         class="ion-chevron-right"></i></button>
             </div>
             <br>
@@ -1279,10 +1279,10 @@
         <!--<uib-tab heading="個人加班單">-->
             <!--<div ng-include="'app/pages/myForms/forms/workHourTableForm_managerTab.html'"></div>-->
         <!--</uib-tab>-->
-        <uib-tab heading="經理/主任審核" ng-if="roleType === '2' || roleType === '100' || roleType === '6'" ng-click="fetchManagerRelatedMembers()">
+        <uib-tab heading="經理/主任審核" ng-if="roleType === '2' || roleType === '100' || roleType === '6'">
             <div ng-include="'app/pages/myForms/forms/workHourTableForm_managerTab.html'"></div>
         </uib-tab>
-        <uib-tab heading="行政確認" ng-if="roleType === '100'" ng-click="fetchExecutiveRelatedMembers()">
+        <uib-tab heading="行政確認" ng-if="roleType === '100'">
             <div ng-include="'app/pages/myForms/forms/workHourTableForm_executiveTab.html'"></div>
         </uib-tab>
         <uib-tab heading="歷史檢視" ng-if="roleType === '2' || roleType === '100'">
@@ -1293,6 +1293,10 @@
         <!--</uib-tab>-->
         <uib-tab heading="加班單核薪" ng-if="roleType === '100'">
             <div ng-include="'app/pages/myForms/forms/workHourTableForm_executive_workAddTab_click_version.html'"></div>
+        </uib-tab>
+        <uib-tab heading="工時審核明細" ng-if="roleType === '2' || roleType === '100' || roleType === '6'"
+                 ng-click="showManagementList()">
+            <div ng-include="'app/pages/myForms/forms/workHourTableForm_management.html'"></div>
         </uib-tab>
     </uib-tabset>
 

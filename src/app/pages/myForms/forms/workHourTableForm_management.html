@@ -1,0 +1,63 @@
+
+<div>
+    <my-weekly-date-picker
+            function1="changeWeeklyDT"
+            type="5"
+            formatted="yyyy/MM/dd"></my-weekly-date-picker>
+    <button type="button" class="btn btn-default btn-icon" ng-click="decreaseWeek(5)"><i
+            class="ion-chevron-left"></i></button>
+    {{firstDate_management}} ~ {{lastDate_management}}
+    <button type="button" class="btn btn-default btn-icon" ng-click="addWeek(5)"><i
+            class="ion-chevron-right"></i></button>
+</div>
+<br>
+
+<button ng-click="showManagementList()" hidden>qwertyu</button>
+
+<div bs-loading-overlay
+     bs-loading-overlay-reference-id="management_workHour">
+
+    <h3 class="with-line">工時審核明細</h3>
+
+    <div class="row" >
+        <table class="table table-bordered table-hover table-condensed">
+            <thead>
+            <tr style="white-space:nowrap">
+                <td style="vertical-align: inherit; text-align: center" width="20px">No.</td>
+                <td style="vertical-align: inherit; text-align: center" width="60px">姓名</td>
+                <td style="vertical-align: inherit; text-align: center" width="80px">工時表狀態</td>
+                <td style="vertical-align: inherit; text-align: center" width="80px">經理/主任審核狀態</td>
+                <td style="vertical-align: inherit; text-align: center" width="80px">行政確認狀態</td>
+            </tr>
+            </thead>
+            <tbody ng-repeat="item in workHourManagementList">
+            <tr style="vertical-align: inherit; text-align: center">
+                <!--序號-->
+                <td style="vertical-align: inherit; text-align: center">
+                    <span id="prjCode">{{$index + 1}}</span>
+                    <!--<span >{{table.tableID}}</span>-->
+                </td>
+                <!--姓名-->
+                <td style="vertical-align: inherit; text-align: center">
+                    <span id="name">{{item.user_info[0].name}}</span>
+                    <!--<span >{{table.tableID}}</span>-->
+                </td>
+                <!--工時表狀態-->
+                <td style="vertical-align: inherit; text-align: center">
+                    <span id="a_{{$index}}" ng-show="item.work_hour_forms.length != 0">{{checkManagementStatus(item, 1, this)}}</span>
+                    <span ng-show="item.work_hour_forms.length == 0" style="color:#ff0000">未填寫</span>
+                </td>
+                <!--經理/主任審核狀態-->
+                <td style="vertical-align: inherit; text-align: center">
+                    <span id="b_{{$index}}" ng-show="item.work_hour_forms.length != 0">{{checkManagementStatus(item, 2, this)}}</span>
+                </td>
+                <!--行政確認狀態-->
+                <td style="vertical-align: inherit; text-align: center">
+                    <span id="c_{{$index}}" ng-show="item.work_hour_forms.length != 0">{{checkManagementStatus(item, 3, this)}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
