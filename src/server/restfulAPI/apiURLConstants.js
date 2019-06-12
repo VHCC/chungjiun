@@ -70,6 +70,9 @@ global.apiUrl = {
     post_work_hour_table_total_update_send_review : '/api/post_work_hour_table_total_update_send_review',
     post_work_hour_table_update : '/api/post_work_hour_table_update',
     post_work_hour_table_update_array : '/api/post_work_hour_table_update_array',
+        // management
+    get_work_hour_table_management_list : '/api/get_work_hour_table_management_list',
+    insert_work_hour_table_management_related_user_temp : '/api/insert_work_hour_table_management_related_user_temp',
 
     //workHourTable Form Work Add
     post_work_hour_work_add_create_item : '/api/post_work_hour_work_add_create_item',

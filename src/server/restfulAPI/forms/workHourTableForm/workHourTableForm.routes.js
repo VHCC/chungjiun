@@ -1,6 +1,7 @@
 var WorkHourForm = require('../../models/workHourForm');
 var WorkHourTableForm = require('../../models/workHourTableForm');
 var Project = require('../../models/project');
+var Temp = require('../../models/temp');
 
 module.exports = function (app) {
     'use strict';
@@ -472,7 +473,206 @@ module.exports = function (app) {
             code: 200,
             error: global.status._200,
         })
+    })
 
+    // in order to insert temp related usersDID
+    app.post(global.apiUrl.insert_work_hour_table_management_related_user_temp, function (req, res) {
+        console.log(req.body.users);
+        var index = 0
+        while(index < req.body.users.length) {
+            var items = {};
+            items.userID = req.body.users[index];
+            Temp.create({
+                tempID: req.body.users[index],
+                creatorDID: req.body.creatorDID
+            });
+            index ++;
+        }
+        res.status(200).send({
+            code: 200,
+            error: global.status._200,
+        });
+    })
+
+    // management List
+    app.post(global.apiUrl.get_work_hour_table_management_list, function (req, res) {
+        Temp.aggregate(
+            [
+                {
+                    $lookup:{
+                        from: "workhourforms",
+                        let: {
+                            userID: "$tempID",
+                            mainID: "$creatorDID"
+                        },
+                        pipeline: [
+                            { $match:
+                                    { $expr:
+                                            { $and:
+                                                    [
+                                                        { $eq: [ "$creatorDID",  "$$userID" ] },
+                                                        { $eq: [ "$$mainID", req.body.creatorDID ] },
+                                                        { $eq: [ "$create_formDate",  req.body.date ] }
+                                                    ]
+                                            }
+                                    }
+                            },
+                            { $project: {
+                                    _id: 0
+                                }
+                            }
+                        ],
+                        as: "work_hour_forms"
+                    }
+                },
+
+                // {
+                //     $match:{
+                //         "work_hour_forms.create_formDate": "2019/02/11"
+                //     }
+                // },
+                // {
+                //     $match: {
+                //         create_formDate: "2019/02/11"
+                //         // isSendReview: true,
+                //         // isBossCheck: true,
+                //         // isExecutiveCheck: false
+                //     }
+                // },
+                {
+                    $addFields: {
+                        "_aaa": {
+                            $toObjectId: "$tempID"
+                        }
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "_aaa",
+                        foreignField: "_id",
+                        as: "user_info"
+                    }
+                },
+                {
+                    $project: {
+                        "work_hour_forms": 1,
+                        "user_info": 1,
+                        // "_id": 1,
+                        "tempID": 1,
+                        // "creatorDID":0
+                        // "user_info" : 1
+                    }
+                },
+                {
+                    $sort: {
+                        "tempID": 1
+                    }
+                },
+                {
+                    $lookup:{
+                        from: "workhourtableforms",
+                        localField: "work_hour_forms.formTables.tableID",
+                        foreignField: "_id",
+                        as: "work_hour_tables"
+                    }
+                },
+                // {
+                //     $match: {
+                //         create_formDate: "2019/02/11",
+                //         // isSendReview: true,
+                //         // isBossCheck: true,
+                //         // isExecutiveCheck: false
+                //     }
+                // },
+                // {
+                //     $group: {
+                //         _id: "$creatorDID",
+                //         count: {
+                //             $sum: 1
+                //         }
+                //     }
+                // }
+            ], function (err, tables) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    Temp.remove({
+                    }, function (err) {
+                        if (err) {
+                            console.log(err)
+                        }
+                    });
+
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: tables,
+                    });
+                }
+            }
+        )
+
+        // WorkHourForm.aggregate(
+        //     [
+        //         {
+        //             $lookup:{
+        //                 from: "workhourtableforms",
+        //                 localField: "formTables.tableID",
+        //                 foreignField: "_id",
+        //                 as: "work_hour_tables"
+        //             }
+        //         },
+        //         {
+        //             $match: {
+        //                 create_formDate: "2019/02/11",
+        //                 // isSendReview: true,
+        //                 // isBossCheck: true,
+        //                 // isExecutiveCheck: false
+        //             }
+        //         },
+        //         {
+        //             $addFields: {
+        //                 "_aaa": {
+        //                     $toObjectId: "$creatorDID"
+        //                 }
+        //             }
+        //         },
+        //         {
+        //             $lookup: {
+        //                 from: "users",
+        //                 localField: "_aaa",
+        //                 foreignField: "_id",
+        //                 as: "user_info"
+        //             }
+        //         },
+        //         {
+        //             $project: {
+        //                 "work_hour_tables": 1,
+        //                 "user_info" : 1
+        //             }
+        //         }
+        //         // {
+        //         //     $group: {
+        //         //         _id: "$creatorDID",
+        //         //         count: {
+        //         //             $sum: 1
+        //         //         }
+        //         //     }
+        //         // }
+        //     ], function (err, tables) {
+        //         if (err) {
+        //             res.send(err);
+        //         } else {
+        //             // Temp.drop();
+        //             res.status(200).send({
+        //                 code: 200,
+        //                 error: global.status._200,
+        //                 payload: tables,
+        //             });
+        //         }
+        //     }
+        // )
     })
 
 }

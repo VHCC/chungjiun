@@ -195,6 +195,15 @@
                 updateWHTableArray: function(formData) { // 一鍵完成
                     return http.post('/api/post_work_hour_table_update_array', formData);
                 },
+
+                // management
+                insertWorkHourFormManagementRelatedMembersTemp: function (formData) {
+                    return http.post('/api/insert_work_hour_table_management_related_user_temp', formData);
+                },
+
+                fetchWorkHourFormManagementList: function (formData) {
+                    return http.post('/api/get_work_hour_table_management_list', formData);
+                },
             }
         }])
         .factory('WorkOffFormUtil', ['$http', function (http) {
