@@ -26,6 +26,7 @@ module.exports = function (app) {
         })
     })
 
+    // by user
     app.post(global.apiUrl.post_project_all_related_to_user_with_disabled, function (req, res) {
         var findData = [];
         findData.push({managerID: req.body.relatedID});

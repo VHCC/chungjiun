@@ -62,7 +62,7 @@
                         {{prj.mainName}}
                     </div>
                     <br/>
-                    <div class="buttons" ng-show="false">
+                    <div class="buttons">
                         <!-- button to show form -->
                         <!--<button type="button" -->
                                 <!--class="btn btn-primary editable-table-button btn-xs"-->
@@ -73,7 +73,7 @@
                         <button type="button"
                                 ng-disabled="uiMainNameForm.$visible"
                                 ng-click="uiMainNameForm.$show()"
-                                ng-show="!uiMainNameForm.$visible;isFitPrjManager(prj.managerID)"
+                                ng-show="!uiMainNameForm.$visible;isFitPrjManager(prj.managerID) || isFitExecutive()"
                                 class="btn btn-primary editable-table-button btn-xs">
                             更換
                         </button>
@@ -107,7 +107,7 @@
                         {{prj.prjName}}
                     </div>
                     <br/>
-                    <div class="buttons" ng-show="false">
+                    <div class="buttons">
                         <!-- button to show form -->
                         <!--<button type="button" -->
                         <!--class="btn btn-primary editable-table-button btn-xs"-->
@@ -118,7 +118,7 @@
                         <button type="button"
                                 ng-disabled="uiPrjNameForm.$visible"
                                 ng-click="uiPrjNameForm.$show()"
-                                ng-show="!uiPrjNameForm.$visible;isFitPrjManager(prj.managerID)"
+                                ng-show="!uiPrjNameForm.$visible;isFitPrjManager(prj.managerID) || isFitExecutive()"
                                 class="btn btn-primary editable-table-button btn-xs">
                             更換
                         </button>
@@ -151,7 +151,7 @@
                         {{prj.prjSubName}}
                     </div>
                     <br/>
-                    <div class="buttons" ng-show="false">
+                    <div class="buttons">
                         <!-- button to show form -->
                         <!--<button type="button" -->
                         <!--class="btn btn-primary editable-table-button btn-xs"-->
@@ -162,7 +162,7 @@
                         <button type="button"
                                 ng-disabled="uiPrjSubNameForm.$visible"
                                 ng-click="uiPrjSubNameForm.$show()"
-                                ng-show="!uiPrjSubNameForm.$visible;isFitPrjManager(prj.managerID)"
+                                ng-show="!uiPrjSubNameForm.$visible;isFitPrjManager(prj.managerID) || isFitExecutive()"
                                 class="btn btn-primary editable-table-button btn-xs">
                             更換
                         </button>
@@ -200,7 +200,7 @@
                 <button type="button"
                         ng-disabled="rowform.$visible"
                         ng-click="rowform.$show()"
-                        ng-show="isFitPrjManager(prj.managerID)"
+                        ng-show="isFitPrjManager(prj.managerID) || isFitExecutive()"
                         class="btn btn-primary editable-table-button btn-xs">
                     指派主承辦
                 </button>
@@ -233,7 +233,7 @@
                         <button type="button" class="btn btn-primary editable-table-button btn-xs"
                                 ng-disabled="uiSelectForm.$visible"
                                 ng-click="uiSelectForm.$show()"
-                                ng-show="!uiSelectForm.$visible;isFitPrjManager(prj.managerID)">
+                                ng-show="!uiSelectForm.$visible;isFitPrjManager(prj.managerID) || isFitExecutive()">
                             分派協辦
                         </button>
                         <!-- buttons to submit / cancel form -->
@@ -258,12 +258,12 @@
             <!--專案上線-->
             <td style="width: 5%; padding-top: 5px">
                 <ba-switcher
-                        ng-show="isFitPrjManager(prj.managerID)"
+                        ng-show="isFitPrjManager(prj.managerID) || isFitExecutive()"
                         ng-click="changePrjStatus(this)"
                         ng-model="prj.enable"
                         switcher-style="primary"
                         switcher-value="prj.enable"/>
-                <div ng-show="!isFitPrjManager(prj.managerID)">
+                <div ng-show="!isFitPrjManager(prj.managerID) || isFitExecutive()">
                     <span ng-if="prj.enable">
                         開啟
                     </span>

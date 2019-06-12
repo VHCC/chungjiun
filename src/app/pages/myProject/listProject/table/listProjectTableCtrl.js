@@ -12,11 +12,22 @@
             var formData = {
                 relatedID: $cookies.get('userDID'),
             }
-            var promise = $http.post('/api/post_project_all_related_to_user_with_disabled', formData)
-                .success(function (allProjects) {
-                    return allProjects;
-                });
-            return promise;
+
+            if ($cookies.get('roletype') == "100") {
+                var promise = $http.get('/api/projectFindAll')
+                    .success(function (allProjects) {
+                        return allProjects;
+                    });
+                return promise;
+            } else {
+                var promise = $http.post('/api/post_project_all_related_to_user_with_disabled', formData)
+                    .success(function (allProjects) {
+                        return allProjects;
+                    });
+                return promise;
+            }
+
+
         })
         .controller('listProjectTableCtrl',
             [
@@ -190,6 +201,11 @@
 
         $scope.isFitPrjManager = function(managerDID) {
             return managerDID === $cookies.get('userDID');
+        }
+
+        // 對應行政總管
+        $scope.isFitExecutive = function () {
+            return ($cookies.get('roletype') == "100")
         }
 
         $scope.showMajor = function (project) {
