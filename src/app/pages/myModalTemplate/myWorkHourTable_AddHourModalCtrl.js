@@ -150,7 +150,7 @@
                 //     return v < 10 ? '0' + v : v;
                 // }).join(':');
                 result = result[0] + (result[1] < 30 ? 0 : result[1] === 0 ? 0 : 0.5);
-                return result < 1 ? 0 : result >= 8 ? 8 : result;
+                return result;
             }
         }
 
