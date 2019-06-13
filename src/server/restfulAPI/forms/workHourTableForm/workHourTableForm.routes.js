@@ -1,5 +1,5 @@
 var WorkHourForm = require('../../models/workHourForm');
-var WorkHourTableForm = require('../../models/workHourTableForm');
+var WorkHourTable = require('../../models/workHourTableForm');
 var Project = require('../../models/project');
 var Temp = require('../../models/temp');
 
@@ -35,7 +35,7 @@ module.exports = function (app) {
             };
             // console.log(findData);
             // 刪除既有 工時表格
-            WorkHourTableForm.remove(
+            WorkHourTable.remove(
                 {
                     $or: findData,
                 }, function (err) {
@@ -49,7 +49,7 @@ module.exports = function (app) {
         var resIndex = 0;
         for (var index = 0; index < req.body.formTables.length; index++) {
             try {
-                WorkHourTableForm.create({
+                WorkHourTable.create({
                     creatorDID: req.body.formTables[index].creatorDID,
                     prjDID: req.body.formTables[index].prjDID,
                     create_formDate: req.body.create_formDate,
@@ -344,7 +344,7 @@ module.exports = function (app) {
 
         // console.log(query);
 
-        WorkHourTableForm.find(query, function (err, tables) {
+        WorkHourTable.find(query, function (err, tables) {
             if (err) {
                 res.send(err);
             }
@@ -359,7 +359,7 @@ module.exports = function (app) {
 
     // update table form send review
     app.post(global.apiUrl.post_work_hour_table_update_send_review, function (req, res) {
-        WorkHourTableForm.update({
+        WorkHourTable.update({
             _id: req.body.tableID,
         }, {
             $set: {
@@ -380,7 +380,7 @@ module.exports = function (app) {
     // update all table ***
     app.post(global.apiUrl.post_work_hour_table_total_update_send_review, function (req, res) {
         for (var index = 0; index < req.body.tableArray.length; index++) {
-            WorkHourTableForm.update({
+            WorkHourTable.update({
                 _id: req.body.tableArray[index],
             }, {
                 $set: {
@@ -427,7 +427,7 @@ module.exports = function (app) {
         //     setQuery.isExecutiveCheck = req.body.isExecutiveCheck;
         // }
 
-        WorkHourTableForm.update({
+        WorkHourTable.update({
             _id: req.body.tableID,
         }, {
             $set: query
@@ -459,7 +459,7 @@ module.exports = function (app) {
         console.log(query);
 
         for (var index = 0; index < req.body.tableIDs.length; index++) {
-            WorkHourTableForm.update({
+            WorkHourTable.update({
                 _id: req.body.tableIDs[index],
             }, {
                 $set: query
@@ -476,14 +476,32 @@ module.exports = function (app) {
     })
 
     // in order to insert temp related usersDID
-    app.post(global.apiUrl.insert_work_hour_table_management_related_user_temp, function (req, res) {
-        console.log(req.body.users);
+    // app.post(global.apiUrl.insert_work_hour_table_temp, function (req, res) {
+    //     console.log(req.body.users);
+    //     var index = 0
+    //     while(index < req.body.users.length) {
+    //         var items = {};
+    //         items.userID = req.body.users[index];
+    //         Temp.create({
+    //             tempID: req.body.users[index],
+    //             creatorDID: req.body.creatorDID
+    //         });
+    //         index ++;
+    //     }
+    //     res.status(200).send({
+    //         code: 200,
+    //         error: global.status._200,
+    //     });
+    // })
+
+    app.post(global.apiUrl.insert_work_hour_table_temp, function (req, res) {
+        console.log(req.body.temps);
         var index = 0
-        while(index < req.body.users.length) {
+        while(index < req.body.temps.length) {
             var items = {};
-            items.userID = req.body.users[index];
+            items.userID = req.body.temps[index];
             Temp.create({
-                tempID: req.body.users[index],
+                tempID: req.body.temps[index],
                 creatorDID: req.body.creatorDID
             });
             index ++;
@@ -598,6 +616,7 @@ module.exports = function (app) {
                     res.send(err);
                 } else {
                     Temp.remove({
+                        creatorDID: req.body.creatorDID
                     }, function (err) {
                         if (err) {
                             console.log(err)
@@ -675,4 +694,221 @@ module.exports = function (app) {
         // )
     })
 
+    // ------------------------ Statistics ---------------------
+    app.post(global.apiUrl.query_statistics_form, function (req, res) {
+        console.log(req.body);
+
+
+        Project.aggregate( // 由專案找起
+            [
+                {
+                    $match: {
+                        branch: "C",
+                        year: "108",
+                        code: "02",
+                        // isSendReview: true,
+                        // isBossCheck: true,
+                        // isExecutiveCheck: false
+                    }
+                },
+                {
+                    $addFields: {
+                        "_projectString": {
+                            $toString: "$_id"
+                        }
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "workhourforms", // 年跟月的屬性
+                        localField: "_projectString",
+                        foreignField: "formTables.prjDID",
+                        as: "work_hour_forms"
+                    }
+                },
+                // {
+                //     $unwind: "$work_hour_forms"
+                // },
+                // {
+                //     $unwind: "$work_hour_forms.formTables"
+                // },
+                // {
+                //     $addFields: {
+                //         "_tableDID": {
+                //             $toObjectId: "$work_hour_forms.formTables.tableID"
+                //         }
+                //     }
+                // },
+                // {
+                //     $lookup:{
+                //         from: "workhourtableforms",
+                //         let: {
+                //             prjDID: "$_projectString",
+                //             tableID: "$_tableDID",
+                //         },
+                //         pipeline: [
+                //             // {
+                //             //     $addFields: {
+                //             //         "_tableID": "$work_hour_forms.formTables.tableID"
+                //             //     }
+                //             // },
+                //             // {
+                //             //     $unwind : "$_tableID"
+                //             // },
+                //             {
+                //                 $match:
+                //                     {
+                //                         $expr:
+                //                             {
+                //                                 $and:
+                //                                     [
+                //                                         { $eq: [ "$prjDID",  "$$prjDID" ] },
+                //                                         { $eq: [ "$_id",  "$$tableID" ] },
+                //                                     ]
+                //                             }
+                //                     }
+                //
+                //             },
+                //
+                //             {
+                //                 $project: {
+                //                     _id: 0
+                //                 }
+                //             }
+                //         ],
+                //         as: "work_hour_tables"
+                //     }
+                // },
+                // {
+                //     $project: {
+                //         "_id":0,
+                //         "_projectString":1,
+                //         "work_hour_forms": 1,
+                //         "work_hour_tables": 1
+                //     }
+                // }
+            ], function (err, tables) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    // Temp.drop();
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: tables,
+                    });
+                }
+            }
+        )
+
+    })
+
+    app.post(global.apiUrl.query_statistics_tables, function (req, res) {
+        console.log(req.body);
+        Temp.aggregate(
+            [
+                {
+                    $addFields: {
+                        "_tableID": {
+                            $toObjectId: "$tempID"
+                        }
+                    }
+                },
+                {
+                    $lookup:{
+                        from: "workhourtableforms",
+                        let: {
+                            tableID: "$_tableID",
+                            mainID: "$creatorDID"
+                        },
+                        pipeline: [
+                            { $match:
+                                    { $expr:
+                                            { $and:
+                                                    [
+                                                        { $eq: [ "$_id",  "$$tableID" ] },
+                                                        { $eq: [ "$$mainID", req.body.creatorDID ] },
+                                                        // { $eq: [ "$create_formDate",  req.body.date ] }
+                                                    ]
+                                            }
+                                    }
+                            },
+                            { $project: {
+                                    _id: 0
+                                }
+                            }
+                        ],
+                        as: "work_hour_tables"
+                    }
+                },
+                {
+                    $unwind: "$work_hour_tables"
+                },
+                {
+                    $addFields: {
+                        "_userDID": {
+                            $toObjectId: "$work_hour_tables.creatorDID"
+                        }
+                    }
+                },
+                {
+                    $addFields: {
+                        "_prjDID": {
+                            $toObjectId: "$work_hour_tables.prjDID"
+                        }
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "_userDID",
+                        foreignField: "_id",
+                        as: "user_info"
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "projects",
+                        localField: "_prjDID",
+                        foreignField: "_id",
+                        as: "project_info"
+                    }
+                },
+                // {
+                //     $project:
+                //         {
+                //             "_userID": {
+                //                 $toObjectId: "$work_hour_tables.creatorDID"
+                //             }
+                //         }
+                // }
+                // {
+                //     $sort: {
+                //         "tempID": 1
+                //     }
+                // },
+            ], function (err, tables) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    Temp.remove({
+                        creatorDID: req.body.creatorDID
+                    }, function (err) {
+                        if (err) {
+                            console.log(err)
+                        }
+                    });
+
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: tables,
+                    });
+                }
+            }
+        )
+
+    })
+
+    // end of file
 }

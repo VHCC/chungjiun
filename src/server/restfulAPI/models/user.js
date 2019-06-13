@@ -19,6 +19,7 @@ module.exports = mongoose.model('User', {
     // value="3">工程師
     // value="4">行政
     // value="5">工讀生
+    // value="6">主任
     // value="100">行政總管
     // 員工角色
     roleType: {

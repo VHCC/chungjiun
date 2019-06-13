@@ -6,7 +6,7 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.myInput')
-        .controller('MyMonthPickerCtrl',
+        .controller('myMonthPickerCtrl',
             [
                 '$scope',
                 'DateUtil',
@@ -15,7 +15,7 @@
 
     /** @ngInject */
     function myMonthPickerCtrl($scope, DateUtil) {
-
+        console.log(" - myMonthPickerCtrl()");
         $scope.openMonthPicker = showMonthPicker;
         $scope.myDT = new Date();
         $scope.myMonth = moment(new Date()).format('YYYY/MM');
@@ -31,15 +31,21 @@
             }
         });
         function showMonthPicker() {
+            console.log(" - showMonthPicker()");
             $scope.monthPickerDom = this;
             $scope.opened = true;
         }
 
         $scope.shiftMonth = function (dom) {
+            console.log(" - shiftMonth()");
             $scope.isShiftMonthSelect = true;
-            $scope.myMonth = moment($scope.myMonth).format('YYYY/MM');
+            $scope.myMonth = moment($scope.myMonth).format($scope.format);
             $scope.myDT = moment(dom.myMonth);
-            console.log($scope);
+            // console.log($scope);
+        }
+
+        $scope.qqqqqwww = function () {
+            console.log(" - qqqqqwww");
         }
     }
 })();

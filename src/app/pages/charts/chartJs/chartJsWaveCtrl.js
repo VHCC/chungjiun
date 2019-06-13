@@ -10,10 +10,8 @@
 
   /** @ngInject */
   function chartJsWaveCtrl($scope, $interval, stopableInterval) {
-    $scope.labels =["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    $scope.data = [1, 9, 3, 4, 5, 6, 7, 8, 2].map(function(e){
-      return Math.sin(e) * 25 +25;
-    });
+    $scope.labels =["減少碳排放", "拯救樹木", "淨化水源", "減少塑膠原料", "環保影響力"];
+    $scope.data = [30, 50, 100, 30, 70];
 
     stopableInterval.start($interval, function(){
       var tempArray = [];
@@ -23,7 +21,7 @@
       }
       tempArray[0] = lastElement;
       $scope.data = tempArray;
-    }, 400)
+    }, 5000)
   }
 
 })();

@@ -72,7 +72,11 @@ global.apiUrl = {
     post_work_hour_table_update_array : '/api/post_work_hour_table_update_array',
         // management
     get_work_hour_table_management_list : '/api/get_work_hour_table_management_list',
-    insert_work_hour_table_management_related_user_temp : '/api/insert_work_hour_table_management_related_user_temp',
+    insert_work_hour_table_temp : '/api/insert_work_hour_table_temp',
+        // statistics
+    query_statistics_form : '/api/query_statistics_form',
+    query_statistics_tables : '/api/query_statistics_tables',
+
 
     //workHourTable Form Work Add
     post_work_hour_work_add_create_item : '/api/post_work_hour_work_add_create_item',

@@ -3719,7 +3719,7 @@
             var apiData = {};
 
             apiData = {
-                users: $scope.mainRelatedMembers,
+                temps: $scope.mainRelatedMembers,
                 creatorDID: cookies.get('userDID')
                 // date: $scope.firstFullDate_management
             }
@@ -3729,7 +3729,7 @@
                 referenceId: 'management_workHour'
             });
 
-            WorkHourUtil.insertWorkHourFormManagementRelatedMembersTemp(apiData)
+            WorkHourUtil.insertWorkHourTempsData(apiData)
                 .success(function (res) {
                     apiData = {
                         date: $scope.firstFullDate_management,

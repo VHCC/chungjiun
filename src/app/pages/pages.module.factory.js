@@ -197,13 +197,22 @@
                 },
 
                 // management
-                insertWorkHourFormManagementRelatedMembersTemp: function (formData) {
-                    return http.post('/api/insert_work_hour_table_management_related_user_temp', formData);
+                insertWorkHourTempsData: function (formData) {
+                    return http.post('/api/insert_work_hour_table_temp', formData);
                 },
 
                 fetchWorkHourFormManagementList: function (formData) {
                     return http.post('/api/get_work_hour_table_management_list', formData);
                 },
+
+                // statistics
+                queryStatisticsForms: function (formData) {
+                    return http.post('/api/query_statistics_form', formData);
+                },
+
+                queryStatisticsTables: function (formData) {
+                    return http.post('/api/query_statistics_tables', formData);
+                }
             }
         }])
         .factory('WorkOffFormUtil', ['$http', function (http) {
