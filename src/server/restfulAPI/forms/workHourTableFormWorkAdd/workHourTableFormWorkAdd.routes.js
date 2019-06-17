@@ -34,6 +34,7 @@ module.exports = function (app) {
                         workAddType: req.body.formTables[index].workAddType,
                         create_formDate: req.body.formTables[index].create_formDate,
                         prjDID: req.body.formTables[index].prjDID,
+                        year: req.body.formTables[index].year,
                         month: req.body.formTables[index].month,
                         day: req.body.formTables[index].day,
                         start_time: req.body.formTables[index].start_time,
