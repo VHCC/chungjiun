@@ -3778,7 +3778,7 @@
             switch($scope.roleType) {
                 case "100": {
                     apiData = {
-                        temps: $scope.mainRelatedMembers_all,
+                        users: $scope.mainRelatedMembers_all,
                         creatorDID: cookies.get('userDID')
                         // date: $scope.firstFullDate_management
                     }
