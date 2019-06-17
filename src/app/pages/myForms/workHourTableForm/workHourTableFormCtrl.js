@@ -2811,18 +2811,19 @@
                             $scope.mainRelatedMembers = relatedMembers;
                             $scope.showRelatedMembersTableReview(typeManager);
                         })
-                    break;
                     // 行政總管跟每個人都有關
 
                     // 所有人，對照資料
                     User.getAllUsers()
                         .success(function (allUsers) {
+                            var relatedMembers_all = [];
+
                             vm.executiveUsers = allUsers;
 
                             for (var index = 0; index < vm.executiveUsers.length; index ++) {
-                                relatedMembers.push(vm.executiveUsers[index]._id);
+                                relatedMembers_all.push(vm.executiveUsers[index]._id);
                             }
-                            $scope.mainRelatedMembers = relatedMembers;
+                            $scope.mainRelatedMembers_all = relatedMembers_all;
                             $scope.showRelatedMembersTableReview(typeExecutive);
                         });
                     break;
@@ -2843,6 +2844,11 @@
             $scope.tables_review = [];
             //紀錄 manager, executive review data.
             $scope.tables_review.tablesItems = [];
+
+            var getData = {
+                relatedMembers: $scope.mainRelatedMembers,
+                create_formDate: targetFormFullDate,
+            }
 
             switch(type) {
                 case typeManager: {
@@ -2867,6 +2873,11 @@
                     $scope.usersReviewForManagers = [];
 
                     targetFormFullDate = $scope.firstFullDate_manager;
+
+                    getData = {
+                        relatedMembers: $scope.mainRelatedMembers,
+                        create_formDate: targetFormFullDate,
+                    }
                 } break;
                 case typeExecutive: {
 
@@ -2890,14 +2901,16 @@
                     $scope.usersReviewForExecutive = [];
 
                     targetFormFullDate = $scope.firstFullDate_executive;
+
+                    getData = {
+                        relatedMembers: $scope.mainRelatedMembers_all,
+                        create_formDate: targetFormFullDate,
+                    }
                 } break;
             }
 
-            var getData = {
-                relatedMembers: $scope.mainRelatedMembers,
-                create_formDate: targetFormFullDate,
-            }
 
+            console.log(getData);
             WorkHourUtil.getWorkHourFormMultiple(getData)
                 .success(function (res) {
                     var relatedUsersAndTables = [];
@@ -2941,7 +2954,7 @@
                             var isProjectIncluded = false;
                             inter:
                             for (var tablesIndex = 0; tablesIndex < res.payload[formIndex].formTables.length; tablesIndex ++) {
-                                if (managersRelatedProjects.includes(res.payload[formIndex].formTables[tablesIndex].prjDID) || type == 2 || type == 6) { // 行政總管跟每個人都有關, 經理只跟專案掛鉤
+                                if (managersRelatedProjects.includes(res.payload[formIndex].formTables[tablesIndex].prjDID) || type == typeExecutive) { // 行政總管跟每個人都有關, 經理只跟專案掛鉤
                                     isProjectIncluded = true;
                                     break inter;
                                 }
@@ -3761,6 +3774,17 @@
                 // date: $scope.firstFullDate_management
             }
             // console.log(apiData);
+
+            switch($scope.roleType) {
+                case "100": {
+                    apiData = {
+                        temps: $scope.mainRelatedMembers_all,
+                        creatorDID: cookies.get('userDID')
+                        // date: $scope.firstFullDate_management
+                    }
+                }
+                break;
+            }
 
             bsLoadingOverlayService.start({
                 referenceId: 'management_workHour'
