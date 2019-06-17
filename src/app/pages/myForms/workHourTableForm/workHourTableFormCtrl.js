@@ -2735,6 +2735,7 @@
             var relatedMembers = [];
 
             switch($scope.roleType) {
+                case "100":
                 case "6": // 主任
                 case "2": // 經理
                     Project.getProjectRelatedToManager(formData)
