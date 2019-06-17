@@ -263,7 +263,7 @@
                         ng-model="prj.enable"
                         switcher-style="primary"
                         switcher-value="prj.enable"/>
-                <div ng-show="!isFitPrjManager(prj.managerID) || isFitExecutive()">
+                <div ng-show="!isFitPrjManager(prj.managerID) && !isFitExecutive()">
                     <span ng-if="prj.enable">
                         開啟
                     </span>
