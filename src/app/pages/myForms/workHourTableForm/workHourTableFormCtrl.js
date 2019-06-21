@@ -3476,31 +3476,33 @@
             switch (tableIndex) {
                 case 0: {
                     if (day < crossDay || crossDay == -1) {
+                        var result = 0;
                         for (var index = 0; index < tables.length; index++) {
                             // console.log("day= " + day);
                             // console.log("index= " + index);
-                            // console.log("tables[index].day= " + tables[index].day);
+                            console.log("tables[index].day= " + tables[index].day);
                             if (day == tables[index].day && (tables[index].isBossCheck && tables[index].isExecutiveCheck)) {
-                                return getHourDiffByTime(tables[index].start_time, tables[index].end_time, tables[index].workOffType);
+                                result += getHourDiffByTime(tables[index].start_time, tables[index].end_time, tables[index].workOffType);
                             };
                         }
-                        return 0;
+                        return result;
                     }
                 }
                 break;
                 case 1:{
                     // console.log(tables);
                     if (day >= crossDay || day === 0) {
+                        var result = 0;
                         for (var index = 0; index < tables.length; index++) {
                             // console.log("day= " + day);
                             // console.log("index= " + index);
                             // console.log("tables[index].day= " + tables[index].day);
                             if (day == tables[index].day && (tables[index].isBossCheck && tables[index].isExecutiveCheck)) {
                                 // console.log(getHourDiffByTime(tables[index].start_time, tables[index].end_time, tables[index].workOffType));
-                                return getHourDiffByTime(tables[index].start_time, tables[index].end_time, tables[index].workOffType);
+                                result += getHourDiffByTime(tables[index].start_time, tables[index].end_time, tables[index].workOffType);
                             };
                         }
-                        return 0
+                        return result;
                     }
                 }
                 break;
