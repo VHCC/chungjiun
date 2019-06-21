@@ -698,109 +698,288 @@ module.exports = function (app) {
     app.post(global.apiUrl.query_statistics_form, function (req, res) {
         console.log(req.body);
 
+        var prjInfo = {};
+
+        if (req.body.branch != undefined) {
+            prjInfo.branch = req.body.branch;
+        }
+
+        if (req.body.year != undefined) {
+            prjInfo.year = req.body.year;
+        }
+
+        if (req.body.code != undefined) {
+            prjInfo.code = req.body.code;
+        }
+
+        if (req.body.prjNumber != undefined) {
+            prjInfo.prjNumber = req.body.prjNumber;
+        }
+
+        if (req.body.prjSubNumber != undefined) {
+            prjInfo.prjSubNumber = req.body.prjSubNumber;
+        }
+
+        if (req.body.type != undefined) {
+            prjInfo.type = req.body.type;
+        }
+        // var prjInfo = {
+        //     branch: "C",
+        //     year: "108",
+        //     code: "02",
+        //     prjNumber: "01",
+        // }
+
+        console.log(prjInfo);
+
+        var $project_hour_table_Conds = [
+            {$eq: [ "$work_hour_forms.formTables.prjDID", "$_projectTargetString" ]}
+        ];
+
+        var $project_hour_add_table_Conds = [
+            {$eq: [ "$work_hour_add_tables.prjDID", "$_projectTargetString" ]}
+        ]
+
+        if (req.body.form_year != undefined) {
+            $project_hour_table_Conds.push({$eq: [ "$work_hour_forms.year", req.body.form_year ]});
+            $project_hour_add_table_Conds.push({$eq: [ "$work_hour_add_tables.year", req.body.form_year ]});
+        }
+
+        if (req.body.form_month != undefined) {
+            $project_hour_table_Conds.push({$eq: [ "$work_hour_forms.month", req.body.form_month ]});
+            $project_hour_add_table_Conds.push({$eq: [ "$work_hour_add_tables.month", req.body.form_month ]});
+        }
 
         Project.aggregate( // 由專案找起
             [
                 {
-                    $match: {
-                        branch: "C",
-                        year: "108",
-                        code: "02",
-                        // isSendReview: true,
-                        // isBossCheck: true,
-                        // isExecutiveCheck: false
-                    }
+                    $match: prjInfo
                 },
                 {
                     $addFields: {
-                        "_projectString": {
+                        "_projectTargetString": {
                             $toString: "$_id"
-                        }
+                        },
+                        "_project_info" : "$$CURRENT"
                     }
                 },
                 {
                     $lookup: {
                         from: "workhourforms", // 年跟月的屬性
-                        localField: "_projectString",
+                        localField: "_projectTargetString",
                         foreignField: "formTables.prjDID",
                         as: "work_hour_forms"
                     }
                 },
-                // {
-                //     $unwind: "$work_hour_forms"
-                // },
-                // {
-                //     $unwind: "$work_hour_forms.formTables"
-                // },
-                // {
-                //     $addFields: {
-                //         "_tableDID": {
-                //             $toObjectId: "$work_hour_forms.formTables.tableID"
-                //         }
-                //     }
-                // },
-                // {
-                //     $lookup:{
-                //         from: "workhourtableforms",
-                //         let: {
-                //             prjDID: "$_projectString",
-                //             tableID: "$_tableDID",
-                //         },
-                //         pipeline: [
-                //             // {
-                //             //     $addFields: {
-                //             //         "_tableID": "$work_hour_forms.formTables.tableID"
-                //             //     }
-                //             // },
-                //             // {
-                //             //     $unwind : "$_tableID"
-                //             // },
-                //             {
-                //                 $match:
-                //                     {
-                //                         $expr:
-                //                             {
-                //                                 $and:
-                //                                     [
-                //                                         { $eq: [ "$prjDID",  "$$prjDID" ] },
-                //                                         { $eq: [ "$_id",  "$$tableID" ] },
-                //                                     ]
-                //                             }
-                //                     }
-                //
-                //             },
-                //
-                //             {
-                //                 $project: {
-                //                     _id: 0
-                //                 }
-                //             }
-                //         ],
-                //         as: "work_hour_tables"
-                //     }
-                // },
-                // {
-                //     $project: {
-                //         "_id":0,
-                //         "_projectString":1,
-                //         "work_hour_forms": 1,
-                //         "work_hour_tables": 1
-                //     }
-                // }
+                {
+                    $unwind: "$work_hour_forms"
+                },
+                {
+                    $unwind: "$work_hour_forms.formTables"
+                },
+                {
+                    $project: {
+                        "_id": 0,
+                        "_work_hour_forms_info" : {
+                            $cond: {
+                                if: {
+                                    $and: $project_hour_table_Conds
+                                },
+                                then: "$work_hour_forms",
+                                else: "$$REMOVE"
+                            }
+                        },
+                        "_project_info" : 1,
+                    }
+                },
+                {
+                    $unwind: "$_work_hour_forms_info"
+                },
+                {
+                    $lookup: {
+                        from: "workhourtableforms", // 年跟月的屬性
+                        localField: "_work_hour_forms_info.formTables.tableID",
+                        foreignField: "_id",
+                        as: "_work_hour_tables_info"
+                    }
+                },
+                {
+                    $unwind: "$_work_hour_tables_info"
+                },
+                {
+                    $addFields: {
+                        "_userDID": {
+                            $toObjectId: "$_work_hour_forms_info.creatorDID"
+                        },
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "_userDID",
+                        foreignField: "_id",
+                        as: "_user_info"
+                    }
+                },
+                {
+                    $unwind: "$_user_info"
+                },
+                {
+                    $project: {
+                        "_id": 0,
+                        "_project_info" : 1,
+                        "_work_hour_forms_info" : 1,
+                        "_work_hour_tables_info" : 1,
+                        "_user_info" : 1,
+                    }
+                },
+                {
+                    $group: {
+                        _id: {
+                            prjCode: '$_project_info.prjCode',  //$region is the column name in collection
+                            userDID: '$_work_hour_forms_info.creatorDID',  //$region is the column name in collection
+                        },
+                        tables: { $push: "$_work_hour_tables_info" },
+                        forms: { $push: "$_work_hour_forms_info" },
+                        _user_info: {$first: "$_user_info"},
+                        _work_hour_forms_info: {$first: "$_work_hour_forms_info"},
+                        _project_info: {$first: "$_project_info"},
+
+                    }
+                },
+                {
+                    $sort: {
+                        "_work_hour_forms_info.creatorDID": 1,
+                        "_project_info.prjCode": 1
+                    }
+                },
+
             ], function (err, tables) {
                 if (err) {
                     res.send(err);
                 } else {
                     // Temp.drop();
-                    res.status(200).send({
-                        code: 200,
-                        error: global.status._200,
-                        payload: tables,
-                    });
+
+                    var results = tables;
+
+                    Project.aggregate( // 由專案找起
+                        [
+                            {
+                                $match: prjInfo
+                            },
+                            {
+                                $addFields: {
+                                    "_projectTargetString": {
+                                        $toString: "$_id"
+                                    },
+                                    "_project_info" : "$$CURRENT"
+                                }
+                            },
+                            {
+                                $lookup: {
+                                    from: "workhourtableformworkadds", // 年跟月的屬性
+                                    localField: "_projectTargetString",
+                                    foreignField: "prjDID",
+                                    as: "work_hour_add_tables"
+                                }
+                            },
+                            {
+                                $unwind: "$work_hour_add_tables"
+                            },
+                            // {
+                            //     $unwind: "$work_hour_forms.formTables"
+                            // },
+                            {
+                                $project: {
+                                    "_id": 0,
+                                    "_work_hour_add_tables_info" : {
+                                        $cond: {
+                                            if: {
+                                                $and: $project_hour_add_table_Conds
+                                            },
+                                            then: "$work_hour_add_tables",
+                                            else: "$$REMOVE"
+                                        }
+                                    },
+                                    "_project_info" : 1,
+                                }
+                            },
+                            {
+                                $unwind: "$_work_hour_add_tables_info"
+                            },
+                            // {
+                            //     $lookup: {
+                            //         from: "workhourtableforms", // 年跟月的屬性
+                            //         localField: "_work_hour_forms_info.formTables.tableID",
+                            //         foreignField: "_id",
+                            //         as: "_work_hour_tables_info"
+                            //     }
+                            // },
+                            // {
+                            //     $unwind: "$_work_hour_tables_info"
+                            // },
+                            {
+                                $addFields: {
+                                    "_userDID": {
+                                        $toObjectId: "$_work_hour_add_tables_info.creatorDID"
+                                    },
+                                }
+                            },
+                            {
+                                $lookup: {
+                                    from: "users",
+                                    localField: "_userDID",
+                                    foreignField: "_id",
+                                    as: "_user_info"
+                                }
+                            },
+                            {
+                                $unwind: "$_user_info"
+                            },
+                            {
+                                $project: {
+                                    "_id": 0,
+                                    "_project_info" : 1,
+                                    "_work_hour_add_tables_info" : 1,
+                                    "_user_info" : 1,
+                                }
+                            },
+                            {
+                                $group: {
+                                    _id: {
+                                        prjCode: '$_project_info.prjCode',  //$region is the column name in collection
+                                        userDID: '$_work_hour_add_tables_info.creatorDID',  //$region is the column name in collection
+                                    },
+                                    add_tables: { $push: "$_work_hour_add_tables_info" },
+                                    forms: { $push: "$_work_hour_forms_info" },
+                                    _user_info: {$first: "$_user_info"},
+                                    _project_info: {$first: "$_project_info"},
+                                }
+                            },
+                            {
+                                $sort: {
+                                    "_work_hour_add_tables_info.creatorDID": 1,
+                                    "_project_info.prjCode": 1
+                                }
+                            },
+
+                        ], function (err, tables) {
+                            if (err) {
+                                res.send(err);
+                            } else {
+                                results = results.concat(tables);
+
+                                res.status(200).send({
+                                    code: 200,
+                                    error: global.status._200,
+                                    payload: results,
+                                });
+                            }
+                        }
+                    )
                 }
             }
         )
-
     })
 
     app.post(global.apiUrl.query_statistics_tables, function (req, res) {
