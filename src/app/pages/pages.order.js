@@ -53,6 +53,11 @@ global.pages = {
     myProfile: 1300,
     myProfile_userEdit : 100,
 
+    // vhc Test
+    vhc: 1400,
+    vhcMemberList : 100,
+    vhcMigrate : 200
+
 
 
 };

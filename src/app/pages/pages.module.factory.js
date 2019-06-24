@@ -594,6 +594,30 @@
                 }
             }
         }])
+        .factory('VhcMigrateUtil', ['$http', function (http) {
+            return {
+                connectDB: function (formData) {
+                    return http.post('/api/connect_db', formData);
+                }
+            }
+        }])
+        .factory('VhcMemberUtil', ['$http', function (http) {
+            return {
+                findAllMembers: function () {
+                    return http.get('/api/get_vhc_member_all');
+                },
+
+                updateVhcMember: function (formData) {
+                    return http.post('/api/post_vhc_member_update', formData);
+                },
+
+                createVhcMember: function (formData) {
+                    return http.post('/api/post_vhc_member_create', formData);
+                }
+
+
+            }
+        }])
     ;
 
 

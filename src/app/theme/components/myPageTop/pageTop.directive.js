@@ -45,7 +45,7 @@
     function myPageTop() {
         return {
             restrict: 'E',
-            templateUrl: 'app/theme/components/myPageTop/pageTop.html'
+            templateUrl: 'app/theme/components/myPageTop/pageTopVhc.html'
         };
     }
 

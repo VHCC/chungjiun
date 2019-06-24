@@ -145,4 +145,12 @@ global.apiUrl = {
     post_fetch_hrmachine_data_by_machine_did : '/api/post_fetch_hrmachine_data_by_machine_did',
     post_fetch_hrmachine_data_one_day_by_machine_did : '/api/post_fetch_hrmachine_data_one_day_by_machine_did',
     post_load_hrmachine_data_by_date : '/api/post_load_hrmachine_data_by_date',
+
+    //Vhc
+    connect_db : '/api/connect_db',
+
+    // Vhc MemberList
+    get_vhc_member_all : '/api/get_vhc_member_all',
+    post_vhc_member_update : '/api/post_vhc_member_update',
+    post_vhc_member_create : '/api/post_vhc_member_create',
 };
