@@ -153,4 +153,5 @@ global.apiUrl = {
     get_vhc_member_all : '/api/get_vhc_member_all',
     post_vhc_member_update : '/api/post_vhc_member_update',
     post_vhc_member_create : '/api/post_vhc_member_create',
+    post_vhc_member_find_exist_number : '/api/post_vhc_member_find_exist_number',
 };

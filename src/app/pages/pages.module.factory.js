@@ -607,6 +607,10 @@
                     return http.get('/api/get_vhc_member_all');
                 },
 
+                findIfExistNumber: function (formData) {
+                    return http.post('/api/post_vhc_member_find_exist_number', formData);
+                },
+
                 updateVhcMember: function (formData) {
                     return http.post('/api/post_vhc_member_update', formData);
                 },

@@ -24,9 +24,6 @@
                 required>
         <br>
         <label style="float:left">生日</label>
-        <my >
-            <my-date-picker formatted="yyyy/MM/dd" default="2010/01/01"></my-date-picker>
-        </my>
         <input  type="text" class="form-control"
                 placeholder="生日"
                 value="{{member.user_birth}}"
@@ -74,6 +71,7 @@
                 ng-click="saveVhcMember()">儲存
         </button>
         <button type="button" class="btn btn-success"
+                id="addBtn"
                 ng-if="isAddMember"
                 ng-click="addVhcMember()">新增
         </button>

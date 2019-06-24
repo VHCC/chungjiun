@@ -21,6 +21,24 @@ module.exports = function (app) {
         })
     });
 
+    // fetch all vhc members
+    app.post(global.apiUrl.post_vhc_member_find_exist_number, function (req, res) {
+        console.log(req.body);
+        VhcUser.findOne({
+            user_number: req.body.user_number
+        }, function (err, user) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: user,
+                });
+            }
+        })
+    });
+
     // update member
     app.post(global.apiUrl.post_vhc_member_update, function (req, res) {
         VhcUser.update({

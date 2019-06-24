@@ -78,7 +78,7 @@
             });
         }
 
-        $scope.ttttt = function () {
+        $scope.addMember = function () {
             $uibModal.open({
                 animation: true,
                 controller: 'vhcMemberModalCtrl',

@@ -38,7 +38,26 @@
         // initial
 
         $scope.checkUserNumber = function (dom) {
-            console.log(dom);
+            console.log(dom.member.user_number);
+            var postData = {
+                user_number: dom.member.user_number
+            }
+            VhcMemberUtil.findIfExistNumber(postData)
+                .success(function (res) {
+                    console.log(res);
+                    console.log(res.payload);
+                    console.log(res.payload == null);
+                    if (res.payload == null) {
+                        // can add
+                        $('#addBtn').html("新增");
+                        $('#addBtn').attr("disabled", false);
+                    } else {
+                        $('#addBtn').html("號碼已經存在！！");
+                        $('#addBtn').attr("disabled", true);
+                        // exist member
+                    }
+                })
+
         }
 
         $scope.saveVhcMember = function () {

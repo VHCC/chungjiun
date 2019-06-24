@@ -48,7 +48,7 @@ module.exports = function (app) {
                     results.forEach(result => {
                         VhcUser.create({
                             user_id: result.USER_ID,
-                            user_number: result.USER_NUMBER,
+                            user_number: result.USER_NUMBER.trim(),
                             user_name: result.USER_NAME,
                             user_sex: result.USER_SEX,
                             user_birth: result.USER_BIRTH,
