@@ -55,10 +55,10 @@
                             return;
                         }
 
-                        if (data[0].roleType != 100 && data[0].workStatus == false) {
-                            window.userNoActivate();
-                            return;
-                        }
+                        // if (data[0].roleType != 100 && data[0].workStatus == false) {
+                        //     window.userNoActivate();
+                        //     return;
+                        // }
 
                         cookies.put('username', data[0].name);
                         cookies.put('email', data[0].email);
