@@ -25,7 +25,7 @@
         // Main Data
         $scope.parent = $scope.$resolve.parent;
         $scope.table = $scope.$resolve.table;
-        $scope.searchType = $scope.$resolve.searchType;
+        $scope.day = $scope.$resolve.searchType;
         $scope.userMonthSalary = $scope.$resolve.userMonthSalary;
         // $scope.userHourSalary = $scope.$resolve.userHourSalary;
         $scope.editableFlag = $scope.$resolve.editableFlag;
@@ -38,17 +38,20 @@
         // 主要顯示
         $scope.workAddTablesItems = [];
 
+        console.log($scope.table);
+
         var formData = {
             creatorDID: $scope.table.creatorDID,
             prjDID: $scope.table.prjDID,
             create_formDate: $scope.table.create_formDate,
-            day: $scope.searchType,
+            day: $scope.day,
         }
-        // console.log(formData);
+        console.log(formData);
         // console.log($scope.table);
         var workAddTableIDArray = [];
         WorkHourAddItemUtil.getWorkHourAddItems(formData)
             .success(function (res) {
+                console.log(res.payload);
                 $scope.workAddTablesItems = res.payload;
                 workAddTableIDArray = [];
                 // 組成 prjID Array, TableID Array，再去Server要資料
@@ -67,8 +70,9 @@
                 workAddType: 1,
                 create_formDate: $scope.table.create_formDate,
                 prjDID: $scope.table.prjDID,
+                year: (new Date($scope.table.create_formDate).getFullYear() -1911),
                 month: (new Date($scope.table.create_formDate).getMonth() + 1),
-                day: $scope.searchType,
+                day: $scope.day,
                 start_time: "",
                 end_time: "",
                 reason: "事由",
@@ -93,6 +97,11 @@
                 result += parseInt(TimeUtil.getCalculateHourDiffByTime(tables[index].start_time, tables[index].end_time));
             }
             result = result % 60 < 30 ? Math.round(result / 60) : Math.round(result / 60) - 0.5;
+            if (result < 1) {
+                $scope.table.totalHourTemp = 0;
+                return 0;
+            }
+
             $scope.table.totalHourTemp = result;
             return result;
         }
@@ -126,7 +135,8 @@
         }
 
         // 加班，規則
-        $scope.getHourDiffByTime = function (start, end) {
+        $scope.getHourDiffByTime = function (start, end, type) {
+            console.log("- MyWorkHourTableAddHourModalCtrl, start= " + start + ", end= " + end + ", type= " + type);
             if (start && end) {
                 var difference = Math.abs(TimeUtil.toSeconds(start) - TimeUtil.toSeconds(end));
                 // compute hours, minutes and seconds
@@ -146,7 +156,7 @@
                 //     return v < 10 ? '0' + v : v;
                 // }).join(':');
                 result = result[0] + (result[1] < 30 ? 0 : result[1] === 0 ? 0 : 0.5);
-                return result < 1 ? 0 : result >= 8 ? 8 : result;
+                return result; // 『每30分鐘足分，計0.5，無加班上限制』
             }
         }
 

@@ -42,6 +42,15 @@
                 case "4":
                     $scope.myDT = new Date($scope.$parent.$parent.$parent.$parent.$parent.firstFullDate_history);
                     break;
+                case "2":
+                    $scope.myDT = new Date($scope.$parent.$parent.$parent.$parent.$parent.firstFullDate_manager);
+                    break;
+                case "3":
+                    $scope.myDT = new Date($scope.$parent.$parent.$parent.$parent.$parent.firstFullDate_executive);
+                    break;
+                case "5":
+                    $scope.myDT = new Date($scope.$parent.$parent.$parent.$parent.$parent.firstFullDate_management);
+                    break;
             }
         }
 

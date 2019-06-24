@@ -7,6 +7,7 @@
 
     angular.module('BlurAdmin.pages.myProfile')
         .controller('userEditCtrl', [
+            '$compile',
             '$scope',
             '$cookies',
             '$http',
@@ -20,7 +21,8 @@
         ]);
 
     /** @ngInject */
-    function UserEditCtrl($scope,
+    function UserEditCtrl($compile,
+                          $scope,
                           cookies,
                           $http,
                           fileReader,
@@ -29,8 +31,14 @@
                           toastr,
                           User,
                           UserEditUtil) {
+
+
         $scope.username = cookies.get('username');
         $scope.roleType = cookies.get('roletype');
+        $scope.email = cookies.get('email');
+        $scope.machineDID = cookies.get('machineDID');
+        $scope.bossID = cookies.get('bossID');
+        $scope.userMonthSalary = cookies.get('userMonthSalary');
 
 
         var formData = {
@@ -117,9 +125,10 @@
 
 
         $scope.fetchAllUsers = function () {
-            User.getAllUsers()
+            User.getAllUsersWithSignOut()
                 .success(function (allUsers) {
                     vm.users = allUsers;
+
                 });
         }
 
@@ -129,6 +138,15 @@
             .success(function (managers) {
                 // console.log(JSON.stringify(managers));
                 vm.managersList = managers;
+
+                // user Boss
+                var userBoss = [];
+                if ($scope.bossID) {
+                    userBoss = $filter('filter')(vm.managersList, {
+                        _id: $scope.bossID,
+                    });
+                }
+                $scope.userBoss = userBoss[0].name;
             })
 
         $scope.updateUser = function () {
@@ -140,10 +158,12 @@
             var formData = {
                 userDID: vm.user.selected._id,
                 userName: $('#userNewName')[0].value,
+                email: vm.email,
                 roleType: vm.userRole.roleType,
                 userMonthSalary: $('#userMonthSalary')[0].value,
                 bossID: vm.userBoss._id,
                 machineDID: $('#userMachineDID')[0].value,
+                workStatus: vm.workStatus,
             }
 
             // console.log(formData);
@@ -178,6 +198,10 @@
                 name: "工讀生",
                 roleType: 5
             },
+            {
+                name: "主任",
+                roleType: 6
+            },
         ];
 
         vm.roleOptions = options_ragular;
@@ -191,7 +215,11 @@
 
         $scope.selectUserProfile = function (user) {
             vm.userMonthSalary = user.userMonthSalary;
+            vm.email = user.email;
             vm.machineDID = user.machineDID;
+            vm.residualRestHour = user.residualRestHour;
+            vm.isSetResidualRestHour = user.isSetResidualRestHour;
+
             // user Role
             var selectedRole = [];
             if (user.roleType !== 100) {
@@ -200,11 +228,13 @@
                     roleType: user.roleType,
                 });
             } else if (user.roleType === 100) {
+                console.log(vm.roleOptions_executive);
                 vm.roleOptions = vm.roleOptions_executive;
                 selectedRole = $filter('filter')(vm.roleOptions_executive, {
                     roleType: user.roleType,
                 });
             }
+            console.log(selectedRole[0]);
             vm.userRole = selectedRole[0];
 
             // user Boss
@@ -215,19 +245,65 @@
                 });
             }
             vm.userBoss = selectedBoss.length ? selectedBoss[0] : undefined;
+
+            vm.workStatus = user.workStatus;
+
+            $('.workOffFormNumberInput').mask('00.Z', {
+                translation: {
+                    'Z': {
+                        pattern: /[05]/,
+                    }
+                }
+            });
+
         }
 
         $scope.showUserStatus = function (user) {
+            var workStatus = user.workStatus ? "" : "(無法登入)"
             if (!user.bossID && user.userMonthSalary === 0) {
-                return user.name + " (未設定主管、薪水)"
+                return user.name + " (未設定主管、薪水)" + workStatus
             } else if (!user.bossID) {
-                return user.name + " (未設定主管)"
+                return user.name + " (未設定主管)" + workStatus
             } else if (user.userMonthSalary === 0) {
-                return user.name + " (未設定薪水)"
+                return user.name + " (未設定薪水)" + workStatus
             } else {
-                return user.name;
+                return user.name + workStatus;
             }
         }
+
+        $scope.setUserResidualRestHour = function () {
+            var formData = {
+                userDID: vm.user.selected._id,
+                residualRestHour: vm.residualRestHour,
+                isSetResidualRestHour: true,
+            }
+
+            User.setUserResidualRestHour(formData)
+                .success(function (res) {
+                    toastr['success'](vm.user.selected.name + '人員 補休設定完成', '人事資料變更');
+                    vm.isSetResidualRestHour = true;
+                    $scope.fetchAllUsers();
+                })
+        }
+
+
+        // 個人檔案
+        // user Role
+        var userRole = [];
+        console.log($scope.roleType);
+        if ($scope.roleType != 100) {
+            $scope.roleOptions = options_ragular;
+            userRole = $filter('filter')(vm.roleOptions, {
+                roleType: $scope.roleType,
+            });
+        } else if ($scope.roleType == 100) {
+            $scope.roleOptions = vm.roleOptions_executive;
+            userRole = $filter('filter')(vm.roleOptions_executive, {
+                roleType: $scope.roleType,
+            });
+        }
+        $scope.userRole = userRole[0].name;
+
     }
 
 })();

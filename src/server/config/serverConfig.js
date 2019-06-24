@@ -1,5 +1,6 @@
 // set up ======================================================================
 var express = require('express');
+var timeout = require('connect-timeout')
 const app = express();
 
 var database = require('./database');           // load the database config
@@ -15,13 +16,13 @@ var bodyParser = require('body-parser');
 // var http = require('http');
 
 // 加入這兩行
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
-const socketPort = 9000;
+// const server = require('http').Server(app);
+// const io = require('socket.io')(server);
+// const socketPort = 9000;
 
-server.listen(socketPort, function () {
-    console.log("--------- Socket Server Started. http://localhost:" + socketPort + " --------------");
-});
+// server.listen(socketPort, function () {
+//     console.log("--------- Socket Server Started. http://localhost:" + socketPort + " --------------");
+// });
 
 var util = require('util');
 var events = require('events');
@@ -44,30 +45,30 @@ global.qqq = mainEventEmitter;
 
 var memberSocketMap = [];
 
-io.on('connection', function (socket){
-    console.log('------- Socket Connect Success ------');
-    // console.log(socket);
-    // console.log('=============' + socket.handshake.headers.cookie + '=============');
-    var cookieArray = socket.handshake.headers.cookie.split(";");
-    cookieArray.forEach(function(ele) {
-        if(ele.includes("userDID")){
-            var userDID = ele.split('=');
-            evalString = "memberSocketMap[\'" + userDID[1] + "\']=socket";
-            eval(evalString);
-        }
-    })
-    mainEventEmitter.on('response', function(targetID, msg) {
-        // socket.emit("greet", msg);
-        // console.log(memberSocketMap[targetID]);
-        if (memberSocketMap[targetID] !== undefined) {
-            memberSocketMap[targetID].emit("greet", msg);
-        }
-    });
-
-    socket.on('disconnect', function () {
-        console.log('Bye~');  // 顯示 bye~
-    })
-});
+// io.on('connection', function (socket){
+//     console.log('------- Socket Connect Success ------');
+//     // console.log(socket);
+//     // console.log('=============' + socket.handshake.headers.cookie + '=============');
+//     var cookieArray = socket.handshake.headers.cookie.split(";");
+//     cookieArray.forEach(function(ele) {
+//         if(ele.includes("userDID")){
+//             var userDID = ele.split('=');
+//             evalString = "memberSocketMap[\'" + userDID[1] + "\']=socket";
+//             eval(evalString);
+//         }
+//     })
+//     mainEventEmitter.on('response', function(targetID, msg) {
+//         // socket.emit("greet", msg);
+//         // console.log(memberSocketMap[targetID]);
+//         if (memberSocketMap[targetID] !== undefined) {
+//             memberSocketMap[targetID].emit("greet", msg);
+//         }
+//     });
+//
+//     socket.on('disconnect', function () {
+//         console.log('Bye~');  // 顯示 bye~
+//     })
+// });
 
 
 // var index = require('./routes/index');
@@ -88,6 +89,8 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(bodyParser.json({type: 'application/vnd.api+json'})); // parse application/vnd.api+json as json
+
+app.use(timeout('10s'))
 
 // view engine setup
 // uncomment after placing your favicon in /public

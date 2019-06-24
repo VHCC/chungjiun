@@ -66,34 +66,12 @@ module.exports = function (app) {
 
         var HrMachineForm = require('../../models/hrMachine')(today);
 
-        // HrMachineForm.find({
-        //     did: req.body.machineDID,
-        // }, function (err, formDataResponse) {
-        //     resultCount++;
-        //     if (err) {
-        //         res.send(err);
-        //     }
-        //     // console.log(formDataResponse);
-        //     // console.log(formDataResponse.length);
-        //     if (formDataResponse.length > 0) {
-        //         resultArry.push(formDataResponse);
-        //     }
-        //
-        //     // console.log(resultCount);
-        //
-        //     // console.log(resultArry);
-        //     res.status(200).send({
-        //         code: 200,
-        //         error: global.status._200,
-        //         payload: resultArry,
-        //     });
-        // })
-
         HrMachineForm.find({
             did: req.body.machineDID
         })
             .sort({
-                date: 1
+                date: 1,
+                time: 1,
             })
             .exec(function (err, formDataResponse) {
                 resultCount++;

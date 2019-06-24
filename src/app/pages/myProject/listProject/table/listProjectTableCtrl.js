@@ -12,11 +12,22 @@
             var formData = {
                 relatedID: $cookies.get('userDID'),
             }
-            var promise = $http.post('/api/post_project_all_related_to_user', formData)
-                .success(function (allProjects) {
-                    return allProjects;
-                });
-            return promise;
+
+            if ($cookies.get('roletype') == "100") {
+                var promise = $http.get('/api/projectFindAll')
+                    .success(function (allProjects) {
+                        return allProjects;
+                    });
+                return promise;
+            } else {
+                var promise = $http.post('/api/post_project_all_related_to_user_with_disabled', formData)
+                    .success(function (allProjects) {
+                        return allProjects;
+                    });
+                return promise;
+            }
+
+
         })
         .controller('listProjectTableCtrl',
             [
@@ -77,7 +88,7 @@
                 document.getElementById('includeHead'))
                 .append($compile(
                     "<div ba-panel ba-panel-title=" +
-                    "'專案列表'" +
+                    "'專案列表 - " + resp.data.length + "'" +
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
@@ -85,54 +96,87 @@
                     "</div>" +
                     "</div>"
                 )($scope));
+
+
+            User.getAllUsers()
+                .success(function (allUsers) {
+                    // 協辦人員
+                    $scope.allWorkers = [];
+                    $scope.allWorkersID = [];
+                    for (var i = 0; i < allUsers.length; i++) {
+                        $scope.allWorkers[i] = {
+                            value: allUsers[i]._id,
+                            name: allUsers[i].name,
+                        };
+                        $scope.allWorkersID[i] = allUsers[i]._id;
+                    }
+
+                    // 經理、主承辦
+                    $scope.projectManagers = [];
+                    $scope.projectManagers[0] = {
+                        value: "",
+                        name: "None"
+                    };
+                    for (var i = 0; i < allUsers.length; i++) {
+                        $scope.projectManagers[i+1] = {
+                            value: allUsers[i]._id,
+                            name: allUsers[i].name
+                        };
+                    }
+
+                    // 顯示
+                    for (var index = 0; index < $scope.projects.length; index++) {
+                        var selected = [];
+                        for (var subIndex = 0; subIndex < $scope.projects[index].workers.length; subIndex++) {
+                            selected = $filter('filter')($scope.allWorkers, {
+                                value: $scope.projects[index].workers[subIndex],
+                            });
+                            selected.length ? $scope.projects[index].workers[subIndex] = selected[0] : "";
+                        }
+                    }
+                })
+
         })
 
-        User.getAllUsers()
-            .success(function (allUsers) {
-                $scope.allWorkers = [];
-                $scope.allWorkersID = [];
-                for (var i = 0; i < allUsers.length; i++) {
-                    $scope.allWorkers[i] = {
-                        value: allUsers[i]._id,
-                        name: allUsers[i].name,
-                    };
-                    $scope.allWorkersID[i] = allUsers[i]._id;
-                }
+        // User.getAllUsers()
+        //     .success(function (allUsers) {
+        //         $scope.allWorkers = [];
+        //         $scope.allWorkersID = [];
+        //         for (var i = 0; i < allUsers.length; i++) {
+        //             $scope.allWorkers[i] = {
+        //                 value: allUsers[i]._id,
+        //                 name: allUsers[i].name,
+        //             };
+        //             $scope.allWorkersID[i] = allUsers[i]._id;
+        //         }
+        //
+        //         for (var index = 0; index < $scope.projects.length; index++) {
+        //             var selected = [];
+        //             for (var subIndex = 0; subIndex < $scope.projects[index].workers.length; subIndex++) {
+        //                 selected = $filter('filter')($scope.allWorkers, {
+        //                     value: $scope.projects[index].workers[subIndex],
+        //                 });
+        //                 selected.length ? $scope.projects[index].workers[subIndex] = selected[0] : "";
+        //             }
+        //         }
+        //     })
 
-                for (var index = 0; index < $scope.projects.length; index++) {
-                    var selected = [];
-                    for (var subIndex = 0; subIndex < $scope.projects[index].workers.length; subIndex++) {
-                        selected = $filter('filter')($scope.allWorkers, {
-                            value: $scope.projects[index].workers[subIndex],
-                        });
-                        selected.length ? $scope.projects[index].workers[subIndex] = selected[0] : "";
-                    }
-                }
-            })
+        // User.getAllUsers()
+        //     .success(function (allUsers) {
+        //         $scope.projectManagers = [];
+        //         $scope.projectManagers[0] = {
+        //             value: "",
+        //             name: "None"
+        //         };
+        //         for (var i = 0; i < allUsers.length; i++) {
+        //             $scope.projectManagers[i+1] = {
+        //                 value: allUsers[i]._id,
+        //                 name: allUsers[i].name
+        //             };
+        //         }
+        //     });
 
-        User.getAllUsers()
-            .success(function (allUsers) {
-                $scope.projectManagers = [];
-                for (var i = 0; i < allUsers.length; i++) {
-                    $scope.projectManagers[i] = {
-                        value: allUsers[i]._id,
-                        name: allUsers[i].name
-                    };
-                }
-                // Project.findAll()
-                //     .success(function (allProjects) {
-                //         console.log('rep - GET ALL Project, SUCCESS');
-                //         console.log(allProjects);
-                //         $scope.loading = false;
-                //         $scope.projects = allProjects
-                //
-                //         $scope.editableTableData = $scope.smartTableData.slice(0, 36);
-                //
-                //         $scope.qq = $scope.projects.slice(0, 2);
-                //
-                //     });
-            });
-
+        //技師
         User.findTechs()
             .success(function (allTechs) {
                 $scope.projectTechs = [];
@@ -157,6 +201,11 @@
 
         $scope.isFitPrjManager = function(managerDID) {
             return managerDID === $cookies.get('userDID');
+        }
+
+        // 對應行政總管
+        $scope.isFitExecutive = function () {
+            return ($cookies.get('roletype') == "100")
         }
 
         $scope.showMajor = function (project) {
@@ -209,6 +258,66 @@
                 })
         }
 
+        // 更新總案名稱
+        $scope.changeMainName = function (form, table) {
+            try {
+                var formData = {
+                    prjID: table.prj._id,
+                    mainName: form.$data.mainName,
+                }
+                Project.updateMainName(formData)
+                    .success(function (res) {
+                        console.log(res.code);
+                    })
+                    .error(function () {
+
+                    })
+            } catch (err) {
+                toastr['warning']('變更總案名 !', '更新失敗');
+                return;
+            }
+        }
+
+        // 更新專案名稱
+        $scope.changePrjName = function (form, table) {
+            try {
+                var formData = {
+                    prjID: table.prj._id,
+                    prjName: form.$data.prjName,
+                }
+                Project.updatePrjName(formData)
+                    .success(function (res) {
+                        console.log(res.code);
+                    })
+                    .error(function () {
+
+                    })
+            } catch (err) {
+                toastr['warning']('變更專案名 !', '更新失敗');
+                return;
+            }
+        }
+
+        // 更新子案名稱
+        $scope.changePrjSubName = function (form, table) {
+            try {
+                var formData = {
+                    prjID: table.prj._id,
+                    prjSubName: form.$data.prjSubName,
+                }
+                Project.updatePrjSubName(formData)
+                    .success(function (res) {
+                        console.log(res.code);
+                    })
+                    .error(function () {
+
+                    })
+            } catch (err) {
+                toastr['warning']('變更子案名 !', '更新失敗');
+                return;
+            }
+        }
+
         $scope.updateWorkers = function (form, table) {
             try {
                 var workers = [];
@@ -238,6 +347,19 @@
                 resault += workers[index].name + ", ";
             }
             return resault;
+        }
+
+        $scope.changePrjStatus = function (table) {
+            var formData = {
+                prjID: table.prj._id,
+                enable: table.prj.enable,
+            }
+            Project.updateStatus(formData)
+                .success(function (res) {
+                    console.log(res.code);
+                })
+                .error(function () {
+                })
         }
     }
 

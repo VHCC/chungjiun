@@ -8,18 +8,21 @@ global.apiUrl = {
     post_login_user_find : '/api/loginfind',
     //register
     post_register_user : '/api/register',
+    post_find_user_by_email : '/api/findUserByEmail',
 
     //create project
     get_all_users : '/api/getAllUsers',
+    get_all_users_with_unregister : '/api/getAllUsersWithSignOut',
     get_all_techs : '/api/getAllTechs',
     get_all_managers : '/api/getAllManagers',
     get_project_find_all : '/api/projectFindAll',
+    get_project_find_all_enable : '/api/projectFindAllEnable',
     get_project_find_all_by_group : '/api/projectFindAllByGroup',
     post_project_find_by_name : '/api/projectFindByName',
     post_project_find_by_code : '/api/post_project_find_by_code',
     // 尋找總數
-    get_project_find_by_name_distinct : '/api/projectFindByNameDistinct',
-    post_project_number_find_by_code_distinct : '/api/post_project_number_find_by_code_distinct',
+    get_project_find_by_code_distinct : '/api/projectFindByCodeDistinct',
+    post_project_number_find_by_prj_number_distinct : '/api/post_project_number_find_by_prj_number_distinct',
     post_project_sub_number_find_by_number_distinct : '/api/post_project_sub_number_find_by_number_distinct',
 
     get_project_find_by_prjid : '/api/projectFindByPrjID',
@@ -37,9 +40,14 @@ global.apiUrl = {
 
     // ListProject
     post_project_all_related_to_user : '/api/post_project_all_related_to_user',
+    post_project_all_related_to_user_with_disabled : '/api/post_project_all_related_to_user_with_disabled',
     // Update
     post_project_update_major_id: '/api/post_project_update_major_id',
     post_project_update_workers: '/api/post_project_update_workers',
+    post_project_update_status: '/api/post_project_update_status',
+    post_project_update_main_name: '/api/post_project_update_main_name',
+    post_project_update_prj_name: '/api/post_project_update_prj_name',
+    post_project_update_prj_sub_name: '/api/post_project_update_prj_sub_name',
 
 
 
@@ -61,6 +69,14 @@ global.apiUrl = {
     post_work_hour_table_update_send_review : '/api/updateWorkHourTableFormSendReview',
     post_work_hour_table_total_update_send_review : '/api/post_work_hour_table_total_update_send_review',
     post_work_hour_table_update : '/api/post_work_hour_table_update',
+    post_work_hour_table_update_array : '/api/post_work_hour_table_update_array',
+        // management
+    get_work_hour_table_management_list : '/api/get_work_hour_table_management_list',
+    insert_work_hour_table_temp : '/api/insert_work_hour_table_temp',
+        // statistics
+    query_statistics_form : '/api/query_statistics_form',
+    query_statistics_tables : '/api/query_statistics_tables',
+
 
     //workHourTable Form Work Add
     post_work_hour_work_add_create_item : '/api/post_work_hour_work_add_create_item',
@@ -68,26 +84,32 @@ global.apiUrl = {
     post_work_hour_work_remove_related_work_add_items : '/api/post_work_hour_work_remove_related_work_add_items',
     post_work_hour_work_executive_confirm : '/api/post_work_hour_work_executive_confirm',
     post_work_hour_work_update_related_work_add_items : '/api/post_work_hour_work_update_related_work_add_items',
+    post_work_hour_work_add_item_update : '/api/post_work_hour_work_add_item_update',
 
     //workOffTable Form
     post_work_off_create_table : '/api/createWorkOffTableForm',
-    post_work_off_table_find_by_table_id_array : '/api/findWorkOffTableFormByTableIDArray',
+    post_work_off_table_insert_item : '/api/post_work_off_table_insert_item', // 20190515
+    post_work_off_table_remove_item : '/api/post_work_off_table_remove_item', // 20190515
+    post_work_off_table_find_by_table_id_array : '/api/findWorkOffTableFormByTableIDArray', //@Deprecated
     post_work_off_table_find_by_table_id_array_and_parameters : '/api/post_work_off_table_find_by_table_id_array_and_parameters',
+    post_work_off_table_find_by_user_did : '/api/post_work_off_table_find_by_user_did',
     post_work_off_table_item_find_by_user_did_executive : '/api/post_work_off_table_item_find_by_user_did_executive',
     post_work_off_table_item_find_by_user_did_boss : '/api/post_work_off_table_item_find_by_user_did_boss',
-    // @Deprecated
-    post_work_off_table_update_send_review : '/api/updateWorkOffTableFormSendReview',
-    // @Deprecated
-    post_work_off_table_update_executive_agree : '/api/post_work_off_table_update_executive_agree',
-    // @Deprecated
-    post_work_off_table_update_boss_agree : '/api/post_work_off_table_update_boss_agree',
-    // @Deprecated
-    post_work_off_table_update_disagree : '/api/post_work_off_table_update_disagree',
+    post_work_off_table_update_send_review : '/api/updateWorkOffTableFormSendReview', //@Deprecated
+    post_work_off_table_update_executive_agree : '/api/post_work_off_table_update_executive_agree', //@Deprecated
+    post_work_off_table_update_boss_agree : '/api/post_work_off_table_update_boss_agree', //@Deprecated
+    post_work_off_table_update_disagree : '/api/post_work_off_table_update_disagree', //@Deprecated
     //***** 請假單更新
     post_work_off_table_update : '/api/post_work_off_table_update',
-    post_work_off_table_fetch_all_user : '/api/fetchUserWorkOffForm',
+    post_work_off_table_fetch_all_user : '/api/fetchUserWorkOffForm', //@Deprecated
     post_work_off_table_fetch_all_executive : '/api/post_work_off_table_fetch_all_executive',
     post_work_off_table_fetch_all_boss : '/api/post_work_off_table_fetch_all_boss',
+
+    //workOffExchangeTable Form
+    post_work_off_exchange_table_insert_item : '/api/post_work_off_exchange_table_insert_item',
+    post_work_off_exchange_table_find_by_creatorDID : '/api/post_work_off_exchange_table_find_by_creatorDID',
+    post_work_off_exchange_table_remove_by_itemID : '/api/post_work_off_exchange_table_remove_by_itemID',
+    post_work_off_exchange_table_update : '/api/post_work_off_exchange_table_update',
 
     // holidayDataForm
     post_holiday_data_form_create : '/api/createHolidayDataForm',
@@ -113,6 +135,7 @@ global.apiUrl = {
     post_user_find_by_userdid : '/api/userFindByuserDID',
     post_user_change_password_by_userdid : '/api/userChangePasswordByuserDID',
     post_user_update_profile : '/api/userUpdateProfile',
+    post_user_set_residual_rest_hour : '/api/setUserResidualRestHour',
 
     // WorkAddConfirmFormUtil
     post_create_work_add_confirm_form : '/api/post_create_work_add_confirm_form',
@@ -122,4 +145,12 @@ global.apiUrl = {
     post_fetch_hrmachine_data_by_machine_did : '/api/post_fetch_hrmachine_data_by_machine_did',
     post_fetch_hrmachine_data_one_day_by_machine_did : '/api/post_fetch_hrmachine_data_one_day_by_machine_did',
     post_load_hrmachine_data_by_date : '/api/post_load_hrmachine_data_by_date',
+
+    //Vhc
+    connect_db : '/api/connect_db',
+
+    // Vhc MemberList
+    get_vhc_member_all : '/api/get_vhc_member_all',
+    post_vhc_member_update : '/api/post_vhc_member_update',
+    post_vhc_member_create : '/api/post_vhc_member_create',
 };

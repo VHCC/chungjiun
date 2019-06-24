@@ -19,10 +19,13 @@
       dataProvider: {
         map: 'worldLow',
         zoomLevel: 3.5,
-        zoomLongitude: 10,
-        zoomLatitude: 52,
+        zoomLongitude: 121,
+        zoomLatitude: 22,
         areas: [
           { title: 'Austria', id: 'AT', color: layoutColors.primary, customData: '1 244', groupId: '1'},
+          { title: 'Taiwan', id: 'TW', color: layoutColors.primary, customData: '1,244', groupId: '1'},
+          { title: 'Japen', id: 'JP', color: layoutColors.primary, customData: '60', groupId: '2'},
+          { title: 'China', id: 'CN', color: layoutColors.primary, customData: '398', groupId: '3'},
           { title: 'Ireland', id: 'IE', color: layoutColors.primary, customData: '1 342', groupId: '1'},
           { title: 'Denmark', id: 'DK', color: layoutColors.primary, customData: '1 973', groupId: '1'},
           { title: 'Finland', id: 'FI', color: layoutColors.primary, customData: '1 573', groupId: '1'},

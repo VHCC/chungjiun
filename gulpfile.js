@@ -20,7 +20,7 @@ wrench.readdirSyncRecursive('./gulp').filter(function(file) {
  *  main optimization build task
  */
 
-gulp.task('default', ['clean', 'load', 'serve'], function () {
+gulp.task('default', ['apiserver'], function () {
     console.log('------------- Server Begin --------------');
 });
 var nodemon = require('gulp-nodemon');
@@ -40,25 +40,9 @@ var nodemon = require('gulp-nodemon');
 //     });
 // });
 
-gulp.task('reloadHrMachine', function () {
-    console.log('-------------  Load File --------------');
-    nodemon({
-        // the script to run the app
-        script: './src/server/loadHrMachine',
-        // this listens to changes in any of these files/routes and restarts the application
-        watch: ["../HR/CARD/"],
-        env: {
-            'NODE_ENV': 'development'
-        },
-        ext: 'txt'
-        // Below i'm using es6 arrow functions but you can remove the arrow and have it a normal .on('restart', function() { // then place your stuff in here }
-    }).on('start', function() {
-        console.log('---------File Load Started.---------')
-    });
-});
 
 
-gulp.task('load', function() {
+gulp.task('apiserver', function() {
     // nodemon({
     //     script: './src/app/server', // 忽略部分对程序运行无影响的文件的改动，nodemon只监视js文件，可用ext项来扩展别的文件类型
     //     ignore: ["gulpfile.js", "node_modules/", "public/**/*.*"],
@@ -79,6 +63,23 @@ gulp.task('load', function() {
         // Below i'm using es6 arrow functions but you can remove the arrow and have it a normal .on('restart', function() { // then place your stuff in here }
     }).on('start', function() {
         console.log('---------Node Server Started.---------')
+    });
+});
+
+gulp.task('reloadHrMachine', function () {
+    console.log('-------------  Load File --------------');
+    nodemon({
+        // the script to run the app
+        script: './src/server/loadHrMachine.js',
+        // this listens to changes in any of these files/routes and restarts the application
+        watch: ["../HR/CARD/"],
+        env: {
+            'NODE_ENV': 'development'
+        },
+        ext: 'txt'
+        // Below i'm using es6 arrow functions but you can remove the arrow and have it a normal .on('restart', function() { // then place your stuff in here }
+    }).on('start', function() {
+        console.log('---------File Load Started.---------')
     });
 });
 

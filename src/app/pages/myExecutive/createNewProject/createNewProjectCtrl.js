@@ -72,13 +72,24 @@
 
         vm.prjTypes = [
             // {label: '規劃-0', type: '0'},
+            // 1.設計
+            // 2.監造
+            // 3.規劃
+            // 4.專管
+            // 5.總案
+            // 6.服務
+            // 7.行政
+            // 8.(空白)
+            // 9.其他
             {label: '設計-1', value: '1'},
             {label: '監造-2', value: '2'},
             {label: '規劃-3', value: '3'},
-            {label: '服務-4', value: '4'},
+            {label: '專管-4', value: '4'},
             {label: '總案-5', value: '5'},
-            {label: '專案管理-6', value: '6'},
-            {label: '其他-7', value: '7'},
+            {label: '服務-6', value: '6'},
+            {label: '行政-7', value: '7'},
+            {label: '投標-8', value: '8'},
+            {label: '其他-9', value: '9'},
         ];
 
         $scope.resetPrjNumber = function() {
@@ -133,11 +144,12 @@
                 //新總案case
                 window.document.getElementById('newPrjNameDiv').style.display = "block";
                 window.document.getElementById('setPrjCodeDiv').style.display = "none";
-                Project.findPrjDistinctByName()
+                Project.findPrjDistinctByCode()
                     .success(function (prjs) {
                             console.log(JSON.stringify(prjs));
+                            console.log(prjs.length);
                             // 總案編號自動跳號 +1
-                            $scope.mainProject.code = prjs.length + 1 > 10 ? prjs.length : "0" + (prjs.length);
+                            $scope.mainProject.code = prjs.length >= 10 ? prjs.length : "0" + (prjs.length);
                             $scope.mainProject.new = "";
                             $scope.year = new Date().getFullYear() - 1911;
                         }
@@ -220,21 +232,29 @@
                 } else {
                     $scope.changeSubmitBtnStatus(false, "建立專案");
                 }
+
+                console.log(vm.branch);
+                if (vm.branch === undefined) {
+                    $scope.changeSubmitBtnStatus(true, "請確認 分支主題，再次輸入總案編號！");
+                    return;
+                }
+
+                var formData = {
+                    prjCode: vm.branch.value + String($scope.mainProject.setCode.substring(0,10))
+                }
+                console.log(formData);
+                Project.findPrjByCode(formData)
+                    .success(function (prj) {
+                        // console.log(JSON.stringify(prj));
+                        if (prj !== null) {
+                            $scope.changeSubmitBtnStatus(true, "專案編號已存在，請檢查！");
+                        } else {
+                            // $scope.mainProject.code = $scope.mainProject.setCode;
+                            $scope.changeSubmitBtnStatus(false, "建立專案");
+                        }
+                    })
             }
 
-            var formData = {
-                prjCode: $scope.mainProject.setCode,
-            }
-            Project.findPrjByCode(formData)
-                .success(function (prj) {
-                    // console.log(JSON.stringify(prj));
-                    if (prj !== null) {
-                        $scope.changeSubmitBtnStatus(true, "專案編號已存在，請檢查！");
-                    } else {
-                        // $scope.mainProject.code = $scope.mainProject.setCode;
-                        $scope.changeSubmitBtnStatus(false, "建立專案");
-                    }
-                })
         }
 
         // Number Check 專案
@@ -261,7 +281,7 @@
                     code: $scope.mainProject.code
                 }
                 console.log(data)
-                Project.findPrjNumberDistinctByCode(data)
+                Project.findPrjNumberDistinctByPrjNumber(data)
                     .success(function (prjs) {
                             console.log(JSON.stringify(prjs));
                             // 專案案編號自動跳號 +1
@@ -387,7 +407,7 @@
                         mainName: $scope.mainProject.new,
                         // majorID: $scope.mainProject.manager._id,
                         managerID: $scope.mainProject.manager._id,
-                        prjCode: totalCode,
+                        prjCode: vm.branch.value + String(totalCode.substring(0,10)),
                         technician: prjTechs,
                         // endDate: req.body.prjEndDate,
                         prjNumber: String(totalCode.substring(5,7)),
@@ -440,7 +460,7 @@
                 toastr['warning']('輸入資訊未完整 !', '建立失敗');
                 return;
             }
-
+            $scope.changeSubmitBtnStatus(true, "建立專案中，請稍待！");
             Project.create(createData)
                 .success(function (res) {
                     // console.log('createSubmit 2');

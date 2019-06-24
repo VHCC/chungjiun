@@ -73,6 +73,7 @@ fs.readFile(fReadName, function (err, data) {
             printType: tempObject.printType,
         }, function (err) {
             if (err) {
+                console.log("err= " + err);
                 res.send(err);
             }
         })
@@ -80,7 +81,7 @@ fs.readFile(fReadName, function (err, data) {
     });
 
     objReadline.on('close', function () {
-        console.log('Readline close...');
+        console.log('Readline close...index= ' + index);
     });
 
     objReadline.on('resume', function () {

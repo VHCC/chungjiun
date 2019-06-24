@@ -56,6 +56,7 @@
 
                 <div class="col-sm-10">
                     <input type="email" class="form-control" id="inputEmail3" placeholder="Email"
+                           ng-change="checkNewUserEmail(this)"
                            ng-model="formData.email" required>
                 </div>
             </div>
@@ -79,6 +80,7 @@
                         <option value="3">工程師</option>
                         <option value="4">行政</option>
                         <option value="5">工讀生</option>
+                        <option value="6">主任</option>
                     </select>
                 </div>
             </div>

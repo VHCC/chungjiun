@@ -15,8 +15,12 @@
             restrict: 'E',
             controller: 'MySelectorCtrl',
             link: function ($scope, elem, attrs) {
+                if (attrs.showtype == 1) { // 補休特休兌換
+                    $scope.loadUserWorkOffExchangeForm();
+                } else {
+                    $scope.loadUserWorkOffForm(JSON.parse(attrs.form));
+                }
                 $scope.workOffTypeChange(parseInt(attrs.type));
-                $scope.loadUserWorkOffForm(JSON.parse(attrs.form));
             },
             templateUrl: 'app/pages/myInput/widgets/mySelector/mySelector.html',
         };

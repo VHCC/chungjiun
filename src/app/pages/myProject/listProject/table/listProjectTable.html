@@ -1,34 +1,192 @@
+<!-- 執行專案 -->
 <div class="horizontal-scroll">
     <table class="table table-hover" st-table="projects">
         <thead>
+        <tr>
+            <td colspan="6" class="text-center">
+                <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
+            </td>
+        </tr>
         <tr class="sortable">
             <th class="table-id" st-sort="prjCode" st-sort-default="true" style="width: 5%">代碼</th>
-            <th st-sort="mainName" style="width: 25%">總案名稱</th>
-            <th st-sort="prjName" style="width: 10%">專案名稱</th>
-            <th st-sort="prjSubName" style="width: 5%">子案名稱</th>
-            <th st-sort="type" style="width: 5%">類型名稱</th>
-            <th st-sort="managerID" style="width: 5%">經理</th>
+            <th st-sort="mainName" style="width: 20%">總案名稱</th>
+            <th st-sort="prjName" style="width: 20%">專案名稱</th>
+            <th st-sort="prjSubName" style="width: 13%">子案名稱</th>
+            <th st-sort="type" style="width: 4%">類型名稱</th>
+            <th st-sort="managerID" style="width: 4%">經理/主任</th>
             <th st-sort="majorID" style="width: 5%">主承辦</th>
-            <th st-sort="creator" style="width: 25%">協辦人員</th>
-            <th st-sort="age" style="width: 5%">技師</th>
+            <th st-sort="workers" style="width: 20%">協辦人員</th>
+            <th st-sort="technician" style="width: 4%">技師</th>
+            <th st-sort="enable" style="width: 5%">專案狀態</th>
+        </tr>
+        <tr>
+            <th><input st-search="prjCode"
+                       placeholder="尋找代碼"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+            <th><input st-search="mainName"
+                       placeholder="輸入總案"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+            <th><input st-search="prjName"
+                       placeholder="輸入專案"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+            <th><input st-search="prjSubName"
+                       placeholder="輸入子案"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+
         </tr>
 
         </thead>
         <tbody>
 
         <tr ng-repeat="prj in projects" class="editable-tr-wrap">
+
             <!--全代碼-->
             <td class="table-id" style="width: 5%">{{prj.prjCode}}</td>
             <!--總案名稱-->
-            <td style="width: 25%">{{prj.mainName}}</td>
+            <td style="width: 20%">
+                <form data-editable-form
+                      name="uiMainNameForm">
+                    <div editable-textarea="prj.mainName"
+                         data-e-form="mainName"
+                         data-e-name="mainName"
+                         name="workers"
+                         data-e-ng-model="prj.mainName">
+                        {{prj.mainName}}
+                    </div>
+                    <br/>
+                    <div class="buttons">
+                        <!-- button to show form -->
+                        <!--<button type="button" -->
+                                <!--class="btn btn-primary editable-table-button btn-xs"-->
+                                <!--ng-click="uiSelectForm.$show()"-->
+                                <!--ng-show="!uiSelectForm.$visible;isFitPrjManager(prj.managerID)">-->
+                            <!--分派協辦-->
+                        <!--</button>-->
+                        <button type="button"
+                                ng-disabled="uiMainNameForm.$visible"
+                                ng-click="uiMainNameForm.$show()"
+                                ng-show="!uiMainNameForm.$visible;isFitPrjManager(prj.managerID) || isFitExecutive()"
+                                class="btn btn-primary editable-table-button btn-xs">
+                            更換
+                        </button>
+                        <!-- buttons to submit / cancel form -->
+                        <span ng-show="uiMainNameForm.$visible">
+                            <br/>
+                            <button type="submit" class="btn btn-primary editable-table-button btn-xs"
+                                    ng-click="changeMainName(uiMainNameForm, this)"
+                                    ng-disabled="uiMainNameForm.$waiting">
+                              確認
+                            </button>
+                            <button type="button" class="btn btn-default editable-table-button btn-xs"
+                                    ng-disabled="uiMainNameForm.$waiting"
+                                    ng-click="uiMainNameForm.$cancel()">
+                              取消
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </td>
+
             <!--專案名稱-->
-            <td style="width: 10%">{{prj.prjName}}</td>
+            <td style="width: 20%">
+                <form data-editable-form
+                      name="uiPrjNameForm">
+                    <div editable-textarea="prj.prjName"
+                         data-e-form="prjName"
+                         data-e-name="prjName"
+                         name="workers"
+                         data-e-ng-model="prj.prjName">
+                        {{prj.prjName}}
+                    </div>
+                    <br/>
+                    <div class="buttons">
+                        <!-- button to show form -->
+                        <!--<button type="button" -->
+                        <!--class="btn btn-primary editable-table-button btn-xs"-->
+                        <!--ng-click="uiSelectForm.$show()"-->
+                        <!--ng-show="!uiSelectForm.$visible;isFitPrjManager(prj.managerID)">-->
+                        <!--分派協辦-->
+                        <!--</button>-->
+                        <button type="button"
+                                ng-disabled="uiPrjNameForm.$visible"
+                                ng-click="uiPrjNameForm.$show()"
+                                ng-show="!uiPrjNameForm.$visible;isFitPrjManager(prj.managerID) || isFitExecutive()"
+                                class="btn btn-primary editable-table-button btn-xs">
+                            更換
+                        </button>
+                        <!-- buttons to submit / cancel form -->
+                        <span ng-show="uiPrjNameForm.$visible">
+                            <br/>
+                            <button type="submit" class="btn btn-primary editable-table-button btn-xs"
+                                    ng-click="changePrjName(uiPrjNameForm, this)"
+                                    ng-disabled="uiPrjNameForm.$waiting">
+                              確認
+                            </button>
+                            <button type="button" class="btn btn-default editable-table-button btn-xs"
+                                    ng-disabled="uiPrjNameForm.$waiting"
+                                    ng-click="uiPrjNameForm.$cancel()">
+                              取消
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </td>
             <!--子案名稱-->
-            <td style="width: 5%">{{prj.prjSubName}}</td>
+            <td style="width: 13%">
+                <form data-editable-form
+                      name="uiPrjSubNameForm">
+                    <div editable-textarea="prj.prjSubName"
+                         data-e-form="prjSubName"
+                         data-e-name="prjSubName"
+                         name="workers"
+                         data-e-ng-model="prj.prjSubName">
+                        {{prj.prjSubName}}
+                    </div>
+                    <br/>
+                    <div class="buttons">
+                        <!-- button to show form -->
+                        <!--<button type="button" -->
+                        <!--class="btn btn-primary editable-table-button btn-xs"-->
+                        <!--ng-click="uiSelectForm.$show()"-->
+                        <!--ng-show="!uiSelectForm.$visible;isFitPrjManager(prj.managerID)">-->
+                        <!--分派協辦-->
+                        <!--</button>-->
+                        <button type="button"
+                                ng-disabled="uiPrjSubNameForm.$visible"
+                                ng-click="uiPrjSubNameForm.$show()"
+                                ng-show="!uiPrjSubNameForm.$visible;isFitPrjManager(prj.managerID) || isFitExecutive()"
+                                class="btn btn-primary editable-table-button btn-xs">
+                            更換
+                        </button>
+                        <!-- buttons to submit / cancel form -->
+                        <span ng-show="uiPrjSubNameForm.$visible">
+                            <br/>
+                            <button type="submit" class="btn btn-primary editable-table-button btn-xs"
+                                    ng-click="changePrjSubName(uiPrjSubNameForm, this)"
+                                    ng-disabled="uiPrjSubNameForm.$waiting">
+                              確認
+                            </button>
+                            <button type="button" class="btn btn-default editable-table-button btn-xs"
+                                    ng-disabled="uiPrjSubNameForm.$waiting"
+                                    ng-click="uiPrjSubNameForm.$cancel()">
+                              取消
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </td>
             <!--類型-->
-            <td style="width: 5%">{{prjTypeToName(prj.type)}}</td>
+            <td style="width: 4%">{{prjTypeToName(prj.type)}}</td>
             <!--經理-->
-            <td style="width: 5%">{{ showManager(prj) }}</td>
+            <td style="width: 4%">{{ showManager(prj) }}</td>
             <!--主承辦-->
             <td class="select-td" style="width: 5%">
                 <span editable-select="prj.majorID"
@@ -42,22 +200,24 @@
                 <button type="button"
                         ng-disabled="rowform.$visible"
                         ng-click="rowform.$show()"
-                        ng-show="isFitPrjManager(prj.managerID)"
+                        ng-show="isFitPrjManager(prj.managerID) || isFitExecutive()"
                         class="btn btn-primary editable-table-button btn-xs">
                     指派主承辦
                 </button>
             </td>
             <!--<td>{{prj.workers}}</td>-->
             <!--協辦-->
-            <td class="select-td" style="width: 25%">
+            <td class="select-td" style="width: 20%">
                 <form data-editable-form
                       name="uiSelectForm">
                     <div editable-ui-select="prj.workers"
                          e-multiple
+                         e-close-on-select="false"
                          data-e-form="uiSelectForm"
                          data-e-name="workers"
                          name="workers"
-                         data-e-style="min-width:150px;max-width:500px"
+                         e-append-to-body="true"
+                         data-e-style="min-width:100px;max-width:500px"
                          data-e-ng-model="prj.workers">
                         {{showWorkersName(prj.workers)}}
                         <editable-ui-select-match placeholder="請選擇協辦人員">
@@ -71,8 +231,9 @@
                     <div class="buttons">
                         <!-- button to show form -->
                         <button type="button" class="btn btn-primary editable-table-button btn-xs"
+                                ng-disabled="uiSelectForm.$visible"
                                 ng-click="uiSelectForm.$show()"
-                                ng-show="!uiSelectForm.$visible;isFitPrjManager(prj.managerID)">
+                                ng-show="!uiSelectForm.$visible;isFitPrjManager(prj.managerID) || isFitExecutive()">
                             分派協辦
                         </button>
                         <!-- buttons to submit / cancel form -->
@@ -93,7 +254,27 @@
                 </form>
             </td>
             <!--技師-->
-            <td style="width: 5%">{{showTechs(prj.technician)}}</td>
+            <td style="width: 4%">{{showTechs(prj.technician)}}</td>
+            <!--專案上線-->
+            <td style="width: 5%; padding-top: 5px">
+                <ba-switcher
+                        ng-show="isFitPrjManager(prj.managerID) || isFitExecutive()"
+                        ng-click="changePrjStatus(this)"
+                        ng-model="prj.enable"
+                        switcher-style="primary"
+                        switcher-value="prj.enable"/>
+                <div ng-show="!isFitPrjManager(prj.managerID) && !isFitExecutive()">
+                    <span ng-if="prj.enable">
+                        開啟
+                    </span>
+                    <span ng-if="!prj.enable">
+                        關閉
+                    </span>
+                </div>
+
+
+
+            </td>
 
         </tr>
         </tbody>

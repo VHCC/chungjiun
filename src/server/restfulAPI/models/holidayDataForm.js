@@ -19,6 +19,7 @@ module.exports = mongoose.model('HolidayDataForm', {
     start_workinjury: {type: String},
     start_maternity: {type: String},
     start_paternity: {type: String},
+    start_others: {type: String},
 
     end_sick: {type: String},
     end_private: {type: String},
@@ -30,6 +31,7 @@ module.exports = mongoose.model('HolidayDataForm', {
     end_workinjury: {type: String},
     end_maternity: {type: String},
     end_paternity: {type: String},
+    end_others: {type: String},
 
     calculate_sick: {type: String, default: 0},
     calculate_private: {type: String, default: 0},
@@ -41,6 +43,7 @@ module.exports = mongoose.model('HolidayDataForm', {
     calculate_workinjury: {type: String, default: 0},
     calculate_maternity: {type: String, default: 0},
     calculate_paternity: {type: String, default: 0},
+    calculate_others: {type: String, default: 0},
 
     rest_sick: {type: String, default: 0},
     rest_private: {type: String, default: 0},
@@ -52,6 +55,7 @@ module.exports = mongoose.model('HolidayDataForm', {
     rest_workinjury: {type: String, default: 0},
     rest_maternity: {type: String, default: 0},
     rest_paternity: {type: String, default: 0},
+    rest_others: {type: String, default: 0},
 
 
 });

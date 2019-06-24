@@ -17,11 +17,11 @@
         return {
             replace: true,
             restrict: 'E',
-            controller: 'MyMonthPickerCtrl',
-            // template: "<div><h2>我叫{{name}}</h2></div>",
+            controller: 'myMonthPickerCtrl',
             link: function ($scope, elem, attrs) {
-                $scope.format = attrs.formatted;
-                $scope.myMonth = attrs.default === undefined ? moment(new Date()).format('YYYY/MM') : new Date(attrs.default);
+                $scope.format = attrs.formatted == undefined ? 'YYYY/MM' : attrs.formatted;
+                $scope.myMonth = attrs.default === undefined ? moment(new Date()).format($scope.format) : new Date(attrs.default);
+                $scope.qqqqqwww();
             },
             templateUrl: 'app/pages/myInput/widgets/myMonthPicker/myMonthPicker.html',
         };

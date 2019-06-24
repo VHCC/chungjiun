@@ -12,6 +12,9 @@
                 getAllUsers: function () {
                     return http.get('/api/getAllUsers');
                 },
+                getAllUsersWithSignOut: function () {
+                    return http.get('/api/getAllUsersWithSignOut');
+                },
                 findTechs: function () {
                     return http.get('/api/getAllTechs');
                 },
@@ -26,6 +29,10 @@
                 },
                 updateUserProfile: function (formData) {
                     return http.post('/api/userUpdateProfile', formData);
+                },
+
+                setUserResidualRestHour: function (formData) {
+                    return http.post('/api/setUserResidualRestHour', formData)
                 }
             }
         }])
@@ -36,6 +43,9 @@
                 },
                 findAll: function () {
                     return http.get('/api/projectFindAll');
+                },
+                findAllEnable: function () {
+                    return http.get('/api/projectFindAllEnable');
                 },
                 create: function (projectData) {
                     return http.post('/api/projectCreate', projectData);
@@ -50,11 +60,11 @@
                 findPrjByCode: function (prjCode) {
                     return http.post('/api/post_project_find_by_code', prjCode);
                 },
-                findPrjDistinctByName: function () { // 以名稱為區隔，尋找總案數
-                    return http.get('/api/projectFindByNameDistinct');
+                findPrjDistinctByCode: function () { // 以總案代碼為區隔，尋找總案數
+                    return http.get('/api/projectFindByCodeDistinct');
                 },
-                findPrjNumberDistinctByCode: function (formData) { // 以總案代碼為區隔，尋找專案數
-                    return http.post('/api/post_project_number_find_by_code_distinct', formData);
+                findPrjNumberDistinctByPrjNumber: function (formData) { // 以專案代碼為區隔，尋找專案數
+                    return http.post('/api/post_project_number_find_by_prj_number_distinct', formData);
                 },
                 findPrjSubNumberDistinctByNumber: function (formData) { // 以子案代碼為區隔，尋找子案數
                     return http.post('/api/post_project_sub_number_find_by_number_distinct', formData);
@@ -89,6 +99,18 @@
                 },
                 updateWorkers: function(formData) {
                     return http.post('/api/post_project_update_workers', formData);
+                },
+                updateStatus: function(formData) {
+                    return http.post('/api/post_project_update_status', formData);
+                },
+                updateMainName: function(formData) {
+                    return http.post('/api/post_project_update_main_name', formData);
+                },
+                updatePrjName: function(formData) {
+                    return http.post('/api/post_project_update_prj_name', formData);
+                },
+                updatePrjSubName: function(formData) {
+                    return http.post('/api/post_project_update_prj_sub_name', formData);
                 },
 
             }
@@ -167,9 +189,30 @@
                 updateTotalTableSendReview: function (formData) {
                     return http.post('/api/post_work_hour_table_total_update_send_review', formData);
                 },
-                updateWHTable: function(formData) {
+                updateWHTable: function(formData) { // 單筆
                     return http.post('/api/post_work_hour_table_update', formData);
                 },
+                updateWHTableArray: function(formData) { // 一鍵完成
+                    return http.post('/api/post_work_hour_table_update_array', formData);
+                },
+
+                // management
+                insertWorkHourTempsData: function (formData) {
+                    return http.post('/api/insert_work_hour_table_temp', formData);
+                },
+
+                fetchWorkHourFormManagementList: function (formData) {
+                    return http.post('/api/get_work_hour_table_management_list', formData);
+                },
+
+                // statistics
+                queryStatisticsForms: function (formData) {
+                    return http.post('/api/query_statistics_form', formData);
+                },
+
+                queryStatisticsTables: function (formData) {
+                    return http.post('/api/query_statistics_tables', formData);
+                }
             }
         }])
         .factory('WorkOffFormUtil', ['$http', function (http) {
@@ -177,6 +220,13 @@
                 // Create form
                 createWorkOffTableForm: function (formData) {
                     return http.post('/api/createWorkOffTableForm', formData);
+                },
+                // Insert Work Off Item 20190515
+                insertWorkOffTableItem: function (formData) {
+                    return http.post('/api/post_work_off_table_insert_item', formData);
+                },
+                removeWorkOffTableItem: function (formData) {
+                    return http.post('/api/post_work_off_table_remove_item', formData);
                 },
                 // get form default
                 fetchUserWorkOffForm: function (formData) {
@@ -189,6 +239,7 @@
                     return http.post('/api/post_work_off_table_item_find_by_user_did_boss', formData);
                 },
 
+                //@Deprecated
                 findWorkOffTableFormByTableIDArray: function (formData) {
                     return http.post('/api/findWorkOffTableFormByTableIDArray', formData);
                 },
@@ -233,6 +284,29 @@
                 // find specify create form date
                 findWorkOffTableFormByTableIDArrayAndParameters: function (formData) {
                     return http.post('/api/post_work_off_table_find_by_table_id_array_and_parameters', formData);
+                },
+
+                // find specify user did form date
+                findWorkOffTableFormByUserDID: function (formData) {
+                    return http.post('/api/post_work_off_table_find_by_user_did', formData);
+                },
+            }
+        }])
+        .factory('WorkOffExchangeFormUtil', ['$http', function (http) {
+            return {
+                // insert new Exchange item
+                insertWorkOffExchangeTableForm: function (formData) {
+                    return http.post('/api/post_work_off_exchange_table_insert_item', formData);
+                },
+                findWorkOffExchangeTableFormByUserDID: function (formData) {
+                    return http.post('/api/post_work_off_exchange_table_find_by_creatorDID', formData);
+                },
+                removeWorkOffExchangeTableFormByItemID: function (formData) {
+                    return http.post('/api/post_work_off_exchange_table_remove_by_itemID', formData);
+                },
+                // ***** workOffExchange Item Update *****
+                updateWorkOffExchangeItem: function(formData) {
+                    return http.post('/api/post_work_off_exchange_table_update', formData);
                 },
             }
         }])
@@ -288,6 +362,9 @@
                 executiveConfirm: function (formData) {
                     return http.post('/api/post_work_hour_work_executive_confirm', formData);
                 },
+                updateItem: function (formData) {
+                    return http.post('/api/post_work_hour_work_add_item_update', formData);
+                },
                 updateRelatedAddItemByProject: function (formData) {
                     return http.post('/api/post_work_hour_work_update_related_work_add_items', formData);
                 },
@@ -320,21 +397,35 @@
             return {
                 getTypeText: function (type) {
                     switch (type) {
-                        case "0":
-                            return "規劃";
+                        // 1.設計
+                        // 2.監造
+                        // 3.規劃
+                        // 4.專管
+                        // 5.總案
+                        // 6.服務
+                        // 7.行政
+                        // 8.投標
+                        // 9.其他
+
+                        // case "0":
+                        //     return "規劃";
                         case "1":
                             return "設計";
                         case "2":
                             return "監造"
                         case "3":
-                            return "服務"
+                            return "規劃"
                         case "4":
-                            return "行政"
+                            return "專管"
                         case "5":
-                            return "投標"
-                        case "6":
                             return "總案"
+                        case "6":
+                            return "服務"
                         case "7":
+                            return "行政"
+                        case "8":
+                            return "投標"
+                        case "9":
                             return "其他"
                         default:
                             return "UNKNOWN"
@@ -408,6 +499,12 @@
                         ];
                         return result;
                     }
+                },
+                getHour: function (timeFormatted) {
+                    // Extract hours, minutes and seconds
+                    var parts = timeFormatted.split(':');
+                    // compute  and return total seconds
+                    return parts[0]
                 }
 
 
@@ -418,27 +515,29 @@
                 getWorkOffString: function (type) {
                     switch (type) {
                         case 0:
-                            return "事假";
+                            return "事假"; // Hour
                         case 1:
-                            return "病假";
+                            return "病假"; // Hour
                         case 2:
-                            return "補休";
+                            return "補休"; // Hour
                         case 3:
-                            return "特休";
+                            return "特休"; // Day
                         case 4:
-                            return "婚假";
+                            return "婚假"; // Day
                         case 5:
-                            return "喪假";
+                            return "喪假"; // Day
                         case 6:
-                            return "公假";
+                            return "公假"; // Hour
                         case 7:
-                            return "公傷假";
+                            return "公傷假"; // Day
                         case 8:
-                            return "產假";
+                            return "產假"; // Day
                         case 9:
-                            return "陪產假";
+                            return "陪產假"; // Day
                         case 1001:
-                            return "特殊假";
+                            return "其他"; // Hour as 公假 20190208
+                        case -1:
+                            return "[假別沒選擇]"
                     }
                 }
             }
@@ -493,6 +592,30 @@
                         new Notification(title, notifyConfig); // 建立通知
                     }
                 }
+            }
+        }])
+        .factory('VhcMigrateUtil', ['$http', function (http) {
+            return {
+                connectDB: function (formData) {
+                    return http.post('/api/connect_db', formData);
+                }
+            }
+        }])
+        .factory('VhcMemberUtil', ['$http', function (http) {
+            return {
+                findAllMembers: function () {
+                    return http.get('/api/get_vhc_member_all');
+                },
+
+                updateVhcMember: function (formData) {
+                    return http.post('/api/post_vhc_member_update', formData);
+                },
+
+                createVhcMember: function (formData) {
+                    return http.post('/api/post_vhc_member_create', formData);
+                }
+
+
             }
         }])
     ;

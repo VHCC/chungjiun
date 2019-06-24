@@ -16,6 +16,7 @@ global.pages = {
     myProject  : 100,
     myProject_createProject  : 100,
     myProject_listProject  : 200,
+    myProject_listProjectAll  : 210,
     myProject_endProject  : 300,
     myProject_projectIncome  : 400,
     myProject_projectFinancial  : 500,
@@ -25,6 +26,7 @@ global.pages = {
     cgWorkManage_workHourTable  : 200,
     cgWorkManage_workOff  : 300,
     cgWorkManage_hrMachine  : 500,
+    cgWorkManage_workStatistics  : 600,
     //
     cgAccountingManage : 300,
     cgAccountingManage_paymentForm  : 100,
@@ -50,6 +52,11 @@ global.pages = {
     //
     myProfile: 1300,
     myProfile_userEdit : 100,
+
+    // vhc Test
+    vhc: 1400,
+    vhcMemberList : 100,
+    vhcMigrate : 200
 
 
 

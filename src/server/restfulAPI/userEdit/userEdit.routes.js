@@ -57,9 +57,31 @@ module.exports = function (app) {
             $set: {
                 roleType: req.body.roleType,
                 name: req.body.userName,
+                email: req.body.email,
                 userMonthSalary: req.body.userMonthSalary,
                 bossID: req.body.bossID,
                 machineDID: req.body.machineDID,
+                workStatus: req.body.workStatus,
+            }
+        }, function (err) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        })
+    })
+
+
+    app.post(global.apiUrl.post_user_set_residual_rest_hour, function (req, res) {
+        User.update({
+            _id: req.body.userDID,
+        }, {
+            $set: {
+                residualRestHour: req.body.residualRestHour,
+                isSetResidualRestHour: req.body.isSetResidualRestHour,
             }
         }, function (err) {
             if (err) {

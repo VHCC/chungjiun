@@ -20,6 +20,9 @@ module.exports = mongoose.model('workHourTableFormWorkAdd', {
     prjDID: {
         type: String,
     },
+    year: {
+        type: Number,
+    },
     // 月
     month: {
         type: Number,

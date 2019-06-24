@@ -1,0 +1,261 @@
+
+<!--<div class="col-md-12">-->
+    <!--月<my-month-picker></my-month-picker>{{myMonth}}-->
+<!--</div>-->
+<div class="row">
+    <div class="col-md-6">
+        <div
+                ba-panel
+                ba-panel-title="時間選擇"
+                ba-panel-class="with-scroll">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="section-block">
+                        <my-year-picker></my-year-picker>
+                        <!--<h1>{{myYear}}</h1>-->
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputYear" class="col-md-3 control-label">年</label>
+                <input type="text"
+                       class="form-control"
+                       id="inputYear"
+                       placeholder="月份空白則為全部月份"
+                       style="color: #000000;"
+                       ng-model="myYear"
+                       disabled="true"
+                       value="{{myYear}}">
+            </div>
+
+            <div class="form-group">
+                <label for="inputMonth" class="col-md-3 control-label">月</label>
+                <input type="text"
+                       class="form-control"
+                       id="inputMonth"
+                       placeholder="月份空白則為全部月份"
+                       style="color: #000000;"
+                       ng-model="month"
+                       value="{{month}}">
+            </div>
+
+            <button ng-click="mnbvcxz()">mnbvcxz</button>
+        </div>
+
+    </div>
+    <div class="col-md-6">
+        <div
+                ba-panel
+                ba-panel-title="專案選擇"
+                ba-panel-class="with-scroll">
+            <div class="row"
+                 id="rowHead">
+                <div class="col-md-12"
+                     id="colHead">
+                    <div class="form-group">
+                        <label for="projectName">總案名稱 - 專案名稱 - 子案名稱 - 代碼</label>
+                        <ui-select ng-model="workStatisticsCtrlVm.prjItems.selected"
+                                   class="btn-group bootstrap-select form-control"
+                                   id="projectName"
+                                   ng-disabled="false"
+                                   ng-change="projectSelected($select.selected);"
+                                   append-to-body="true"
+                                   search-enabled="true">
+                            <ui-select-match placeholder="選擇">
+                                {{$select.selected.mainName}} -
+                                {{$select.selected.prjName}} -
+                                {{$select.selected.prjSubName}} -
+                                {{prjTypeToName($select.selected.type)}} -
+                                {{$select.selected.prjCode}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    ng-model="prjName"
+                                    repeat="prjItems in workStatisticsCtrlVm.allProjectData | groupSelectpickerOptions: {mainName: $select.search, prjCode: $select.search}"
+                                    group-by="'mainName'">
+                                <span ng-bind-html="prjItems.prjName + ' - ' +
+                                prjItems.prjSubName + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="prjBranch" class="col-md-3 control-label">分支主題</label>
+                <input type="text"
+                       class="form-control"
+                       id="prjBranch"
+                       placeholder="分支主題空白則為全部"
+                       style="color: #000000;"
+                       ng-model="_branch"
+                       value="{{_branch}}">
+            </div>
+
+            <div class="form-group">
+                <label for="prjYear" class="col-md-3 control-label">年度</label>
+                <input type="text"
+                       class="form-control"
+                       id="prjYear"
+                       placeholder="年度空白則為全部"
+                       style="color: #000000;"
+                       ng-model="_year"
+                       value="{{_year}}">
+            </div>
+
+            <div class="form-group">
+                <label for="prjCode" class="col-md-3 control-label">總案</label>
+                <input type="text"
+                       class="form-control"
+                       id="prjCode"
+                       placeholder="總案空白則為全部"
+                       style="color: #000000;"
+                       ng-model="_code"
+                       value="{{_code}}">
+            </div>
+
+            <div class="form-group">
+                <label for="prjNumber" class="col-md-3 control-label">專案編號</label>
+                <input type="text"
+                       class="form-control"
+                       id="prjNumber"
+                       placeholder="專案編號空白則為全部"
+                       style="color: #000000;"
+                       ng-model="_number"
+                       value="{{_number}}">
+            </div>
+
+            <div class="form-group">
+                <label for="prjSubNumber" class="col-md-3 control-label">子案編號</label>
+                <input type="text"
+                       class="form-control"
+                       id="prjSubNumber"
+                       placeholder="子案編號空白則為全部"
+                       style="color: #000000;"
+                       ng-model="_subNumber"
+                       value="{{_subNumber}}">
+            </div>
+
+            <div class="form-group">
+                <label for="prjType" class="col-md-3 control-label">類型[1.設計 2.監造 3.規劃 4.專管 5.總案 6.服務 7.行政 8.投標 9.其他]</label>
+                <input type="text"
+                       class="form-control"
+                       id="prjType"
+                       placeholder="類型空白則為全部"
+                       style="color: #000000;"
+                       ng-model="_type"
+                       value="{{_type}}">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bs-loading-overlay
+     bs-loading-overlay-reference-id="mainPage_statistics">
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div ba-panel
+                 ba-panel-class="with-scroll">
+
+                <div class="row">
+                    <table class="table table-bordered table-hover table-condensed">
+                        <thead>
+                        <tr style="white-space:nowrap">
+                            <td style="vertical-align: inherit; text-align: center" width="20px">序號</td>
+                            <td style="vertical-align: inherit; text-align: center" width="20px">年份</td>
+                            <td style="vertical-align: inherit; text-align: center" width="20px">月份</td>
+                            <td style="vertical-align: inherit; text-align: center" width="80px">專案代碼</td>
+                            <td style="vertical-align: inherit; text-align: center" width="300px">專案名稱</td>
+
+                            <td style="vertical-align: inherit; text-align: center" width="80px">人員</td>
+
+                            <td style="vertical-align: inherit; text-align: center" width="30px">時數</td>
+                            <td style="vertical-align: inherit; text-align: center" width="30px">類別</td>
+                        </tr>
+                        </thead>
+                        <tbody ng-repeat="item in statisticsResults">
+                        <tr style="vertical-align: inherit; text-align: center">
+                            <!--序號-->
+                            <td style="vertical-align: inherit; text-align: center">
+                                <span>{{$index + 1}}</span>
+                            </td>
+                            <!--年份-->
+                            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                                <my ng-if="item.tables.length > 0">
+                                    {{item._work_hour_forms_info.year}}
+                                </my>
+                                <my ng-if="item.add_tables.length > 0">
+                                    {{item.add_tables[0].year}}
+                                </my>
+                            </td>
+                            <!--月份-->
+                            <td style="vertical-align: inherit; text-align: center">
+                                <span ng-if="month">
+                                    <my ng-if="item.tables.length > 0">
+                                        {{item._work_hour_forms_info.month}}
+                                    </my>
+                                    <my ng-if="item.add_tables.length > 0">
+                                        {{item.add_tables[0].month}}
+                                    </my>
+                                </span>
+                                <span ng-if="!month">
+                                    <my ng-if="item.tables.length > 0">
+                                        {{showAllMonth(item, 1)}}
+                                    </my>
+                                    <my ng-if="item.add_tables.length > 0">
+                                        {{showAllMonth(item, 2)}}
+                                    </my>
+                                </span>
+                            </td>
+                            <!--專案代碼-->
+                            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                                {{item._project_info.prjCode}}
+                            </td>
+                            <!--專案名稱-->
+                            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                                {{item._project_info.mainName}}
+                                -
+                                {{item._project_info.prjName}}
+                                -
+                                {{item._project_info.prjSubName}}
+                            </td>
+                            <!--人員-->
+                            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                                {{item._user_info.name}}
+                            </td>
+                            <!--時數-->
+                            <td class="form-group has-success" style="vertical-align: inherit;">
+                                <my ng-if="item.tables.length > 0">
+                                    {{calculateHours(item)}}
+                                </my>
+                                <my ng-if="item.add_tables.length > 0">
+                                    {{calculateAddHours(item)}}
+                                </my>
+                            </td>
+                            <!--類別-->
+                            <td style="vertical-align: inherit;" rowspan="2">
+                                <my ng-if="item.tables.length > 0">
+                                    正常
+                                </my>
+                                <my ng-if="item.add_tables.length > 0" style="color:red">
+                                    加班
+                                </my>
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+

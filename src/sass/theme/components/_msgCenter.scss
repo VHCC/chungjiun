@@ -171,6 +171,16 @@
           }
         }
       }
+      .my-msg-title-area {
+        float: left;
+        width: 36px;
+        span {
+          font-style: italic;
+          text-align: right;
+          display: block;
+          font-size: 11px;
+        }
+      }
       .msg-area {
         float: right;
         width: 230px;

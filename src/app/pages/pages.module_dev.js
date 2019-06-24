@@ -17,20 +17,21 @@
         'BlurAdmin.pages.form',
         'BlurAdmin.pages.tables',
         'BlurAdmin.pages.charts',
-        'BlurAdmin.pages.maps',
+        // 'BlurAdmin.pages.maps',
         'BlurAdmin.pages.profile',
-        // 'BlurAdmin.pages.myNewPage',
-        // 'BlurAdmin.pages.myCalender',
-        // 'BlurAdmin.pages.myProject',
-        // 'BlurAdmin.pages.myInput',
-        // 'BlurAdmin.pages.myForms',
-        // 'BlurAdmin.pages.myExecutive',
-        // 'BlurAdmin.pages.myProfile',
+        'BlurAdmin.pages.myNewPage',
+        'BlurAdmin.pages.myCalender',
+        'BlurAdmin.pages.myProject',
+        'BlurAdmin.pages.myInput',
+        'BlurAdmin.pages.myForms',
+        'BlurAdmin.pages.myExecutive',
+        'BlurAdmin.pages.myProfile',
 
-        // 'BlurAdmin.pages.cgWorkManage',
-        // 'BlurAdmin.pages.cgProject',
-        // 'BlurAdmin.pages.cgAccountingManage',
-        // 'BlurAdmin.pages.cgKPI'
+        'BlurAdmin.pages.cgWorkManage',
+        'BlurAdmin.pages.cgProject',
+        'BlurAdmin.pages.cgAccountingManage',
+        'BlurAdmin.pages.cgKPI',
+        'BlurAdmin.pages.vhcTest'
     ])
         .config(routeConfig)
 

@@ -8,8 +8,16 @@
     angular.module('BlurAdmin.pages.myForms', [
         'ui.select',
         'ngSanitize',
-        'BlurAdmin.pages.ui.notifications'
+        'BlurAdmin.pages.ui.notifications',
+        'bsLoadingOverlay',
+        'bsLoadingOverlaySpinJs',
     ])
+        .run(function(bsLoadingOverlayService) {
+            bsLoadingOverlayService.setGlobalConfig({
+                templateUrl: 'components/loading-overlay-template.html'
+                // templateUrl: 'bsLoadingOverlaySpinJs'
+            });
+        })
         .config(routeConfig);
 
     /** @ngInject */

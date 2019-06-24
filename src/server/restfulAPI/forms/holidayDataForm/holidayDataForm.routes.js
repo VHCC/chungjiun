@@ -60,6 +60,8 @@ module.exports = function (app) {
                 end_maternity: req.body.end_maternity,
                 start_paternity: req.body.start_paternity,
                 end_paternity: req.body.end_paternity,
+                start_others: req.body.start_others,
+                end_others: req.body.end_others,
 
                 calculate_sick: req.body.calculate_sick,
                 calculate_private: req.body.calculate_private,
@@ -71,6 +73,7 @@ module.exports = function (app) {
                 calculate_workinjury: req.body.calculate_workinjury,
                 calculate_maternity: req.body.calculate_maternity,
                 calculate_paternity: req.body.calculate_paternity,
+                calculate_others: req.body.calculate_others,
 
                 rest_sick: req.body.rest_sick,
                 rest_private: req.body.rest_private,
@@ -82,6 +85,7 @@ module.exports = function (app) {
                 rest_workinjury: req.body.rest_workinjury,
                 rest_maternity: req.body.rest_maternity,
                 rest_paternity: req.body.rest_paternity,
+                rest_others: req.body.rest_others,
             }
         }, function (err) {
             if (err) {

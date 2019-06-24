@@ -1,0 +1,39 @@
+<div class="horizontal-scroll">
+    <table class="table table-hover" st-table="workOffTables">
+        <thead>
+        <tr class="sortable">
+            <th class="table-id" st-sort="date" st-sort-default="true" style="width: 5%">日期</th>
+            <th st-sort="day" style="width: 10%">星期</th>
+            <th st-sort="workOffType" style="width: 5%">假別</th>
+            <th style="width: 10%">時間</th>
+            <th style="width: 5%">休假時數</th>
+            <!--<th style="width: 5%">年度累積</th>-->
+        </tr>
+
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="tableItem in workOffTables" class="editable-tr-wrap">
+            <!--日期-->
+            <td class="table-id" style="width: 5%">{{showDate(tableItem)}}</td>
+            <!--星期-->
+            <td style="width: 10%">{{showDay(tableItem.day)}}</td>
+            <!--假別-->
+            <td style="width: 5%">{{showWorkOffTypeString(tableItem.workOffType)}}</td>
+            <!--時間-->
+            <td style="width: 10%">{{tableItem.start_time}} - {{tableItem.end_time}}</td></td>
+            <!--休假時數-->
+            <td style="width: 5%">{{getHourDiffByTime(tableItem.start_time, tableItem.end_time, tableItem.workOffType)}}</td>
+            <!--年度累積-->
+            <!--<td class="select-td" style="width: 5%">-->
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="6" class="text-center">
+                <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>

@@ -50,14 +50,25 @@
                     },
                 })
             .state('cgProject.listProject',
+            {
+                url: '/listProject',
+                templateUrl: 'app/pages/myProject/listProject/listProject.html',
+                controller: 'listProjectCtrl',
+                title: '執行專案',
+                accessLevel: [2,6, 100],
+                sidebarMeta: {
+                    order: global.pages.myProject_listProject,
+                },
+            })
+            .state('cgProject.listProjectAll',
                 {
-                    url: '/listProject',
-                    templateUrl: 'app/pages/myProject/listProject/listProject.html',
-                    controller: 'listProjectCtrl',
-                    title: '執行專案',
-                    accessLevel: [2, 100],
+                    url: '/listProjectAll',
+                    templateUrl: 'app/pages/myProject/listProjectAll/listProjectAll.html',
+                    controller: 'listProjectAllCtrl',
+                    title: '專案總表',
+                    accessLevel: [1,2,3,6,100],
                     sidebarMeta: {
-                        order: global.pages.myProject_listProject,
+                        order: global.pages.myProject_listProjectAll,
                     },
                 })
             // .state('myProject.endProject',
