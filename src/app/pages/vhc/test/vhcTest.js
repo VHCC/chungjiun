@@ -26,7 +26,7 @@
                 aaa : "aaa"
             }
 
-            VhcMemberUtil.connectDB(postData)
+            VhcMigrateUtil.connectDB(postData)
                 .success(function () {
                     console.log("migrate done.");
                 })
