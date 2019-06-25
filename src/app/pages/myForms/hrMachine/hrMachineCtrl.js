@@ -673,7 +673,7 @@
                     if (result <= 60) {
                         return 1;
                     } else {
-                        console.log(result);
+                        // console.log(result);
                         return Math.floor(result/60) + (((result % 60) / 60 > 0.5) ? 1 : (result % 60) == 0 ? 0 : 0.5);
                         // return result;
                         // return Math.floor(result/60);
@@ -814,7 +814,7 @@
                         }
                     }
                     // 20190408設計
-                    if (workOnHour < 12) {
+                    if (workOnHour <= 12) {
                         isBeforeNoon = true;
                     }
 
@@ -834,24 +834,27 @@
                         workOffHour = 12;
                         workOffMin = 0;
                     }
-                    // console.log("isLate= " + $scope.isLate(tableItem)
-                    //     + ", "
-                    //     + workOnHour + ":" + workOnMin
-                    //     + ", "
-                    //     + workOffHour + ":" + workOffMin);
+                    console.log(tableItem);
+                    console.log("isLate= " + $scope.isLate(tableItem)
+                        + ", "
+                        + workOnHour + ":" + workOnMin
+                        + ", "
+                        + workOffHour + ":" + workOffMin);
 
                     if (workOffHour >= 13) {
                         isAfterNoon = true;
                     }
 
+                    console.log("isAfterNoon= " + isAfterNoon + ", isBeforeNoon= " + isBeforeNoon);
+
                     if (isAfterNoon && isBeforeNoon) {
                         // console.log(parseInt(workOffHour) - parseInt(workOnHour) - 1);
                         result =  parseInt((workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin));
-                        // console.log("A result:" + result);
+                        console.log("A result:" + result);
                     } else {
                         // console.log((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
                         result =  parseInt((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
-                        // console.log("B result:" + result);
+                        console.log("B result:" + result);
                     }
                     isAfterNoon = false;
                     isBeforeNoon = false;
@@ -911,12 +914,12 @@
                     if (isAfterNoon && isBeforeNoon) {
                         // console.log(workOffHour - workOnHour - 1);
                         result +=  parseInt((workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin));
-                        // console.log("C result:" + result);
+                        console.log("C result:" + result);
 
                     } else {
                         // console.log((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
                         result += parseInt((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
-                        // console.log("D result:" + result);
+                        console.log("D result:" + result);
                     }
                 }
 
