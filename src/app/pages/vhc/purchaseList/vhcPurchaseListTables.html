@@ -75,15 +75,7 @@
                     ng-mouseleave="hover = false"
                     ng-click="editMember(mem)">
                     &nbsp<i class="ion-clipboard"></i>
-                    <span class="tooltiptext_member">{{mem.user_name}} 資訊</span>
-                </my>
-                <my ng-class="{vhcMember: hover}"
-                    class="mytooltip"
-                    ng-mouseover="hover = true"
-                    ng-mouseleave="hover = false"
-                    ng-click="editRx(mem)">
-                    &nbsp<i class="ion-gear-a"></i>
-                    <span class="tooltiptext_oldrx">原始視力概況(old Rx)</span>
+                    <span class="tooltiptext">{{mem.user_name}} 資訊</span>
                 </my>
             </td>
             <!--姓名-->

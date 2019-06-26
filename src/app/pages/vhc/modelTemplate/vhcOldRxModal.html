@@ -1,0 +1,150 @@
+<div>
+    <div class="modal-header bg-info">
+        <i class="ion-android-info modal-icon"></i>
+        <strong>{{member.user_name}} 原始視力概況(old Rx)</strong>
+    </div>
+    <div class="modal-body text-center ">
+        <table class="table table-bordered table-condensed">
+            <thead>
+            <tr>
+                <td style="vertical-align: inherit; text-align: center"></td>
+                <td style="vertical-align: inherit; text-align: center">S</td>
+                <td style="vertical-align: inherit; text-align: center">C</td>
+                <td style="vertical-align: inherit; text-align: center">A</td>
+
+                <td style="vertical-align: inherit; text-align: center">BC</td>
+                <td style="vertical-align: inherit; text-align: center">ADD</td>
+                <td style="vertical-align: inherit; text-align: center">VA</td>
+                <td style="vertical-align: inherit; text-align: center">P.D</td>
+            </tr>
+            </thead>
+            <tbody >
+            <tr style="vertical-align: inherit; text-align: center">
+                <td style="vertical-align: inherit; text-align: center">
+                    <span >右眼</span>
+
+                </td>
+                <!--RS-->
+                <td style="vertical-align: inherit; text-align: center">
+                    <input type="text"
+                           ng-model="memberOldRx.user_rightolds"
+                           class="form-control "
+                           value="memberOldRx.user_rightolds">
+                </td>
+                <!--RC-->
+                <td class="form-group" style="vertical-align: inherit; text-align: center">
+                    <input type="text"
+                           ng-model="memberOldRx.user_rightoldc"
+                           class="form-control "
+                           value="memberOldRx.user_rightoldc">
+                </td>
+                <!--RA-->
+                <td class="form-group" style="vertical-align: inherit; text-align: center">
+                    <input type="text"
+                           ng-model="memberOldRx.user_rightolda"
+                           class="form-control "
+                           value="memberOldRx.user_rightolda">
+                </td>
+
+                <!--RBC-->
+                <td class="form-group" style="vertical-align: inherit; text-align: center">
+                    <input type="text"
+                           ng-model="memberOldRx.user_rightoldbc"
+                           class="form-control "
+                           value="memberOldRx.user_rightoldbc">
+                </td>
+                <!--RADD-->
+                <td class="form-group" style="vertical-align: inherit; text-align: center">
+                    <input type="text"
+                           ng-model="memberOldRx.user_rightoldadd"
+                           class="form-control "
+                           value="memberOldRx.user_rightoldadd">
+                </td>
+                <!--RVA-->
+                <td class="form-group" style="vertical-align: inherit; text-align: center">
+                    <input type="text"
+                           ng-model="memberOldRx.user_rightoldva"
+                           class="form-control "
+                           value="memberOldRx.user_rightoldva">
+                </td>
+                <!--RP.D-->
+                <td class="form-group" style="vertical-align: inherit; text-align: center">
+                    <input type="text"
+                           ng-model="memberOldRx.user_rightoldpd"
+                           class="form-control "
+                           value="memberOldRx.user_rightoldpd">
+                </td>
+            </tr>
+            <!--左眼-->
+            <tr style="vertical-align: inherit; text-align: center">
+                <td style="vertical-align: inherit; text-align: center">
+                    <span >左眼</span>
+
+                </td>
+                <!--LS-->
+                <td style="vertical-align: inherit; text-align: center">
+                    <input type="text"
+                           ng-model="memberOldRx.user_leftolds"
+                           class="form-control "
+                           value="memberOldRx.user_leftolds">
+                </td>
+                <!--LC-->
+                <td class="form-group" style="vertical-align: inherit; text-align: center">
+                    <input type="text"
+                           ng-model="memberOldRx.user_leftoldc"
+                           class="form-control "
+                           value="memberOldRx.user_leftoldc">
+                </td>
+                <!--LA-->
+                <td class="form-group" style="vertical-align: inherit; text-align: center">
+                    <input type="text"
+                           ng-model="memberOldRx.user_leftolda"
+                           class="form-control "
+                           value="memberOldRx.user_leftolda">
+                </td>
+
+                <!--LBC-->
+                <td class="form-group" style="vertical-align: inherit; text-align: center">
+                    <input type="text"
+                           ng-model="memberOldRx.user_leftoldbc"
+                           class="form-control "
+                           value="memberOldRx.user_leftoldbc">
+                </td>
+                <!--LADD-->
+                <td class="form-group" style="vertical-align: inherit; text-align: center">
+                    <input type="text"
+                           ng-model="memberOldRx.user_leftoldadd"
+                           class="form-control "
+                           value="memberOldRx.user_leftoldadd">
+                </td>
+                <!--LVA-->
+                <td class="form-group" style="vertical-align: inherit; text-align: center">
+                    <input type="text"
+                           ng-model="memberOldRx.user_leftoldva"
+                           class="form-control "
+                           value="memberOldRx.user_leftoldva">
+                </td>
+                <!--LP.D-->
+                <td class="form-group" style="vertical-align: inherit; text-align: center">
+                    <input type="text"
+                           ng-model="memberOldRx.user_leftoldpd"
+                           class="form-control "
+                           value="memberOldRx.user_leftoldpd">
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            </tfoot>
+
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger"
+                ng-click="saveOldRx()">儲存
+        </button>
+        <button type="button"
+                class="btn btn-primary"
+                ng-click="closeDialog()">取消
+        </button>
+    </div>
+</div>

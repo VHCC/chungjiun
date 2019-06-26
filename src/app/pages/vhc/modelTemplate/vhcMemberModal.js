@@ -32,7 +32,6 @@
         $scope.isAddMember = false;
 
         if ($scope.member == undefined) {
-            console.log("QQQQQ");
             $scope.isAddMember = true;
         }
         // initial

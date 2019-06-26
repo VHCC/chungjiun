@@ -39,6 +39,16 @@
                     order: global.pages.vhcMemberList,
                 },
             })
+            .state('vhcTest.purchseList', {
+                url: '/purchaseList',
+                templateUrl: 'app/pages/vhc/purchaseList/vhcPurchaseList.html',
+                controller: 'vhcPurchaseListController',
+                title: '消費',
+                sidebarMeta: {
+                    icon: 'ion-grid',
+                    order: global.pages.vhcPurchaseList,
+                },
+            })
     }
 
 })();

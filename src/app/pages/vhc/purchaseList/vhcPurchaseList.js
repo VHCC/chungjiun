@@ -10,13 +10,14 @@
 
             var promise = $http.get('/api/get_vhc_member_all')
                 .success(function (results) {
+                    console.log(results);
                     return results;
                 });
             return promise;
 
 
         })
-        .controller('vhcMemberListController',
+        .controller('vhcPurchaseListController',
             [
                 '$scope',
                 'toastr',
@@ -24,7 +25,6 @@
                 '$compile',
                 '$uibModal',
                 'VhcMemberUtil',
-                'VhcOldRxUtil',
                 'intVhcMemberListService',
                 VhcMemberList
             ]);
@@ -38,7 +38,6 @@
                     $compile,
                     $uibModal,
                     VhcMemberUtil,
-                    VhcOldRxUtil,
                     intVhcMemberListService) {
 
         intVhcMemberListService.then(function (resp) {
@@ -54,7 +53,7 @@
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
-                    "ng-include=\"'app/pages/vhc/memberList/vhcMemberListTables.html'\">" +
+                    "ng-include=\"'app/pages/vhc/purchaseList/vhcPurchaseListTables.html'\">" +
                     "</div>" +
                     "</div>"
                 )($scope));
@@ -96,36 +95,6 @@
             }).result.then(function () {
                 // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
             });
-        }
-
-        $scope.editRx = function (member) {
-
-            var postData = {
-                user_number: member.user_number
-            }
-            VhcOldRxUtil.findOldRxByMemberNumber(postData)
-                .success(function (res) {
-                    console.log(res);
-
-                    $uibModal.open({
-                        animation: true,
-                        controller: 'vhcOldRxModalCtrl',
-                        templateUrl: 'app/pages/vhc/modelTemplate/vhcOldRxModal.html',
-                        resolve: {
-                            memberOldRx: function () {
-                                return res.payload;
-                            },
-                            member: function () {
-                                return member;
-                            },
-                            parent: function () {
-                                return $scope;
-                            },
-                        }
-                    }).result.then(function () {
-                        // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
-                    });
-                })
         }
 
 

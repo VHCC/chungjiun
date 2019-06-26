@@ -13,7 +13,7 @@
     }
 
     /* Tooltip text */
-    .mytooltip .tooltiptext_member {
+    .mytooltip .tooltiptext {
         visibility: hidden;
         width: 80px;
         background-color: #555;
@@ -34,57 +34,20 @@
         transition: opacity 0.3s;
     }
 
-    .mytooltip .tooltiptext_oldrx {
-        visibility: hidden;
-        width: 150px;
-        background-color: #555;
-        color: #fff;
-        text-align: center;
-        padding: 5px 0;
-        border-radius: 6px;
-
-        /* Position the tooltip text */
-        position: absolute;
-        z-index: 1;
-        bottom: 125%;
-        left: 50%;
-        margin-left: -40px;
-
-        /* Fade in tooltip */
-        opacity: 0;
-        transition: opacity 0.3s;
-    }
-
     /* Tooltip arrow */
-    .mytooltip .tooltiptext_member::after {
-         content: "";
-         position: absolute;
-         top: 100%;
-         left: 50%;
-         margin-left: -5px;
-         border-width: 5px;
-         border-style: solid;
-         border-color: #555 transparent transparent transparent;
-     }
-
-    .mytooltip .tooltiptext_oldrx::after {
+    .mytooltip .tooltiptext::after {
         content: "";
         position: absolute;
         top: 100%;
         left: 50%;
-        margin-left: -35px;
+        margin-left: -5px;
         border-width: 5px;
         border-style: solid;
         border-color: #555 transparent transparent transparent;
     }
 
     /* Show the tooltip text when you mouse over the tooltip container */
-    .mytooltip:hover .tooltiptext_member {
-        visibility: visible;
-        opacity: 1;
-    }
-
-    .mytooltip:hover .tooltiptext_oldrx {
+    .mytooltip:hover .tooltiptext {
         visibility: visible;
         opacity: 1;
     }

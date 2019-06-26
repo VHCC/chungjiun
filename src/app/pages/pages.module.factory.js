@@ -622,6 +622,18 @@
 
             }
         }])
+        .factory('VhcOldRxUtil', ['$http', function (http) {
+            return {
+                findOldRxByMemberNumber: function(formData) {
+                    return http.post('/api/post_vhc_member_old_rx_by_number', formData);
+                },
+
+                updateOldRxByMemberNumber: function (formData) {
+                    return http.post('/api/post_vhc_member_old_rx_update', formData);
+                },
+
+            }
+        }])
     ;
 
 

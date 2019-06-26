@@ -56,6 +56,7 @@ global.pages = {
     // vhc Test
     vhc: 1400,
     vhcMemberList : 100,
+    vhcPurchaseList : 150,
     vhcMigrate : 200
 
 
