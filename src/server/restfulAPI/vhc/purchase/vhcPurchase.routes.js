@@ -14,14 +14,14 @@ module.exports = function (app) {
                 //         user_number: "10139"
                 //     }
                 // },
-                {
-                    $addFields: {
-                        // "_number": {
-                        //     $toString: "$user_number"
-                        // },
-                        "_member_info" : "$$CURRENT"
-                    }
-                },
+                // {
+                //     $addFields: {
+                //         // "_number": {
+                //         //     $toString: "$user_number"
+                //         // },
+                //         "_member_info" : "$$CURRENT"
+                //     }
+                // },
                 {
                     $lookup: {
                         from: "vhcpurchaserecords",
@@ -39,13 +39,13 @@ module.exports = function (app) {
                 // {
                 //     $unwind: "$work_hour_forms.formTables"
                 // },
-                {
-                    $project: {
-                        "_id": 0,
-                        "purchases": 1,
-                        "_member_info": 1
-                    }
-                },
+                // {
+                //     $project: {
+                //         "_id": 0,
+                //         "purchases": 1,
+                //         "_member_info": 1
+                //     }
+                // },
                 // {
                 //     $unwind: "$_work_hour_forms_info"
                 // },

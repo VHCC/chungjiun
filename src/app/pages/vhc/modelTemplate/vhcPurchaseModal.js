@@ -109,7 +109,7 @@
         $scope.addPurchase = function (item) {
 
             var postData = {
-                member_info: $scope.item._member_info,
+                member_info: $scope.item,
             }
 
             VhcPurchaseUtil.addPurchaseItem(postData)

@@ -11,33 +11,33 @@
             </td>
         </tr>
         <tr class="sortable">
-            <th class="table-id" st-sort="_member_info.user_number" st-sort-default="true" style="width: 10%">會員號碼</th>
-            <th st-sort="_member_info.user_name" style="width: 10%">姓名</th>
-            <th st-sort="_member_info.user_birth" style="width: 13%">生日</th>
-            <th st-sort="_member_info.user_mobile" style="width: 13%">手機</th>
+            <th class="table-id" st-sort="user_number" st-sort-default="true" style="width: 10%">會員號碼</th>
+            <th st-sort="user_name" style="width: 10%">姓名</th>
+            <th st-sort="user_birth" style="width: 13%">生日</th>
+            <th st-sort="user_mobile" style="width: 13%">手機</th>
             <!--<th st-sort="user_email" style="width: 13%">Email</th>-->
             <!--<th st-sort="user_address" style="width: 20%">住址</th>-->
-            <th st-sort="_member_info.user_memo" style="width: 13%">備註</th>
+            <th st-sort="user_memo" style="width: 13%">備註</th>
             <th  style="width: 10px">消費筆數</th>
             <th  style="width: 5%">消費總額</th>
         </tr>
         <tr>
-            <th><input st-search="_member_info.user_number"
+            <th><input st-search="user_number"
                        placeholder="尋找會員號碼"
                        class="input-sm form-control search-input"
                        type="search"/>
             </th>
-            <th><input st-search="_member_info.user_name"
+            <th><input st-search="user_name"
                        placeholder="輸入姓名"
                        class="input-sm form-control search-input"
                        type="search"/>
             </th>
-            <th><input st-search="_member_info.user_birth"
+            <th><input st-search="user_birth"
                        placeholder="輸入生日"
                        class="input-sm form-control search-input"
                        type="search"/>
             </th>
-            <th><input st-search="_member_info.user_mobile"
+            <th><input st-search="user_mobile"
                        placeholder="輸入手機"
                        class="input-sm form-control search-input"
                        type="search"/>
@@ -52,7 +52,7 @@
                        <!--class="input-sm form-control search-input"-->
                        <!--type="search"/>-->
             </th>
-            <th><input st-search="_member_info.user_memo"
+            <th><input st-search="user_memo"
                        placeholder="輸入備註"
                        class="input-sm form-control search-input"
                        type="search"/>
@@ -72,19 +72,19 @@
 
             <!--會員ID-->
             <td class="table-id" style="width: 5%">
-                {{item._member_info.user_number}}
+                {{item.user_number}}
             </td>
             <!--姓名-->
             <td style="width: 20%">
-                {{item._member_info.user_name}}
+                {{item.user_name}}
             </td>
             <!--生日-->
             <td style="width: 13%">
-                {{item._member_info.user_birth}}
+                {{item.user_birth}}
             </td>
             <!--手機-->
             <td style="width: 13%">
-                {{item._member_info.user_mobile}}
+                {{item.user_mobile}}
             </td>
             <!--Email-->
             <!--<td style="width: 13%">-->
@@ -96,7 +96,7 @@
             <!--</td>-->
             <!--備註-->
             <td style="width: 13%">
-                {{item._member_info.user_memo}}
+                {{item.user_memo}}
             </td>
             <!--消費筆數-->
             <td style="width: 10px">
