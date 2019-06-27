@@ -153,8 +153,7 @@
                     <!--</td>-->
 
                     <!--上班時數-->
-                    <td ng-class="workOffHour(tableItem) != '' ? 'sumWarning' : 'sunNormal'"
-                            style="vertical-align: inherit;">
+                    <td style="vertical-align: inherit;">
                         <div ng-show="showWorkHour(tableItem,
                         showHrMachineTime(tableItem, 11),
                         showHrMachineTime(tableItem, 21),
@@ -173,7 +172,8 @@
                     </td>
 
                     <!--請假時數-->
-                    <td style="vertical-align: inherit;">
+                    <td ng-class="workOffHour(tableItem) != '' ? 'sumWarning' : 'sunNormal'"
+                        style="vertical-align: inherit;">
                         {{workOffHour(tableItem)}}
                     </td>
 
