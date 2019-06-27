@@ -24,135 +24,134 @@ module.exports = function (app) {
     // purchase
     app.get(global.apiUrl.get_vhc_test_all, function (req, res) {
 
-        VhcUser.find({}, function (err, results) {
-            if (err) {
-                res.send(err);
-            } else {
-                res.status(200).send({
-                    code: 200,
-                    error: global.status._200,
-                    payload: results,
-                });
-            }
-        })
-
-        // VhcUser.aggregate( // 由專案找起
-        //     [
-        //         // {
-        //         //     $match: prjInfo
-        //         // },
-        //         // {
-        //         //     $addFields: {
-        //         //         "_projectTargetString": {
-        //         //             $toString: "$_id"
-        //         //         },
-        //         //         "_project_info" : "$$CURRENT"
-        //         //     }
-        //         // },
-        //         {
-        //             $lookup: {
-        //                 from: "workhourforms", // 年跟月的屬性
-        //                 localField: "_projectTargetString",
-        //                 foreignField: "formTables.prjDID",
-        //                 as: "work_hour_forms"
-        //             }
-        //         },
-        //         // {
-        //         //     $unwind: "$work_hour_forms"
-        //         // },
-        //         // {
-        //         //     $unwind: "$work_hour_forms.formTables"
-        //         // },
-        //         // {
-        //         //     $project: {
-        //         //         "_id": 0,
-        //         //         "_work_hour_forms_info" : {
-        //         //             $cond: {
-        //         //                 if: {
-        //         //                     $and: $project_hour_table_Conds
-        //         //                 },
-        //         //                 then: "$work_hour_forms",
-        //         //                 else: "$$REMOVE"
-        //         //             }
-        //         //         },
-        //         //         "_project_info" : 1,
-        //         //     }
-        //         // },
-        //         // {
-        //         //     $unwind: "$_work_hour_forms_info"
-        //         // },
-        //         // {
-        //         //     $lookup: {
-        //         //         from: "workhourtableforms", // 年跟月的屬性
-        //         //         localField: "_work_hour_forms_info.formTables.tableID",
-        //         //         foreignField: "_id",
-        //         //         as: "_work_hour_tables_info"
-        //         //     }
-        //         // },
-        //         // {
-        //         //     $unwind: "$_work_hour_tables_info"
-        //         // },
-        //         // {
-        //         //     $addFields: {
-        //         //         "_userDID": {
-        //         //             $toObjectId: "$_work_hour_forms_info.creatorDID"
-        //         //         },
-        //         //     }
-        //         // },
-        //         // {
-        //         //     $lookup: {
-        //         //         from: "users",
-        //         //         localField: "_userDID",
-        //         //         foreignField: "_id",
-        //         //         as: "_user_info"
-        //         //     }
-        //         // },
-        //         // {
-        //         //     $unwind: "$_user_info"
-        //         // },
-        //         // {
-        //         //     $project: {
-        //         //         "_id": 0,
-        //         //         "_project_info" : 1,
-        //         //         "_work_hour_forms_info" : 1,
-        //         //         "_work_hour_tables_info" : 1,
-        //         //         "_user_info" : 1,
-        //         //     }
-        //         // },
-        //         // {
-        //         //     $group: {
-        //         //         _id: {
-        //         //             prjCode: '$_project_info.prjCode',  //$region is the column name in collection
-        //         //             userDID: '$_work_hour_forms_info.creatorDID',  //$region is the column name in collection
-        //         //         },
-        //         //         tables: { $push: "$_work_hour_tables_info" },
-        //         //         forms: { $push: "$_work_hour_forms_info" },
-        //         //         _user_info: {$first: "$_user_info"},
-        //         //         _work_hour_forms_info: {$first: "$_work_hour_forms_info"},
-        //         //         _project_info: {$first: "$_project_info"},
-        //         //
-        //         //     }
-        //         // },
-        //         // {
-        //         //     $sort: {
-        //         //         "_work_hour_forms_info.creatorDID": 1,
-        //         //         "_project_info.prjCode": 1
-        //         //     }
-        //         // },
-        //
-        //     ], function (err, tables) {
-        //         if (err) {
-        //             res.send(err);
-        //         } else {
-        //             var results = tables;
-        //             res.status(200).send({
-        //                 code: 200,
-        //                 error: global.status._200,
-        //                 payload: results,
-        //             });
-        //         }
+        // VhcPurchaseRecord.find({
+        //     user_number: "10139",
+        // }, function (err, results) {
+        //     if (err) {
+        //         res.send(err);
         //     }
-        // )
+        //     res.status(200).send({
+        //         code: 200,
+        //         error: global.status._200,
+        //         payload: results,
+        //     });
+        // });
+
+
+        VhcUser.aggregate( //
+            [
+                // {
+                //     $match: {
+                //         user_number: "10139"
+                //     }
+                // },
+                {
+                    $addFields: {
+                        // "_number": {
+                        //     $toString: "$user_number"
+                        // },
+                        "_member_info" : "$$CURRENT"
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "vhcpurchaserecords",
+                        localField: "user_number",
+                        foreignField: "user_number",
+                        as: "purchases"
+                    }
+                },
+                // {
+                //     $unwind: "$vhcPurchaseRecord"
+                // },
+                // {
+                //     $unwind: "$work_hour_forms"
+                // },
+                // {
+                //     $unwind: "$work_hour_forms.formTables"
+                // },
+                {
+                    $project: {
+                        "_id": 0,
+                        "purchases": 1,
+                        "_member_info": 1
+                    }
+                },
+
+                // {
+                //     $unwind: "$_work_hour_forms_info"
+                // },
+                // {
+                //     $lookup: {
+                //         from: "workhourtableforms", // 年跟月的屬性
+                //         localField: "_work_hour_forms_info.formTables.tableID",
+                //         foreignField: "_id",
+                //         as: "_work_hour_tables_info"
+                //     }
+                // },
+                // {
+                //     $unwind: "$_work_hour_tables_info"
+                // },
+                // {
+                //     $addFields: {
+                //         "_userDID": {
+                //             $toObjectId: "$_work_hour_forms_info.creatorDID"
+                //         },
+                //     }
+                // },
+                // {
+                //     $lookup: {
+                //         from: "users",
+                //         localField: "_userDID",
+                //         foreignField: "_id",
+                //         as: "_user_info"
+                //     }
+                // },
+                // {
+                //     $unwind: "$_user_info"
+                // },
+                // {
+                //     $project: {
+                //         "_id": 0,
+                //         "_project_info" : 1,
+                //         "_work_hour_forms_info" : 1,
+                //         "_work_hour_tables_info" : 1,
+                //         "_user_info" : 1,
+                //     }
+                // },
+                // {
+                //     $group: {
+                //         _id: {
+                //             prjCode: '$_project_info.prjCode',  //$region is the column name in collection
+                //             userDID: '$_work_hour_forms_info.creatorDID',  //$region is the column name in collection
+                //         },
+                //         tables: { $push: "$_work_hour_tables_info" },
+                //         forms: { $push: "$_work_hour_forms_info" },
+                //         _user_info: {$first: "$_user_info"},
+                //         _work_hour_forms_info: {$first: "$_work_hour_forms_info"},
+                //         _project_info: {$first: "$_project_info"},
+                //
+                //     }
+                // },
+                // {
+                //     $sort: {
+                //         "_work_hour_forms_info.creatorDID": 1,
+                //         "_project_info.prjCode": 1
+                //     }
+                // },
+
+            ], function (err, results) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: results,
+                    });
+                }
+            }
+        )
     });
 
     // find old rx

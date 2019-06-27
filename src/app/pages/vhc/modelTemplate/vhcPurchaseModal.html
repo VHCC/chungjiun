@@ -1,0 +1,161 @@
+<div>
+    <div class="modal-header bg-info">
+        <i class="ion-android-info modal-icon"></i>
+        <strong>會員資料</strong>
+    </div>
+    <div class="modal-body text-center ">
+        <table class="table table-bordered table-condensed">
+
+            <thead>
+            <tr>
+                <td style="vertical-align: inherit; text-align: center" width="10px">No.</td>
+                <td style="vertical-align: inherit; text-align: center" width="100px">消費日期</td>
+                <td colspan="2"
+                    style="vertical-align: inherit; text-align: center" width="200px">商品名</td>
+                <td style="vertical-align: inherit; text-align: center">金額</td>
+
+                <td colspan="13"
+                    style="vertical-align: inherit; text-align: center">商品資訊</td>
+            </tr>
+            </thead>
+            <tbody ng-repeat="purchase in item.purchases">
+            <tr style="vertical-align: inherit; text-align: center">
+                <td rowspan="2"
+                    class="form-group has-success" style="vertical-align: inherit;">
+                    {{$index + 1}}
+                </td>
+                <td rowspan="2"
+                    class="form-group has-success" style="vertical-align: inherit;">
+                    {{purchase.purchase_recorddate}}
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    F
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    {{purchase.purchase_f}}
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    {{purchase.purchase_fprice}}
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    R:
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    S
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    {{purchase.purchase_rights}}
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    C
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    {{purchase.purchase_rightc}}
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    A
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    {{purchase.purchase_righta}}
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    BC
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    {{purchase.purchase_rightbc}}
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    P.D
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    {{purchase.purchase_rightpd}}
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    ADD
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    {{purchase.purchase_rightadd}}
+                </td>
+            </tr>
+            <tr style="vertical-align: inherit; text-align: center">
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    C
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    {{purchase.purchase_l}}
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    {{purchase.purchase_lprice}}
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    L:
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    S
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    {{purchase.purchase_lefts}}
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    C
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    {{purchase.purchase_leftc}}
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    A
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    {{purchase.purchase_lefta}}
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    BC
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    {{purchase.purchase_leftbc}}
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    P.D
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    {{purchase.purchase_leftpd}}
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    ADD
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    {{purchase.purchase_leftadd}}
+                </td>
+            </tr>
+
+
+
+            </tbody>
+            <tfoot>
+            <!--總時數-->
+            <tr>
+                <td colspan="2" style="text-align: center">
+                        <span>
+                            總金額
+                        </span>
+                </td>
+                <td colspan="3" style="text-align: center">
+                    {{totalPurchase(item)}}
+                </td>
+            </tr>
+            </tfoot>
+
+
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success"
+                id="addBtn"
+                ng-click="addPurchase()">新增
+        </button>
+        <button type="button"
+                class="btn btn-primary"
+                ng-click="closeDialog()">取消
+        </button>
+    </div>
+</div>

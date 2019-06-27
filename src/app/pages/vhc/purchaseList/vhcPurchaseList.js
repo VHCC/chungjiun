@@ -6,9 +6,9 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.vhcTest')
-        .service('intVhcMemberListService', function ($http, $cookies) {
+        .service('intVhcPurchaseListService', function ($http, $cookies) {
 
-            var promise = $http.get('/api/get_vhc_member_all')
+            var promise = $http.get('/api/get_vhc_test_all')
                 .success(function (results) {
                     console.log(results);
                     return results;
@@ -25,7 +25,7 @@
                 '$compile',
                 '$uibModal',
                 'VhcMemberUtil',
-                'intVhcMemberListService',
+                'intVhcPurchaseListService',
                 VhcMemberList
             ]);
 
@@ -38,18 +38,20 @@
                     $compile,
                     $uibModal,
                     VhcMemberUtil,
-                    intVhcMemberListService) {
+                    intVhcPurchaseListService) {
 
-        intVhcMemberListService.then(function (resp) {
+        intVhcPurchaseListService.then(function (resp) {
             // console.log(resp.data.payload);
-            $scope.members = resp.data.payload;
-            $scope.members.slice(0, resp.data.payload.length);
+            $scope.items = resp.data.payload;
+            $scope.items.slice(0, resp.data.payload.length);
+
+            // console.log($scope.items);
 
             angular.element(
                 document.getElementById('includeHead'))
                 .append($compile(
                     "<div ba-panel ba-panel-title=" +
-                    "'保健視會員列表 - " + resp.data.payload.length + "'" +
+                    "'保健視會員 消費列表 - " + resp.data.payload.length + "'" +
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
@@ -60,15 +62,15 @@
         })
 
 
-        $scope.editMember = function (member) {
-            // console.log(member);
+        $scope.fetchPurchase = function (item) {
             $uibModal.open({
                 animation: true,
-                controller: 'vhcMemberModalCtrl',
-                templateUrl: 'app/pages/vhc/modelTemplate/vhcMemberModal.html',
+                controller: 'vhcPurchaseModalCtrl',
+                templateUrl: 'app/pages/vhc/modelTemplate/vhcPurchaseModal.html',
+                size: 'lg',
                 resolve: {
-                    member: function () {
-                        return member;
+                    item: function () {
+                        return item;
                     },
                     parent: function () {
                         return $scope;
@@ -79,24 +81,29 @@
             });
         }
 
-        $scope.addMember = function () {
-            $uibModal.open({
-                animation: true,
-                controller: 'vhcMemberModalCtrl',
-                templateUrl: 'app/pages/vhc/modelTemplate/vhcMemberModal.html',
-                resolve: {
-                    member: function () {
-                        return undefined;
-                    },
-                    parent: function () {
-                        return $scope;
-                    },
+        $scope.totalPurchase = function(item) {
+            // console.log(item);
+            var results = 0;
+            for (var index = 0; index < item.purchases.length; index ++) {
+                // console.log(item.purchases[index].purchase_fprice);
+                if (isNaN(parseInt(item.purchases[index].purchase_fprice))) {
+                    continue;
                 }
-            }).result.then(function () {
-                // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
-            });
+                results += parseInt(item.purchases[index].purchase_fprice);
+            }
+            for (var index = 0; index < item.purchases.length; index ++) {
+                // console.log(item.purchases[index].purchase_lprice);
+                if (isNaN(parseInt(item.purchases[index].purchase_lprice))) {
+                    continue;
+                }
+                results += parseInt(item.purchases[index].purchase_lprice);
+            }
+            return results;
         }
 
+        $scope.addPurchase = function () {
+            console.log("ADD");
+        }
 
 
     }
