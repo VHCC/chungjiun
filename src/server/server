@@ -32,5 +32,6 @@ require('./restfulAPI/forms/workAddConfirmForm/workAddConfirmForm.routes')(app);
 require('./restfulAPI/forms/hrMachineForm/hrMachineForm.routes')(app);
 require('./restfulAPI/vhc/connect/vhcMigrate.routes')(app);
 require('./restfulAPI/vhc/member/vhcMember.routes')(app);
+require('./restfulAPI/vhc/purchase/vhcPurchase.routes')(app);
 
 

@@ -89,13 +89,11 @@
                 member: $scope.member
             }
 
-            // VhcMemberUtil.createVhcMember(postData)
-            //     .success(function (res) {
-            //         console.log(res);
-            //         $window.location.reload();
-            //     })
-
-
+            VhcMemberUtil.createVhcMember(postData)
+                .success(function (res) {
+                    console.log(res);
+                    $window.location.reload();
+                })
 
         };
 

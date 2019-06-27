@@ -21,8 +21,10 @@ module.exports = mongoose.model('VhcPurchaseRecord', {
     purchase_leftadd:{type: String,},
 
     purchase_f:{type: String,},
+    purchase_f_memo:{type: String,},
     purchase_fprice:{type: String,},
     purchase_l:{type: String,},
+    purchase_l_memo:{type: String,},
     purchase_lprice:{type: String,},
 
 

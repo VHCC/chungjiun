@@ -8,7 +8,7 @@
     angular.module('BlurAdmin.pages.vhcTest')
         .service('intVhcPurchaseListService', function ($http, $cookies) {
 
-            var promise = $http.get('/api/get_vhc_test_all')
+            var promise = $http.get('/api/get_vhc_purchase_all')
                 .success(function (results) {
                     console.log(results);
                     return results;
@@ -100,11 +100,6 @@
             }
             return results;
         }
-
-        $scope.addPurchase = function () {
-            console.log("ADD");
-        }
-
 
     }
 

@@ -8,14 +8,16 @@
 
             <thead>
             <tr>
-                <td style="vertical-align: inherit; text-align: center" width="10px">No.</td>
-                <td style="vertical-align: inherit; text-align: center" width="100px">消費日期</td>
+                <td style="vertical-align: inherit; text-align: center" width="5px">No.</td>
+                <td style="vertical-align: inherit; text-align: center" width="70px">消費日期</td>
                 <td colspan="2"
-                    style="vertical-align: inherit; text-align: center" width="200px">商品名</td>
-                <td style="vertical-align: inherit; text-align: center">金額</td>
+                    style="vertical-align: inherit; text-align: center" width="150px">商品名</td>
+                <td colspan="2"
+                    style="vertical-align: inherit; text-align: center" width="150px">金額</td>
 
                 <td colspan="13"
-                    style="vertical-align: inherit; text-align: center">商品資訊</td>
+                    style="vertical-align: inherit; text-align: center"
+                    width="500px">商品資訊</td>
             </tr>
             </thead>
             <tbody ng-repeat="purchase in item.purchases">
@@ -26,16 +28,60 @@
                 </td>
                 <td rowspan="2"
                     class="form-group has-success" style="vertical-align: inherit;">
-                    {{purchase.purchase_recorddate}}
+                    <!--{{purchase.purchase_recorddate}}-->
+
+                    <span editable-text="purchase.purchase_recorddate"
+                          e-form="rowform1"
+                          e-style="width:100px"
+                          e-ng-change="textChange(this)"
+                          ng-model="purchase.purchase_recorddate"
+                          id="purchase_recorddate"
+                          e-required>{{purchase.purchase_recorddate}}</span>
+
+                    <div class="buttons" ng-show="!rowform1.$visible">
+                        <button class="btn btn-info editable-table-button btn-xs"
+                                ng-click="rowform1.$show()">編輯
+                        </button>
+                    </div>
+                    <form editable-form name="rowform1" ng-show="rowform1.$visible"
+                          class="form-buttons form-inline">
+                        <button type="submit"
+                                ng-click="savePurchase(purchase)"
+                                class="btn btn-primary editable-table-button btn-xs">
+                            存擋
+                        </button>
+                    </form>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     F
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    {{purchase.purchase_f}}
+                    <span editable-text="purchase.purchase_f"
+                          e-form="rowform1"
+                          e-style="width:150px"
+                          e-ng-change="textChange(this)"
+                          ng-model="purchase.purchase_f"
+                          id="purchase_purchase_f"
+                          e-required>{{purchase.purchase_f}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    {{purchase.purchase_fprice}}
+                    <span editable-text="purchase.purchase_f_memo"
+                          e-form="rowform1"
+                          e-style="width:90px"
+                          ng-model="purchase.purchase_f_memo"
+                          e-ng-change="textChange(this)"
+                          id="purchase_f_memo"
+                          e-required>{{purchase.purchase_f_memo}}</span>
+                </td>
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    <span editable-text="purchase.purchase_fprice"
+                          e-form="rowform1"
+                          e-style="width:60px"
+                          ng-model="purchase.purchase_fprice"
+                          e-ng-change="textChange(this)"
+                          id="purchase_purchase_fprice"
+                          e-required>{{purchase.purchase_fprice}}</span>
+                    <!--{{purchase.purchase_fprice}}-->
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     R:
@@ -44,37 +90,79 @@
                     S
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    {{purchase.purchase_rights}}
+                    <!--{{purchase.purchase_rights}}-->
+                    <span editable-text="purchase.purchase_rights"
+                          e-form="rowform1"
+                          e-style="width:60px"
+                          e-ng-change="textChange(this)"
+                          ng-model="purchase.purchase_rights"
+                          id="purchase_purchase_rights"
+                          e-required>{{purchase.purchase_rights}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     C
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    {{purchase.purchase_rightc}}
+                    <!--{{purchase.purchase_rightc}}-->
+                    <span editable-text="purchase.purchase_rightc"
+                          e-form="rowform1"
+                          e-style="width:60px"
+                          e-ng-change="textChange(this)"
+                          ng-model="purchase.purchase_rightc"
+                          id="purchase_purchase_rightc"
+                          e-required>{{purchase.purchase_rightc}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     A
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    {{purchase.purchase_righta}}
+                    <!--{{purchase.purchase_righta}}-->
+                    <span editable-text="purchase.purchase_righta"
+                          e-form="rowform1"
+                          e-style="width:60px"
+                          e-ng-change="textChange(this)"
+                          ng-model="purchase.purchase_righta"
+                          id="purchase_purchase_righta"
+                          e-required>{{purchase.purchase_righta}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     BC
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    {{purchase.purchase_rightbc}}
+                    <!--{{purchase.purchase_rightbc}}-->
+                    <span editable-text="purchase.purchase_rightbc"
+                          e-form="rowform1"
+                          e-style="width:60px"
+                          e-ng-change="textChange(this)"
+                          ng-model="purchase.purchase_rightbc"
+                          id="purchase_purchase_rightbc"
+                          e-required>{{purchase.purchase_rightbc}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     P.D
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    {{purchase.purchase_rightpd}}
+                    <!--{{purchase.purchase_rightpd}}-->
+                    <span editable-text="purchase.purchase_rightpd"
+                          e-form="rowform1"
+                          e-style="width:60px"
+                          e-ng-change="textChange(this)"
+                          ng-model="purchase.purchase_rightpd"
+                          id="purchase_purchase_rightpd"
+                          e-required>{{purchase.purchase_rightpd}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     ADD
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    {{purchase.purchase_rightadd}}
+                    <!--{{purchase.purchase_rightadd}}-->
+                    <span editable-text="purchase.purchase_rightadd"
+                          e-form="rowform1"
+                          e-style="width:60px"
+                          e-ng-change="textChange(this)"
+                          ng-model="purchase.purchase_rightadd"
+                          id="purchase_purchase_rightadd"
+                          e-required>{{purchase.purchase_rightadd}}</span>
                 </td>
             </tr>
             <tr style="vertical-align: inherit; text-align: center">
@@ -82,10 +170,34 @@
                     C
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    {{purchase.purchase_l}}
+                    <!--{{purchase.purchase_l}}-->
+                    <span editable-text="purchase.purchase_l"
+                          e-form="rowform1"
+                          e-style="width:150px"
+                          e-ng-change="textChange(this)"
+                          ng-model="purchase.purchase_l"
+                          id="purchase_purchase_l"
+                          e-required>{{purchase.purchase_l}}</span>
+                </td>
+
+                <td class="form-group has-success" style="vertical-align: inherit;">
+                    <span editable-text="purchase.purchase_l_memo"
+                          e-form="rowform1"
+                          e-style="width:90px"
+                          ng-model="purchase.purchase_l_memo"
+                          e-ng-change="textChange(this)"
+                          id="purchase_l_memo"
+                          e-required>{{purchase.purchase_l_memo}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    {{purchase.purchase_lprice}}
+                    <!--{{purchase.purchase_lprice}}-->
+                    <span editable-text="purchase.purchase_lprice"
+                          e-form="rowform1"
+                          e-style="width:60px"
+                          e-ng-change="textChange(this)"
+                          ng-model="purchase.purchase_lprice"
+                          id="purchase_purchase_lprice"
+                          e-required>{{purchase.purchase_lprice}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     L:
@@ -94,37 +206,79 @@
                     S
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    {{purchase.purchase_lefts}}
+                    <!--{{purchase.purchase_lefts}}-->
+                    <span editable-text="purchase.purchase_lefts"
+                          e-form="rowform1"
+                          e-style="width:60px"
+                          e-ng-change="textChange(this)"
+                          ng-model="purchase.purchase_lefts"
+                          id="purchase_purchase_lefts"
+                          e-required>{{purchase.purchase_lefts}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     C
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    {{purchase.purchase_leftc}}
+                    <!--{{purchase.purchase_leftc}}-->
+                    <span editable-text="purchase.purchase_leftc"
+                          e-form="rowform1"
+                          e-style="width:60px"
+                          e-ng-change="textChange(this)"
+                          ng-model="purchase.purchase_leftc"
+                          id="purchase_purchase_leftc"
+                          e-required>{{purchase.purchase_leftc}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     A
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    {{purchase.purchase_lefta}}
+                    <!--{{purchase.purchase_lefta}}-->
+                    <span editable-text="purchase.purchase_lefta"
+                          e-form="rowform1"
+                          e-style="width:60px"
+                          e-ng-change="textChange(this)"
+                          ng-model="purchase.purchase_lefta"
+                          id="purchase_purchase_lefta"
+                          e-required>{{purchase.purchase_lefta}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     BC
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    {{purchase.purchase_leftbc}}
+                    <!--{{purchase.purchase_leftbc}}-->
+                    <span editable-text="purchase.purchase_leftbc"
+                          e-form="rowform1"
+                          e-style="width:60px"
+                          e-ng-change="textChange(this)"
+                          ng-model="purchase.purchase_leftbc"
+                          id="purchase_purchase_leftbc"
+                          e-required>{{purchase.purchase_leftbc}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     P.D
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    {{purchase.purchase_leftpd}}
+                    <!--{{purchase.purchase_leftpd}}-->
+                    <span editable-text="purchase.purchase_leftpd"
+                          e-form="rowform1"
+                          e-style="width:60px"
+                          e-ng-change="textChange(this)"
+                          ng-model="purchase.purchase_leftpd"
+                          id="purchase_purchase_leftpd"
+                          e-required>{{purchase.purchase_leftpd}}</span>
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     ADD
                 </td>
                 <td class="form-group has-success" style="vertical-align: inherit;">
-                    {{purchase.purchase_leftadd}}
+                    <!--{{purchase.purchase_leftadd}}-->
+                    <span editable-text="purchase.purchase_leftadd"
+                          e-form="rowform1"
+                          e-style="width:60px"
+                          e-ng-change="textChange(this)"
+                          ng-model="purchase.purchase_leftadd"
+                          id="purchase_purchase_leftadd"
+                          e-required>{{purchase.purchase_leftadd}}</span>
                 </td>
             </tr>
 
@@ -151,7 +305,7 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-success"
                 id="addBtn"
-                ng-click="addPurchase()">新增
+                ng-click="addPurchase(item)">新增
         </button>
         <button type="button"
                 class="btn btn-primary"

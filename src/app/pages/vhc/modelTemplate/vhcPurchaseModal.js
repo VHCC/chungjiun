@@ -13,6 +13,9 @@
                 'toastr',
                 '$cookies',
                 'VhcMemberUtil',
+                'VhcPurchaseUtil',
+                'editableOptions',
+                'editableThemes',
                 '$uibModalInstance',
                 VhcMemberModalC
             ]);
@@ -23,6 +26,9 @@
                              toastr,
                              cookies,
                              VhcMemberUtil,
+                             VhcPurchaseUtil,
+                             editableOptions,
+                             editableThemes,
                              $uibModalInstance) {
 
         // console.log($scope.$resolve.member);
@@ -61,6 +67,57 @@
             $uibModalInstance.close();
         }
 
+        editableOptions.theme = 'bs3';
+        editableThemes['bs3'].submitTpl = '<button type="submit" class="btn btn-primary btn-with-icon"><i class="ion-checkmark-round"></i></button>';
+        editableThemes['bs3'].cancelTpl = '<button type="button" ng-click="$form.$cancel()" class="btn btn-default btn-with-icon"><i class="ion-close-round"></i></button>';
+
+
+        $scope.savePurchase = function (purchase) {
+
+            // var purchase_f = $('tbody').find("span[id='purchase_purchase_f']")[0].innerText;
+            // var purchase_fprice = $('tbody').find("span[id='purchase_purchase_fprice']")[0].innerText;
+            //
+            // var item = {
+            //     purchase_f: purchase_f,
+            //     purchase_fprice: purchase_fprice,
+            // }
+
+            var postData = {
+                purchase: purchase,
+            }
+
+            console.log(postData);
+
+            VhcPurchaseUtil.updatePurchaseItem(postData)
+                .success(function (res) {
+                    console.log(res);
+                })
+        }
+
+        $scope.textChange = function (dom) {
+            console.log(dom);
+
+            var domName = dom.$parent.$editable.name;
+            var newValue = dom.$data;
+
+            var parent = 'dom.$parent.$parent.' + domName;
+
+            var updateString = parent + " = '" + newValue + "'";
+            eval(updateString);
+        }
+
+        $scope.addPurchase = function (item) {
+
+            var postData = {
+                member_info: $scope.item._member_info,
+            }
+
+            VhcPurchaseUtil.addPurchaseItem(postData)
+                .success(function (res) {
+                    console.log(res);
+                    item.purchases.push(res.payload);
+                })
+        }
     }
 
 })();

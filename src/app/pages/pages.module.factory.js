@@ -634,6 +634,17 @@
 
             }
         }])
+        .factory('VhcPurchaseUtil', ['$http', function (http) {
+            return {
+                updatePurchaseItem: function (formData) {
+                    return http.post('/api/post_vhc_purchase_update', formData);
+                },
+
+                addPurchaseItem: function (formData) {
+                    return http.post('/api/post_vhc_purchase_add', formData);
+                },
+            }
+        }])
     ;
 
 

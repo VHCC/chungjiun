@@ -151,7 +151,6 @@ global.apiUrl = {
 
     // Vhc MemberList
     get_vhc_member_all : '/api/get_vhc_member_all',
-    get_vhc_test_all : '/api/get_vhc_test_all',
     post_vhc_member_update : '/api/post_vhc_member_update',
     post_vhc_member_create : '/api/post_vhc_member_create',
     post_vhc_member_find_exist_number : '/api/post_vhc_member_find_exist_number',
@@ -159,4 +158,9 @@ global.apiUrl = {
     // Old Rx
     post_vhc_member_old_rx_by_number : '/api/post_vhc_member_old_rx_by_number',
     post_vhc_member_old_rx_update : '/api/post_vhc_member_old_rx_update',
+
+    // Purchase
+    get_vhc_purchase_all : '/api/get_vhc_purchase_all',
+    post_vhc_purchase_update : '/api/post_vhc_purchase_update',
+    post_vhc_purchase_add : '/api/post_vhc_purchase_add',
 };
