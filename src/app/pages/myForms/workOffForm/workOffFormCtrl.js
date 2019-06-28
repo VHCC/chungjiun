@@ -1771,6 +1771,50 @@
                     })
             }
 
+            // 對應行政總管
+            $scope.isFitExecutive = function () {
+                return ($scope.roleType == 100)
+            }
+
+            // ************* 行政核定後退回 ****************
+            $scope.repentWorkItem_executive = function (workOffTables, table, index) {
+                console.log(table);
+                console.log(index);
+
+                $scope.checkText = '確定 恢復成行政審核前狀態：' +
+                    $scope.showDate(table) +
+                    " " +
+                    $scope.showWorkOffTypeString(table.workOffType) +
+                    "  ？";
+                $scope.checkingForm = workOffTables;
+                $scope.checkingTable = table;
+                $scope.mIndex = index;
+                ngDialog.open({
+                    template: 'app/pages/myModalTemplate/myWorkOffTableFormRepent_ExecutiveModal.html',
+                    className: 'ngdialog-theme-default',
+                    scope: $scope,
+                    showClose: false,
+                });
+            }
+
+            //行政核定後退回 -2
+            $scope.sendWorkRepent_executive = function (workOffTables, checkingTable, index) {
+
+                // console.log(workOffTables);
+                // console.log(checkingTable);
+                // console.log(index);
+
+                var formData = {
+                    tableID: checkingTable._id,
+                    isExecutiveCheck: false,
+                }
+                WorkOffFormUtil.updateWorkOffItem(formData)
+                    .success(function (res) {
+                        workOffTables.splice(index, 1);
+                    })
+            }
+
+
         } // End of function
     }
 

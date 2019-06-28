@@ -15,7 +15,14 @@
 
         <tr ng-repeat="tableItem in workOffTables" class="editable-tr-wrap">
             <!--日期-->
-            <td class="table-id" style="width: 5%">{{showDate(tableItem)}}</td>
+            <td class="table-id" style="width: 5%">
+                {{showDate(tableItem)}}
+                <button class="btn btn-danger editable-table-button btn-xs"
+                        ng-show="isFitExecutive()"
+                        ng-click="repentWorkItem_executive(workOffTables, tableItem, $index);">
+                    核定後退回
+                </button>
+            </td>
             <!--星期-->
             <td style="width: 10%">{{showDay(tableItem.day)}}</td>
             <!--假別-->
