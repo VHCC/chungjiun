@@ -27,8 +27,9 @@ module.exports = function (app) {
         }, function (err, user) {
             if (err) {
                 res.send(err);
+            } else {
+                res.json(user[0]);
             }
-            res.json(user[0]);
         })
     })
 
@@ -42,11 +43,13 @@ module.exports = function (app) {
         }, function (err) {
             if (err) {
                 res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
             }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-            });
+
         })
     })
 
@@ -66,11 +69,13 @@ module.exports = function (app) {
         }, function (err) {
             if (err) {
                 res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
             }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-            });
+
         })
     })
 
@@ -86,11 +91,13 @@ module.exports = function (app) {
         }, function (err) {
             if (err) {
                 res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
             }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-            });
+
         })
     })
 }
