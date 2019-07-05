@@ -272,7 +272,7 @@
                         <td style="vertical-align: inherit; text-align: center">狀態</td>
                         <td style="vertical-align: inherit; text-align: center">經理/主任確認</td>
                         <td style="vertical-align: inherit; text-align: center">行政確認</td>
-                        <td style="vertical-align: inherit; text-align: center">請假扣款</td>
+                        <!--<td style="vertical-align: inherit; text-align: center">請假扣款</td>-->
                     </tr>
                     </thead>
                     <tbody ng-repeat="table in specificUserTablesItems">
@@ -420,17 +420,17 @@
                             </my>
                         </td>
                         <!--請假扣款-->
-                        <td style="vertical-align: inherit;">
-                            <!--審查完成-->
-                            <div ng-show="(table.isBossCheck && table.isExecutiveCheck &&
-                            (table.workOffType === 0 || table.workOffType === 1))">
-                                <!--只有事假、病假要扣錢 20190312-->
-                                <span>
-                                    <!-- -{{(table.userHourSalary) * table.myHourDiff}}-->
-                                    -{{formatFloat((table.userMonthSalary/240) * table.myHourDiff, 2)}}
-                                </span>
-                            </div>
-                        </td>
+                        <!--<td style="vertical-align: inherit;">-->
+                            <!--&lt;!&ndash;審查完成&ndash;&gt;-->
+                            <!--<div ng-show="(table.isBossCheck && table.isExecutiveCheck &&-->
+                            <!--(table.workOffType === 0 || table.workOffType === 1))">-->
+                                <!--&lt;!&ndash;只有事假、病假要扣錢 20190312&ndash;&gt;-->
+                                <!--<span>-->
+                                    <!--&lt;!&ndash; -{{(table.userHourSalary) * table.myHourDiff}}&ndash;&gt;-->
+                                    <!-- -{{formatFloat((table.userMonthSalary/240) * table.myHourDiff, 2)}}-->
+                                <!--</span>-->
+                            <!--</div>-->
+                        <!--</td>-->
 
                     </tr>
                     </tbody>
