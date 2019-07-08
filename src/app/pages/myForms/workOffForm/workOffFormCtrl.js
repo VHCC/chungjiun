@@ -449,7 +449,6 @@
                     }
                     // 補休
                     case 2: {
-                         ;
                         return result ;
                     }
                     // 特
@@ -602,15 +601,22 @@
                     }
                     var resultFinal;
                     if (TimeUtil.getHour(dom.table.start_time) <= 12 && TimeUtil.getHour(dom.table.end_time) >= 13) {
-                        resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 1 : result -1;
+                        if (dom.table.workOffType == 2) {
+                            resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 0.5 : result -1;
+                        } else {
+                            resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 1 : result -1;
+                        }
                     } else {
-                        resultFinal = result <= 1 ? 1 : result >= 8 ? 8 : result;
+                        if (dom.table.workOffType == 2) {
+                            resultFinal = result < 1 ? 0.5 : result >= 8 ? 8 : result;
+                        } else {
+                            resultFinal = result < 1 ? 1 : result >= 8 ? 8 : result;
+                        }
                     }
 
                     dom.table.myHourDiff = resultFinal;
                     if (dom.table.workOffType == 3 || dom.table.workOffType == 4 || dom.table.workOffType == 5
                         || dom.table.workOffType == 7 ||dom.table.workOffType == 8 || dom.table.workOffType == 9) {
-
                         dom.table.myHourDiff = resultFinal <= 4 ? 4 : 8;
                     }
 
@@ -655,9 +661,17 @@
                     }
                     var resultFinal;
                     if (TimeUtil.getHour(start) <= 12 && TimeUtil.getHour(end) >= 13) {
-                        resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 1 : result -1;
+                        if (this.table != undefined && this.workOffType.type == 2) {
+                            resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 0.5 : result -1;
+                        } else {
+                            resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 1 : result -1;
+                        }
                     } else {
-                        resultFinal = result <= 1 ? 1 : result >= 8 ? 8 : result;
+                        if (this.table != undefined && this.workOffType.type == 2) {
+                            resultFinal = result < 1 ? 0.5 : result >= 8 ? 8 : result;
+                        } else {
+                            resultFinal = result < 1 ? 1 : result >= 8 ? 8 : result;
+                        }
                     }
 
                     if (this.workOffType !== undefined) {
@@ -675,7 +689,6 @@
                         // 主管審核、行政審核
                         if (this.table.workOffType == 3 || this.table.workOffType == 4 || this.table.workOffType == 5
                             || this.table.workOffType == 7 || this.table.workOffType == 8 || this.table.workOffType == 9) {
-
                             resultFinal = resultFinal <= 4 ? 4 : 8;
                         }
 
