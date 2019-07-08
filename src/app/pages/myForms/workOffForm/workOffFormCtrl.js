@@ -661,16 +661,65 @@
                     }
                     var resultFinal;
                     if (TimeUtil.getHour(start) <= 12 && TimeUtil.getHour(end) >= 13) {
-                        if (this.table != undefined && this.workOffType.type == 2) {
-                            resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 0.5 : result -1;
+                        // if (this.table != undefined && this.workOffType.type == 2) {
+                        //     resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 0.5 : result -1;
+                        // } else {
+                        //     resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 1 : result -1;
+                        // }
+
+                        if (this.workOffType !== undefined) {
+                            // 請假單
+                            if (this.workOffType.type == 2) {
+                                resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 0.5 : result -1;
+                            } else {
+                                resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 1 : result -1;
+                            }
+
+                        } else if (this.table != undefined) {
+                            // 主管審核、行政審核
+                            if (this.table.workOffType == 2) {
+                                resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 0.5 : result -1;
+                            } else {
+                                resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 1 : result -1;
+                            }
                         } else {
-                            resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 1 : result -1;
+                            // 總攬
+                            if (type == 2) {
+                                resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 0.5 : result -1;
+                            } else {
+                                resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 1 : result -1;
+                            }
                         }
+
                     } else {
-                        if (this.table != undefined && this.workOffType.type == 2) {
-                            resultFinal = result < 1 ? 0.5 : result >= 8 ? 8 : result;
+                        // if (this.table != undefined && this.workOffType.type == 2) {
+                        //     resultFinal = result < 1 ? 0.5 : result >= 8 ? 8 : result;
+                        // } else {
+                        //     resultFinal = result < 1 ? 1 : result >= 8 ? 8 : result;
+                        // }
+
+                        if (this.workOffType !== undefined) {
+                            // 請假單
+                            if (this.workOffType.type == 2) {
+                                resultFinal = result < 1 ? 0.5 : result >= 8 ? 8 : result;
+                            } else {
+                                resultFinal = result < 1 ? 1 : result >= 8 ? 8 : result;
+                            }
+
+                        } else if (this.table != undefined) {
+                            // 主管審核、行政審核
+                            if (this.table.workOffType == 2) {
+                                resultFinal = result < 1 ? 0.5 : result >= 8 ? 8 : result;
+                            } else {
+                                resultFinal = result < 1 ? 1 : result >= 8 ? 8 : result;
+                            }
                         } else {
-                            resultFinal = result < 1 ? 1 : result >= 8 ? 8 : result;
+                            // 總攬
+                            if (type == 2) {
+                                resultFinal = result < 1 ? 0.5 : result >= 8 ? 8 : result;
+                            } else {
+                                resultFinal = result < 1 ? 1 : result >= 8 ? 8 : result;
+                            }
                         }
                     }
 
