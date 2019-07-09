@@ -2739,93 +2739,110 @@
                 case "2": // 經理
                     Project.getProjectRelatedToManager(formData)
                         .success(function (relatedProjects) {
-                            // console.log(relatedProjects);
+                            console.log(relatedProjects);
                             for(var index = 0; index < relatedProjects.length; index ++) {
                                 // 相關專案
                                 managersRelatedProjects.push(relatedProjects[index]._id);
                                 // console.log(relatedMembers);
                                 //主辦
-                                if (relatedProjects[index].majorID !== undefined
-                                    && relatedProjects[index].majorID !== ""
-                                    && relatedProjects[index].majorID !== null
-                                    && !relatedMembers.includes(relatedProjects[index].majorID)) {
-                                    // console.log("AA");
-                                    // console.log(relatedProjects[index].majorID);
-                                    relatedMembers.push(relatedProjects[index].majorID);
-                                }
-                                //協辦
-                                if (relatedProjects[index].workers.length !== 0) {
-                                    // console.log("BB");
-                                    for (var subIndex = 0; subIndex < relatedProjects[index].workers.length; subIndex ++) {
-                                        if (relatedProjects[index].workers[subIndex] !== undefined
-                                            && relatedProjects[index].workers[subIndex] !== ""
-                                            && relatedProjects[index].workers[subIndex] !== null
-                                            && !relatedMembers.includes(relatedProjects[index].workers[subIndex])) {
-                                            // console.log(relatedProjects[index].workers[subIndex]);
-                                            relatedMembers.push(relatedProjects[index].workers[subIndex]);
-                                        }
+                                // if (relatedProjects[index].majorID !== undefined
+                                //     && relatedProjects[index].majorID !== ""
+                                //     && relatedProjects[index].majorID !== null
+                                //     && !relatedMembers.includes(relatedProjects[index].majorID)) {
+                                //     // console.log("AA");
+                                //     // console.log(relatedProjects[index].majorID);
+                                //     relatedMembers.push(relatedProjects[index].majorID);
+                                // }
+                                // //協辦
+                                // if (relatedProjects[index].workers.length !== 0) {
+                                //     // console.log("BB");
+                                //     for (var subIndex = 0; subIndex < relatedProjects[index].workers.length; subIndex ++) {
+                                //         if (relatedProjects[index].workers[subIndex] !== undefined
+                                //             && relatedProjects[index].workers[subIndex] !== ""
+                                //             && relatedProjects[index].workers[subIndex] !== null
+                                //             && !relatedMembers.includes(relatedProjects[index].workers[subIndex])) {
+                                //             // console.log(relatedProjects[index].workers[subIndex]);
+                                //             relatedMembers.push(relatedProjects[index].workers[subIndex]);
+                                //         }
+                                //     }
+                                // }
+                            }
+                            // if (!relatedMembers.includes(cookies.get('userDID'))) {
+                            //     relatedMembers.push(cookies.get('userDID'));
+                            // }
+
+                            // console.log(relatedMembers);
+                            // $scope.mainRelatedMembers = relatedMembers;
+                            // $scope.showRelatedMembersTableReview(typeManager);
+                            User.getAllUsers()
+                                .success(function (allUsers) {
+
+                                    for (var index = 0; index < allUsers.length; index ++) {
+                                        relatedMembers.push(allUsers[index]._id);
                                     }
-                                }
-                            }
-                            if (!relatedMembers.includes(cookies.get('userDID'))) {
-                                relatedMembers.push(cookies.get('userDID'));
-                            }
-                            $scope.mainRelatedMembers = relatedMembers;
-                            $scope.showRelatedMembersTableReview(typeManager);
+                                    $scope.mainRelatedMembers = relatedMembers;
+                                    $scope.showRelatedMembersTableReview(typeManager);
+                                });
                         })
                     break;
                 case "100": //顯示行政審查人員
                     Project.getProjectRelatedToManager(formData)
                         .success(function (relatedProjects) {
-                            // console.log(relatedProjects);
+                            console.log(relatedProjects);
                             for(var index = 0; index < relatedProjects.length; index ++) {
                                 // 相關專案
                                 managersRelatedProjects.push(relatedProjects[index]._id);
                                 // console.log(relatedMembers);
                                 //主辦
-                                if (relatedProjects[index].majorID !== undefined
-                                    && relatedProjects[index].majorID !== ""
-                                    && relatedProjects[index].majorID !== null
-                                    && !relatedMembers.includes(relatedProjects[index].majorID)) {
-                                    // console.log("AA");
-                                    // console.log(relatedProjects[index].majorID);
-                                    relatedMembers.push(relatedProjects[index].majorID);
-                                }
-                                //協辦
-                                if (relatedProjects[index].workers.length !== 0) {
-                                    // console.log("BB");
-                                    for (var subIndex = 0; subIndex < relatedProjects[index].workers.length; subIndex ++) {
-                                        if (relatedProjects[index].workers[subIndex] !== undefined
-                                            && relatedProjects[index].workers[subIndex] !== ""
-                                            && relatedProjects[index].workers[subIndex] !== null
-                                            && !relatedMembers.includes(relatedProjects[index].workers[subIndex])) {
-                                            // console.log(relatedProjects[index].workers[subIndex]);
-                                            relatedMembers.push(relatedProjects[index].workers[subIndex]);
-                                        }
+                                // if (relatedProjects[index].majorID !== undefined
+                                //     && relatedProjects[index].majorID !== ""
+                                //     && relatedProjects[index].majorID !== null
+                                //     && !relatedMembers.includes(relatedProjects[index].majorID)) {
+                                //     // console.log("AA");
+                                //     // console.log(relatedProjects[index].majorID);
+                                //     relatedMembers.push(relatedProjects[index].majorID);
+                                // }
+                                // //協辦
+                                // if (relatedProjects[index].workers.length !== 0) {
+                                //     // console.log("BB");
+                                //     for (var subIndex = 0; subIndex < relatedProjects[index].workers.length; subIndex ++) {
+                                //         if (relatedProjects[index].workers[subIndex] !== undefined
+                                //             && relatedProjects[index].workers[subIndex] !== ""
+                                //             && relatedProjects[index].workers[subIndex] !== null
+                                //             && !relatedMembers.includes(relatedProjects[index].workers[subIndex])) {
+                                //             // console.log(relatedProjects[index].workers[subIndex]);
+                                //             relatedMembers.push(relatedProjects[index].workers[subIndex]);
+                                //         }
+                                //     }
+                                // }
+                            }
+                            // if (!relatedMembers.includes(cookies.get('userDID'))) {
+                            //     relatedMembers.push(cookies.get('userDID'));
+                            // }
+                            // console.log(relatedMembers);
+                            // $scope.mainRelatedMembers = relatedMembers;
+                            // $scope.showRelatedMembersTableReview(typeManager);
+
+                            // 行政總管跟每個人都有關
+
+                            // // 所有人，對照資料
+                            User.getAllUsers()
+                                .success(function (allUsers) {
+                                    var relatedMembers_all = [];
+
+                                    vm.executiveUsers = allUsers;
+
+                                    for (var index = 0; index < vm.executiveUsers.length; index ++) {
+                                        relatedMembers_all.push(vm.executiveUsers[index]._id);
+                                        relatedMembers.push(vm.executiveUsers[index]._id);
                                     }
-                                }
-                            }
-                            if (!relatedMembers.includes(cookies.get('userDID'))) {
-                                relatedMembers.push(cookies.get('userDID'));
-                            }
-                            $scope.mainRelatedMembers = relatedMembers;
-                            $scope.showRelatedMembersTableReview(typeManager);
+                                    $scope.mainRelatedMembers = relatedMembers;
+                                    $scope.showRelatedMembersTableReview(typeManager);
+                                    $scope.mainRelatedMembers_all = relatedMembers_all;
+                                    $scope.showRelatedMembersTableReview(typeExecutive);
+                                });
                         })
-                    // 行政總管跟每個人都有關
 
-                    // 所有人，對照資料
-                    User.getAllUsers()
-                        .success(function (allUsers) {
-                            var relatedMembers_all = [];
-
-                            vm.executiveUsers = allUsers;
-
-                            for (var index = 0; index < vm.executiveUsers.length; index ++) {
-                                relatedMembers_all.push(vm.executiveUsers[index]._id);
-                            }
-                            $scope.mainRelatedMembers_all = relatedMembers_all;
-                            $scope.showRelatedMembersTableReview(typeExecutive);
-                        });
                     break;
             }
 
