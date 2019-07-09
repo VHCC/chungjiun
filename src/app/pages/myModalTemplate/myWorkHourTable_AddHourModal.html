@@ -15,7 +15,7 @@
                     <td style="vertical-align: inherit; text-align: center"></td>
                     <td style="vertical-align: inherit; text-align: center">事由</td>
                     <td style="vertical-align: inherit; text-align: center">時間</td>
-                    <td style="vertical-align: inherit; text-align: center">時數</td>
+                    <td style="vertical-align: inherit; text-align: center">分鐘數</td>
 
                     <td style="vertical-align: inherit; text-align: center">類型</td>
                 </tr>
@@ -53,9 +53,9 @@
                             {{table.start_time}} - {{table.end_time}}
                         </my>
                     </td>
-                    <!--時數/天數-->
+                    <!--分鐘數-->
                     <td class="form-group has-success" style="vertical-align: inherit;">
-                        {{getHourDiffByTime(table.start_time, table.end_time, table.workOffType)}}
+                        {{showWorkOverMin(table.start_time, table.end_time, table.workOffType)}}
                     </td>
                     <!--類型-->
                     <td class="form-group" style="vertical-align: inherit; text-align: center">
@@ -89,14 +89,24 @@
                 <tfoot>
                 <!--總時數-->
                 <tr>
-                    <td colspan="2" style="text-align: center">
+                    <td colspan="1" style="text-align: center">
                         <span>
-                            總時數
+                            加班總時數
                         </span>
                     </td>
-                    <td colspan="3" style="text-align: center">
+                    <td colspan="1" style="text-align: center">
                         <span>
-                            {{showTotalAddHour(workAddTablesItems)}}
+                            {{showTotalAddHour(workAddTablesItems, 1)}}
+                        </span>
+                    </td>
+                    <td colspan="1" style="text-align: center">
+                        <span>
+                            換休總時數
+                        </span>
+                    </td>
+                    <td colspan="2" style="text-align: center">
+                        <span>
+                            {{showTotalAddHour(workAddTablesItems, 2)}}
                         </span>
                     </td>
                 </tr>
