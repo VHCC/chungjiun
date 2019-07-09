@@ -91,10 +91,12 @@
         }
 
         // 累積所有項目
-        $scope.showTotalAddHour = function (tables) {
+        $scope.showTotalAddHour = function (tables, type) {
             var result = 0;
             for (var index = 0; index < tables.length; index++) {
-                result += parseInt(TimeUtil.getCalculateHourDiffByTime(tables[index].start_time, tables[index].end_time));
+                if (type == tables[index].workAddType) {
+                    result += parseInt(TimeUtil.getCalculateHourDiffByTime(tables[index].start_time, tables[index].end_time));
+                }
             }
             result = result % 60 < 30 ? Math.round(result / 60) : Math.round(result / 60) - 0.5;
             if (result < 1) {
@@ -102,7 +104,7 @@
                 return 0;
             }
 
-            $scope.table.totalHourTemp = result;
+            // $scope.table.totalHourTemp = result;
             return result;
         }
 
@@ -160,10 +162,39 @@
             }
         }
 
+        // 分鐘數
+        $scope.showWorkOverMin = function (workOverOn, workOverOff, type) {
+            // console.log(workOverOn);
+            // console.log(workOverOff);
+            var workOnHour;
+            var workOnMin;
+            var workOffHour;
+            var workOffMin;
+            if (workOverOn && workOverOff) {
+                // console.log("A " + datas[index].time);
+                workOnHour = parseInt(workOverOn.substr(0,2));
+                workOnMin = parseInt(workOverOn.substr(3,5));
+                // console.log("AA " + workOnHour + ":" + workOnMin);
+
+                // console.log("B " + datas[index].time);
+                workOffHour = parseInt(workOverOff.substr(0,2));
+                workOffMin = parseInt(workOverOff.substr(3,5));
+                // console.log("BB " + workOffHour + ":" + workOffMin);
+
+                if ((workOnHour && workOffHour) || (workOnHour == 0 && workOffHour) || (workOnHour == 0 && workOffHour == 0)) {
+                    // console.log("C " + workOnHour + ":" + workOnMin);
+                    // console.log("D " + workOffHour + ":" + workOffMin);
+                    var min = ((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))
+                    return min;
+                }
+            }
+        }
+
         // **************** time section ********************
 
         $scope.saveWorkAddItem = function (button) {
             button.currentTarget.innerText = "saving...";
+            $scope.table.totalHourTemp = $scope.showTotalAddHour($scope.workAddTablesItems, 1) + $scope.showTotalAddHour($scope.workAddTablesItems, 2);
             var data = {
                 table: $scope.table,
                 formTables: $scope.workAddTablesItems,
