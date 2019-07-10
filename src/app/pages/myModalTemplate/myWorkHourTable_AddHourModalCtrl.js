@@ -100,7 +100,7 @@
             }
             result = result % 60 < 30 ? Math.round(result / 60) : Math.round(result / 60) - 0.5;
             if (result < 1) {
-                $scope.table.totalHourTemp = 0;
+                // $scope.table.totalHourTemp = 0;
                 return 0;
             }
 
