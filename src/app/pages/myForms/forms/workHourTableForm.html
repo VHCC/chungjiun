@@ -35,11 +35,12 @@
         display: inline-block;
         /*overflow : hidden;*/
         text-overflow : ellipsis;
+        cursor: pointer;
         /*white-space : nowrap;*/
     }
 
     /* Tooltip text */
-    .mytooltip .tooltiptext {
+    .mytooltip .tooltiptext, .mytooltip .tooltiptextprj{
         visibility: hidden;
         width: 360px;
         background-color: #555;
@@ -61,7 +62,7 @@
     }
 
     /* Tooltip arrow */
-    .mytooltip .tooltiptext::after {
+    .mytooltip .tooltiptext::after, .mytooltip .tooltiptextprj:after {
         content: "";
         position: absolute;
         top: 100%;
@@ -78,9 +79,23 @@
         opacity: 1;
     }
 
+    textarea:focus, input:focus{
+        outline: none;
+    }
+
+    *:focus {
+        outline: none;
+    }
+
+    .mytooltip:focus .tooltiptextprj {
+        visibility: visible;
+        opacity: 1;
+    }
+
     .uib-datepicker-popup table tbody tr:hover{
         background-color: #99c7ee;
     }
+
 </style>
 
 <div bs-loading-overlay
@@ -183,8 +198,12 @@
                         </button>
                     </td>
                     <td rowspan="2" style="vertical-align: inherit; text-align: center">
-                        <p class="mytooltip">{{showPrjName(item.prjDID)}}
+                        <p class="mytooltip" tabindex="{{$index}}">
+                            {{showPrjNameEZ(item.prjDID)}}
                             <!--<span class="tooltiptext">{{showPrjName(item.prjDID)}}</span>-->
+                            <span class="tooltiptextprj">
+                                {{showPrjName(item.prjDID)}}
+                            </span>
                         </p>
                     </td>
 
