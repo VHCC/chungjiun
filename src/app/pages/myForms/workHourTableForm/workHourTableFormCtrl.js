@@ -106,6 +106,16 @@
                 $scope.allProjectData = [];
                 var prjCount = allProjects.length;
                 for (var index = 0; index < prjCount; index++) {
+
+                    var nameResult = "";
+                    if (allProjects[index].prjSubName != undefined && allProjects[index].prjSubName.trim() != "") {
+                        nameResult = allProjects[index].prjSubName + " - " + ProjectUtil.getTypeText(allProjects[index].type);
+                    } else if (allProjects[index].prjName != undefined && allProjects[index].prjName.trim() != "") {
+                        nameResult = allProjects[index].prjName + " - " + ProjectUtil.getTypeText(allProjects[index].type);
+                    } else {
+                        nameResult = allProjects[index].mainName + " - " + ProjectUtil.getTypeText(allProjects[index].type);
+                    }
+
                     $scope.allProjectData[index] = {
                         prjDID: allProjects[index]._id,
                         prjCode: allProjects[index].prjCode,
@@ -115,6 +125,7 @@
                         + ProjectUtil.getTypeText(allProjects[index].type),
                         majorID: allProjects[index].majorID,
                         managerID: allProjects[index].managerID,
+                        ezName: nameResult,
                     };
                 }
             })
@@ -643,6 +654,19 @@
 
             if (!selected) return 'Not Set'
             return selected.length > 0 ? selected[0].mainName : 'Not Set';
+        };
+
+        // 20190711 決議
+        $scope.showPrjNameEZ = function (prjDID) {
+            var selected = [];
+            if (prjDID) {
+                selected = $filter('filter')($scope.allProjectData, {
+                    prjDID: prjDID,
+                });
+            }
+
+            if (!selected) return 'Not Set'
+            return selected.length > 0 ? selected[0].ezName : 'Not Set';
         };
 
         $scope.showPrjCode = function (prjDID) {
