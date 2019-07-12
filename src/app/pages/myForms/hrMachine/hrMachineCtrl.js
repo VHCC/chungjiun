@@ -638,11 +638,17 @@
                             return false;
                         }
 
-                        if (workOnHour >= 9 && workOnMin >= 1) {
-                            return true;
-                        } else {
+                        if (workOnHour == 9 && workOnMin == 0) {
                             return false;
+                        } else {
+                            return true;
                         }
+
+                        // if (workOnHour >= 9 && workOnMin >= 1) {
+                        //     return true;
+                        // } else {
+                        //     return false;
+                        // }
 
                     }
                 }
