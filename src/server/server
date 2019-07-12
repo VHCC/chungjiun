@@ -30,5 +30,6 @@ require('./restfulAPI/forms/overTimeDayForm/overTimeDayForm.routes')(app);
 require('./restfulAPI/userEdit/userEdit.routes')(app);
 require('./restfulAPI/forms/workAddConfirmForm/workAddConfirmForm.routes')(app);
 require('./restfulAPI/forms/hrMachineForm/hrMachineForm.routes')(app);
+require('./restfulAPI/lineNotify/auth/auth.route')(app);
 
 
