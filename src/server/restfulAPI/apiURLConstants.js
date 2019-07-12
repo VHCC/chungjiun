@@ -163,4 +163,6 @@ global.apiUrl = {
     get_vhc_purchase_all : '/api/get_vhc_purchase_all',
     post_vhc_purchase_update : '/api/post_vhc_purchase_update',
     post_vhc_purchase_add : '/api/post_vhc_purchase_add',
+    // line notify
+    get_line_notify_auth_register : '/api/post_line_notify_auth_register',
 };
