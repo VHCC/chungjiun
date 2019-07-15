@@ -31,5 +31,6 @@ require('./restfulAPI/userEdit/userEdit.routes')(app);
 require('./restfulAPI/forms/workAddConfirmForm/workAddConfirmForm.routes')(app);
 require('./restfulAPI/forms/hrMachineForm/hrMachineForm.routes')(app);
 require('./restfulAPI/lineNotify/auth/auth.route')(app);
+require('./restfulAPI/notificationMsg/notificationMsg.route')(app);
 
 

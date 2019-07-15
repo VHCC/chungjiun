@@ -458,6 +458,11 @@
                     var firstDay = moment(firstDate).add(offset, 'days');
                     return firstDay.format('YYYY/MM/DD');
                 },
+
+                getShiftDatefromFirstDateCalendar: function (firstDate, offset) {
+                    var firstDay = moment(firstDate).add(offset, 'days');
+                    return firstDay.format('YYYY-MM-DD');
+                },
                 getDay: function (day) {
                     switch (day) {
                         case 0:
@@ -554,6 +559,13 @@
                         console.log("error!!");
                     });
                 }
+            }
+        }])
+        .factory('NotificationMsgUtil', ['$http', function (http) {
+            return {
+                fetchMsgItemsByUserDID: function (formData) {
+                    return http.post('/api/post_notification_msg_by_user_did', formData);
+                },
             }
         }])
         .factory('NotificationUtil', ['$http', function (http) {

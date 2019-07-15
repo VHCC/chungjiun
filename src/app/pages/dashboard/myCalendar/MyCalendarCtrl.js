@@ -43,20 +43,20 @@
 
                     for (var index = 0; index < res.payload.length; index++) {
                         var eventItem = {
-                            color: baConfig.colors.warning,
-                            start: DateUtil.getShiftDatefromFirstDate(res.payload[index].create_formDate, res.payload[index].day - 1),
+                            color: baConfig.colors.danger,
+                            start: DateUtil.getShiftDatefromFirstDateCalendar(res.payload[index].create_formDate, res.payload[index].day - 1),
                             // title: DateUtil.getShiftDatefromFirstDate(res.payload[index].create_formDate, res.payload[index].day),
-                            title: ''
+                            title: '放假日',
+                            msg: 'test',
                         }
-                        console.log(eventItem);
+                        // console.log(eventItem);
                         totalEvent.push(eventItem);
                     }
 
                     console.log(totalEvent);
 
-
                     // Init Calender
-                    var $element = $('#calendar').fullCalendar({
+                    var $element = $('#myCalendar').fullCalendar({
                         //height: 335,
                         header: {
                             left: 'prev, next today',
@@ -82,6 +82,22 @@
                         editable: false,
                         eventLimit: true, // allow "more" link when too many events
                         events: totalEvent,
+                        // dayClick: function(date, jsEvent, view) {
+                        //
+                        //     alert('Clicked on: ' + date.format());
+                        //
+                        //     // alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+                        //     //
+                        //     // alert('Current view: ' + view.name);
+                        //     //
+                        //     // // change the day's background color just for fun
+                        //     // $(this).css('background-color', 'red');
+                        // }
+                        eventClick: function(calEvent, jsEvent, view) {
+
+                            console.log(calEvent);
+
+                        }
                     });
                 }
             })

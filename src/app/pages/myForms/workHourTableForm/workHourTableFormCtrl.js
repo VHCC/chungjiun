@@ -698,6 +698,24 @@
             return selected.length > 0 ? selected[0].name : 'Not Set';
         };
 
+        $scope.showProjectManagerDID = function (prjDID) {
+            var majorSelected = [];
+            if (prjDID) {
+                majorSelected = $filter('filter')($scope.allProjectData, {
+                    prjDID: prjDID
+                });
+            }
+            var managerDID = majorSelected[0].managerID;
+            var selected = [];
+            if (managerDID) {
+                selected = $filter('filter')($scope.projectManagers, {
+                    value: managerDID
+                });
+            }
+            if (!selected) return 'Not Set'
+            return selected.length > 0 ? selected[0].value : 'Not Set';
+        };
+
         // 對應經理
         $scope.isFitManager = function(prjDID) {
             var majorSelected = [];
@@ -1850,12 +1868,17 @@
         $scope.reviewForm = function(tableIndex) {
             $timeout(function () {
                 var tableList = [];
+                var targetList = [];
                 for (var index = 0; index < $scope.tables[tableIndex].tablesItems.length; index ++) {
+                    console.log($scope.tables[tableIndex].tablesItems[index]);
                     tableList[index] = $scope.tables[tableIndex].tablesItems[index].tableID;
+                    targetList[index] = $scope.showProjectManagerDID($scope.tables[tableIndex].tablesItems[index].prjDID);
                 }
                 var formData = {
+                    creatorDID: cookies.get('userDID'),
                     msgTargetID: cookies.get('bossID'),
                     tableArray: tableList,
+                    msgTargetArray: targetList,
                 }
                 // console.log(formData);
                 WorkHourUtil.updateTotalTableSendReview(formData)

@@ -2,6 +2,7 @@ var WorkHourForm = require('../../models/workHourForm');
 var WorkHourTable = require('../../models/workHourTableForm');
 var Project = require('../../models/project');
 var Temp = require('../../models/temp');
+var NotificationMsgItem = require('../../models/notificationMsgItem');
 
 module.exports = function (app) {
     'use strict';
@@ -368,17 +369,20 @@ module.exports = function (app) {
         }, function (err) {
             if (err) {
                 res.send(err);
-            }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-            });
+            } else {
 
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
+            }
         })
     })
 
     // update all table ***
     app.post(global.apiUrl.post_work_hour_table_total_update_send_review, function (req, res) {
+        console.log("===================");
+        console.log(req.body);
         for (var index = 0; index < req.body.tableArray.length; index++) {
             WorkHourTable.update({
                 _id: req.body.tableArray[index],
@@ -391,6 +395,17 @@ module.exports = function (app) {
                     res.send(err);
                 }
             })
+            NotificationMsgItem.create({
+                creatorDID: req.body.creatorDID,
+                msgTarget: req.body.msgTargetArray[index],
+                msgActionTopic: 1000,
+                msgActionDetail: 1001
+            });
+            // Temp.create({
+                //             tempID: req.body.users[index],
+                //             creatorDID: req.body.creatorDID
+                //         });
+
         }
         // global.qqq.response(req.body.msgTargetID, global.eventString._2001);
         res.status(200).send({
@@ -495,13 +510,13 @@ module.exports = function (app) {
     // })
 
     app.post(global.apiUrl.insert_work_hour_table_temp, function (req, res) {
-        console.log(req.body.temps);
+        console.log(req.body.users);
         var index = 0
-        while(index < req.body.temps.length) {
+        while(index < req.body.users.length) {
             var items = {};
-            items.userID = req.body.temps[index];
+            items.userID = req.body.users[index];
             Temp.create({
-                tempID: req.body.temps[index],
+                tempID: req.body.users[index],
                 creatorDID: req.body.creatorDID
             });
             index ++;
