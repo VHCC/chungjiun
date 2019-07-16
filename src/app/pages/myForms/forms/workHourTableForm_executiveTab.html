@@ -22,8 +22,8 @@
                    ng-repeat="table in fetchReviewTableFromScope(user)">
                 <thead>
                 <tr>
-                    <td rowspan="3" style="vertical-align: inherit; text-align: center">代碼</td>
-                    <td rowspan="3" style="vertical-align: inherit; text-align: center"width="240px">名稱</td>
+                    <td rowspan="3" style="vertical-align: inherit; text-align: center" width="50px">代碼</td>
+                    <td rowspan="3" style="vertical-align: inherit; text-align: center" width="300px">名稱</td>
                     <td rowspan="3" style="vertical-align: inherit; text-align: center" width="80px">經理/主任</td>
                     <td rowspan="3" style="vertical-align: inherit; text-align: center" width="80px">類型</td>
 
@@ -326,6 +326,7 @@
                         style="vertical-align: inherit;">
                             <span editable-number="item.mon_hour_add"
                                   ng-if="$parent.$index === 0"
+                                  ng-show="item.mon_hour_add != 0"
                                   e-form="rowform1"
                                   e-ng-change="hourAddChange(this)"
                                   e-min="0"
@@ -355,6 +356,7 @@
                                   ng-if="checkIsCrossMonth(firstFullDate_executive) < 0
                               || (user.crossDay > 2 && $parent.$index === 0)
                               || (user.crossDay <= 2 && $parent.$index === 1)"
+                                  ng-show="item.tue_hour_add != 0"
                                   e-form="rowform1"
                                   e-ng-change="hourAddChange(this)"
                                   e-min="0"
@@ -386,6 +388,7 @@
                                   ng-if="checkIsCrossMonth(firstFullDate_executive) < 0
                               || (user.crossDay > 3 && $parent.$index === 0)
                               || (user.crossDay <= 3 && $parent.$index === 1)"
+                                  ng-show="item.wes_hour_add != 0"
                                   e-form="rowform1"
                                   e-ng-change="hourAddChange(this)"
                                   e-min="0"
@@ -417,6 +420,7 @@
                                   ng-if="checkIsCrossMonth(firstFullDate_executive) < 0
                               || (user.crossDay > 4 && $parent.$index === 0)
                               || (user.crossDay <= 4 && $parent.$index === 1)"
+                                  ng-show="item.thu_hour_add != 0"
                                   e-form="rowform1"
                                   e-ng-change="hourAddChange(this)"
                                   e-min="0"
@@ -448,6 +452,7 @@
                                   ng-if="checkIsCrossMonth(firstFullDate_executive) < 0
                               || (user.crossDay > 5 && $parent.$index === 0)
                               || (user.crossDay <= 5 && $parent.$index === 1)"
+                                  ng-show="item.fri_hour_add != 0"
                                   e-form="rowform1"
                                   e-ng-change="hourAddChange(this)"
                                   e-min="0"
@@ -479,6 +484,7 @@
                                   ng-if="checkIsCrossMonth(firstFullDate_executive) < 0
                               || (user.crossDay > 6 && $parent.$index === 0)
                               || (user.crossDay <= 6 && $parent.$index === 1)"
+                                  ng-show="item.sat_hour_add != 0"
                                   e-form="rowform1"
                                   e-ng-change="hourAddChange(this)"
                                   e-min="0"
@@ -510,6 +516,7 @@
                                   ng-if="checkIsCrossMonth(firstFullDate_executive) < 0
                               || (user.crossDay > 7 && $parent.$index === 0)
                               || (user.crossDay <= 7 && $parent.$index === 1)"
+                                  ng-show="item.sun_hour_add != 0"
                                   e-form="rowform1"
                                   e-ng-change="hourAddChange(this)"
                                   e-min="0"
