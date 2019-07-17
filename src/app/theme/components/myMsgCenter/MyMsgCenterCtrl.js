@@ -89,7 +89,25 @@
                             return " [行政總管] 退還 " + msgMemo + " 工時表給您"
                         }
                         case 1005: {
-                            return " [行政總管] 確認完成您 " + msgMemo + " 的工時表"
+                            return " [行政總管] 確認完成 您 " + msgMemo + " 的工時表"
+                        }
+                    }
+                case 2000:
+                    switch (msgDetail) {
+                        case 2001: {
+                            return " 寄送 " + msgMemo + " 請假單給您 [主管審核]"
+                        }
+                        case 2002: {
+                            return " 的 " + msgMemo + " 請假單提交給您 [行政確認]"
+                        }
+                        case 2003: {
+                            return " [主管] 退還 " + msgMemo + " 請假單給您"
+                        }
+                        case 2004: {
+                            return " [行政總管] 退還 " + msgMemo + " 請假單給您"
+                        }
+                        case 2005: {
+                            return " [行政總管] 確認完成 您 " + msgMemo + " 的請假單"
                         }
                     }
             }

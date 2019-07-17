@@ -42,6 +42,7 @@
                     'NationalHolidayUtil',
                     'OverTimeDayUtil',
                     'WorkHourAddItemUtil',
+                    'NotificationMsgUtil',
                     'toastr',
                     'HolidayDataForms',
                     'bsLoadingOverlayService',
@@ -66,6 +67,7 @@
                                  NationalHolidayUtil,
                                  OverTimeDayUtil,
                                  WorkHourAddItemUtil,
+                                 NotificationMsgUtil,
                                  toastr,
                                  HolidayDataForms,
                                  bsLoadingOverlayService,
@@ -827,10 +829,27 @@
                     userMonthSalary: checkingTable.userMonthSalary,
                     isSendReview: true,
                 }
+
+                var targetList = [$scope.bossID];
+                var msgTopicList = [2000];
+                var msgDetailList = [2001];
+                var memoList = [$scope.showDate(checkingTable)];
+
                 // WorkOffFormUtil.updateWorkOffTableSendReview(formData)
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-                        $scope.specificUserTablesItems[checkingIndex].isSendReview = true;
+
+                        var formData = {
+                            creatorDID: cookies.get('userDID'),
+                            msgTargetArray: targetList,
+                            msgMemoArray: memoList,
+                            msgTopicArray: msgTopicList,
+                            msgDetailArray: msgDetailList,
+                        }
+                        NotificationMsgUtil.createMsgItem(formData)
+                            .success(function (req) {
+                                $scope.specificUserTablesItems[checkingIndex].isSendReview = true;
+                            })
                     })
             }
 
@@ -856,10 +875,29 @@
                     tableID: checkingTable.tableID,
                     isExecutiveCheck: true,
                 }
+
+                var targetList = [vm.executive.selected._id];
+                var msgTopicList = [2000];
+                var msgDetailList = [2005];
+                var memoList = [$scope.showDate(checkingTable)];
+
                 // WorkOffFormUtil.updateExecutiveAgree(formData)
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-                        $scope.executiveCheckTablesItems.splice(index, 1);
+
+                        var formData = {
+                            creatorDID: cookies.get('userDID'),
+                            msgTargetArray: targetList,
+                            msgMemoArray: memoList,
+                            msgTopicArray: msgTopicList,
+                            msgDetailArray: msgDetailList,
+                        }
+                        NotificationMsgUtil.createMsgItem(formData)
+                            .success(function (req) {
+                                $scope.executiveCheckTablesItems.splice(index, 1);
+                            })
+
+
                     })
             }
 
@@ -890,10 +928,28 @@
                     isExecutiveReject: true,
                     executiveReject_memo: rejectMsg,
                 }
+
+                var targetList = [vm.executive.selected._id];
+                var msgTopicList = [2000];
+                var msgDetailList = [2004];
+                var memoList = [$scope.showDate(checkingTable)];
+
                 // WorkOffFormUtil.updateDisAgree(formData)
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-                        $scope.executiveCheckTablesItems.splice(index, 1);
+
+                        var formData = {
+                            creatorDID: cookies.get('userDID'),
+                            msgTargetArray: targetList,
+                            msgMemoArray: memoList,
+                            msgTopicArray: msgTopicList,
+                            msgDetailArray: msgDetailList,
+                        }
+                        NotificationMsgUtil.createMsgItem(formData)
+                            .success(function (req) {
+                                $scope.executiveCheckTablesItems.splice(index, 1);
+                            })
+
                     })
             }
 
@@ -919,15 +975,33 @@
                     tableID: checkingTable.tableID,
                     isBossCheck: true,
                 }
+
+                var targetList = ["5b3c65903e93d2f3b0a0c582"];
+                var msgTopicList = [2000];
+                var msgDetailList = [2002];
+                var memoList = [$scope.showDate(checkingTable)];
+
                 // WorkOffFormUtil.updateBossAgree(formData)
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-                        $scope.bossCheckTablesItems.splice(index, 1);
+
+                        var formData = {
+                            creatorDID: vm.boss.selected._id,
+                            msgTargetArray: targetList,
+                            msgMemoArray: memoList,
+                            msgTopicArray: msgTopicList,
+                            msgDetailArray: msgDetailList,
+                        }
+                        NotificationMsgUtil.createMsgItem(formData)
+                            .success(function (req) {
+                                $scope.bossCheckTablesItems.splice(index, 1);
+                            })
                     })
             }
 
             //主管退回
             $scope.disagreeItem_boss = function (table, index) {
+                console.log(table);
                 $scope.checkText = '確定 退回：' + vm.boss.selected.name + " " +
                     DateUtil.getShiftDatefromFirstDate(
                         DateUtil.getFirstDayofThisWeek(moment(table.create_formDate)),
@@ -953,11 +1027,29 @@
                     isExecutiveReject: false,
                     bossReject_memo: rejectMsg,
                 }
+
+                var targetList = [vm.boss.selected._id];
+                var msgTopicList = [2000];
+                var msgDetailList = [2003];
+                var memoList = [$scope.showDate(checkingTable)];
+
                 // WorkOffFormUtil.updateDisAgree(formData)
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
                         // console.log(res.code + ", sendDisagree_boss");
-                        $scope.bossCheckTablesItems.splice(index, 1);
+
+                        var formData = {
+                            creatorDID: cookies.get('userDID'),
+                            msgTargetArray: targetList,
+                            msgMemoArray: memoList,
+                            msgTopicArray: msgTopicList,
+                            msgDetailArray: msgDetailList,
+                        }
+                        NotificationMsgUtil.createMsgItem(formData)
+                            .success(function (req) {
+                                $scope.bossCheckTablesItems.splice(index, 1);
+                            })
+
                     })
             }
 
