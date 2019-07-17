@@ -111,7 +111,7 @@
   left: auto;
   right: -47px;
   top: 26px;
-  @include scrollbars(.4em, rgba(0,0,0,0.5), #fff);
+  @include scrollbars(.4em, rgba(0, 0, 0, 0.5), #fff);
   .header {
     padding: 10px 12px;
     border-bottom: 1px solid $default;
@@ -140,16 +140,22 @@
       text-decoration: none;
       color: $dropdown-text;
       font-size: 12px;
+
       &:first-child {
         border-top: none;
       }
+
+      &.myMsgItemRead {
+        background: #b9e2f0;
+      }
+
       .img-area {
         float: left;
         width: 36px;
         img {
           width: 36px;
           height: 36px;
-          &.photo-msg-item{
+          &.photo-msg-item {
             border-radius: 18px;
           }
         }
@@ -181,6 +187,7 @@
           font-size: 11px;
         }
       }
+
       .msg-area {
         float: right;
         width: 230px;
@@ -206,11 +213,12 @@
     display: block;
     text-align: center;
     padding: 10px;
-    font-size: 12px;
+    font-size: 120px;
     text-decoration: none;
     &:hover {
       color: $dropdown-text;
     }
+
   }
 
   &.profile-dropdown {

@@ -41,130 +41,132 @@
                 .success(function (res) {
                     console.log(res);
                     $scope.messages = [];
+                    var msgQueue = [];
                     for (var index = 0; index < res.payload.length; index ++) {
                         var msgItem = {};
-                        msgItem.text = res.payload[index].creatorDID
-                        msgItem.type = res.payload[index].msgActionTopic
-                        $scope.messages.push(msgItem);
+                        msgItem.creatorDID = res.payload[index].creatorDID;
+                        msgItem._id = res.payload[index]._id;
+                        msgItem.creatorInfo = res.payload[index]._user_info[0];
+                        msgItem.topic = res.payload[index].msgActionTopic;
+                        msgItem.detail = res.payload[index].msgActionDetail;
+                        msgItem.msgMemo = res.payload[index].msgMemo;
+                        msgItem.isRead = res.payload[index].isRead;
+                        // msgItem.timestamp = new Date(res.payload[index].timestamp);
+                        msgItem.timeDiff = GetDateDiff(new Date(res.payload[index].timestamp), new Date(), "minute");
+                        msgItem.text = getMsgText(msgItem.topic, msgItem.detail, msgItem.msgMemo);
+                        // $scope.messages.push(msgItem);
+                        msgQueue.push(msgItem);
                     }
+
+                    $scope.messages = msgQueue.slice(0);
                 })
         }
 
-
+        $scope.fetchNotification();
         var intervalID = setInterval(getNotificationMsg, 10000);
 
         function getNotificationMsg() {
-
+            $scope.messages = [];
             $scope.fetchNotification();
 
-            console.log('10 秒鐘又到了！');
+            // console.log('10 秒鐘又到了！');
         }
 
-        // ==================== original code ====================
-        $scope.users = {
-            0: {
-                name: 'Vlad',
-            },
-            1: {
-                name: 'Kostya',
-            },
-            2: {
-                name: 'Andrey',
-            },
-            3: {
-                name: 'Nasta',
+        function getMsgText(msgTopic, msgDetail, msgMemo) {
+            switch (msgTopic){
+                case 1000:
+                    switch (msgDetail) {
+                        case 1001: {
+                            return " 寄送 " + msgMemo + " 工時表給您 [經理/主任審核]"
+                        }
+                        case 1002: {
+                            return " 的 " + msgMemo + " 工時表提交給您 [行政確認]"
+                        }
+                        case 1003: {
+                            return " [經理/主任] 退還 " + msgMemo + " 工時表給您"
+                        }
+                        case 1004: {
+                            return " [行政總管] 退還 " + msgMemo + " 工時表給您"
+                        }
+                        case 1005: {
+                            return " [行政總管] 確認完成您 " + msgMemo + " 的工時表"
+                        }
+                    }
             }
-        };
+        }
 
-        // $scope.notifications = [
-        //     {
-        //         userId: 0,
-        //         template: '&name posted a new article.',
-        //         time: '1 min ago'
-        //     },
-        //     {
-        //         userId: 1,
-        //         template: '&name changed his contact information.',
-        //         time: '2 hrs ago'
-        //     },
-        //     {
-        //         image: 'assets/img/shopping-cart.svg',
-        //         template: 'New orders received.',
-        //         time: '5 hrs ago'
-        //     },
-        //     {
-        //         userId: 2,
-        //         template: '&name replied to your comment.',
-        //         time: '1 day ago'
-        //     },
-        //     {
-        //         userId: 3,
-        //         template: 'Today is &name\'s birthday.',
-        //         time: '2 days ago'
-        //     },
-        //     {
-        //         image: 'assets/img/comments.svg',
-        //         template: 'New comments on your post.',
-        //         time: '3 days ago'
-        //     },
-        //     {
-        //         userId: 1,
-        //         template: '&name invited you to join the event.',
-        //         time: '1 week ago'
-        //     }
-        // ];
-
-        $scope.messages = [
-            {
-                userId: 3,
-                text: "資料讀取中，請稍候",
-                // time: '1 min ago',
-                type: '工時表'
-            },
-            {
-                userId: 0,
-                text: "資料讀取中，請稍候",
-                // time: '2 hrs ago',
-                type: '人員請假'
+        $scope.unReadMsg = function () {
+            var count = 0;
+            for (var index = 0; index < $scope.messages.length; index ++) {
+                if (!$scope.messages[index].isRead) {
+                    count++;
+                }
             }
-            // {
-            //     userId: 1,
-            //     text: 'Want to request new icons? Here\'s how. Need vectors or want to use on the...',
-            //     time: '10 hrs ago',
-            //     type: '工時表'
-            // },
-            // {
-            //     userId: 2,
-            //     text: 'Explore your passions and discover new ones by getting involved. Stretch your...',
-            //     time: '1 day ago',
-            //     type: '工時表'
-            // },
-            // {
-            //     userId: 3,
-            //     text: 'Get to know who we are - from the inside out. From our history and culture, to the...',
-            //     time: '1 day ago',
-            //     type: '工時表'
-            // },
-            // {
-            //     userId: 1,
-            //     text: 'Need some support to reach your goals? Apply for scholarships across a variety of...',
-            //     time: '2 days ago',
-            //     type: '工時表'
-            // },
-            // {
-            //     userId: 0,
-            //     text: 'Wrap the dropdown\'s trigger and the dropdown menu within .dropdown, or...',
-            //     time: '1 week ago',
-            //     type: '工時表'
-            // }
-        ];
+            return count;
+        }
 
-        $scope.getMessage = function (msg) {
-            var text = msg.template;
-            if (msg.userId || msg.userId === 0) {
-                text = text.replace('&name', '<strong>' + $scope.users[msg.userId].name + '</strong>');
+        $scope.readMsg = function (dom) {
+            // console.log(dom);
+            dom.msg.isRead = true;
+            var getData = {
+                msgID: dom.msg._id,
             }
-            return $sce.trustAsHtml(text);
-        };
+            NotificationMsgUtil.updateMsgItem(getData)
+                .success(function (req) {
+                    console.log(req);
+                })
+        }
+
+        /*
+            * 獲得時間差,時間格式為 年-月-日 小時:分鐘:秒 或者 年/月/日 小時：分鐘：秒
+            * 其中，年月日為全格式，例如 ： 2010-10-12 01:00:00
+            * 返回精度為：秒，分，小時，天
+            */
+        function GetDateDiff(startTime, endTime, diffType) {
+            var timeUnits = "";
+            //將xxxx-xx-xx的時間格式，轉換為 xxxx/xx/xx的格式
+//             startTime = startTime.replace(/\-/g, "/");
+//             endTime = endTime.replace(/\-/g, "/");
+            //將計算間隔類性字元轉換為小寫
+            diffType = diffType.toLowerCase();
+            var sTime = new Date(startTime); //開始時間
+            var eTime = new Date(endTime); //結束時間
+            // console.log(sTime);
+            // console.log(eTime);
+            //作為除數的數字
+            var divNum = 1;
+            var result;
+            switch (diffType) {
+                case "second":
+                    divNum = 1000;
+                    timeUnits = " 秒前";
+                    break;
+                case "minute":
+                    divNum = 1000 * 60;
+                    timeUnits = " 分鐘前";
+                    result = parseInt((eTime.getTime() - sTime.getTime()) / parseInt(divNum)) < 60
+                        ? parseInt((eTime.getTime() - sTime.getTime()) / parseInt(divNum)) : GetDateDiff(startTime, endTime, "hour");
+                    break;
+                case "hour":
+                    divNum = 1000 * 3600;
+                    timeUnits = " 小時前";
+                    result = parseInt((eTime.getTime() - sTime.getTime()) / parseInt(divNum)) < 24
+                        ? parseInt((eTime.getTime() - sTime.getTime()) / parseInt(divNum)) : GetDateDiff(startTime, endTime, "day");
+                    break;
+                case "day":
+                    divNum = 1000 * 3600 * 24;
+                    timeUnits = " 日前";
+                    result = parseInt((eTime.getTime() - sTime.getTime()) / parseInt(divNum));
+                    break;
+                default:
+                    break;
+            }
+            // console.log(sTime.getTime());
+            // console.log(eTime.getTime());
+            // console.log(diffType);
+            // console.log(result);
+            return result + timeUnits;
+        }
+
     }
 })();

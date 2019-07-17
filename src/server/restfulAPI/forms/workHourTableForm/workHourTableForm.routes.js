@@ -395,18 +395,23 @@ module.exports = function (app) {
                     res.send(err);
                 }
             })
-            NotificationMsgItem.create({
-                creatorDID: req.body.creatorDID,
-                msgTarget: req.body.msgTargetArray[index],
-                msgActionTopic: 1000,
-                msgActionDetail: 1001
-            });
+
             // Temp.create({
                 //             tempID: req.body.users[index],
                 //             creatorDID: req.body.creatorDID
                 //         });
-
         }
+
+        // for (var index = 0; index < req.body.msgTargetArray.length; index++) {
+        //     NotificationMsgItem.create({
+        //         creatorDID: req.body.creatorDID,
+        //         msgTarget: req.body.msgTargetArray[index],
+        //         msgMemo: req.body.msgMemoArray[index],
+        //         msgActionTopic: 1000,
+        //         msgActionDetail: 1001,
+        //         timestamp: new Date()
+        //     });
+        // }
         // global.qqq.response(req.body.msgTargetID, global.eventString._2001);
         res.status(200).send({
             code: 200,

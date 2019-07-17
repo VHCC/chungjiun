@@ -563,9 +563,18 @@
         }])
         .factory('NotificationMsgUtil', ['$http', function (http) {
             return {
+
+                createMsgItem: function (formData) {
+                    return http.post('/api/post_notification_msg_create_item', formData);
+                },
+
                 fetchMsgItemsByUserDID: function (formData) {
                     return http.post('/api/post_notification_msg_by_user_did', formData);
                 },
+
+                updateMsgItem: function (formData) {
+                    return http.post('/api/post_notification_msg_update', formData);
+                }
             }
         }])
         .factory('NotificationUtil', ['$http', function (http) {

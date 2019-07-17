@@ -150,5 +150,7 @@ global.apiUrl = {
     get_line_notify_auth_register : '/api/post_line_notify_auth_register',
 
     // notification Msg
+    post_notification_msg_create_item : '/api/post_notification_msg_create_item',
     post_notification_msg_by_user_did : '/api/post_notification_msg_by_user_did',
+    post_notification_msg_update : '/api/post_notification_msg_update',
 };

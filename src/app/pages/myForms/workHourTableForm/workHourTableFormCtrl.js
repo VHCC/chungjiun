@@ -27,6 +27,7 @@
                 'NationalHolidayUtil',
                 'OverTimeDayUtil',
                 'WorkAddConfirmFormUtil',
+                'NotificationMsgUtil',
                 'editableOptions',
                 'editableThemes',
                 'bsLoadingOverlayService',
@@ -53,6 +54,7 @@
                                NationalHolidayUtil,
                                OverTimeDayUtil,
                                WorkAddConfirmFormUtil,
+                               NotificationMsgUtil,
                                editableOptions,
                                editableThemes,
                                bsLoadingOverlayService) {
@@ -1869,22 +1871,44 @@
             $timeout(function () {
                 var tableList = [];
                 var targetList = [];
+                var msgTopicList = [];
+                var msgDetailList = [];
+                var memoList = [];
                 for (var index = 0; index < $scope.tables[tableIndex].tablesItems.length; index ++) {
                     console.log($scope.tables[tableIndex].tablesItems[index]);
                     tableList[index] = $scope.tables[tableIndex].tablesItems[index].tableID;
-                    targetList[index] = $scope.showProjectManagerDID($scope.tables[tableIndex].tablesItems[index].prjDID);
+                    console.log($scope.tables[tableIndex].tablesItems[index].isSendReview);
+                    if (!$scope.tables[tableIndex].tablesItems[index].isSendReview) { // 未被審查的項目 才需要通知；已經遞交審查的不通知
+                        if (!targetList.includes($scope.showProjectManagerDID($scope.tables[tableIndex].tablesItems[index].prjDID))) { // 一張表格多個項目有相同的經理的話，只通知一次
+                            targetList[index] = $scope.showProjectManagerDID($scope.tables[tableIndex].tablesItems[index].prjDID);
+                            memoList[index] = $scope.tables[tableIndex].tablesItems[index].create_formDate;
+                            msgTopicList[index] = 1000;
+                            msgDetailList[index] = 1001;
+                        }
+                    }
                 }
+
                 var formData = {
                     creatorDID: cookies.get('userDID'),
-                    msgTargetID: cookies.get('bossID'),
                     tableArray: tableList,
-                    msgTargetArray: targetList,
                 }
-                // console.log(formData);
+                console.log(formData);
                 WorkHourUtil.updateTotalTableSendReview(formData)
                     .success(function (res) {
                         // console.log(res.code);
-                        $scope.getTable();
+                        var formData = {
+                            creatorDID: cookies.get('userDID'),
+                            // msgTargetID: cookies.get('bossID'),
+                            // tableArray: tableList,
+                            msgTargetArray: targetList,
+                            msgMemoArray: memoList,
+                            msgTopicArray: msgTopicList,
+                            msgDetailArray: msgDetailList,
+                        }
+                        NotificationMsgUtil.createMsgItem(formData)
+                            .success(function (req) {
+                                $scope.getTable();
+                            })
                     })
             }, 1000);
         }
@@ -2147,9 +2171,30 @@
                 isManagerCheck: true,
                 // isExecutiveCheck: null,
             }
+
+            var targetList = ["5b3c65903e93d2f3b0a0c582"];
+            var msgTopicList = [1000];
+            var msgDetailList = [1002];
+            var memoList = [$scope.firstFullDate_manager];
+
             WorkHourUtil.updateWHTableArray(formData)
                 .success(function (res) {
-                    $scope.fetchRelatedMembers();
+
+                    var formData = {
+                        creatorDID: user.DID,
+                        msgTargetArray: targetList,
+                        msgMemoArray: memoList,
+                        msgTopicArray: msgTopicList,
+                        msgDetailArray: msgDetailList,
+                    }
+                    NotificationMsgUtil.createMsgItem(formData)
+                        .success(function (req) {
+                            $scope.fetchRelatedMembers();
+                        })
+                        .error(function (req) {
+                            $scope.fetchRelatedMembers();
+                        })
+
                     // $scope.showTableOfItem(user, null, null, null, null, null, 1);
                 })
         }
@@ -2181,9 +2226,26 @@
                 isExecutiveReject: false,
                 managerReject_memo: rejectMsg,
             }
+
+            var targetList = [item.creatorDID];
+            var msgTopicList = [1000];
+            var msgDetailList = [1003];
+            var memoList = [item.create_formDate];
+
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
-                    $scope.showTableOfItem(user, null, null, null, null, null, 1);
+
+                    var formData = {
+                        creatorDID: cookies.get('userDID'),
+                        msgTargetArray: targetList,
+                        msgMemoArray: memoList,
+                        msgTopicArray: msgTopicList,
+                        msgDetailArray: msgDetailList,
+                    }
+                    NotificationMsgUtil.createMsgItem(formData)
+                        .success(function (req) {
+                            $scope.showTableOfItem(user, null, null, null, null, null, 1);
+                        })
                 })
         }
 
@@ -2204,6 +2266,7 @@
         $scope.satDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 5));
         $scope.sunDate_executive = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_executive), 6));
 
+        // Deprecated
         //行政確認 -1
         $scope.reviewWHExecutiveItem = function (form, table, index) {
             $scope.checkText = '確定 同意：' +
@@ -2236,12 +2299,7 @@
                         prjDID: checkingTable.prjDID,
                         create_formDate: checkingTable.create_formDate,
                     }
-                    WorkHourAddItemUtil.updateRelatedAddItemByProject(formData)
-                        .success(function (res) {
-                            $scope.showTableOfItem(form, null, null, null, null, null, 2);
-                        })
-                        .error(function () {
-                        })
+                    $scope.showTableOfItem(form, null, null, null, null, null, 2);
                 })
         }
 
@@ -2271,10 +2329,27 @@
                 isExecutiveReject: true,
                 executiveReject_memo: rejectMsg,
             }
+
+            var targetList = [checkingTable.creatorDID];
+            var msgTopicList = [1000];
+            var msgDetailList = [1004];
+            var memoList = [checkingTable.create_formDate];
+
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
-                    // console.log(res.code);
-                    $scope.showTableOfItem(form, null, null, null, null, null, 2);
+
+                    var formData = {
+                        creatorDID: cookies.get('userDID'),
+                        msgTargetArray: targetList,
+                        msgMemoArray: memoList,
+                        msgTopicArray: msgTopicList,
+                        msgDetailArray: msgDetailList,
+                    }
+                    NotificationMsgUtil.createMsgItem(formData)
+                        .success(function (req) {
+                            $scope.showTableOfItem(form, null, null, null, null, null, 2);
+                        })
+
                 })
         }
 
@@ -2327,19 +2402,47 @@
                 .success(function (res) {
                     // $scope.fetchManagerRelatedMembers();
                     // $scope.fetchExecutiveRelatedMembers();
-                    $scope.showTableOfItem(user, null, null, null, null, null, 2);
+
+                    var targetList = [user.DID];
+                    var msgTopicList = [1000];
+                    var msgDetailList = [1005];
+                    var memoList = [$scope.firstFullDate_executive];
+
+                    WorkHourAddItemUtil.updateRelatedAddItemByProject(formData)
+                        .success(function (res) {
+
+                            var formData = {
+                                creatorDID: cookies.get('userDID'),
+                                msgTargetArray: targetList,
+                                msgMemoArray: memoList,
+                                msgTopicArray: msgTopicList,
+                                msgDetailArray: msgDetailList,
+                            }
+                            NotificationMsgUtil.createMsgItem(formData)
+                                .success(function (req) {
+                                    $scope.showTableOfItem(user, null, null, null, null, null, 2);
+                                })
+
+                        })
+                        .error(function () {
+                        })
+
+
                 })
             var formData = {
                 formTables: workAddTableIDArray,
             }
             // console.log(formData);
-            WorkHourAddItemUtil.executiveConfirm(formData)
-                .success(function () {
-                    toastr.success('確認成功', 'Success');
-                })
-                .error(function () {
+            if (workAddTableIDArray.length != 0) {
+                WorkHourAddItemUtil.executiveConfirm(formData)
+                    .success(function () {
+                        toastr.success('確認成功', 'Success');
+                    })
+                    .error(function () {
 
-                })
+                    })
+            }
+
         }
 
         // ************* 行政核定後退回 ****************

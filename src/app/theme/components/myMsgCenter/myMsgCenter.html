@@ -1,7 +1,8 @@
 <ul class="al-msg-center clearfix">
     <li uib-dropdown ng-if="false">
         <a href uib-dropdown-toggle>
-            <i class="fa fa-bell-o"></i><span>{{managerNotification}}</span>
+            <i class="fa fa-bell-o"></i>
+            <span>{{messages.length}}</span>
 
             <div class="notification-ring"></div>
         </a>
@@ -32,25 +33,36 @@
     <li uib-dropdown style="padding-top:10px">
         <a href class="msg" uib-dropdown-toggle>
             <i class="fa fa-envelope-o"></i>
-            <span>{{getTotalMsg()}}</span>
+            <span>{{unReadMsg()}}</span>
+
             <div class="notification-ring"></div>
         </a>
         <div uib-dropdown-menu class="top-dropdown-menu">
             <i class="dropdown-arr"></i>
             <div class="header clearfix">
-                <strong>待審核通知</strong>
+                <strong>通知</strong>
                 <!--<a href>Mark All as Read</a>-->
                 <!--<a href>Settings</a>-->
             </div>
             <div class="msg-list">
-                <a href class="clearfix" ng-repeat="msg in messages">
-                    <div class="my-msg-title-area">
-                        <div>{{ msg.type }}</div>
-                        <!--<img class="photo-msg-item"-->
-                                               <!--ng-src="{{::( users[msg.userId].name | profilePicture )}}">-->
+                <a href
+                   class="clearfix"
+                   ng-class="{myMsgItemRead: !msg.isRead}"
+                   ng-repeat="msg in messages"
+                   ng-click="readMsg(this)">
+                    <!--<div class="my-msg-title-area">-->
+                    <!--<div>{{ msg.type }}</div>-->
+                    <!--<img class="photo-msg-item"-->
+                    <!--ng-src="{{::( msg.creatorDID | profilePicture )}}">-->
+                    <!--</div>-->
+                    <div class="img-area">
+                        <img class="photo-msg-item"
+                             ng-src="{{::( msg.creatorDID | profilePicture )}}">
                     </div>
+
                     <div class="msg-area">
-                        <div>{{ msg.text }}</div>
+                        <div>{{msg.creatorInfo.name}} {{ msg.text }}</div>
+                        <span>{{ msg.timeDiff }}</span>
                         <!--<span>{{ msg.time }}</span>-->
                     </div>
                 </a>

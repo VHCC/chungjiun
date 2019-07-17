@@ -137,7 +137,8 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_work_hour_work_executive_confirm, function (req, res) {
         var findData = []
         var resultCount = 0
-        console.log(req.body.formTables);
+        console.log(req.body);
+
         for (var index = 0; index < req.body.formTables.length; index++) {
             WorkHourTableFormWorkAdd.update({
                 _id: req.body.formTables[index],
@@ -158,6 +159,7 @@ module.exports = function (app) {
                 }
             })
         }
+
     })
 
     // update work add item
