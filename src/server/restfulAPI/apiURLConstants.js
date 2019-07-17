@@ -153,4 +153,5 @@ global.apiUrl = {
     post_notification_msg_create_item : '/api/post_notification_msg_create_item',
     post_notification_msg_by_user_did : '/api/post_notification_msg_by_user_did',
     post_notification_msg_update : '/api/post_notification_msg_update',
+    post_notification_msg_update_all : '/api/post_notification_msg_update_all',
 };

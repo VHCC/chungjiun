@@ -574,6 +574,10 @@
 
                 updateMsgItem: function (formData) {
                     return http.post('/api/post_notification_msg_update', formData);
+                },
+
+                updateMsgItemAll: function (formData) {
+                    return http.post('/api/post_notification_msg_update_all', formData);
                 }
             }
         }])

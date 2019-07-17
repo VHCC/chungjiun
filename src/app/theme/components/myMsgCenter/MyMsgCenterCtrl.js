@@ -123,6 +123,24 @@
             return count;
         }
 
+        $scope.allMsgRead = function() {
+            var msgIDs = [];
+            for (var index = 0; index < $scope.messages.length; index ++) {
+                if (!$scope.messages[index].isRead) {
+                    msgIDs.push($scope.messages[index]._id)
+                }
+            }
+
+            var getData = {
+                msgIDs: msgIDs,
+            }
+
+            NotificationMsgUtil.updateMsgItemAll(getData)
+                .success(function (req) {
+                    $scope.fetchNotification();
+                })
+        }
+
         $scope.readMsg = function (dom) {
             // console.log(dom);
             dom.msg.isRead = true;

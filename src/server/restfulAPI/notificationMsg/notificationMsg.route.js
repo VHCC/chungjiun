@@ -136,6 +136,35 @@ module.exports = function (app) {
         });
     });
 
+    // update item all
+    app.post(global.apiUrl.post_notification_msg_update_all, function (req, res) {
+        console.log(req.body);
+
+        var msgIDs = req.body.msgIDs
+
+        for (var index = 0; index < msgIDs.length; index ++) {
+            NotificationMsgItem.update({
+                _id: msgIDs[index]
+            }, {
+                $set: {
+                    isRead: true,
+                }
+            }, function(err, result) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    console.log(result)
+                }
+            });
+        }
+
+        res.status(200).send({
+            code: 200,
+            error: global.status._200,
+        });
+
+    });
+
     // create item
     app.post(global.apiUrl.post_notification_msg_create_item, function (req, res) {
         console.log(req.body);
