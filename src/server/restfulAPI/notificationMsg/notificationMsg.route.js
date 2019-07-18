@@ -7,8 +7,7 @@ module.exports = function (app) {
 
     // fetch Form
     app.post(global.apiUrl.post_notification_msg_by_user_did, function (req, res) {
-        console.log(req.body);
-
+        // console.log(req.body);
 
         NotificationMsgItem.aggregate( // 由專案找起
             [

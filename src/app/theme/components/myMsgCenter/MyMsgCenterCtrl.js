@@ -52,7 +52,7 @@
                         msgItem.msgMemo = res.payload[index].msgMemo;
                         msgItem.isRead = res.payload[index].isRead;
                         // msgItem.timestamp = new Date(res.payload[index].timestamp);
-                        msgItem.timeDiff = GetDateDiff(new Date(res.payload[index].timestamp), new Date(), "minute");
+                        msgItem.timeDiff = GetDateDiff(new Date(res.payload[index].timestamp), new Date(), "second");
                         msgItem.text = getMsgText(msgItem.topic, msgItem.detail, msgItem.msgMemo);
                         // $scope.messages.push(msgItem);
                         msgQueue.push(msgItem);
@@ -176,23 +176,25 @@
                 case "second":
                     divNum = 1000;
                     timeUnits = " 秒前";
+                    result = parseInt((eTime.getTime() - sTime.getTime()) / parseInt(divNum)) < 60
+                        ? parseInt((eTime.getTime() - sTime.getTime()) / parseInt(divNum)) + timeUnits: GetDateDiff(startTime, endTime, "minute");
                     break;
                 case "minute":
                     divNum = 1000 * 60;
                     timeUnits = " 分鐘前";
                     result = parseInt((eTime.getTime() - sTime.getTime()) / parseInt(divNum)) < 60
-                        ? parseInt((eTime.getTime() - sTime.getTime()) / parseInt(divNum)) : GetDateDiff(startTime, endTime, "hour");
+                        ? parseInt((eTime.getTime() - sTime.getTime()) / parseInt(divNum)) + timeUnits : GetDateDiff(startTime, endTime, "hour");
                     break;
                 case "hour":
                     divNum = 1000 * 3600;
                     timeUnits = " 小時前";
                     result = parseInt((eTime.getTime() - sTime.getTime()) / parseInt(divNum)) < 24
-                        ? parseInt((eTime.getTime() - sTime.getTime()) / parseInt(divNum)) : GetDateDiff(startTime, endTime, "day");
+                        ? parseInt((eTime.getTime() - sTime.getTime()) / parseInt(divNum)) + timeUnits : GetDateDiff(startTime, endTime, "day");
                     break;
                 case "day":
                     divNum = 1000 * 3600 * 24;
                     timeUnits = " 日前";
-                    result = parseInt((eTime.getTime() - sTime.getTime()) / parseInt(divNum));
+                    result = parseInt((eTime.getTime() - sTime.getTime()) / parseInt(divNum)) + timeUnits;
                     break;
                 default:
                     break;
@@ -201,7 +203,7 @@
             // console.log(eTime.getTime());
             // console.log(diffType);
             // console.log(result);
-            return result + timeUnits;
+            return result;
         }
 
     }
