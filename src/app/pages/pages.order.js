@@ -27,6 +27,7 @@ global.pages = {
     cgWorkManage_workOff  : 300,
     cgWorkManage_hrMachine  : 500,
     cgWorkManage_workStatistics  : 600,
+    cgWorkManage_workStatistics_CJ  : 601,
     //
     cgAccountingManage : 300,
     cgAccountingManage_paymentForm  : 100,

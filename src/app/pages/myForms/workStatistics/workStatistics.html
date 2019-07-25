@@ -71,10 +71,18 @@
                             </ui-select-match>
                             <ui-select-choices
                                     ng-model="prjName"
-                                    repeat="prjItems in workStatisticsCtrlVm.allProjectData | groupSelectpickerOptions: {mainName: $select.search, prjCode: $select.search}"
+                                    repeat="prjItems in workStatisticsCtrlVm.allProjectData |
+                                    groupSelectpickerOptions: {
+                                    mainName: $select.search,
+                                    prjName: $select.search,
+                                    prjSubName: $select.search,
+                                    prjCode: $select.search
+                                    }"
                                     group-by="'mainName'">
                                 <span ng-bind-html="prjItems.prjName + ' - ' +
-                                prjItems.prjSubName + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
+                                prjItems.prjSubName + ' - ' +
+                                prjTypeToName(prjItems.type) + ' - ' +
+                                prjItems.prjCode | highlight: $select.search"></span>
                             </ui-select-choices>
                         </ui-select>
                     </div>
@@ -89,8 +97,7 @@
                        id="prjBranch"
                        placeholder="分支主題空白則為全部"
                        style="color: #000000;"
-                       ng-model="_branch"
-                       value="{{_branch}}">
+                       ng-model="_branch">
             </div>
 
             <div class="form-group">
@@ -100,8 +107,7 @@
                        id="prjYear"
                        placeholder="年度空白則為全部"
                        style="color: #000000;"
-                       ng-model="_year"
-                       value="{{_year}}">
+                       ng-model="_year">
             </div>
 
             <div class="form-group">
@@ -111,8 +117,7 @@
                        id="prjCode"
                        placeholder="總案空白則為全部"
                        style="color: #000000;"
-                       ng-model="_code"
-                       value="{{_code}}">
+                       ng-model="_code">
             </div>
 
             <div class="form-group">
@@ -122,8 +127,7 @@
                        id="prjNumber"
                        placeholder="專案編號空白則為全部"
                        style="color: #000000;"
-                       ng-model="_number"
-                       value="{{_number}}">
+                       ng-model="_number">
             </div>
 
             <div class="form-group">
@@ -133,19 +137,17 @@
                        id="prjSubNumber"
                        placeholder="子案編號空白則為全部"
                        style="color: #000000;"
-                       ng-model="_subNumber"
-                       value="{{_subNumber}}">
+                       ng-model="_subNumber">
             </div>
 
             <div class="form-group">
-                <label for="prjType" class="col-md-3 control-label">類型[1.設計 2.監造 3.規劃 4.專管 5.總案 6.服務 7.行政 8.投標 9.其他]</label>
+                <label for="prjType" class="col-md-12 control-label">類型[1.設計 2.監造 3.規劃 4.專管 5.總案 6.服務 7.行政 8.投標 9.其他]</label>
                 <input type="text"
                        class="form-control"
                        id="prjType"
                        placeholder="類型空白則為全部"
                        style="color: #000000;"
-                       ng-model="_type"
-                       value="{{_type}}">
+                       ng-model="_type">
             </div>
         </div>
     </div>

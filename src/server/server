@@ -21,6 +21,7 @@ require('./restfulAPI/myProject/listProject/listProject.routes')(app);
 require('./restfulAPI/myNewPage/todo.routes')(app);
 require('./restfulAPI/forms/paymentForm/paymentForm.routes')(app);
 require('./restfulAPI/forms/workHourTableForm/workHourTableForm.routes')(app);
+require('./restfulAPI/forms/workHourTableStatistics/workHourTableStatistics.routes')(app); // Statistics
 require('./restfulAPI/forms/workHourTableFormWorkAdd/workHourTableFormWorkAdd.routes')(app);
 require('./restfulAPI/forms/workOffTableForm/workHourOffForm.routes')(app);
 // require('./restfulAPI/forms/workOffTableExchangeForm/workOffTableExchangeForm.routes')(app);

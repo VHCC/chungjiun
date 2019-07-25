@@ -75,6 +75,10 @@ global.apiUrl = {
     insert_work_hour_table_temp : '/api/insert_work_hour_table_temp',
         // statistics
     query_statistics_form : '/api/query_statistics_form',
+    query_statistics_form_CJ : '/api/query_statistics_form_CJ',
+    query_statistics_form_CJ_type1 : '/api/query_statistics_form_CJ_type1',
+    query_statistics_form_CJ_type2 : '/api/query_statistics_form_CJ_type2',
+    query_statistics_form_CJ_type3 : '/api/query_statistics_form_CJ_type3',
     query_statistics_tables : '/api/query_statistics_tables',
 
 

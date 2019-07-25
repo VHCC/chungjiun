@@ -85,13 +85,6 @@
                 getData.prjSubNumber = $('#prjSubNumber')[0].value == (undefined || "") ? undefined : $('#prjSubNumber')[0].value;
                 getData.type = $('#prjType')[0].value == (undefined || "") ? undefined : $('#prjType')[0].value;
 
-                // var getData = {
-                //     creatorDID: cookies.get('userDID'),
-                //     year: parseInt(this.myYear) - 1911,
-                //     month: this.month == (undefined || "") ? undefined : parseInt(this.month)
-                // }
-
-                // console.log(this);
                 console.log(getData);
                 WorkHourUtil.queryStatisticsForms(getData)
                     .success(function (res) {
@@ -108,54 +101,7 @@
                                 referenceId: 'mainPage_statistics'
                             });
                         }, 500)
-                        // var workHourTables= [];
-                        //
-                        // for (var index = 0; index < res.payload.length; index ++) {
-                        //     // console.log(res.payload[index]);
-                        //     if (res.payload[index].work_hour_forms.length > 0) {
-                        //         var prjDID = res.payload[index]._projectString;
-                        //         for (var subIndex = 0; subIndex < res.payload[index].work_hour_forms.length; subIndex ++) {
-                        //             // console.log(res.payload[index].work_hour_forms[subIndex]);
-                        //
-                        //             // TODO 日期過濾
-                        //             if(false) {
-                        //                 continue;
-                        //             }
-                        //
-                        //             if (res.payload[index].work_hour_forms[subIndex].formTables.length > 0) {
-                        //                 for (var subSubInedex = 0; subSubInedex < res.payload[index].work_hour_forms[subIndex].formTables.length; subSubInedex++) {
-                        //                     // console.log(res.payload[index].work_hour_forms[subIndex].formTables[subSubInedex]);
-                        //                     if (res.payload[index].work_hour_forms[subIndex].formTables[subSubInedex].prjDID == prjDID) {
-                        //                         workHourTables.push(res.payload[index].work_hour_forms[subIndex].formTables[subSubInedex].tableID);
-                        //                     }
-                        //                 }
-                        //             }
-                        //         }
-                        //     }
-                        // }
-                        // console.log(workHourTables);
-                        //
-                        // var apiData = {};
-                        //
-                        // apiData = {
-                        //     temps: workHourTables,
-                        //     creatorDID: cookies.get('userDID')
-                        // }
-                        //
-                        // WorkHourUtil.insertWorkHourTempsData(apiData)
-                        //     .success(function (res) {
-                        //         var subGetData = {
-                        //             tables: workHourTables,
-                        //             creatorDID: cookies.get('userDID')
-                        //         }
-                        //
-                        //         WorkHourUtil.queryStatisticsTables(subGetData)
-                        //             .success(function (res) {
-                        //                 console.log(res);
-                        //                 $scope.statisticsTableForms = res.payload;
-                        //             })
-                        //
-                        //     })
+
                     })
                     .error(function () {
                         $timeout(function () {
@@ -192,26 +138,28 @@
                 }
                 hourTotal = hourTotal % 60 < 30 ? Math.round(hourTotal / 60) : Math.round(hourTotal / 60) - 0.5;
                 if (hourTotal < 1) {
-                    // $scope.table.totalHourTemp = 0;
                     return 0;
                 }
-
                 return hourTotal;
             }
 
             $scope.projectSelected = function (projectInfo) {
                 // console.log(projectInfo);
-                this._branch = $scope._branch = projectInfo.branch;
-                this._year = $scope._year = projectInfo.year;
-                this._code = $scope._code = projectInfo.code;
-                this._number = $scope._number = projectInfo.prjNumber;
-                this._subNumber = $scope._subNumber = projectInfo.prjSubNumber;
-                this._type = $scope._type = projectInfo.type;
+                this._branch = $scope._branch = $('#prjBranch')[0].value = projectInfo.branch;
+                this._year = $scope._year = $('#prjYear')[0].value = projectInfo.year;
+                this._code = $scope._code = $('#prjCode')[0].value = projectInfo.code;
+                this._number = $scope._number = $('#prjNumber')[0].value = projectInfo.prjNumber;
+                this._subNumber = $scope._subNumber = $('#prjSubNumber')[0].value = projectInfo.prjSubNumber;
+                this._type = $scope._type = $('#prjType')[0].value = projectInfo.type;
                 // console.log(this);
             }
 
+            $scope.prjTypeToName = function (type) {
+                return ProjectUtil.getTypeText(type);
+            }
+
             $scope.showAllMonth = function (item, type) {
-                console.log(item);
+                // console.log(item);
                 var months = [];
                 switch (type) {
                     case 1: {
@@ -231,7 +179,6 @@
                     }
                     break;
                 }
-
                 return months;
             }
 

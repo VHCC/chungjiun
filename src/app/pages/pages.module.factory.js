@@ -210,6 +210,23 @@
                     return http.post('/api/query_statistics_form', formData);
                 },
 
+                // statistics CJ
+                queryStatisticsFormsCJ: function (formData) {
+                    return http.post('/api/query_statistics_form_CJ', formData);
+                },
+
+                queryStatisticsFormsCJ_type1: function (formData) {
+                    return http.post('/api/query_statistics_form_CJ_type1', formData);
+                },
+
+                queryStatisticsFormsCJ_type2: function (formData) {
+                    return http.post('/api/query_statistics_form_CJ_type2', formData);
+                },
+
+                queryStatisticsFormsCJ_type3: function (formData) {
+                    return http.post('/api/query_statistics_form_CJ_type3', formData);
+                },
+
                 queryStatisticsTables: function (formData) {
                     return http.post('/api/query_statistics_tables', formData);
                 }

@@ -88,5 +88,17 @@
                         order: global.pages.cgWorkManage_workStatistics,
                     },
                 })
+            .state('cgWorkManage.workStatisticsCJ',
+                {
+                    url: '/workStatisticsCJ',
+                    templateUrl: 'app/pages/myForms/workStatisticsCJ/workStatisticsCJ.html',
+                    controller: 'workStatisticsCJCtrl',
+                    controllerAs: 'workStatisticsCJCtrlVm',
+                    title: '工時表統計CJ',
+                    accessLevel: [2, 100],
+                    sidebarMeta: {
+                        order: global.pages.cgWorkManage_workStatistics_CJ,
+                    },
+                })
     }
 })();
