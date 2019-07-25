@@ -16,13 +16,15 @@
 
       if (angular.isArray(items)) {
         var keys = Object.keys(props);
-
+        // console.log(keys);
         items.forEach(function (item) {
           var itemMatches = false;
-
           for (var i = 0; i < keys.length; i++) {
             var prop = keys[i];
             var text = props[prop].toLowerCase();
+            if (item[prop] == undefined) {
+              break;
+            }
             if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
               itemMatches = true;
               break;
