@@ -1,7 +1,8 @@
 var WorkHourForm = require('../../models/workHourForm');
-var WorkHourTableForm = require('../../models/workHourTableForm');
+var WorkHourTable = require('../../models/workHourTableForm');
 var Project = require('../../models/project');
 var Temp = require('../../models/temp');
+var NotificationMsgItem = require('../../models/notificationMsgItem');
 
 module.exports = function (app) {
     'use strict';
@@ -35,7 +36,7 @@ module.exports = function (app) {
             };
             // console.log(findData);
             // 刪除既有 工時表格
-            WorkHourTableForm.remove(
+            WorkHourTable.remove(
                 {
                     $or: findData,
                 }, function (err) {
@@ -49,7 +50,7 @@ module.exports = function (app) {
         var resIndex = 0;
         for (var index = 0; index < req.body.formTables.length; index++) {
             try {
-                WorkHourTableForm.create({
+                WorkHourTable.create({
                     creatorDID: req.body.formTables[index].creatorDID,
                     prjDID: req.body.formTables[index].prjDID,
                     create_formDate: req.body.create_formDate,
@@ -321,7 +322,6 @@ module.exports = function (app) {
             findData.push(target);
         }
 
-        // console.log("findData");
         // console.log(findData);
 
         var query = {};
@@ -344,7 +344,7 @@ module.exports = function (app) {
 
         // console.log(query);
 
-        WorkHourTableForm.find(query, function (err, tables) {
+        WorkHourTable.find(query, function (err, tables) {
             if (err) {
                 res.send(err);
             }
@@ -359,7 +359,7 @@ module.exports = function (app) {
 
     // update table form send review
     app.post(global.apiUrl.post_work_hour_table_update_send_review, function (req, res) {
-        WorkHourTableForm.update({
+        WorkHourTable.update({
             _id: req.body.tableID,
         }, {
             $set: {
@@ -368,19 +368,21 @@ module.exports = function (app) {
         }, function (err) {
             if (err) {
                 res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
             }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-            });
-
         })
     })
 
     // update all table ***
     app.post(global.apiUrl.post_work_hour_table_total_update_send_review, function (req, res) {
+        console.log("===================");
+        console.log(req.body);
         for (var index = 0; index < req.body.tableArray.length; index++) {
-            WorkHourTableForm.update({
+            WorkHourTable.update({
                 _id: req.body.tableArray[index],
             }, {
                 $set: {
@@ -391,8 +393,9 @@ module.exports = function (app) {
                     res.send(err);
                 }
             })
+
         }
-        // global.qqq.response(req.body.msgTargetID, global.eventString._2001);
+
         res.status(200).send({
             code: 200,
             error: global.status._200,
@@ -417,17 +420,7 @@ module.exports = function (app) {
 
         // var setQuery = {};
 
-        // if (req.body.isSendReview !== null) {
-        //     setQuery.isSendReview = req.body.isSendReview;
-        // }
-        // if (req.body.isManagerCheck !== null) {
-        //     setQuery.isManagerCheck = req.body.isManagerCheck;
-        // }
-        // if (req.body.isExecutiveCheck !== null) {
-        //     setQuery.isExecutiveCheck = req.body.isExecutiveCheck;
-        // }
-
-        WorkHourTableForm.update({
+        WorkHourTable.update({
             _id: req.body.tableID,
         }, {
             $set: query
@@ -459,7 +452,7 @@ module.exports = function (app) {
         console.log(query);
 
         for (var index = 0; index < req.body.tableIDs.length; index++) {
-            WorkHourTableForm.update({
+            WorkHourTable.update({
                 _id: req.body.tableIDs[index],
             }, {
                 $set: query
@@ -475,8 +468,7 @@ module.exports = function (app) {
         })
     })
 
-    // in order to insert temp related usersDID
-    app.post(global.apiUrl.insert_work_hour_table_management_related_user_temp, function (req, res) {
+    app.post(global.apiUrl.insert_work_hour_table_temp, function (req, res) {
         console.log(req.body.users);
         var index = 0
         while(index < req.body.users.length) {
@@ -525,20 +517,6 @@ module.exports = function (app) {
                         as: "work_hour_forms"
                     }
                 },
-
-                // {
-                //     $match:{
-                //         "work_hour_forms.create_formDate": "2019/02/11"
-                //     }
-                // },
-                // {
-                //     $match: {
-                //         create_formDate: "2019/02/11"
-                //         // isSendReview: true,
-                //         // isBossCheck: true,
-                //         // isExecutiveCheck: false
-                //     }
-                // },
                 {
                     $addFields: {
                         "_aaa": {
@@ -577,27 +555,12 @@ module.exports = function (app) {
                         as: "work_hour_tables"
                     }
                 },
-                // {
-                //     $match: {
-                //         create_formDate: "2019/02/11",
-                //         // isSendReview: true,
-                //         // isBossCheck: true,
-                //         // isExecutiveCheck: false
-                //     }
-                // },
-                // {
-                //     $group: {
-                //         _id: "$creatorDID",
-                //         count: {
-                //             $sum: 1
-                //         }
-                //     }
-                // }
             ], function (err, tables) {
                 if (err) {
                     res.send(err);
                 } else {
                     Temp.remove({
+                        creatorDID: req.body.creatorDID
                     }, function (err) {
                         if (err) {
                             console.log(err)
@@ -612,67 +575,7 @@ module.exports = function (app) {
                 }
             }
         )
-
-        // WorkHourForm.aggregate(
-        //     [
-        //         {
-        //             $lookup:{
-        //                 from: "workhourtableforms",
-        //                 localField: "formTables.tableID",
-        //                 foreignField: "_id",
-        //                 as: "work_hour_tables"
-        //             }
-        //         },
-        //         {
-        //             $match: {
-        //                 create_formDate: "2019/02/11",
-        //                 // isSendReview: true,
-        //                 // isBossCheck: true,
-        //                 // isExecutiveCheck: false
-        //             }
-        //         },
-        //         {
-        //             $addFields: {
-        //                 "_aaa": {
-        //                     $toObjectId: "$creatorDID"
-        //                 }
-        //             }
-        //         },
-        //         {
-        //             $lookup: {
-        //                 from: "users",
-        //                 localField: "_aaa",
-        //                 foreignField: "_id",
-        //                 as: "user_info"
-        //             }
-        //         },
-        //         {
-        //             $project: {
-        //                 "work_hour_tables": 1,
-        //                 "user_info" : 1
-        //             }
-        //         }
-        //         // {
-        //         //     $group: {
-        //         //         _id: "$creatorDID",
-        //         //         count: {
-        //         //             $sum: 1
-        //         //         }
-        //         //     }
-        //         // }
-        //     ], function (err, tables) {
-        //         if (err) {
-        //             res.send(err);
-        //         } else {
-        //             // Temp.drop();
-        //             res.status(200).send({
-        //                 code: 200,
-        //                 error: global.status._200,
-        //                 payload: tables,
-        //             });
-        //         }
-        //     }
-        // )
     })
 
+    // end of file
 }

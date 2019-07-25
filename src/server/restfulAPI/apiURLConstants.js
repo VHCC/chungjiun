@@ -72,7 +72,15 @@ global.apiUrl = {
     post_work_hour_table_update_array : '/api/post_work_hour_table_update_array',
         // management
     get_work_hour_table_management_list : '/api/get_work_hour_table_management_list',
-    insert_work_hour_table_management_related_user_temp : '/api/insert_work_hour_table_management_related_user_temp',
+    insert_work_hour_table_temp : '/api/insert_work_hour_table_temp',
+        // statistics
+    query_statistics_form : '/api/query_statistics_form',
+    query_statistics_form_CJ : '/api/query_statistics_form_CJ',
+    query_statistics_form_CJ_type1 : '/api/query_statistics_form_CJ_type1',
+    query_statistics_form_CJ_type2 : '/api/query_statistics_form_CJ_type2',
+    query_statistics_form_CJ_type3 : '/api/query_statistics_form_CJ_type3',
+    query_statistics_tables : '/api/query_statistics_tables',
+
 
     //workHourTable Form Work Add
     post_work_hour_work_add_create_item : '/api/post_work_hour_work_add_create_item',
@@ -144,4 +152,10 @@ global.apiUrl = {
 
     // line notify
     get_line_notify_auth_register : '/api/post_line_notify_auth_register',
+
+    // notification Msg
+    post_notification_msg_create_item : '/api/post_notification_msg_create_item',
+    post_notification_msg_by_user_did : '/api/post_notification_msg_by_user_did',
+    post_notification_msg_update : '/api/post_notification_msg_update',
+    post_notification_msg_update_all : '/api/post_notification_msg_update_all',
 };

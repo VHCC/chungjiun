@@ -197,13 +197,39 @@
                 },
 
                 // management
-                insertWorkHourFormManagementRelatedMembersTemp: function (formData) {
-                    return http.post('/api/insert_work_hour_table_management_related_user_temp', formData);
+                insertWorkHourTempsData: function (formData) {
+                    return http.post('/api/insert_work_hour_table_temp', formData);
                 },
 
                 fetchWorkHourFormManagementList: function (formData) {
                     return http.post('/api/get_work_hour_table_management_list', formData);
                 },
+
+                // statistics
+                queryStatisticsForms: function (formData) {
+                    return http.post('/api/query_statistics_form', formData);
+                },
+
+                // statistics CJ
+                queryStatisticsFormsCJ: function (formData) {
+                    return http.post('/api/query_statistics_form_CJ', formData);
+                },
+
+                queryStatisticsFormsCJ_type1: function (formData) {
+                    return http.post('/api/query_statistics_form_CJ_type1', formData);
+                },
+
+                queryStatisticsFormsCJ_type2: function (formData) {
+                    return http.post('/api/query_statistics_form_CJ_type2', formData);
+                },
+
+                queryStatisticsFormsCJ_type3: function (formData) {
+                    return http.post('/api/query_statistics_form_CJ_type3', formData);
+                },
+
+                queryStatisticsTables: function (formData) {
+                    return http.post('/api/query_statistics_tables', formData);
+                }
             }
         }])
         .factory('WorkOffFormUtil', ['$http', function (http) {
@@ -449,6 +475,11 @@
                     var firstDay = moment(firstDate).add(offset, 'days');
                     return firstDay.format('YYYY/MM/DD');
                 },
+
+                getShiftDatefromFirstDateCalendar: function (firstDate, offset) {
+                    var firstDay = moment(firstDate).add(offset, 'days');
+                    return firstDay.format('YYYY-MM-DD');
+                },
                 getDay: function (day) {
                     switch (day) {
                         case 0:
@@ -544,6 +575,26 @@
                     }).error(function () {
                         console.log("error!!");
                     });
+                }
+            }
+        }])
+        .factory('NotificationMsgUtil', ['$http', function (http) {
+            return {
+
+                createMsgItem: function (formData) {
+                    return http.post('/api/post_notification_msg_create_item', formData);
+                },
+
+                fetchMsgItemsByUserDID: function (formData) {
+                    return http.post('/api/post_notification_msg_by_user_did', formData);
+                },
+
+                updateMsgItem: function (formData) {
+                    return http.post('/api/post_notification_msg_update', formData);
+                },
+
+                updateMsgItemAll: function (formData) {
+                    return http.post('/api/post_notification_msg_update_all', formData);
                 }
             }
         }])
