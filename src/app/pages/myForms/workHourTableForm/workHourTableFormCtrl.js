@@ -1710,20 +1710,24 @@
                     }
 
                     var sendMonth = moment($scope.firstFullDate).month() + 1;
+                    var sendYear = moment($scope.firstFullDate).year() - 1911;
 
 
                     switch (majorIndex) {
                         case 0:
                             sendMonth = moment($scope.firstFullDate).month() + 1;
+                            sendYear = moment($scope.firstFullDate).year() - 1911;
                             break;
                         case 1:
-                            sendMonth = (moment($scope.firstFullDate).month()) === 11 ? 0
+                            sendMonth = (moment($scope.firstFullDate).month()) === 11 ? 1
                                 : (moment($scope.firstFullDate).month() + 2);
+                            sendYear = (moment($scope.firstFullDate).month()) === 11 ? moment($scope.firstFullDate).year() - 1911 + 1
+                                : moment($scope.firstFullDate).year() - 1911
                             break;
                     }
 
                     var formData = {
-                        year: moment($scope.firstFullDate).year() - 1911,
+                        year: sendYear,
                         month: sendMonth,
                         creatorDID: cookies.get('userDID'),
                         create_formDate: $scope.firstFullDate,
