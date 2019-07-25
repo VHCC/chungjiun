@@ -57,7 +57,31 @@ module.exports = mongoose.model('workHourTableFormWorkAdd', {
     isExecutiveConfirm: {
         type: Boolean,
         default: false
-    }
+    },
+
+    // 加班倍數 1 + 0
+    dis_1_0: {
+        type: String,
+        default: "0"
+    },
+
+    // 加班倍數 1 + 1/3
+    dis_1_13: {
+        type: String,
+        default: "0"
+    },
+
+    // 加班倍數 1 + 2/3
+    dis_1_23: {
+        type: String,
+        default: "0"
+    },
+
+    // 加班倍數 1 + 1
+    dis_1_1: {
+        type: String,
+        default: "0"
+    },
 
 
 

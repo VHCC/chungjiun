@@ -379,12 +379,16 @@
                 executiveConfirm: function (formData) {
                     return http.post('/api/post_work_hour_work_executive_confirm', formData);
                 },
-                updateItem: function (formData) {
-                    return http.post('/api/post_work_hour_work_add_item_update', formData);
+                updateItemRepent: function (formData) {
+                    return http.post('/api/post_work_hour_work_add_item_update_repent', formData);
                 },
                 updateRelatedAddItemByProject: function (formData) {
                     return http.post('/api/post_work_hour_work_update_related_work_add_items', formData);
                 },
+
+                distributeWorkAdd: function (formData) {
+                    return http.post('/api/post_work_hour_work_distribution_save', formData);
+                }
             }
         }])
         .factory('WorkAddConfirmFormUtil', ['$http', function (http) {
