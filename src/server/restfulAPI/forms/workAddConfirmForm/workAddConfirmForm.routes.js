@@ -4,6 +4,7 @@ module.exports = function (app) {
     'use strict';
     // ----- define routes
 
+    // Deprecated
     // create Form
     app.post(global.apiUrl.post_create_work_add_confirm_form, function (req, res) {
         if (req.body.oldFormID !== undefined) {
@@ -49,6 +50,7 @@ module.exports = function (app) {
     });
 
     // fetch
+    // Deprecated
     app.post(global.apiUrl.post_fetch_work_add_confirm_form_by_user_id, function (req, res) {
         WorkAddConfirmForm.find({
             creatorDID: req.body.creatorDID,

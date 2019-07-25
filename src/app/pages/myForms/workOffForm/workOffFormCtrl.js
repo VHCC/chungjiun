@@ -1226,7 +1226,7 @@
             // 主要顯示
             $scope.nationalHolidayTablesItems = [];
 
-            $scope.fetchNationHolidays = function () {
+            $scope.fetchNationHolidays_workOff = function () {
                 var getData = {
                     year: thisYear,
                 }
@@ -1278,7 +1278,7 @@
                     }
                     NationalHolidayUtil.createNationalHoliday(formData)
                         .success(function (res) {
-                            $scope.fetchNationHolidays();
+                            $scope.fetchNationHolidays_workOff();
                             console.log(res.code + ", createNationalHoliday");
                         })
                         .error(function () {
@@ -1307,7 +1307,7 @@
                 }
                 NationalHolidayUtil.removeNationalHoliday(formData)
                     .success(function (res) {
-                        $scope.fetchNationHolidays();
+                        $scope.fetchNationHolidays_workOff();
                     })
             }
 

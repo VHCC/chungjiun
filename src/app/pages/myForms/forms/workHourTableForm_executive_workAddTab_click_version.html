@@ -5,7 +5,7 @@
             <ui-select ng-model="workHourTableCtrlVm.workAdd.selected"
                        class="btn-group bootstrap-select form-control"
                        ng-disabled="false"
-                       ng-change="fetchNationHolidays($select.selected)"
+                       ng-change="fetchWorkHourAdd_confirmed($select.selected)"
                        append-to-body="true"
                        search-enabled="true">
                 <ui-select-match placeholder="選擇員工">
@@ -20,186 +20,174 @@
     </div>
 </div>
 
-<h3 class="with-line" ng-show="workHourTableCtrlVm.workAdd.selected">
-    {{workHourTableCtrlVm.workAdd.selected.name}} {{month}}月份加班單</h3>
+<div bs-loading-overlay
+     ng-show="workHourTableCtrlVm.workAdd.selected"
+     bs-loading-overlay-reference-id="addConfirm_workHour">
 
-<table class="table table-bordered table-hover table-condensed"
-       ng-show="workHourTableCtrlVm.workAdd.selected">
-    <thead>
-    <tr>
-        <td style="vertical-align: inherit; text-align: center" width="80px"></td>
-        <td style="vertical-align: inherit; text-align: center" width="150px">日期</td>
-        <td style="vertical-align: inherit; text-align: center">星期</td>
-        <td style="vertical-align: inherit; text-align: center">代碼</td>
-        <td style="vertical-align: inherit; text-align: center">時數</td>
-        <td style="vertical-align: inherit; text-align: center">月薪</td>
-        <td style="vertical-align: inherit; text-align: center" width="80px">1 + 1/3</td>
-        <td style="vertical-align: inherit; text-align: center" width="80px">1 + 2/3</td>
-        <td style="vertical-align: inherit; text-align: center" width="80px">1 + 1</td>
-        <td style="vertical-align: inherit; text-align: center">換休</td>
-        <td style="vertical-align: inherit; text-align: center">加班合計</td>
-        <td style="vertical-align: inherit; text-align: center">加班費</td>
-    </tr>
-    </thead>
+    <div class="col-md-12">
+        <my-month-picker
+                formatted="YYYY/MM">
 
-    <tbody ng-repeat="table in workAddConfirmTablesItems">
-    <tr style="vertical-align: inherit; text-align: center">
-        <!--序號-->
-        <td rowspan="2" style="vertical-align: inherit; text-align: center">
-            <span>{{$index + 1}}</span>
-            <span style="display: none;" id="prjDID">{{table.prjDID}}</span>
-        </td>
-        <!--日期-->
-        <td rowspan="2" style="vertical-align: inherit; text-align: center">
-            {{table.date}}
-        </td>
-        <!--星期-->
-        <td rowspan="2" style="vertical-align: inherit; text-align: center">
-            {{showDay(table.day)}}
-        </td>
-        <!--代碼-->
-        <td rowspan="2" style="vertical-align: inherit; text-align: center">
-            <span id="prjCode">{{showPrjCode(table.prjDID)}}</span>
-        </td>
-        <!--時數-->
-        <td rowspan="2" style="vertical-align: inherit;">
-            {{showAddAndRestByType(table, 1)}}
-            <!--{{table.addWork + table.restWork}}-->
-        </td>
-        <td rowspan="2" style="vertical-align: inherit;">
-            {{table.userMonthSalary}}
-        </td>
-        <!--1 + 1/3-->
-        <td class="form-group has-success" style="vertical-align: inherit;">
-            <!--<div ng-show="table.day < 6 && !table.isNH">-->
-                <div ng-show="table.addWork > 0">
-                        <input type="text"
-                               ng-model="table.type1_13"
-                               value="{{table.type1_13}}"
-                               class="form-control workOffFormDateInput input-sm">
-                    <!--<span ng-show="table.addWork <= 2">1.34 * {{table.addWork}}</span>-->
-                    <!--<span ng-show="table.addWork > 2">1.34 * 2</span>-->
-                    <!--<br>-->
-                    <!--<span ng-show="table.addWork > 2">1.66 * {{table.addWork - 2}}</span>-->
-                </div>
-            <!--</div>-->
-        </td>
-        <!--1 + 2/3-->
-        <td style="vertical-align: inherit;" style="vertical-align: inherit;">
-            <!--<div ng-show="table.day === 6">-->
-                <div ng-show="table.addWork > 0">
-                        <input type="text"
-                               ng-model="table.type1_23"
-                               value="{{table.type1_23}}"
-                               class="form-control workOffFormDateInput input-sm">
-                    <!--<span ng-show="table.addWork <= 2">1.34 * {{table.addWork}}</span>-->
-                    <!--<span ng-show="table.addWork > 2">1.34 * 2</span>-->
-                    <!--<br>-->
-                    <!--<span ng-show="table.addWork > 2">1.66 * {{table.addWork - 2}}</span>-->
-                </div>
-            <!--</div>-->
-        </td>
-        <!--1 + 1-->
-        <td style="vertical-align: inherit;" style="vertical-align: inherit;">
-            <!--<div ng-show="table.day === 7">-->
-                <div ng-show="table.addWork > 0">
+        </my-month-picker>
+        <br>
+        <button type="button" class="btn btn-default btn-icon" ng-click="changeWorkOffHistoryMonth(-1, this)">
+            <i class="ion-chevron-left"></i>
+        </button>
+        {{myMonth}}
+        <button type="button" class="btn btn-default btn-icon" ng-click="changeWorkOffHistoryMonth(1, this)">
+            <i class="ion-chevron-right"></i>
+        </button>
+    </div>
+
+    <!--<div class="col-md-12" id="includeHead">-->
+    <!--</div>-->
+
+    <h3 class="with-line" ng-show="workHourTableCtrlVm.workAdd.selected">
+        {{workHourTableCtrlVm.workAdd.selected.name}} {{myMonth}} 加班單</h3>
+
+    <table class="table table-bordered table-hover table-condensed">
+        <thead>
+        <tr>
+            <th colspan="4" style="vertical-align: inherit; text-align: center" width="80px"></th>
+            <th style="vertical-align: inherit; text-align: center" width="150px">合計</th>
+            <th style="vertical-align: inherit; text-align: center">{{showTotalDisHour(workAddConfirmTablesItems, 1)}}</th>
+            <th style="vertical-align: inherit; text-align: center">{{showTotalDisHour(workAddConfirmTablesItems, 2)}}</th>
+            <th style="vertical-align: inherit; text-align: center">{{showTotalDisHour(workAddConfirmTablesItems, 3)}}</th>
+            <th style="vertical-align: inherit; text-align: center">{{showTotalDisHour(workAddConfirmTablesItems, 4)}}</th>
+            <th style="vertical-align: inherit; text-align: center">{{showTotalAddHour(workAddConfirmTablesItems, 1)}}</th>
+            <th style="vertical-align: inherit; text-align: center">{{showTotalAddHour(workAddConfirmTablesItems, 2)}}</th>
+        </tr>
+        <tr>
+            <th style="vertical-align: inherit; text-align: center" width="80px"></th>
+            <th style="vertical-align: inherit; text-align: center" width="150px">日期</th>
+            <th style="vertical-align: inherit; text-align: center">星期</th>
+            <th style="vertical-align: inherit; text-align: center">專案代碼</th>
+            <th style="vertical-align: inherit; text-align: center">事由</th>
+            <th style="vertical-align: inherit; text-align: center" width="80px">1 + 0</th>
+            <th style="vertical-align: inherit; text-align: center" width="80px">1 + 1/3</th>
+            <th style="vertical-align: inherit; text-align: center" width="80px">1 + 2/3</th>
+            <th style="vertical-align: inherit; text-align: center" width="80px">1 + 1</th>
+            <th style="vertical-align: inherit; text-align: center">加班時數</th>
+            <th style="vertical-align: inherit; text-align: center">換休時數</th>
+        </tr>
+        </thead>
+
+        <tbody ng-repeat="table_add in workAddConfirmTablesItems">
+        <tr style="vertical-align: inherit; text-align: center">
+            <!--序號-->
+            <td style="vertical-align: inherit; text-align: center">
+                <span>{{$index + 1}}</span>
+                <span style="display: none;" id="prjDID">{{table_add.prjDID}}</span>
+            </td>
+            <!--日期-->
+            <td style="vertical-align: inherit; text-align: center">
+                {{showWorkHourAdd(table_add)}}
+            </td>
+            <!--星期-->
+            <td style="vertical-align: inherit; text-align: center">
+                {{showDay(table_add.day)}}
+            </td>
+            <!--專案代碼-->
+            <td style="vertical-align: inherit; text-align: center">
+                <span id="prjCode">{{showPrjCode(table_add.prjDID)}}</span>
+            </td>
+            <!--事由-->
+            <td style="vertical-align: inherit;">
+                {{table_add.reason}}
+            </td>
+            <!--1 + 0-->
+            <td style="vertical-align: inherit;">
+                <input type="text"
+                       ng-model="table_add.dis_1_0"
+                       value="{{table_add.dis_1_0}}"
+                       class="form-control workOffFormNumberInput input-sm">
+            </td>
+            <!--1 + 1/3-->
+            <td style="vertical-align: inherit;">
+                <div >
                     <input type="text"
-                           ng-model="table.type1_1"
-                           value="{{table.type1_1}}"
-                           class="form-control workOffFormDateInput input-sm">
-                    <!--<span ng-show="table.addWork <= 2">1.34 * {{table.addWork}}</span>-->
-                    <!--<span ng-show="table.addWork > 2">1.34 * 2</span>-->
-                    <!--<br>-->
-                    <!--<span ng-show="table.addWork > 2">1.66 * {{table.addWork - 2}}</span>-->
+                           ng-model="table_add.dis_1_13"
+                           value="{{table_add.dis_1_13}}"
+                           class="form-control workOffFormNumberInput input-sm">
                 </div>
-            <!--</div>-->
-        </td>
-        <!--換休-->
-        <td class="form-group has-success" style="vertical-align: inherit;">
-            <span>{{showAddAndRestByType(table, 3)}}</span>
-        </td>
-        <!--加班合計-->
-        <td style="vertical-align: inherit;">
-            <span>{{showAddAndRestByType(table, 2)}}</span>
-        </td>
-        <!--加班費-->
-        <td class="form-group has-success" style="vertical-align: inherit;">
-            <!--{{table.addWork * table.userHourSalary}}-->
-            {{formatFloat(((table.type1_13 * 1.33) + (table.type1_23 * 1.66) + (table.type1_1 * 2))
-            * (table.userMonthSalary/240), 2)}}
-        </td>
-    </tr>
-    </tbody>
+            </td>
+            <!--1 + 2/3-->
+            <td style="vertical-align: inherit;">
+                <div >
+                    <input type="text"
+                           ng-model="table_add.dis_1_23"
+                           value="{{table_add.dis_1_23}}"
+                           class="form-control workOffFormNumberInput input-sm">
+                </div>
+            </td>
+            <!--1 + 1-->
+            <td style="vertical-align: inherit;" >
+                <div >
+                    <input type="text"
+                           ng-model="table_add.dis_1_1"
+                           value="{{table_add.dis_1_1}}"
+                           class="form-control workOffFormNumberInput input-sm">
+                </div>
+            </td>
+            <!--加班時數-->
+            <td style="vertical-align: inherit;">
+                {{showAddHour(table_add, 1)}}
+            </td>
+            <!--換休時數-->
+            <td style="vertical-align: inherit;">
+                {{showAddHour(table_add, 2)}}
+            </td>
+        </tr>
+        </tbody>
 
-    <tfoot>
-    <!--合計-->
-    <tr>
-        <td style="text-align: center">
-            合計
-        </td>
-        <td style="text-align: center">
-        </td>
-        <td style="text-align: center">
-        </td>
-        <td style="text-align: center">
-        </td>
-        <!--時數-->
-        <td style="text-align: center">
-            <span>
-                <!--{{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 1)}}-->
-            </span>
-        </td>
-        <!--月薪-->
-        <td style="text-align: center">
-            <span>
-            </span>
-        </td>
-        <!--1 + 1/3-->
-        <td style="text-align: center">
-            <span>
-                <!--{{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 2)}}-->
-            </span>
-        </td>
-        <!--1 + 2/3-->
-        <td style="text-align: center">
-            <span>
-                <!--{{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 3)}}-->
-            </span>
-        </td>
-        <!--1 + 1-->
-        <td style="text-align: center">
-            <span>
-                <!--{{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 4)}}-->
-            </span>
-        </td>
-        <!-- 換休-->
-        <td style="text-align: center">
-            <span>
-                <!--{{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 6)}}-->
-            </span>
-        </td>
-        <!-- 加班合計-->
-        <td style="text-align: center">
-            <span>
-                <!--{{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 7)}}-->
-            </span>
-        </td>
-        <!-- 加班費-->
-        <td style="text-align: center">
-            <span>
-                {{showCalculateWorkAddTableSum(workAddConfirmTablesItems, 8)}}
-            </span>
-        </td>
-    </tr>
-    </tfoot>
-</table>
+        <tfoot>
+        <!--合計-->
+        <tr>
+            <td colspan="3" style="text-align: center">
+                加班費合計
+            </td>
+            <td style="text-align: center">
+            </td>
+            <td style="text-align: center">
+                合計
+            </td>
+            <!--1 + 0-->
+            <td style="text-align: center">
+                {{showTotalDisHour(workAddConfirmTablesItems, 1)}}
+            </td>
+            <!--1 + 1/3-->
+            <td style="text-align: center">
+                {{showTotalDisHour(workAddConfirmTablesItems, 2)}}
+            </td>
+            <!--1 + 2/3-->
+            <td style="text-align: center">
+                {{showTotalDisHour(workAddConfirmTablesItems, 3)}}
+            </td>
+            <!--1 + 1-->
+            <td style="text-align: center">
+                {{showTotalDisHour(workAddConfirmTablesItems, 4)}}
+            </td>
+            <!-- 加班時數-->
+            <td style="text-align: center">
+                {{showTotalAddHour(workAddConfirmTablesItems, 1)}}
+            </td>
+            <!-- 換休時數-->
+            <td style="text-align: center">
+                {{showTotalAddHour(workAddConfirmTablesItems, 2)}}
+            </td>
+        </tr>
+        </tfoot>
+    </table>
 
-<hr>
-<section class="col-md-6" ng-show="workHourTableCtrlVm.workAdd.selected">
-    <button progress-button="saveAddWorkFormToServer()"
-            style="float: inherit;"
-            pb-style="shrink"
-            class="btn btn-warning">
-        儲存分配表
-    </button>
-</section>
+    <hr>
+    <section class="col-md-6">
+        <button progress-button="saveAddWorkDisFormToServer()"
+                style="float: inherit;"
+                pb-style="shrink"
+                class="btn btn-warning">
+            儲存分配表
+        </button>
+    </section>
+
+</div>
+

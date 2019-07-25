@@ -67,16 +67,6 @@ module.exports = function (app) {
         }
         // console.log(query);
 
-        // WorkHourTableFormWorkAdd.find(query, function (err, workAddItems) {
-        //     if (err) {
-        //         res.send(err);
-        //     }
-        //     res.status(200).send({
-        //         code: 200,
-        //         error: global.status._200,
-        //         payload: workAddItems,
-        //     });
-        // })
         WorkHourTableFormWorkAdd.find(query)
             .sort({
                 create_formDate: 1,
@@ -85,12 +75,13 @@ module.exports = function (app) {
             .exec(function (err, workAddItems) {
                 if (err) {
                     res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: workAddItems,
+                    });
                 }
-                res.status(200).send({
-                    code: 200,
-                    error: global.status._200,
-                    payload: workAddItems,
-                });
             });
 
     });
@@ -104,11 +95,12 @@ module.exports = function (app) {
         }, function (err) {
             if (err) {
                 res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
             }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-            });
         })
     })
 
@@ -125,11 +117,12 @@ module.exports = function (app) {
         }, function (err) {
             if (err) {
                 res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
             }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-            });
         })
     })
 
@@ -149,19 +142,20 @@ module.exports = function (app) {
                 resultCount++;
                 if (err) {
                     res.send(err);
-                }
-                if (resultCount === req.body.formTables.length) {
-                    res.status(200).send({
-                        code: 200,
-                        error: global.status._200,
-                    });
+                } else {
+                    if (resultCount === req.body.formTables.length) {
+                        res.status(200).send({
+                            code: 200,
+                            error: global.status._200,
+                        });
+                    }
                 }
             })
         }
     })
 
-    // update work add item
-    app.post(global.apiUrl.post_work_hour_work_add_item_update, function (req, res) {
+    // update work add item repent back
+    app.post(global.apiUrl.post_work_hour_work_add_item_update_repent, function (req, res) {
 
         var keyArray = Object.keys(req.body);
         var query = {};
@@ -181,11 +175,53 @@ module.exports = function (app) {
         }, function (err) {
             if (err) {
                 res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
             }
+        })
+    });
+
+    // 加班單分配
+    app.post(global.apiUrl.post_work_hour_work_distribution_save, function (req, res) {
+
+        console.log(req.body);
+        var resultCount = 0;
+
+        if (req.body.data.length == 0) {
             res.status(200).send({
                 code: 200,
                 error: global.status._200,
             });
-        })
+        }
+        
+        for (var index = 0; index < req.body.data.length; index ++) {
+            WorkHourTableFormWorkAdd.update({
+                _id: req.body.data[index]._id,
+            }, {
+                $set: {
+                    dis_1_0: req.body.data[index].dis_1_0,
+                    dis_1_13: req.body.data[index].dis_1_13,
+                    dis_1_23: req.body.data[index].dis_1_23,
+                    dis_1_1: req.body.data[index].dis_1_1,
+                    isExecutiveConfirm: true,
+                }
+            }, function (err) {
+                resultCount++;
+                if (err) {
+                    res.send(err);
+                } else {
+                    if (resultCount === req.body.data.length) {
+                        res.status(200).send({
+                            code: 200,
+                            error: global.status._200,
+                        });
+                    }
+                }
+            })
+        }
+        
     });
 }
