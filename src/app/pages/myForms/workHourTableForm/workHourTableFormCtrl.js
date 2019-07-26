@@ -61,6 +61,7 @@
         // console.log = function() {}
 
         var vm = this;
+
         var thisYear = new Date().getFullYear() - 1911;
         var thisMonth = new Date().getMonth() + 1; //January is 0!;
         $scope.month = thisMonth;
@@ -2590,14 +2591,27 @@
             var year = parseInt(dom.myDT.year()) - 1911;
             var month = parseInt(dom.myDT.month()) + 1;
 
-            console.log(vm);
+            // console.log(vm);
 
             $scope.fetchWorkHourAdd_confirmed(vm.workAdd.selected, month);
 
         }
 
-        $scope.fetchWorkHourAdd_confirmed = function (user, month) {
+        $scope.listenMonth = function(dom){
+            // console.log($scope);
+            // console.log(dom);
+            dom.$watch('myMonth',function(newValue, oldValue) {
+                console.log(oldValue);
+                console.log(newValue);
+                if (dom.isShiftMonthSelect) {
+                    dom.isShiftMonthSelect = false;
+                    $scope.changeWorkOffHistoryMonth(0, dom.monthPickerDom);
+                }
+            });
+        }
 
+        $scope.fetchWorkHourAdd_confirmed = function (user, month) {
+            // console.log($scope);
             bsLoadingOverlayService.start({
                 referenceId: 'addConfirm_workHour'
             });
@@ -2640,6 +2654,7 @@
                     }
                 }
             });
+
         }
 
         // 顯示單一時數
@@ -2659,6 +2674,7 @@
 
         // 顯示合計時數
         $scope.showTotalAddHour = function (tables, type) {
+            if (tables == undefined) return;
             var result = 0;
             for (var index = 0; index < tables.length; index++) {
                 if (type == tables[index].workAddType) {
@@ -2677,6 +2693,8 @@
 
         // 顯示分配
         $scope.showTotalDisHour = function (tables, type) {
+
+            if (tables == undefined) return;
             var result = 0;
             var temp;
             for (var index = 0; index < tables.length; index++) {

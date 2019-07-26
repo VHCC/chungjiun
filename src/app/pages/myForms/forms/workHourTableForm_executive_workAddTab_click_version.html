@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" >
     <div class="col-md-12">
         <div class="form-group">
             <label>選擇員工</label>
@@ -25,11 +25,10 @@
      bs-loading-overlay-reference-id="addConfirm_workHour">
 
     <div class="col-md-12">
-        <my-month-picker
-                formatted="YYYY/MM">
 
+        <my-month-picker ng-click="listenMonth(this)"
+                formatted="YYYY/MM">
         </my-month-picker>
-        <br>
         <button type="button" class="btn btn-default btn-icon" ng-click="changeWorkOffHistoryMonth(-1, this)">
             <i class="ion-chevron-left"></i>
         </button>
@@ -48,8 +47,8 @@
     <table class="table table-bordered table-hover table-condensed">
         <thead>
         <tr>
-            <th colspan="4" style="vertical-align: inherit; text-align: center" width="80px"></th>
-            <th style="vertical-align: inherit; text-align: center" width="150px">合計</th>
+            <th colspan="4" style="vertical-align: inherit; text-align: center" ></th>
+            <th style="vertical-align: inherit; text-align: center" >合計</th>
             <th style="vertical-align: inherit; text-align: center">{{showTotalDisHour(workAddConfirmTablesItems, 1)}}</th>
             <th style="vertical-align: inherit; text-align: center">{{showTotalDisHour(workAddConfirmTablesItems, 2)}}</th>
             <th style="vertical-align: inherit; text-align: center">{{showTotalDisHour(workAddConfirmTablesItems, 3)}}</th>
@@ -59,16 +58,16 @@
         </tr>
         <tr>
             <th style="vertical-align: inherit; text-align: center" width="80px"></th>
-            <th style="vertical-align: inherit; text-align: center" width="150px">日期</th>
-            <th style="vertical-align: inherit; text-align: center">星期</th>
-            <th style="vertical-align: inherit; text-align: center">專案代碼</th>
-            <th style="vertical-align: inherit; text-align: center">事由</th>
-            <th style="vertical-align: inherit; text-align: center" width="80px">1 + 0</th>
-            <th style="vertical-align: inherit; text-align: center" width="80px">1 + 1/3</th>
-            <th style="vertical-align: inherit; text-align: center" width="80px">1 + 2/3</th>
-            <th style="vertical-align: inherit; text-align: center" width="80px">1 + 1</th>
-            <th style="vertical-align: inherit; text-align: center">加班時數</th>
-            <th style="vertical-align: inherit; text-align: center">換休時數</th>
+            <th style="vertical-align: inherit; text-align: center" width="100px">日期</th>
+            <th style="vertical-align: inherit; text-align: center" width="80px">星期</th>
+            <th style="vertical-align: inherit; text-align: center" width="120px">專案代碼</th>
+            <th style="vertical-align: inherit; text-align: center" >事由</th>
+            <th style="vertical-align: inherit; text-align: center" width="100px">1 + 0</th>
+            <th style="vertical-align: inherit; text-align: center" width="100px">1 + 1/3</th>
+            <th style="vertical-align: inherit; text-align: center" width="100px">1 + 2/3</th>
+            <th style="vertical-align: inherit; text-align: center" width="100px">1 + 1</th>
+            <th style="vertical-align: inherit; text-align: center" width="100px">加班時數</th>
+            <th style="vertical-align: inherit; text-align: center" width="100px">換休時數</th>
         </tr>
         </thead>
 
@@ -143,10 +142,10 @@
         <tfoot>
         <!--合計-->
         <tr>
-            <td colspan="3" style="text-align: center">
+            <td colspan="2" style="text-align: center">
                 加班費合計
             </td>
-            <td style="text-align: center">
+            <td colspan="2" style="text-align: center">
             </td>
             <td style="text-align: center">
                 合計
