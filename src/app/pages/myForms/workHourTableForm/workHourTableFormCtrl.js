@@ -2691,25 +2691,44 @@
             return result;
         }
 
+        // 顯示合計加班費
+        $scope.showTotalOTMoney = function () {
+            if ($scope.workAddConfirmTablesItems.length === 0) {
+                return;
+            }
+
+            var result = 0.0;
+
+            for (var index = 0; index < $scope.workAddConfirmTablesItems.length; index ++) {
+                var salaryBase =  $scope.workAddConfirmTablesItems[index].userMonthSalary / 30 / 8 ;
+                console.log(salaryBase);
+                result += $scope.workAddConfirmTablesItems[index].dis_1_0 * salaryBase;
+                result += $scope.workAddConfirmTablesItems[index].dis_1_13 * salaryBase;
+                result += $scope.workAddConfirmTablesItems[index].dis_1_23 * salaryBase;
+                result += $scope.workAddConfirmTablesItems[index].dis_1_1 * salaryBase;
+            }
+            return $scope.formatFloat(result, 0);
+        }
+
         // 顯示分配
         $scope.showTotalDisHour = function (tables, type) {
 
             if (tables == undefined) return;
-            var result = 0;
+            var result = 0.0;
             var temp;
             for (var index = 0; index < tables.length; index++) {
                 switch (type) {
                     case 1:
-                        temp = tables[index].dis_1_0 == (undefined || "" )? parseInt(0) : parseInt(tables[index].dis_1_0);
+                        temp = tables[index].dis_1_0 == (undefined || "" )? parseFloat(0) : parseFloat(tables[index].dis_1_0);
                         break;
                     case 2:
-                        temp = tables[index].dis_1_13 == (undefined || "" ) ? parseInt(0) : parseInt(tables[index].dis_1_13);
+                        temp = tables[index].dis_1_13 == (undefined || "" ) ? parseFloat(0) : parseFloat(tables[index].dis_1_13);
                         break;
                     case 3:
-                        temp = tables[index].dis_1_23 == (undefined || "" ) ? parseInt(0) : parseInt(tables[index].dis_1_23);
+                        temp = tables[index].dis_1_23 == (undefined || "" ) ? parseFloat(0) : parseFloat(tables[index].dis_1_23);
                         break;
                     case 4:
-                        temp = tables[index].dis_1_1 == (undefined || "" ) ? parseInt(0) : parseInt(tables[index].dis_1_1);
+                        temp = tables[index].dis_1_1 == (undefined || "" ) ? parseFloat(0) : parseFloat(tables[index].dis_1_1);
                         break;
                 }
                 result += temp;
