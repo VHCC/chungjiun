@@ -480,6 +480,11 @@
                     return firstDay.format('YYYY/MM/DD');
                 },
 
+                getShiftDatefromFirstDate_typeB: function (firstDate, offset) {
+                    var firstDay = moment(firstDate).add(offset, 'days');
+                    return firstDay.format('YYYY_MM_DD');
+                },
+
                 getShiftDatefromFirstDateCalendar: function (firstDate, offset) {
                     var firstDay = moment(firstDate).add(offset, 'days');
                     return firstDay.format('YYYY-MM-DD');

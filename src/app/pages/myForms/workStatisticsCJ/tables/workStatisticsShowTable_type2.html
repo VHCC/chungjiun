@@ -27,34 +27,6 @@
             <td style="vertical-align: inherit; text-align: center">
                 <span>{{$index + 1}}</span>
             </td>
-            <!--&lt;!&ndash;年份&ndash;&gt;-->
-            <!--<td class="form-group" style="vertical-align: inherit; text-align: center">-->
-                <!--<my ng-if="item.tables.length > 0">-->
-                    <!--{{item._work_hour_forms_info.year}}-->
-                <!--</my>-->
-                <!--<my ng-if="item.add_tables.length > 0">-->
-                    <!--{{item.add_tables[0].year}}-->
-                <!--</my>-->
-            <!--</td>-->
-            <!--&lt;!&ndash;月份&ndash;&gt;-->
-            <!--<td style="vertical-align: inherit; text-align: center">-->
-                    <!--<span ng-if="month">-->
-                        <!--<my ng-if="item.tables.length > 0">-->
-                            <!--{{item._work_hour_forms_info.month}}-->
-                        <!--</my>-->
-                        <!--<my ng-if="item.add_tables.length > 0">-->
-                            <!--{{item.add_tables[0].month}}-->
-                        <!--</my>-->
-                    <!--</span>-->
-                    <!--<span ng-if="!month">-->
-                        <!--<my ng-if="item.tables.length > 0">-->
-                            <!--{{showAllMonth(item, 1)}}-->
-                        <!--</my>-->
-                        <!--<my ng-if="item.add_tables.length > 0">-->
-                            <!--{{showAllMonth(item, 2)}}-->
-                        <!--</my>-->
-                    <!--</span>-->
-            <!--</td>-->
             <!--區間-->
             <td style="vertical-align: inherit; text-align: center">
                 <span>{{startDay}} - {{endDay}}</span>
@@ -78,22 +50,9 @@
             <!--時數-->
             <td class="form-group has-success" style="vertical-align: inherit;">
                 <my >
-                    <!--{{calculateHours(item)}}-->
                     {{calculateHours_type2(item)}}
                 </my>
-                <!--<my ng-if="item.add_tables.length > 0">-->
-                    <!--{{calculateAddHours(item)}}-->
-                <!--</my>-->
             </td>
-            <!--&lt;!&ndash;類別&ndash;&gt;-->
-            <!--<td style="vertical-align: inherit;" rowspan="2">-->
-                <!--<my ng-if="item.tables.length > 0">-->
-                    <!--正常-->
-                <!--</my>-->
-                <!--<my ng-if="item.add_tables.length > 0" style="color:red">-->
-                    <!--加班-->
-                <!--</my>-->
-            <!--</td>-->
             <!--加班總時數-->
             <td class="form-group has-success" style="vertical-align: inherit;">
                 <my >
@@ -106,7 +65,6 @@
                     {{calculateHours_type2_add(item, 2)}}
                 </my>
             </td>
-
 
         </tr>
         </tbody>
