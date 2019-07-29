@@ -55,11 +55,23 @@
                     console.log("Error, Project.findAll")
                 })
 
+            $scope.prjTypeToName = function (type) {
+                return ProjectUtil.getTypeText(type);
+            }
+
             $scope.month = this.month = undefined;
             $scope.year = this.myYear;
 
             $(document).ready(function () {
                 console.log(" ====== initMask document ready ====== ")
+
+                $('#inputStartDay')[0].value = DateUtil.getShiftDatefromFirstDate(
+                    DateUtil.getFirstDayofThisWeek(moment()),
+                    moment().day() === 0 ? 6 : moment().day() - 1);
+                $('#inputEndDay')[0].value = DateUtil.getShiftDatefromFirstDate(
+                    DateUtil.getFirstDayofThisWeek(moment()),
+                    moment().day() === 0 ? 6 : moment().day() - 1);
+
                 $('.statisticsDate').mask('2KY0/M0/D0', {
                     translation: {
                         'K': {
@@ -1299,10 +1311,6 @@
                 this._subNumber = $scope._subNumber = $('#prjSubNumber')[0].value = projectInfo.prjSubNumber;
                 this._type = $scope._type = $('#prjType')[0].value = projectInfo.type;
                 // console.log(this);
-            }
-
-            $scope.prjTypeToName = function (type) {
-                return ProjectUtil.getTypeText(type);
             }
 
             // Deprecated

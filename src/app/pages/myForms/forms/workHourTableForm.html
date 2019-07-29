@@ -1323,13 +1323,17 @@
         <!--<uib-tab heading="加班單核薪" ng-if="roleType === '100'">-->
             <!--<div ng-include="'app/pages/myForms/forms/workHourTableForm_executive_workAddTab.html'"></div>-->
         <!--</uib-tab>-->
-        <uib-tab heading="加班單核薪" ng-if="roleType === '100'">
+        <uib-tab heading="加班單核薪（測試）[行政總管]" ng-if="roleType === '100'">
             <div ng-include="'app/pages/myForms/forms/workHourTableForm_executive_workAddTab_click_version.html'"></div>
         </uib-tab>
         <uib-tab heading="工時審核明細"
                  ng-if="roleType === '2' || roleType === '100' || roleType === '6'"
                  ng-click="showManagementList()">
             <div ng-include="'app/pages/myForms/forms/workHourTableForm_management.html'"></div>
+        </uib-tab>
+        <uib-tab heading="工時表統計（測試）[經理/主任/行政總管]"
+                 ng-if="roleType === '2' || roleType === '100' || roleType === '6'">
+           <work-statistics-c-j></work-statistics-c-j>
         </uib-tab>
     </uib-tabset>
 

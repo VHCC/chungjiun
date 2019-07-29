@@ -2693,7 +2693,7 @@
 
         // 顯示合計加班費
         $scope.showTotalOTMoney = function () {
-            if ($scope.workAddConfirmTablesItems.length === 0) {
+            if ($scope.workAddConfirmTablesItems == undefined || $scope.workAddConfirmTablesItems.length === 0) {
                 return;
             }
 
@@ -4127,7 +4127,7 @@
                 }
 
             }
-
         }
+
     } // function End line
 })();
