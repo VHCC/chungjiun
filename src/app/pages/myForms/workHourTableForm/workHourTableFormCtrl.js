@@ -2574,187 +2574,187 @@
 
         // **************** 加班單核薪 ****************
 
-        $scope.showWorkHourAdd = function(item) {
-            return DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment(item.create_formDate), item.day - 1));
-        }
-
-        $scope.changeWorkOffHistoryMonth = function(changeCount, dom) {
-
-            $scope.monthPicker = dom;
-
-            // document.getElementById('includeHead').innerHTML = "";
-
-            dom.myMonth = moment(dom.myDT).add(changeCount, 'M').format('YYYY/MM');
-            dom.myDT = moment(dom.myDT).add(changeCount, 'M');
-            console.log("dom.myMonth= " + dom.myMonth);
-
-            var year = parseInt(dom.myDT.year()) - 1911;
-            var month = parseInt(dom.myDT.month()) + 1;
-
-            // console.log(vm);
-
-            $scope.fetchWorkHourAdd_confirmed(vm.workAdd.selected, month);
-
-        }
-
-        $scope.listenMonth = function(dom){
-            // console.log($scope);
-            // console.log(dom);
-            dom.$watch('myMonth',function(newValue, oldValue) {
-                console.log(oldValue);
-                console.log(newValue);
-                if (dom.isShiftMonthSelect) {
-                    dom.isShiftMonthSelect = false;
-                    $scope.changeWorkOffHistoryMonth(0, dom.monthPickerDom);
-                }
-            });
-        }
-
-        $scope.fetchWorkHourAdd_confirmed = function (user, month) {
-            // console.log($scope);
-            bsLoadingOverlayService.start({
-                referenceId: 'addConfirm_workHour'
-            });
-
-            var formData = {
-                creatorDID: user._id,
-                month: month == undefined ? thisMonth : month,
-                isExecutiveConfirm: true,
-            }
-            console.log(formData);
-            WorkHourAddItemUtil.getWorkHourAddItems(formData)
-                .success(function (res) {
-                    console.log(res);
-                    // 主要顯示
-                    $scope.workAddConfirmTablesItems = res.payload;
-
-                    $timeout(function () {
-                        bsLoadingOverlayService.stop({
-                            referenceId: 'addConfirm_workHour'
-                        });
-                    }, 500);
-                })
-                .error(function () {
-                    console.log('ERROR  WorkHourAddItemUtil.getWorkHourAddItems');
-
-                    $timeout(function () {
-                        bsLoadingOverlayService.stop({
-                            referenceId: 'addConfirm_workHour'
-                        });
-                    }, 500);
-                })
-
-            $('.workOffFormNumberInput').mask('A.Z', {
-                translation: {
-                    'A': {
-                        pattern: /[012345678]/,
-                    },
-                    'Z': {
-                        pattern: /[05]/,
-                    }
-                }
-            });
-
-        }
-
-        // 顯示單一時數
-        $scope.showAddHour = function (table_add, type) {
-            var result = 0;
-            if (type == table_add.workAddType) {
-                result += parseInt(TimeUtil.getCalculateHourDiffByTime(table_add.start_time, table_add.end_time));
-            }
-            result = result % 60 < 30 ? Math.round(result / 60) : Math.round(result / 60) - 0.5;
-            if (result < 1) {
-                // $scope.table.totalHourTemp = 0;
-                return 0;
-            }
-            // $scope.table.totalHourTemp = result;
-            return result;
-        }
-
-        // 顯示合計時數
-        $scope.showTotalAddHour = function (tables, type) {
-            if (tables == undefined) return;
-            var result = 0;
-            for (var index = 0; index < tables.length; index++) {
-                if (type == tables[index].workAddType) {
-                    result += parseInt(TimeUtil.getCalculateHourDiffByTime(tables[index].start_time, tables[index].end_time));
-                }
-            }
-            result = result % 60 < 30 ? Math.round(result / 60) : Math.round(result / 60) - 0.5;
-            if (result < 1) {
-                // $scope.table.totalHourTemp = 0;
-                return 0;
-            }
-
-            // $scope.table.totalHourTemp = result;
-            return result;
-        }
-
-        // 顯示合計加班費
-        $scope.showTotalOTMoney = function () {
-            if ($scope.workAddConfirmTablesItems == undefined || $scope.workAddConfirmTablesItems.length === 0) {
-                return;
-            }
-
-            var result = 0.0;
-
-            for (var index = 0; index < $scope.workAddConfirmTablesItems.length; index ++) {
-                var salaryBase =  $scope.workAddConfirmTablesItems[index].userMonthSalary / 30 / 8 ;
-                console.log(salaryBase);
-                result += $scope.workAddConfirmTablesItems[index].dis_1_0 * salaryBase;
-                result += $scope.workAddConfirmTablesItems[index].dis_1_13 * salaryBase;
-                result += $scope.workAddConfirmTablesItems[index].dis_1_23 * salaryBase;
-                result += $scope.workAddConfirmTablesItems[index].dis_1_1 * salaryBase;
-            }
-            return $scope.formatFloat(result, 0);
-        }
-
-        // 顯示分配
-        $scope.showTotalDisHour = function (tables, type) {
-
-            if (tables == undefined) return;
-            var result = 0.0;
-            var temp;
-            for (var index = 0; index < tables.length; index++) {
-                switch (type) {
-                    case 1:
-                        temp = tables[index].dis_1_0 == (undefined || "" )? parseFloat(0) : parseFloat(tables[index].dis_1_0);
-                        break;
-                    case 2:
-                        temp = tables[index].dis_1_13 == (undefined || "" ) ? parseFloat(0) : parseFloat(tables[index].dis_1_13);
-                        break;
-                    case 3:
-                        temp = tables[index].dis_1_23 == (undefined || "" ) ? parseFloat(0) : parseFloat(tables[index].dis_1_23);
-                        break;
-                    case 4:
-                        temp = tables[index].dis_1_1 == (undefined || "" ) ? parseFloat(0) : parseFloat(tables[index].dis_1_1);
-                        break;
-                }
-                result += temp;
-            }
-            return result;
-        }
-
-
-        // 加班單核薪 分配點數
-        $scope.saveAddWorkDisFormToServer = function () {
-            if ($scope.workAddConfirmTablesItems.length === 0) {
-                toastr.warning('沒有任何加班單', 'Warning');
-            }
-
-            console.log($scope.workAddConfirmTablesItems);
-
-            var formData = {
-                data: $scope.workAddConfirmTablesItems,
-            }
-
-            WorkHourAddItemUtil.distributeWorkAdd(formData)
-                .success(function (res) {
-                    console.log(res);
-                })
-
-        }
+        // $scope.showWorkHourAdd = function(item) {
+        //     return DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment(item.create_formDate), item.day - 1));
+        // }
+        //
+        // $scope.changeWorkOffHistoryMonth = function(changeCount, dom) {
+        //
+        //     $scope.monthPicker = dom;
+        //
+        //     // document.getElementById('includeHead').innerHTML = "";
+        //
+        //     dom.myMonth = moment(dom.myDT).add(changeCount, 'M').format('YYYY/MM');
+        //     dom.myDT = moment(dom.myDT).add(changeCount, 'M');
+        //     console.log("dom.myMonth= " + dom.myMonth);
+        //
+        //     var year = parseInt(dom.myDT.year()) - 1911;
+        //     var month = parseInt(dom.myDT.month()) + 1;
+        //
+        //     // console.log(vm);
+        //
+        //     $scope.fetchWorkHourAdd_confirmed(vm.workAdd.selected, month);
+        //
+        // }
+        //
+        // $scope.listenMonth = function(dom){
+        //     // console.log($scope);
+        //     // console.log(dom);
+        //     dom.$watch('myMonth',function(newValue, oldValue) {
+        //         console.log(oldValue);
+        //         console.log(newValue);
+        //         if (dom.isShiftMonthSelect) {
+        //             dom.isShiftMonthSelect = false;
+        //             $scope.changeWorkOffHistoryMonth(0, dom.monthPickerDom);
+        //         }
+        //     });
+        // }
+        //
+        // $scope.fetchWorkHourAdd_confirmed = function (user, month) {
+        //     // console.log($scope);
+        //     bsLoadingOverlayService.start({
+        //         referenceId: 'addConfirm_workHour'
+        //     });
+        //
+        //     var formData = {
+        //         creatorDID: user._id,
+        //         month: month == undefined ? thisMonth : month,
+        //         isExecutiveConfirm: true,
+        //     }
+        //     console.log(formData);
+        //     WorkHourAddItemUtil.getWorkHourAddItems(formData)
+        //         .success(function (res) {
+        //             console.log(res);
+        //             // 主要顯示
+        //             $scope.workAddConfirmTablesItems = res.payload;
+        //
+        //             $timeout(function () {
+        //                 bsLoadingOverlayService.stop({
+        //                     referenceId: 'addConfirm_workHour'
+        //                 });
+        //             }, 500);
+        //         })
+        //         .error(function () {
+        //             console.log('ERROR  WorkHourAddItemUtil.getWorkHourAddItems');
+        //
+        //             $timeout(function () {
+        //                 bsLoadingOverlayService.stop({
+        //                     referenceId: 'addConfirm_workHour'
+        //                 });
+        //             }, 500);
+        //         })
+        //
+        //     $('.workOffFormNumberInput').mask('A.Z', {
+        //         translation: {
+        //             'A': {
+        //                 pattern: /[012345678]/,
+        //             },
+        //             'Z': {
+        //                 pattern: /[05]/,
+        //             }
+        //         }
+        //     });
+        //
+        // }
+        //
+        // // 顯示單一時數
+        // $scope.showAddHour = function (table_add, type) {
+        //     var result = 0;
+        //     if (type == table_add.workAddType) {
+        //         result += parseInt(TimeUtil.getCalculateHourDiffByTime(table_add.start_time, table_add.end_time));
+        //     }
+        //     result = result % 60 < 30 ? Math.round(result / 60) : Math.round(result / 60) - 0.5;
+        //     if (result < 1) {
+        //         // $scope.table.totalHourTemp = 0;
+        //         return 0;
+        //     }
+        //     // $scope.table.totalHourTemp = result;
+        //     return result;
+        // }
+        //
+        // // 顯示合計時數
+        // $scope.showTotalAddHour = function (tables, type) {
+        //     if (tables == undefined) return;
+        //     var result = 0;
+        //     for (var index = 0; index < tables.length; index++) {
+        //         if (type == tables[index].workAddType) {
+        //             result += parseInt(TimeUtil.getCalculateHourDiffByTime(tables[index].start_time, tables[index].end_time));
+        //         }
+        //     }
+        //     result = result % 60 < 30 ? Math.round(result / 60) : Math.round(result / 60) - 0.5;
+        //     if (result < 1) {
+        //         // $scope.table.totalHourTemp = 0;
+        //         return 0;
+        //     }
+        //
+        //     // $scope.table.totalHourTemp = result;
+        //     return result;
+        // }
+        //
+        // // 顯示合計加班費
+        // $scope.showTotalOTMoney = function () {
+        //     if ($scope.workAddConfirmTablesItems == undefined || $scope.workAddConfirmTablesItems.length === 0) {
+        //         return;
+        //     }
+        //
+        //     var result = 0.0;
+        //
+        //     for (var index = 0; index < $scope.workAddConfirmTablesItems.length; index ++) {
+        //         var salaryBase =  $scope.workAddConfirmTablesItems[index].userMonthSalary / 30 / 8 ;
+        //         console.log(salaryBase);
+        //         result += $scope.workAddConfirmTablesItems[index].dis_1_0 * salaryBase;
+        //         result += $scope.workAddConfirmTablesItems[index].dis_1_13 * salaryBase;
+        //         result += $scope.workAddConfirmTablesItems[index].dis_1_23 * salaryBase;
+        //         result += $scope.workAddConfirmTablesItems[index].dis_1_1 * salaryBase;
+        //     }
+        //     return $scope.formatFloat(result, 0);
+        // }
+        //
+        // // 顯示分配
+        // $scope.showTotalDisHour = function (tables, type) {
+        //
+        //     if (tables == undefined) return;
+        //     var result = 0.0;
+        //     var temp;
+        //     for (var index = 0; index < tables.length; index++) {
+        //         switch (type) {
+        //             case 1:
+        //                 temp = tables[index].dis_1_0 == (undefined || "" )? parseFloat(0) : parseFloat(tables[index].dis_1_0);
+        //                 break;
+        //             case 2:
+        //                 temp = tables[index].dis_1_13 == (undefined || "" ) ? parseFloat(0) : parseFloat(tables[index].dis_1_13);
+        //                 break;
+        //             case 3:
+        //                 temp = tables[index].dis_1_23 == (undefined || "" ) ? parseFloat(0) : parseFloat(tables[index].dis_1_23);
+        //                 break;
+        //             case 4:
+        //                 temp = tables[index].dis_1_1 == (undefined || "" ) ? parseFloat(0) : parseFloat(tables[index].dis_1_1);
+        //                 break;
+        //         }
+        //         result += temp;
+        //     }
+        //     return result;
+        // }
+        //
+        //
+        // // 加班單核薪 分配點數
+        // $scope.saveAddWorkDisFormToServer = function () {
+        //     if ($scope.workAddConfirmTablesItems.length === 0) {
+        //         toastr.warning('沒有任何加班單', 'Warning');
+        //     }
+        //
+        //     console.log($scope.workAddConfirmTablesItems);
+        //
+        //     var formData = {
+        //         data: $scope.workAddConfirmTablesItems,
+        //     }
+        //
+        //     WorkHourAddItemUtil.distributeWorkAdd(formData)
+        //         .success(function (res) {
+        //             console.log(res);
+        //         })
+        //
+        // }
 
         // 主要顯示 是否為國定假日
         // $scope.nationalHolidayTablesItems = [];
@@ -2830,6 +2830,7 @@
         // }
 
         //加班單核薪專用
+        // Deprecated
         $scope.workAddTablesRawData = [];
 
         // 整理相同日期的加班項目
@@ -3013,6 +3014,7 @@
         }
 
         // 加班單核薪
+        // Deprecated
         $scope.confirmWorkAddItems = function () {
             if ($scope.workAddTablesRawData.length === 0) {
                 toastr.warning('沒有任何加班單', 'Warning');
