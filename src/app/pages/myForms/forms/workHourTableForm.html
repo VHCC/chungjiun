@@ -1324,7 +1324,8 @@
             <!--<div ng-include="'app/pages/myForms/forms/workHourTableForm_executive_workAddTab.html'"></div>-->
         <!--</uib-tab>-->
         <uib-tab heading="加班單核薪（測試）[行政總管]" ng-if="roleType === '100'">
-            <div ng-include="'app/pages/myForms/forms/workHourTableForm_executive_workAddTab_click_version.html'"></div>
+            <!--<div ng-include="'app/pages/myForms/forms/workHourTableForm_executive_workAddTab_click_version.html'"></div>-->
+            <work-hour-o-t-distribution></work-hour-o-t-distribution>
         </uib-tab>
         <uib-tab heading="工時審核明細"
                  ng-if="roleType === '2' || roleType === '100' || roleType === '6'"
