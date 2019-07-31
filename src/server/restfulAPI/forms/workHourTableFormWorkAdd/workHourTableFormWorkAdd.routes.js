@@ -200,7 +200,7 @@ module.exports = function (app) {
         }
         
         for (var index = 0; index < req.body.data.length; index ++) {
-            WorkHourTableFormWorkAdd.update({
+            WorkHourTableFormWorkAdd.updateMany({
                 creatorDID: req.body.data[index].creatorDID,
                 create_formDate: req.body.data[index].create_formDate,
                 prjDID: req.body.data[index].prjDID,

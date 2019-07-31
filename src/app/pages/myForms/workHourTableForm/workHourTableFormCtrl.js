@@ -4003,7 +4003,7 @@
             var apiData = {};
 
             apiData = {
-                temps: $scope.mainRelatedMembers,
+                users: $scope.mainRelatedMembers,
                 creatorDID: cookies.get('userDID')
                 // date: $scope.firstFullDate_management
             }
