@@ -245,12 +245,12 @@
                 var result = 0.0;
 
                 for (var index = 0; index < $scope.workAddConfirmTablesItems.length; index ++) {
-                    var salaryBase =  $scope.workAddConfirmTablesItems[index].userMonthSalary / 30 / 8 ;
-                    // console.log(salaryBase);
-                    result += $scope.workAddConfirmTablesItems[index].dis_1_0 * salaryBase;
-                    result += $scope.workAddConfirmTablesItems[index].dis_1_13 * salaryBase;
-                    result += $scope.workAddConfirmTablesItems[index].dis_1_23 * salaryBase;
-                    result += $scope.workAddConfirmTablesItems[index].dis_1_1 * salaryBase;
+                    var salaryBase =  Math.ceil($scope.workAddConfirmTablesItems[index].userMonthSalary / 30 / 8) ;
+                    console.log(salaryBase);
+                    result += $scope.workAddConfirmTablesItems[index].dis_1_0 * salaryBase * 1;
+                    result += $scope.workAddConfirmTablesItems[index].dis_1_13 * salaryBase * (4/3);
+                    result += $scope.workAddConfirmTablesItems[index].dis_1_23 * salaryBase * (5/3);
+                    result += $scope.workAddConfirmTablesItems[index].dis_1_1 * salaryBase * (2);
                 }
                 return $scope.formatFloat(result, 0);
             }
