@@ -1901,19 +1901,20 @@
                 WorkHourUtil.updateTotalTableSendReview(formData)
                     .success(function (res) {
                         // console.log(res.code);
-                        var formData = {
-                            creatorDID: cookies.get('userDID'),
-                            // msgTargetID: cookies.get('bossID'),
-                            // tableArray: tableList,
-                            msgTargetArray: targetList,
-                            msgMemoArray: memoList,
-                            msgTopicArray: msgTopicList,
-                            msgDetailArray: msgDetailList,
-                        }
-                        NotificationMsgUtil.createMsgItem(formData)
-                            .success(function (req) {
-                                $scope.getTable();
-                            })
+                        // var formData = {
+                        //     creatorDID: cookies.get('userDID'),
+                        //     // msgTargetID: cookies.get('bossID'),
+                        //     // tableArray: tableList,
+                        //     msgTargetArray: targetList,
+                        //     msgMemoArray: memoList,
+                        //     msgTopicArray: msgTopicList,
+                        //     msgDetailArray: msgDetailList,
+                        // }
+                        // NotificationMsgUtil.createMsgItem(formData)
+                        //     .success(function (req) {
+                        //
+                        //     })
+                        $scope.getTable();
                     })
             }, 1000);
         }
@@ -2185,22 +2186,23 @@
             WorkHourUtil.updateWHTableArray(formData)
                 .success(function (res) {
 
-                    var formData = {
-                        creatorDID: user.DID,
-                        msgTargetArray: targetList,
-                        msgMemoArray: memoList,
-                        msgTopicArray: msgTopicList,
-                        msgDetailArray: msgDetailList,
-                    }
-                    NotificationMsgUtil.createMsgItem(formData)
-                        .success(function (req) {
-                            $scope.fetchRelatedMembers();
-                        })
-                        .error(function (req) {
-                            $scope.fetchRelatedMembers();
-                        })
+                    // var formData = {
+                    //     creatorDID: user.DID,
+                    //     msgTargetArray: targetList,
+                    //     msgMemoArray: memoList,
+                    //     msgTopicArray: msgTopicList,
+                    //     msgDetailArray: msgDetailList,
+                    // }
+                    // NotificationMsgUtil.createMsgItem(formData)
+                    //     .success(function (req) {
+                    //         $scope.fetchRelatedMembers();
+                    //     })
+                    //     .error(function (req) {
+                    //
+                    //     })
 
                     // $scope.showTableOfItem(user, null, null, null, null, null, 1);
+                    $scope.fetchRelatedMembers();
                 })
         }
 
@@ -2240,17 +2242,18 @@
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
 
-                    var formData = {
-                        creatorDID: cookies.get('userDID'),
-                        msgTargetArray: targetList,
-                        msgMemoArray: memoList,
-                        msgTopicArray: msgTopicList,
-                        msgDetailArray: msgDetailList,
-                    }
-                    NotificationMsgUtil.createMsgItem(formData)
-                        .success(function (req) {
-                            $scope.showTableOfItem(user, null, null, null, null, null, 1);
-                        })
+                    // var formData = {
+                    //     creatorDID: cookies.get('userDID'),
+                    //     msgTargetArray: targetList,
+                    //     msgMemoArray: memoList,
+                    //     msgTopicArray: msgTopicList,
+                    //     msgDetailArray: msgDetailList,
+                    // }
+                    // NotificationMsgUtil.createMsgItem(formData)
+                    //     .success(function (req) {
+                    //
+                    //     })
+                    $scope.showTableOfItem(user, null, null, null, null, null, 1);
                 })
         }
 
@@ -2343,17 +2346,18 @@
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
 
-                    var formData = {
-                        creatorDID: cookies.get('userDID'),
-                        msgTargetArray: targetList,
-                        msgMemoArray: memoList,
-                        msgTopicArray: msgTopicList,
-                        msgDetailArray: msgDetailList,
-                    }
-                    NotificationMsgUtil.createMsgItem(formData)
-                        .success(function (req) {
-                            $scope.showTableOfItem(form, null, null, null, null, null, 2);
-                        })
+                    // var formData = {
+                    //     creatorDID: cookies.get('userDID'),
+                    //     msgTargetArray: targetList,
+                    //     msgMemoArray: memoList,
+                    //     msgTopicArray: msgTopicList,
+                    //     msgDetailArray: msgDetailList,
+                    // }
+                    // NotificationMsgUtil.createMsgItem(formData)
+                    //     .success(function (req) {
+                    //
+                    //     })
+                    $scope.showTableOfItem(form, null, null, null, null, null, 2);
 
                 })
         }
@@ -2416,17 +2420,18 @@
                     WorkHourAddItemUtil.updateRelatedAddItemByProject(formData)
                         .success(function (res) {
 
-                            var formData = {
-                                creatorDID: cookies.get('userDID'),
-                                msgTargetArray: targetList,
-                                msgMemoArray: memoList,
-                                msgTopicArray: msgTopicList,
-                                msgDetailArray: msgDetailList,
-                            }
-                            NotificationMsgUtil.createMsgItem(formData)
-                                .success(function (req) {
-                                    $scope.showTableOfItem(user, null, null, null, null, null, 2);
-                                })
+                            // var formData = {
+                            //     creatorDID: cookies.get('userDID'),
+                            //     msgTargetArray: targetList,
+                            //     msgMemoArray: memoList,
+                            //     msgTopicArray: msgTopicList,
+                            //     msgDetailArray: msgDetailList,
+                            // }
+                            // NotificationMsgUtil.createMsgItem(formData)
+                            //     .success(function (req) {
+                            //
+                            //     })
+                            $scope.showTableOfItem(user, null, null, null, null, null, 2);
 
                         })
                         .error(function () {
