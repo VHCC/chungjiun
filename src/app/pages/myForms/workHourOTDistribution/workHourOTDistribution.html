@@ -131,12 +131,17 @@
                     </div>
                 </td>
                 <!--加班時數-->
-                <td style="vertical-align: inherit;">
-                    {{showAddHour(table_add, 1)}}
+                <td style="vertical-align: inherit; color:blue">
+                    <my ng-if="showAddHour(table_add, 1) > 0">
+                        {{showAddHour(table_add, 1)}}
+                    </my>
                 </td>
                 <!--換休時數-->
                 <td style="vertical-align: inherit;">
-                    {{showAddHour(table_add, 2)}}
+                    <my ng-if="showAddHour(table_add, 2) > 0">
+                        {{showAddHour(table_add, 2)}}
+                    </my>
+
                 </td>
             </tr>
             </tbody>
