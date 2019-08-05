@@ -244,14 +244,23 @@
 
                 var result = 0.0;
 
+                var result_1_0 = 0.0;
+                var result_1_13 = 0.0;
+                var result_1_23 = 0.0;
+                var result_1_1 = 0.0;
+
                 for (var index = 0; index < $scope.workAddConfirmTablesItems.length; index ++) {
-                    var salaryBase =  Math.ceil($scope.workAddConfirmTablesItems[index].userMonthSalary / 30 / 8) ;
+                    var salaryBase =  Math.ceil($scope.workAddConfirmTablesItems[index].userMonthSalary / 30 / 8);
                     console.log(salaryBase);
-                    result += Math.round($scope.workAddConfirmTablesItems[index].dis_1_0 * salaryBase * 1);
-                    result += Math.round($scope.workAddConfirmTablesItems[index].dis_1_13 * salaryBase * (4/3));
-                    result += Math.round($scope.workAddConfirmTablesItems[index].dis_1_23 * salaryBase * (5/3));
-                    result += Math.round($scope.workAddConfirmTablesItems[index].dis_1_1 * salaryBase * (2));
+                    result_1_0 += $scope.workAddConfirmTablesItems[index].dis_1_0 * salaryBase * 1;
+                    result_1_13 += $scope.workAddConfirmTablesItems[index].dis_1_13 * salaryBase * (4/3);
+                    result_1_23 += $scope.workAddConfirmTablesItems[index].dis_1_23 * salaryBase * (5/3);
+                    result_1_1 += $scope.workAddConfirmTablesItems[index].dis_1_1 * salaryBase * (2);
                 }
+
+                result = Math.round(result_1_0) + Math.round(result_1_13) + Math.round(result_1_23) + Math.round(result_1_1);
+
+
                 return $scope.formatFloat(result, 0);
             }
 
