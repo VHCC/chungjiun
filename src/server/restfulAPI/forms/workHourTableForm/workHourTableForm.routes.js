@@ -509,7 +509,13 @@ module.exports = function (app) {
                                             }
                                     }
                             },
-                            { $project: {
+                            {
+                                $sort:{
+                                    month:1,
+                                }
+                            },
+                            {
+                                $project: {
                                     _id: 0
                                 }
                             }
