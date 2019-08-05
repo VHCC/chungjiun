@@ -1416,43 +1416,125 @@
                 WorkHourAddItemUtil.getWorkHourAddItems(formData)
                     .success(function (res) {
                         var tables = res.payload;
-                        var result = 0;
+
+                        tables = $scope.filterData(res.payload);
+
+                        var result = 0.0;
                         console.log(tables);
-                        for (var index = 0; index < tables.length; index++) {
-                            if (!tables[index].isExecutiveConfirm) {
-                                continue;
-                            }
-                            switch (tables[index].workAddType) {
-                                case 1:
-                                    // 加班不使用
-                                    break;
-                                case 2:
-                                    console.log(tables[index]);
-                                    // result += $scope.getHourDiffByTime(
-                                    //     tables[index].start_time,
-                                    //     tables[index].end_time, tables[index].workAddType);
-                                    // getHourDiffByTime_for_work_add
-                                    result += $scope.getHourDiffByTime_for_work_add(
-                                        tables[index].start_time,
-                                        tables[index].end_time, tables[index].workAddType);
-                                    console.log(result);
-                                    break;
-                            }
-                        }
+                        // for (var index = 0; index < tables.length; index++) {
+                        //     if (!tables[index].isExecutiveConfirm) {
+                        //         continue;
+                        //     }
+                        //     switch (tables[index].workAddType) {
+                        //         case 1:
+                        //             // 加班不使用
+                        //             break;
+                        //         case 2:
+                        //             console.log(tables[index]);
+                        //             result += $scope.getHourDiffByTime_for_work_add(
+                        //                 tables[index].start_time,
+                        //                 tables[index].end_time, tables[index].workAddType);
+                        //             console.log(result);
+                        //             break;
+                        //     }
+                        // }
                         switch (type) {
                             // login User
                             case 1:
-                                vm.loginUserHolidayForm.rest_observed = (result);
+                                // vm.loginUserHolidayForm.rest_observed = (result);
+                                vm.loginUserHolidayForm.rest_observed = $scope.showTotalAddHour(tables, 2);
                                 break;
                             // specific user
                             case 2:
-                                vm.holidayForm.rest_observed = (result);
+                                // vm.holidayForm.rest_observed = (result);
+                                vm.holidayForm.rest_observed = $scope.showTotalAddHour(tables, 2);
                                 break;
                         }
                     })
                     .error(function () {
                         console.log('ERROR  WorkHourAddItemUtil.getWorkHourAddItems')
                     })
+            }
+
+            // 整理數據
+            $scope.filterData = function(rawData) {
+                console.log(rawData);
+
+                var itemList = [];
+
+                var workOT_date = [];
+
+                for (var index = 0; index < rawData.length; index ++) {
+                    var item = "_" + DateUtil.getShiftDatefromFirstDate_typeB(moment(rawData[index].create_formDate)
+                        , 0) + "_" +
+                        rawData[index].day + "_" +
+                        rawData[index].prjDID;
+
+                    // console.log(item);
+
+                    var detail = {
+                        item_start_time: rawData[index].start_time,
+                        item_end_time: rawData[index].end_time,
+                        item_workAddType: rawData[index].workAddType,
+                    }
+
+                    if (workOT_date[item] != undefined) {
+                        var data = workOT_date[item];
+                        data.items.push(detail);
+
+                        data.reason += ", " + rawData[index].reason
+                    } else {
+
+                        itemList.push(item);
+
+                        var items = [];
+
+                        items.push(detail);
+
+                        rawData[index].items = items;
+
+                        var data = rawData[index];
+                    }
+
+                    eval('workOT_date[item] = data');
+
+                }
+
+                // console.log(workOT_date);
+
+                var result = [];
+
+                for (var index = 0; index < itemList.length; index ++) {
+                    result.push(workOT_date[itemList[index]]);
+                }
+
+                console.log(result);
+
+                return result;
+            }
+
+            // 顯示合計時數
+            $scope.showTotalAddHour = function (tables, type) {
+                if (tables == undefined) return;
+
+                var final_result = 0.0;
+
+                for (var index = 0; index < tables.length; index++) {
+                    var result = 0.0;
+                    for (var index_item = 0; index_item < tables[index].items.length; index_item++) {
+                        if (type == tables[index].items[index_item].item_workAddType) {
+                            result += parseInt(TimeUtil.getCalculateHourDiffByTime(tables[index].items[index_item].item_start_time, tables[index].items[index_item].item_end_time));
+                        }
+                    }
+                    result = result % 60 < 30 ? Math.round(result / 60) : Math.round(result / 60) - 0.5;
+                    if (result < 1) {
+                        // $scope.table.totalHourTemp = 0;
+                        result = 0;
+                    }
+                    final_result += result;
+                }
+                // $scope.table.totalHourTemp = result;
+                return final_result;
             }
 
             // ***********************  補班日設定 ************************
