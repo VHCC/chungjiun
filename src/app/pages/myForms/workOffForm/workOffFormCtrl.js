@@ -778,12 +778,12 @@
                         // difference % 60 // SECONDS
                     ];
 
-                    // formatting (0 padding and concatenation)
-                    // result = result.map(function (v) {
-                    //     return v < 10 ? '0' + v : v;
-                    // }).join(':');
+                    // console.log(result);
+                    // console.log(result[0]);
+                    // console.log(result[1]);
+
                     result = result[0] + (result[1] < 30 ? 0 : result[1] === 0 ? 0 : 0.5);
-                    return result < 1 ? 0 : result >= 8 ? 8 : result;
+                    return result;
                 }
             }
 
