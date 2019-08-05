@@ -166,6 +166,9 @@
                                             }
                                         }
                                     }
+                                    if (vm.user !== undefined) {
+                                        $scope.getWorkOffTable(vm.user.selected._id);
+                                    }
                                 })
                         }
                     });
