@@ -4076,15 +4076,14 @@
                             case 1: { // 工時表狀態
                                 for (var index_form_tables = 0; index_form_tables < item.work_hour_forms[0].formTables.length; index_form_tables++) {
                                     for (var index = 0; index < item.work_hour_tables.length; index ++) {
-                                        // console.log(item.work_hour_tables[index]._id);
-                                        // console.log(item.work_hour_forms[0].formTables[0].tableID);
-                                        // console.log(item.work_hour_tables[index]._id == item.work_hour_forms[0].formTables[0].tableID);
                                         if (!item.work_hour_tables[index].isSendReview
                                             && item.work_hour_tables[index]._id == item.work_hour_forms[0].formTables[index_form_tables].tableID) {
                                             $('#a_' + dom.$index).css('color', '#dfb81c');
                                             return "編輯中"
                                         }
                                     }
+                                }
+                                for (var index_form_tables = 0; index_form_tables < item.work_hour_forms[0].formTables.length; index_form_tables++) {
                                     for (var index = 0; index < item.work_hour_tables.length; index ++) {
                                         // console.log(item.work_hour_tables[index]);
                                         if (!item.work_hour_tables[index].isManagerCheck
@@ -4093,6 +4092,8 @@
                                             return "等待確認"
                                         }
                                     }
+                                }
+                                for (var index_form_tables = 0; index_form_tables < item.work_hour_forms[0].formTables.length; index_form_tables++) {
                                     for (var index = 0; index < item.work_hour_tables.length; index ++) {
                                         // console.log(item.work_hour_tables[index]);
                                         if (!item.work_hour_tables[index].isExecutiveCheck
@@ -4108,7 +4109,6 @@
                                 break;
                             case 2: { //經理/主任狀態
                                 for (var index_form_tables = 0; index_form_tables < item.work_hour_forms[0].formTables.length; index_form_tables++) {
-
                                     for (var index = 0; index < item.work_hour_tables.length; index ++) {
                                         // console.log(item.work_hour_tables[index]);
                                         if (!item.work_hour_tables[index].isSendReview
@@ -4116,6 +4116,8 @@
                                             return ""
                                         }
                                     }
+                                }
+                                for (var index_form_tables = 0; index_form_tables < item.work_hour_forms[0].formTables.length; index_form_tables++) {
                                     for (var index = 0; index < item.work_hour_tables.length; index ++) {
                                         // console.log(item.work_hour_tables[index]);
                                         if (!item.work_hour_tables[index].isManagerCheck
@@ -4131,7 +4133,6 @@
                                 break;
                             case 3: { // 行政總管狀態
                                 for (var index_form_tables = 0; index_form_tables < item.work_hour_forms[0].formTables.length; index_form_tables++) {
-
                                     for (var index = 0; index < item.work_hour_tables.length; index ++) {
                                         // console.log(item.work_hour_tables[index]);
                                         if (!item.work_hour_tables[index].isManagerCheck
@@ -4139,6 +4140,8 @@
                                             return ""
                                         }
                                     }
+                                }
+                                for (var index_form_tables = 0; index_form_tables < item.work_hour_forms[0].formTables.length; index_form_tables++) {
                                     for (var index = 0; index < item.work_hour_tables.length; index ++) {
                                         // console.log(item.work_hour_tables[index]);
                                         if (!item.work_hour_tables[index].isExecutiveCheck
@@ -4160,7 +4163,6 @@
                         switch (type) {
                             case 1: { // 工時表狀態
                                 for (var index_form_tables = 0; index_form_tables < item.work_hour_forms[1].formTables.length; index_form_tables++) {
-
                                     for (var index = 0; index < item.work_hour_tables.length; index ++) {
                                         // console.log(item.work_hour_tables[index]);
                                         if (!item.work_hour_tables[index].isSendReview
@@ -4169,6 +4171,8 @@
                                             return "編輯中"
                                         }
                                     }
+                                }
+                                for (var index_form_tables = 0; index_form_tables < item.work_hour_forms[1].formTables.length; index_form_tables++) {
                                     for (var index = 0; index < item.work_hour_tables.length; index ++) {
                                         // console.log(item.work_hour_tables[index]);
                                         if (!item.work_hour_tables[index].isManagerCheck
@@ -4177,6 +4181,8 @@
                                             return "等待確認"
                                         }
                                     }
+                                }
+                                for (var index_form_tables = 0; index_form_tables < item.work_hour_forms[1].formTables.length; index_form_tables++) {
                                     for (var index = 0; index < item.work_hour_tables.length; index ++) {
                                         // console.log(item.work_hour_tables[index]);
                                         if (!item.work_hour_tables[index].isExecutiveCheck
@@ -4192,7 +4198,6 @@
                                 break;
                             case 2: { //經理/主任狀態
                                 for (var index_form_tables = 0; index_form_tables < item.work_hour_forms[1].formTables.length; index_form_tables++) {
-
                                     for (var index = 0; index < item.work_hour_tables.length; index ++) {
                                         // console.log(item.work_hour_tables[index]);
                                         if (!item.work_hour_tables[index].isSendReview
@@ -4200,6 +4205,8 @@
                                             return ""
                                         }
                                     }
+                                }
+                                for (var index_form_tables = 0; index_form_tables < item.work_hour_forms[1].formTables.length; index_form_tables++) {
                                     for (var index = 0; index < item.work_hour_tables.length; index ++) {
                                         // console.log(item.work_hour_tables[index]);
                                         if (!item.work_hour_tables[index].isManagerCheck
@@ -4215,7 +4222,6 @@
                                 break;
                             case 3: { // 行政總管狀態
                                 for (var index_form_tables = 0; index_form_tables < item.work_hour_forms[1].formTables.length; index_form_tables++) {
-
                                     for (var index = 0; index < item.work_hour_tables.length; index ++) {
                                         // console.log(item.work_hour_tables[index]);
                                         if (!item.work_hour_tables[index].isManagerCheck
@@ -4223,6 +4229,8 @@
                                             return ""
                                         }
                                     }
+                                }
+                                for (var index_form_tables = 0; index_form_tables < item.work_hour_forms[1].formTables.length; index_form_tables++) {
                                     for (var index = 0; index < item.work_hour_tables.length; index ++) {
                                         // console.log(item.work_hour_tables[index]);
                                         if (!item.work_hour_tables[index].isExecutiveCheck
