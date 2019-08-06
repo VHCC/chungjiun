@@ -818,6 +818,10 @@
                             workOnHour += 1;
                             workOnMin = 0;
                         }
+                        if (workOnHour == 12 ) {
+                            workOnHour = 13;
+                            workOnMin = 0;
+                        }
                     }
                     // 20190408設計
                     if (workOnHour <= 12) {
