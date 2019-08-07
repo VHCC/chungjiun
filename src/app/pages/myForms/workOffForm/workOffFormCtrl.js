@@ -506,7 +506,6 @@
                 };
                 $scope.specificUserTablesItems.push(inserted);
 
-                // $scope.createSubmit(0);
                 $scope.insertWorkOffItem(0);
             }
 
@@ -736,7 +735,7 @@
                             resultFinal = resultFinal <= 4 ? 4 : 8;
                         }
 
-                        console.log("this.workOffType= " + this.workOffType + ", resultFinal= " + resultFinal);
+                        // console.log("this.workOffType= " + this.workOffType + ", resultFinal= " + resultFinal);
 
                         return resultFinal;
                     } else if (this.table != undefined) {
@@ -794,7 +793,6 @@
 
             // Send WorkOffTable to Review
             $scope.reviewWorkOffTable = function (table, button, index) {
-                // $scope.createSubmit(0);
                 $timeout(function () {
                     // console.log(table)
                     console.log($scope.specificUserTablesItems[index]);
@@ -842,17 +840,18 @@
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
 
-                        var formData = {
-                            creatorDID: cookies.get('userDID'),
-                            msgTargetArray: targetList,
-                            msgMemoArray: memoList,
-                            msgTopicArray: msgTopicList,
-                            msgDetailArray: msgDetailList,
-                        }
-                        NotificationMsgUtil.createMsgItem(formData)
-                            .success(function (req) {
-                                $scope.specificUserTablesItems[checkingIndex].isSendReview = true;
-                            })
+                        // var formData = {
+                        //     creatorDID: cookies.get('userDID'),
+                        //     msgTargetArray: targetList,
+                        //     msgMemoArray: memoList,
+                        //     msgTopicArray: msgTopicList,
+                        //     msgDetailArray: msgDetailList,
+                        // }
+                        // NotificationMsgUtil.createMsgItem(formData)
+                        //     .success(function (req) {
+                        //
+                        //     })
+                        $scope.specificUserTablesItems[checkingIndex].isSendReview = true;
                     })
             }
 
@@ -888,18 +887,18 @@
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
 
-                        var formData = {
-                            creatorDID: cookies.get('userDID'),
-                            msgTargetArray: targetList,
-                            msgMemoArray: memoList,
-                            msgTopicArray: msgTopicList,
-                            msgDetailArray: msgDetailList,
-                        }
-                        NotificationMsgUtil.createMsgItem(formData)
-                            .success(function (req) {
-                                $scope.executiveCheckTablesItems.splice(index, 1);
-                            })
-
+                        // var formData = {
+                        //     creatorDID: cookies.get('userDID'),
+                        //     msgTargetArray: targetList,
+                        //     msgMemoArray: memoList,
+                        //     msgTopicArray: msgTopicList,
+                        //     msgDetailArray: msgDetailList,
+                        // }
+                        // NotificationMsgUtil.createMsgItem(formData)
+                        //     .success(function (req) {
+                        //
+                        //     })
+                        $scope.executiveCheckTablesItems.splice(index, 1);
 
                     })
             }
@@ -941,18 +940,18 @@
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
 
-                        var formData = {
-                            creatorDID: cookies.get('userDID'),
-                            msgTargetArray: targetList,
-                            msgMemoArray: memoList,
-                            msgTopicArray: msgTopicList,
-                            msgDetailArray: msgDetailList,
-                        }
-                        NotificationMsgUtil.createMsgItem(formData)
-                            .success(function (req) {
-                                $scope.executiveCheckTablesItems.splice(index, 1);
-                            })
-
+                        // var formData = {
+                        //     creatorDID: cookies.get('userDID'),
+                        //     msgTargetArray: targetList,
+                        //     msgMemoArray: memoList,
+                        //     msgTopicArray: msgTopicList,
+                        //     msgDetailArray: msgDetailList,
+                        // }
+                        // NotificationMsgUtil.createMsgItem(formData)
+                        //     .success(function (req) {
+                        //
+                        //     })
+                        $scope.executiveCheckTablesItems.splice(index, 1);
                     })
             }
 
@@ -988,17 +987,18 @@
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
 
-                        var formData = {
-                            creatorDID: vm.boss.selected._id,
-                            msgTargetArray: targetList,
-                            msgMemoArray: memoList,
-                            msgTopicArray: msgTopicList,
-                            msgDetailArray: msgDetailList,
-                        }
-                        NotificationMsgUtil.createMsgItem(formData)
-                            .success(function (req) {
-                                $scope.bossCheckTablesItems.splice(index, 1);
-                            })
+                        // var formData = {
+                        //     creatorDID: vm.boss.selected._id,
+                        //     msgTargetArray: targetList,
+                        //     msgMemoArray: memoList,
+                        //     msgTopicArray: msgTopicList,
+                        //     msgDetailArray: msgDetailList,
+                        // }
+                        // NotificationMsgUtil.createMsgItem(formData)
+                        //     .success(function (req) {
+                        //
+                        //     })
+                        $scope.bossCheckTablesItems.splice(index, 1);
                     })
             }
 
@@ -1041,18 +1041,18 @@
                     .success(function (res) {
                         // console.log(res.code + ", sendDisagree_boss");
 
-                        var formData = {
-                            creatorDID: cookies.get('userDID'),
-                            msgTargetArray: targetList,
-                            msgMemoArray: memoList,
-                            msgTopicArray: msgTopicList,
-                            msgDetailArray: msgDetailList,
-                        }
-                        NotificationMsgUtil.createMsgItem(formData)
-                            .success(function (req) {
-                                $scope.bossCheckTablesItems.splice(index, 1);
-                            })
-
+                        // var formData = {
+                        //     creatorDID: cookies.get('userDID'),
+                        //     msgTargetArray: targetList,
+                        //     msgMemoArray: memoList,
+                        //     msgTopicArray: msgTopicList,
+                        //     msgDetailArray: msgDetailList,
+                        // }
+                        // NotificationMsgUtil.createMsgItem(formData)
+                        //     .success(function (req) {
+                        //
+                        //     })
+                        $scope.bossCheckTablesItems.splice(index, 1);
                     })
             }
 
@@ -1318,32 +1318,31 @@
 
             // ***********************  國定假日設定 ************************
 
+            var specificYear = thisYear;
+
             // 主要顯示
             $scope.nationalHolidayTablesItems = [];
 
-            $scope.fetchNationHolidays_workOff = function () {
+            $scope.fetchNationHolidays_workOff = function (year) {
+                // console.log(year);
                 var getData = {
-                    year: thisYear,
+                    year: year == null ? thisYear : year,
                 }
                 NationalHolidayUtil.fetchAllNationalHolidays(getData)
                     .success(function (res) {
-                        // console.log(res.payload);
-                        if (res.payload.length > 0) {
-                            $scope.nationalHolidayTablesItems = [];
-                            // 取得 Table Data
-                            for (var index = 0; index < res.payload.length; index++) {
-                                var detail = {
-                                    tableID: res.payload[index]._id,
+                        $scope.nationalHolidayTablesItems = [];
+                        // 取得 Table Data
+                        for (var index = 0; index < res.payload.length; index++) {
+                            var detail = {
+                                tableID: res.payload[index]._id,
 
-                                    create_formDate: res.payload[index].create_formDate,
-                                    year: res.payload[index].year,
-                                    month: res.payload[index].month,
-                                    day: res.payload[index].day,
-                                    isEnable: res.payload[index].isEnable,
-                                };
-                                $scope.nationalHolidayTablesItems.push(detail);
-                            }
-                            // console.log($scope.nationalHolidayTablesItems);
+                                create_formDate: res.payload[index].create_formDate,
+                                year: res.payload[index].year,
+                                month: res.payload[index].month,
+                                day: res.payload[index].day,
+                                isEnable: res.payload[index].isEnable,
+                            };
+                            $scope.nationalHolidayTablesItems.push(detail);
                         }
                     })
                     .error(function () {
@@ -1354,7 +1353,7 @@
             $scope.addNationalHolidayItem = function () {
                 var inserted = {
                     create_formDate: $scope.firstFullDate,
-                    year: thisYear,
+                    year: specificYear,
                     month: thisMonth,
                     day: thisDay,
                     //RIGHT
@@ -1373,8 +1372,8 @@
                     }
                     NationalHolidayUtil.createNationalHoliday(formData)
                         .success(function (res) {
-                            $scope.fetchNationHolidays_workOff();
-                            console.log(res.code + ", createNationalHoliday");
+                            $scope.fetchNationHolidays_workOff(table.year);
+                            // console.log(res.code + ", createNationalHoliday");
                         })
                         .error(function () {
                             console.log('ERROR NationalHolidayUtil.createNationalHoliday');
@@ -1402,8 +1401,22 @@
                 }
                 NationalHolidayUtil.removeNationalHoliday(formData)
                     .success(function (res) {
-                        $scope.fetchNationHolidays_workOff();
+                        $scope.fetchNationHolidays_workOff(specificYear);
                     })
+            }
+
+            $scope.listenYear = function (dom) {
+                // console.log(dom);
+                dom.$watch('myYear',function(newValue, oldValue) {
+                    if (dom.isShiftYearSelect) {
+                        dom.isShiftYearSelect = false;
+                        console.log(oldValue);
+                        console.log(newValue);
+                        $scope.year = specificYear = newValue - 1911;
+                        $scope.fetchNationHolidays_workOff(specificYear);
+                        $scope.fetchOverTimeDays(specificYear);
+                    }
+                });
             }
 
             /**
@@ -1424,23 +1437,6 @@
 
                         var result = 0.0;
                         console.log(tables);
-                        // for (var index = 0; index < tables.length; index++) {
-                        //     if (!tables[index].isExecutiveConfirm) {
-                        //         continue;
-                        //     }
-                        //     switch (tables[index].workAddType) {
-                        //         case 1:
-                        //             // 加班不使用
-                        //             break;
-                        //         case 2:
-                        //             console.log(tables[index]);
-                        //             result += $scope.getHourDiffByTime_for_work_add(
-                        //                 tables[index].start_time,
-                        //                 tables[index].end_time, tables[index].workAddType);
-                        //             console.log(result);
-                        //             break;
-                        //     }
-                        // }
                         switch (type) {
                             // login User
                             case 1:
@@ -1545,30 +1541,28 @@
             // 主要顯示
             $scope.overTimeDayTablesItems = [];
 
-            $scope.fetchOverTimeDays = function () {
+            $scope.fetchOverTimeDays = function (year) {
                 var getData = {
-                    year: thisYear,
+                    year: year == null ? thisYear : year,
                 }
                 OverTimeDayUtil.fetchAllOverTimeDays(getData)
                     .success(function (res) {
                         // console.log(res.payload);
                         $scope.overTimeDayTablesItems = [];
-                        if (res.payload.length > 0) {
-                            // 取得 Table Data
-                            for (var index = 0; index < res.payload.length; index++) {
-                                var detail = {
-                                    tableID: res.payload[index]._id,
+                        // 取得 Table Data
+                        for (var index = 0; index < res.payload.length; index++) {
+                            var detail = {
+                                tableID: res.payload[index]._id,
 
-                                    create_formDate: res.payload[index].create_formDate,
-                                    year: res.payload[index].year,
-                                    month: res.payload[index].month,
-                                    day: res.payload[index].day,
-                                    isEnable: res.payload[index].isEnable,
-                                };
-                                $scope.overTimeDayTablesItems.push(detail);
-                            }
-                            console.log($scope.overTimeDayTablesItems);
+                                create_formDate: res.payload[index].create_formDate,
+                                year: res.payload[index].year,
+                                month: res.payload[index].month,
+                                day: res.payload[index].day,
+                                isEnable: res.payload[index].isEnable,
+                            };
+                            $scope.overTimeDayTablesItems.push(detail);
                         }
+                        console.log($scope.overTimeDayTablesItems);
                     })
                     .error(function () {
                         console.log('ERROR OverTimeDayUtil.fetchAllOverTimeDays');
@@ -1578,7 +1572,7 @@
             $scope.addOverTimeDayItem = function () {
                 var inserted = {
                     create_formDate: $scope.firstFullDate,
-                    year: thisYear,
+                    year: specificYear,
                     month: thisMonth,
                     day: thisDay,
                     //RIGHT
@@ -1597,7 +1591,7 @@
                     }
                     OverTimeDayUtil.createOverTimeDay(formData)
                         .success(function (res) {
-                            $scope.fetchOverTimeDays();
+                            $scope.fetchOverTimeDays(table.year);
                         })
                         .error(function () {
                             console.log('ERROR NationalHolidayUtil.createNationalHoliday');
@@ -1625,7 +1619,7 @@
                 }
                 OverTimeDayUtil.removeOverTimeDay(formData)
                     .success(function (res) {
-                        $scope.fetchOverTimeDays();
+                        $scope.fetchOverTimeDays(specificYear);
                     })
             }
 

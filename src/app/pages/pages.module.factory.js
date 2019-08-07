@@ -299,6 +299,7 @@
                 },
 
                 // find specify create form date
+                // @Deprecated
                 findWorkOffTableFormByTableIDArrayAndParameters: function (formData) {
                     return http.post('/api/post_work_off_table_find_by_table_id_array_and_parameters', formData);
                 },

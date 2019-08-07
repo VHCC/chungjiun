@@ -8,17 +8,6 @@ module.exports = function (app) {
     // create table item
     app.post(global.apiUrl.post_work_off_create_table, function (req, res) {
         console.log(JSON.stringify(req.body));
-        // 刪除既有休假表
-        // WorkOffForm.remove({
-        //     creatorDID: req.body.creatorDID,
-        //     year: req.body.year,
-        //     month: req.body.month,
-        // }, function (err) {
-        //     if (err) {
-        //         console.log(err);
-        //     }
-        // })
-        // console.log(req.body.oldTables);
         if (req.body.oldTables.hasOwnProperty('tableIDArray')) {
             var findData = []
             for (var index = 0; index < req.body.oldTables.tableIDArray.length; index++) {
@@ -73,54 +62,6 @@ module.exports = function (app) {
                     }
                     // formTable.push(tableItem);
                     if (resIndex === req.body.formTables.length) {
-                        // WorkOffForm.create({
-                        //     creatorDID: req.body.creatorDID,
-                        //     year: req.body.year,
-                        //     month: req.body.month,
-                        //     formTables: formTable,
-                        // }, function (err) {
-                        //     if (err) {
-                        //         res.send(err);
-                        //     }
-                        //     WorkOffTableForm.find({
-                        //         creatorDID: req.body.creatorDID,
-                        //         year: req.body.year,
-                        //     }, function (err, workOffForms) {
-                        //         if (err) {
-                        //             res.send(err);
-                        //         }
-                        //         for (var x= 0; x < workOffForms.length; x++) {
-                        //             var tableItem = {
-                        //                 tableID: workOffForms[x]._id,
-                        //             }
-                        //             resultTable.push(tableItem);
-                        //         }
-                        //         res.status(200).send({
-                        //             code: 200,
-                        //             error: global.status._200,
-                        //             payload: resultTable,
-                        //         });
-                        //     })
-                        // });
-                        // WorkOffTableForm.find({
-                        //     creatorDID: req.body.creatorDID,
-                        //     year: req.body.year,
-                        // }, function (err, workOffTables) {
-                        //     if (err) {
-                        //         res.send(err);
-                        //     }
-                        //     for (var index = 0; index < workOffTables.length; index++) {
-                        //         var tableItem = {
-                        //             tableID: workOffTables[index]._id,
-                        //         }
-                        //         resultTable.push(tableItem);
-                        //     }
-                        //     res.status(200).send({
-                        //         code: 200,
-                        //         error: global.status._200,
-                        //         payload: resultTable,
-                        //     });
-                        // })
 
                         var query = {
                             creatorDID: req.body.creatorDID,
@@ -134,18 +75,20 @@ module.exports = function (app) {
                             .exec(function (err, workOffTables) {
                                 if (err) {
                                     res.send(err);
-                                }
-                                for (var index = 0; index < workOffTables.length; index++) {
-                                    var tableItem = {
-                                        tableID: workOffTables[index]._id,
+                                } else {
+
+                                    for (var index = 0; index < workOffTables.length; index++) {
+                                        var tableItem = {
+                                            tableID: workOffTables[index]._id,
+                                        }
+                                        resultTable.push(tableItem);
                                     }
-                                    resultTable.push(tableItem);
+                                    res.status(200).send({
+                                        code: 200,
+                                        error: global.status._200,
+                                        payload: resultTable,
+                                    });
                                 }
-                                res.status(200).send({
-                                    code: 200,
-                                    error: global.status._200,
-                                    payload: resultTable,
-                                });
                             });
                 }
                 });
@@ -222,91 +165,6 @@ module.exports = function (app) {
         }
     });
 
-    //get Work Off Form by date
-    //@Deprecated
-    // app.post(global.apiUrl.post_work_off_table_fetch_all_user, function (req, res) {
-    //     console.log(JSON.stringify(req.body));
-    //     var query = {};
-    //     if (req.body.month !== null) {
-    //         query.month = req.body.month;
-    //     }
-    //     query.creatorDID = req.body.creatorDID;
-    //     query.year = req.body.year;
-    //
-    //     // console.log(query);
-    //     WorkOffForm.find(query, function (err, workOffForm) {
-    //         if (err) {
-    //             res.send(err);
-    //         }
-    //         res.status(200).send({
-    //             code: 200,
-    //             error: global.status._200,
-    //             payload: workOffForm,
-    //         });
-    //     });
-    //
-    //     // WorkOffForm.find({
-    //     //     creatorDID: req.body.creatorDID,
-    //     //     year: req.body.year,
-    //     //     month: req.body.month,
-    //     // }, function (err, workOffForm) {
-    //     //     if (err) {
-    //     //         res.send(err);
-    //     //     }
-    //     //     res.status(200).send({
-    //     //         code: 200,
-    //     //         error: global.status._200,
-    //     //         payload: workOffForm,
-    //     //     });
-    //     // });
-    // });
-
-    // find table by table Id array
-    //@Deprecated
-    // app.post(global.apiUrl.post_work_off_table_find_by_table_id_array, function (req, res) {
-    //     console.log(JSON.stringify(req.body));
-    //     var tableCount = req.body.tableIDArray.length;
-    //     var findData = []
-    //     for (var index = 0; index < tableCount; index++) {
-    //         var target = {
-    //             _id: req.body.tableIDArray[index],
-    //         }
-    //         findData.push(target);
-    //     }
-    //     WorkOffTableForm.find({
-    //         $or: findData,
-    //     }, function (err, tables) {
-    //         if (err) {
-    //             res.send(err);
-    //         }
-    //         res.status(200).send({
-    //             code: 200,
-    //             error: global.status._200,
-    //             payload: tables,
-    //         });
-    //     });
-    // })
-
-    // update table item send review
-    //@Deprecated
-    // app.post(global.apiUrl.post_work_off_table_update_send_review, function (req, res) {
-    //     console.log(JSON.stringify(req.body));
-    //     WorkOffTableForm.update({
-    //         _id: req.body.tableID,
-    //     }, {
-    //         $set: {
-    //             isSendReview: true,
-    //         }
-    //     }, function (err) {
-    //         if (err) {
-    //             res.send(err);
-    //         }
-    //         res.status(200).send({
-    //             code: 200,
-    //             error: global.status._200,
-    //         });
-    //     })
-    // })
 
     // find table item by user DID to executive
     // 請假單行政確認
@@ -321,12 +179,14 @@ module.exports = function (app) {
         }, function (err, tables) {
             if (err) {
                 res.send(err);
+            } else {
+
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: tables,
+                });
             }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-                payload: tables,
-            });
         })
     })
 
@@ -342,79 +202,17 @@ module.exports = function (app) {
         }, function (err, tables) {
             if (err) {
                 res.send(err);
+            } else {
+
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: tables,
+                });
             }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-                payload: tables,
-            });
         })
     })
 
-    // executive agree
-    //@Deprecated
-    // app.post(global.apiUrl.post_work_off_table_update_executive_agree, function (req, res) {
-    //     console.log(JSON.stringify(req.body));
-    //     WorkOffTableForm.update({
-    //         _id: req.body.tableID,
-    //     }, {
-    //         $set: {
-    //             isExecutiveCheck: true,
-    //         }
-    //     }, function (err) {
-    //         if (err) {
-    //             res.send(err);
-    //         }
-    //         res.status(200).send({
-    //             code: 200,
-    //             error: global.status._200,
-    //         });
-    //     })
-    // })
-
-    // boss agree
-    //@Deprecated
-    // app.post(global.apiUrl.post_work_off_table_update_boss_agree, function (req, res) {
-    //     console.log(JSON.stringify(req.body));
-    //     WorkOffTableForm.update({
-    //         _id: req.body.tableID,
-    //     }, {
-    //         $set: {
-    //             isBossCheck: true,
-    //         }
-    //     }, function (err) {
-    //         if (err) {
-    //             res.send(err);
-    //         }
-    //         res.status(200).send({
-    //             code: 200,
-    //             error: global.status._200,
-    //         });
-    //     })
-    // })
-
-    // disagree
-    //@Deprecated
-    // app.post(global.apiUrl.post_work_off_table_update_disagree, function (req, res) {
-    //     console.log(JSON.stringify(req.body));
-    //     WorkOffTableForm.update({
-    //         _id: req.body.tableID,
-    //     }, {
-    //         $set: {
-    //             isSendReview: false,
-    //             isExecutiveCheck: false,
-    //             isBossCheck: false
-    //         }
-    //     }, function (err) {
-    //         if (err) {
-    //             res.send(err);
-    //         }
-    //         res.status(200).send({
-    //             code: 200,
-    //             error: global.status._200,
-    //         });
-    //     })
-    // })
 
     // 休假單更新
     // update table by parameters
@@ -439,11 +237,13 @@ module.exports = function (app) {
         }, function (err) {
             if (err) {
                 res.send(err);
+            } else {
+
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
             }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-            });
         })
     })
 
@@ -470,12 +270,13 @@ module.exports = function (app) {
             ], function (err, tables) {
                 if (err) {
                     res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: tables,
+                    });
                 }
-                res.status(200).send({
-                    code: 200,
-                    error: global.status._200,
-                    payload: tables,
-                });
             }
         )
     })
@@ -545,12 +346,13 @@ module.exports = function (app) {
         }, function (err, tables) {
             if (err) {
                 res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: tables,
+                });
             }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-                payload: tables,
-            });
         });
     })
 
@@ -579,6 +381,10 @@ module.exports = function (app) {
             query.isExecutiveCheck = req.body.isExecutiveCheck;
         }
 
+        if (req.body.create_formDate !== null && req.body.create_formDate != undefined) {
+            query.create_formDate = req.body.create_formDate;
+        }
+
         query.creatorDID = req.body.creatorDID;
 
         console.log(query);
@@ -591,27 +397,16 @@ module.exports = function (app) {
             .exec(function (err, tables) {
                 if (err) {
                     res.send(err);
+                } else {
+                    console.log(tables.length);
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: tables,
+                    });
                 }
-                console.log(tables.length);
-                res.status(200).send({
-                    code: 200,
-                    error: global.status._200,
-                    payload: tables,
-                });
+
             });
-
-
-        // WorkOffTableForm.find(query, function (err, tables) {
-        //     if (err) {
-        //         res.send(err);
-        //     }
-        //     console.log(tables.length);
-        //     res.status(200).send({
-        //         code: 200,
-        //         error: global.status._200,
-        //         payload: tables,
-        //     });
-        // });
     })
 
 }

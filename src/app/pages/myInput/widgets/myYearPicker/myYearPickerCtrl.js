@@ -32,13 +32,13 @@
         // });
         function showYearPicker() {
             console.log(" - showYearPicker()");
-            // $scope.monthPickerDom = this;
+            $scope.yearPickerDom = this;
             $scope.opened = true;
         }
 
         $scope.shiftYear = function (dom) {
             console.log(" - shiftYear()");
-            // $scope.isShiftMonthSelect = true;
+            $scope.isShiftYearSelect = true;
             $scope.myYear = moment($scope.myYear).format('YYYY');
             $scope.myDT = moment(dom.myYear);
             console.log($scope);
