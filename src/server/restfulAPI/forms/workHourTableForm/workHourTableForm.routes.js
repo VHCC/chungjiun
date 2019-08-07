@@ -123,12 +123,13 @@ module.exports = function (app) {
                         }, function (err) {
                             if (err) {
                                 res.send(err);
+                            } else {
+                                res.status(200).send({
+                                    code: 200,
+                                    error: global.status._200,
+                                    payload: formTable,
+                                });
                             }
-                            res.status(200).send({
-                                code: 200,
-                                error: global.status._200,
-                                payload: formTable,
-                            });
                         });
                     }
                 });

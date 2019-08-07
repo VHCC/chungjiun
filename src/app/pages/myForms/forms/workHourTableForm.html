@@ -103,9 +103,9 @@
 
 
     <uib-tabset active="$tabSetStatus.activeTab">
-        <uib-tab heading="個人填寫" ng-click="getTable()">
+        <uib-tab heading="個人填寫" ng-click="getWorkHourTables()">
             <div class="row"
-                 ng-init="getTable();fetchRelatedMembers()"
+                 ng-init="getWorkHourTables();fetchRelatedMembers()"
                  id="rowHead">
                 <div class="col-md-12"
                      id="colHead">
@@ -1285,7 +1285,7 @@
                     <td colspan="22">
                         <section class="col-md-12" >
                             <button progress-button="createSubmit(1500, false)"
-                                    style="float: inherit;"
+                                    style="float: inherit; display: none"
                                     id="btnCreate"
                                     pb-style="shrink"
                                     class="btn btn-warning">

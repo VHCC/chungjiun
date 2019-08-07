@@ -1,4 +1,6 @@
-<h3 class="with-line">{{year}}年 國定假日表</h3>
+<my-year-picker ng-click="listenYear(this)"></my-year-picker>
+
+<h3 class="with-line">{{year}} 年 國定假日表</h3>
 
 <div class="row" ng-init="fetchNationHolidays_workOff()">
     <table class="table table-bordered table-hover table-condensed">
