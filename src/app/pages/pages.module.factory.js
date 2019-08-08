@@ -389,7 +389,13 @@
 
                 distributeWorkAdd: function (formData) {
                     return http.post('/api/post_work_hour_work_distribution_save', formData);
+                },
+
+                updateWorkAddItemsMonthSalary: function (formData) {
+                    return http.post('/api/post_work_hour_work_add_month_salary_update', formData);
                 }
+
+
             }
         }])
         .factory('WorkAddConfirmFormUtil', ['$http', function (http) {
