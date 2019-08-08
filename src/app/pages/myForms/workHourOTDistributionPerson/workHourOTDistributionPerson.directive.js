@@ -6,26 +6,26 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.myForms')
-        .directive('workHourOTDistribution',
+        .directive('workHourOTDistributionPerson',
             [
                 'DateUtil',
-                workHourOTDistribution
+                workHourOTDistributionPerson
             ]);
 
     /** @ngInject */
-    function workHourOTDistribution(DateUtil) {
+    function workHourOTDistributionPerson(DateUtil) {
         return {
             replace: true,
             restrict: 'E',
-            controller: 'workHourOTDistributionCtrl',
-            controllerAs: 'workHourOTDistributionCtrlVm',
+            controller: 'workHourOTDistributionPersonCtrl',
+            controllerAs: 'workHourOTDistributionPersonCtrlVm',
             link: function ($scope, elem, attrs) {
-                console.log("load workHourOTDistributionPerson directive");
+                console.log("load workHourOTDistribution directive");
                 // $scope.format = attrs.formatted == undefined ? 'YYYY/MM' : attrs.formatted;
                 // $scope.myMonth = attrs.default === undefined ? moment(new Date()).format($scope.format) : new Date(attrs.default);
                 // $scope.qqqqqwww();
             },
-            templateUrl: 'app/pages/myForms/workHourOTDistribution/workHourOTDistribution.html',
+            templateUrl: 'app/pages/myForms/workHourOTDistributionPerson/workHourOTDistributionPerson.html',
         };
     }
 })();
