@@ -2637,6 +2637,8 @@
                                 // 相關專案
                                 managersRelatedProjects.push(relatedProjects[index]._id);
                             }
+
+                            // 工時表有填寫過的項目就會出現
                             User.getAllUsers()
                                 .success(function (allUsers) {
 
