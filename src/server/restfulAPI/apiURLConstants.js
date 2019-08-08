@@ -90,6 +90,7 @@ global.apiUrl = {
     post_work_hour_work_update_related_work_add_items : '/api/post_work_hour_work_update_related_work_add_items',
     post_work_hour_work_distribution_save : '/api/post_work_hour_work_distribution_save',
     post_work_hour_work_add_item_update_repent : '/api/post_work_hour_work_add_item_update_repent',
+    post_work_hour_work_add_month_salary_update : '/api/post_work_hour_work_add_month_salary_update',
 
     //workOffTable Form
     post_work_off_create_table : '/api/createWorkOffTableForm',

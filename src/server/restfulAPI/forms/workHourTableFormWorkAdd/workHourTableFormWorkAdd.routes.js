@@ -225,6 +225,33 @@ module.exports = function (app) {
                 }
             })
         }
-        
+    });
+
+    app.post(global.apiUrl.post_work_hour_work_add_month_salary_update, function (req, res) {
+        console.log(req.body);
+
+        var resultCount = 0;
+
+        for (var index = 0; index < req.body.items.length; index ++) {
+            WorkHourTableFormWorkAdd.update({
+                _id: req.body.items[index].item_id,
+            }, {
+                $set: {
+                    userMonthSalary: req.body.salary,
+                }
+            }, function (err) {
+                resultCount++;
+                if (err) {
+                    res.send(err);
+                } else {
+                    if (resultCount === req.body.items.length) {
+                        res.status(200).send({
+                            code: 200,
+                            error: global.status._200,
+                        });
+                    }
+                }
+            })
+        }
     });
 }

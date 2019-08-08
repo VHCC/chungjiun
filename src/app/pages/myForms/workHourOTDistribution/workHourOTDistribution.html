@@ -44,7 +44,7 @@
         <!--</div>-->
 
         <h3 class="with-line" ng-show="workHourOTDistributionCtrlVm.workAdd.selected">
-            {{workHourOTDistributionCtrlVm.workAdd.selected.name}} {{myMonth}} 加班單</h3>
+            {{workHourOTDistributionCtrlVm.workAdd.selected.name}} {{myMonth}} 加班單 (當前薪資:{{specificUserMonthSalary}})</h3>
 
         <table class="table table-bordered table-hover table-condensed">
             <thead>
@@ -57,9 +57,10 @@
                 <th style="vertical-align: inherit; text-align: center">{{showTotalDisHour(workAddConfirmTablesItems, 4)}}</th>
                 <th style="vertical-align: inherit; text-align: center">{{showTotalAddHour(workAddConfirmTablesItems, 1)}}</th>
                 <th style="vertical-align: inherit; text-align: center">{{showTotalAddHour(workAddConfirmTablesItems, 2)}}</th>
+                <th style="vertical-align: inherit; text-align: center"></th>
             </tr>
             <tr>
-                <th style="vertical-align: inherit; text-align: center" width="80px"></th>
+                <th style="vertical-align: inherit; text-align: center" width="120px"></th>
                 <th style="vertical-align: inherit; text-align: center" width="100px">日期</th>
                 <th style="vertical-align: inherit; text-align: center" width="80px">星期</th>
                 <th style="vertical-align: inherit; text-align: center" width="120px">專案代碼</th>
@@ -70,6 +71,7 @@
                 <th style="vertical-align: inherit; text-align: center" width="100px">1 + 1</th>
                 <th style="vertical-align: inherit; text-align: center" width="100px">加班時數</th>
                 <th style="vertical-align: inherit; text-align: center" width="100px">換休時數</th>
+                <th style="vertical-align: inherit; text-align: center" width="30px">填表時月薪</th>
             </tr>
             </thead>
 
@@ -79,6 +81,8 @@
                 <td style="vertical-align: inherit; text-align: center">
                     <span>{{$index + 1}}</span>
                     <span style="display: none;" id="prjDID">{{table_add.prjDID}}</span>
+                    <button class="btn btn-danger editable-table-button btn-xs"
+                            ng-click="changeSalary(table_add)">更改月薪</button>
                 </td>
                 <!--日期-->
                 <td style="vertical-align: inherit; text-align: center">
@@ -143,6 +147,10 @@
                     </my>
 
                 </td>
+                <!-- 填表時月薪-->
+                <td style="text-align: center">
+                    {{table_add.userMonthSalary}}
+                </td>
             </tr>
             </tbody>
 
@@ -181,6 +189,9 @@
                 <!-- 換休時數-->
                 <td style="text-align: center">
                     {{showTotalAddHour(workAddConfirmTablesItems, 2)}}
+                </td>
+                <!-- 填表時月薪-->
+                <td style="text-align: center">
                 </td>
             </tr>
             </tfoot>
