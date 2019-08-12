@@ -18,7 +18,6 @@
              ng-click="fetchData()">
 
         <div class="row">
-
             <!--<div>-->
                 <!--<my-month-picker-->
                         <!--formatted="MM"></my-month-picker>-->
@@ -29,9 +28,16 @@
                     <!--<i class="ion-chevron-right"></i></button>-->
             <!--</div>-->
 
+            <hr/>
+
+            <button class="btn btn-info editable-table-button btn-xs no-print"
+                    ng-click="printPDF() ">
+                列印
+            </button>
+
             <hr>
 
-            <table class="table table-bordered table-hover table-condensed">
+            <table class="table table-bordered table-hover table-condensed" id="form_main_pdf">
                 <thead>
                 <tr style="white-space:nowrap">
                     <td style="vertical-align: inherit; text-align: center" width="100px">日期</td>
@@ -239,6 +245,7 @@
 
                 </tbody>
             </table>
+
         </div>
 
     </uib-tab>
