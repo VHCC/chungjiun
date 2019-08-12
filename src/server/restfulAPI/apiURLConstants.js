@@ -113,9 +113,9 @@ global.apiUrl = {
 
     //workOffExchangeTable Form
     post_work_off_exchange_table_insert_item : '/api/post_work_off_exchange_table_insert_item',
-    post_work_off_exchange_table_find_by_creatorDID : '/api/post_work_off_exchange_table_find_by_creatorDID',
-    post_work_off_exchange_table_remove_by_itemID : '/api/post_work_off_exchange_table_remove_by_itemID',
-    post_work_off_exchange_table_update : '/api/post_work_off_exchange_table_update',
+    post_work_off_exchange_table_fetch_items : '/api/post_work_off_exchange_table_fetch_items',
+    post_work_off_exchange_table_confirm_item : '/api/post_work_off_exchange_table_confirm_item',
+    post_work_off_exchange_table_remove_item : '/api/post_work_off_exchange_table_remove_item',
 
     // holidayDataForm
     post_holiday_data_form_create : '/api/createHolidayDataForm',

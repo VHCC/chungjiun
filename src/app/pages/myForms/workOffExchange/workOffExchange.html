@@ -1,0 +1,127 @@
+<div>
+
+    <div class="row" >
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>選擇員工</label>
+                <ui-select ng-model="workOffExchangeCtrlVm.workAdd.selected"
+                           class="btn-group bootstrap-select form-control"
+                           ng-disabled="false"
+                           ng-change="fetchWorkOffExchange_form($select.selected._id)"
+                           append-to-body="true"
+                           search-enabled="true">
+                    <ui-select-match placeholder="選擇員工">
+                        {{$select.selected.name}}
+                    </ui-select-match>
+                    <ui-select-choices
+                            repeat="user in workOffExchangeCtrlVm.executiveUsers |
+                            groupSelectpickerOptions: {name: $select.search}">
+                        <span ng-bind-html="user.name| highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+
+    <div bs-loading-overlay
+         ng-show="workOffExchangeCtrlVm.workAdd.selected"
+         bs-loading-overlay-reference-id="exchange_workOff">
+
+        <my-year-picker ng-click="listenYear(this)"></my-year-picker>
+
+        <h3 class="with-line" ng-show="workOffExchangeCtrlVm.workAdd.selected">
+            {{workOffExchangeCtrlVm.workAdd.selected.name}} {{myYear}} 兌換單</h3>
+
+        <table class="table table-bordered table-hover table-condensed">
+            <thead>
+            <tr>
+                <th style="vertical-align: inherit; text-align: center" width="80px">特休可兌現時數</th>
+                <th style="vertical-align: inherit; text-align: center" width="80px">{{specialRest - specialRest_exchange}}</th>
+                <th style="vertical-align: inherit; text-align: center" width="80px">補休可兌現時數</th>
+                <th style="vertical-align: inherit; text-align: center" width="80px">{{observedRest - observedRest_exchange}}</th>
+            </tr>
+            <tr>
+                <th style="vertical-align: inherit; text-align: center" width="80px"></th>
+                <th style="vertical-align: inherit; text-align: center" width="80px">兌現月份</th>
+                <th style="vertical-align: inherit; text-align: center" width="80px">當前月薪</th>
+                <th style="vertical-align: inherit; text-align: center" width="80px">兌現假別</th>
+                <th style="vertical-align: inherit; text-align: center" width="80px">兌現時數</th>
+                <th style="vertical-align: inherit; text-align: center" width="80px">兌現金額</th>
+            </tr>
+            </thead>
+
+            <tbody ng-repeat="item in workOffExchangeTablesItems">
+            <tr style="vertical-align: inherit; text-align: center">
+                <!--序號-->
+                <td style="vertical-align: inherit; text-align: center">
+                    <span>{{$index + 1}}</span>
+                    <button class="btn btn-danger editable-table-button btn-xs"
+                            ng-if="item.isConfirmed"
+                            ng-click="removeExchangeItem(item);">
+                        移除
+                    </button>
+                    <button class="btn btn-info editable-table-button btn-xs"
+                            ng-if="!item.isConfirmed"
+                            ng-click="confirmExchangeItem(item) ">
+                        核定
+                    </button>
+                </td>
+                <!-- 兌現月份 -->
+                <td style="vertical-align: inherit; text-align: center">
+                    <span ng-if="item.isConfirmed">{{item.month}}</span>
+                    <input type="text"
+                           ng-if="!item.isConfirmed"
+                           ng-model="item.month"
+                           value="{{item.month}}"
+                           class="form-control exchangeMonth input-sm">
+                </td>
+                <!-- 當前月薪 -->
+                <td style="vertical-align: inherit; text-align: center">
+                    <span ng-if="item.isConfirmed">{{item.userMonthSalary}}</span>
+                    <input type="text"
+                           ng-if="!item.isConfirmed"
+                           ng-model="item.userMonthSalary"
+                           value="{{item.userMonthSalary}}"
+                           class="form-control exchangeInput input-sm">
+                </td>
+                <!-- 兌現假別 -->
+                <td style="vertical-align: inherit; text-align: center">
+                    <span ng-if="item.isConfirmed">{{exchangeType(item.workOffType)}}</span>
+                    <my ng-if="!item.isConfirmed">
+                        <my-selector type="{{item.workOffType}}"
+                                     showtype="1">
+                        </my-selector>
+                    </my>
+                </td>
+                <!-- 兌現時數 -->
+                <td style="vertical-align: inherit; text-align: center">
+                    <span ng-if="item.isConfirmed">{{item.exchangeHour}}</span>
+                    <input type="text"
+                           ng-if="!item.isConfirmed"
+                           ng-model="item.exchangeHour"
+                           value="{{item.exchangeHour}}"
+                           class="form-control exchangeInput input-sm">
+                </td>
+                <!-- 兌現金額 -->
+                <td style="vertical-align: inherit; text-align: center">
+                    <span>{{calculateExchangeMoney(item)}}</span>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+
+        <hr>
+
+        <section class="col-md-6">
+            <button progress-button="insertExchangeItem()"
+                    style="float: inherit;"
+                    pb-style="shrink"
+                    class="btn btn-primary">
+                新增兌換紀錄
+            </button>
+        </section>
+    </div>
+
+</div>

@@ -154,6 +154,11 @@
         // ＊＊＊＊＊＊＊ Manipulate ＊＊＊＊＊＊＊
         // 新增項目
         $scope.addWorkItem = function (prj) {
+
+            bsLoadingOverlayService.start({
+                referenceId: 'mainPage_workHour'
+            });
+
             vm.prjItems.selected = "";
             var newTableItem = {
                 prjDID: prj._id,
@@ -192,12 +197,12 @@
             }
             // console.log(newTableItem);
 
-            $scope.createSubmit(500, true);
+            $scope.createSubmit(0, true);
         }
 
         // 暫存表單，＊＊＊使用者互動 主要儲存功能＊＊＊
         $scope.saveTemp = function () {
-            $scope.createSubmit(500, false);
+            $scope.createSubmit(100, false);
         }
 
         // Remove Work Hour Check
@@ -228,7 +233,7 @@
             // 移除加班項目
             WorkHourAddItemUtil.removeRelatedAddItemByProject(formData)
                 .success(function (res) {
-                    $scope.createSubmit(500, true);
+                    $scope.createSubmit(100, true);
                 })
                 .error(function () {
                     console.log("ERROR WorkHourAddItemUtil.removeRelatedAddItemByProject");
@@ -1555,7 +1560,7 @@
                             table.fri_hour_add +
                             table.sat_hour_add +
                             table.sun_hour_add;
-                        $scope.createSubmit(500, false);
+                        $scope.createSubmit(100, false);
                     })
                     .error(function () {
                         console.log('ERROR WorkHourAddItemUtil.createWorkHourAddItem')
@@ -1758,6 +1763,11 @@
                         })
                         .error(function () {
                             console.log('ERROR WorkHourUtil.createWorkHourTableForm');
+                            $timeout(function () {
+                                bsLoadingOverlayService.stop({
+                                    referenceId: 'mainPage_workHour'
+                                });
+                            }, 500)
                         })
 
                 }
