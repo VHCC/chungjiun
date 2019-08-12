@@ -313,18 +313,20 @@
         .factory('WorkOffExchangeFormUtil', ['$http', function (http) {
             return {
                 // insert new Exchange item
-                insertWorkOffExchangeTableForm: function (formData) {
+                insertExchangeItem: function (formData) {
                     return http.post('/api/post_work_off_exchange_table_insert_item', formData);
                 },
-                findWorkOffExchangeTableFormByUserDID: function (formData) {
-                    return http.post('/api/post_work_off_exchange_table_find_by_creatorDID', formData);
+
+                fetchExchangeItemsByYear: function (formData) {
+                    return http.post('/api/post_work_off_exchange_table_fetch_items', formData);
                 },
-                removeWorkOffExchangeTableFormByItemID: function (formData) {
-                    return http.post('/api/post_work_off_exchange_table_remove_by_itemID', formData);
+
+                removeExchangeItem: function (formData) {
+                    return http.post('/api/post_work_off_exchange_table_remove_item', formData);
                 },
-                // ***** workOffExchange Item Update *****
-                updateWorkOffExchangeItem: function(formData) {
-                    return http.post('/api/post_work_off_exchange_table_update', formData);
+
+                confirmExchangeItem: function (formData) {
+                    return http.post('/api/post_work_off_exchange_table_confirm_item', formData);
                 },
             }
         }])

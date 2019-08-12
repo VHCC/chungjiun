@@ -267,13 +267,15 @@
                    <!--value="{{workOffFormCtrlVm.holidayForm.rest_observed}}">-->
             <!--{{diff(workOffFormCtrlVm.holidayForm.rest_observed,-->
             <!--workOffFormCtrlVm.holidayForm.calculate_observed)}}-->
-            {{workOffFormCtrlVm.holidayForm.rest_observed+
+            {{workOffFormCtrlVm.holidayForm.rest_observed +
             workOffFormCtrlVm.holidayForm.person_residual_rest_hour -
-            showWorkOffCount(2)}}
+            showWorkOffCount(2) -
+            specificUser_exchange_observed}}
         </td>
         <td class="form-group " style="vertical-align: inherit;">
-            {{workOffFormCtrlVm.holidayForm.rest_special-
-            workOffFormCtrlVm.holidayForm.calculate_special}}
+            {{workOffFormCtrlVm.holidayForm.rest_special -
+            workOffFormCtrlVm.holidayForm.calculate_special -
+            (specificUser_exchange_special / 8)}}
         </td>
         <td class="form-group " style="vertical-align: inherit;">
             {{workOffFormCtrlVm.holidayForm.rest_married-

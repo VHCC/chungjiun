@@ -157,13 +157,15 @@
                             <!--<t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_private}}</t>-->
                         </td>
                         <td class="form-group " style="vertical-align: inherit;">
-                            <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_observed+
+                            <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_observed +
                                 workOffFormCtrlVm.loginUserHolidayForm.person_residual_rest_hour -
-                                showWorkOffCount(2)}}</t>
+                                showWorkOffCount(2) -
+                                loginUser_exchange_observed}}</t>
                         </td>
                         <td class="form-group " style="vertical-align: inherit;">
-                            <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_special-
-                                workOffFormCtrlVm.loginUserHolidayForm.calculate_special}}</t>
+                            <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_special -
+                                workOffFormCtrlVm.loginUserHolidayForm.calculate_special -
+                                (loginUser_exchange_special / 8)}}</t>
                         </td>
                         <td class="form-group " style="vertical-align: inherit;">
                             <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_married-
@@ -482,17 +484,10 @@
             <div ng-include="'app/pages/myForms/forms/workOffForm_OverTimeDayTab.html'"></div>
         </uib-tab>
 
-        <uib-tab heading="補休特休兌換" ng-click="getWorkOffExchangeTable()" ng-show="false">
-            <div ng-include="'app/pages/myForms/forms/workOffForm_ExchangeCashTab.html'"></div>
+        <uib-tab heading="補休特休兌換" ng-click="getWorkOffExchangeTable()">
+            <work-off-exchange></work-off-exchange>
         </uib-tab>
 
-        <uib-tab heading="補休特休兌換(主管審核)" ng-show="false">
-            <div ng-include="'app/pages/myForms/forms/workOffForm_ExchangeCashBossTab.html'"></div>
-        </uib-tab>
-
-        <uib-tab heading="補休特休兌換(行政確認)" ng-show="false">
-            <div ng-include="'app/pages/myForms/forms/workOffForm_ExchangeCashExecutiveTab.html'"></div>
-        </uib-tab>
     </uib-tabset>
 </div>
 
