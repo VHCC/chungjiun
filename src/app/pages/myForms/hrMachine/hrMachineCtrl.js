@@ -84,6 +84,12 @@
 
                 HrMachineUtil.fetchUserHrMachineDataOneDayByMachineDID(formData)
                     .success(function (res) {
+                        res.payload = res.payload.sort(function (a, b) {
+                            return a._id > b._id ? 1 : -1;
+                        });
+
+                        console.log(res.payload);
+
                         var arrayResult = res.payload;
 
                         var hrMachineTableSorted = {};
@@ -844,27 +850,27 @@
                         workOffHour = 12;
                         workOffMin = 0;
                     }
-                    console.log(tableItem);
-                    console.log("isLate= " + $scope.isLate(tableItem)
-                        + ", "
-                        + workOnHour + ":" + workOnMin
-                        + ", "
-                        + workOffHour + ":" + workOffMin);
+                    // console.log(tableItem);
+                    // console.log("isLate= " + $scope.isLate(tableItem)
+                    //     + ", "
+                    //     + workOnHour + ":" + workOnMin
+                    //     + ", "
+                    //     + workOffHour + ":" + workOffMin);
 
                     if (workOffHour >= 13) {
                         isAfterNoon = true;
                     }
 
-                    console.log("isAfterNoon= " + isAfterNoon + ", isBeforeNoon= " + isBeforeNoon);
+                    // console.log("isAfterNoon= " + isAfterNoon + ", isBeforeNoon= " + isBeforeNoon);
 
                     if (isAfterNoon && isBeforeNoon) {
                         // console.log(parseInt(workOffHour) - parseInt(workOnHour) - 1);
                         result =  parseInt((workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin));
-                        console.log("A result:" + result);
+                        // console.log("A result:" + result);
                     } else {
                         // console.log((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
                         result =  parseInt((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
-                        console.log("B result:" + result);
+                        // console.log("B result:" + result);
                     }
                     isAfterNoon = false;
                     isBeforeNoon = false;
@@ -924,12 +930,12 @@
                     if (isAfterNoon && isBeforeNoon) {
                         // console.log(workOffHour - workOnHour - 1);
                         result +=  parseInt((workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin));
-                        console.log("C result:" + result);
+                        // console.log("C result:" + result);
 
                     } else {
                         // console.log((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
                         result += parseInt((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
-                        console.log("D result:" + result);
+                        // console.log("D result:" + result);
                     }
                 }
 
