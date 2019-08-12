@@ -72,6 +72,7 @@ module.exports = function (app) {
             .sort({
                 date: 1,
                 time: 1,
+                _id: 1
             })
             .exec(function (err, formDataResponse) {
                 resultCount++;
