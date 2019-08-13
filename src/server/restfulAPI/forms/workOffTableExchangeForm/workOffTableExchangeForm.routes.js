@@ -25,20 +25,35 @@ module.exports = function (app) {
 
     // fetch items
     app.post(global.apiUrl.post_work_off_exchange_table_fetch_items, function (req, res) {
-        WorkOffTableExchangeForm.find({
-            creatorDID: req.body.creatorDID,
-            year: req.body.year,
-        }, function (err, items) {
-            if (err) {
-                res.send(err);
-            } else {
-                res.status(200).send({
-                    code: 200,
-                    error: global.status._200,
-                    payload: items,
-                });
-            }
-        });
+
+        var query = {};
+        if (req.body.month != null || req.body.month != undefined) {
+            query.month = req.body.month;
+        }
+
+        if (req.body.year != null || req.body.year != undefined) {
+            query.year = req.body.year;
+        }
+
+        query.creatorDID = req.body.creatorDID;
+
+        WorkOffTableExchangeForm.find(query)
+            .sort({
+                _id: 1,
+            })
+            .exec(function (err, items) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: items,
+                    });
+                }
+
+            });
+
     });
 
     // remove items
