@@ -201,7 +201,7 @@
 
             $scope.calculateExchangeMoney = function (item) {
                 var result;
-                result = (item.userMonthSalary / 30 / 8) * item.exchangeHour;
+                result = Math.round(item.userMonthSalary / 30 / 8) * item.exchangeHour;
                 return isNaN(result) ? "未核定" : Math.ceil(result);
             }
 
