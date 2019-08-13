@@ -14,7 +14,7 @@
 
     /** @ngInject */
     function mySelectorCtrl($scope
-                    , $filter) {
+        , $filter) {
         $scope.workOffTypeOptions = [
             {
                 name: "事假",
@@ -41,6 +41,19 @@
             $scope.workOffType = selectedRole[0];
         }
 
+        $scope.loadUserWorkOffExchangeForm = function () {
+            $scope.workOffTypeOptions = [
+                {
+                    name: "補休",
+                    type: 2
+                },
+                {
+                    name: "特休",
+                    type: 3
+                }
+            ];
+        }
+
         $scope.loadUserWorkOffForm = function (table) {
             $scope.workOffTypeOptions = [
                 {
@@ -58,7 +71,7 @@
                 {
                     name: "特休",
                     type: 3
-                },
+                }
             ];
             $scope.loginUserForm = table;
 
