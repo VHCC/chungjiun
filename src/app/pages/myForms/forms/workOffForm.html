@@ -484,7 +484,7 @@
             <div ng-include="'app/pages/myForms/forms/workOffForm_OverTimeDayTab.html'"></div>
         </uib-tab>
 
-        <uib-tab heading="補休特休兌換" ng-click="getWorkOffExchangeTable()">
+        <uib-tab heading="補休特休兌換（測試）[行整總管]" ng-click="getWorkOffExchangeTable()" ng-if="roleType === '100'">
             <work-off-exchange></work-off-exchange>
         </uib-tab>
 
