@@ -286,10 +286,6 @@
 
             }
 
-            $scope.changeWorkOffType = function (dom) {
-                dom.$parent.$parent.item.workOffType = dom.workOffType.type;
-            }
-
         } // End of function
     }
 )();

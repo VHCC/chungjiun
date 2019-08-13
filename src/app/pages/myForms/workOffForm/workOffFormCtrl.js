@@ -461,13 +461,22 @@
 
             // 顯示假期名
             $scope.showWorkOffTypeString = function (type) {
+                // console.log(type);
                 return WorkOffTypeUtil.getWorkOffString(type);
             }
 
             $scope.changeWorkOffType = function (dom) {
-                dom.$parent.table.workOffType = dom.workOffType.type;
+                // 個人請假
+                if (dom.$parent.table != undefined) {
+                    dom.$parent.table.workOffType = dom.workOffType.type;
+                }
                 if (dom.$parent.reloadDatePicker != null) {
                     dom.$parent.reloadDatePicker(dom.workOffType.type);
+                }
+
+                // 補休、特休兌換
+                if (dom.$parent.$parent.item != undefined) {
+                    dom.$parent.$parent.item.workOffType = dom.workOffType.type;
                 }
             }
 
