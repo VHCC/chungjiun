@@ -1502,8 +1502,10 @@
                 for (var index = 0; index < tables.length; index++) {
                     var result = 0.0;
                     for (var index_item = 0; index_item < tables[index].items.length; index_item++) {
-                        if (type == tables[index].items[index_item].item_workAddType) {
-                            result += parseInt(TimeUtil.getCalculateHourDiffByTime(tables[index].items[index_item].item_start_time, tables[index].items[index_item].item_end_time));
+                        if (tables[index].isExecutiveConfirm) {
+                            if (type == tables[index].items[index_item].item_workAddType) {
+                                result += parseInt(TimeUtil.getCalculateHourDiffByTime(tables[index].items[index_item].item_start_time, tables[index].items[index_item].item_end_time));
+                            }
                         }
                     }
                     result = result % 60 < 30 ? Math.round(result / 60) : Math.round(result / 60) - 0.5;
