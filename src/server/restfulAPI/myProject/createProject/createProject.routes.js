@@ -20,8 +20,10 @@ module.exports = function (app) {
             function (err, users) {
                 if (err) {
                     res.send(err);
+                } else {
+
+                    res.json(users);
                 }
-                res.json(users);
             });
     });
 
@@ -37,8 +39,10 @@ module.exports = function (app) {
             function (err, users) {
                 if (err) {
                     res.send(err);
+                } else {
+
+                    res.json(users);
                 }
-                res.json(users);
             });
     });
 
@@ -47,7 +51,8 @@ module.exports = function (app) {
         console.log(global.timeFormat(new Date()) + global.log.i + "AP, getAllTechs");
         User.find(
             {
-                roleType: 1 // 技師
+                roleType: 1, // 技師
+                workStatus:true
             },
             {
                 password: 0
@@ -55,8 +60,10 @@ module.exports = function (app) {
             function (err, techs) {
                 if (err) {
                     res.send(err);
+                } else {
+
+                    res.json(techs);
                 }
-                res.json(techs);
             })
     });
 
@@ -64,7 +71,8 @@ module.exports = function (app) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, getAllManagers");
         User.find(
             {
-                roleType: 2 // 技師
+                roleType: 2, // 技師
+                workStatus:true
             },
             {
                 password: 0
@@ -72,8 +80,9 @@ module.exports = function (app) {
             function (err, managers) {
                 if (err) {
                     res.send(err);
+                } else {
+                    res.json(managers);
                 }
-                res.json(managers);
             })
     })
 
@@ -102,13 +111,14 @@ module.exports = function (app) {
                 function (err, project) {
                     if (err) {
                         res.send(err);
+                    } else {
+                        console.log(global.timeFormat(new Date()) + global.log.i + "create Project= " +
+                            JSON.stringify(req.body));
+                        res.status(200).send({
+                            code: 200,
+                            error: global.status._200,
+                        });
                     }
-                    console.log(global.timeFormat(new Date()) + global.log.i + "create Project= " +
-                        JSON.stringify(req.body));
-                    res.status(200).send({
-                        code: 200,
-                        error: global.status._200,
-                    });
                 });
         } catch (error) {
             console.log("ERROR");
@@ -126,8 +136,10 @@ module.exports = function (app) {
         Project.find(function (err, projects) {
             if (err) {
                 res.send(err);
+            } else {
+
+                res.json(projects);
             }
-            res.json(projects);
         })
     });
 
@@ -139,10 +151,11 @@ module.exports = function (app) {
                 enable: true
             },
             function (err, projects) {
-            if (err) {
-                res.send(err);
-            }
-            res.json(projects);
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.json(projects);
+                }
         })
     });
 
@@ -161,8 +174,9 @@ module.exports = function (app) {
         ], function (err, projects) {
             if (err) {
                 res.send(err);
+            } else {
+                res.json(projects);
             }
-            res.json(projects);
         })
     });
 
@@ -173,8 +187,10 @@ module.exports = function (app) {
         }, function (err, oneProject) {
             if (err) {
                 res.send(err);
+            } else {
+
+                res.json(oneProject);
             }
-            res.json(oneProject);
         })
     });
 
@@ -187,8 +203,10 @@ module.exports = function (app) {
             console.log(oneProject)
             if (err) {
                 res.send(err);
+            } else {
+
+                res.json(oneProject);
             }
-            res.json(oneProject);
         })
     });
 
@@ -200,8 +218,10 @@ module.exports = function (app) {
         }).distinct('code', function (err, projects) {
             if (err) {
                 res.send(err);
+            } else {
+
+                res.json(projects);
             }
-            res.json(projects);
         })
     });
 
@@ -221,12 +241,14 @@ module.exports = function (app) {
             }, function (err, projects) {
                 if (err) {
                     res.send(err);
+                } else {
+
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: projects,
+                    });
                 }
-                res.status(200).send({
-                    code: 200,
-                    error: global.status._200,
-                    payload: projects,
-                });
             })
     });
 
@@ -238,8 +260,10 @@ module.exports = function (app) {
         }).distinct('prjNumber', function (err, projects) {
             if (err) {
                 res.send(err);
+            } else {
+
+                res.json(projects);
             }
-            res.json(projects);
         })
     })
 
@@ -252,8 +276,10 @@ module.exports = function (app) {
         }).distinct('prjSubNumber', function (err, projects) {
             if (err) {
                 res.send(err);
+            } else {
+
+                res.json(projects);
             }
-            res.json(projects);
         })
     })
 
@@ -302,8 +328,10 @@ module.exports = function (app) {
             .exec(function (err, projects) {
                 if (err) {
                     res.send(err);
+                } else {
+
+                    res.json(projects);
                 }
-                res.json(projects);
             });
     })
 
@@ -316,8 +344,10 @@ module.exports = function (app) {
         }, function (err, projects) {
             if (err) {
                 res.send(err);
+            } else {
+
+                res.json(projects);
             }
-            res.json(projects);
         })
     })
 
@@ -332,8 +362,10 @@ module.exports = function (app) {
         }, function (err, projects) {
             if (err) {
                 res.send(err);
+            } else {
+
+                res.json(projects);
             }
-            res.json(projects);
         })
     })
 }
