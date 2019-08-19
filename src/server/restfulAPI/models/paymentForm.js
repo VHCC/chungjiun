@@ -1,20 +1,21 @@
 var mongoose = require('mongoose');
 
 module.exports = mongoose.model('PaymentForm', {
+    // 填表人
     creatorDID: {
       type: String,
     },
-    prjDID: {
-        type: String,
+    // 年分
+    year: {
+        type: Number,
     },
-    payDate: {
-        type: Date,
+    // 月份
+    month: {
+        type: Number,
     },
-    receiptCode: {
-        type: String,
-    },
-    amount: {
-        type: String,
+    // tableDID以及prjDID
+    formTables: {
+        type: Array,
     },
 
 });

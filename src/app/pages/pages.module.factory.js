@@ -143,11 +143,39 @@
                 }
             }
         }])
-        .factory('PaymentForms', ['$http', function (http) {
+        .factory('PaymentFormsUtil', ['$http', function (http) {
             return {
-                createForms: function (formData) {
-                    return http.post('/api/createPaymentForm', formData);
-                }
+                // createForms: function (formData) {
+                //     return http.post('/api/createPaymentForm', formData);
+                // }
+                insertPaymentItem: function (formData) {
+                    return http.post('/api/post_payment_insert_item', formData);
+                },
+
+                removePaymentItem: function (formData) {
+                    return http.post('/api/post_payment_remove_item', formData);
+                },
+
+                fetchPaymentItems: function (formData) {
+                    return http.post('/api/post_payment_fetch_items', formData);
+                },
+
+                createPaymentForm: function (formData) {
+                    return http.post('/api/post_payment_create_form', formData);
+                },
+
+                updatePaymentItems: function (formData) {
+                    return http.post('/api/post_payment_items_update', formData);
+                },
+
+                updatePaymentItemByID: function (formData) {
+                    return http.post('/api/post_payment_items_update_by_id', formData);
+                },
+
+                // 多組
+                getPaymentsMultiple: function(formData) {
+                    return http.post('/api/post_payment_multiple_get', formData);
+                },
             }
         }])
         .factory('HolidayDataForms', ['$http', function (http) {
