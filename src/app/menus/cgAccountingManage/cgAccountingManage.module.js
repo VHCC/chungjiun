@@ -29,7 +29,6 @@
                     controller: 'paymentFormCtrl',
                     controllerAs: 'paymentFormCtrlVm',
                     title: '墊付款',
-                    accessLevel: [9999],
                     sidebarMeta: {
                         order: global.pages.cgAccountingManage_paymentForm,
                     },

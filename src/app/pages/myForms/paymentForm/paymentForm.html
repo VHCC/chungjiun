@@ -1,0 +1,120 @@
+<style type='text/css'>
+
+    .modal::before {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+        margin-right: -4px;
+    }
+
+    .modal-dialog {
+        display: inline-block;
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    .workAdd {
+        cursor: pointer;
+    }
+
+    .sumWarning {
+        color: red;
+        font-weight: bold;
+    }
+
+    .sumNormal {
+        color: black;
+    }
+
+    .mytooltip {
+        position: relative;
+        display: inline-block;
+        /*overflow : hidden;*/
+        text-overflow : ellipsis;
+        cursor: pointer;
+        /*white-space : nowrap;*/
+    }
+
+    /* Tooltip text */
+    .mytooltip .tooltiptext, .mytooltip .tooltiptextprj{
+        visibility: hidden;
+        width: 360px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+
+        /* Position the tooltip text */
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -180px;
+
+        /* Fade in tooltip */
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    /* Tooltip arrow */
+    .mytooltip .tooltiptext::after, .mytooltip .tooltiptextprj:after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    /* Show the tooltip text when you mouse over the tooltip container */
+    .mytooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    textarea:focus, input:focus{
+        outline: none;
+    }
+
+    *:focus {
+        outline: none;
+    }
+
+    .mytooltip:focus .tooltiptextprj {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .uib-datepicker-popup table tbody tr:hover{
+        background-color: #99c7ee;
+    }
+
+</style>
+
+
+<div ng-init="fetchRelatedMembers()">
+    <div bs-loading-overlay
+         bs-loading-overlay-reference-id="payment_main">
+
+        <uib-tabset active="$tabSetStatus.activeTab">
+            <uib-tab heading="新增表單" >
+                <div ng-include="'app/pages/myForms/paymentForm/tabs/paymentForm_mainTab.html'"></div>
+            </uib-tab>
+            <uib-tab heading="歷史檢視" ng-if="roleType === '100'">
+                <div ng-include="'app/pages/myForms/paymentForm/tabs/paymentForm_historyTab.html'"></div>
+            </uib-tab>
+            <uib-tab heading="經理/主任審核" ng-if="roleType === '2' || roleType === '100' || roleType === '6'"
+                     ng-init="getPaymentReviewData_manager()">
+                <div ng-include="'app/pages/myForms/paymentForm/tabs/paymentForm_managerTab.html'"></div>
+            </uib-tab>
+            <uib-tab heading="行政確認" ng-if="roleType === '100'"
+                     ng-click="getPaymentReviewData_executive()">
+                <div ng-include="'app/pages/myForms/paymentForm/tabs/paymentForm_executiveTab.html'"></div>
+            </uib-tab>
+        </uib-tabset>
+    </div>
+</div>

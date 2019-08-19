@@ -1299,6 +1299,7 @@
             }
 
             $scope.saveNationalHoliday = function (checkingTable, checkingButton) {
+                console.log(checkingButton);
                 var formData = {
                     tableID: checkingTable.tableID,
                     create_formDate: checkingTable.create_formDate,

@@ -64,27 +64,6 @@
                 return DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment(item.create_formDate), item.day - 1));
             }
 
-            $scope.changeWorkOffHistoryMonth = function(changeCount, dom) {
-
-                $scope.monthPicker = dom;
-
-                // document.getElementById('includeHead').innerHTML = "";
-
-                dom.myMonth = moment(dom.myDT).add(changeCount, 'M').format('YYYY/MM');
-                dom.myDT = moment(dom.myDT).add(changeCount, 'M');
-                console.log("dom.myMonth= " + dom.myMonth);
-
-                var year = parseInt(dom.myDT.year()) - 1911;
-                var month = parseInt(dom.myDT.month()) + 1;
-
-                // console.log(vm);
-
-                specificYear = month;
-
-                $scope.fetchWorkHourAdd_confirmed(vm.workAdd.selected, specificYear);
-
-            }
-
             $scope.listenYear = function (dom) {
                 dom.$watch('myYear',function(newValue, oldValue) {
                     if (dom.isShiftYearSelect) {
