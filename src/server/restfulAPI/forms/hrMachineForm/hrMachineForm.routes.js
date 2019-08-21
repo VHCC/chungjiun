@@ -78,21 +78,21 @@ module.exports = function (app) {
                 resultCount++;
                 if (err) {
                     res.send(err);
-                }
-                // console.log(formDataResponse);
-                // console.log(formDataResponse.length);
-                if (formDataResponse.length > 0) {
-                    resultArry.push(formDataResponse);
-                }
+                } else {
+                    // console.log(formDataResponse);
+                    // console.log(formDataResponse.length);
+                    if (formDataResponse != undefined && formDataResponse.length > 0) {
+                        resultArry.push(formDataResponse);
+                    }
 
-                // console.log(resultCount);
-
-                // console.log(resultArry);
-                res.status(200).send({
-                    code: 200,
-                    error: global.status._200,
-                    payload: resultArry,
-                });
+                    // console.log(resultCount);
+                    // console.log(resultArry);
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: resultArry,
+                    });
+                }
             });
 
     });
