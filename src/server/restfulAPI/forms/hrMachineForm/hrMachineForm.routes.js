@@ -33,23 +33,25 @@ module.exports = function (app) {
                 resultCount++;
                 if (err) {
                     res.send(err);
-                }
-                // console.log(formDataResponse);
-                // console.log(formDataResponse.length);
-                if (formDataResponse.length > 0) {
-                    resultArry.push(formDataResponse);
+                } else {
+                    // console.log(formDataResponse);
+                    // console.log(formDataResponse.length);
+                    if (formDataResponse != undefined && formDataResponse.length > 0) {
+                        resultArry.push(formDataResponse);
+                    }
+
+                    // console.log(resultCount);
+
+                    if (resultCount === daysCount + 1) {
+                        // console.log(resultArry);
+                        res.status(200).send({
+                            code: 200,
+                            error: global.status._200,
+                            payload: resultArry,
+                        });
+                    }
                 }
 
-                // console.log(resultCount);
-
-                if (resultCount === daysCount + 1) {
-                    // console.log(resultArry);
-                    res.status(200).send({
-                        code: 200,
-                        error: global.status._200,
-                        payload: resultArry,
-                    });
-                }
             })
         }
     });
@@ -193,14 +195,16 @@ module.exports = function (app) {
                     resultIndex++;
                     if (err) {
                         res.send(err);
+                    } else {
+                        // console.log("resultIndex= " + resultIndex);
+                        if (resultIndex === index - 1) {
+                            res.status(200).send({
+                                code: 200,
+                                error: global.status._200,
+                            });
+                        }
                     }
-                    // console.log("resultIndex= " + resultIndex);
-                    if (resultIndex === index - 1) {
-                        res.status(200).send({
-                            code: 200,
-                            error: global.status._200,
-                        });
-                    }
+
                 })
                 // console.log(index);
                 index ++;
