@@ -371,23 +371,54 @@
         };
 
         // main
+        // 提交審查
         $scope.sendReview = function (dom) {
 
             $scope.saveItems();
 
-            $timeout(function () {
-                var formData = {
-                    creatorDID: $scope.userDID,
-                    year: specificYear,
-                    month: specificMonth,
-                    isSendReview: true,
-                }
-                PaymentFormsUtil.updatePaymentItems(formData)
-                    .success(function (res) {
-                        $scope.fetchPaymentsData();
-                    })
-            }, 500)
+            var unSendReviewCount = 0;
 
+            for (var index = 0; index < $scope.displayPaymentItems.length; index ++) {
+                if (!$scope.displayPaymentItems[index].isSendReview) {
+                    unSendReviewCount++
+                }
+            }
+
+            $scope.checkText = "確定 提交：" + unSendReviewCount + "筆 墊付款 ?";
+            $scope.checkingUserDID = $scope.userDID;
+            ngDialog.open({
+                template: 'app/pages/myForms/paymentForm//dialog/paymentReviewSend_Modal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+
+            // $timeout(function () {
+            //     var formData = {
+            //         creatorDID: $scope.userDID,
+            //         year: specificYear,
+            //         month: specificMonth,
+            //         isSendReview: true,
+            //     }
+            //     PaymentFormsUtil.updatePaymentItems(formData)
+            //         .success(function (res) {
+            //             $scope.fetchPaymentsData();
+            //         })
+            // }, 500)
+
+        }
+
+        $scope.checkToSendReview = function(userDID) {
+            var formData = {
+                creatorDID: userDID,
+                year: specificYear,
+                month: specificMonth,
+                isSendReview: true,
+            }
+            PaymentFormsUtil.updatePaymentItems(formData)
+                .success(function (res) {
+                    $scope.fetchPaymentsData();
+                })
         }
 
         $scope.saveItems = function () {
