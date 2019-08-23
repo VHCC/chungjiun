@@ -1,5 +1,5 @@
 var PaymentForm = require('../../models/paymentForm');
-var PaymentFormItem = require('../../models/PaymentFormItem');
+var PaymentFormItem = require('../../models/paymentFormItem');
 
 module.exports = function (app) {
     'use strict';
