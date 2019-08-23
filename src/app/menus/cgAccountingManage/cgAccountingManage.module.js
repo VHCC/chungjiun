@@ -28,7 +28,7 @@
                     templateUrl: 'app/pages/myForms/paymentForm/paymentFormPage.html',
                     controller: 'paymentFormCtrl',
                     controllerAs: 'paymentFormCtrlVm',
-                    title: '墊付款',
+                    title: '墊付款[測試]',
                     sidebarMeta: {
                         order: global.pages.cgAccountingManage_paymentForm,
                     },
