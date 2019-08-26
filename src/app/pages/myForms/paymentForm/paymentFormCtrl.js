@@ -93,38 +93,43 @@
 
             });
 
-        Project.findAll()
-            .success(function (allProjects) {
-                // console.log(allProjects);
-                vm.projects = allProjects.slice();
+        $scope.initProject = function() {
+            Project.findAll()
+                .success(function (allProjects) {
+                    // console.log(allProjects);
+                    vm.projects = allProjects.slice();
 
-                $scope.allProjectCache = [];
-                var prjCount = allProjects.length;
-                for (var index = 0; index < prjCount; index++) {
+                    $scope.allProjectCache = [];
+                    var prjCount = allProjects.length;
+                    for (var index = 0; index < prjCount; index++) {
 
-                    // 專案名稱顯示規則 2019/07 定義
-                    var nameResult = "";
-                    if (allProjects[index].prjSubName != undefined && allProjects[index].prjSubName.trim() != "") {
-                        nameResult = allProjects[index].prjSubName + " - " + ProjectUtil.getTypeText(allProjects[index].type);
-                    } else if (allProjects[index].prjName != undefined && allProjects[index].prjName.trim() != "") {
-                        nameResult = allProjects[index].prjName + " - " + ProjectUtil.getTypeText(allProjects[index].type);
-                    } else {
-                        nameResult = allProjects[index].mainName + " - " + ProjectUtil.getTypeText(allProjects[index].type);
+                        // 專案名稱顯示規則 2019/07 定義
+                        var nameResult = "";
+                        if (allProjects[index].prjSubName != undefined && allProjects[index].prjSubName.trim() != "") {
+                            nameResult = allProjects[index].prjSubName + " - " + ProjectUtil.getTypeText(allProjects[index].type);
+                        } else if (allProjects[index].prjName != undefined && allProjects[index].prjName.trim() != "") {
+                            nameResult = allProjects[index].prjName + " - " + ProjectUtil.getTypeText(allProjects[index].type);
+                        } else {
+                            nameResult = allProjects[index].mainName + " - " + ProjectUtil.getTypeText(allProjects[index].type);
+                        }
+
+                        $scope.allProjectCache[index] = {
+                            prjDID: allProjects[index]._id,
+                            prjCode: allProjects[index].prjCode,
+                            mainName: allProjects[index].mainName + " - "
+                            + allProjects[index].prjName + " - "
+                            + allProjects[index].prjSubName + " - "
+                            + ProjectUtil.getTypeText(allProjects[index].type),
+                            majorID: allProjects[index].majorID,
+                            managerID: allProjects[index].managerID,
+                            ezName: nameResult,
+                        };
                     }
+                });
+        }
 
-                    $scope.allProjectCache[index] = {
-                        prjDID: allProjects[index]._id,
-                        prjCode: allProjects[index].prjCode,
-                        mainName: allProjects[index].mainName + " - "
-                        + allProjects[index].prjName + " - "
-                        + allProjects[index].prjSubName + " - "
-                        + ProjectUtil.getTypeText(allProjects[index].type),
-                        majorID: allProjects[index].majorID,
-                        managerID: allProjects[index].managerID,
-                        ezName: nameResult,
-                    };
-                }
-            });
+        $scope.initProject();
+
 
         $scope.listenMonth = function(dom){
             dom.$watch('myMonth',function(newValue, oldValue) {
@@ -267,6 +272,7 @@
                                 .success(function (res) {
                                     // console.log(res);
                                     $scope.fetchPaymentsData();
+                                    $scope.initProject();
                                 })
                         })
                 })
