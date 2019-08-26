@@ -324,12 +324,17 @@
             try {
                 var workers = [];
                 for (var index = 0; index < form.$data.workers.length; index++) {
-                    workers[index] = form.$data.workers[index].value;
+                    // console.log(form.$data.workers[index]);
+                    if (form.$data.workers[index] == null ) {
+                        continue;
+                    }
+                    workers.push(form.$data.workers[index].value);
                 }
                 var formData = {
                     prjID: table.prj._id,
                     workers: workers,
                 }
+                // console.log(formData);
                 Project.updateWorkers(formData)
                     .success(function (res) {
                         console.log(res.code);
