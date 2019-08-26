@@ -120,7 +120,8 @@
                             selected = $filter('filter')($scope.allWorkers, {
                                 value: $scope.projects[index].workers[subIndex],
                             });
-                            selected.length ? $scope.projects[index].workers[subIndex] = selected[0] : "";
+
+                            selected.length == 1 ? $scope.projects[index].workers[subIndex] = selected[0] : $scope.projects[index].workers[subIndex];
                         }
                     }
                 })
@@ -278,7 +279,11 @@
 
         $scope.showWorkersName = function (workers) {
             var resault = "";
+            // console.log(workers);
             for (var index = 0; index < workers.length; index++) {
+                if (workers[index].name == undefined) {
+                    continue;
+                }
                 resault += workers[index].name + ", ";
             }
             return resault;
