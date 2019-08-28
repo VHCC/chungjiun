@@ -137,8 +137,8 @@
                                     hrMachineItemTemp.workType = "3";
                                     hrMachineTableSorted[arrayResult[0][index].date].push(hrMachineItemTemp);
 
-                                    console.log(lastDate);
-                                    console.log(hrMachineTableSorted[lastDate]);
+                                    // console.log(lastDate);
+                                    // console.log(hrMachineTableSorted[lastDate]);
 
                                     if (hrMachineTableSorted[lastDate] !== undefined) {
 
@@ -678,6 +678,9 @@
                         $scope.showHrMachineTime(tableItem, 21),
                         $scope.showHrMachineTime(tableItem, 12),
                         $scope.showHrMachineTime(tableItem, 22)) : 0 ;
+                    // console.log(result);
+                    // console.log($scope.showHrMachineTime(tableItem, 12));
+                    // console.log($scope.showHrMachineTime(tableItem, 22));
                     if (result == 0) {
                         return "";
                     }
@@ -864,12 +867,12 @@
                     // console.log("isAfterNoon= " + isAfterNoon + ", isBeforeNoon= " + isBeforeNoon);
 
                     if (isAfterNoon && isBeforeNoon) {
-                        // console.log(parseInt(workOffHour) - parseInt(workOnHour) - 1);
-                        result =  parseInt((workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin));
+                        // console.log(Math.abs(parseInt(workOffHour) - parseInt(workOnHour) - 1));
+                        result =  parseInt( Math.abs((workOffHour - workOnHour - 1)) * 60 + (workOffMin - workOnMin));
                         // console.log("A result:" + result);
                     } else {
-                        // console.log((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
-                        result =  parseInt((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
+                        // console.log( Math.abs((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin)));
+                        result =  parseInt( Math.abs((workOffHour - workOnHour)) * 60 + (workOffMin - workOnMin));
                         // console.log("B result:" + result);
                     }
                     isAfterNoon = false;
@@ -878,7 +881,6 @@
                 }
                 if (workOn2 && workOff2) {
                     // console.log(workOn2);
-
                     // console.log("上班");
                     var workOnHour = parseInt(workOn2.substr(0,2));
                     var workOnMin = parseInt(workOn2.substr(2,4));
@@ -929,12 +931,14 @@
 
                     if (isAfterNoon && isBeforeNoon) {
                         // console.log(workOffHour - workOnHour - 1);
-                        result +=  parseInt((workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin));
+                        // console.log(workOffMin - workOnMin);
+                        // console.log("C pre_result:" + result);
+                        result += ( Math.abs(parseInt((workOffHour - workOnHour - 1)) * 60 + (workOffMin - workOnMin)));
                         // console.log("C result:" + result);
 
                     } else {
-                        // console.log((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
-                        result += parseInt((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
+                        console.log((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
+                        result += ( Math.abs(parseInt((workOffHour - workOnHour)) * 60 + (workOffMin - workOnMin)));
                         // console.log("D result:" + result);
                     }
                 }
