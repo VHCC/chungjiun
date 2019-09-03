@@ -73,7 +73,7 @@
                 create_formDate: $scope.table.create_formDate,
                 prjDID: $scope.table.prjDID,
                 year: (new Date($scope.table.create_formDate).getFullYear() -1911),
-                month: (new Date(DateUtil.getShiftDatefromFirstDate(moment($scope.table.create_formDate), $scope.day)).getMonth() + 1),
+                month: (new Date(DateUtil.getShiftDatefromFirstDate(moment($scope.table.create_formDate), ($scope.day - 1))).getMonth() + 1),
                 day: $scope.day,
                 start_time: "",
                 end_time: "",
