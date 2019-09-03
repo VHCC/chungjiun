@@ -896,13 +896,13 @@
             $scope.calculateHours_type1 = function (item) {
                 var hourTotal = 0;
 
-                if (item.tables.length > 0) {
+                if (item.tables != undefined && item.tables.length > 0) {
                     for (var index = 0; index < item.tables.length; index ++) {
                         hourTotal += parseFloat(item.tables[index].type_1_hour);
                     }
                 }
 
-                if (item.table_add.length > 0) {
+                if (item.table_add != undefined && item.table_add.length > 0) {
                     for (var index = 0; index < item.table_add.length; index ++) {
                         hourTotal += $scope.calculateHours_type1_add(item.table_add[index]);
                     }
