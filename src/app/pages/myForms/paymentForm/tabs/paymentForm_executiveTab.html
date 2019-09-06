@@ -127,25 +127,29 @@
                                     確認完成
                                 </button>
                             </div>
+                            <button class="btn btn-primary editable-table-button btn-xs"
+                                    ng-click="reviewPaymentExecutiveItem(user, item);">
+                                核定
+                            </button>
                         </div>
                     </td>
                 </tr>
                 </tbody>
-                <tfoot>
-                <tr>
-                    <td colspan="7">
-                        <section class="col-md-12" >
-                            <button ng-click="reviewPaymentExecutiveAll(user)"
-                                    style="float: right; padding: 0 60px; line-height: 4"
-                                    id="btnReview"
-                                    pb-style="shrink"
-                                    class="btn btn-primary">
-                                行政核定
-                            </button>
-                        </section>
-                    </td>
-                </tr>
-                </tfoot>
+                <!--<tfoot>-->
+                <!--<tr>-->
+                    <!--<td colspan="7">-->
+                        <!--<section class="col-md-12" >-->
+                            <!--<button ng-click="reviewPaymentExecutiveAll(user)"-->
+                                    <!--style="float: right; padding: 0 60px; line-height: 4"-->
+                                    <!--id="btnReview"-->
+                                    <!--pb-style="shrink"-->
+                                    <!--class="btn btn-primary">-->
+                                <!--行政核定-->
+                            <!--</button>-->
+                        <!--</section>-->
+                    <!--</td>-->
+                <!--</tr>-->
+                <!--</tfoot>-->
             </table>
 
         </uib-accordion-group>

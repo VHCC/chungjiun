@@ -807,6 +807,36 @@
                 })
         }
 
+        //行政總管單筆核定 -1
+        $scope.reviewPaymentExecutiveItem = function (userDID, item) {
+            console.log(item);
+            $scope.checkText = '確定 核定：' +
+                $scope.showUser(userDID) + ", " +
+                $scope.showPrjCode(item.prjDID) + ", 金額：" +
+                item.amount +
+                " ？";
+            $scope.checkingUserDID = userDID;
+            $scope.checkingItem = item;
+            ngDialog.open({
+                template: 'app/pages/myForms/paymentForm//dialog/paymentReviewAgree_ExecutiveAllModal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+
+        //行政總管單筆核定 -2
+        $scope.sendPaymentAgree_executive = function (userDID, item) {
+            var formData = {
+                _id: item._id,
+                isExecutiveCheck: true,
+            }
+            PaymentFormsUtil.updatePaymentItemByID(formData)
+                .success(function (res) {
+                    $scope.getPaymentReviewData_executive();
+                })
+        }
+
         //行政總管一鍵核定 -1
         $scope.reviewPaymentExecutiveAll = function (userDID) {
             $scope.checkText = "確定 核定：" + $scope.showUser(userDID) + " ?";
@@ -933,8 +963,11 @@
             switch(type) {
                 case 0:
                     operationTarget = $scope.displayPaymentItems;
+                    if (operationTarget == undefined || operationTarget == null) {
+                        return;
+                    }
                     for (var index = 0; index < operationTarget.length; index ++) {
-                        console.log(operationTarget[index]);
+                        // console.log(operationTarget[index]);
                         if (operationTarget[index].amount != null || operationTarget[index].amount != undefined) {
                             result += parseInt(operationTarget[index].amount);
                         }
@@ -943,6 +976,9 @@
                     break;
                 case 2:
                     operationTarget = $scope.displayPaymentItems_executiveAdd;
+                    if (operationTarget == undefined || operationTarget == null) {
+                        return;
+                    }
                     for (var index = 0; index < operationTarget.length; index ++) {
                         console.log(operationTarget[index]);
                         if (operationTarget[index].amount != null || operationTarget[index].amount != undefined) {
