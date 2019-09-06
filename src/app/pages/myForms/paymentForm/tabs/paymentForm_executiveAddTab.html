@@ -1,14 +1,39 @@
+<div class="row" >
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>選擇員工</label>
+            <ui-select ng-model="paymentFormCtrlVm.executiveAddUser.selected"
+                       class="btn-group bootstrap-select form-control"
+                       ng-disabled="false"
+                       ng-click="initDate_executiveAdd()"
+                       ng-change="fetchPaymentsData($select.selected._id, 2)"
+                       append-to-body="true"
+                       search-enabled="true">
+                <ui-select-match placeholder="選擇員工">
+                    {{$select.selected.name}}
+                </ui-select-match>
+                <ui-select-choices
+                        repeat="user in paymentFormCtrlVm.executiveAddUsers |
+                            groupSelectpickerOptions: {name: $select.search}">
+                    <span ng-bind-html="user.name| highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+</div>
+
 <div class="row"
+     ng-if="paymentFormCtrlVm.executiveAddUser.selected"
      id="rowHead">
     <div class="col-md-12"
          id="colHead">
         <div class="form-group">
             <label for="projectName">總案名稱 - 專案名稱 - 子案名稱 - 類型 - 代碼</label>
-            <ui-select ng-model="paymentFormCtrlVm.prjItems.selected"
+            <ui-select ng-model="paymentFormCtrlVm.prjItems_executiveAdd.selected"
                        class="btn-group bootstrap-select form-control"
                        id="projectName"
                        ng-disabled="false"
-                       ng-change="insertPaymentItem($select.selected._id, 0)"
+                       ng-change="insertPaymentItem($select.selected._id, 2)"
                        append-to-body="true"
                        search-enabled="true">
                 <ui-select-match placeholder="選擇(新增)">
@@ -20,7 +45,7 @@
                 </ui-select-match>
                 <ui-select-choices
                         ng-model="prjName"
-                        repeat="prjItems in paymentFormCtrlVm.projects |
+                        repeat="prjItems_executiveAdd in paymentFormCtrlVm.projects_executiveAdd |
                             groupSelectpickerOptions: {
                             mainName: $select.search,
                             prjName: $select.search,
@@ -28,32 +53,37 @@
                             prjCode: $select.search
                             }"
                         group-by="'mainName'">
-                    <span ng-bind-html="prjItems.prjName + ' - ' + prjItems.prjSubName + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
+                    <span ng-bind-html="prjItems_executiveAdd.prjName + ' - ' +
+                    prjItems_executiveAdd.prjSubName + ' - ' +
+                    prjTypeToName(prjItems_executiveAdd.type) + ' - ' +
+                    prjItems_executiveAdd.prjCode | highlight: $select.search"></span>
                 </ui-select-choices>
             </ui-select>
         </div>
     </div>
 </div>
 
-<div class="row col-md-12" ng-init="fetchPaymentsData(null, 0)">
+<div class="row col-md-12"
+     ng-if="paymentFormCtrlVm.executiveAddUser.selected"
+     ng-init="fetchPaymentsData(null, 0)">
 
-    <my-month-picker ng-click="listenMonth(this)"
+    <my-month-picker ng-click="listenMonth_executiveAdd(this)"
                      formatted="YYYY/MM">
     </my-month-picker>
     <br>
     <button type="button" class="btn btn-default btn-icon"
-            ng-click="changePaymentMonth(-1, this)">
+            ng-click="changePaymentMonth_executiveAdd(-1, this)">
         <i class="ion-chevron-left"></i>
     </button>
     {{myMonth}}
     <button type="button" class="btn btn-default btn-icon"
-            ng-click="changePaymentMonth(1, this)">
+            ng-click="changePaymentMonth_executiveAdd(1, this)">
         <i class="ion-chevron-right"></i>
     </button>
 
     <hr>
 
-    <table class="table table-bordered table-hover table-condensed" id="form_main_pdf">
+    <table class="table table-bordered table-hover table-condensed">
         <thead>
         <tr style="white-space:nowrap">
             <td style="vertical-align: inherit; text-align: center" width="80px"></td>
@@ -65,14 +95,13 @@
             <td style="vertical-align: inherit; text-align: center">經理簽章</td>
         </tr>
         </thead>
-        <tbody ng-repeat="item in displayPaymentItems">
+        <tbody ng-repeat="item in displayPaymentItems_executiveAdd">
         <tr style="vertical-align: inherit; text-align: center">
             <!--序號-->
             <td style="vertical-align: inherit; text-align: center">
                 <span id="prjCode">{{$index + 1}}</span>
                 <button class="btn btn-danger editable-table-button btn-xs"
-                        ng-if="!item.isSendReview"
-                        ng-click="removePaymentItem(item, 0);">移除
+                        ng-click="removePaymentItem(item, 2);">移除
                 </button>
             </td>
             <!--專案代碼-->
@@ -81,36 +110,28 @@
             </td>
             <!--發票日期-->
             <td style="vertical-align: inherit; text-align: center">
-                <span ng-if="item.isSendReview">{{item.payDate}}</span>
                 <input type="text"
-                       ng-if="!item.isSendReview"
                        ng-model="item.payDate"
                        value="{{item.payDate}}"
                        class="form-control input-sm">
             </td>
             <!--發票號碼-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="item.isSendReview">{{item.receiptCode}}</span>
                 <input type="text"
-                       ng-if="!item.isSendReview"
                        ng-model="item.receiptCode"
                        value="{{item.receiptCode}}"
                        class="form-control input-sm">
             </td>
             <!--內容說明-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="item.isSendReview">{{item.contents}}</span>
                 <input type="text"
-                       ng-if="!item.isSendReview"
                        ng-model="item.contents"
                        value="{{item.contents}}"
                        class="form-control input-sm">
             </td>
             <!--墊付金額-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="item.isSendReview">{{item.amount}}</span>
                 <input type="text"
-                       ng-if="!item.isSendReview"
                        ng-model="item.amount"
                        value="{{item.amount}}"
                        class="form-control input-sm">
@@ -157,18 +178,21 @@
                     原因：<i class="ion-clipboard"></i>
                     <span class="tooltiptext">{{item.managerReject_memo}}</span>
                 </my>
+                <button class="btn btn-danger editable-table-button btn-xs"
+                        ng-click="executiveModifiedPaymentItem(item);">修訂
+                </button>
             </td>
         </tr>
         </tbody>
         <tfoot>
-            <tr style="vertical-align: inherit; text-align: center">
-                <td colspan="5" style="vertical-align: inherit;">
-                    小計
-                </td>
-                <td style="vertical-align: inherit;">
-                    {{calculateSum(0)}}
-                </td>
-            </tr>
+        <tr style="vertical-align: inherit; text-align: center">
+            <td colspan="5" style="vertical-align: inherit;">
+                小計
+            </td>
+            <td style="vertical-align: inherit;">
+                {{calculateSum(2)}}
+            </td>
+        </tr>
         </tfoot>
     </table>
 
@@ -177,6 +201,7 @@
     <button type="submit"
             style="float: right; margin-right: 10px"
             ng-click="printPDF()"
+            ng-if="false"
             class="btn btn-danger">
         列印
     </button>
@@ -184,13 +209,15 @@
     <button type="submit"
             style="float: right; margin-right: 10px"
             ng-click="sendReview(this)"
+            ng-if="false"
             class="btn btn-warning">
         提交審查
     </button>
 
     <button type="submit"
             style="float: left; margin-right: 10px"
-            ng-click="saveItems(0)"
+            ng-click="saveItems(2)"
+            ng-if="false"
             class="btn btn-primary">
         表單暫存
     </button>
