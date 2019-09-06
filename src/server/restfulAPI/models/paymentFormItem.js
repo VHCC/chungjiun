@@ -67,4 +67,10 @@ module.exports = mongoose.model('PaymentFormItem', {
         default: false,
     },
 
+    // 行政新增
+    isExecutiveAdd: {
+        type: Boolean,
+        default: false,
+    }
+
 });

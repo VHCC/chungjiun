@@ -101,14 +101,17 @@
          bs-loading-overlay-reference-id="payment_main">
 
         <uib-tabset active="$tabSetStatus.activeTab">
-            <uib-tab heading="新增表單" >
+            <uib-tab heading="新增表單">
                 <div ng-include="'app/pages/myForms/paymentForm/tabs/paymentForm_mainTab.html'"></div>
+            </uib-tab>
+            <uib-tab heading="行政增修" ng-if="roleType === '100'">
+                <div ng-include="'app/pages/myForms/paymentForm/tabs/paymentForm_executiveAddTab.html'"></div>
             </uib-tab>
             <uib-tab heading="歷史檢視" ng-if="roleType === '100'">
                 <div ng-include="'app/pages/myForms/paymentForm/tabs/paymentForm_historyTab.html'"></div>
             </uib-tab>
             <uib-tab heading="經理/主任審核" ng-if="roleType === '2' || roleType === '100' || roleType === '6'"
-                     ng-init="getPaymentReviewData_manager()">
+                     ng-click="getPaymentReviewData_manager()">
                 <div ng-include="'app/pages/myForms/paymentForm/tabs/paymentForm_managerTab.html'"></div>
             </uib-tab>
             <uib-tab heading="行政確認" ng-if="roleType === '100'"

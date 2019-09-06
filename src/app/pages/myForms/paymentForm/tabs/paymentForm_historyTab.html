@@ -5,8 +5,8 @@
             <ui-select ng-model="paymentFormCtrlVm.historyUser.selected"
                        class="btn-group bootstrap-select form-control"
                        ng-disabled="false"
-                       ng-click="initDate()"
-                       ng-change="fetchPaymentsData($select.selected._id)"
+                       ng-click="initDate_history()"
+                       ng-change="fetchPaymentsData($select.selected._id, 1)"
                        append-to-body="true"
                        search-enabled="true">
                 <ui-select-match placeholder="選擇員工">
@@ -90,12 +90,21 @@
             <!--經理審查-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
                 <div ng-if="item.isManagerCheck">
-                    <button class="btn btn-info editable-table-button btn-xs"
-                            style="color: black">
-                        {{ showProjectManager(item.prjDID)}}
-                        <br>
-                        確認完成
-                    </button>
+                    <div ng-if="!item.isExecutiveAdd">
+                        <button class="btn btn-info editable-table-button btn-xs"
+                                style="color: black">
+                            {{ showProjectManager(item.prjDID)}}
+                            <br>
+                            確認完成
+                        </button>
+                    </div>
+                    <div ng-if="item.isExecutiveAdd">
+                        <button class="btn btn-primary editable-table-button btn-xs"
+                                style="color: black">
+                            行政修訂
+                        </button>
+                    </div>
+
                 </div>
             </td>
             <!--行政核定-->
