@@ -50,7 +50,12 @@
                 projectsSorted.push({mainName: "新總案", code: ""});
                 projectsSorted.push({mainName: "建立總案 (自訂編號)", code: "9999"});
                 for (var index = 0; index < allProjects.length; index ++) {
-                    projectsSorted.push({mainName: allProjects[index].mainName, code: allProjects[index].code});
+                    projectsSorted.push({
+                        mainName: allProjects[index].mainName,
+                        branch: allProjects[index].branch,
+                        year: allProjects[index].year,
+                        code: allProjects[index].code
+                    });
                 }
                 vm.projects = projectsSorted;
                 $scope.year = new Date().getFullYear() - 1911;
@@ -149,7 +154,7 @@
                             console.log(JSON.stringify(prjs));
                             console.log(prjs.length);
                             // 總案編號自動跳號 +1
-                            $scope.mainProject.code = prjs.length >= 10 ? prjs.length : "0" + (prjs.length);
+                            $scope.mainProject.code = prjs.length >= 10 ? prjs.length + 1 : "0" + (prjs.length);
                             $scope.mainProject.new = "";
                             $scope.year = new Date().getFullYear() - 1911;
                         }
@@ -285,7 +290,7 @@
                     .success(function (prjs) {
                             console.log(JSON.stringify(prjs));
                             // 專案案編號自動跳號 +1
-                            $scope.mainProject.number.code = prjs.length + 1 > 10 ? prjs.length : "0" + (prjs.length);
+                            $scope.mainProject.number.code = prjs.length >= 10 ? prjs.length +1 : "0" + (prjs.length);
                             $scope.mainProject.numberNew = "";
                         }
                     );
@@ -341,7 +346,7 @@
                     .success(function (prjs) {
                             // console.log(JSON.stringify(prjs));
                             // 子案案編號自動跳號 +1
-                            $scope.mainProject.subNumber.code = prjs.length + 1 > 10 ? prjs.length : "0" + (prjs.length);
+                            $scope.mainProject.subNumber.code = prjs.length >= 10 ? prjs.length + 1 : "0" + (prjs.length);
                             $scope.mainProject.subNumberNew = "";
                         }
                     );
@@ -364,6 +369,7 @@
                 prjSubNumber: $scope.mainProject.subNumber.code,
                 type: $scope.mainProject.type.selected.value,
             }
+            console.log(data);
             Project.findPrjTypeBySubNumber(data)
                 .success(function (projects) {
                         if (projects.length !== 0) {
@@ -440,22 +446,6 @@
                         prjSubName: $scope.mainProject.subNumberNew,
                     }
                 }
-                // var createData = {
-                //     branch: vm.branch.value,
-                //     year: String($scope.year),
-                //     code: String($scope.mainProject.code),
-                //     type: $scope.mainProject.type.selected.value,
-                //     mainName: $scope.mainProject.new,
-                //     // majorID: $scope.mainProject.manager._id,
-                //     managerID: $scope.mainProject.manager._id,
-                //     prjCode: totalCode,
-                //     technician: prjTechs,
-                //     // endDate: req.body.prjEndDate,
-                //     prjNumber: $scope.mainProject.number.code,
-                //     prjName: $scope.mainProject.numberNew,
-                //     prjSubNumber: $scope.mainProject.subNumber.code,
-                //     prjSubName: $scope.mainProject.subNumberNew,
-                // }
             } catch (err) {
                 toastr['warning']('輸入資訊未完整 !', '建立失敗');
                 return;
