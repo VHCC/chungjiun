@@ -51,6 +51,10 @@
                     return http.post('/api/projectCreate', projectData);
                 },
 
+                combineProject : function (projectData) {
+                    return http.post('/api/projectCombine', projectData);
+                },
+
                 findPrjByID: function (prjID) {
                     return http.get('/api/projectFindByPrjID', prjID);
                 },

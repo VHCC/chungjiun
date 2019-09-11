@@ -30,6 +30,8 @@ global.apiUrl = {
     post_project_foot_code : '/api/projectFootCode',
     // Create
     post_project_create : '/api/projectCreate',
+    // Combine Project
+    post_project_combine : '/api/projectCombine',
     // search
     post_project_number_find_by_code_group_by_number: '/api/post_project_number_find_by_code_group_by_number',
     post_project_sub_number_find_by_number: '/api/post_project_sub_number_find_by_number',

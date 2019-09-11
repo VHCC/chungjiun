@@ -60,6 +60,7 @@ module.exports = function (app) {
 
     // 更新總案名
     app.post(global.apiUrl.post_project_update_main_name, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, update_main_name");
         Project.update({
             _id: req.body.prjID,
         }, {

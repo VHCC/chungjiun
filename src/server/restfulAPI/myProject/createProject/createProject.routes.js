@@ -6,8 +6,8 @@ module.exports = function (app) {
 // application -------------------------------------------------------------
 
 // ----- define routes
-    // create
 
+    // create
     app.get(global.apiUrl.get_all_users, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, getAllUsers");
         User.find(
@@ -21,12 +21,10 @@ module.exports = function (app) {
                 if (err) {
                     res.send(err);
                 } else {
-
                     res.json(users);
                 }
             });
     });
-
 
     app.get(global.apiUrl.get_all_users_with_unregister, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, getAllUsersWithUnRegister");
@@ -40,12 +38,10 @@ module.exports = function (app) {
                 if (err) {
                     res.send(err);
                 } else {
-
                     res.json(users);
                 }
             });
     });
-
 
     app.get(global.apiUrl.get_all_techs, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "AP, getAllTechs");
@@ -61,7 +57,6 @@ module.exports = function (app) {
                 if (err) {
                     res.send(err);
                 } else {
-
                     res.json(techs);
                 }
             })
@@ -130,6 +125,80 @@ module.exports = function (app) {
 
     });
 
+    // projectCombine
+    app.post(global.apiUrl.post_project_combine, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, combine project");
+        try {
+
+            Project.update({
+                _id: req.body.prjA,
+            }, {
+                $set: {
+                    combinedID: req.body.prjCode,
+                    enable: false,
+                }
+            }, function (err) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    console.log("update A Done");
+                }
+            })
+
+            Project.update({
+                _id: req.body.prjB,
+            }, {
+                $set: {
+                    combinedID: req.body.prjCode,
+                    enable: false,
+                }
+            }, function (err) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    console.log("update B Done");
+                }
+            })
+
+            Project.create(
+                {
+                    branch: req.body.branch,
+                    year: String(req.body.year),
+                    code: String(req.body.code),
+                    type: req.body.type,
+                    mainName: req.body.mainName,
+                    managerID: req.body.managerID,
+                    prjCode: req.body.prjCode,
+                    technician: req.body.technician,
+                    enable: true,
+                    prjNumber: req.body.prjNumber,
+                    prjName: req.body.prjName,
+                    prjSubNumber: req.body.prjSubNumber,
+                    prjSubName: req.body.prjSubName,
+                },
+                function (err, project) {
+                    if (err) {
+                        res.send(err);
+                    } else {
+                        console.log(global.timeFormat(new Date()) + global.log.i + "API, combine Project done: " +
+                            JSON.stringify(req.body));
+                        res.status(200).send({
+                            code: 200,
+                            error: global.status._200,
+                        });
+                    }
+                });
+
+        } catch (error) {
+            console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_combine");
+            res.status(400).send({
+                code: 400,
+                error: global.status._400,
+            });
+        }
+
+    });
+
     // include disable prj
     app.get(global.apiUrl.get_project_find_all, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, get projects");
@@ -137,7 +206,6 @@ module.exports = function (app) {
             if (err) {
                 res.send(err);
             } else {
-
                 res.json(projects);
             }
         })
@@ -169,6 +237,8 @@ module.exports = function (app) {
                     code: {$first: '$code'},
                     type: {$first: '$type'},
                     prjCode: {$first: '$prjCode'},
+                    year: {$first: '$year'},
+                    branch: {$first: '$branch'},
                 }
             }
         ], function (err, projects) {
@@ -188,7 +258,6 @@ module.exports = function (app) {
             if (err) {
                 res.send(err);
             } else {
-
                 res.json(oneProject);
             }
         })
@@ -196,7 +265,6 @@ module.exports = function (app) {
 
     app.post(global.apiUrl.post_project_find_by_code, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, find prj by code");
-        console.log(req.body.prjCode)
         Project.findOne({
             prjCode: req.body.prjCode
         }, function (err, oneProject) {
@@ -204,7 +272,6 @@ module.exports = function (app) {
             if (err) {
                 res.send(err);
             } else {
-
                 res.json(oneProject);
             }
         })
@@ -242,7 +309,6 @@ module.exports = function (app) {
                 if (err) {
                     res.send(err);
                 } else {
-
                     res.status(200).send({
                         code: 200,
                         error: global.status._200,
@@ -261,7 +327,6 @@ module.exports = function (app) {
             if (err) {
                 res.send(err);
             } else {
-
                 res.json(projects);
             }
         })
@@ -277,7 +342,6 @@ module.exports = function (app) {
             if (err) {
                 res.send(err);
             } else {
-
                 res.json(projects);
             }
         })
@@ -285,27 +349,6 @@ module.exports = function (app) {
 
     // 用總案代碼找專案，用專案代碼分類
     app.post(global.apiUrl.post_project_number_find_by_code_group_by_number, function (req, res) {
-        // Project.aggregate(
-        //     [
-        //         {
-        //             $match: {
-        //                 year: req.body.year,
-        //                 code: req.body.code
-        //             }
-        //         },
-        //         {
-        //             $group: {
-        //                 _id: '$prjName',  //$region is the column name in collection
-        //                 prjName: {$first: '$prjName'},
-        //                 prjNumber: {$first: '$prjNumber'},
-        //             }
-        //         }
-        //     ], function (err, projects) {
-        //         if (err) {
-        //             res.send(err);
-        //         }
-        //         res.json(projects);
-        //     })
         var query = [
             {
                 $match: {
@@ -329,7 +372,6 @@ module.exports = function (app) {
                 if (err) {
                     res.send(err);
                 } else {
-
                     res.json(projects);
                 }
             });
@@ -337,18 +379,34 @@ module.exports = function (app) {
 
     // 用專案代碼找子案
     app.post(global.apiUrl.post_project_sub_number_find_by_number, function (req, res) {
-        Project.find({
-            year: req.body.year,
-            code: req.body.code,
-            prjNumber: req.body.prjNumber
-        }, function (err, projects) {
-            if (err) {
-                res.send(err);
-            } else {
-
-                res.json(projects);
+        var query = [
+            {
+                $match: {
+                    year: req.body.year,
+                    code: req.body.code,
+                    prjNumber: req.body.prjNumber
+                }
+            },
+            {
+                $group: {
+                    _id: '$prjSubNumber',  //$region is the column name in collection
+                    prjSubName: {$first: '$prjSubName'},
+                    prjSubNumber: {$first: '$prjSubNumber'},
+                }
             }
-        })
+        ];
+        Project.aggregate(query)
+            .sort({
+                prjSubNumber: 1,
+            })
+            .exec(function (err, projects) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.json(projects);
+                }
+            });
+
     })
 
     // 用子案代碼找類型
@@ -363,7 +421,6 @@ module.exports = function (app) {
             if (err) {
                 res.send(err);
             } else {
-
                 res.json(projects);
             }
         })

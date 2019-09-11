@@ -1,26 +1,105 @@
+<div>
 
-<div class="row"
-     id="rowHead">
-    <div class="col-md-12"
-         id="colHead">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label >總案名稱 - 專案名稱 - 子案名稱 - 類型 - 代碼</label>
+                <ui-select ng-model="combineProjectCtrlVm.prjItems_A.selected"
+                           class="btn-group bootstrap-select form-control"
+                           ng-disabled="false"
+                           ng-change="checkProject($select.selected._id, 1)"
+                           append-to-body="true"
+                           search-enabled="true">
+                    <ui-select-match placeholder="選擇(A專案)">
+                        {{$select.selected.mainName}} -
+                        {{$select.selected.prjName}} -
+                        {{$select.selected.prjSubName}} -
+                        {{prjTypeToName($select.selected.type)}} -
+                        {{$select.selected.prjCode}}
+                    </ui-select-match>
+                    <ui-select-choices
+                            ng-model="prjName"
+                            repeat="prjItems_A in combineProjectCtrlVm.projects |
+                            groupSelectpickerOptions: {
+                            mainName: $select.search,
+                            prjName: $select.search,
+                            prjSubName: $select.search,
+                            prjCode: $select.search
+                            }"
+                            group-by="'mainName'">
+                    <span ng-bind-html="prjItems_A.prjName + ' - ' +
+                    prjItems_A.prjSubName + ' - ' +
+                    prjTypeToName(prjItems_A.type) + ' - ' +
+                    prjItems_A.prjCode | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label >總案名稱 - 專案名稱 - 子案名稱 - 類型 - 代碼</label>
+                <ui-select ng-model="combineProjectCtrlVm.prjItems_B.selected"
+                           class="btn-group bootstrap-select form-control"
+                           ng-disabled="false"
+                           ng-change="checkProject($select.selected._id, 2)"
+                           append-to-body="true"
+                           search-enabled="true">
+                    <ui-select-match placeholder="選擇(B專案)">
+                        {{$select.selected.mainName}} -
+                        {{$select.selected.prjName}} -
+                        {{$select.selected.prjSubName}} -
+                        {{prjTypeToName($select.selected.type)}} -
+                        {{$select.selected.prjCode}}
+                    </ui-select-match>
+                    <ui-select-choices
+                            ng-model="prjName"
+                            repeat="prjItems_B in combineProjectCtrlVm.projects |
+                            groupSelectpickerOptions: {
+                            mainName: $select.search,
+                            prjName: $select.search,
+                            prjSubName: $select.search,
+                            prjCode: $select.search
+                            }"
+                            group-by="'mainName'">
+                    <span ng-bind-html="prjItems_B.prjName + ' - ' +
+                    prjItems_B.prjSubName + ' - ' +
+                    prjTypeToName(prjItems_B.type) + ' - ' +
+                    prjItems_B.prjCode | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div ng-if="combineProjectCtrlVm.prjItems_A.selected && combineProjectCtrlVm.prjItems_B.selected">
+        合併後專案資訊設定
+
         <div class="form-group">
             <label for="prjCode" class="col-md-2 control-label">專案代碼: </label>
             <p id="prjCode" class="col-md-10">
-                {{createNewProjectCtrlVm.branch.value}} <!-- 分支O-->
+                {{combineProjectCtrlVm.branch.value}} <!-- 分支O-->
                 {{year}} <!-- 年度 OOO-->
-                {{mainProject.code}} <!-- 總案 OO-->
-                {{mainProject.number.code}} <!-- 專案 OO-->
-                {{mainProject.subNumber.code}} <!-- 子案 OO-->
-                {{mainProject.type.selected.value}} <!-- 類型 O-->
+                {{combineProjectCtrlVm.mainProject.code}} <!-- 總案 OO-->
+                {{combineProjectCtrlVm.mainProject.number.code}} <!-- 專案 OO-->
+                {{combineProjectCtrlVm.mainProject.subNumber.code}} <!-- 子案 OO-->
+                {{combineProjectCtrlVm.mainProject.type.selected.value}} <!-- 類型 O-->
             </p>
         </div>
 
+        <hr>
+
         <form class="form-horizontal">
+
             <!--分支主題-->
             <div class="form-group">
                 <label class="col-md-2 control-label">分支主題</label>
                 <div class="col-md-10">
-                    <ui-select ng-model="createNewProjectCtrlVm.branch"
+                    <ui-select ng-model="combineProjectCtrlVm.branch"
                                class="btn-group bootstrap-select form-control"
                                append-to-body="true"
                                search-enabled="true">
@@ -28,7 +107,7 @@
                             {{$select.selected.value}}
                         </ui-select-match>
                         <ui-select-choices
-                                repeat="option in createNewProjectCtrlVm.prjBranch">
+                                repeat="option in combineProjectCtrlVm.prjBranch">
                             <span ng-bind-html="option.label"></span>
                         </ui-select-choices>
                     </ui-select>
@@ -39,10 +118,10 @@
             <div class="form-group" id="prjNameDiv">
                 <label for="projectName" class="col-md-2 control-label">總案名稱</label>
                 <div class="col-md-10">
-                    <ui-select ng-model="mainProject.selected"
+                    <ui-select ng-model="combineProjectCtrlVm.mainProject.selected"
                                class="btn-group bootstrap-select form-control"
                                id="projectName"
-                               ng-change="triggerChangeMainProject()"
+                               ng-change="triggerChangeMainProject_combine()"
                                ng-disabled="false"
                                append-to-body="true"
                                search-enabled="true">
@@ -50,58 +129,60 @@
                             {{$select.selected.mainName}}
                         </ui-select-match>
                         <ui-select-choices
-                                repeat="prjItems in createNewProjectCtrlVm.projects |
+                                repeat="prjItems_result in combineProjectCtrlVm.projectsByGroup |
                                 groupSelectpickerOptions: {
                                 mainName: $select.search,
                                 code: $select.search,
                                 prjCode: $select.search
                                 }" >
                             <span ng-bind-html="
-                            prjItems.mainName +
-                            ' : ' + prjItems.branch +
-                            ' - ' + prjItems.year +
-                            ' - ' + prjItems.code
+                            prjItems_result.mainName +
+                            ' : ' + prjItems_result.branch +
+                            ' - ' + prjItems_result.year +
+                            ' - ' + prjItems_result.code
                             | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
                 </div>
             </div>
 
+            <!-- 合併後新總案名稱 -->
             <div class="form-group" style="display: none" id="newPrjNameDiv">
                 <label for="newProjectName" class="col-md-2 control-label">新總案名稱</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control"
                            id="newProjectName"
-                           ng-model="mainProject.new"
-                           ng-change="triggerChangePrjNewName()"
+                           ng-model="combineProjectCtrlVm.mainProject.newProjectName"
+                           ng-change="triggerChangePrjNewName_combine()"
                            placeholder="請輸入新總案名稱">
                 </div>
             </div>
 
+            <!-- 合併後新總案編號 -->
             <div class="form-group" style="display: none" id="setPrjCodeDiv">
                 <label for="setPrjCode" class="col-md-2 control-label">自訂總案編號(2)</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control"
                            id="setPrjCode"
-                           ng-model="mainProject.setCode"
-                           ng-change="triggerChangePrjCode()"
+                           ng-model="combineProjectCtrlVm.mainProject.setCode"
+                           ng-change="triggerChangePrjCode_combine()"
                            placeholder="請輸入自訂總案編號">
                 </div>
             </div>
 
-            <div class="form-group" ng-show="mainProject.selected">
+            <div class="form-group" ng-show="combineProjectCtrlVm.mainProject.selected">
                 <label class="col-md-2 control-label">專案(2)</label>
                 <div class="col-md-10">
-                    <ui-select ng-model="mainProject.number.selected"
+                    <ui-select ng-model="combineProjectCtrlVm.mainProject.number.selected"
                                class="btn-group bootstrap-select form-control"
-                               ng-change="triggerChangePrjNumber()"
+                               ng-change="triggerChangePrjNumber_combine()"
                                append-to-body="true"
                                search-enabled="true">
                         <ui-select-match placeholder="請選擇專案">
                             {{$select.selected.label}}-{{$select.selected.value}}
                         </ui-select-match>
                         <ui-select-choices
-                                repeat="option in createNewProjectCtrlVm.prjNumbers | filter: $select.search">
+                                repeat="option in combineProjectCtrlVm.prjNumbers | filter: $select.search">
                             <span ng-bind-html="option.label | highlight: $select.search"></span>-<span ng-bind-html="option.value | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
@@ -113,25 +194,25 @@
                 <div class="col-md-10">
                     <input type="text" class="form-control"
                            id="newProjectNumber"
-                           ng-model="mainProject.numberNew"
+                           ng-model="combineProjectCtrlVm.mainProject.numberNew"
                            required
                            placeholder="請輸入新專案名稱">
                 </div>
             </div>
 
-            <div class="form-group" ng-show="mainProject.number.selected">
-                <label for="projectType" class="col-md-2 control-label">子案(2)</label>
+            <div class="form-group" ng-show="combineProjectCtrlVm.mainProject.number.selected">
+                <label class="col-md-2 control-label">子案(2)</label>
                 <div class="col-md-10">
-                    <ui-select ng-model="mainProject.subNumber.selected"
+                    <ui-select ng-model="combineProjectCtrlVm.mainProject.subNumber.selected"
                                class="btn-group bootstrap-select form-control"
-                               ng-change="triggerChangePrjSubNumber()"
+                               ng-change="triggerChangePrjSubNumber_combine()"
                                append-to-body="true"
                                search-enabled="true">
                         <ui-select-match placeholder="請選擇子案">
                             {{$select.selected.label}}-{{$select.selected.value}}
                         </ui-select-match>
                         <ui-select-choices
-                                repeat="option in createNewProjectCtrlVm.prjSubNumbers | filter: $select.search">
+                                repeat="option in combineProjectCtrlVm.prjSubNumbers | filter: $select.search">
                             <span ng-bind-html="option.label | highlight: $select.search"></span>-<span ng-bind-html="option.value | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
@@ -142,31 +223,31 @@
                 <label class="col-md-2 control-label">新子案名稱</label>
                 <div class="col-md-10">
                     <input type="text" class="form-control"
-                           ng-model="mainProject.subNumberNew"
+                           ng-model="combineProjectCtrlVm.mainProject.subNumberNew"
                            required
                            placeholder="請輸入新子案名稱">
                 </div>
             </div>
 
-            <div class="form-group" ng-show="mainProject.subNumber.selected">
+            <div class="form-group" ng-show="combineProjectCtrlVm.mainProject.subNumber.selected">
                 <label for="projectType" class="col-md-2 control-label">類型(1)</label>
                 <div class="col-md-10">
                     <select class="form-control selectpicker"
                             id="projectType"
                             title="請選擇類型"
-                            ng-change="triggerChangePrjType()"
-                            ng-model="mainProject.type.selected"
-                            ng-options="item as item.label for item in createNewProjectCtrlVm.prjTypes"
+                            ng-change="triggerChangePrjType_combine()"
+                            ng-model="combineProjectCtrlVm.mainProject.type.selected"
+                            ng-options="item as item.label for item in combineProjectCtrlVm.prjTypes"
                             selectpicker
                             required>
                     </select>
                 </div>
             </div>
 
-            <div class="form-group" ng-show="mainProject.type.selected">
+            <div class="form-group" ng-show="combineProjectCtrlVm.mainProject.type.selected">
                 <label for="projectManager" class="col-md-2 control-label">承辦經理/主任</label>
                 <div class="col-md-10">
-                    <ui-select ng-model="mainProject.manager"
+                    <ui-select ng-model="combineProjectCtrlVm.mainProject.manager"
                                class="btn-group bootstrap-select form-control"
                                id="projectManager"
                                required
@@ -177,18 +258,18 @@
                             {{$select.selected.name}}
                         </ui-select-match>
                         <ui-select-choices
-                                repeat="multipleItem in createNewProjectCtrlVm.managersItem | filter: $select.search">
+                                repeat="multipleItem in combineProjectCtrlVm.managersItem | filter: $select.search">
                             <span ng-bind-html="multipleItem.name | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
                 </div>
             </div>
 
-            <div class="form-group" ng-show="mainProject.type.selected">
+            <div class="form-group" ng-show="combineProjectCtrlVm.mainProject.type.selected">
                 <label for="projectName" class="col-md-2 control-label">負責技師</label>
                 <div class="col-md-10">
                     <ui-select multiple
-                               ng-model="mainProject.techs"
+                               ng-model="combineProjectCtrlVm.mainProject.techs"
                                ng-disabled="false"
                                ng-change="triggerChangePrjTechs()"
                                search-enabled="true"
@@ -200,7 +281,7 @@
                             {{$item.name}}
                         </ui-select-match>
                         <ui-select-choices
-                                repeat="multipleItem in createNewProjectCtrlVm.techsItems | filter: $select.search">
+                                repeat="multipleItem in combineProjectCtrlVm.techsItems | filter: $select.search">
                             <span ng-bind-html="multipleItem.name | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
@@ -211,9 +292,18 @@
                 <button type="submit"
                         class="btn btn-danger"
                         id="prjSubmitBtn"
-                        ng-click="createSubmit()">建立專案
+                        ng-click="combineSubmit()">
+                    合併專案
                 </button>
             </div>
+
         </form>
+
     </div>
+
+    <div ng-if="isSamePrj">
+        選取的專案相同！！！！
+    </div>
+
+
 </div>

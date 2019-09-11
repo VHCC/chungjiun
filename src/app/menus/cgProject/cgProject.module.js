@@ -40,7 +40,7 @@
             .state('cgProject.createNewProject',
                 {
                     url: '/createNewProject',
-                    templateUrl: 'app/pages/myExecutive/createNewProject/createNewProject.html',
+                    templateUrl: 'app/pages/myExecutive/createNewProject/createProjectHomePage.html',
                     controller: 'createNewProjectCtrl',
                     controllerAs: 'createNewProjectCtrlVm',
                     title: '建立專案',

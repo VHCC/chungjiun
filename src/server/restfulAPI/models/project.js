@@ -107,4 +107,9 @@ module.exports = mongoose.model('Project', {
     prjSubName: {
         type: String,
     },
+
+    // 合併後專案
+    combinedID : {
+        type: String,
+    }
 });
