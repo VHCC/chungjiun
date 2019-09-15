@@ -818,7 +818,7 @@
             $scope.checkingUserDID = userDID;
             $scope.checkingItem = item;
             ngDialog.open({
-                template: 'app/pages/myForms/paymentForm//dialog/paymentReviewAgree_ExecutiveAllModal.html',
+                template: 'app/pages/myForms/paymentForm//dialog/paymentReviewAgree_ExecutiveItemModal.html',
                 className: 'ngdialog-theme-default',
                 scope: $scope,
                 showClose: false,
