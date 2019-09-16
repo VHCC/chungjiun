@@ -84,33 +84,7 @@
                     </td>
                     <!--經理簽章-->
                     <td rowspan="2" style="vertical-align: inherit;">
-                        <div ng-if="isFitManager(item.prjDID) && item.isSendReview">
-                            <div ng-if="!item.isManagerCheck">
-                                <button class="btn btn-danger editable-table-button btn-xs"
-                                        ng-click="disagreePaymentItem_manager(user, item)"
-                                        style="color: black">
-                                    退回
-                                </button>
-                            </div>
-                            <div ng-if="item.isManagerCheck">
-                                <div ng-if="!item.isExecutiveAdd">
-                                    <button class="btn btn-info editable-table-button btn-xs"
-                                            style="color: black">
-                                        {{ showProjectManager(item.prjDID)}}
-                                        <br>
-                                        確認完成
-                                    </button>
-                                </div>
-                                <div ng-if="item.isExecutiveAdd">
-                                    <button class="btn btn-primary editable-table-button btn-xs"
-                                            style="color: black">
-                                        行政修訂
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div ng-if="!isFitManager(item.prjDID)">
+                        <div >
                             <div ng-if="(item.isSendReview && !item.isManagerCheck)">
                                 <button class="btn btn-warning editable-table-button btn-xs"
                                         style="color: black">
