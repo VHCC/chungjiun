@@ -71,6 +71,12 @@ module.exports = mongoose.model('PaymentFormItem', {
     isExecutiveAdd: {
         type: Boolean,
         default: false,
-    }
+    },
+
+    // 核定編號
+    itemIndex: {
+        type: Number,
+        default: 0
+    },
 
 });

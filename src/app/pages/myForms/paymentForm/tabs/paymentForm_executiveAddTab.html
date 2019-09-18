@@ -93,6 +93,7 @@
             <td style="vertical-align: inherit; text-align: center">內容說明</td>
             <td style="vertical-align: inherit; text-align: center" width="100px">墊付金額</td>
             <td style="vertical-align: inherit; text-align: center">經理簽章</td>
+            <td style="vertical-align: inherit; text-align: center" width="20px">核定編號</td>
         </tr>
         </thead>
         <tbody ng-repeat="item in displayPaymentItems_executiveAdd">
@@ -182,6 +183,14 @@
                         ng-click="executiveModifiedPaymentItem(item);">修訂
                 </button>
             </td>
+            <!--核定編號-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <input type="text"
+                       id="paymentItemIndexInput"
+                       ng-model="item.itemIndex"
+                       value="{{item.itemIndex}}"
+                       class="form-control input-sm">
+            </td>
         </tr>
         </tbody>
         <tfoot>
@@ -217,7 +226,6 @@
     <button type="submit"
             style="float: left; margin-right: 10px"
             ng-click="saveItems(2)"
-            ng-if="false"
             class="btn btn-primary">
         表單暫存
     </button>

@@ -28,15 +28,17 @@
                     <td style="vertical-align: inherit; text-align: center" width="150px">發票號碼</td>
                     <td style="vertical-align: inherit; text-align: center">內容說明</td>
                     <td style="vertical-align: inherit; text-align: center" width="100px">墊付金額</td>
-                    <td style="vertical-align: inherit; text-align: center">經理簽章</td>
+                    <td style="vertical-align: inherit; text-align: center">簽核狀態</td>
+                    <td style="vertical-align: inherit; text-align: center" width="20px">核定編號</td>
                 </tr>
                 </thead>
                 <tbody ng-repeat="item in fetchReviewItemsFromScope(user)">
                 <tr style="vertical-align: inherit; text-align: center">
                     <!--序號-->
                     <td style="vertical-align: inherit; text-align: center">
-                        <span id="prjCode">{{$index + 1}}</span>
+                        <!--<span id="prjCode">{{$index + 1}}</span>-->
                         <button class="btn btn-danger editable-table-button btn-xs"
+                                ng-if="!item.isExecutiveCheck"
                                 ng-click="disagreePaymentItem_executive(user, item)"
                                 style="color: black">
                             退回
@@ -84,7 +86,7 @@
                     </td>
                     <!--經理簽章-->
                     <td rowspan="2" style="vertical-align: inherit;">
-                        <div >
+                        <div ng-if="!item.isExecutiveCheck">
                             <div ng-if="(item.isSendReview && !item.isManagerCheck)">
                                 <button class="btn btn-warning editable-table-button btn-xs"
                                         style="color: black">
@@ -98,7 +100,7 @@
                                         style="color: black">
                                     {{ showProjectManager(item.prjDID)}}
                                     <br>
-                                    確認完成
+                                    簽章完成
                                 </button>
                             </div>
                             <button class="btn btn-primary editable-table-button btn-xs"
@@ -106,6 +108,25 @@
                                 核定
                             </button>
                         </div>
+                        <div ng-if="item.isExecutiveCheck">
+                            <button class="btn btn-info editable-table-button btn-xs"
+                                    style="color: black">
+                                核定完成
+                            </button>
+                        </div>
+                    </td>
+                    <!--核定編號-->
+                    <td class="form-group" style="vertical-align: inherit; text-align: center">
+                        <div ng-if="item.isExecutiveCheck">
+                            {{item.itemIndex}}
+                        </div>
+
+                        <input type="text"
+                               ng-if="!item.isExecutiveCheck"
+                               id="paymentItemIndexInput"
+                               ng-model="item.itemIndex"
+                               value="{{item.itemIndex}}"
+                               class="form-control input-sm">
                     </td>
                 </tr>
                 </tbody>
