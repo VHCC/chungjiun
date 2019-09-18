@@ -1,55 +1,31 @@
+
 <div style="color:red">
     項目『送審』經過『經理簽章』完成，『行政核定』完成，才會顯示在頁面上。
 </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="form-group">
-            <label>選擇員工</label>
-            <ui-select ng-model="paymentFormCtrlVm.historyUser.selected"
-                       class="btn-group bootstrap-select form-control"
-                       ng-disabled="false"
-                       ng-change="fetchPaymentsData($select.selected._id, 1)"
-                       append-to-body="true"
-                       search-enabled="true">
-                <ui-select-match placeholder="選擇員工">
-                    {{$select.selected.name}}
-                </ui-select-match>
-                <ui-select-choices
-                        repeat="user in paymentFormCtrlVm.historyUsers |
-                            groupSelectpickerOptions: {name: $select.search}">
-                    <span ng-bind-html="user.name| highlight: $select.search"></span>
-                </ui-select-choices>
-            </ui-select>
-        </div>
-    </div>
-</div>
+<div class="row col-md-12">
 
-
-<div class="row col-md-12"
-     ng-if="paymentFormCtrlVm.historyUser.selected">
-
-    <my-month-picker ng-click="listenMonth_history(this)"
+    <my-month-picker ng-click="listenMonth_person(this)"
                      formatted="YYYY/MM">
     </my-month-picker>
     <br>
     <button type="button" class="btn btn-default btn-icon"
-            ng-click="changePaymentMonth_history(-1, this)">
+            ng-click="changePaymentMonth_person(-1, this)">
         <i class="ion-chevron-left"></i>
     </button>
     {{myMonth}}
     <button type="button" class="btn btn-default btn-icon"
-            ng-click="changePaymentMonth_history(1, this)">
+            ng-click="changePaymentMonth_person(1, this)">
         <i class="ion-chevron-right"></i>
     </button>
 
-    <div id="form_history_pdf">
+    <div id="form_person_pdf">
 
         <h3 class="with-line">
-            {{paymentFormCtrlVm.historyUser.selected.name}} {{myMonth}} 墊付款</h3>
+            {{username}} {{myMonth}} 墊付款</h3>
 
         <button class="btn btn-info editable-table-button btn-xs no-print"
-                ng-click="printPDF_history() ">
+                ng-click="printPDF_person() ">
             列印
         </button>
 
@@ -64,22 +40,16 @@
                 <td style="vertical-align: inherit; text-align: center">發票號碼</td>
                 <td style="vertical-align: inherit; text-align: center" width="180px">內容說明</td>
                 <td style="vertical-align: inherit; text-align: center">墊付金額</td>
-                <td style="vertical-align: inherit; text-align: center" class="no-print">經理審查</td>
+                <td style="vertical-align: inherit; text-align: center" class="no-print">經理簽章</td>
                 <td style="vertical-align: inherit; text-align: center" class="no-print">行政核定</td>
             </tr>
             </thead>
-            <tbody ng-repeat="item in displayPaymentItems_history">
+            <tbody ng-repeat="item in displayPaymentItems_person">
             <tr style="vertical-align: inherit; text-align: center"
                 ng-if="item.isManagerCheck && item.isExecutiveCheck">
                 <!--序號-->
                 <td style="vertical-align: inherit; text-align: center">
-                    <!--<span id="prjCode">{{$index + 1}}</span>-->
                     <span id="prjCode">{{item.itemIndex}}</span>
-                    <button class="btn btn-danger editable-table-button btn-xs no-print"
-                            ng-if="item.isExecutiveCheck"
-                            ng-click="repentPayment_executive(paymentFormCtrlVm.historyUser.selected._id, item);">
-                        核定後退回
-                    </button>
                 </td>
                 <!--專案代碼-->
                 <td class="form-group" style="vertical-align: inherit; text-align: center">
@@ -101,7 +71,7 @@
                 <td class="form-group" style="vertical-align: inherit; text-align: center">
                     <span ng-if="item.isSendReview">{{item.amount}}</span>
                 </td>
-                <!--經理審查-->
+                <!--經理簽章-->
                 <td class="form-group no-print" style="vertical-align: inherit; text-align: center">
                     <div ng-if="item.isManagerCheck">
                         <div ng-if="!item.isExecutiveAdd">
@@ -109,7 +79,7 @@
                                     style="color: black">
                                 {{ showProjectManager(item.prjDID)}}
                                 <br>
-                                確認完成
+                                簽章完成
                             </button>
                         </div>
                         <div ng-if="item.isExecutiveAdd">
@@ -149,13 +119,14 @@
                     小計
                 </td>
                 <td style="vertical-align: inherit;">
-                    {{calculateSum(1)}}
+                    {{calculateSum(3)}}
                 </td>
             </tr>
             </tfoot>
         </table>
-
     </div>
+
+
 
 </div>
 

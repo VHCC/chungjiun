@@ -57,6 +57,9 @@
         // ***** 墊付款 history Tab 主要顯示 *****
         $scope.displayPaymentItems_history;
 
+        // ***** 墊付款 person Tab 主要顯示 *****
+        $scope.displayPaymentItems_person;
+
         // ***** 墊付款 executive Tab 主要顯示 *****
         $scope.displayPaymentItems_executiveAdd;
 
@@ -178,6 +181,15 @@
             });
         }
 
+        $scope.listenMonth_person = function(dom){
+            dom.$watch('myMonth',function(newValue, oldValue) {
+                if (dom.isShiftMonthSelect) {
+                    dom.isShiftMonthSelect = false;
+                    $scope.changePaymentMonth_person(0, dom.monthPickerDom);
+                }
+            });
+        }
+
         $scope.listenMonth_executiveAdd = function(dom){
             dom.$watch('myMonth',function(newValue, oldValue) {
                 if (dom.isShiftMonthSelect) {
@@ -253,6 +265,22 @@
             specificMonth = month;
 
             $scope.fetchPaymentsData(vm.historyUser.selected._id, 1);
+        }
+
+        // 個人檢視
+        $scope.changePaymentMonth_person = function(changeCount, dom) {
+            $scope.monthPicker = dom;
+
+            dom.myMonth = moment(dom.myDT).add(changeCount, 'M').format('YYYY/MM');
+            dom.myDT = moment(dom.myDT).add(changeCount, 'M');
+
+            var year = parseInt(dom.myDT.year()) - 1911;
+            var month = parseInt(dom.myDT.month()) + 1;
+
+            specificYear = year;
+            specificMonth = month;
+
+            $scope.fetchPaymentsData(null, 3);
         }
 
         // 行政修訂
@@ -340,8 +368,21 @@
         var isHistoryInitDate = false;
 
         $scope.initDate_history = function() {
+            $scope.fetchPaymentsData($scope.userDID, 1);
             if (!isHistoryInitDate) {
                 isHistoryInitDate = true;
+                specificYear = new Date().getFullYear() - 1911;
+                specificMonth = new Date().getMonth() + 1; //January is 0!
+            }
+        }
+
+        var isPersonInitDate = false;
+
+        $scope.initDate_person = function() {
+
+            $scope.fetchPaymentsData($scope.userDID, 3);
+            if (!isPersonInitDate) {
+                isPersonInitDate = true;
                 specificYear = new Date().getFullYear() - 1911;
                 specificMonth = new Date().getMonth() + 1; //January is 0!
             }
@@ -360,6 +401,7 @@
         // main, type = 0
         // history, type = 1
         // executiveAdd, type = 2
+        // person, type = 3
         $scope.fetchPaymentsData = function (specificUserDID, type) {
 
             bsLoadingOverlayService.start({
@@ -379,12 +421,22 @@
                     switch (type) {
                         case 0:
                             $scope.displayPaymentItems = res.payload;
+                            console.log(res.payload);
                             break;
                         case 1:
+                            res.payload = res.payload.sort(function (a, b) {
+                                return a.itemIndex > b.itemIndex ? 1 : -1;
+                            });
                             $scope.displayPaymentItems_history = res.payload;
                             break;
                         case 2:
                             $scope.displayPaymentItems_executiveAdd = res.payload;
+                            break;
+                        case 3:
+                            res.payload = res.payload.sort(function (a, b) {
+                                return a.itemIndex > b.itemIndex ? 1 : -1;
+                            });
+                            $scope.displayPaymentItems_person = res.payload;
                             break;
                     }
 
@@ -408,6 +460,15 @@
                         });
                     }, 500)
                 })
+
+            $('#paymentItemIndexInput').mask('DD', {
+                translation: {
+                    'D': {
+                        pattern: /[0123456789]/,
+                    }
+                }
+            });
+
         }
 
         $scope.showPrjCode = function (prjDID) {
@@ -467,6 +528,7 @@
                 amount: item.amount,
                 isExecutiveAdd : true,
                 isExecutiveCheck: true,
+                itemIndex: item.itemIndex,
             }
             PaymentFormsUtil.updatePaymentItemByID(formData)
                 .success(function (res) {
@@ -537,6 +599,7 @@
                     receiptCode: item.receiptCode,
                     contents: item.contents,
                     amount: item.amount,
+                    itemIndex: item.itemIndex
                 }
                 PaymentFormsUtil.updatePaymentItemByID(formData)
                     .success(function (res) {
@@ -595,16 +658,22 @@
                 isFindExecutiveCheck: null,
             }
 
+            // console.log(formData);
+
             PaymentFormsUtil.getPaymentsMultiple(formData)
                 .success(function (res) {
                     // console.log(res);
                     var userResult = [];
                     var evalString;
+
+                    // console.log(managersRelatedProjects);
                     if (res.payload.length > 0) {
                         for (var paymentsItemsIndex = 0; paymentsItemsIndex < res.payload.length; paymentsItemsIndex ++) {
                             var isProjectIncluded = false;
                             inter:
                             if (managersRelatedProjects.includes(res.payload[paymentsItemsIndex].prjDID)) { // 行政總管跟每個人都有關, 經理只跟專案掛鉤
+                                // console.log(paymentsItemsIndex);
+                                // console.log(res.payload[paymentsItemsIndex].prjDID);
                                 isProjectIncluded = true;
                                 break inter;
                             }
@@ -649,6 +718,15 @@
         }
 
         $scope.fetchReviewItemsFromScope = function(user) {
+
+            $('#paymentItemIndexInput').mask('DD', {
+                translation: {
+                    'D': {
+                        pattern: /[0123456789]/,
+                    }
+                }
+            });
+
             return $scope.tables_review[user] === undefined ?
                 [] : $scope.tables_review[user];
         }
@@ -759,12 +837,12 @@
                 month: specificMonth,
                 isFindSendReview: true,
                 isFindManagerCheck: true,
-                isFindExecutiveCheck: false,
+                isFindExecutiveCheck: null,
             }
 
             PaymentFormsUtil.getPaymentsMultiple(formData)
                 .success(function (res) {
-                    // console.log(res);
+                    console.log(res);
                     var userResult = [];
                     var evalString;
                     if (res.payload.length > 0) {
@@ -787,7 +865,38 @@
                                 manipulateObject.push(res.payload[paymentsItemsIndex]);
                             }
                         }
+
+                        // 檢查全部都核定過的物件
+
+                        var userTemp = userResult.slice();
+                        // console.log(userResult);
+                        for (var index = 0; index < userTemp.length; index ++) {
+                            // console.log(userTemp[index]);
+                            evalString = "manipulateObject = $scope.tables_review['" + userTemp[index] + "']";
+                            eval(evalString);
+                            // console.log(manipulateObject);
+                            var isNeedShow = false
+                            for (var itemIndex = 0; itemIndex < manipulateObject.length; itemIndex++) {
+                                // console.log(manipulateObject[itemIndex]);
+                                if (!manipulateObject[itemIndex].isExecutiveCheck) {
+                                    isNeedShow = true;
+                                }
+                            }
+
+                            if (!isNeedShow) {
+                                // console.log(index);
+                                var location = userResult.indexOf(userTemp[index]);
+                                // console.log(userTemp[index]);
+                                // console.log(manipulateObject);
+                                userResult.splice(location, 1);
+                            }
+
+
+                        }
+
                         $scope.usersReviewForExecutive = userResult;
+
+                        // console.log($scope);
 
                         $timeout(function () {
                             bsLoadingOverlayService.stop({
@@ -813,7 +922,8 @@
             $scope.checkText = '確定 核定：' +
                 $scope.showUser(userDID) + ", " +
                 $scope.showPrjCode(item.prjDID) + ", 金額：" +
-                item.amount +
+                item.amount + ", 核定編號：" +
+                item.itemIndex +
                 " ？";
             $scope.checkingUserDID = userDID;
             $scope.checkingItem = item;
@@ -830,6 +940,7 @@
             var formData = {
                 _id: item._id,
                 isExecutiveCheck: true,
+                itemIndex: item.itemIndex
             }
             PaymentFormsUtil.updatePaymentItemByID(formData)
                 .success(function (res) {
@@ -955,7 +1066,43 @@
             });
         }
 
+        $scope.printPDF_person = function() {
+            $("#form_person_pdf").print({
+                globalStyles: true,
+                mediaPrint: false,
+                stylesheet: null,
+                noPrintSelector: ".no-print",
+                iframe: true,
+                append: null,
+                prepend: null,
+                manuallyCopyFormValues: true,
+                deferred: $.Deferred(),
+                timeout: 750,
+                title: null,
+                doctype: '<!doctype html>'
+            });
+        }
+
+        $scope.printPDF_history = function () {
+
+            $("#form_history_pdf").print({
+                globalStyles: true,
+                mediaPrint: false,
+                stylesheet: null,
+                noPrintSelector: ".no-print",
+                iframe: true,
+                append: null,
+                prepend: null,
+                manuallyCopyFormValues: true,
+                deferred: $.Deferred(),
+                timeout: 750,
+                title: null,
+                doctype: '<!doctype html>'
+            });
+        }
+
         // main tab, type = 0
+        // history tab, type = 1
         // executive_Add, type = 2
         $scope.calculateSum = function (type) {
             var operationTarget;
@@ -974,6 +1121,21 @@
                     }
                     return result;
                     break;
+                case 1:
+                    operationTarget = $scope.displayPaymentItems_history;
+                    if (operationTarget == undefined || operationTarget == null) {
+                        return;
+                    }
+                    for (var index = 0; index < operationTarget.length; index ++) {
+                        if (!operationTarget[index].isExecutiveCheck) {
+                            continue;
+                        }
+                        if (operationTarget[index].amount != null || operationTarget[index].amount != undefined) {
+                            result += parseInt(operationTarget[index].amount);
+                        }
+                    }
+                    return result;
+                    break;
                 case 2:
                     operationTarget = $scope.displayPaymentItems_executiveAdd;
                     if (operationTarget == undefined || operationTarget == null) {
@@ -981,6 +1143,21 @@
                     }
                     for (var index = 0; index < operationTarget.length; index ++) {
                         console.log(operationTarget[index]);
+                        if (operationTarget[index].amount != null || operationTarget[index].amount != undefined) {
+                            result += parseInt(operationTarget[index].amount);
+                        }
+                    }
+                    return result;
+                    break;
+                case 3:
+                    operationTarget = $scope.displayPaymentItems_person;
+                    if (operationTarget == undefined || operationTarget == null) {
+                        return;
+                    }
+                    for (var index = 0; index < operationTarget.length; index ++) {
+                        if (!operationTarget[index].isExecutiveCheck) {
+                            continue;
+                        }
                         if (operationTarget[index].amount != null || operationTarget[index].amount != undefined) {
                             result += parseInt(operationTarget[index].amount);
                         }

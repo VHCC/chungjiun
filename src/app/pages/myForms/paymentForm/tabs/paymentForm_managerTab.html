@@ -22,7 +22,7 @@
             <table class="table table-bordered table-hover table-condensed">
                 <thead>
                     <tr style="white-space:nowrap">
-                        <td style="vertical-align: inherit; text-align: center" width="80px"></td>
+                        <!--<td style="vertical-align: inherit; text-align: center" width="80px"></td>-->
                         <td style="vertical-align: inherit; text-align: center" width="100px">專案代碼</td>
                         <td style="vertical-align: inherit; text-align: center" width="150px">發票日期</td>
                         <td style="vertical-align: inherit; text-align: center" width="150px">發票號碼</td>
@@ -34,9 +34,9 @@
                 <tbody ng-repeat="item in fetchReviewItemsFromScope(user)">
                     <tr style="vertical-align: inherit; text-align: center">
                         <!--序號-->
-                        <td style="vertical-align: inherit; text-align: center">
-                            <span id="prjCode">{{$index + 1}}</span>
-                        </td>
+                        <!--<td style="vertical-align: inherit; text-align: center">-->
+                            <!--<span id="prjCode">{{$index + 1}}</span>-->
+                        <!--</td>-->
                         <!--專案代碼-->
                         <td class="form-group" style="vertical-align: inherit; text-align: center">
                             <span>{{showPrjCode(item.prjDID)}}</span>
@@ -120,7 +120,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="7">
+                        <td colspan="6">
                             <section class="col-md-12" >
                                 <button ng-click="reviewPaymentManagerAll(user)"
                                         style="float: right; padding: 0 60px; line-height: 4"
