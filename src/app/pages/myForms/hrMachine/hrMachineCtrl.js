@@ -88,7 +88,7 @@
                             return a._id > b._id ? 1 : -1;
                         });
 
-                        console.log(res.payload);
+                        // console.log(res.payload);
 
                         var arrayResult = res.payload;
 
@@ -96,7 +96,7 @@
                         var lastDate = "";
 
                         for (var index = 0; index < arrayResult[0].length; index++) {
-                            console.log(arrayResult[0][index]);
+                            // console.log(arrayResult[0][index]);
 
                             var hrMachineItem = {
                                 date: "",
@@ -106,7 +106,7 @@
                                 time: "",
                                 workType: ""
                             }
-                            console.log(hrMachineTableSorted);
+                            // console.log(hrMachineTableSorted);
                             if (hrMachineTableSorted[arrayResult[0][index].date] === undefined) {
                                 hrMachineItem.date = arrayResult[0][index].date;
                                 hrMachineItem.did = arrayResult[0][index].did;
@@ -117,7 +117,7 @@
 
                                 var hrMachineCollection = [];
                                 hrMachineCollection.push(hrMachineItem);
-                                console.log(hrMachineCollection);
+                                // console.log(hrMachineCollection);
                                 hrMachineTableSorted[arrayResult[0][index].date] = hrMachineCollection;
 
                                 if (arrayResult[0][index].workType == 4) {
@@ -868,11 +868,17 @@
 
                     if (isAfterNoon && isBeforeNoon) {
                         // console.log(Math.abs(parseInt(workOffHour) - parseInt(workOnHour) - 1));
-                        result =  parseInt( Math.abs((workOffHour - workOnHour - 1)) * 60 + (workOffMin - workOnMin));
+                        var culc = (workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin);
+                        if (culc > 0) {
+                            result =  parseInt( Math.abs((workOffHour - workOnHour - 1)) * 60 + (workOffMin - workOnMin));
+                        }
                         // console.log("A result:" + result);
                     } else {
+                        var culc = (workOffHour - workOnHour) * 60 + (workOffMin - workOnMin);
+                        if (culc > 0) {
+                            result =  parseInt( Math.abs((workOffHour - workOnHour)) * 60 + (workOffMin - workOnMin));
+                        }
                         // console.log( Math.abs((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin)));
-                        result =  parseInt( Math.abs((workOffHour - workOnHour)) * 60 + (workOffMin - workOnMin));
                         // console.log("B result:" + result);
                     }
                     isAfterNoon = false;
@@ -933,12 +939,20 @@
                         // console.log(workOffHour - workOnHour - 1);
                         // console.log(workOffMin - workOnMin);
                         // console.log("C pre_result:" + result);
-                        result += ( Math.abs(parseInt((workOffHour - workOnHour - 1)) * 60 + (workOffMin - workOnMin)));
+                        var culc = (workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin);
+                        if (culc > 0) {
+                            result =  parseInt( Math.abs((workOffHour - workOnHour - 1)) * 60 + (workOffMin - workOnMin));
+                        }
+                        // result += ( Math.abs(parseInt((workOffHour - workOnHour - 1)) * 60 + (workOffMin - workOnMin)));
                         // console.log("C result:" + result);
 
                     } else {
-                        console.log((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
-                        result += ( Math.abs(parseInt((workOffHour - workOnHour)) * 60 + (workOffMin - workOnMin)));
+                        var culc = (workOffHour - workOnHour) * 60 + (workOffMin - workOnMin);
+                        if (culc > 0) {
+                            result =  parseInt( Math.abs((workOffHour - workOnHour)) * 60 + (workOffMin - workOnMin));
+                        }
+                        // console.log((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
+                        // result += ( Math.abs(parseInt((workOffHour - workOnHour)) * 60 + (workOffMin - workOnMin)));
                         // console.log("D result:" + result);
                     }
                 }
