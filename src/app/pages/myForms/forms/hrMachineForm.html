@@ -235,9 +235,9 @@
                     <!--</td>-->
 
                     <!--遲到-->
-                    <td ng-class="isLate(tableItem) ? 'sumWarning' : 'sunNormal'"
+                    <td ng-class="(isLate(tableItem, 0) || isLate(tableItem, 1))? 'sumWarning' : 'sunNormal'"
                         style="vertical-align: inherit;">
-                        <div ng-show="isLate(tableItem)">
+                        <div ng-show="(isLate(tableItem, 0) || isLate(tableItem, 1))">
                             遲
                         </div>
                     </td>

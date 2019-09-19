@@ -635,29 +635,54 @@
             // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝ＣＨＪ ＲＵＬＥ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
             // 遲到判斷
-            $scope.isLate = function (tableItem) {
+            $scope.isLate = function (tableItem, type) {
+
+                var operateArray = [];
+
+                var isLate = false;
+
+                // console.log(tableItem);
+
                 for (var index = 0; index < tableItem.length; index++) {
                     if (tableItem[index].workType === "1") {
-                        var workOnHour = parseInt(tableItem[index].time.substr(0,2));
-                        var workOnMin = parseInt(tableItem[index].time.substr(2,4));
-                        if (workOnHour <= 8) {
-                            return false;
-                        }
-
-                        if (workOnHour == 9 && workOnMin == 0) {
-                            return false;
-                        } else {
-                            return true;
-                        }
-
-                        // if (workOnHour >= 9 && workOnMin >= 1) {
-                        //     return true;
-                        // } else {
-                        //     return false;
-                        // }
-
+                        operateArray.push(tableItem[index]);
                     }
                 }
+
+                console.log(operateArray);
+                // console.log("isLate, type= " + type);
+
+                if (operateArray.length > 0 && operateArray[type] != undefined) {
+                    var workOnHour = parseInt(operateArray[type].time.substr(0,2));
+                    var workOnMin = parseInt(operateArray[type].time.substr(2,4));
+
+                    if (workOnHour <= 8) {
+                        isLate = false
+                    } else if (workOnHour == 9 && workOnMin == 0) {
+                        isLate = false
+                    } else {
+                        isLate = true;
+                    }
+                }
+
+                // for (var index = 0; index < tableItem.length; index++) {
+                //     if (tableItem[index].workType === "1") {
+                //         // console.log(tableItem[index]);
+                //         var workOnHour = parseInt(tableItem[index].time.substr(0,2));
+                //         var workOnMin = parseInt(tableItem[index].time.substr(2,4));
+                //         if (workOnHour <= 8) {
+                //             // return false;
+                //         } else {}
+                //
+                //         if (workOnHour == 9 && workOnMin == 0) {
+                //             // return false;
+                //         } else {
+                //             isLate = true;
+                //         }
+                //     }
+                // }
+
+                return isLate;
             }
 
             // 請假時數
@@ -697,110 +722,111 @@
             }
 
             // 上班時數
-            $scope.workHour = function (tableItem) {
-                // console.log(tableItem);
-                var result = undefined;
-                var isBeforeNoon = false;
-                var isAfterNoon = false;
-                var workOnCount = 0;
-                var workOffCount = 0;
-                for (var index = 0; index < tableItem.length; index++) {
-                    if (tableItem[index].workType === "1") {
-                        // console.log("上班");
-                        var workOnHour = parseInt(tableItem[index].time.substr(0,2));
-                        var workOnMin = parseInt(tableItem[index].time.substr(2,4));
-
-                        if (workOnHour < 8) { // before 0800 => 0800, ex: 0759 => 0800
-                            workOnHour = 8;
-                            workOnMin = 0;
-                        }
-
-                        //遲到規則
-                        if (workOnCount == 0) {
-                            if (workOnHour >= 9 && workOnMin >= 1) {
-                                if (workOnMin <= 30) {
-                                    workOnMin = 30;
-                                } else if (workOnMin > 30) {
-                                    workOnHour += 1;
-                                    workOnMin = 0;
-                                }
-                            }
-                            // 20190408設計
-                        }
-
-                        if (workOnHour < 12) {
-                            isBeforeNoon = true;
-                        }
-                        // console.log("index:" + index);
-                        // console.log(workOnHour + ":" + workOnMin);
-                        workOnCount ++;
-                    }
-                    if (tableItem[index].workType === "2") {
-                        // console.log("下班");
-                        var workOffHour = parseInt(tableItem[index].time.substr(0,2));
-                        var workOffMin = parseInt(tableItem[index].time.substr(2,4));
-
-                        if ($scope.isLate(tableItem) && workOffHour >= 18) { //若是遲到
-                            workOffHour = 17;
-                            workOffMin = 30;
-                        } else if (workOffHour >= 18) {
-                            workOffHour = 18;
-                            workOffMin = 0;
-                        }
-
-                        if (workOffHour > 13) {
-                            isAfterNoon = true;
-                        }
-                        // console.log("index:" + index);
-                        // console.log(workOffHour + ":" + workOffMin);
-                        workOffCount++;
-                    }
-                    if (workOnHour && workOffHour) {
-
-                        if (workOnCount == 1 && workOffCount == 1 ) {
-                            if (isAfterNoon && isBeforeNoon) {
-                                // console.log("A index:" + index);
-                                // console.log("A result:" + result);
-                                // console.log(workOffHour - workOnHour - 1);
-                                // return (workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin);
-                                result =  parseInt((workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin));
-                            } else {
-                                // console.log("B index:" + index);
-                                // console.log("B result:" + result);
-                                // console.log((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
-                                // return (workOffHour - workOnHour) * 60 + (workOffMin - workOnMin);
-                                result =  parseInt((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
-                            }
-                            isAfterNoon = false;
-                            isBeforeNoon = false;
-                        }
-
-                        if (workOnCount == 2 && workOffCount == 2 ) {
-                            if (isAfterNoon && isBeforeNoon) {
-                                // console.log("C index:" + index);
-                                // console.log("C result:" + result);
-                                // console.log(workOffHour - workOnHour - 1);
-                                // return (workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin);
-                                result +=  parseInt((workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin));
-                            } else {
-                                // console.log("D index:" + index);
-                                // console.log("D result:" + result);
-                                // console.log((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
-                                // return (workOffHour - workOnHour) * 60 + (workOffMin - workOnMin);
-                                result += parseInt((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
-                            }
-                        }
-                    }
-                }
-
-                if (result != undefined) {
-                    // console.log(result);
-                    return result;
-                } else {
-                    return undefined;
-                }
-
-            }
+            // Deprecated
+            // $scope.workHour2 = function (tableItem) {
+            //     // console.log(tableItem);
+            //     var result = undefined;
+            //     var isBeforeNoon = false;
+            //     var isAfterNoon = false;
+            //     var workOnCount = 0;
+            //     var workOffCount = 0;
+            //     for (var index = 0; index < tableItem.length; index++) {
+            //         if (tableItem[index].workType === "1") {
+            //             // console.log("上班");
+            //             var workOnHour = parseInt(tableItem[index].time.substr(0,2));
+            //             var workOnMin = parseInt(tableItem[index].time.substr(2,4));
+            //
+            //             if (workOnHour < 8) { // before 0800 => 0800, ex: 0759 => 0800
+            //                 workOnHour = 8;
+            //                 workOnMin = 0;
+            //             }
+            //
+            //             //遲到規則
+            //             if (workOnCount == 0) {
+            //                 if (workOnHour >= 9 && workOnMin >= 1) {
+            //                     if (workOnMin <= 30) {
+            //                         workOnMin = 30;
+            //                     } else if (workOnMin > 30) {
+            //                         workOnHour += 1;
+            //                         workOnMin = 0;
+            //                     }
+            //                 }
+            //                 // 20190408設計
+            //             }
+            //
+            //             if (workOnHour < 12) {
+            //                 isBeforeNoon = true;
+            //             }
+            //             // console.log("index:" + index);
+            //             // console.log(workOnHour + ":" + workOnMin);
+            //             workOnCount ++;
+            //         }
+            //         if (tableItem[index].workType === "2") {
+            //             // console.log("下班");
+            //             var workOffHour = parseInt(tableItem[index].time.substr(0,2));
+            //             var workOffMin = parseInt(tableItem[index].time.substr(2,4));
+            //
+            //             if ($scope.isLate(tableItem) && workOffHour >= 18) { //若是遲到
+            //                 workOffHour = 17;
+            //                 workOffMin = 30;
+            //             } else if (workOffHour >= 18) {
+            //                 workOffHour = 18;
+            //                 workOffMin = 0;
+            //             }
+            //
+            //             if (workOffHour > 13) {
+            //                 isAfterNoon = true;
+            //             }
+            //             // console.log("index:" + index);
+            //             // console.log(workOffHour + ":" + workOffMin);
+            //             workOffCount++;
+            //         }
+            //         if (workOnHour && workOffHour) {
+            //
+            //             if (workOnCount == 1 && workOffCount == 1 ) {
+            //                 if (isAfterNoon && isBeforeNoon) {
+            //                     // console.log("A index:" + index);
+            //                     // console.log("A result:" + result);
+            //                     // console.log(workOffHour - workOnHour - 1);
+            //                     // return (workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin);
+            //                     result =  parseInt((workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin));
+            //                 } else {
+            //                     // console.log("B index:" + index);
+            //                     // console.log("B result:" + result);
+            //                     // console.log((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
+            //                     // return (workOffHour - workOnHour) * 60 + (workOffMin - workOnMin);
+            //                     result =  parseInt((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
+            //                 }
+            //                 isAfterNoon = false;
+            //                 isBeforeNoon = false;
+            //             }
+            //
+            //             if (workOnCount == 2 && workOffCount == 2 ) {
+            //                 if (isAfterNoon && isBeforeNoon) {
+            //                     // console.log("C index:" + index);
+            //                     // console.log("C result:" + result);
+            //                     // console.log(workOffHour - workOnHour - 1);
+            //                     // return (workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin);
+            //                     result +=  parseInt((workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin));
+            //                 } else {
+            //                     // console.log("D index:" + index);
+            //                     // console.log("D result:" + result);
+            //                     // console.log((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
+            //                     // return (workOffHour - workOnHour) * 60 + (workOffMin - workOnMin);
+            //                     result += parseInt((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
+            //                 }
+            //             }
+            //         }
+            //     }
+            //
+            //     if (result != undefined) {
+            //         // console.log(result);
+            //         return result;
+            //     } else {
+            //         return undefined;
+            //     }
+            //
+            // }
 
             // 上班時數
             $scope.showWorkHour = function (tableItem, workOn1, workOff1, workOn2, workOff2) {
@@ -843,7 +869,7 @@
                     var workOffHour = parseInt(workOff1.substr(0,2));
                     var workOffMin = parseInt(workOff1.substr(2,4));
 
-                    if ($scope.isLate(tableItem) && workOffHour >= 18) { //若是遲到
+                    if ($scope.isLate(tableItem, 0) && workOffHour >= 18) { //若是遲到
                         workOffHour = 17;
                         workOffMin = 30;
                     } else if (workOffHour >= 18) {
@@ -863,6 +889,14 @@
                     if (workOffHour >= 13) {
                         isAfterNoon = true;
                     }
+
+                    console.log("Sec, "
+                        + "isLate= " + $scope.isLate(tableItem, 0) +
+                        + ", isBeforeNoon= " + isBeforeNoon
+                        + ", isAfterNoon= " + isAfterNoon + ", "
+                        + workOnHour + ":" + workOnMin
+                        + ", "
+                        + workOffHour + ":" + workOffMin);
 
                     // console.log("isAfterNoon= " + isAfterNoon + ", isBeforeNoon= " + isBeforeNoon);
 
@@ -886,7 +920,7 @@
 
                 }
                 if (workOn2 && workOff2) {
-                    // console.log(workOn2);
+                    console.log("workOn2: " + workOn2);
                     // console.log("上班");
                     var workOnHour = parseInt(workOn2.substr(0,2));
                     var workOnMin = parseInt(workOn2.substr(2,4));
@@ -905,18 +939,32 @@
                     //         workOnMin = 0;
                     //     }
                     // }
+
+                    //遲到規則
+                    if (workOnHour >= 9 && workOnMin >= 1) {
+                        if (workOnMin <= 30) {
+                            workOnMin = 30;
+                        } else if (workOnMin > 30) {
+                            workOnHour += 1;
+                            workOnMin = 0;
+                        }
+                        if (workOnHour == 12 ) {
+                            workOnHour = 13;
+                            workOnMin = 0;
+                        }
+                    }
+
                     // 20190408設計
-                    if (workOnHour < 12) {
+                    if (workOnHour <= 12) {
                         isBeforeNoon = true;
                     }
 
                     // =======================
-                    // console.log(workOff2);
+                    console.log("workOff2: " + workOff2);
                     // console.log("下班");
                     var workOffHour = parseInt(workOff2.substr(0,2));
                     var workOffMin = parseInt(workOff2.substr(2,4));
-
-                    if ($scope.isLate(tableItem) && workOffHour >= 18) { //若是遲到
+                    if ($scope.isLate(tableItem, 1) && workOffHour >= 18) { //若是遲到
                         workOffHour = 17;
                         workOffMin = 30;
                     } else if (workOffHour >= 18) {
@@ -924,36 +972,36 @@
                         workOffMin = 0;
                     }
 
-                    if (workOffHour > 13) {
+                    if (workOffHour >= 13) {
                         isAfterNoon = true;
                     }
 
-                    // console.log("Sec, "
-                    //     + "isBeforeNoon= " + isBeforeNoon
-                    //     + ", isAfterNoon= " + isAfterNoon + ", "
-                    //     + workOnHour + ":" + workOnMin
-                    //     + ", "
-                    //     + workOffHour + ":" + workOffMin);
+                    console.log("Sec, "
+                        + "isLate= " + $scope.isLate(tableItem, 1) +
+                        + ", isBeforeNoon= " + isBeforeNoon
+                        + ", isAfterNoon= " + isAfterNoon + ", "
+                        + workOnHour + ":" + workOnMin
+                        + ", "
+                        + workOffHour + ":" + workOffMin);
 
                     if (isAfterNoon && isBeforeNoon) {
                         // console.log(workOffHour - workOnHour - 1);
                         // console.log(workOffMin - workOnMin);
                         // console.log("C pre_result:" + result);
                         var culc = (workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin);
+                        console.log(culc);
                         if (culc > 0) {
                             result =  parseInt( Math.abs((workOffHour - workOnHour - 1)) * 60 + (workOffMin - workOnMin));
                         }
-                        // result += ( Math.abs(parseInt((workOffHour - workOnHour - 1)) * 60 + (workOffMin - workOnMin)));
-                        // console.log("C result:" + result);
+                        console.log("C result:" + result);
 
                     } else {
                         var culc = (workOffHour - workOnHour) * 60 + (workOffMin - workOnMin);
+                        console.log(culc);
                         if (culc > 0) {
                             result =  parseInt( Math.abs((workOffHour - workOnHour)) * 60 + (workOffMin - workOnMin));
                         }
-                        // console.log((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
-                        // result += ( Math.abs(parseInt((workOffHour - workOnHour)) * 60 + (workOffMin - workOnMin)));
-                        // console.log("D result:" + result);
+                        console.log("D result:" + result);
                     }
                 }
 
