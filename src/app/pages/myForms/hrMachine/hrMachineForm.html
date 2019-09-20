@@ -1,0 +1,45 @@
+<style type='text/css'>
+
+    .sumWarning {
+        color: red;
+        font-weight: bold;
+    }
+
+    .sumNormal {
+        color: black;
+    }
+
+</style>
+
+<div bs-loading-overlay
+     bs-loading-overlay-reference-id="overlay_hrMachine">
+
+    <uib-tabset active="$tabSetStatus.activeTab">
+        <uib-tab heading="個人打卡機資訊"
+                 ng-init="fetchData(undefined, undefined, 0)"
+                 ng-click="fetchData(undefined, undefined, 0)">
+            <div ng-include="'app/pages/myForms/hrMachine/hrMachineForm_mainTab.html'"></div>
+        </uib-tab>
+        <uib-tab heading="打卡機檢視" ng-if="roleType === '2' || roleType === '100'"
+                 style="color: blue">
+            <div ng-include="'app/pages/myForms/hrMachine/hrMachineForm_UserDataFind.html'"></div>
+        </uib-tab>
+        <uib-tab heading="打卡機補登" ng-if=false
+                 style="color: blue">
+            <div ng-include="'app/pages/myForms/hrMachine/hrMachineForm_LoadTab.html'"></div>
+        </uib-tab>
+        <uib-tab heading="打卡機補登審核" ng-if=false
+                 style="color: blue">
+            <div ng-include="'app/pages/myForms/hrMachine/hrMachineForm_LoadTab.html'"></div>
+        </uib-tab>
+        <uib-tab heading="打卡機檔案讀取" ng-if="roleType === '100'"
+                 style="color: blue">
+            <div ng-include="'app/pages/myForms/hrMachine/hrMachineForm_LoadTab.html'"></div>
+        </uib-tab>
+        <uib-tab heading="打卡機月報表" ng-if="roleType === '100'"
+                 style="color: blue">
+            <div ng-include="'app/pages/myForms/hrMachine/hrMachineForm_monthReportsTab.html'"></div>
+        </uib-tab>
+    </uib-tabset>
+
+</div>

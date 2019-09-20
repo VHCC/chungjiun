@@ -32,6 +32,10 @@ module.exports = function (app) {
             }, function (err, formDataResponse) {
                 resultCount++;
                 if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_fetch_hrmachine_data_by_machine_did");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
                     res.send(err);
                 } else {
                     // console.log(formDataResponse);
@@ -60,13 +64,13 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_fetch_hrmachine_data_one_day_by_machine_did, function (req, res) {
         var resultArry = [];
         // console.log(req.body);
-        var today = req.body.today;
+        var date = req.body.date;
 
-        console.log("today= " + today);
+        console.log("today= " + date);
 
         var resultCount = 0;
 
-        var HrMachineForm = require('../../models/hrMachine')(today);
+        var HrMachineForm = require('../../models/hrMachine')(date);
 
         HrMachineForm.find({
             did: req.body.machineDID
@@ -79,16 +83,16 @@ module.exports = function (app) {
             .exec(function (err, formDataResponse) {
                 resultCount++;
                 if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_fetch_hrmachine_data_one_day_by_machine_did");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
                     res.send(err);
                 } else {
-                    // console.log(formDataResponse);
-                    // console.log(formDataResponse.length);
                     if (formDataResponse != undefined && formDataResponse.length > 0) {
                         resultArry.push(formDataResponse);
                     }
 
-                    // console.log(resultCount);
-                    // console.log(resultArry);
                     res.status(200).send({
                         code: 200,
                         error: global.status._200,
@@ -99,23 +103,28 @@ module.exports = function (app) {
 
     });
 
-    // Load Date File
+    // Load Date File for specific date
     app.post(global.apiUrl.post_load_hrmachine_data_by_date, function (req, res) {
         var fileDate = req.body.loadDate;
         var fReadName = '../HR/CARD/' + fileDate + '.txt';
 
         fs.stat(fReadName, function(err, stat) {
             if(err == null) {
-                console.log('File exists');
+                console.log('File exist, fileDate= ' + fileDate);
                 loadData(fileDate, fReadName, req, res);
             } else if(err.code == 'ENOENT') {
                 // file does not exist
-                console.log('ENOENT');
+                console.log('File not exist, fileDate= ' + fileDate);
                 res.status(400).send({
                     code: 200,
+                    fileDate: fileDate,
                     error: global.status._400,
                 });
             } else {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_load_hrmachine_data_by_date");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 console.log('Some other error: ', err.code);
             }
         });
@@ -142,11 +151,15 @@ module.exports = function (app) {
             if (err) {
                 throw err;
             }
-            console.log("Readline start !!!");
+            console.log("Readline start !!!, fileDate= " + fileDate);
 
             hrMAchineModel.remove({
             }, function (err) {
                 if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, loadData");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
                     res.send(err);
                 }
             })
@@ -194,12 +207,17 @@ module.exports = function (app) {
                 }, function (err) {
                     resultIndex++;
                     if (err) {
+                        console.log(global.timeFormat(new Date()) + global.log.e + "API, loadData");
+                        console.log(req.body);
+                        console.log(" ***** ERROR ***** ");
+                        console.log(err);
                         res.send(err);
                     } else {
                         // console.log("resultIndex= " + resultIndex);
                         if (resultIndex === index - 1) {
                             res.status(200).send({
                                 code: 200,
+                                fileDate: fileDate,
                                 error: global.status._200,
                             });
                         }

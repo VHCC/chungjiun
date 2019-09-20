@@ -18,6 +18,7 @@
                     'DateUtil',
                     'TimeUtil',
                     'toastr',
+                    'bsLoadingOverlayService',
                     HrMachineCtrl
                 ]);
 
@@ -31,7 +32,8 @@
                                  User,
                                  DateUtil,
                                  TimeUtil,
-                                 toastr) {
+                                 toastr,
+                                 bsLoadingOverlayService) {
 
 
             $scope.username = cookies.get('username');
@@ -40,8 +42,10 @@
             $scope.machineDID = cookies.get('machineDID');
 
             var vm = this;
+
             var thisYear = new Date().getFullYear() - 1911;
             var thisMonth = new Date().getMonth() + 1; //January is 0!;
+
             $scope.year = thisYear;
             $scope.month = thisMonth;
             var thisDay = new Date().getDay();
@@ -58,28 +62,45 @@
                 User.getAllUsers()
                     .success(function (allUsers) {
                         vm.users = allUsers;
+                        vm.users_month_report = allUsers;
                     });
             }
 
-            // 主要顯示
+            // ***** main Tab 主要顯示 *****
             $scope.hrMachineTable = [];
+
+            // ***** specific user 主要顯示 *****
             $scope.hrMachineTable_specific = [];
 
-            $scope.fetchData = function(machineDID, month) {
+            // ***** month reports 主要顯示 *****
+            $scope.hrMachineTable_month_reports = [];
+
+
+            // type 0 : main tab
+            // type 1 : specific user tab
+            // type 2 : month reports tab
+            $scope.fetchData = function(machineDID, specificDate, type) {
+
+                bsLoadingOverlayService.start({
+                    referenceId: 'overlay_hrMachine'
+                });
+
                 $scope.hrMachineTable = [];
                 $scope.hrMachineTable_specific = [];
-                var startDate = moment().format('YYYYMM') + "01";
-                var endDate = moment().format('YYYYMM') + moment().daysInMonth();
+                $scope.hrMachineTable_month_reports = [];
+
+                // var startDate = moment().format('YYYYMM') + "01";
+                // var endDate = moment().format('YYYYMM') + moment().daysInMonth();
                 var today = moment().format('YYYYMMDD');
 
-                if (month !== undefined) {
-                    startDate = moment(month).format('YYYYMM') + "01";
-                    endDate = moment(month).format('YYYYMM') + moment(month).daysInMonth();
-                }
+                // if (month !== undefined) {
+                //     startDate = moment(month).format('YYYYMM') + "01";
+                //     endDate = moment(month).format('YYYYMM') + moment(month).daysInMonth();
+                // }
 
                 var formData = {
                     machineDID: machineDID == undefined ? $scope.machineDID : machineDID,
-                    today: today,
+                    date: specificDate == undefined ? today : specificDate,
                 }
 
                 HrMachineUtil.fetchUserHrMachineDataOneDayByMachineDID(formData)
@@ -88,7 +109,7 @@
                             return a._id > b._id ? 1 : -1;
                         });
 
-                        // console.log(res.payload);
+                        console.log(res.payload);
 
                         var arrayResult = res.payload;
 
@@ -96,7 +117,21 @@
                         var lastDate = "";
 
                         for (var index = 0; index < arrayResult[0].length; index++) {
-                            // console.log(arrayResult[0][index]);
+                            // console.log(arrayResult[0][index].date);
+
+                            var yearString = parseInt(arrayResult[0][index].date.substr(0, 3)) + 1911;
+                            var dateString = arrayResult[0][index].date.substr(3, arrayResult[0][index].date.length);
+                            // console.log(yearString + dateString);
+                            var newDate = yearString + dateString;
+
+                            // console.log(moment(newDate).format('MM'));
+
+                            if (type == 2) {
+                                if (moment(newDate).format('MM') != moment(specificDate).format('MM')) {
+                                    continue;
+                                }
+                            }
+
 
                             var hrMachineItem = {
                                 date: "",
@@ -176,12 +211,31 @@
                                 lastDate = arrayResult[0][index].date;
                             }
                         }
-                        if (machineDID) {
-                            $scope.hrMachineTable_specific = hrMachineTableSorted;
-                        } else {
-                            // console.log(hrMachineTableSorted);
-                            $scope.hrMachineTable = hrMachineTableSorted;
+
+                        switch(type) {
+                            case 0:
+                                $scope.hrMachineTable = hrMachineTableSorted;
+                                break;
+                            case 1:
+                                $scope.hrMachineTable_specific = hrMachineTableSorted;
+                                break;
+                            case 2:
+                                $scope.hrMachineTable_month_reports = hrMachineTableSorted;
+                                break;
+
                         }
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'overlay_hrMachine'
+                            });
+                        }, 500)
+                    })
+                    .error(function () {
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'overlay_hrMachine'
+                            });
+                        }, 500)
                     })
             }
 
@@ -193,28 +247,63 @@
                 return resultString;
             }
 
+            // @Deprecated
             $scope.changeHrMachineMonth = function(changeCount, dom) {
-                dom.myMonth = moment(dom.myDT).add(changeCount, 'M').format('YYYY/MM');
-                dom.myDT = moment(dom.myDT).add(changeCount, 'M');
-                $scope.fetchData(dom.myMonth);
+                // dom.myMonth = moment(dom.myDT).add(changeCount, 'M').format('YYYY/MM');
+                // dom.myDT = moment(dom.myDT).add(changeCount, 'M');
+                // $scope.fetchData(dom.myMonth);
             }
 
+            // 打卡機檔案讀取
             $scope.loadHrMachineDate = function (dom) {
                 if (moment(dom.myDT).format('YYYYMMDD') === "Invalid date") {
                     toastr.error('請檢察日期', 'Error');
                     return;
                 }
-                var fileDate = moment(dom.myDT).format('YYYYMMDD')
+                var fileDate = moment(dom.myDT).format('YYYYMMDD');
                 // console.log(fileDate);
                 var formData = {
                     loadDate: fileDate,
                 }
                 HrMachineUtil.loadHrMachineDataByDate(formData)
                     .success(function () {
-                        toastr.success('讀取完成', 'Success');
+                        // toastr.success('讀取完成', 'Success');
                     })
                     .error(function () {
                         toastr.error('讀取失敗', '機器無該日期檔案');
+                    })
+            }
+
+            // 月報表
+            $scope.loadHrMachineMonth = function (dom) {
+                // var fileDate = moment(dom.myDT).format('YYYYMMDD');
+                var fileDate = moment(dom.myDT).endOf('month').format('YYYYMMDD')
+                // console.log(fileDate);
+
+                if (vm.users_month_report.selected == undefined) {
+                    toastr.error('操作異常', '請先選取員工');
+                    return;
+                }
+
+                bsLoadingOverlayService.start({
+                    referenceId: 'overlay_hrMachine'
+                });
+
+                var formData = {
+                    loadDate: fileDate,
+                }
+                HrMachineUtil.loadHrMachineDataByDate(formData)
+                    .success(function (res) {
+                        $scope.fetchData(vm.users_month_report.selected.machineDID, res.fileDate, 2);
+
+                    })
+                    .error(function (res) {
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'overlay_hrMachine'
+                            });
+                        }, 500)
+                        toastr.error('讀取失敗', '機器無該日期檔案, ' + res.fileDate);
                     })
             }
 
@@ -649,7 +738,7 @@
                     }
                 }
 
-                console.log(operateArray);
+                // console.log(operateArray);
                 // console.log("isLate, type= " + type);
 
                 if (operateArray.length > 0 && operateArray[type] != undefined) {
@@ -890,13 +979,13 @@
                         isAfterNoon = true;
                     }
 
-                    console.log("Sec, "
-                        + "isLate= " + $scope.isLate(tableItem, 0) +
-                        + ", isBeforeNoon= " + isBeforeNoon
-                        + ", isAfterNoon= " + isAfterNoon + ", "
-                        + workOnHour + ":" + workOnMin
-                        + ", "
-                        + workOffHour + ":" + workOffMin);
+                    // console.log("Sec, "
+                    //     + "isLate= " + $scope.isLate(tableItem, 0) +
+                    //     + ", isBeforeNoon= " + isBeforeNoon
+                    //     + ", isAfterNoon= " + isAfterNoon + ", "
+                    //     + workOnHour + ":" + workOnMin
+                    //     + ", "
+                    //     + workOffHour + ":" + workOffMin);
 
                     // console.log("isAfterNoon= " + isAfterNoon + ", isBeforeNoon= " + isBeforeNoon);
 
@@ -920,7 +1009,7 @@
 
                 }
                 if (workOn2 && workOff2) {
-                    console.log("workOn2: " + workOn2);
+                    // console.log("workOn2: " + workOn2);
                     // console.log("上班");
                     var workOnHour = parseInt(workOn2.substr(0,2));
                     var workOnMin = parseInt(workOn2.substr(2,4));
@@ -960,7 +1049,7 @@
                     }
 
                     // =======================
-                    console.log("workOff2: " + workOff2);
+                    // console.log("workOff2: " + workOff2);
                     // console.log("下班");
                     var workOffHour = parseInt(workOff2.substr(0,2));
                     var workOffMin = parseInt(workOff2.substr(2,4));
@@ -976,32 +1065,32 @@
                         isAfterNoon = true;
                     }
 
-                    console.log("Sec, "
-                        + "isLate= " + $scope.isLate(tableItem, 1) +
-                        + ", isBeforeNoon= " + isBeforeNoon
-                        + ", isAfterNoon= " + isAfterNoon + ", "
-                        + workOnHour + ":" + workOnMin
-                        + ", "
-                        + workOffHour + ":" + workOffMin);
+                    // console.log("Sec, "
+                    //     + "isLate= " + $scope.isLate(tableItem, 1) +
+                    //     + ", isBeforeNoon= " + isBeforeNoon
+                    //     + ", isAfterNoon= " + isAfterNoon + ", "
+                    //     + workOnHour + ":" + workOnMin
+                    //     + ", "
+                    //     + workOffHour + ":" + workOffMin);
 
                     if (isAfterNoon && isBeforeNoon) {
                         // console.log(workOffHour - workOnHour - 1);
                         // console.log(workOffMin - workOnMin);
                         // console.log("C pre_result:" + result);
                         var culc = (workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin);
-                        console.log(culc);
+                        // console.log(culc);
                         if (culc > 0) {
                             result =  parseInt( Math.abs((workOffHour - workOnHour - 1)) * 60 + (workOffMin - workOnMin));
                         }
-                        console.log("C result:" + result);
+                        // console.log("C result:" + result);
 
                     } else {
                         var culc = (workOffHour - workOnHour) * 60 + (workOffMin - workOnMin);
-                        console.log(culc);
+                        // console.log(culc);
                         if (culc > 0) {
                             result =  parseInt( Math.abs((workOffHour - workOnHour)) * 60 + (workOffMin - workOnMin));
                         }
-                        console.log("D result:" + result);
+                        // console.log("D result:" + result);
                     }
                 }
 
@@ -1089,6 +1178,23 @@
 
             $scope.printPDF = function () {
                 $("#form_main_pdf").print({
+                    globalStyles: true,
+                    mediaPrint: false,
+                    stylesheet: null,
+                    noPrintSelector: ".no-print",
+                    iframe: true,
+                    append: null,
+                    prepend: null,
+                    manuallyCopyFormValues: true,
+                    deferred: $.Deferred(),
+                    timeout: 750,
+                    title: null,
+                    doctype: '<!doctype html>'
+                });
+            }
+
+            $scope.printPDF_month = function () {
+                $("#form_hrmachine_month_pdf").print({
                     globalStyles: true,
                     mediaPrint: false,
                     stylesheet: null,
