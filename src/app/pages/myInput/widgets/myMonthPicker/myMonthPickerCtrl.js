@@ -45,7 +45,7 @@
         }
 
         $scope.qqqqqwww = function () {
-            console.log(" - qqqqqwww");
+            console.log(" - functionTest");
         }
     }
 })();

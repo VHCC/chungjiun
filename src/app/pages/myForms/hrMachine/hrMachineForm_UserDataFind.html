@@ -6,7 +6,7 @@
             <ui-select ng-model="hrMachineCtrlVm.user.selected"
                        class="btn-group bootstrap-select form-control"
                        ng-disabled="false"
-                       ng-change="fetchData(hrMachineCtrlVm.user.selected.machineDID)"
+                       ng-change="fetchData(hrMachineCtrlVm.user.selected.machineDID, undefined, 1)"
                        append-to-body="true"
                        search-enabled="true">
                 <ui-select-match placeholder="選擇員工">

@@ -1,0 +1,40 @@
+
+<hr>
+
+<div>
+
+    選取日期後
+    <br>
+    點選「讀取打卡機」
+    <br>
+    會更新「打卡機資訊」到ＥＲＰ資料庫中
+    <br>
+    之後「個人打卡機資訊」才會顯示Ｔｈｅ　Ｌａｔｅｓｔ資訊。
+
+</div>
+
+<hr>
+
+<div>
+
+    <span style="color: red">為確保資料完整性與系統穩定，一次更新一個檔案</span>
+
+</div>
+
+<hr>
+
+<div >
+    <my-date-picker formatted="yyyy/MM/dd"></my-date-picker>
+</div>
+
+<hr>
+
+<section class="col-md-12" >
+    <button ng-click="loadHrMachineDate(this)"
+            style="float: right; padding: 0 60px; line-height: 4"
+            id="btnReview"
+            pb-style="shrink"
+            class="btn btn-primary">
+        讀取打卡機
+    </button>
+</section>
