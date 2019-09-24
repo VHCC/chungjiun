@@ -96,6 +96,7 @@ module.exports = mongoose.model('Project', {
     //專案名稱
     prjName: {
         type: String,
+        default: ""
     },
     // 子岸編號
     // OO
@@ -106,6 +107,7 @@ module.exports = mongoose.model('Project', {
     //子案名稱
     prjSubName: {
         type: String,
+        default: ""
     },
 
     // 合併後專案
