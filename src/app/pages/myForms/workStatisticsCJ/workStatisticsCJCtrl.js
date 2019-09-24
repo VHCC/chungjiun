@@ -46,7 +46,7 @@
             var thisMonth = new Date().getMonth() + 1; //January is 0!;
 
             //所有專案
-            Project.findAllEnable()
+            Project.findAll()
                 .success(function (allProjects) {
                     // console.log(allProjects);
                     vm.allProjectData = allProjects;
