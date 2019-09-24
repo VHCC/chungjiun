@@ -48,7 +48,7 @@
         var thisYear = new Date().getFullYear() - 1911;
         var thisMonth = new Date().getMonth() + 1; //January is 0!;
 
-        Project.findAll()
+        Project.findAllEnable()
             .success(function (allProjects) {
 
                 console.log(allProjects);
@@ -104,7 +104,7 @@
             });
 
         $scope.initProject = function() {
-            Project.findAll()
+            Project.findAllEnable()
                 .success(function (allProjects) {
                     // console.log(allProjects);
                     vm.projects = allProjects.slice();
