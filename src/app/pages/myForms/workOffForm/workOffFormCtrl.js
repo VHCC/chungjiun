@@ -116,7 +116,7 @@
                     $scope.residualRestHour = user.residualRestHour;
                 })
 
-            Project.findAll()
+            Project.findAllEnable()
                 .success(function (allProjects) {
                     // console.log(allProjects);
                     vm.projects = allProjects;
