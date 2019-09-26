@@ -16,14 +16,18 @@ module.exports = function (app) {
                 }
                 findData.push(target);
             }
-            WorkHourTableFormWorkAdd.remove(
-                {
-                    $or: findData,
-                }, function (err) {
-                    if (err) {
-                        console.log(err);
-                    }
-                })
+
+            if (req.body.oldTables.length > 0) {
+
+                WorkHourTableFormWorkAdd.remove(
+                    {
+                        $or: findData,
+                    }, function (err) {
+                        if (err) {
+                            console.log(err);
+                        }
+                    })
+            }
         }
 
         if (req.body.hasOwnProperty('formTables')) {

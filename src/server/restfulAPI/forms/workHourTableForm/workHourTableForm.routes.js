@@ -472,14 +472,17 @@ module.exports = function (app) {
     app.post(global.apiUrl.insert_work_hour_table_temp, function (req, res) {
         console.log(req.body.users);
         var index = 0
-        while(index < req.body.users.length) {
-            var items = {};
-            items.userID = req.body.users[index];
-            Temp.create({
-                tempID: req.body.users[index],
-                creatorDID: req.body.creatorDID
-            });
-            index ++;
+
+        if (req.body.users != null) {
+            while(index < req.body.users.length) {
+                var items = {};
+                items.userID = req.body.users[index];
+                Temp.create({
+                    tempID: req.body.users[index],
+                    creatorDID: req.body.creatorDID
+                });
+                index ++;
+            }
         }
         res.status(200).send({
             code: 200,
