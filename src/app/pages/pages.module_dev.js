@@ -30,7 +30,8 @@
         'BlurAdmin.pages.cgWorkManage',
         'BlurAdmin.pages.cgProject',
         'BlurAdmin.pages.cgAccountingManage',
-        'BlurAdmin.pages.cgKPI'
+        'BlurAdmin.pages.cgKPI',
+        'BlurAdmin.pages.cgOfficialDoc',
     ])
         .config(routeConfig)
 

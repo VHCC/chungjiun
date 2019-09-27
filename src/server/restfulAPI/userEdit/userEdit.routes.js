@@ -16,7 +16,7 @@ module.exports = function (app) {
 // ----- define routes
     // upload
 
-    app.post(global.apiUrl.post_upload_user_avatatr, upload.single('file'), function (req, res) {
+    app.post(global.apiUrl.post_upload_user_avatar, upload.single('file'), function (req, res) {
         // req.file is the `avatar` file
         // req.body will hold the text fields, if there were any
     })

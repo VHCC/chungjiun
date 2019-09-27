@@ -147,8 +147,14 @@ global.apiUrl = {
     post_over_time_day_data_form_remove : '/api/post_over_time_day_data_form_remove',
     post_over_time_day_data_form_fetch_with_parameters : '/api/post_over_time_day_data_form_fetch_with_parameters',
 
+    // Official Doc
+    post_official_doc_upload_file : '/api/post_official_doc_upload_file',
+    post_official_doc_delete_file : '/api/post_official_doc_delete_file',
+    post_official_doc_detect_file : '/api/post_official_doc_detect_file',
+    post_official_doc_get_file : '/api/post_official_doc_get_file',
+
     //userEdit
-    post_upload_user_avatatr : '/api/uploadUserAvatar',
+    post_upload_user_avatar : '/api/uploadUserAvatar',
     post_user_find_by_userdid : '/api/userFindByuserDID',
     post_user_change_password_by_userdid : '/api/userChangePasswordByuserDID',
     post_user_update_profile : '/api/userUpdateProfile',
