@@ -83,7 +83,7 @@ module.exports = function (app) {
 
                     var filesResult = [];
 
-                    for (var index = 0; index < files.length; index ++) {
+                    for (var index = 0; index < files.length; index++) {
                         var pdfItem = {
                             name: files[index]
                         };
@@ -125,6 +125,24 @@ module.exports = function (app) {
             });
     })
 
+    // download file
+    app.post(global.apiUrl.post_official_doc_download_file, function (req, res) {
+
+        // var files = fs.createReadStream(dir + '/' + req.body.fileName);
+        // res.writeHead(200, {
+        //     'Content-disposition': 'attachment; filename=demo.pdf'
+        // }); //here you can add more headers
+        // files.pipe(res)
+        fs.readFile(dir + '/' + req.body.fileName,
+            'base64',
+            function (err, data) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.send(data);
+                }
+            });
+    })
 
 
 }

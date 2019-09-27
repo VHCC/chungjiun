@@ -153,6 +153,7 @@ global.apiUrl = {
     post_official_doc_detect_file : '/api/post_official_doc_detect_file',
     post_official_doc_get_file : '/api/post_official_doc_get_file',
     post_official_doc_fetch_file : '/api/post_official_doc_fetch_file',
+    post_official_doc_download_file : '/api/post_official_doc_download_file',
 
     //userEdit
     post_upload_user_avatar : '/api/uploadUserAvatar',

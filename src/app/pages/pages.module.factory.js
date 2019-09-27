@@ -174,7 +174,13 @@
 
                 getOfficialDocFile : function (formData) {
                     return http.post('/api/post_official_doc_get_file', formData);
-                }
+                },
+
+                downloadOfficialDocFile : function (formData) {
+                    return http.post('/api/post_official_doc_download_file', formData);
+                },
+
+
             }
         }])
         .factory('PaymentFormsUtil', ['$http', function (http) {
