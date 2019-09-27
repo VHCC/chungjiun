@@ -50,6 +50,9 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_official_doc_detect_file, function (req, res) {
 
         fs.readdir(dir, function (err, files) {
+
+            console.log(files);
+
             if (err) {
                 // some sort of error
             } else {
@@ -67,10 +70,51 @@ module.exports = function (app) {
         });
     })
 
+    // fetch files
+    app.post(global.apiUrl.post_official_doc_fetch_file, function (req, res) {
+        fs.readdir(dir, function (err, files) {
+            if (err) {
+                // some sort of error
+            } else {
+                // console.log("files= " + files.length);
+                if (!files.length) {
+                    // directory appears to be empty
+                } else {
+
+                    var filesResult = [];
+
+                    for (var index = 0; index < files.length; index ++) {
+                        var pdfItem = {
+                            name: files[index]
+                        };
+                        // console.log(files[index]);
+                        // console.log(files[index].indexOf(".pdf"));
+                        if (files[index].indexOf(".pdf") > 0) {
+                            var stats = fs.statSync(dir + "/" + files[index]);
+                            // console.log(stats.size + " bytes");
+                            // console.log(Math.round(stats.size / 1000) + " KB");
+                            pdfItem.size = Math.round(stats.size / 1000) + " KB";
+                            filesResult.push(pdfItem);
+                        }
+                    }
+
+
+                    res.status(200).send({
+                        code: 200,
+                        payload: filesResult,
+                        error: global.status._200,
+                    });
+                }
+            }
+        });
+    })
+
     // get file
     app.post(global.apiUrl.post_official_doc_get_file, function (req, res) {
 
-        fs.readFile(dir + '/' + req.body.userDID + '.pdf',
+        console.log(req.body);
+
+        fs.readFile(dir + '/' + req.body.fileName,
             'base64',
             function (err, data) {
                 if (err) {
@@ -79,7 +123,8 @@ module.exports = function (app) {
                     res.send(data);
                 }
             });
-
     })
+
+
 
 }

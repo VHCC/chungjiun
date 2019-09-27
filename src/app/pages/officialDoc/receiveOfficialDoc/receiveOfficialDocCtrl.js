@@ -6,16 +6,11 @@
             [
                 '$scope',
                 '$cookies',
+                '$uibModal',
+                'toastr',
                 'OfficialDocUtil',
-                function (scope,
-                          cookies,
-                          OfficialDocUtil) {
-                    return new ReceiveOfficialDocCtrl(
-                        scope,
-                        cookies,
-                        OfficialDocUtil
-                    );
-                }])
+                ReceiveOfficialDocCtrl
+            ])
     ;
 
     /**
@@ -23,26 +18,9 @@
      */
     function ReceiveOfficialDocCtrl($scope,
                                     $cookies,
+                                    $uibModal,
+                                    toastr,
                                     OfficialDocUtil) {
-
-        $(".dropz").dropzone({
-            url: "handle-upload.php",
-            addRemoveLinks: true,
-            dictRemoveLinks: "x",
-            dictCancelUpload: "x",
-            maxFiles: 10,
-            maxFilesize: 5,
-            acceptedFiles: ".js",
-            init: function () {
-                this.on("success", function (file) {
-                    console.log("File " + file.name + "uploaded");
-                });
-                this.on("removedfile", function (file) {
-                    console.log("File " + file.name + "removed");
-                });
-            }
-        });
-
 
         var dropzone = new Dropzone('#demo-upload',
             {
@@ -72,7 +50,7 @@
                 },
 
                 removedfile: function (file) {
-                    console.log(file);
+                    // console.log(file);
                     if (file.previewElement != null && file.previewElement.parentNode != null) {
                         file.previewElement.parentNode.removeChild(file.previewElement);
 
@@ -85,7 +63,6 @@
                 },
 
                 success: function (file) {
-                    console.log(file)
 
                     var uploadData = new FormData();
                     uploadData.append('userDID', $cookies.get('userDID'));
@@ -95,15 +72,39 @@
                 },
 
                 error: function (file, message) {
-                    console.log(file);
-                    console.log(message);
-                }
+                    // console.log(file);
+                    // console.log(message);
+                    if (file.previewElement != null && file.previewElement.parentNode != null) {
+                        file.previewElement.parentNode.removeChild(file.previewElement);
+                        toastr.error('新增失敗', '只開放接收.pdf檔案');
+                    }
+                },
+
+                // drop: function (event) {
+                //   console.log(event);
+                // },
+                //
+                // dragstart: function (event) {
+                //     console.log(event);
+                // },
+                //
+                // dragend: function (event) {
+                //     console.log(event);
+                // },
+                //
+                // dragenter: function (event) {
+                //     console.log(event);
+                // },
+                //
+                // dragover: function (event) { // 停留在zone
+                //     // console.log(event);
+                // },
 
             });
 
 
-// Now fake the file upload, since GitHub does not handle file uploads
-// and returns a 404
+        // Now fake the file upload, since GitHub does not handle file uploads
+        // and returns a 404
 
         var minSteps = 6,
             maxSteps = 60,
@@ -134,7 +135,7 @@
                                 self.emit("success", file, 'success', null);
                                 self.emit("complete", file);
                                 self.processQueue();
-                                //document.getElementsByClassName("dz-success-mark").style.opacity = "1";
+                                // document.getElementsByClassName("dz-success-mark")[0].style.opacity = "1";
                             }
                         };
                     }(file, totalSteps, step), duration);
@@ -142,6 +143,21 @@
             }
         }
 
+        $scope.pdfList = undefined;
+
+        // pdf 檔案列表
+        $scope.fetchPDFFiles = function () {
+
+            var formData = {
+                userDID: $cookies.get('userDID')
+            }
+
+            OfficialDocUtil.fetchOfficialDocFiles(formData)
+                .success(function (res) {
+                    console.log(res);
+                    $scope.pdfList = res.payload;
+                })
+        }
         $scope.isAttached = function () {
 
             var formData = {
@@ -159,22 +175,18 @@
         // pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
         pdfjsLib.GlobalWorkerOptions.workerSrc = window['pdfjs-dist/build/pdf.worker'];
 
-        $scope.getPDF = function () {
+        $scope.getPDF = function (item) {
+
             var formData = {
-                userDID: $cookies.get('userDID')
+                fileName: item.$parent.pdfItem.name
             }
 
             OfficialDocUtil.getOfficialDocFile(formData)
                 .success(function (pdfBinaryData) {
 
-                    console.log(pdfBinaryData);
                     var loadingTask = pdfjsLib.getDocument({
                         data: atob(pdfBinaryData)
                     })
-
-                    var url = 'https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/examples/learning/helloworld.pdf';
-
-                    // var loadingTask = pdfjsLib.getDocument(url);
 
                     loadingTask.promise.then(function (pdf) {
                         console.log('PDF loaded');
@@ -209,6 +221,25 @@
                     });
                 })
         }
+
+        // show pdf View
+        $scope.showPDF = function (dom) {
+            $uibModal.open({
+                animation: true,
+                controller: 'officialDocPDFViewerModalCtrl',
+                templateUrl: 'app/pages/officialDoc/receiveOfficialDoc/modal/officialDocPDFViewerModal.html',
+                resolve: {
+                    parent: function () {
+                        return $scope;
+                    },
+                    dom: function () {
+                        return dom;
+                    },
+                }
+            }).result.then(function (data) {
+
+            });
+        };
 
     }
 

@@ -1,0 +1,39 @@
+<style>
+    .modal-dialog {
+        display: inline-block;
+        text-align: left;
+        vertical-align: middle;
+        width: 1000px
+    }
+
+    .pdf-meta {
+
+    }
+</style>
+
+<div>
+    <div class="modal-header bg-info">
+        <i class="ion-android-warning modal-icon"></i>
+        <strong>{{dom.$parent.pdfItem.name}}</strong>
+    </div>
+    <hr>
+    <div class="pdf-meta">
+        <div id="pdf-buttons">
+            <button ng-click="changePage(0)">Previous</button>
+            <button ng-click="changePage(1)"id="pdf-next">Next</button>
+        </div>
+    </div>
+    第 {{viewPage}} 頁 / 總共 {{totalPage}} 頁
+    <div class="modal-body text-center">
+        <canvas id="the-canvas" width="500"></canvas>
+    </div>
+    <div class="modal-footer" ng-if="false">
+        <button type="button" class="btn btn-danger"
+                ng-click="closeThisDialog()">確定
+        </button>
+        <button type="button"
+                class="btn btn-primary"
+                ng-click="closeThisDialog()">取消
+        </button>
+    </div>
+</div>

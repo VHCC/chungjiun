@@ -168,6 +168,10 @@
                     return http.post('/api/post_official_doc_detect_file', formData);
                 },
 
+                fetchOfficialDocFiles : function (formData) {
+                    return http.post('/api/post_official_doc_fetch_file', formData);
+                },
+
                 getOfficialDocFile : function (formData) {
                     return http.post('/api/post_official_doc_get_file', formData);
                 }
