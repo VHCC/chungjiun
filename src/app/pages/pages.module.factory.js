@@ -147,6 +147,32 @@
                 }
             }
         }])
+        .factory('OfficialDocUtil', ['$http', function (http) {
+            return {
+                uploadOfficialDocFile: function (uploadData) {
+                    return http.post('/api/post_official_doc_upload_file', uploadData, {
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': undefined}
+                    }).success(function () {
+                        console.log("success!!");
+                    }).error(function () {
+                        console.log("error!!");
+                    });
+                },
+
+                deleteOfficialDocFile : function (formData) {
+                    return http.post('/api/post_official_doc_delete_file', formData);
+                },
+
+                detectOfficialDocFiles : function (formData) {
+                    return http.post('/api/post_official_doc_detect_file', formData);
+                },
+
+                getOfficialDocFile : function (formData) {
+                    return http.post('/api/post_official_doc_get_file', formData);
+                }
+            }
+        }])
         .factory('PaymentFormsUtil', ['$http', function (http) {
             return {
                 // createForms: function (formData) {

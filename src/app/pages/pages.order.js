@@ -33,9 +33,17 @@ global.pages = {
     cgAccountingManage_paymentForm  : 100,
 
     //
-    cgKPI  : 400,
+    cgKPI : 400,
 
     myCalender : 500,
+
+    // 公文
+    cgOfficialDoc : 600,
+    cgOfficialDoc_list : 100,
+    cgOfficialDoc_receive : 200,
+    cgOfficialDoc_300 : 300,
+    cgOfficialDoc_400 : 400,
+    cgOfficialDoc_500 : 500,
 
     //
     myForms  : 1000,

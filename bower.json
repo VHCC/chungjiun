@@ -66,7 +66,10 @@
     "socket.io-client": "2.0.4",
     "angular-ui-switch": "^0.1.1",
     "angular-loading-overlay": "^1.1.1",
-    "angular-loading-overlay-spinjs": "^1.0.2"
+    "angular-loading-overlay-spinjs": "^1.0.2",
+    "dropzone": "^5.1.1",
+    "pdfjs": "^2.x.x",
+    "pdfjs-dist" : "^2.x.x"
   },
   "resolutions": {
     "angular": "~1.5.9",
