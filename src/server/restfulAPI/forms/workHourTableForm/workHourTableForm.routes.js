@@ -12,6 +12,7 @@ module.exports = function (app) {
     // create Form
     app.post(global.apiUrl.post_work_hour_create_table, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_create_table");
+        // console.log(req.body);
         // 刪除既有工時表
         WorkHourForm.remove({
             creatorDID: req.body.creatorDID,
@@ -54,6 +55,8 @@ module.exports = function (app) {
 
         var formTable = [];
         var resIndex = 0;
+
+        console.log("req.body.formTables= " + req.body.formTables.length);
         for (var index = 0; index < req.body.formTables.length; index++) {
             try {
                 WorkHourTable.create({
@@ -122,7 +125,7 @@ module.exports = function (app) {
                     }
 
                     if (resIndex === req.body.formTables.length) {
-                        // console.log(formTable);
+                        console.log(formTable);
                         WorkHourForm.create({
                             year: req.body.year,
                             month: req.body.month,
