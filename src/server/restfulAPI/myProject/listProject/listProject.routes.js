@@ -20,9 +20,14 @@ module.exports = function (app) {
             $and: findDataAnd
         }, function (err, projects) {
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_all_related_to_user");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 res.send(err);
+            } else {
+                res.json(projects);
             }
-            res.json(projects);
         })
     })
 
@@ -37,9 +42,14 @@ module.exports = function (app) {
             $or: findData,
         }, function (err, projects) {
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_all_related_to_user_with_disabled");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 res.send(err);
+            } else {
+                res.json(projects);
             }
-            res.json(projects);
         })
     })
 
@@ -52,9 +62,14 @@ module.exports = function (app) {
             $or: findData,
         }, function (err, projects) {
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_all_related_to_manager");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 res.send(err);
+            } else {
+                res.json(projects);
             }
-            res.json(projects);
         })
     })
 
@@ -69,12 +84,17 @@ module.exports = function (app) {
             }
         }, function (err) {
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_update_main_name");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
             }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-            });
         })
     })
 
@@ -88,12 +108,17 @@ module.exports = function (app) {
             }
         }, function (err) {
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_update_prj_name");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
             }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-            });
         })
     })
 
@@ -107,12 +132,17 @@ module.exports = function (app) {
             }
         }, function (err) {
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_update_prj_sub_name");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
             }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-            });
         })
     })
 
@@ -126,12 +156,17 @@ module.exports = function (app) {
             }
         }, function (err) {
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_update_major_id");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
             }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-            });
         })
     })
 
@@ -145,12 +180,17 @@ module.exports = function (app) {
             }
         }, function (err) {
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_update_workers");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
             }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-            });
         })
     })
 
@@ -164,12 +204,17 @@ module.exports = function (app) {
             }
         }, function (err) {
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_update_status");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
             }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-            });
         })
     })
 

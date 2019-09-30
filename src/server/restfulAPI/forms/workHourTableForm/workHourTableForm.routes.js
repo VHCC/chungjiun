@@ -11,7 +11,7 @@ module.exports = function (app) {
 
     // create Form
     app.post(global.apiUrl.post_work_hour_create_table, function (req, res) {
-
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_create_table");
         // 刪除既有工時表
         WorkHourForm.remove({
             creatorDID: req.body.creatorDID,
@@ -20,6 +20,9 @@ module.exports = function (app) {
             month: req.body.month,
         }, function (err) {
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_create_table");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
                 console.log(err);
             }
         })
@@ -41,6 +44,9 @@ module.exports = function (app) {
                     $or: findData,
                 }, function (err) {
                     if (err) {
+                        console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_create_table");
+                        console.log(req.body);
+                        console.log(" ***** ERROR ***** ");
                         console.log(err);
                     }
                 })
@@ -125,6 +131,10 @@ module.exports = function (app) {
                             formTables: formTable,
                         }, function (err) {
                             if (err) {
+                                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_create_table");
+                                console.log(req.body);
+                                console.log(" ***** ERROR ***** ");
+                                console.log(err);
                                 res.send(err);
                             } else {
                                 res.status(200).send({
@@ -138,6 +148,10 @@ module.exports = function (app) {
                 });
             } catch (err) {
                 if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_create_table");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
                     res.send(err);
                 }
             }
@@ -147,7 +161,7 @@ module.exports = function (app) {
 
     //get form by date, creator DID
     app.post(global.apiUrl.post_work_hour_get, function (req, res) {
-
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_get");
         var query = {
             creatorDID: req.body.creatorDID,
             create_formDate: req.body.create_formDate,
@@ -177,13 +191,18 @@ module.exports = function (app) {
                 })
                 .exec(function (err, workHourForms) {
                     if (err) {
+                        console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_get");
+                        console.log(req.body);
+                        console.log(" ***** ERROR ***** ");
+                        console.log(err);
                         res.send(err);
+                    } else {
+                        res.status(200).send({
+                            code: 200,
+                            error: global.status._200,
+                            payload: workHourForms,
+                        });
                     }
-                    res.status(200).send({
-                        code: 200,
-                        error: global.status._200,
-                        payload: workHourForms,
-                    });
                 });
         }
 
@@ -192,7 +211,7 @@ module.exports = function (app) {
 
     // 多組creator, create_formDate
     app.post(global.apiUrl.post_work_hour_multiple_get, function (req, res) {
-        // console.log(req.body);
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_multiple_get");
         var findData = []
         for (var index = 0; index < req.body.relatedMembers.length; index++) {
             var target = {
@@ -200,41 +219,11 @@ module.exports = function (app) {
                 create_formDate: req.body.create_formDate,
             }
             findData.push(target);
-
         }
-
-        // WorkHourForm.find({
-        //     $or: findData,
-        // }, function (err, workHourForms) {
-        //     if (err) {
-        //         res.send(err);
-        //     }
-        //     res.status(200).send({
-        //         code: 200,
-        //         error: global.status._200,
-        //         payload: workHourForms,
-        //     });
-        // });
 
         var query = {
             $or: findData,
         }
-
-        // WorkHourForm.find(query)
-        //     .sort({
-        //         month: -1,
-        //     })
-        //     .exec(function (err, workHourForms) {
-        //         if (err) {
-        //             res.send(err);
-        //         }
-        //         res.status(200).send({
-        //             code: 200,
-        //             error: global.status._200,
-        //             payload: workHourForms,
-        //         });
-        //     });
-
 
         var d = new Date(req.body.create_formDate);
         if (d.getMonth() == 11) {
@@ -244,13 +233,18 @@ module.exports = function (app) {
                 })
                 .exec(function (err, workHourForms) {
                     if (err) {
+                        console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_multiple_get");
+                        console.log(req.body);
+                        console.log(" ***** ERROR ***** ");
+                        console.log(err);
                         res.send(err);
+                    } else {
+                        res.status(200).send({
+                            code: 200,
+                            error: global.status._200,
+                            payload: workHourForms,
+                        });
                     }
-                    res.status(200).send({
-                        code: 200,
-                        error: global.status._200,
-                        payload: workHourForms,
-                    });
                 });
         } else {
             WorkHourForm.find(query)
@@ -259,21 +253,27 @@ module.exports = function (app) {
                 })
                 .exec(function (err, workHourForms) {
                     if (err) {
+                        console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_multiple_get");
+                        console.log(req.body);
+                        console.log(" ***** ERROR ***** ");
+                        console.log(err);
                         res.send(err);
+                    } else {
+                        res.status(200).send({
+                            code: 200,
+                            error: global.status._200,
+                            payload: workHourForms,
+                        });
                     }
-                    res.status(200).send({
-                        code: 200,
-                        error: global.status._200,
-                        payload: workHourForms,
-                    });
                 });
         }
 
     })
 
     // get forms for manager
-    app.post(global.apiUrl.
-        post_work_hour_get_for_manager, function (req, res) {
+    app.post(global.apiUrl.post_work_hour_get_for_manager, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_get_for_manager");
+
         var relatedProjects = [];
         var prjCount = 0;
         Project.find(
@@ -300,23 +300,29 @@ module.exports = function (app) {
                     create_formDate: req.body.create_formDate,
                 }, function (err, forms) {
                     if (err) {
+                        console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_get_for_manager");
+                        console.log(req.body);
+                        console.log(" ***** ERROR ***** ");
+                        console.log(err);
                         res.send(err);
+                    } else {
+                        res.status(200).send({
+                            code: 200,
+                            error: global.status._200,
+                            payload: forms,
+                            prjIDArray: prjIDArray,
+                        });
                     }
-                    res.status(200).send({
-                        code: 200,
-                        error: global.status._200,
-                        payload: forms,
-                        prjIDArray: prjIDArray,
-                    });
                 });
 
             });
-
 
     })
 
     // find table by tableid array
     app.post(global.apiUrl.post_work_hour_table_find_by_tableid_array, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_table_find_by_tableid_array");
+
         var tableCount = req.body.tableIDArray.length;
         var findData = []
         for (var index = 0; index < tableCount; index++) {
@@ -325,8 +331,6 @@ module.exports = function (app) {
             }
             findData.push(target);
         }
-
-        // console.log(findData);
 
         var query = {};
         query.$or = findData;
@@ -350,19 +354,27 @@ module.exports = function (app) {
 
         WorkHourTable.find(query, function (err, tables) {
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_table_find_by_tableid_array");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: tables,
+                    creatorDID: req.body.creatorDID
+                });
             }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-                payload: tables,
-                creatorDID: req.body.creatorDID
-            });
         });
     })
 
     // update table form send review
     app.post(global.apiUrl.post_work_hour_table_update_send_review, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_table_update_send_review");
+
+
         WorkHourTable.update({
             _id: req.body.tableID,
         }, {
@@ -371,6 +383,10 @@ module.exports = function (app) {
             }
         }, function (err) {
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_table_update_send_review");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 res.send(err);
             } else {
                 res.status(200).send({
@@ -383,7 +399,7 @@ module.exports = function (app) {
 
     // update all table ***
     app.post(global.apiUrl.post_work_hour_table_total_update_send_review, function (req, res) {
-        console.log("===================");
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_table_total_update_send_review");
         console.log(req.body);
         for (var index = 0; index < req.body.tableArray.length; index++) {
             WorkHourTable.update({
@@ -394,12 +410,15 @@ module.exports = function (app) {
                 }
             }, function (err) {
                 if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_table_total_update_send_review");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
                     res.send(err);
                 }
             })
 
         }
-
         res.status(200).send({
             code: 200,
             error: global.status._200,
@@ -409,6 +428,8 @@ module.exports = function (app) {
 
     // update table one item
     app.post(global.apiUrl.post_work_hour_table_update, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_table_update");
+
         // console.log(req.body);
         var keyArray = Object.keys(req.body);
         var query = {};
@@ -430,19 +451,23 @@ module.exports = function (app) {
             $set: query
         }, function (err) {
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_table_update");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
             }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-            });
         })
     })
 
     // update table array
     app.post(global.apiUrl.post_work_hour_table_update_array, function (req, res) {
-        console.log("update table array");
-        console.log(req.body);
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_table_update");
         var keyArray = Object.keys(req.body);
         var query = {};
         for (var index = 0; index < keyArray.length; index++) {
@@ -462,6 +487,10 @@ module.exports = function (app) {
                 $set: query
             }, function (err) {
                 if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_table_update");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
                     res.send(err);
                 }
             })
@@ -473,9 +502,9 @@ module.exports = function (app) {
     })
 
     app.post(global.apiUrl.insert_work_hour_table_temp, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, insert_work_hour_table_temp");
         console.log(req.body.users);
         var index = 0
-
         if (req.body.users != null) {
             while(index < req.body.users.length) {
                 var items = {};
@@ -495,6 +524,8 @@ module.exports = function (app) {
 
     // management List
     app.post(global.apiUrl.get_work_hour_table_management_list, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, get_work_hour_table_management_list");
+
         Temp.aggregate(
             [
                 {
@@ -570,13 +601,20 @@ module.exports = function (app) {
                 },
             ], function (err, tables) {
                 if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, get_work_hour_table_management_list");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
                     res.send(err);
                 } else {
                     Temp.remove({
                         creatorDID: req.body.creatorDID
                     }, function (err) {
                         if (err) {
-                            console.log(err)
+                            console.log(global.timeFormat(new Date()) + global.log.e + "API, get_work_hour_table_management_list");
+                            console.log(req.body);
+                            console.log(" ***** ERROR ***** ");
+                            console.log(err);
                         }
                     });
 
