@@ -7,6 +7,7 @@ module.exports = function (app) {
     // ----- define routes
     // create table item
     app.post(global.apiUrl.post_work_off_create_table, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_create_table");
         console.log(JSON.stringify(req.body));
         if (req.body.oldTables.hasOwnProperty('tableIDArray')) {
             var findData = []
@@ -105,6 +106,7 @@ module.exports = function (app) {
     // 20190515
     // insert work off item
     app.post(global.apiUrl.post_work_off_table_insert_item, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_insert_item");
         console.log(JSON.stringify(req.body));
         // New Items
             try {
@@ -145,8 +147,8 @@ module.exports = function (app) {
 
     // remove table item
     app.post(global.apiUrl.post_work_off_table_remove_item, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_remove_item");
         console.log(req.body);
-
         try {
             WorkOffTableForm.remove({
                 creatorDID: req.body.creatorDID,
@@ -169,6 +171,7 @@ module.exports = function (app) {
     // find table item by user DID to executive
     // 請假單行政確認
     app.post(global.apiUrl.post_work_off_table_item_find_by_user_did_executive, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_item_find_by_user_did_executive");
         console.log(JSON.stringify(req.body));
         WorkOffTableForm.find({
             creatorDID: req.body.creatorDID,
@@ -193,6 +196,7 @@ module.exports = function (app) {
     // find table item by user DID to boss
     // 請假單主管確認
     app.post(global.apiUrl.post_work_off_table_item_find_by_user_did_boss, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_item_find_by_user_did_boss");
         console.log(JSON.stringify(req.body));
         WorkOffTableForm.find({
             creatorDID: req.body.creatorDID,
@@ -217,6 +221,7 @@ module.exports = function (app) {
     // 休假單更新
     // update table by parameters
     app.post(global.apiUrl.post_work_off_table_update, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_update");
         console.log(JSON.stringify(req.body));
         var keyArray = Object.keys(req.body);
         var query = {};
@@ -249,6 +254,7 @@ module.exports = function (app) {
 
     // fetch all executive tables
     app.post(global.apiUrl.post_work_off_table_fetch_all_executive, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_fetch_all_executive");
         console.log(JSON.stringify(req.body));
         WorkOffTableForm.aggregate(
             [
@@ -283,6 +289,7 @@ module.exports = function (app) {
 
     // fetch all boss tables
     app.post(global.apiUrl.post_work_off_table_fetch_all_boss, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_fetch_all_boss");
         console.log(JSON.stringify(req.body));
         var underlingCount = req.body.underlingArray.length;
         var findData = []
@@ -330,6 +337,7 @@ module.exports = function (app) {
 
     // find table by table id array and parameters
     app.post(global.apiUrl.post_work_off_table_find_by_table_id_array_and_parameters, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_find_by_table_id_array_and_parameters");
         console.log(JSON.stringify(req.body));
         var tableCount = req.body.tableIDArray.length;
         var findData = [];
@@ -359,6 +367,7 @@ module.exports = function (app) {
     // 20190201 add
     // find table by creatorDID
     app.post(global.apiUrl.post_work_off_table_find_by_user_did, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_find_by_user_did");
         console.log(JSON.stringify(req.body));
         var query = {};
         if (req.body.month !== null) {
@@ -387,7 +396,7 @@ module.exports = function (app) {
 
         query.creatorDID = req.body.creatorDID;
 
-        console.log(query);
+        // console.log(query);
 
         WorkOffTableForm.find(query)
             .sort({
@@ -398,7 +407,7 @@ module.exports = function (app) {
                 if (err) {
                     res.send(err);
                 } else {
-                    console.log(tables.length);
+                    // console.log(tables.length);
                     res.status(200).send({
                         code: 200,
                         error: global.status._200,

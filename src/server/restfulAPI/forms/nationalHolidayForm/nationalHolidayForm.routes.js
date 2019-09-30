@@ -7,6 +7,8 @@ module.exports = function (app) {
 
     // create Form
     app.post(global.apiUrl.post_national_holiday_data_form_create, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_national_holiday_data_form_create");
+
         console.log(JSON.stringify(req.body));
         NationalHoliday.create({
             create_formDate: req.body.create_formDate,
@@ -26,6 +28,8 @@ module.exports = function (app) {
 
     // fetch all data
     app.post(global.apiUrl.post_national_holiday_data_form_fetch_all, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_national_holiday_data_form_fetch_all");
+
         console.log(JSON.stringify(req.body));
         NationalHoliday.find({
             year: req.body.year,
@@ -43,6 +47,8 @@ module.exports = function (app) {
 
     // update data
     app.post(global.apiUrl.post_national_holiday_data_form_update, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_national_holiday_data_form_update");
+
         console.log(JSON.stringify(req.body));
         NationalHoliday.update({
             _id: req.body.tableID,
@@ -67,6 +73,7 @@ module.exports = function (app) {
 
     // remove item
     app.post(global.apiUrl.post_national_holiday_data_form_remove, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_national_holiday_data_form_remove");
         console.log(JSON.stringify(req.body));
         NationalHoliday.remove({
             _id: req.body.tableID,
@@ -83,6 +90,7 @@ module.exports = function (app) {
 
     //fetch Holiday with parameters
     app.post(global.apiUrl.post_national_holiday_data_form_fetch_with_parameters, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_national_holiday_data_form_fetch_with_parameters");
         console.log(JSON.stringify(req.body));
         NationalHoliday.find({
             // year: req.body.year,
