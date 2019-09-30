@@ -106,11 +106,14 @@ module.exports = function (app) {
                 }, function (err, workTable) {
                     resIndex++;
                     // workHourForm formTables 的參數
-                    var tableItem = {
-                        tableID: workTable._id,
-                        prjDID: workTable.prjDID,
+
+                    if (workTable) {
+                        var tableItem = {
+                            tableID: workTable._id,
+                            prjDID: workTable.prjDID,
+                        }
+                        formTable.push(tableItem);
                     }
-                    formTable.push(tableItem);
 
                     if (resIndex === req.body.formTables.length) {
                         // console.log(formTable);
