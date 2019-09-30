@@ -19,6 +19,10 @@ module.exports = function (app) {
             },
             function (err, users) {
                 if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, get_all_users");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
                     res.send(err);
                 } else {
                     res.json(users);
@@ -36,6 +40,10 @@ module.exports = function (app) {
             },
             function (err, users) {
                 if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, get_all_users_with_unregister");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
                     res.send(err);
                 } else {
                     res.json(users);
@@ -55,6 +63,10 @@ module.exports = function (app) {
             },
             function (err, techs) {
                 if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, get_all_techs");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
                     res.send(err);
                 } else {
                     res.json(techs);
@@ -74,6 +86,10 @@ module.exports = function (app) {
             },
             function (err, managers) {
                 if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, get_all_managers");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
                     res.send(err);
                 } else {
                     res.json(managers);
@@ -105,6 +121,10 @@ module.exports = function (app) {
                 },
                 function (err, project) {
                     if (err) {
+                        console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_create");
+                        console.log(req.body);
+                        console.log(" ***** ERROR ***** ");
+                        console.log(err);
                         res.send(err);
                     } else {
                         console.log(global.timeFormat(new Date()) + global.log.i + "create Project= " +
@@ -116,7 +136,10 @@ module.exports = function (app) {
                     }
                 });
         } catch (error) {
-            console.log("ERROR");
+            console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_create");
+            console.log(req.body);
+            console.log(" ***** ERROR ***** ");
+            console.log(error);
             res.status(400).send({
                 code: 400,
                 error: global.status._400,
@@ -129,7 +152,6 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_project_combine, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, combine project");
         try {
-
             Project.update({
                 _id: req.body.prjA,
             }, {
@@ -139,6 +161,10 @@ module.exports = function (app) {
                 }
             }, function (err) {
                 if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_combine");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
                     res.send(err);
                 } else {
                     console.log("update A Done");
@@ -154,6 +180,10 @@ module.exports = function (app) {
                 }
             }, function (err) {
                 if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_combine");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
                     res.send(err);
                 } else {
                     console.log("update B Done");
@@ -178,6 +208,10 @@ module.exports = function (app) {
                 },
                 function (err, project) {
                     if (err) {
+                        console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_combine");
+                        console.log(req.body);
+                        console.log(" ***** ERROR ***** ");
+                        console.log(err);
                         res.send(err);
                     } else {
                         console.log(global.timeFormat(new Date()) + global.log.i + "API, combine Project done: " +
@@ -191,6 +225,9 @@ module.exports = function (app) {
 
         } catch (error) {
             console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_combine");
+            console.log(req.body);
+            console.log(" ***** ERROR ***** ");
+            console.log(error);
             res.status(400).send({
                 code: 400,
                 error: global.status._400,
@@ -204,6 +241,10 @@ module.exports = function (app) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, get projects");
         Project.find(function (err, projects) {
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, get_project_find_all");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 res.send(err);
             } else {
                 res.json(projects);
@@ -220,6 +261,10 @@ module.exports = function (app) {
             },
             function (err, projects) {
                 if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, get_project_find_all_enable");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
                     res.send(err);
                 } else {
                     res.json(projects);
@@ -243,6 +288,10 @@ module.exports = function (app) {
             }
         ], function (err, projects) {
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, get_project_find_all_by_group");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 res.send(err);
             } else {
                 res.json(projects);
@@ -256,6 +305,10 @@ module.exports = function (app) {
             mainName: req.body.name
         }, function (err, oneProject) {
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_find_by_name");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 res.send(err);
             } else {
                 res.json(oneProject);
@@ -268,8 +321,11 @@ module.exports = function (app) {
         Project.findOne({
             prjCode: req.body.prjCode
         }, function (err, oneProject) {
-            console.log(oneProject)
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_find_by_code");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 res.send(err);
             } else {
                 res.json(oneProject);
@@ -278,12 +334,15 @@ module.exports = function (app) {
     });
 
     app.get(global.apiUrl.get_project_find_by_code_distinct, function (req, res) {
-        var date = new Date();
-        console.log(global.timeFormat(date) + global.log.i + "API, get projects by name distinct.");
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, get projects by name distinct.");
         Project.find({
             year: date.getFullYear() - 1911
         }).distinct('code', function (err, projects) {
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, get_project_find_by_code_distinct");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 res.send(err);
             } else {
 
@@ -294,6 +353,7 @@ module.exports = function (app) {
 
 
     app.post(global.apiUrl.get_project_find_by_prjid_array, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, get_project_find_by_prjid_array");
         var prjCount = req.body.prjIDArray.length;
         var findData = [];
         for (var index = 0; index < prjCount; index++) {
@@ -307,6 +367,10 @@ module.exports = function (app) {
                 $or: findData,
             }, function (err, projects) {
                 if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, get_project_find_by_prjid_array");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
                     res.send(err);
                 } else {
                     res.status(200).send({
@@ -320,11 +384,17 @@ module.exports = function (app) {
 
     // 找總案代碼下的專案總數
     app.post(global.apiUrl.post_project_number_find_by_prj_number_distinct, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_project_number_find_by_prj_number_distinct");
+
         Project.find({
             year: req.body.year,
             code: req.body.code,
         }).distinct('prjNumber', function (err, projects) {
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_number_find_by_prj_number_distinct");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 res.send(err);
             } else {
                 res.json(projects);
@@ -334,12 +404,18 @@ module.exports = function (app) {
 
     // 找專案代碼下的子案總數
     app.post(global.apiUrl.post_project_sub_number_find_by_number_distinct, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_project_sub_number_find_by_number_distinct");
+
         Project.find({
             year: req.body.year,
             code: req.body.code,
             prjNumber: req.body.prjNumber
         }).distinct('prjSubNumber', function (err, projects) {
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_sub_number_find_by_number_distinct");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 res.send(err);
             } else {
                 res.json(projects);
@@ -349,6 +425,8 @@ module.exports = function (app) {
 
     // 用總案代碼找專案，用專案代碼分類
     app.post(global.apiUrl.post_project_number_find_by_code_group_by_number, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_project_number_find_by_code_group_by_number");
+
         var query = [
             {
                 $match: {
@@ -370,6 +448,10 @@ module.exports = function (app) {
             })
             .exec(function (err, projects) {
                 if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_number_find_by_code_group_by_number");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
                     res.send(err);
                 } else {
                     res.json(projects);
@@ -379,6 +461,8 @@ module.exports = function (app) {
 
     // 用專案代碼找子案
     app.post(global.apiUrl.post_project_sub_number_find_by_number, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_project_sub_number_find_by_number");
+
         var query = [
             {
                 $match: {
@@ -401,6 +485,10 @@ module.exports = function (app) {
             })
             .exec(function (err, projects) {
                 if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_sub_number_find_by_number");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
                     res.send(err);
                 } else {
                     res.json(projects);
@@ -411,6 +499,8 @@ module.exports = function (app) {
 
     // 用子案代碼找類型
     app.post(global.apiUrl.post_project_type_find_by_sub_number, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_project_type_find_by_sub_number");
+
         Project.find({
             year: req.body.year,
             code: req.body.code,
@@ -419,6 +509,10 @@ module.exports = function (app) {
             type: req.body.type,
         }, function (err, projects) {
             if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_type_find_by_sub_number");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
                 res.send(err);
             } else {
                 res.json(projects);
