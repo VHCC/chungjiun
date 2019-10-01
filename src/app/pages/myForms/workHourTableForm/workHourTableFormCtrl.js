@@ -2496,8 +2496,8 @@
                 })
 
             var formData = {
-                creatorDID: table.creatorDID,
-                prjDID: table.prjDID,
+                creatorDID: checkingTable.creatorDID,
+                prjDID: checkingTable.prjDID,
                 create_formDate: $scope.firstFullDate_history,
                 // workAddType: 2 // 換休加班都 退核
             }
