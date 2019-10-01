@@ -1194,6 +1194,9 @@
             }
 
             $scope.printPDF_month = function () {
+
+                var user = vm.users_month_report.selected.name;
+
                 $("#form_hrmachine_month_pdf").print({
                     globalStyles: true,
                     mediaPrint: false,
@@ -1205,7 +1208,7 @@
                     manuallyCopyFormValues: true,
                     deferred: $.Deferred(),
                     timeout: 750,
-                    title: null,
+                    title: user + " - 打卡機月報表資料",
                     doctype: '<!doctype html>'
                 });
             }
