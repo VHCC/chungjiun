@@ -73,6 +73,7 @@ global.apiUrl = {
 
     //workHourTable Form
     post_work_hour_create_table : '/api/createWorkHourTableForm',
+    post_work_hour_remove_table : '/api/removeWorkHourTableForm',
     post_work_hour_get : '/api/getWorkHourForm',
     post_work_hour_multiple_get : '/api/post_work_hour_multiple_get',
     post_work_hour_get_for_manager : '/api/post_work_hour_get_for_manager',

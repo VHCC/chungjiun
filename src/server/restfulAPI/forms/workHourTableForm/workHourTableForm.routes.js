@@ -9,10 +9,9 @@ module.exports = function (app) {
 
     // ----- define routes
 
-    // create Form
-    app.post(global.apiUrl.post_work_hour_create_table, function (req, res) {
-        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_create_table");
-        // console.log(req.body);
+    // remove Form
+    app.post(global.apiUrl.post_work_hour_remove_table, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_remove_table");
         // 刪除既有工時表
         WorkHourForm.remove({
             creatorDID: req.body.creatorDID,
@@ -21,37 +20,54 @@ module.exports = function (app) {
             month: req.body.month,
         }, function (err) {
             if (err) {
-                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_create_table");
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_remove_table");
                 console.log(req.body);
                 console.log(" ***** ERROR ***** ");
                 console.log(err);
+                res.send(err);
+            } else {
+                if (req.body.oldTables.hasOwnProperty('tableIDArray')) {
+                    var findData = []
+                    for (var index = 0; index < req.body.oldTables.tableIDArray.length; index++) {
+                        var target = {
+                            _id: req.body.oldTables.tableIDArray[index],
+                            creatorDID: req.body.creatorDID,
+                            create_formDate: req.body.create_formDate,
+                        }
+                        findData.push(target);
+                    };
+                    console.log(findData);
+                    // 刪除既有 工時表格
+                    WorkHourTable.remove(
+                        {
+                            $or: findData,
+                        }, function (err) {
+                            if (err) {
+                                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_remove_table");
+                                console.log(req.body);
+                                console.log(" ***** ERROR ***** ");
+                                console.log(err);
+                                res.send(err);
+                            } else {
+                                res.status(200).send({
+                                    code: 200,
+                                    error: global.status._200,
+                                });
+                            }
+                        })
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                    });
+                }
             }
         })
-        // console.log(req.body.oldTables);
-        if (req.body.oldTables.hasOwnProperty('tableIDArray')) {
-            var findData = []
-            for (var index = 0; index < req.body.oldTables.tableIDArray.length; index++) {
-                var target = {
-                    _id: req.body.oldTables.tableIDArray[index],
-                    creatorDID: req.body.creatorDID,
-                    create_formDate: req.body.create_formDate,
-                }
-                findData.push(target);
-            };
-            // console.log(findData);
-            // 刪除既有 工時表格
-            WorkHourTable.remove(
-                {
-                    $or: findData,
-                }, function (err) {
-                    if (err) {
-                        console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_create_table");
-                        console.log(req.body);
-                        console.log(" ***** ERROR ***** ");
-                        console.log(err);
-                    }
-                })
-        }
+    });
+
+    // create Form
+    app.post(global.apiUrl.post_work_hour_create_table, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_create_table");
 
         var formTable = [];
         var resIndex = 0;
