@@ -1739,27 +1739,38 @@
                         oldTables: needRemoveOldTable,
                     };
 
-                    // TODO 跨月
-                    WorkHourUtil.createWorkHourTableForm(formData)
+                    WorkHourUtil.removeWorkHourTableForm(formData)
                         .success(function (res) {
-                            var workIndex = tableIndex;
-                            tableIndex++;
-                            // // 更新old Table ID Array
-                            // var workTableIDArray = [];
-                            if (res.payload.length > 0) {
-                                for (var index = 0; index < res.payload.length; index++) {
-                                    needUpdateWorkTableIDArray.push(res.payload[index].tableID);
-                                    $scope.tables[workIndex].tablesItems[index].tableID = res.payload[index].tableID; // for send to review.
-                                }
-                            }
-                            // 移除舊有 tableID;
-                            needRemoveOldTable = {
-                                tableIDArray: needUpdateWorkTableIDArray,
-                            }
-                            sleep(500);
-                            if (isRefreshProjectSelector && tableIndex === $scope.tables.length) {
-                                $scope.getWorkHourTables();
-                            }
+                            // TODO 跨月
+                            WorkHourUtil.createWorkHourTableForm(formData)
+                                .success(function (res) {
+                                    var workIndex = tableIndex;
+                                    tableIndex++;
+                                    // // 更新old Table ID Array
+                                    // var workTableIDArray = [];
+                                    if (res.payload.length > 0) {
+                                        for (var index = 0; index < res.payload.length; index++) {
+                                            needUpdateWorkTableIDArray.push(res.payload[index].tableID);
+                                            $scope.tables[workIndex].tablesItems[index].tableID = res.payload[index].tableID; // for send to review.
+                                        }
+                                    }
+                                    // 移除舊有 tableID;
+                                    needRemoveOldTable = {
+                                        tableIDArray: needUpdateWorkTableIDArray,
+                                    }
+                                    sleep(500);
+                                    if (isRefreshProjectSelector && tableIndex === $scope.tables.length) {
+                                        $scope.getWorkHourTables();
+                                    }
+                                })
+                                .error(function () {
+                                    console.log('ERROR WorkHourUtil.createWorkHourTableForm');
+                                    $timeout(function () {
+                                        bsLoadingOverlayService.stop({
+                                            referenceId: 'mainPage_workHour'
+                                        });
+                                    }, 500)
+                                })
                         })
                         .error(function () {
                             console.log('ERROR WorkHourUtil.createWorkHourTableForm');

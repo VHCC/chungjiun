@@ -236,6 +236,11 @@
                 createWorkHourTableForm: function (formData) {
                     return http.post('/api/createWorkHourTableForm', formData);
                 },
+
+                removeWorkHourTableForm : function (formData) {
+                    return http.post('/api/removeWorkHourTableForm', formData);
+                },
+
                 getWorkHourForm: function (formData) {
                     return http.post('/api/getWorkHourForm', formData);
                 },
