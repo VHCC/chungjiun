@@ -52,6 +52,7 @@ module.exports = function (app) {
                                 res.status(200).send({
                                     code: 200,
                                     error: global.status._200,
+                                    payload: req.body
                                 });
                             }
                         })
@@ -59,6 +60,7 @@ module.exports = function (app) {
                     res.status(200).send({
                         code: 200,
                         error: global.status._200,
+                        payload: req.body
                     });
                 }
             }

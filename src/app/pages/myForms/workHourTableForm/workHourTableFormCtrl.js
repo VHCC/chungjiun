@@ -1739,10 +1739,25 @@
                         oldTables: needRemoveOldTable,
                     };
 
+                    console.log(formData);
+
                     WorkHourUtil.removeWorkHourTableForm(formData)
                         .success(function (res) {
+
+                            console.log(res);
+
+                            var createFormData = {
+                                year: res.payload.year,
+                                month: res.payload.month,
+                                creatorDID: res.payload.creatorDID,
+                                create_formDate: res.payload.create_formDate,
+                                // workHourTableData 為 []，也要送，作為更新。
+                                formTables: res.payload.formTables,
+                                oldTables: res.payload.oldTables,
+                            };
+
                             // TODO 跨月
-                            WorkHourUtil.createWorkHourTableForm(formData)
+                            WorkHourUtil.createWorkHourTableForm(createFormData)
                                 .success(function (res) {
                                     var workIndex = tableIndex;
                                     tableIndex++;
