@@ -56,7 +56,8 @@ function browserSyncInit(baseDir, browser) {
     server: server,
     browser: browser,
     ghostMode: false,
-    middleware: [apiProxy]
+    middleware: [apiProxy],
+    port: 4000
   });
 }
 
