@@ -38,7 +38,7 @@ function browserSyncInit(baseDir, browser) {
   var proxy = require('http-proxy-middleware')
 
   var proxyTableAPI = {
-      'vhc.ichenprocin.dsmynas.com/api': 'http://localhost:8000'
+      'vhc.ichenprocin.dsmynas.com/api': 'http://192.168.1.151:16788'
   }
   // 设置代理
   var apiProxy = proxy('/api', {
