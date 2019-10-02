@@ -234,13 +234,18 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_work_hour_multiple_get, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_multiple_get");
         var findData = []
-        for (var index = 0; index < req.body.relatedMembers.length; index++) {
-            var target = {
-                creatorDID: req.body.relatedMembers[index],
-                create_formDate: req.body.create_formDate,
+
+        if (req.body.relatedMembers != null) {
+
+            for (var index = 0; index < req.body.relatedMembers.length; index++) {
+                var target = {
+                    creatorDID: req.body.relatedMembers[index],
+                    create_formDate: req.body.create_formDate,
+                }
+                findData.push(target);
             }
-            findData.push(target);
         }
+
 
         var query = {
             $or: findData,
@@ -524,7 +529,7 @@ module.exports = function (app) {
 
     app.post(global.apiUrl.insert_work_hour_table_temp, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, insert_work_hour_table_temp");
-        console.log(req.body.users);
+        // console.log(req.body.users);
         var index = 0
         if (req.body.users != null) {
             while(index < req.body.users.length) {
