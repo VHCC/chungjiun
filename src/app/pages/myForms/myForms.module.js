@@ -23,39 +23,39 @@
     /** @ngInject */
     function routeConfig($stateProvider) {
         $stateProvider
-            .state('myForms',
-                {
-                    url: '/myForms',
-                    template: '<ui-view autoscroll="true" autoscroll-body-top></ui-view>',
-                    abstract: true,
-                    title: '表單',
-                    sidebarMeta: {
-                        icon: 'ion-compose',
-                        order: global.pages.myForms,
-                    },
-                })
-            .state('myForms.workHours',
-                {
-                    url: '/workHours',
-                    templateUrl: 'app/pages/myForms/workHour/workHourPage.html',
-                    controller: 'workHourFormCtrl',
-                    controllerAs: 'workHourFormCtrlVm',
-                    title: '工時表(未完成)',
-                    sidebarMeta: {
-                        order: global.pages.myForms_workHour,
-                    },
-                })
-            .state('myForms.newForm',
-                {
-                    url: '/newForm',
-                    templateUrl: 'app/pages/myForms/newForm/newFormPage.html',
-                    controller: 'newFormCtrl',
-                    controllerAs: 'newFormCtrlVm',
-                    title: '新表單(Sample)',
-                    sidebarMeta: {
-                        order: global.pages.myForms_newForm,
-                    },
-                })
+            // .state('myForms',
+            //     {
+            //         url: '/myForms',
+            //         template: '<ui-view autoscroll="true" autoscroll-body-top></ui-view>',
+            //         abstract: true,
+            //         title: '表單',
+            //         sidebarMeta: {
+            //             icon: 'ion-compose',
+            //             order: global.pages.myForms,
+            //         },
+            //     })
+            // .state('myForms.workHours',
+            //     {
+            //         url: '/workHours',
+            //         templateUrl: 'app/pages/myForms/workHour/workHourPage.html',
+            //         controller: 'workHourFormCtrl',
+            //         controllerAs: 'workHourFormCtrlVm',
+            //         title: '工時表(未完成)',
+            //         sidebarMeta: {
+            //             order: global.pages.myForms_workHour,
+            //         },
+            //     })
+            // .state('myForms.newForm',
+            //     {
+            //         url: '/newForm',
+            //         templateUrl: 'app/pages/myForms/newForm/newFormPage.html',
+            //         controller: 'newFormCtrl',
+            //         controllerAs: 'newFormCtrlVm',
+            //         title: '新表單(Sample)',
+            //         sidebarMeta: {
+            //             order: global.pages.myForms_newForm,
+            //         },
+            //     })
             // .state('myForms.paymentForm',
             //     {
             //         url: '/paymentForm',
