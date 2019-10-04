@@ -9,6 +9,7 @@
         .controller('MyWorkHourTable_AddHourModalCtrl',
             [
                 '$scope',
+                'toastr',
                 '$cookies',
                 '$uibModalInstance',
                 'TimeUtil',
@@ -19,6 +20,7 @@
 
     /** @ngInject */
     function MyWorkHourTableAddHourModalCtrl($scope,
+                                             toastr,
                                              cookies,
                                              $uibModalInstance,
                                              TimeUtil,
@@ -75,9 +77,9 @@
                 year: (new Date($scope.table.create_formDate).getFullYear() -1911),
                 month: (new Date(DateUtil.getShiftDatefromFirstDate(moment($scope.table.create_formDate), ($scope.day - 1))).getMonth() + 1),
                 day: $scope.day,
-                start_time: "",
-                end_time: "",
-                reason: "事由",
+                start_time: "08:30",
+                end_time: "17:30",
+                reason: "請填寫",
                 userMonthSalary: $scope.userMonthSalary,
                 // userHourSalary: $scope.userHourSalary,
             };
@@ -195,8 +197,21 @@
         // **************** time section ********************
 
         $scope.saveWorkAddItem = function (button) {
+
+            console.log(button);
+
+            var result = $scope.showTotalAddHour($scope.workAddTablesItems, 1) + $scope.showTotalAddHour($scope.workAddTablesItems, 2);
+
+            console.log($scope.showTotalAddHour($scope.workAddTablesItems, 1) + $scope.showTotalAddHour($scope.workAddTablesItems, 2));
+
+            if (isNaN(result)) {
+                toastr.error('加班單格式錯誤，請檢查', '錯誤');
+                console.log("qqqq");
+                return;
+            }
+
             button.currentTarget.innerText = "saving...";
-            $scope.table.totalHourTemp = $scope.showTotalAddHour($scope.workAddTablesItems, 1) + $scope.showTotalAddHour($scope.workAddTablesItems, 2);
+            $scope.table.totalHourTemp = result;
             var data = {
                 table: $scope.table,
                 formTables: $scope.workAddTablesItems,
