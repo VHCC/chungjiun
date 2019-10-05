@@ -886,8 +886,6 @@
 
                 });
 
-
-
                 console.log(result);
 
                 return result;
@@ -902,24 +900,26 @@
                     }
                 }
 
+                var addHourTotal = 0;
+
                 if (item.table_add != undefined && item.table_add.length > 0) {
                     for (var index = 0; index < item.table_add.length; index ++) {
-                        hourTotal += $scope.calculateHours_type1_add(item.table_add[index]);
+                        addHourTotal += $scope.calculateHours_type1_add(item.table_add[index]);
+                    }
+
+                    addHourTotal = addHourTotal % 60 < 30 ? Math.round(addHourTotal / 60) : Math.round(addHourTotal / 60) - 0.5;
+                    if (addHourTotal < 1) {
+                        addHourTotal = 0;
                     }
                 }
 
-                return hourTotal;
+                return hourTotal + addHourTotal;
             }
 
             $scope.calculateHours_type1_add = function (item) {
                 var hourTotal = 0;
 
                 hourTotal += parseInt(TimeUtil.getCalculateHourDiffByTime(item.type_1_start_time, item.type_1_end_time));
-
-                hourTotal = hourTotal % 60 < 30 ? Math.round(hourTotal / 60) : Math.round(hourTotal / 60) - 0.5;
-                if (hourTotal < 1) {
-                    return 0;
-                }
 
                 return hourTotal;
             }
@@ -1030,8 +1030,9 @@
             $scope.filter_type3_data = function(rawTables) {
                 console.log(rawTables);
 
-                var type3_data = [];
+                var itemList = [];
 
+                var type3_data = [];
 
                 for (var memberCount = 0; memberCount < rawTables.length; memberCount++) {
 
@@ -1238,33 +1239,85 @@
                     }
 
                     if (rawTables[memberCount]._add_tables != undefined) {
+
                         for (var table_add_index = 0 ;table_add_index < rawTables[memberCount]._add_tables.length; table_add_index ++) {
                             if (moment( DateUtil.getShiftDatefromFirstDate(moment(rawTables[memberCount]._add_tables[table_add_index].create_formDate), rawTables[memberCount]._add_tables[table_add_index].day - 1) )
                                     .diff( moment( $scope.startDay )) >= 0 &&
                                 moment( DateUtil.getShiftDatefromFirstDate(moment(rawTables[memberCount]._add_tables[table_add_index].create_formDate), rawTables[memberCount]._add_tables[table_add_index].day - 1) )
                                     .diff( moment( $scope.endDay )) <= 0) {
-                                var data = {
-                                    _date: DateUtil.getShiftDatefromFirstDate(moment(rawTables[memberCount]._add_tables[table_add_index].create_formDate), rawTables[memberCount]._add_tables[table_add_index].day - 1),
-                                    _date_short: DateUtil.formatDate(
-                                        DateUtil.getShiftDatefromFirstDate(
-                                            moment(rawTables[memberCount]._add_tables[table_add_index].create_formDate), rawTables[memberCount]._add_tables[table_add_index].day - 1)),
-                                    _day: rawTables[memberCount]._add_tables[table_add_index].day,
-                                    _day_tw: DateUtil.getDay(rawTables[memberCount]._add_tables[table_add_index].day),
-                                    _id: rawTables[memberCount]._id,
-                                    _prjCode: rawTables[memberCount]._id.prjCode,
-                                    _userDID: rawTables[memberCount]._id.userDID,
-                                    _project_info: rawTables[memberCount]._project_info,
-                                    _user_info: rawTables[memberCount]._user_info,
-                                    table_add: {
-                                        type_3_create_formDate: rawTables[memberCount]._add_tables[table_add_index].create_formDate,
-                                        type_3_day: rawTables[memberCount]._add_tables[table_add_index].day,
-                                        type_3_workAddType: rawTables[memberCount]._add_tables[table_add_index].workAddType,
-                                        type_3_start_time: rawTables[memberCount]._add_tables[table_add_index].start_time,
-                                        type_3_end_time: rawTables[memberCount]._add_tables[table_add_index].end_time,
-                                        type_3_reason: rawTables[memberCount]._add_tables[table_add_index].reason,
-                                    },
+                                // var data = {
+                                //     _date: DateUtil.getShiftDatefromFirstDate(moment(rawTables[memberCount]._add_tables[table_add_index].create_formDate), rawTables[memberCount]._add_tables[table_add_index].day - 1),
+                                //     _date_short: DateUtil.formatDate(
+                                //         DateUtil.getShiftDatefromFirstDate(
+                                //             moment(rawTables[memberCount]._add_tables[table_add_index].create_formDate), rawTables[memberCount]._add_tables[table_add_index].day - 1)),
+                                //     _day: rawTables[memberCount]._add_tables[table_add_index].day,
+                                //     _day_tw: DateUtil.getDay(rawTables[memberCount]._add_tables[table_add_index].day),
+                                //     _id: rawTables[memberCount]._id,
+                                //     _prjCode: rawTables[memberCount]._id.prjCode,
+                                //     _userDID: rawTables[memberCount]._id.userDID,
+                                //     _project_info: rawTables[memberCount]._project_info,
+                                //     _user_info: rawTables[memberCount]._user_info,
+                                //     table_add: {
+                                //         type_3_create_formDate: rawTables[memberCount]._add_tables[table_add_index].create_formDate,
+                                //         type_3_day: rawTables[memberCount]._add_tables[table_add_index].day,
+                                //         type_3_workAddType: rawTables[memberCount]._add_tables[table_add_index].workAddType,
+                                //         type_3_start_time: rawTables[memberCount]._add_tables[table_add_index].start_time,
+                                //         type_3_end_time: rawTables[memberCount]._add_tables[table_add_index].end_time,
+                                //         type_3_reason: rawTables[memberCount]._add_tables[table_add_index].reason,
+                                //     },
+                                // }
+                                // type3_data.push(data);
+
+
+
+
+                                var item = "_" + DateUtil.getShiftDatefromFirstDate_typeB(moment(rawTables[memberCount]._add_tables[table_add_index].create_formDate),
+                                    rawTables[memberCount]._add_tables[table_add_index].day - 1) + "_" +
+                                    rawTables[memberCount]._id.prjCode + "_" + rawTables[memberCount]._add_tables[table_add_index].workAddType;
+
+                                var tableData_add = {
+                                    type_3_create_formDate: rawTables[memberCount]._add_tables[table_add_index].create_formDate,
+                                    type_3_day: rawTables[memberCount]._add_tables[table_add_index].day,
+                                    type_3_workAddType: rawTables[memberCount]._add_tables[table_add_index].workAddType,
+                                    type_3_start_time: rawTables[memberCount]._add_tables[table_add_index].start_time,
+                                    type_3_end_time: rawTables[memberCount]._add_tables[table_add_index].end_time,
+                                    type_3_reason: rawTables[memberCount]._add_tables[table_add_index].reason,
                                 }
-                                type3_data.push(data);
+
+                                console.log(item);
+
+                                if (type3_data[item] != undefined) {
+                                    var data = type3_data[item];
+                                    data.table_add.push(tableData_add);
+                                } else {
+
+                                    itemList.push(item);
+
+                                    var tables_add = [];
+
+                                    tables_add.push(tableData_add);
+
+                                    var data = {
+                                        _date: DateUtil.getShiftDatefromFirstDate(moment(rawTables[memberCount]._add_tables[table_add_index].create_formDate), rawTables[memberCount]._add_tables[table_add_index].day - 1),
+                                        _date_short: DateUtil.formatDate(
+                                            DateUtil.getShiftDatefromFirstDate(
+                                                moment(rawTables[memberCount]._add_tables[table_add_index].create_formDate), rawTables[memberCount]._add_tables[table_add_index].day - 1)),
+                                        _day: rawTables[memberCount]._add_tables[table_add_index].day,
+                                        _day_tw: DateUtil.getDay(rawTables[memberCount]._add_tables[table_add_index].day),
+                                        _id: rawTables[memberCount]._id,
+                                        _prjCode: rawTables[memberCount]._id.prjCode,
+                                        _userDID: rawTables[memberCount]._id.userDID,
+                                        _project_info: rawTables[memberCount]._project_info,
+                                        _user_info: rawTables[memberCount]._user_info,
+                                        _workAddType: rawTables[memberCount]._add_tables[table_add_index].workAddType,
+                                        table_add: tables_add
+                                    }
+
+                                    type3_data.push(data);
+
+                                    eval('type3_data[item] = data')
+                                }
+
                             }
                         }
                     }
@@ -1286,17 +1339,30 @@
                 return hourTotal;
             }
 
-            $scope.calculateHours_type3_add = function (item, type) {
+            $scope.calculateHours_type3_add = function (addTables, type) {
                 var hourTotal = 0;
 
-                hourTotal += parseInt(TimeUtil.getCalculateHourDiffByTime(item.type_3_start_time, item.type_3_end_time));
+                for (var index = 0; index < addTables.length; index ++) {
+                    hourTotal += parseInt(TimeUtil.getCalculateHourDiffByTime(addTables[index].type_3_start_time, addTables[index].type_3_end_time));
+                }
 
                 hourTotal = hourTotal % 60 < 30 ? Math.round(hourTotal / 60) : Math.round(hourTotal / 60) - 0.5;
+
                 if (hourTotal < 1) {
                     return 0;
                 }
 
                 return hourTotal;
+            }
+
+            $scope.show_type3_add_reason = function (addTables) {
+                var reasonString = "";
+
+                for (var index = 0; index < addTables.length; index ++) {
+                    reasonString += addTables[index].type_3_reason + ", ";
+                }
+
+                return reasonString;
             }
 
 

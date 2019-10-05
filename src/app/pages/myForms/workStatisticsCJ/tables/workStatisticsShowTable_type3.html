@@ -67,10 +67,10 @@
                     正常
                 </my>
                 <my ng-if="item.table_add != undefined">
-                    <my ng-if="item.table_add.type_3_workAddType == 1">
+                    <my ng-if="item._workAddType == 1">
                         加班
                     </my>
-                    <my ng-if="item.table_add.type_3_workAddType == 2">
+                    <my ng-if="item._workAddType == 2">
                         換休
                     </my>
                 </my>
@@ -81,7 +81,8 @@
                     {{item.table.type_3_hour_memo}}
                 </my>
                 <my ng-if="item.table_add != undefined">
-                    {{item.table_add.type_3_reason}}
+                    <!--{{item.table_add.type_3_reason}}-->
+                    {{show_type3_add_reason(item.table_add)}}
                 </my>
             </td>
 
