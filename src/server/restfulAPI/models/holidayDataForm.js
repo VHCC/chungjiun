@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 module.exports = mongoose.model('HolidayDataForm', {
     // 表單擁有者
@@ -57,5 +58,8 @@ module.exports = mongoose.model('HolidayDataForm', {
     rest_paternity: {type: String, default: 0},
     rest_others: {type: String, default: 0},
 
-
+    timestamp: {
+        type : String,
+        default: moment(new Date()).format("YYYYMMDD_HHmmss")
+    }
 });

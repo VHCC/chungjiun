@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 // 兌換單
 module.exports = mongoose.model('workOffTableExchangeForm', {
@@ -54,6 +55,11 @@ module.exports = mongoose.model('workOffTableExchangeForm', {
     // 設定完成 Flag
     isConfirmed: {
         type: Boolean,
-    }
+    },
+
+    timestamp: {
+        type : String,
+        default: moment(new Date()).format("YYYYMMDD_HHmmss")
+    },
 
 });

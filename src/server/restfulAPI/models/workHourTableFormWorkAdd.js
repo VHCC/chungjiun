@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 //加班單
 module.exports = mongoose.model('workHourTableFormWorkAdd', {
@@ -82,6 +83,11 @@ module.exports = mongoose.model('workHourTableFormWorkAdd', {
         type: String,
         default: "0"
     },
+
+    timestamp: {
+        type : String,
+        default: moment(new Date()).format("YYYYMMDD_HHmmss")
+    }
 
 
 

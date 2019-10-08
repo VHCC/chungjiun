@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 module.exports = mongoose.model('WorkHourForm', {
 
@@ -26,6 +27,11 @@ module.exports = mongoose.model('WorkHourForm', {
     // tableDID以及prjDID
     formTables: {
         type: Array,
+    },
+
+    timestamp: {
+        type : String,
+        default: moment(new Date()).format("YYYYMMDD_HHmmss")
     },
     
 

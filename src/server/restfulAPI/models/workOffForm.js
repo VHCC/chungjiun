@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 // 休假單
 module.exports = mongoose.model('WorkOffForm', {
@@ -19,5 +20,9 @@ module.exports = mongoose.model('WorkOffForm', {
         type: Array,
     },
 
+    timestamp: {
+        type : String,
+        default: moment(new Date()).format("YYYYMMDD_HHmmss")
+    },
 
 });
