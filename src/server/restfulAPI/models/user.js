@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 module.exports = mongoose.model('User', {
     // 登入帳號
@@ -62,6 +63,11 @@ module.exports = mongoose.model('User', {
     isSetResidualRestHour: {
         type: Boolean,
         default: false
+    },
+
+    timestamp: {
+        type : String,
+        default: moment(new Date()).format("YYYYMMDD_HHmmss")
     },
 
 });

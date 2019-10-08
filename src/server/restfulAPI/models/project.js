@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 module.exports = mongoose.model('Project', {
     // 分支主題
@@ -113,5 +114,10 @@ module.exports = mongoose.model('Project', {
     // 合併後專案
     combinedID : {
         type: String,
-    }
+    },
+
+    timestamp: {
+        type : String,
+        default: moment(new Date()).format("YYYYMMDD_HHmmss")
+    },
 });

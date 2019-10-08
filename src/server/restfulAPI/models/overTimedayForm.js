@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 // 補班日
 module.exports = mongoose.model('overTimeDayForm', {
@@ -23,5 +24,10 @@ module.exports = mongoose.model('overTimeDayForm', {
     isEnable: {
         type: Boolean,
         default: false
+    },
+
+    timestamp: {
+        type : String,
+        default: moment(new Date()).format("YYYYMMDD_HHmmss")
     },
 });

@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 // 加班分配表 文惠專用
 module.exports = mongoose.model('WorkAddConfirmForm', {
@@ -16,6 +17,11 @@ module.exports = mongoose.model('WorkAddConfirmForm', {
     },
     formTables: {
         type: String,
+    },
+
+    timestamp: {
+        type : String,
+        default: moment(new Date()).format("YYYYMMDD_HHmmss")
     },
 
 

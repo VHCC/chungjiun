@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 module.exports = mongoose.model('PaymentFormItem', {
     // 填表人
@@ -77,6 +78,11 @@ module.exports = mongoose.model('PaymentFormItem', {
     itemIndex: {
         type: Number,
         default: 0
+    },
+
+    timestamp: {
+        type : String,
+        default: moment(new Date()).format("YYYYMMDD_HHmmss")
     },
 
 });

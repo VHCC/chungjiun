@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 // 國定假日單
 module.exports = mongoose.model('nationalHolidayForm', {
@@ -23,5 +24,10 @@ module.exports = mongoose.model('nationalHolidayForm', {
     isEnable: {
         type: Boolean,
         default: false
+    },
+
+    timestamp: {
+        type : String,
+        default: moment(new Date()).format("YYYYMMDD_HHmmss")
     },
 });

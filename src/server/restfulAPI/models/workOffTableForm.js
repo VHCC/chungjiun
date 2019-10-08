@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 // 休假單
 module.exports = mongoose.model('workOffTableForm', {
@@ -99,6 +100,11 @@ module.exports = mongoose.model('workOffTableForm', {
     // 行政退回事由
     executiveReject_memo: {
         type: String,
+    },
+
+    timestamp: {
+        type : String,
+        default: moment(new Date()).format("YYYYMMDD_HHmmss")
     },
 
 });

@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 // 收文、發文項目
 module.exports = mongoose.model('officialDocItem', {
@@ -104,7 +105,12 @@ module.exports = mongoose.model('officialDocItem', {
     isDocClose: {
         type: Boolean,
         default: false
-    }
+    },
+
+    timestamp: {
+        type : String,
+        default: moment(new Date()).format("YYYYMMDD_HHmmss")
+    },
 
 
 
