@@ -1,6 +1,9 @@
 var User = require('../models/user');
 var fs = require('fs');
 const dir = '../temp';
+var Vendor = require('../models/officialDocVendor');
+var OfficialDocItem = require('../models/officialDocItem');
+
 
 module.exports = function (app) {
 // application -------------------------------------------------------------
@@ -50,6 +53,9 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_official_doc_detect_file, function (req, res) {
 
         fs.readdir(dir, function (err, files) {
+
+            console.log(files);
+
             if (err) {
                 // some sort of error
             } else {
@@ -67,10 +73,51 @@ module.exports = function (app) {
         });
     })
 
+    // fetch files
+    app.post(global.apiUrl.post_official_doc_fetch_file, function (req, res) {
+        fs.readdir(dir, function (err, files) {
+            if (err) {
+                // some sort of error
+            } else {
+                // console.log("files= " + files.length);
+                if (!files.length) {
+                    // directory appears to be empty
+                } else {
+
+                    var filesResult = [];
+
+                    for (var index = 0; index < files.length; index++) {
+                        var pdfItem = {
+                            name: files[index]
+                        };
+                        // console.log(files[index]);
+                        // console.log(files[index].indexOf(".pdf"));
+                        if (files[index].indexOf(".pdf") > 0) {
+                            var stats = fs.statSync(dir + "/" + files[index]);
+                            // console.log(stats.size + " bytes");
+                            // console.log(Math.round(stats.size / 1000) + " KB");
+                            pdfItem.size = Math.round(stats.size / 1000) + " KB";
+                            filesResult.push(pdfItem);
+                        }
+                    }
+
+
+                    res.status(200).send({
+                        code: 200,
+                        payload: filesResult,
+                        error: global.status._200,
+                    });
+                }
+            }
+        });
+    })
+
     // get file
     app.post(global.apiUrl.post_official_doc_get_file, function (req, res) {
 
-        fs.readFile(dir + '/' + req.body.userDID + '.pdf',
+        console.log(req.body);
+
+        fs.readFile(dir + '/' + req.body.fileName,
             'base64',
             function (err, data) {
                 if (err) {
@@ -79,7 +126,135 @@ module.exports = function (app) {
                     res.send(data);
                 }
             });
+    })
 
+    // download file
+    app.post(global.apiUrl.post_official_doc_download_file, function (req, res) {
+
+        // var files = fs.createReadStream(dir + '/' + req.body.fileName);
+        // res.writeHead(200, {
+        //     'Content-disposition': 'attachment; filename=demo.pdf'
+        // }); //here you can add more headers
+        // files.pipe(res)
+        fs.readFile(dir + '/' + req.body.fileName,
+            'base64',
+            function (err, data) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.send(data);
+                }
+            });
+    })
+
+    // ----------- item ------------
+    app.post(global.apiUrl.post_official_doc_create_item, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_create_item");
+        console.log(req.body);
+        OfficialDocItem.create(
+            {
+                creatorDID: req.body.creatorDID,
+                vendorDID: req.body.vendorItem._id,
+                receiveDate: req.body._receiveDate,
+                dueDate: req.body._dueDate,
+                prjDID: req.body.prjItem._id,
+                chargerDID: req.body.chargeUser._id,
+                subject: req.body._subject,
+                archiveNumber: req.body._archiveNumber,
+                receiveType: req.body._receiveType,
+                receiveNumber: req.body._receiveNumber,
+                docType: req.body.docOption.option,
+            },
+            function (err) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_create_item");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                    });
+                }
+            })
+    })
+
+    // ----------- Vendor ------------
+
+    app.get(global.apiUrl.get_fetch_official_doc_vendor, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, get_fetch_official_doc_vendor");
+        Vendor.find(
+            {
+            },
+            function (err, vendors) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, get_fetch_official_doc_vendor");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: vendors,
+                    });
+                }
+        })
+    })
+
+    app.post(global.apiUrl.post_insert_official_doc_vendor, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_insert_official_doc_vendor");
+        Vendor.create(
+            {
+                vendorName: req.body.vendorName
+            },
+            function (err) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_insert_official_doc_vendor");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                    });
+                }
+            })
+    })
+
+    app.post(global.apiUrl.post_update_official_doc_vendor, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_update_official_doc_vendor");
+        console.log(req.body);
+
+        Vendor.update(
+            {
+                _id: req.body._id
+            },
+            {
+                $set: {
+                    vendorName: req.body.vendorName,
+                    isEnable: true,
+                }
+            },
+            function (err) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_update_official_doc_vendor");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                    });
+                }
+            })
     })
 
 }

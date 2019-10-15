@@ -1,0 +1,71 @@
+<style>
+    .modal-dialog {
+        display: inline-block;
+        text-align: left;
+        vertical-align: middle;
+        width: 1000px
+    }
+
+    .pdf-meta {
+        display: block;
+    }
+
+    .pdf-buttons {
+        padding: 10px;
+    }
+    
+    .pdf-pages {
+        padding: 10px;
+        float: right;
+    }
+
+    .download-img {
+        cursor: pointer;
+        margin: 5px;
+        cursor: pointer;
+        vertical-align: top;
+        position: relative;
+        display: inline-block;
+    }
+
+    .download-img:hover {
+        border-radius: 10px;
+        border: 2px solid rgba(206, 206, 206, 0.88);
+    }
+
+</style>
+
+<div>
+    <div class="modal-header bg-info">
+        <i class="ion-android-warning modal-icon"></i>
+        <strong>{{dom.$parent.pdfItem.name}}</strong>
+    </div>
+    <hr>
+    <div class="pdf-meta">
+        <div class="pdf-buttons">
+            <button class="btn btn-warning" ng-click="changePage(0)">上一頁</button>
+            <button class="btn btn-warning" ng-click="changePage(1)"id="pdf-next">下一頁</button>
+        </div>
+        <div class="pdf-pages">
+            <span style="font-size: 16px">
+                第 {{viewPage}} 頁 / 總共 {{totalPage}} 頁
+            </span>
+        </div>
+        <div class="download-img" ng-click="downloadPDF(this)">
+            <img src="assets/img/cloud-download-2.svg" width="50px" height="50px"/>
+        </div>
+    </div>
+
+    <div class="modal-body text-center">
+        <canvas id="the-canvas" width="500"></canvas>
+    </div>
+    <div class="modal-footer" ng-if="false">
+        <button type="button" class="btn btn-danger"
+                ng-click="closeThisDialog()">確定
+        </button>
+        <button type="button"
+                class="btn btn-primary"
+                ng-click="closeThisDialog()">取消
+        </button>
+    </div>
+</div>

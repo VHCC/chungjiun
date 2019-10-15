@@ -36,8 +36,9 @@
             .state('cgOfficialDoc.200',
                 {
                     url: '/officialDocReceive',
-                    templateUrl: 'app/pages/officialDoc/receiveOfficialDoc/receiveOfficialDoc.html',
+                    templateUrl: 'app/pages/officialDoc/receiveOfficialDoc/receiveOfficialDocHomePage.html',
                     controller: 'receiveOfficialDocCtrl',
+                    controllerAs: 'receiveOfficialDocCtrlVm',
                     title: '收文作業',
                     // accessLevel: [9999],
                     sidebarMeta: {
