@@ -1,6 +1,9 @@
 var User = require('../models/user');
 var fs = require('fs');
 const dir = '../temp';
+var Vendor = require('../models/officialDocVendor');
+var OfficialDocItem = require('../models/officialDocItem');
+
 
 module.exports = function (app) {
 // application -------------------------------------------------------------
@@ -144,5 +147,114 @@ module.exports = function (app) {
             });
     })
 
+    // ----------- item ------------
+    app.post(global.apiUrl.post_official_doc_create_item, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_create_item");
+        console.log(req.body);
+        OfficialDocItem.create(
+            {
+                creatorDID: req.body.creatorDID,
+                vendorDID: req.body.vendorItem._id,
+                receiveDate: req.body._receiveDate,
+                dueDate: req.body._dueDate,
+                prjDID: req.body.prjItem._id,
+                chargerDID: req.body.chargeUser._id,
+                subject: req.body._subject,
+                archiveNumber: req.body._archiveNumber,
+                receiveType: req.body._receiveType,
+                receiveNumber: req.body._receiveNumber,
+                docType: req.body.docOption.option,
+            },
+            function (err) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_create_item");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                    });
+                }
+            })
+    })
+
+    // ----------- Vendor ------------
+
+    app.get(global.apiUrl.get_fetch_official_doc_vendor, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, get_fetch_official_doc_vendor");
+        Vendor.find(
+            {
+            },
+            function (err, vendors) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, get_fetch_official_doc_vendor");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: vendors,
+                    });
+                }
+        })
+    })
+
+    app.post(global.apiUrl.post_insert_official_doc_vendor, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_insert_official_doc_vendor");
+        Vendor.create(
+            {
+                vendorName: req.body.vendorName
+            },
+            function (err) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_insert_official_doc_vendor");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                    });
+                }
+            })
+    })
+
+    app.post(global.apiUrl.post_update_official_doc_vendor, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_update_official_doc_vendor");
+        console.log(req.body);
+
+        Vendor.update(
+            {
+                _id: req.body._id
+            },
+            {
+                $set: {
+                    vendorName: req.body.vendorName,
+                    isEnable: true,
+                }
+            },
+            function (err) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_update_official_doc_vendor");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                    });
+                }
+            })
+    })
 
 }

@@ -3,6 +3,7 @@ var moment = require('moment');
 
 // 收文、發文項目
 module.exports = mongoose.model('officialDocItem', {
+
     // 填文人
     creatorDID: {
         type: String,
@@ -21,12 +22,6 @@ module.exports = mongoose.model('officialDocItem', {
         required: true,
     },
 
-    // 建檔日期
-    createDate: {
-        type: String,
-        require: true,
-    },
-
     // 來文機關
     vendorDID: {
         type: String,
@@ -34,7 +29,7 @@ module.exports = mongoose.model('officialDocItem', {
     },
 
     // 來文日期
-    sendDate: {
+    receiveDate: {
         type: String,
         required: true,
     },
@@ -54,7 +49,7 @@ module.exports = mongoose.model('officialDocItem', {
     // 處理期限 sendDate + 6
     lastDate: {
         type: String,
-        required: true,
+        default: "",
     },
 
     chargerDID: {
@@ -69,24 +64,24 @@ module.exports = mongoose.model('officialDocItem', {
     },
 
     // 總收文號
-    docMain: {
+    archiveNumber: {
         type: String,
         required: true,
     },
 
     // 文號字
-    docTitle: {
+    _receiveType: {
         type: String,
         required: true,
     },
 
     // 文號編號
-    docNumber: {
+    receiveNumber: {
         type: String,
         required: true,
     },
 
-    // 文號別
+    // 文別
     // 0 : 函
     // 1 : 會勘
     // 2 : 開會
@@ -95,11 +90,11 @@ module.exports = mongoose.model('officialDocItem', {
         required: true,
     },
 
-    // 辦理情形
-    processing: {
-        type: String,
-        default: ""
-    },
+    // 辦理情形, 另立追蹤Schema
+    // processing: {
+    //     type: String,
+    //     default: ""
+    // },
 
     // 簽結
     isDocClose: {

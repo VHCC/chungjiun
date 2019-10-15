@@ -9,7 +9,7 @@
         .config(routeConfig)
         .factory('User', ['$http', function (http) {
             return {
-                getAllUsers: function () {
+                getAllUsers: function () { // can sign in
                     return http.get('/api/getAllUsers');
                 },
                 getAllUsersWithSignOut: function () {
@@ -178,6 +178,11 @@
 
                 downloadOfficialDocFile : function (formData) {
                     return http.post('/api/post_official_doc_download_file', formData);
+                },
+
+                // 公文
+                createOfficialDocItem : function (formData) {
+                    return http.post('/api/post_official_doc_create_item', formData);
                 },
 
 
@@ -496,6 +501,25 @@
                 },
             }
         }])
+        .factory('OfficialDocVendorUtil', ['$http', function (http) {
+            return {
+                fetchOfficialDocVendor: function () {
+                    return http.get('/api/get_fetch_official_doc_vendor');
+                },
+
+                createOfficialDocVendor: function (formData) {
+                    return http.post('/api/post_insert_official_doc_vendor', formData);
+                },
+
+                updateOfficialDocVendor: function (formData) {
+                    return http.post('/api/post_update_official_doc_vendor', formData);
+                },
+
+                removeOfficialDocVendor: function (formData) {
+                    return http.post('/api/post_remove_official_doc_vendor', formData);
+                },
+            }
+        }])
         .factory('ProjectUtil', function () {
             return {
                 getTypeText: function (type) {
@@ -619,8 +643,6 @@
                     // compute  and return total seconds
                     return parts[0]
                 }
-
-
             }
         }])
         .factory('WorkOffTypeUtil', ['$http', function (http) {

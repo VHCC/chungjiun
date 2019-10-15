@@ -1,0 +1,58 @@
+<div>
+    <h3 class="with-line">機關列表</h3>
+
+    <div class="row" ng-init="fetchVendor()">
+        <table class="table table-bordered table-hover table-condensed">
+            <thead>
+            <tr style="white-space:nowrap">
+                <td style="vertical-align: inherit; text-align: center" width="80px"></td>
+                <td style="vertical-align: inherit; text-align: center">機關名稱</td>
+            </tr>
+            </thead>
+            <tbody ng-repeat="vendor in officialDocVendors">
+            <tr style="vertical-align: inherit; text-align: center">
+                <!--序號-->
+                <td style="vertical-align: inherit; text-align: center">
+                    <span id="prjCode">{{$index + 1}}</span>
+                    <button class="btn btn-danger editable-table-button btn-xs"
+                            ng-show="vendor.isEnable"
+                            ng-click="removeVendorItem(vendor);">
+                        移除
+                    </button>
+                    <!--設定-->
+                    <div ng-if="!vendor.isEnable">
+                        <div class="buttons">
+                            <button class="btn btn-info editable-table-button btn-xs"
+                                    ng-click="setVendorName(vendor, this) ">
+                                設定
+                            </button>
+                        </div>
+                    </div>
+                </td>
+                <!--名稱-->
+                <td style="vertical-align: inherit; text-align: center">
+
+                    <my ng-show="!vendor.isEnable">
+                        <input type="text"
+                               class="form-control"
+                               placeholder="機關名稱"
+                               ng-model="vendorSetName"
+                               style="color: #000000;">
+                    </my>
+                    <my ng-show="vendor.isEnable">
+                        {{vendor.vendorName}}
+                    </my>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <button type="button"
+                ng-click="addVendorItem()"
+                class="btn btn-info btn-icon">
+            <i class="ion-plus-round"/>
+        </button>
+    </div>
+</div>

@@ -47,7 +47,9 @@
             <button class="btn btn-warning" ng-click="changePage(1)"id="pdf-next">下一頁</button>
         </div>
         <div class="pdf-pages">
-            第 {{viewPage}} 頁 / 總共 {{totalPage}} 頁
+            <span style="font-size: 16px">
+                第 {{viewPage}} 頁 / 總共 {{totalPage}} 頁
+            </span>
         </div>
         <div class="download-img" ng-click="downloadPDF(this)">
             <img src="assets/img/cloud-download-2.svg" width="50px" height="50px"/>

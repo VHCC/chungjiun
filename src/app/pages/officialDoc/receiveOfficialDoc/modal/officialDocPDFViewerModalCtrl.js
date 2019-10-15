@@ -56,7 +56,7 @@
                     })
 
                     loadingTask.promise.then(function (pdf) {
-                        console.log('PDF loaded');
+                        // console.log('PDF loaded');
 
                         $scope.pdfFile = pdf;
 
@@ -70,12 +70,13 @@
                 })
         }
 
+        // init page view
         $scope.getPDF($scope.dom);
 
         $scope.showPage = function (pageIndex) {
             $scope.pdfFile.getPage(pageIndex)
                 .then(function (page) {
-                    console.log('Page loaded, page= ' + page);
+                    console.log('Page loaded, page= ' + pageIndex);
 
                     var scale = 1.5;
                     var viewport = page.getViewport({scale: scale});
@@ -93,7 +94,7 @@
                     };
                     var renderTask = page.render(renderContext);
                     renderTask.promise.then(function () {
-                        console.log('Page rendered');
+                        // console.log('Page rendered');
                     });
                 });
         }
@@ -118,7 +119,7 @@
         }
 
         $scope.downloadPDF = function (dom) {
-            console.log(dom);
+            // console.log(dom);
 
             var formData = {
                 fileName: dom.dom.$parent.pdfItem.name

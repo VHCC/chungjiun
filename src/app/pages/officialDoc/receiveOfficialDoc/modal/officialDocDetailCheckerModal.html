@@ -1,0 +1,81 @@
+<style>
+
+
+</style>
+
+<div>
+    <div class="modal-header bg-info">
+        <i class="ion-android-warning modal-icon"></i>
+        <strong style="color: red;">總收文號：{{docData._archiveNumber}}</strong>
+    </div>
+    <hr>
+
+    <div class="modal-body text-left">
+
+        <div style="padding: 5px">
+            <label >收文日期</label>
+            <input type="text" class="form-control"
+                   value="{{docData._receiveDate}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px">
+            <label >機關名稱</label>
+            <input type="text" class="form-control"
+                   value="{{docData.vendorItem.vendorName}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px">
+            <label >文別</label>
+            <input type="text" class="form-control"
+                   value="{{docData.docOption.name}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px">
+            <label >收文字/收文號</label>
+            <input type="text" class="form-control"
+                   value="{{docData._receiveType}} - {{docData._receiveNumber}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px">
+            <label >主旨</label>
+            <input type="text" class="form-control"
+                   value="{{docData._subject}}"
+                   ng-disabled="true">
+        </div>
+
+        <hr>
+
+        <div style="padding: 5px">
+            <label >專案代碼</label>
+            <input type="text" class="form-control"
+                   value="{{docData.prjItem.prjCode}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px">
+            <label >承辦人</label>
+            <input type="text" class="form-control"
+                   value="{{docData.chargeUser.name}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px">
+            <label >到期日期</label>
+            <input type="text" class="form-control"
+                   value="{{docData._dueDate}}"
+                   ng-disabled="true">
+        </div>
+
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger"
+                ng-click="confirmCreateDoc()">建檔
+        </button>
+    </div>
+</div>

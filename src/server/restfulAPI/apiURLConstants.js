@@ -155,6 +155,14 @@ global.apiUrl = {
     post_official_doc_get_file : '/api/post_official_doc_get_file',
     post_official_doc_fetch_file : '/api/post_official_doc_fetch_file',
     post_official_doc_download_file : '/api/post_official_doc_download_file',
+    //
+    post_official_doc_create_item : '/api/post_official_doc_create_item',
+
+    // OfficialDocVendorUtil
+    get_fetch_official_doc_vendor : '/api/get_fetch_official_doc_vendor',
+    post_insert_official_doc_vendor : '/api/post_insert_official_doc_vendor',
+    post_update_official_doc_vendor : '/api/post_update_official_doc_vendor',
+    post_remove_official_doc_vendor : '/api/post_remove_official_doc_vendor',
 
     //userEdit
     post_upload_user_avatar : '/api/uploadUserAvatar',
