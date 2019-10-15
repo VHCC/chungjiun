@@ -148,6 +148,75 @@ module.exports = function (app) {
 
     });
 
+    // Project Transfer
+    app.post(global.apiUrl.post_project_transfer, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, transfer project");
+        try {
+            Project.update({
+                _id: req.body.prjA,
+            }, {
+                $set: {
+                    combinedID: req.body.prjCode,
+                    enable: false,
+                }
+            }, function (err) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_transfer");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    console.log("update A Done");
+                }
+            })
+
+            Project.create(
+                {
+                    branch: req.body.branch,
+                    year: String(req.body.year),
+                    code: String(req.body.code),
+                    type: req.body.type,
+                    mainName: req.body.mainName,
+                    managerID: req.body.managerID,
+                    prjCode: req.body.prjCode,
+                    technician: req.body.technician,
+                    enable: true,
+                    prjNumber: req.body.prjNumber,
+                    prjName: req.body.prjName,
+                    prjSubNumber: req.body.prjSubNumber,
+                    prjSubName: req.body.prjSubName,
+                },
+                function (err, project) {
+                    if (err) {
+                        console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_transfer");
+                        console.log(req.body);
+                        console.log(" ***** ERROR ***** ");
+                        console.log(err);
+                        res.send(err);
+                    } else {
+                        console.log(global.timeFormat(new Date()) + global.log.i + "API, transfer Project done: " +
+                            JSON.stringify(req.body));
+                        res.status(200).send({
+                            code: 200,
+                            error: global.status._200,
+                        });
+                    }
+                });
+
+        } catch (error) {
+            console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_transfer");
+            console.log(req.body);
+            console.log(" ***** ERROR ***** ");
+            console.log(error);
+            res.status(400).send({
+                code: 400,
+                error: global.status._400,
+            });
+        }
+
+    });
+
     // projectCombine
     app.post(global.apiUrl.post_project_combine, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, combine project");

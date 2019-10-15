@@ -1,12 +1,12 @@
 /**
  * @author Ichen.chu
- * created on 02.03.2018
+ * created on 15.10.2019
  */
 (function () {
     'use strict';
 
     angular.module('BlurAdmin.pages.myForms')
-        .controller('combineProjectCtrl',
+        .controller('transferProjectCtrl',
             [
                 '$scope',
                 'toastr',
@@ -21,11 +21,11 @@
                 'ProjectUtil',
                 'PaymentFormsUtil',
                 'bsLoadingOverlayService',
-                CombinePorjectCtrl
+                TransferProjectCtrl
             ])
 
     /** @ngInject */
-    function CombinePorjectCtrl($scope,
+    function TransferProjectCtrl($scope,
                              toastr,
                              $cookies,
                              $filter,
@@ -166,7 +166,7 @@
         var A_prjID = "";
         var B_prjID = "";
 
-        $scope.checkProject = function (prj_id, index) {
+        $scope.checkProject_transfer = function (prj_id, index) {
 
             switch (index) {
                 case 1:
@@ -221,28 +221,28 @@
             {label: '其他-9', value: '9'},
         ];
 
-        $scope.resetPrjNumber_combine = function() {
+        $scope.resetPrjNumber_transfer = function() {
             vm.prjNumbers = [
                 {label: "新專案", value: ""},
             ];
         }
 
-        $scope.resetPrjNumber_combine();
+        $scope.resetPrjNumber_transfer();
 
-        $scope.resetPrjSubNumber_combine = function() {
+        $scope.resetPrjSubNumber_transfer = function() {
             vm.prjSubNumbers = [
                 {label: '新子案', value: ""},
             ];
         }
 
-        $scope.resetPrjSubNumber_combine();
+        $scope.resetPrjSubNumber_transfer();
 
         vm.prjBranch = [
             {label: 'P-投標-服務建議書', value: 'P'},
             {label: 'C-已成案', value: 'C'},
         ];
 
-        $scope.showPrjBranch_combine = function (branch) {
+        $scope.showPrjBranch_transfer = function (branch) {
 
             var selected = [];
             if (branch) {
@@ -256,14 +256,14 @@
         // ********* Logic Biz **********
 
         //Prj Name Check whether is new or not.　”總案名稱“變更
-        $scope.triggerChangeMainProject_combine = function () {
+        $scope.triggerChangeMainProject_transfer = function () {
             vm.mainProject.number = null;
             vm.mainProject.subNumber = null;
             vm.mainProject.type = null;
             $('.tab-pane').find('#newPrjNumberDiv')[1].style.display =  "none";
             $('.tab-pane').find('#newPrjSubNumberDiv')[1].style.display =  "none";
             $('.tab-pane').find('#prjCode')[1].style.visibility =  "inherit";
-            $scope.changeSubmitBtnStatus_combine(false, "合併專案");
+            $scope.changeSubmitBtnStatus_transfer(false, "專案轉換");
             // console.log('triggerChangePrjName');
             if (vm.mainProject.selected.code === "") {
                 //新總案case
@@ -279,7 +279,7 @@
                             $scope.year = new Date().getFullYear() - 1911;
                         }
                     );
-                $scope.resetPrjNumber_combine();
+                $scope.resetPrjNumber_transfer();
                 //    自訂總案編號
             } else if (vm.mainProject.selected.code === "9999") {
                 $('.tab-pane').find('#newPrjNameDiv')[1].style.display =  "block";
@@ -287,7 +287,7 @@
                 $('.tab-pane').find('#prjCode')[1].style.visibility =  "hidden";
                 vm.mainProject.setCode = "";
                 vm.mainProject.newProjectName = "";
-                $scope.resetPrjNumber_combine();
+                $scope.resetPrjNumber_transfer();
             } else {
                 // 專案已存在
                 vm.mainProject.newProjectName = vm.mainProject.selected.mainName;
@@ -302,7 +302,7 @@
                             console.log(prj);
                             vm.mainProject.code = prj.code;
                             $scope.year = prj.year;
-                            vm.branch = $scope.showPrjBranch_combine(prj.branch);
+                            vm.branch = $scope.showPrjBranch_transfer(prj.branch);
 
                             var data = {
                                 year: $scope.year,
@@ -330,7 +330,7 @@
         }
 
         // Name Check　新總案名稱
-        $scope.triggerChangePrjNewName_combine = function (name) {
+        $scope.triggerChangePrjNewName_transfer = function (name) {
             // console.log('triggerChangePrjNewName');
             var data = {
                 name: vm.mainProject.newProjectName
@@ -339,28 +339,28 @@
                 .success(function (prj) {
                     // console.log(JSON.stringify(prj));
                     if (prj !== null) {
-                        $scope.changeSubmitBtnStatus_combine(true, "專案名稱已存在，請檢查！");
+                        $scope.changeSubmitBtnStatus_transfer(true, "專案名稱已存在，請檢查！");
                     } else {
-                        $scope.changeSubmitBtnStatus_combine(false, "合併專案");
-                        $scope.triggerChangePrjCode_combine();
+                        $scope.changeSubmitBtnStatus_transfer(false, "專案轉換");
+                        $scope.triggerChangePrjCode_transfer();
                     }
                 })
         }
 
         // Code Check　自訂編號
-        $scope.triggerChangePrjCode_combine = function () {
+        $scope.triggerChangePrjCode_transfer = function () {
             // console.log('triggerChangePrjNewName');
 
             if (vm.mainProject.selected.code === "9999") {
                 if (vm.mainProject.setCode.length !== 10) {
-                    $scope.changeSubmitBtnStatus_combine(true, "請確認 自訂總案編號為 10 碼！");
+                    $scope.changeSubmitBtnStatus_transfer(true, "請確認 自訂總案編號為 10 碼！");
                     return;
                 } else {
-                    $scope.changeSubmitBtnStatus_combine(false, "合併專案");
+                    $scope.changeSubmitBtnStatus_transfer(false, "專案轉換");
                 }
 
                 if (vm.branch === undefined) {
-                    $scope.changeSubmitBtnStatus_combine(true, "請確認 分支主題，再次輸入總案編號！");
+                    $scope.changeSubmitBtnStatus_transfer(true, "請確認 分支主題，再次輸入總案編號！");
                     return;
                 }
 
@@ -372,9 +372,9 @@
                     .success(function (prj) {
                         // console.log(JSON.stringify(prj));
                         if (prj !== null) {
-                            $scope.changeSubmitBtnStatus_combine(true, "專案編號已存在，請檢查！");
+                            $scope.changeSubmitBtnStatus_transfer(true, "專案編號已存在，請檢查！");
                         } else {
-                            $scope.changeSubmitBtnStatus_combine(false, "合併專案");
+                            $scope.changeSubmitBtnStatus_transfer(false, "專案轉換");
                         }
                     })
             }
@@ -382,20 +382,20 @@
         }
 
         // Number Check 專案
-        $scope.triggerChangePrjNumber_combine = function() {
+        $scope.triggerChangePrjNumber_transfer = function() {
             console.log(vm);
             vm.mainProject.subNumber = null;
             vm.mainProject.type = null;
             $('.tab-pane').find('#newPrjNumberDiv')[1].style.display =  "none";
             $('.tab-pane').find('#newPrjSubNumberDiv')[1].style.display =  "none";
-            $scope.changeSubmitBtnStatus_combine(false, "合併專案");
-            $scope.triggerChangePrjCode_combine();
+            $scope.changeSubmitBtnStatus_transfer(false, "專案轉換");
+            $scope.triggerChangePrjCode_transfer();
             if (vm.mainProject.selected.code === "") {
                 $('.tab-pane').find('#newPrjNumberDiv')[1].style.display =  "block";
                 //新總案，必新專案 00
                 vm.mainProject.number.code = "00";
                 vm.mainProject.numberNew = "";
-                $scope.resetPrjSubNumber_combine();
+                $scope.resetPrjSubNumber_transfer();
                 return;
             }
             if (vm.mainProject.number.selected.value === "") {
@@ -414,7 +414,7 @@
                             vm.mainProject.numberNew = "";
                         }
                     );
-                $scope.resetPrjSubNumber_combine();
+                $scope.resetPrjSubNumber_transfer();
             } else {
                 // 既有專案
                 $('.tab-pane').find('#newPrjNumberDiv')[1].style.display =  "none";
@@ -447,10 +447,10 @@
         }
 
         // SubNumber Check 子案
-        $scope.triggerChangePrjSubNumber_combine = function() {
+        $scope.triggerChangePrjSubNumber_transfer = function() {
             vm.mainProject.type = null;
-            $scope.changeSubmitBtnStatus_combine(false, "合併專案");
-            $scope.triggerChangePrjCode_combine();
+            $scope.changeSubmitBtnStatus_transfer(false, "專案轉換");
+            $scope.triggerChangePrjCode_transfer();
             if (vm.mainProject.number.selected.value === "") {
                 $('.tab-pane').find('#newPrjSubNumberDiv')[1].style.display =  "block";
                 //新專案，必新子案 00
@@ -483,7 +483,7 @@
         }
 
         // Type Check　類型
-        $scope.triggerChangePrjType_combine = function () {
+        $scope.triggerChangePrjType_transfer = function () {
             vm.mainProject.techs = null;
             vm.mainProject.manager = null;
             var data = {
@@ -496,29 +496,29 @@
             Project.findPrjTypeBySubNumber(data)
                 .success(function (projects) {
                         if (projects.length !== 0) {
-                            $scope.changeSubmitBtnStatus_combine(true, "此類型子案已存在，請檢察！");
+                            $scope.changeSubmitBtnStatus_transfer(true, "此類型子案已存在，請檢察！");
                         } else {
-                            $scope.changeSubmitBtnStatus_combine(false, "合併專案");
-                            $scope.triggerChangePrjCode_combine();
+                            $scope.changeSubmitBtnStatus_transfer(false, "專案轉換");
+                            $scope.triggerChangePrjCode_transfer();
                         }
                     }
                 );
         }
 
-        $scope.triggerChangePrjTechs_combine = function () {
+        $scope.triggerChangePrjTechs_transfer = function () {
             if (vm.mainProject.techs === undefined) {
                 vm.mainProject.techs = null;
             }
         }
 
-        $scope.changeSubmitBtnStatus_combine = function(isDisable, showText) {
+        $scope.changeSubmitBtnStatus_transfer = function(isDisable, showText) {
             $('.tab-pane').find('#prjSubmitBtn')[1].disabled = isDisable;
             $('.tab-pane').find('#prjSubmitBtn')[1].innerText = showText;
         }
 
         // ----------------- CREATE ---------------
 
-        $scope.combineSubmit = function () {
+        $scope.transferSubmit = function () {
             try {
                 var prjTechs = [];
                 for (var index = 0; index < vm.mainProject.techs.length; index++) {
@@ -528,9 +528,9 @@
                 if ($('.tab-pane').find('#setPrjCodeDiv')[1].style.display === 'block') {
                     //自訂專案
                     totalCode = vm.mainProject.setCode;
-                    var combineData = {
+                    var transferData = {
                         prjA: A_prjID,
-                        prjB: B_prjID,
+                        // prjB: B_prjID,
 
                         branch: vm.branch.value,
                         year: String(totalCode.substring(0,3)),
@@ -553,9 +553,9 @@
                         String(vm.mainProject.subNumber.code) +
                         vm.mainProject.type.selected.value;
 
-                    var combineData = {
+                    var transferData = {
                         prjA: A_prjID,
-                        prjB: B_prjID,
+                        // prjB: B_prjID,
 
                         branch: vm.branch.value,
                         year: String($scope.year),
@@ -575,9 +575,9 @@
                 toastr['warning']('輸入資訊未完整 !', '建立失敗');
                 return;
             }
-            console.log(combineData);
-            $scope.changeSubmitBtnStatus_combine(true, "合併專案中，請稍待！");
-            Project.combineProject(combineData)
+            console.log(transferData);
+            $scope.changeSubmitBtnStatus_transfer(true, "專案轉換中，請稍待！");
+            Project.transferProject(transferData)
                 .success(function (res) {
                     if (res.code == 200) {
                         window.location.reload();
