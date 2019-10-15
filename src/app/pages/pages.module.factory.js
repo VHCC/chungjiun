@@ -51,6 +51,11 @@
                     return http.post('/api/projectCreate', projectData);
                 },
 
+                // 專案轉換
+                transferProject : function (projectData) {
+                    return http.post('/api/projectTransfer', projectData);
+                },
+                // 專案合併
                 combineProject : function (projectData) {
                     return http.post('/api/projectCombine', projectData);
                 },

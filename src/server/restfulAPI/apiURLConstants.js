@@ -30,6 +30,9 @@ global.apiUrl = {
     post_project_foot_code : '/api/projectFootCode',
     // Create
     post_project_create : '/api/projectCreate',
+
+    // Transfer Project
+    post_project_transfer : '/api/projectTransfer',
     // Combine Project
     post_project_combine : '/api/projectCombine',
     // search

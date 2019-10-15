@@ -1,0 +1,272 @@
+<div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label >總案名稱 - 專案名稱 - 子案名稱 - 類型 - 代碼</label>
+                <ui-select ng-model="transferProjectCtrlVm.prjItems_A.selected"
+                           class="btn-group bootstrap-select form-control"
+                           ng-disabled="false"
+                           ng-change="checkProject_transfer($select.selected._id, 1)"
+                           append-to-body="true"
+                           search-enabled="true">
+                    <ui-select-match placeholder="選擇(A專案)">
+                        {{$select.selected.mainName}} -
+                        {{$select.selected.prjName}} -
+                        {{$select.selected.prjSubName}} -
+                        {{prjTypeToName($select.selected.type)}} -
+                        {{$select.selected.prjCode}}
+                    </ui-select-match>
+                    <ui-select-choices
+                            ng-model="prjName"
+                            repeat="prjItems_A in transferProjectCtrlVm.projects |
+                            groupSelectpickerOptions: {
+                            mainName: $select.search,
+                            prjName: $select.search,
+                            prjSubName: $select.search,
+                            prjCode: $select.search
+                            }"
+                            group-by="'mainName'">
+                    <span ng-bind-html="prjItems_A.prjName + ' - ' +
+                    prjItems_A.prjSubName + ' - ' +
+                    prjTypeToName(prjItems_A.type) + ' - ' +
+                    prjItems_A.prjCode | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div ng-if="transferProjectCtrlVm.prjItems_A.selected">
+        專案轉換資訊設定
+
+        <div class="form-group">
+            <label for="prjCode" class="col-md-2 control-label">專案代碼: </label>
+            <p id="prjCode" class="col-md-10">
+                {{transferProjectCtrlVm.branch.value}} <!-- 分支O-->
+                {{year}} <!-- 年度 OOO-->
+                {{transferProjectCtrlVm.mainProject.code}} <!-- 總案 OO-->
+                {{transferProjectCtrlVm.mainProject.number.code}} <!-- 專案 OO-->
+                {{transferProjectCtrlVm.mainProject.subNumber.code}} <!-- 子案 OO-->
+                {{transferProjectCtrlVm.mainProject.type.selected.value}} <!-- 類型 O-->
+            </p>
+        </div>
+
+        <hr>
+
+        <form class="form-horizontal">
+
+            <!--分支主題-->
+            <div class="form-group">
+                <label class="col-md-2 control-label">分支主題</label>
+                <div class="col-md-10">
+                    <ui-select ng-model="transferProjectCtrlVm.branch"
+                               class="btn-group bootstrap-select form-control"
+                               append-to-body="true"
+                               search-enabled="true">
+                        <ui-select-match placeholder="請選擇分支主題">
+                            {{$select.selected.value}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                repeat="option in transferProjectCtrlVm.prjBranch">
+                            <span ng-bind-html="option.label"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+
+            <!--總案名稱-->
+            <div class="form-group" id="prjNameDiv">
+                <label for="projectName" class="col-md-2 control-label">總案名稱</label>
+                <div class="col-md-10">
+                    <ui-select ng-model="transferProjectCtrlVm.mainProject.selected"
+                               class="btn-group bootstrap-select form-control"
+                               id="projectName"
+                               ng-change="triggerChangeMainProject_transfer()"
+                               ng-disabled="false"
+                               append-to-body="true"
+                               search-enabled="true">
+                        <ui-select-match placeholder="選擇總案">
+                            {{$select.selected.mainName}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                repeat="prjItems_result in transferProjectCtrlVm.projectsByGroup |
+                                groupSelectpickerOptions: {
+                                mainName: $select.search,
+                                code: $select.search,
+                                prjCode: $select.search
+                                }" >
+                            <span ng-bind-html="
+                            prjItems_result.mainName +
+                            ' : ' + prjItems_result.branch +
+                            ' - ' + prjItems_result.year +
+                            ' - ' + prjItems_result.code
+                            | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+
+            <!-- 合併後新總案名稱 -->
+            <div class="form-group" style="display: none" id="newPrjNameDiv">
+                <label for="newProjectName" class="col-md-2 control-label">新總案名稱</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control"
+                           id="newProjectName"
+                           ng-model="transferProjectCtrlVm.mainProject.newProjectName"
+                           ng-change="triggerChangePrjNewName_transfer()"
+                           placeholder="請輸入新總案名稱">
+                </div>
+            </div>
+
+            <!-- 合併後新總案編號 -->
+            <div class="form-group" style="display: none" id="setPrjCodeDiv">
+                <label for="setPrjCode" class="col-md-2 control-label">自訂總案編號(2)</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control"
+                           id="setPrjCode"
+                           ng-model="transferProjectCtrlVm.mainProject.setCode"
+                           ng-change="triggerChangePrjCode_transfer()"
+                           placeholder="請輸入自訂總案編號">
+                </div>
+            </div>
+
+            <div class="form-group" ng-show="transferProjectCtrlVm.mainProject.selected">
+                <label class="col-md-2 control-label">專案(2)</label>
+                <div class="col-md-10">
+                    <ui-select ng-model="transferProjectCtrlVm.mainProject.number.selected"
+                               class="btn-group bootstrap-select form-control"
+                               ng-change="triggerChangePrjNumber_transfer()"
+                               append-to-body="true"
+                               search-enabled="true">
+                        <ui-select-match placeholder="請選擇專案">
+                            {{$select.selected.label}}-{{$select.selected.value}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                repeat="option in transferProjectCtrlVm.prjNumbers | filter: $select.search">
+                            <span ng-bind-html="option.label | highlight: $select.search"></span>-<span ng-bind-html="option.value | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+
+            <div class="form-group" style="display: none" id="newPrjNumberDiv">
+                <label for="newProjectName" class="col-md-2 control-label">新專案名稱</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control"
+                           id="newProjectNumber"
+                           ng-model="transferProjectCtrlVm.mainProject.numberNew"
+                           required
+                           placeholder="請輸入新專案名稱">
+                </div>
+            </div>
+
+            <div class="form-group" ng-show="transferProjectCtrlVm.mainProject.number.selected">
+                <label class="col-md-2 control-label">子案(2)</label>
+                <div class="col-md-10">
+                    <ui-select ng-model="transferProjectCtrlVm.mainProject.subNumber.selected"
+                               class="btn-group bootstrap-select form-control"
+                               ng-change="triggerChangePrjSubNumber_transfer()"
+                               append-to-body="true"
+                               search-enabled="true">
+                        <ui-select-match placeholder="請選擇子案">
+                            {{$select.selected.label}}-{{$select.selected.value}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                repeat="option in transferProjectCtrlVm.prjSubNumbers | filter: $select.search">
+                            <span ng-bind-html="option.label | highlight: $select.search"></span>-<span ng-bind-html="option.value | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+
+            <div class="form-group" style="display: none" id="newPrjSubNumberDiv">
+                <label class="col-md-2 control-label">新子案名稱</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control"
+                           ng-model="transferProjectCtrlVm.mainProject.subNumberNew"
+                           required
+                           placeholder="請輸入新子案名稱">
+                </div>
+            </div>
+
+            <div class="form-group" ng-show="transferProjectCtrlVm.mainProject.subNumber.selected">
+                <label for="projectType" class="col-md-2 control-label">類型(1)</label>
+                <div class="col-md-10">
+                    <select class="form-control selectpicker"
+                            id="projectType"
+                            title="請選擇類型"
+                            ng-change="triggerChangePrjType_transfer()"
+                            ng-model="transferProjectCtrlVm.mainProject.type.selected"
+                            ng-options="item as item.label for item in transferProjectCtrlVm.prjTypes"
+                            selectpicker
+                            required>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group" ng-show="transferProjectCtrlVm.mainProject.type.selected">
+                <label for="projectManager" class="col-md-2 control-label">承辦經理/主任</label>
+                <div class="col-md-10">
+                    <ui-select ng-model="transferProjectCtrlVm.mainProject.manager"
+                               class="btn-group bootstrap-select form-control"
+                               id="projectManager"
+                               required
+                               ng-disabled="false"
+                               append-to-body="true"
+                               search-enabled="true">
+                        <ui-select-match placeholder="請選擇承辦經理/主任">
+                            {{$select.selected.name}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                repeat="multipleItem in transferProjectCtrlVm.managersItem | filter: $select.search">
+                            <span ng-bind-html="multipleItem.name | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+
+            <div class="form-group" ng-show="transferProjectCtrlVm.mainProject.type.selected">
+                <label for="projectName" class="col-md-2 control-label">負責技師</label>
+                <div class="col-md-10">
+                    <ui-select multiple
+                               ng-model="transferProjectCtrlVm.mainProject.techs"
+                               ng-disabled="false"
+                               ng-change="triggerChangePrjTechs()"
+                               search-enabled="true"
+                               append-to-body="true"
+                               class="form-control "
+                               array-required>
+
+                        <ui-select-match placeholder="請選擇技師">
+                            {{$item.name}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                repeat="multipleItem in transferProjectCtrlVm.techsItems | filter: $select.search">
+                            <span ng-bind-html="multipleItem.name | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit"
+                        class="btn btn-danger"
+                        id="prjSubmitBtn"
+                        ng-click="transferSubmit()">
+                    專案轉換
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+    <div ng-if="isSamePrj">
+        選取的專案相同！！！！
+    </div>
+
+
+</div>
