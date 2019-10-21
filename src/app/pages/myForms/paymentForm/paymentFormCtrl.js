@@ -138,7 +138,9 @@
         }
 
         $scope.resetProjectData = function() {
+            vm.prjItems.selected = null;
             vm.projects = $scope.allProject_raw.slice();
+            vm.prjItems_executiveAdd.selected = null;
             vm.projects_executiveAdd = $scope.allProject_raw.slice();
         }
 
