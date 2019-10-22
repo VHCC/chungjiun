@@ -69,6 +69,17 @@ module.exports = mongoose.model('WageItem', {
     green_item_10: {type: String, default: "0"},
     green_item_10_title: {type: String},
 
+    // 工讀
+    blue_item_1: {type: String, default: "0"},
+    blue_item_1_hour: {type: String, default: "0"},
+    blue_item_2: {type: String, default: "0"},
+    blue_item_3: {type: String, default: "0"},
+    blue_item_4: {type: String, default: "0"},
+    blue_item_5: {type: String, default: "0"},
+    blue_item_6: {type: String, default: "0"},
+    blue_item_6_title: {type: String},
+    blue_item_7: {type: String, default: "0"},
+    blue_item_7_title: {type: String},
 
     timestamp: {
         type: String,

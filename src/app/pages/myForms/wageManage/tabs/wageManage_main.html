@@ -52,7 +52,8 @@
 
     <hr>
 
-    <div class="col-md-4" ng-if="wageManageCtrlVm.main.selected">
+    <div class="col-md-4" ng-if="wageManageCtrlVm.main.selected
+            && wageManageCtrlVm.main.selected.roleType != 5">
         <div
                 ba-panel
                 ba-panel-title="月薪"
@@ -364,10 +365,182 @@
                 </tbody>
             </table>
         </div>
-
     </div>
 
-    <div class="col-md-4" ng-if="wageManageCtrlVm.main.selected">
+
+    <!-- 工讀生 -->
+    <div class="col-md-4" ng-if="wageManageCtrlVm.main.selected
+            && wageManageCtrlVm.main.selected.roleType == 5">
+        <div
+                ba-panel
+                ba-panel-title="薪資"
+                ba-panel-class="with-scroll">
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                </thead>
+
+                <tbody>
+
+                <!-- 1 row-->
+                <tr style="vertical-align: inherit; text-align: center;">
+                    <td style="vertical-align: inherit; text-align: left; width: 90px; background-color: #ddebf7">
+                        時薪
+                    </td>
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; width: 120px">
+                        <input type="text"
+                               ng-model="blue_item_1"
+                               placeholder="0"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+                </tr>
+
+                <!-- 1-1 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        總工時
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <input type="text"
+                               ng-model="blue_item_1_hour"
+                               placeholder="0"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+                </tr>
+
+
+                <!-- 2 row-->
+                <tr style="vertical-align: inherit; text-align: center;">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        代扣勞保費
+                    </td>
+                    <td style="vertical-align: inherit; ">
+                        <input type="text"
+                               ng-model="blue_item_2"
+                               placeholder="0"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+                </tr>
+
+                <!-- 3 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        代扣健保費
+                    </td>
+                    <td style="vertical-align: inherit; ">
+                        <input type="text"
+                               ng-model="blue_item_3"
+                               placeholder="0"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+                </tr>
+
+                <!-- 4 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        代扣綜所稅
+                    </td>
+                    <td style="vertical-align: inherit; ">
+                        <input type="text"
+                               ng-model="blue_item_4"
+                               placeholder="0"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+                </tr>
+
+                <!-- 5 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        代扣自提勞退
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <input type="text"
+                               ng-model="blue_item_5"
+                               placeholder="0"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+                </tr>
+
+                <!-- 6 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        <input type="text"
+                               ng-model="blue_item_6_title"
+                               placeholder="備用"
+                               style="text-align: left"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <input type="text"
+                               ng-model="blue_item_6"
+                               placeholder="0"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+                </tr>
+
+                <!-- 7 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        <input type="text"
+                               ng-model="blue_item_7_title"
+                               placeholder="備用"
+                               style="text-align: left"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <input type="text"
+                               ng-model="blue_item_7"
+                               placeholder="0"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+                </tr>
+
+                <tr style="vertical-align: inherit; text-align: center">
+                    <td class="form-group" style="vertical-align: inherit; text-align: center; background-color: #ddebf7">
+                        實領金額
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <input type="text"
+                               ng-model="total_wage_servitor"
+                               disabled="true"
+                               style="text-align: right; color: black;"
+                               class="form-control input-sm"
+                               value="{{getTotalWage_servitor()}}">
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-4" ng-if="wageManageCtrlVm.main.selected
+            && wageManageCtrlVm.main.selected.roleType != 5">
         <div
                 ba-panel
                 ba-panel-title="加班"

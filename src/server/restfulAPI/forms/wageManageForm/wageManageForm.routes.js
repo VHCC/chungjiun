@@ -103,6 +103,17 @@ module.exports = function (app) {
                 green_item_10: req.body.green_item_10,
                 green_item_10_title: req.body.green_item_10_title,
 
+                blue_item_1: req.body.blue_item_1,
+                blue_item_1_hour: req.body.blue_item_1_hour,
+                blue_item_2: req.body.blue_item_2,
+                blue_item_3: req.body.blue_item_3,
+                blue_item_4: req.body.blue_item_4,
+                blue_item_5: req.body.blue_item_5,
+                blue_item_6: req.body.blue_item_6,
+                blue_item_6_title: req.body.blue_item_6_title,
+                blue_item_7: req.body.blue_item_7,
+                blue_item_7_title: req.body.blue_item_7_title,
+
             }
         }, function (err, wageItem) {
             if (err) {
