@@ -55,16 +55,6 @@
                         order: global.pages.cgWorkManage_workOff,
                     },
                 })
-            .state('cgWorkManage.wageManagement',
-                {
-                    url: '/empty',
-                    templateUrl: 'app/pages/myNewPage/empty.html',
-                    title: '薪資管理',
-                    accessLevel: [9999],
-                    sidebarMeta: {
-                        order: 500,
-                    },
-                })
             .state('cgWorkManage.hrMachine',
                 {
                     url: '/hrMachine',

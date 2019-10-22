@@ -31,6 +31,7 @@ global.pages = {
     //
     cgAccountingManage : 300,
     cgAccountingManage_paymentForm  : 100,
+    cgAccountingManage_wageManage  : 200,
 
     //
     cgKPI : 400,

@@ -1,0 +1,547 @@
+<style>
+
+
+</style>
+
+<div class="row" ng-init="showWageTable(userDID)">
+
+
+    <section>
+        <div>
+            <my-month-picker ng-click="listenMonth_person(this)"
+                             formatted="YYYY/MM">
+            </my-month-picker>
+            <br>
+            <button type="button" class="btn btn-default btn-icon"
+                    ng-click="changeWageMonth_person(-1, this)">
+                <i class="ion-chevron-left"></i>
+            </button>
+            {{myMonth}}
+            <button type="button" class="btn btn-default btn-icon"
+                    ng-click="changeWageMonth_person(1, this)">
+                <i class="ion-chevron-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <hr>
+
+    <div class="col-md-4" ng-if="!isMain">
+        <div
+                ba-panel
+                ba-panel-title="月薪"
+                ba-panel-class="with-scroll">
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                </thead>
+
+                <tbody>
+
+                <!-- 1 row-->
+                <tr style="vertical-align: inherit; text-align: center;
+                ">
+                    <td style="vertical-align: inherit; text-align: left; width: 90px; background-color: #ddebf7">
+                        薪資
+                    </td>
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; width: 120px">
+                        <span style="float: right">
+                            {{wgae_item_1}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 2 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        伙食費
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right">
+                            {{wgae_item_2}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 3 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        工地加給
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right">
+                            {{wgae_item_3}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 4 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        品管加給
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right">
+                            {{wgae_item_4}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 5 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        駐外加給
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right">
+                            {{wgae_item_5}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 6 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        請假
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right">
+                            -{{showTotalWorkOffMoney_wage()}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 7 row-->
+                <tr style="vertical-align: inherit; text-align: center;">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        代扣勞保費
+                    </td>
+                    <td style="vertical-align: inherit; ">
+                        <span style="float: right">
+                            {{wgae_item_7}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 8 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        代扣健保費
+                    </td>
+                    <td style="vertical-align: inherit; ">
+                        <span style="float: right">
+                            {{wgae_item_8}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 9 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        代扣綜所稅
+                    </td>
+                    <td style="vertical-align: inherit; ">
+                        <span style="float: right">
+                            {{wgae_item_9}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 10 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        代扣自提勞退
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right">
+                            {{wgae_item_10}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 11 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        代扣職工福利金
+                    </td>
+                    <td style="vertical-align: inherit; ">
+                        <span style="float: right">
+                            {{wgae_item_11}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 12 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        <span style="float: left">
+                            {{wgae_item_12_title}}
+                        </span>
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right">
+                            {{wgae_item_12}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 13 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        <span style="float: left">
+                            {{wgae_item_13_title}}
+                        </span>
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right">
+                            {{wgae_item_13}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 14 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        <span style="float: left">
+                            {{wgae_item_14_title}}
+                        </span>
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right">
+                            {{wgae_item_12}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 15 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        <span style="float: left">
+                            {{wgae_item_15_title}}
+                        </span>
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right">
+                            {{wgae_item_15}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 16 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        <span style="float: left">
+                            {{wgae_item_16_title}}
+                        </span>
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right">
+                            {{wgae_item_16}}
+                        </span>
+                    </td>
+                </tr>
+
+
+
+                <tr style="vertical-align: inherit; text-align: center">
+                    <td class="form-group" style="vertical-align: inherit; text-align: center; background-color: #ddebf7">
+                        月薪實領金額
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right">
+                            {{getTotalWage_blue()}}
+                            {{total_wage}}
+                        </span>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div class="col-md-4" ng-if="!isMain">
+        <div
+                ba-panel
+                ba-panel-title="加班"
+                ba-panel-class="with-scroll">
+
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                </thead>
+
+                <tbody>
+
+                <!-- 1 row-->
+                <tr style="vertical-align: inherit; text-align: center;
+                ">
+                    <td style="vertical-align: inherit; text-align: left; width: 90px; background-color: #fff2cc">
+                        加班費（免稅）
+                    </td>
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; width: 120px">
+                        <span style="float: right;">
+                            {{showTotalOTMoney_wage()}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 2 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #fff2cc">
+                        加班費（應稅）
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right;">
+                            {{withholding_item_2}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 3 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #fff2cc">
+                        代扣健保費
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right;">
+                            {{withholding_item_3}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 4 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #fff2cc">
+                        代扣綜所稅
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right;">
+                            {{withholding_item_4}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 5 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #fff2cc">
+                        <span style="float: left;">
+                            {{withholding_item_5_title}}
+                        </span>
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right;">
+                            {{withholding_item_5}}
+                        </span>
+                    </td>
+                </tr>
+
+                <tr style="vertical-align: inherit; text-align: center">
+                    <td class="form-group" style="vertical-align: inherit; text-align: center; background-color: #fff2cc">
+                        加班實領金額
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right;">
+                            {{getTotalWage_yellow()}}
+                            {{total_wage_withholding}}
+                        </span>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4" ng-if="!isMain">
+        <div
+                ba-panel
+                ba-panel-title="獎金"
+                ba-panel-class="with-scroll">
+
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                </thead>
+
+                <tbody>
+
+                <!-- 1 row-->
+                <tr style="vertical-align: inherit; text-align: center;
+                ">
+                    <td style="vertical-align: inherit; text-align: left; width: 90px; background-color: #e2efda">
+                        春節獎金
+                    </td>
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; width: 120px">
+                        <span style="float: right;">
+                            {{green_item_1}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 2 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #e2efda">
+                        中秋獎金
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right;">
+                            {{green_item_2}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 3 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #e2efda">
+                        端午獎金
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right;">
+                            {{green_item_3}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 4 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #e2efda">
+                        查核獎金
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right;">
+                            {{green_item_4}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 5 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #e2efda">
+                        年終獎金
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right;">
+                            {{green_item_5}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 6 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #e2efda">
+                        代扣健保費
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right;">
+                            {{green_item_6}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 7 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #e2efda">
+                        代扣綜所稅
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right;">
+                            {{green_item_7}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 8 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #e2efda">
+                        <span style="float: left;">
+                            {{green_item_8_title}}
+                        </span>
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right;">
+                            {{green_item_8}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 9 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #e2efda">
+                        <span style="float: left;">
+                            {{green_item_9_title}}
+                        </span>
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right;">
+                            {{green_item_9}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 10 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #e2efda">
+                        <span style="float: left;">
+                            {{green_item_10_title}}
+                        </span>
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right;">
+                            {{green_item_10}}
+                        </span>
+                    </td>
+                </tr>
+
+                <tr style="vertical-align: inherit; text-align: center">
+                    <td class="form-group" style="vertical-align: inherit; text-align: center; background-color: #e2efda">
+                        獎金實領金額
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right;">
+                            {{getTotalWage_green()}}
+                            {{total_wage_green}}
+                        </span>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+

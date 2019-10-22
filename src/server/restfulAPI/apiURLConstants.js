@@ -73,6 +73,10 @@ global.apiUrl = {
     post_payment_items_update_by_id : '/api/post_payment_items_update_by_id',
     post_payment_multiple_get : '/api/post_payment_multiple_get',
 
+    // wageManage
+    post_wage_manage_fetch_item : '/api/post_wage_manage_fetch_item',
+    post_wage_manage_create_item : '/api/post_wage_manage_create_item',
+    post_wage_manage_update_item : '/api/post_wage_manage_update_item',
 
     //workHourTable Form
     post_work_hour_create_table : '/api/createWorkHourTableForm',
