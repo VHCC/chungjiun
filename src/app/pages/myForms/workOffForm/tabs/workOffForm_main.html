@@ -458,30 +458,30 @@
 
         </uib-tab>
         <uib-tab heading="個人請假單" ng-click="initWorkOffMonthCheck()">
-            <div ng-include="'app/pages/myForms/forms/workOffForm_All_Tab.html'"></div>
+            <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_All_Tab.html'"></div>
         </uib-tab>
         <uib-tab heading="主管審核" ng-if="roleType === '2' || roleType === '100'"
                  ng-click="initUser()">
-            <div ng-include="'app/pages/myForms/forms/workOffForm_BossTab.html'"></div>
+            <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_BossTab.html'"></div>
         </uib-tab>
 
         <uib-tab heading="行政確認" ng-if="roleType === '100'"
                  ng-click="initUser()">
-            <div ng-include="'app/pages/myForms/forms/workOffForm_ExecutiveTab.html'"></div>
+            <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_ExecutiveTab.html'"></div>
         </uib-tab>
 
         <uib-tab heading="假期確認" ng-if="roleType === '100'"
                  ng-click="initUser()"
                  style="color: blue">
-            <div ng-include="'app/pages/myForms/forms/workOffForm_HolidayTab.html'"></div>
+            <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_HolidayTab.html'"></div>
         </uib-tab>
 
         <uib-tab heading="國定假日設定" ng-if="roleType === '100'">
-            <div ng-include="'app/pages/myForms/forms/workOffForm_NationalHolidayTab.html'"></div>
+            <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_NationalHolidayTab.html'"></div>
         </uib-tab>
 
         <uib-tab heading="補班日設定" ng-if="roleType === '100'">
-            <div ng-include="'app/pages/myForms/forms/workOffForm_OverTimeDayTab.html'"></div>
+            <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_OverTimeDayTab.html'"></div>
         </uib-tab>
 
         <uib-tab heading="補休特休兌換" ng-click="getWorkOffExchangeTable()" ng-if="roleType === '100'">
