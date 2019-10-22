@@ -189,8 +189,21 @@
                 createOfficialDocItem : function (formData) {
                     return http.post('/api/post_official_doc_create_item', formData);
                 },
+            }
+        }])
+        .factory('WageManageUtil', ['$http', function (http) {
+            return {
+                fetchUserWageMain: function (formData) {
+                    return http.post('/api/post_wage_manage_fetch_item', formData)
+                },
 
+                createUserWageMain: function (formData) {
+                    return http.post('/api/post_wage_manage_create_item', formData)
+                },
 
+                updateUserWageMain: function (formData) {
+                    return http.post('/api/post_wage_manage_update_item', formData)
+                },
             }
         }])
         .factory('PaymentFormsUtil', ['$http', function (http) {

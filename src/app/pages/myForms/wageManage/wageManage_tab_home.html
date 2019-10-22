@@ -1,0 +1,20 @@
+<div bs-loading-overlay
+     bs-loading-overlay-reference-id="mainPage_wageManage">
+
+    <uib-tabset active="$tabSetStatus.activeTab">
+        <uib-tab heading="薪資管理" ng-if="roleType === '100'" >
+            <div ng-include="'app/pages/myForms/wageManage/tabs/wageManage_main.html'"></div>
+        </uib-tab>
+
+        <!--<uib-tab heading="薪資設定" ng-if="roleType === '100'">-->
+            <!--<div ng-include="'app/pages/myForms/wageManage/tabs/wageManage_setting.html'"></div>-->
+        <!--</uib-tab>-->
+
+        <uib-tab heading="個人薪資"
+                 ng-click="switchToMain(false); showWageTable(userDID)">
+            <div ng-include="'app/pages/myForms/wageManage/tabs/wageManage_personal.html'"></div>
+        </uib-tab>
+
+    </uib-tabset>
+</div>
+

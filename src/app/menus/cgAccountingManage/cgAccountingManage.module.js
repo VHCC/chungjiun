@@ -33,6 +33,17 @@
                         order: global.pages.cgAccountingManage_paymentForm,
                     },
                 })
+            .state('cgAccountingManage.wageManagement',
+                {
+                    url: '/wageManagement',
+                    templateUrl: 'app/pages/myForms/wageManage/wageManageHomePage.html',
+                    title: '公司行政[測試]',
+                    controller: 'wageManageCtrl',
+                    controllerAs: 'wageManageCtrlVm',
+                    sidebarMeta: {
+                        order: global.pages.cgAccountingManage_wageManage,
+                    },
+                })
             .state('cgAccountingManage.200',
                 {
                     url: '/empty',

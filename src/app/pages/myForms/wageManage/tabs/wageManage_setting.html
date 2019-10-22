@@ -1,0 +1,361 @@
+<div class="row">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>選擇員工</label>
+                <ui-select ng-model="wageManageCtrlVm.main.selected"
+                           class="btn-group bootstrap-select form-control"
+                           ng-disabled="false"
+                           ng-change="showHistoryTable()"
+                           append-to-body="true"
+                           search-enabled="true">
+                    <ui-select-match placeholder="選擇員工">
+                        {{$select.selected.name}}
+                    </ui-select-match>
+                    <ui-select-choices
+                            repeat="user in wageManageCtrlVm.mainUsers | groupSelectpickerOptions: {name: $select.search}">
+                        <span ng-bind-html="user.name| highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+
+
+    <hr>
+    <table class="table table-bordered table-hover table-condensed">
+        <thead>
+        </thead>
+
+        <tbody>
+
+        <!-- 月薪 -->
+        <!-- 1 row-->
+        <tr style="vertical-align: inherit; text-align: center;
+                border-left: black 3px solid;
+                border-right: black 3px solid;
+                border-top: black 3px solid;">
+            <td rowspan="11" style="vertical-align: inherit; text-align: center;
+                    width: 90px;
+                    border-right: black 3px solid; ">
+                月薪
+            </td>
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left; width: 120px">
+                本俸
+            </td>
+            <td style="vertical-align: inherit;">
+
+            </td>
+        </tr>
+
+        <!-- 2 row-->
+        <tr style="vertical-align: inherit; text-align: center">
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left;">
+                伙食費
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- 3 row-->
+        <tr style="vertical-align: inherit; text-align: center">
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                工地加給
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- 4 row-->
+        <tr style="vertical-align: inherit; text-align: center">
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                品管加給
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- 5 row-->
+        <tr style="vertical-align: inherit; text-align: center">
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                主管加給
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- 6 row-->
+        <tr style="vertical-align: inherit; text-align: center">
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                地域加給
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- 7 row-->
+        <tr style="vertical-align: inherit; text-align: center; border-bottom: black 3px solid">
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                專業加給
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- 8 row-->
+        <tr style="vertical-align: inherit; text-align: center">
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                代扣勞保費
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- 9 row-->
+        <tr style="vertical-align: inherit; text-align: center">
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                代扣自提勞退
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- 10 row-->
+        <tr style="vertical-align: inherit; text-align: center">
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                代扣健保費
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- 11 row-->
+        <tr style="vertical-align: inherit; text-align: center">
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                代扣綜所稅
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- blank row-->
+        <tr style="vertical-align: inherit; text-align: center; border: black 3px solid">
+
+            <td colspan="2" class="form-group"
+                style="vertical-align: inherit;
+                    text-align: center;">
+                    <span >
+                        月薪實領金額
+                    </span>
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- 加班 -->
+        <!-- 1 row-->
+        <tr style="vertical-align: inherit; text-align: center;
+                border-left: black 3px solid;
+                border-right: black 3px solid;
+                border-top: black 3px solid;">
+            <td rowspan="4" style="vertical-align: inherit; text-align: center;
+                    width: 90px;
+                    border-right: black 3px solid; ">
+                加班
+            </td>
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left; width: 120px">
+                加班費(免稅)
+            </td>
+            <td style="vertical-align: inherit;">
+
+            </td>
+        </tr>
+
+        <!-- 2 row-->
+        <tr style="vertical-align: inherit; text-align: center; border-bottom: black 3px solid">
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                加班費(應稅)
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- 3 row-->
+        <tr style="vertical-align: inherit; text-align: center">
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                代繳健保費
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- 4 row-->
+        <tr style="vertical-align: inherit; text-align: center">
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                預扣綜所稅
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- blank row-->
+        <tr style="vertical-align: inherit; text-align: center; border: black 3px solid">
+
+            <td colspan="2" class="form-group"
+                style="vertical-align: inherit;
+                    text-align: center;">
+                    <span >
+                        加班實領金額
+                    </span>
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- 獎金 -->
+        <!-- 1 row-->
+        <tr style="vertical-align: inherit; text-align: center;
+                border-left: black 3px solid;
+                border-right: black 3px solid;
+                border-top: black 3px solid;">
+            <td rowspan="7" style="vertical-align: inherit; text-align: center;
+                    width: 90px;
+                    border-right: black 3px solid; ">
+                獎金
+            </td>
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left; width: 120px">
+                三節獎金
+            </td>
+            <td style="vertical-align: inherit;">
+
+            </td>
+        </tr>
+
+        <!-- 2 row-->
+        <tr style="vertical-align: inherit; text-align: center">
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                年終獎金
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- 3 row-->
+        <tr style="vertical-align: inherit; text-align: center">
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                (備用欄)
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- 4 row-->
+        <tr style="vertical-align: inherit; text-align: center">
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                (備用欄)
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- 5 row-->
+        <tr style="vertical-align: inherit; text-align: center; border-bottom: black 3px solid">
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                (備用欄)
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- 6 row-->
+        <tr style="vertical-align: inherit; text-align: center">
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                代繳健保費
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- 7 row-->
+        <tr style="vertical-align: inherit; text-align: center">
+
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                預扣綜所稅
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        <!-- blank row-->
+        <tr style="vertical-align: inherit; text-align: center; border: black 3px solid">
+
+            <td colspan="2" class="form-group"
+                style="vertical-align: inherit;
+                    text-align: center;">
+                    <span >
+                        獎金實領金額
+                    </span>
+            </td>
+            <td style="vertical-align: inherit; border-right: black 3px solid; ">
+
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+<hr>
+<section class="col-md-12">
+    <button progress-button="aaa()"
+            style="float: right;"
+            id="btnCreate"
+            pb-style="shrink"
+            class="btn btn-warning">
+        核定薪水
+    </button>
+</section>
+
+
