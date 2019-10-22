@@ -25,7 +25,7 @@
                 // $scope.myMonth = attrs.default === undefined ? moment(new Date()).format($scope.format) : new Date(attrs.default);
                 // $scope.qqqqqwww();
             },
-            templateUrl: 'app/pages/myForms/workOffExchange/workOffExchange.html',
+            templateUrl: 'app/pages/myForms/workOffForm/tabs/workOffExchange/workOffExchange.html',
         };
     }
 })();

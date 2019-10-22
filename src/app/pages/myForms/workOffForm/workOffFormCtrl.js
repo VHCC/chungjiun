@@ -1653,7 +1653,7 @@
                                 "ba-panel-class= " +
                                 "'with-scroll'" + ">" +
                                 "<div " +
-                                "ng-include=\"'app/pages/myForms/forms/workOffForm_AllHistory.html'\">" +
+                                "ng-include=\"'app/pages/myForms/workOffForm/tabs/workOffForm_AllHistory.html'\">" +
                                 "</div>" +
                                 "</div>"
                             )($scope));
@@ -1725,7 +1725,7 @@
                                 "ba-panel-class= " +
                                 "'with-scroll'" + ">" +
                                 "<div " +
-                                "ng-include=\"'app/pages/myForms/forms/workOffForm_AllHistory.html'\">" +
+                                "ng-include=\"'app/pages/myForms/workOffForm/tabs/workOffForm_AllHistory.html'\">" +
                                 "</div>" +
                                 "</div>"
                             )($scope));
@@ -1778,7 +1778,7 @@
                                 "ba-panel-class= " +
                                 "'with-scroll'" + ">" +
                                 "<div " +
-                                "ng-include=\"'app/pages/myForms/forms/workOffForm_AllHistory.html'\">" +
+                                "ng-include=\"'app/pages/myForms/workOffForm/tabs/workOffForm_AllHistory.html'\">" +
                                 "</div>" +
                                 "</div>"
                             )($scope));
