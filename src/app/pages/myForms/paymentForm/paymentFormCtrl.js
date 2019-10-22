@@ -1144,7 +1144,7 @@
                         return;
                     }
                     for (var index = 0; index < operationTarget.length; index ++) {
-                        console.log(operationTarget[index]);
+                        // console.log(operationTarget[index]);
                         if (operationTarget[index].amount != null || operationTarget[index].amount != undefined) {
                             result += parseInt(operationTarget[index].amount);
                         }
