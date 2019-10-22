@@ -694,7 +694,7 @@
                 var total_withholding =
                     // (isNaN(this.withholding_item_1) ? 0 : parseInt(this.withholding_item_1)) +
                     ($scope.showTotalOTMoney_wage() * 1) +
-                    (isNaN(this.withholding_item_2) ? 0 : parseInt(this.withholding_item_2)) +
+                    // (isNaN(this.withholding_item_2) ? 0 : parseInt(this.withholding_item_2)) +
                     (isNaN(this.withholding_item_3) ? 0 : parseInt(this.withholding_item_3)) +
                     (isNaN(this.withholding_item_4) ? 0 : parseInt(this.withholding_item_4)) +
                     (isNaN(this.withholding_item_5) ? 0 : parseInt(this.withholding_item_5));

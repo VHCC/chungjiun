@@ -100,7 +100,7 @@
 
             $scope.specificUserMonthSalary;
 
-            $scope.fetchWorkHourAdd_confirmed = function (user, month) {
+            $scope.fetchWorkHourAdd_confirmed = function (user, month, year) {
                 // console.log($scope);
                 bsLoadingOverlayService.start({
                     referenceId: 'addConfirm_workHour'
@@ -117,6 +117,7 @@
 
                 var formData = {
                     creatorDID: user._id,
+                    year: year == undefined ? specificYear : year,
                     month: month == undefined ? specificMonth : month,
                     isExecutiveConfirm: true,
                 }
@@ -128,7 +129,7 @@
                         // $$$$$ 主要顯示 $$$$$
                         $scope.workAddConfirmTablesItems = $scope.filterData(res.payload);
 
-                        fetchExchangeData(user._id, specificYear, month == undefined ? specificMonth : month);
+                        fetchExchangeData(user._id, year == undefined ? specificYear : year, month == undefined ? specificMonth : month);
 
                         $timeout(function () {
                             bsLoadingOverlayService.stop({
