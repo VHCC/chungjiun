@@ -95,47 +95,69 @@
                                 .success(function (res) {
                                     vm.formID = res.payload._id;
 
-                                    vm.wageForm_blue.wgae_item_1 = res.payload.wgae_item_1 == null ? 0 : res.payload.wgae_item_1;
-                                    vm.wageForm_blue.wgae_item_2 = res.payload.wgae_item_2 == null ? 0 : res.payload.wgae_item_2;
-                                    vm.wageForm_blue.wgae_item_3 = res.payload.wgae_item_3 == null ? 0 : res.payload.wgae_item_3;
-                                    vm.wageForm_blue.wgae_item_4 = res.payload.wgae_item_4 == null ? 0 : res.payload.wgae_item_4;
-                                    vm.wageForm_blue.wgae_item_5 = res.payload.wgae_item_5 == null ? 0 : res.payload.wgae_item_5;
-                                    // vm.wageForm.wgae_item_6 = res.payload.wgae_item_6 == null ? 0 : res.payload.wgae_item_6;
-                                    vm.wageForm_blue.wgae_item_7 = res.payload.wgae_item_7 == null ? 0 : res.payload.wgae_item_7;
-                                    vm.wageForm_blue.wgae_item_8 = res.payload.wgae_item_8 == null ? 0 : res.payload.wgae_item_8;
-                                    vm.wageForm_blue.wgae_item_9 = res.payload.wgae_item_9 == null ? 0 : res.payload.wgae_item_9;
-                                    vm.wageForm_blue.wgae_item_10 = res.payload.wgae_item_10 == null ? 0 : res.payload.wgae_item_10;
-                                    vm.wageForm_blue.wgae_item_11 = res.payload.wgae_item_11 == null ? 0 : res.payload.wgae_item_11;
-                                    vm.wageForm_blue.wgae_item_12 = res.payload.wgae_item_12 == null ? 0 : res.payload.wgae_item_12;
-                                    vm.wageForm_blue.wgae_item_12_title = res.payload.wgae_item_12_title == null ? "" : res.payload.wgae_item_12_title;
-                                    vm.wageForm_blue.wgae_item_13 = res.payload.wgae_item_13 == null ? 0 : res.payload.wgae_item_13;
-                                    vm.wageForm_blue.wgae_item_13_title = res.payload.wgae_item_13_title == null ? "" : res.payload.wgae_item_13_title;
-                                    vm.wageForm_blue.wgae_item_14 = res.payload.wgae_item_14 == null ? 0 : res.payload.wgae_item_14;
-                                    vm.wageForm_blue.wgae_item_14_title = res.payload.wgae_item_14_title == null ? "" : res.payload.wgae_item_14_title;
-                                    vm.wageForm_blue.wgae_item_15 = res.payload.wgae_item_15 == null ? 0 : res.payload.wgae_item_15;
-                                    vm.wageForm_blue.wgae_item_15_title = res.payload.wgae_item_15_title == null ? "" : res.payload.wgae_item_15_title;
-                                    vm.wageForm_blue.wgae_item_16 = res.payload.wgae_item_16 == null ? 0 : res.payload.wgae_item_16;
-                                    vm.wageForm_blue.wgae_item_16_title = res.payload.wgae_item_16_title == null ? "" : res.payload.wgae_item_16_title;
+                                    if (vm.wageForm_blue) {
 
-                                    vm.wageForm_yellow.withholding_item_2 = res.payload.withholding_item_2 == null ? 0 : res.payload.withholding_item_2;
-                                    vm.wageForm_yellow.withholding_item_3 = res.payload.withholding_item_3 == null ? 0 : res.payload.withholding_item_3;
-                                    vm.wageForm_yellow.withholding_item_4 = res.payload.withholding_item_4 == null ? 0 : res.payload.withholding_item_4;
-                                    vm.wageForm_yellow.withholding_item_5 = res.payload.withholding_item_5 == null ? 0 : res.payload.withholding_item_5;
-                                    vm.wageForm_yellow.withholding_item_5_title = res.payload.withholding_item_5_title == null ? "" : res.payload.withholding_item_5_title;
+                                        vm.wageForm_blue.wgae_item_1 = res.payload.wgae_item_1 == null ? 0 : res.payload.wgae_item_1;
+                                        vm.wageForm_blue.wgae_item_2 = res.payload.wgae_item_2 == null ? 0 : res.payload.wgae_item_2;
+                                        vm.wageForm_blue.wgae_item_3 = res.payload.wgae_item_3 == null ? 0 : res.payload.wgae_item_3;
+                                        vm.wageForm_blue.wgae_item_4 = res.payload.wgae_item_4 == null ? 0 : res.payload.wgae_item_4;
+                                        vm.wageForm_blue.wgae_item_5 = res.payload.wgae_item_5 == null ? 0 : res.payload.wgae_item_5;
+                                        // vm.wageForm.wgae_item_6 = res.payload.wgae_item_6 == null ? 0 : res.payload.wgae_item_6;
+                                        vm.wageForm_blue.wgae_item_7 = res.payload.wgae_item_7 == null ? 0 : res.payload.wgae_item_7;
+                                        vm.wageForm_blue.wgae_item_8 = res.payload.wgae_item_8 == null ? 0 : res.payload.wgae_item_8;
+                                        vm.wageForm_blue.wgae_item_9 = res.payload.wgae_item_9 == null ? 0 : res.payload.wgae_item_9;
+                                        vm.wageForm_blue.wgae_item_10 = res.payload.wgae_item_10 == null ? 0 : res.payload.wgae_item_10;
+                                        vm.wageForm_blue.wgae_item_11 = res.payload.wgae_item_11 == null ? 0 : res.payload.wgae_item_11;
+                                        vm.wageForm_blue.wgae_item_12 = res.payload.wgae_item_12 == null ? 0 : res.payload.wgae_item_12;
+                                        vm.wageForm_blue.wgae_item_12_title = res.payload.wgae_item_12_title == null ? "" : res.payload.wgae_item_12_title;
+                                        vm.wageForm_blue.wgae_item_13 = res.payload.wgae_item_13 == null ? 0 : res.payload.wgae_item_13;
+                                        vm.wageForm_blue.wgae_item_13_title = res.payload.wgae_item_13_title == null ? "" : res.payload.wgae_item_13_title;
+                                        vm.wageForm_blue.wgae_item_14 = res.payload.wgae_item_14 == null ? 0 : res.payload.wgae_item_14;
+                                        vm.wageForm_blue.wgae_item_14_title = res.payload.wgae_item_14_title == null ? "" : res.payload.wgae_item_14_title;
+                                        vm.wageForm_blue.wgae_item_15 = res.payload.wgae_item_15 == null ? 0 : res.payload.wgae_item_15;
+                                        vm.wageForm_blue.wgae_item_15_title = res.payload.wgae_item_15_title == null ? "" : res.payload.wgae_item_15_title;
+                                        vm.wageForm_blue.wgae_item_16 = res.payload.wgae_item_16 == null ? 0 : res.payload.wgae_item_16;
+                                        vm.wageForm_blue.wgae_item_16_title = res.payload.wgae_item_16_title == null ? "" : res.payload.wgae_item_16_title;
+                                    }
 
-                                    vm.wageForm_green.green_item_1 = res.payload.green_item_1 == null ? 0 : res.payload.green_item_1;
-                                    vm.wageForm_green.green_item_2 = res.payload.green_item_2 == null ? 0 : res.payload.green_item_2;
-                                    vm.wageForm_green.green_item_3 = res.payload.green_item_3 == null ? 0 : res.payload.green_item_3;
-                                    vm.wageForm_green.green_item_4 = res.payload.green_item_4 == null ? 0 : res.payload.green_item_4;
-                                    vm.wageForm_green.green_item_5 = res.payload.green_item_5 == null ? 0 : res.payload.green_item_5;
-                                    vm.wageForm_green.green_item_6 = res.payload.green_item_6 == null ? 0 : res.payload.green_item_6;
-                                    vm.wageForm_green.green_item_7 = res.payload.green_item_7 == null ? 0 : res.payload.green_item_7;
-                                    vm.wageForm_green.green_item_8 = res.payload.green_item_8 == null ? 0 : res.payload.green_item_8;
-                                    vm.wageForm_green.green_item_8_title = res.payload.green_item_8_title == null ? "" : res.payload.green_item_8_title;
-                                    vm.wageForm_green.green_item_9 = res.payload.green_item_9 == null ? 0 : res.payload.green_item_9;
-                                    vm.wageForm_green.green_item_9_title = res.payload.green_item_9_title == null ? "" : res.payload.green_item_9_title;
-                                    vm.wageForm_green.green_item_10 = res.payload.green_item_10 == null ? 0 : res.payload.green_item_10;
-                                    vm.wageForm_green.green_item_10_title = res.payload.green_item_10_title == null ? "" : res.payload.green_item_10_title;
+                                    if (vm.wageForm_yellow) {
+                                        vm.wageForm_yellow.withholding_item_2 = res.payload.withholding_item_2 == null ? 0 : res.payload.withholding_item_2;
+                                        vm.wageForm_yellow.withholding_item_3 = res.payload.withholding_item_3 == null ? 0 : res.payload.withholding_item_3;
+                                        vm.wageForm_yellow.withholding_item_4 = res.payload.withholding_item_4 == null ? 0 : res.payload.withholding_item_4;
+                                        vm.wageForm_yellow.withholding_item_5 = res.payload.withholding_item_5 == null ? 0 : res.payload.withholding_item_5;
+                                        vm.wageForm_yellow.withholding_item_5_title = res.payload.withholding_item_5_title == null ? "" : res.payload.withholding_item_5_title;
+                                    }
+
+                                    if (vm.wageForm_green) {
+
+                                        vm.wageForm_green.green_item_1 = res.payload.green_item_1 == null ? 0 : res.payload.green_item_1;
+                                        vm.wageForm_green.green_item_2 = res.payload.green_item_2 == null ? 0 : res.payload.green_item_2;
+                                        vm.wageForm_green.green_item_3 = res.payload.green_item_3 == null ? 0 : res.payload.green_item_3;
+                                        vm.wageForm_green.green_item_4 = res.payload.green_item_4 == null ? 0 : res.payload.green_item_4;
+                                        vm.wageForm_green.green_item_5 = res.payload.green_item_5 == null ? 0 : res.payload.green_item_5;
+                                        vm.wageForm_green.green_item_6 = res.payload.green_item_6 == null ? 0 : res.payload.green_item_6;
+                                        vm.wageForm_green.green_item_7 = res.payload.green_item_7 == null ? 0 : res.payload.green_item_7;
+                                        vm.wageForm_green.green_item_8 = res.payload.green_item_8 == null ? 0 : res.payload.green_item_8;
+                                        vm.wageForm_green.green_item_8_title = res.payload.green_item_8_title == null ? "" : res.payload.green_item_8_title;
+                                        vm.wageForm_green.green_item_9 = res.payload.green_item_9 == null ? 0 : res.payload.green_item_9;
+                                        vm.wageForm_green.green_item_9_title = res.payload.green_item_9_title == null ? "" : res.payload.green_item_9_title;
+                                        vm.wageForm_green.green_item_10 = res.payload.green_item_10 == null ? 0 : res.payload.green_item_10;
+                                        vm.wageForm_green.green_item_10_title = res.payload.green_item_10_title == null ? "" : res.payload.green_item_10_title;
+
+                                    }
+                                    if (vm.wageForm_blue_servitor) {
+
+                                        vm.wageForm_blue_servitor.blue_item_1 = res.payload.blue_item_1 == null ? 0 : res.payload.blue_item_1;
+                                        vm.wageForm_blue_servitor.blue_item_1_hour = res.payload.blue_item_1_hour == null ? 0 : res.payload.blue_item_1_hour;
+                                        vm.wageForm_blue_servitor.blue_item_2 = res.payload.blue_item_2 == null ? 0 : res.payload.blue_item_2;
+                                        vm.wageForm_blue_servitor.blue_item_3 = res.payload.blue_item_3 == null ? 0 : res.payload.blue_item_3;
+                                        vm.wageForm_blue_servitor.blue_item_4 = res.payload.blue_item_4 == null ? 0 : res.payload.blue_item_4;
+                                        vm.wageForm_blue_servitor.blue_item_5 = res.payload.blue_item_5 == null ? 0 : res.payload.blue_item_5;
+                                        vm.wageForm_blue_servitor.blue_item_6 = res.payload.blue_item_6 == null ? 0 : res.payload.blue_item_6;
+                                        vm.wageForm_blue_servitor.blue_item_6_title = res.payload.blue_item_6_title == null ? "" : res.payload.blue_item_6_title;
+                                        vm.wageForm_blue_servitor.blue_item_7 = res.payload.blue_item_7 == null ? 0 : res.payload.blue_item_7;
+                                        vm.wageForm_blue_servitor.blue_item_7_title = res.payload.blue_item_7_title == null ? "" : res.payload.blue_item_7_title;
+                                    }
 
                                     $timeout(function () {
                                         bsLoadingOverlayService.stop({
@@ -151,49 +173,73 @@
                                     }, 500)
                                 })
                         } else {
+                            console.log(vm);
+
                             vm.formID = res.payload._id;
 
-                            vm.wageForm_blue.wgae_item_1 = res.payload.wgae_item_1 == null ? 0 : res.payload.wgae_item_1;
-                            vm.wageForm_blue.wgae_item_2 = res.payload.wgae_item_2 == null ? 0 : res.payload.wgae_item_2;
-                            vm.wageForm_blue.wgae_item_3 = res.payload.wgae_item_3 == null ? 0 : res.payload.wgae_item_3;
-                            vm.wageForm_blue.wgae_item_4 = res.payload.wgae_item_4 == null ? 0 : res.payload.wgae_item_4;
-                            vm.wageForm_blue.wgae_item_5 = res.payload.wgae_item_5 == null ? 0 : res.payload.wgae_item_5;
-                            // vm.wageForm.wgae_item_6 = res.payload.wgae_item_6 == null ? 0 : res.payload.wgae_item_6;
-                            vm.wageForm_blue.wgae_item_7 = res.payload.wgae_item_7 == null ? 0 : res.payload.wgae_item_7;
-                            vm.wageForm_blue.wgae_item_8 = res.payload.wgae_item_8 == null ? 0 : res.payload.wgae_item_8;
-                            vm.wageForm_blue.wgae_item_9 = res.payload.wgae_item_9 == null ? 0 : res.payload.wgae_item_9;
-                            vm.wageForm_blue.wgae_item_10 = res.payload.wgae_item_10 == null ? 0 : res.payload.wgae_item_10;
-                            vm.wageForm_blue.wgae_item_11 = res.payload.wgae_item_11 == null ? 0 : res.payload.wgae_item_11;
-                            vm.wageForm_blue.wgae_item_12 = res.payload.wgae_item_12 == null ? 0 : res.payload.wgae_item_12;
-                            vm.wageForm_blue.wgae_item_12_title = res.payload.wgae_item_12_title == null ? "" : res.payload.wgae_item_12_title;
-                            vm.wageForm_blue.wgae_item_13 = res.payload.wgae_item_13 == null ? 0 : res.payload.wgae_item_13;
-                            vm.wageForm_blue.wgae_item_13_title = res.payload.wgae_item_13_title == null ? "" : res.payload.wgae_item_13_title;
-                            vm.wageForm_blue.wgae_item_14 = res.payload.wgae_item_14 == null ? 0 : res.payload.wgae_item_14;
-                            vm.wageForm_blue.wgae_item_14_title = res.payload.wgae_item_14_title == null ? "" : res.payload.wgae_item_14_title;
-                            vm.wageForm_blue.wgae_item_15 = res.payload.wgae_item_15 == null ? 0 : res.payload.wgae_item_15;
-                            vm.wageForm_blue.wgae_item_15_title = res.payload.wgae_item_15_title == null ? "" : res.payload.wgae_item_15_title;
-                            vm.wageForm_blue.wgae_item_16 = res.payload.wgae_item_16 == null ? 0 : res.payload.wgae_item_16;
-                            vm.wageForm_blue.wgae_item_16_title = res.payload.wgae_item_16_title == null ? "" : res.payload.wgae_item_16_title;
+                            if (vm.wageForm_blue) {
 
-                            vm.wageForm_yellow.withholding_item_2 = res.payload.withholding_item_2 == null ? 0 : res.payload.withholding_item_2;
-                            vm.wageForm_yellow.withholding_item_3 = res.payload.withholding_item_3 == null ? 0 : res.payload.withholding_item_3;
-                            vm.wageForm_yellow.withholding_item_4 = res.payload.withholding_item_4 == null ? 0 : res.payload.withholding_item_4;
-                            vm.wageForm_yellow.withholding_item_5 = res.payload.withholding_item_5 == null ? 0 : res.payload.withholding_item_5;
-                            vm.wageForm_yellow.withholding_item_5_title = res.payload.withholding_item_5_title == null ? "" : res.payload.withholding_item_5_title;
+                                vm.wageForm_blue.wgae_item_1 = res.payload.wgae_item_1 == null ? 0 : res.payload.wgae_item_1;
+                                vm.wageForm_blue.wgae_item_2 = res.payload.wgae_item_2 == null ? 0 : res.payload.wgae_item_2;
+                                vm.wageForm_blue.wgae_item_3 = res.payload.wgae_item_3 == null ? 0 : res.payload.wgae_item_3;
+                                vm.wageForm_blue.wgae_item_4 = res.payload.wgae_item_4 == null ? 0 : res.payload.wgae_item_4;
+                                vm.wageForm_blue.wgae_item_5 = res.payload.wgae_item_5 == null ? 0 : res.payload.wgae_item_5;
+                                // vm.wageForm.wgae_item_6 = res.payload.wgae_item_6 == null ? 0 : res.payload.wgae_item_6;
+                                vm.wageForm_blue.wgae_item_7 = res.payload.wgae_item_7 == null ? 0 : res.payload.wgae_item_7;
+                                vm.wageForm_blue.wgae_item_8 = res.payload.wgae_item_8 == null ? 0 : res.payload.wgae_item_8;
+                                vm.wageForm_blue.wgae_item_9 = res.payload.wgae_item_9 == null ? 0 : res.payload.wgae_item_9;
+                                vm.wageForm_blue.wgae_item_10 = res.payload.wgae_item_10 == null ? 0 : res.payload.wgae_item_10;
+                                vm.wageForm_blue.wgae_item_11 = res.payload.wgae_item_11 == null ? 0 : res.payload.wgae_item_11;
+                                vm.wageForm_blue.wgae_item_12 = res.payload.wgae_item_12 == null ? 0 : res.payload.wgae_item_12;
+                                vm.wageForm_blue.wgae_item_12_title = res.payload.wgae_item_12_title == null ? "" : res.payload.wgae_item_12_title;
+                                vm.wageForm_blue.wgae_item_13 = res.payload.wgae_item_13 == null ? 0 : res.payload.wgae_item_13;
+                                vm.wageForm_blue.wgae_item_13_title = res.payload.wgae_item_13_title == null ? "" : res.payload.wgae_item_13_title;
+                                vm.wageForm_blue.wgae_item_14 = res.payload.wgae_item_14 == null ? 0 : res.payload.wgae_item_14;
+                                vm.wageForm_blue.wgae_item_14_title = res.payload.wgae_item_14_title == null ? "" : res.payload.wgae_item_14_title;
+                                vm.wageForm_blue.wgae_item_15 = res.payload.wgae_item_15 == null ? 0 : res.payload.wgae_item_15;
+                                vm.wageForm_blue.wgae_item_15_title = res.payload.wgae_item_15_title == null ? "" : res.payload.wgae_item_15_title;
+                                vm.wageForm_blue.wgae_item_16 = res.payload.wgae_item_16 == null ? 0 : res.payload.wgae_item_16;
+                                vm.wageForm_blue.wgae_item_16_title = res.payload.wgae_item_16_title == null ? "" : res.payload.wgae_item_16_title;
+                            }
 
-                            vm.wageForm_green.green_item_1 = res.payload.green_item_1 == null ? 0 : res.payload.green_item_1;
-                            vm.wageForm_green.green_item_2 = res.payload.green_item_2 == null ? 0 : res.payload.green_item_2;
-                            vm.wageForm_green.green_item_3 = res.payload.green_item_3 == null ? 0 : res.payload.green_item_3;
-                            vm.wageForm_green.green_item_4 = res.payload.green_item_4 == null ? 0 : res.payload.green_item_4;
-                            vm.wageForm_green.green_item_5 = res.payload.green_item_5 == null ? 0 : res.payload.green_item_5;
-                            vm.wageForm_green.green_item_6 = res.payload.green_item_6 == null ? 0 : res.payload.green_item_6;
-                            vm.wageForm_green.green_item_7 = res.payload.green_item_7 == null ? 0 : res.payload.green_item_7;
-                            vm.wageForm_green.green_item_8 = res.payload.green_item_8 == null ? 0 : res.payload.green_item_8;
-                            vm.wageForm_green.green_item_8_title = res.payload.green_item_8_title == null ? "" : res.payload.green_item_8_title;
-                            vm.wageForm_green.green_item_9 = res.payload.green_item_9 == null ? 0 : res.payload.green_item_9;
-                            vm.wageForm_green.green_item_9_title = res.payload.green_item_9_title == null ? "" : res.payload.green_item_9_title;
-                            vm.wageForm_green.green_item_10 = res.payload.green_item_10 == null ? 0 : res.payload.green_item_10;
-                            vm.wageForm_green.green_item_10_title = res.payload.green_item_10_title == null ? "" : res.payload.green_item_10_title;
+                            if (vm.wageForm_yellow) {
+                                vm.wageForm_yellow.withholding_item_2 = res.payload.withholding_item_2 == null ? 0 : res.payload.withholding_item_2;
+                                vm.wageForm_yellow.withholding_item_3 = res.payload.withholding_item_3 == null ? 0 : res.payload.withholding_item_3;
+                                vm.wageForm_yellow.withholding_item_4 = res.payload.withholding_item_4 == null ? 0 : res.payload.withholding_item_4;
+                                vm.wageForm_yellow.withholding_item_5 = res.payload.withholding_item_5 == null ? 0 : res.payload.withholding_item_5;
+                                vm.wageForm_yellow.withholding_item_5_title = res.payload.withholding_item_5_title == null ? "" : res.payload.withholding_item_5_title;
+                            }
+
+                            if (vm.wageForm_green) {
+
+                                vm.wageForm_green.green_item_1 = res.payload.green_item_1 == null ? 0 : res.payload.green_item_1;
+                                vm.wageForm_green.green_item_2 = res.payload.green_item_2 == null ? 0 : res.payload.green_item_2;
+                                vm.wageForm_green.green_item_3 = res.payload.green_item_3 == null ? 0 : res.payload.green_item_3;
+                                vm.wageForm_green.green_item_4 = res.payload.green_item_4 == null ? 0 : res.payload.green_item_4;
+                                vm.wageForm_green.green_item_5 = res.payload.green_item_5 == null ? 0 : res.payload.green_item_5;
+                                vm.wageForm_green.green_item_6 = res.payload.green_item_6 == null ? 0 : res.payload.green_item_6;
+                                vm.wageForm_green.green_item_7 = res.payload.green_item_7 == null ? 0 : res.payload.green_item_7;
+                                vm.wageForm_green.green_item_8 = res.payload.green_item_8 == null ? 0 : res.payload.green_item_8;
+                                vm.wageForm_green.green_item_8_title = res.payload.green_item_8_title == null ? "" : res.payload.green_item_8_title;
+                                vm.wageForm_green.green_item_9 = res.payload.green_item_9 == null ? 0 : res.payload.green_item_9;
+                                vm.wageForm_green.green_item_9_title = res.payload.green_item_9_title == null ? "" : res.payload.green_item_9_title;
+                                vm.wageForm_green.green_item_10 = res.payload.green_item_10 == null ? 0 : res.payload.green_item_10;
+                                vm.wageForm_green.green_item_10_title = res.payload.green_item_10_title == null ? "" : res.payload.green_item_10_title;
+
+                            }
+                            if (vm.wageForm_blue_servitor) {
+
+                                vm.wageForm_blue_servitor.blue_item_1 = res.payload.blue_item_1 == null ? 0 : res.payload.blue_item_1;
+                                vm.wageForm_blue_servitor.blue_item_1_hour = res.payload.blue_item_1_hour == null ? 0 : res.payload.blue_item_1_hour;
+                                vm.wageForm_blue_servitor.blue_item_2 = res.payload.blue_item_2 == null ? 0 : res.payload.blue_item_2;
+                                vm.wageForm_blue_servitor.blue_item_3 = res.payload.blue_item_3 == null ? 0 : res.payload.blue_item_3;
+                                vm.wageForm_blue_servitor.blue_item_4 = res.payload.blue_item_4 == null ? 0 : res.payload.blue_item_4;
+                                vm.wageForm_blue_servitor.blue_item_5 = res.payload.blue_item_5 == null ? 0 : res.payload.blue_item_5;
+                                vm.wageForm_blue_servitor.blue_item_6 = res.payload.blue_item_6 == null ? 0 : res.payload.blue_item_6;
+                                vm.wageForm_blue_servitor.blue_item_6_title = res.payload.blue_item_6_title == null ? "" : res.payload.blue_item_6_title;
+                                vm.wageForm_blue_servitor.blue_item_7 = res.payload.blue_item_7 == null ? 0 : res.payload.blue_item_7;
+                                vm.wageForm_blue_servitor.blue_item_7_title = res.payload.blue_item_7_title == null ? "" : res.payload.blue_item_7_title;
+                            }
 
 
                             $timeout(function () {
@@ -537,6 +583,17 @@
                     green_item_10: vm.wageForm_green.green_item_10,
                     green_item_10_title: vm.wageForm_green.green_item_10_title,
 
+                    // 工讀生
+                    blue_item_1: vm.wageForm_blue_servitor.blue_item_1,
+                    blue_item_1_hour: vm.wageForm_blue_servitor.blue_item_1_hour,
+                    blue_item_2: vm.wageForm_blue_servitor.blue_item_2,
+                    blue_item_3: vm.wageForm_blue_servitor.blue_item_3,
+                    blue_item_4: vm.wageForm_blue_servitor.blue_item_4,
+                    blue_item_5: vm.wageForm_blue_servitor.blue_item_5,
+                    blue_item_6: vm.wageForm_blue_servitor.blue_item_6,
+                    blue_item_6_title: vm.wageForm_blue_servitor.blue_item_6_title,
+                    blue_item_7: vm.wageForm_blue_servitor.blue_item_7,
+                    blue_item_7_title: vm.wageForm_blue_servitor.blue_item_7_title,
 
                 }
 
@@ -607,7 +664,6 @@
 
             //
             $scope.getTotalWage_blue = function () {
-                console.log(123);
                 vm.wageForm_blue = this;
                 var total_wage_temp =
                     (isNaN(this.wgae_item_1) ? 0 : parseInt(this.wgae_item_1)) +
@@ -663,6 +719,23 @@
                     (isNaN(this.green_item_10) ? 0 : parseInt(this.green_item_10));
 
                 this.total_wage_green = total_green;
+            }
+
+            $scope.getTotalWage_servitor = function () {
+
+                vm.wageForm_blue_servitor = this;
+
+                var total_wage_temp =
+                    ((isNaN(this.blue_item_1) ? 0 : parseInt(this.blue_item_1)) *
+                        (isNaN(this.blue_item_1_hour) ? 0 : parseFloat(this.blue_item_1_hour))) +
+                    (isNaN(this.blue_item_2) ? 0 : parseInt(this.blue_item_2)) +
+                    (isNaN(this.blue_item_3) ? 0 : parseInt(this.blue_item_3)) +
+                    (isNaN(this.blue_item_4) ? 0 : parseInt(this.blue_item_4)) +
+                    (isNaN(this.blue_item_5) ? 0 : parseInt(this.blue_item_5)) +
+                    (isNaN(this.blue_item_6) ? 0 : parseInt(this.blue_item_6)) +
+                    (isNaN(this.blue_item_7) ? 0 : parseInt(this.blue_item_7));
+
+                this.total_wage_servitor = total_wage_temp;
             }
 
         } // End of function

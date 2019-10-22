@@ -26,7 +26,7 @@
 
     <hr>
 
-    <div class="col-md-4" ng-if="!isMain">
+    <div class="col-md-4" ng-if="!isMain && roleType != 5">
         <div
                 ba-panel
                 ba-panel-title="月薪"
@@ -273,10 +273,148 @@
                 </tbody>
             </table>
         </div>
-
     </div>
 
-    <div class="col-md-4" ng-if="!isMain">
+    <!-- 工讀生 -->
+    <div class="col-md-4" ng-if="!isMain && roleType == 5">
+        <div
+                ba-panel
+                ba-panel-title="薪資"
+                ba-panel-class="with-scroll">
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                </thead>
+
+                <tbody>
+
+                <!-- 1 row-->
+                <tr style="vertical-align: inherit; text-align: center;">
+                    <td style="vertical-align: inherit; text-align: left; width: 90px; background-color: #ddebf7">
+                        時薪
+                    </td>
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; width: 120px">
+                        <span style="float: right">
+                            {{blue_item_1}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 1-1 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        總工時
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right">
+                            {{blue_item_1_hour}}
+                        </span>
+                    </td>
+                </tr>
+
+
+                <!-- 2 row-->
+                <tr style="vertical-align: inherit; text-align: center;">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        代扣勞保費
+                    </td>
+                    <td style="vertical-align: inherit; ">
+                        <span style="float: right">
+                            {{blue_item_2}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 3 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        代扣健保費
+                    </td>
+                    <td style="vertical-align: inherit; ">
+                        <span style="float: right">
+                            {{blue_item_3}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 4 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        代扣綜所稅
+                    </td>
+                    <td style="vertical-align: inherit; ">
+                        <span style="float: right">
+                            {{blue_item_4}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 5 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        代扣自提勞退
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right">
+                            {{blue_item_5}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 6 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        <span style="float: left">
+                            {{blue_item_6_title}}
+                        </span>
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right">
+                            {{blue_item_6}}
+                        </span>
+                    </td>
+                </tr>
+
+                <!-- 7 row-->
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: left; background-color: #ddebf7">
+                        <span style="float: left">
+                            {{blue_item_7_title}}
+                        </span>
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right">
+                            {{blue_item_7}}
+                        </span>
+                    </td>
+                </tr>
+
+                <tr style="vertical-align: inherit; text-align: center">
+                    <td class="form-group" style="vertical-align: inherit; text-align: center; background-color: #ddebf7">
+                        實領金額
+                    </td>
+                    <td style="vertical-align: inherit;">
+                        <span style="float: right">
+                            {{total_wage_servitor}}
+                            {{getTotalWage_servitor()}}
+                        </span>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="col-md-4" ng-if="!isMain && roleType != 5">
         <div
                 ba-panel
                 ba-panel-title="加班"
