@@ -536,6 +536,81 @@
                 return Math.round(num * size) / size;
             }
 
+            //
+            $scope.fetch_pre_month_data = function () {
+                var formData = {
+                    creatorDID: vm.main.selected._id,
+                    year: specificMonth == 1 ? specificYear - 1 : specificYear,
+                    month: specificMonth == 1 ? 12 : specificMonth - 1
+                }
+
+                console.log(formData);
+                bsLoadingOverlayService.start({
+                    referenceId: 'mainPage_wageManage'
+                });
+
+                // console.log(formData);
+
+                WageManageUtil.fetchUserWageMain(formData)
+                    .success(function (res) {
+                        console.log(res);
+
+                        if (vm.wageForm_blue) {
+
+                            vm.wageForm_blue.wgae_item_1 = res.payload.wgae_item_1 == null ? 0 : res.payload.wgae_item_1;
+                            vm.wageForm_blue.wgae_item_2 = res.payload.wgae_item_2 == null ? 0 : res.payload.wgae_item_2;
+                            vm.wageForm_blue.wgae_item_3 = res.payload.wgae_item_3 == null ? 0 : res.payload.wgae_item_3;
+                            vm.wageForm_blue.wgae_item_4 = res.payload.wgae_item_4 == null ? 0 : res.payload.wgae_item_4;
+                            vm.wageForm_blue.wgae_item_5 = res.payload.wgae_item_5 == null ? 0 : res.payload.wgae_item_5;
+                            // vm.wageForm.wgae_item_6 = res.payload.wgae_item_6 == null ? 0 : res.payload.wgae_item_6;
+                            vm.wageForm_blue.wgae_item_7 = res.payload.wgae_item_7 == null ? 0 : res.payload.wgae_item_7;
+                            vm.wageForm_blue.wgae_item_8 = res.payload.wgae_item_8 == null ? 0 : res.payload.wgae_item_8;
+                            vm.wageForm_blue.wgae_item_9 = res.payload.wgae_item_9 == null ? 0 : res.payload.wgae_item_9;
+                            vm.wageForm_blue.wgae_item_10 = res.payload.wgae_item_10 == null ? 0 : res.payload.wgae_item_10;
+                            vm.wageForm_blue.wgae_item_11 = res.payload.wgae_item_11 == null ? 0 : res.payload.wgae_item_11;
+                            vm.wageForm_blue.wgae_item_12 = res.payload.wgae_item_12 == null ? 0 : res.payload.wgae_item_12;
+                            vm.wageForm_blue.wgae_item_12_title = res.payload.wgae_item_12_title == null ? "" : res.payload.wgae_item_12_title;
+                            vm.wageForm_blue.wgae_item_13 = res.payload.wgae_item_13 == null ? 0 : res.payload.wgae_item_13;
+                            vm.wageForm_blue.wgae_item_13_title = res.payload.wgae_item_13_title == null ? "" : res.payload.wgae_item_13_title;
+                            vm.wageForm_blue.wgae_item_14 = res.payload.wgae_item_14 == null ? 0 : res.payload.wgae_item_14;
+                            vm.wageForm_blue.wgae_item_14_title = res.payload.wgae_item_14_title == null ? "" : res.payload.wgae_item_14_title;
+                            vm.wageForm_blue.wgae_item_15 = res.payload.wgae_item_15 == null ? 0 : res.payload.wgae_item_15;
+                            vm.wageForm_blue.wgae_item_15_title = res.payload.wgae_item_15_title == null ? "" : res.payload.wgae_item_15_title;
+                            vm.wageForm_blue.wgae_item_16 = res.payload.wgae_item_16 == null ? 0 : res.payload.wgae_item_16;
+                            vm.wageForm_blue.wgae_item_16_title = res.payload.wgae_item_16_title == null ? "" : res.payload.wgae_item_16_title;
+                        }
+
+                        if (vm.wageForm_blue_servitor) {
+
+                            vm.wageForm_blue_servitor.blue_item_1 = res.payload.blue_item_1 == null ? 0 : res.payload.blue_item_1;
+                            vm.wageForm_blue_servitor.blue_item_1_hour = res.payload.blue_item_1_hour == null ? 0 : res.payload.blue_item_1_hour;
+                            vm.wageForm_blue_servitor.blue_item_2 = res.payload.blue_item_2 == null ? 0 : res.payload.blue_item_2;
+                            vm.wageForm_blue_servitor.blue_item_3 = res.payload.blue_item_3 == null ? 0 : res.payload.blue_item_3;
+                            vm.wageForm_blue_servitor.blue_item_4 = res.payload.blue_item_4 == null ? 0 : res.payload.blue_item_4;
+                            vm.wageForm_blue_servitor.blue_item_5 = res.payload.blue_item_5 == null ? 0 : res.payload.blue_item_5;
+                            vm.wageForm_blue_servitor.blue_item_6 = res.payload.blue_item_6 == null ? 0 : res.payload.blue_item_6;
+                            vm.wageForm_blue_servitor.blue_item_6_title = res.payload.blue_item_6_title == null ? "" : res.payload.blue_item_6_title;
+                            vm.wageForm_blue_servitor.blue_item_7 = res.payload.blue_item_7 == null ? 0 : res.payload.blue_item_7;
+                            vm.wageForm_blue_servitor.blue_item_7_title = res.payload.blue_item_7_title == null ? "" : res.payload.blue_item_7_title;
+                        }
+
+
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'mainPage_wageManage'
+                            });
+                        }, 500)
+                    })
+                    .error(function (res) {
+                        console.log(res)
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'mainPage_wageManage'
+                            });
+                        }, 500)
+                    })
+            }
+
             $scope.save_wage_main = function () {
 
                 var formData = {
@@ -584,16 +659,16 @@
                     green_item_10_title: vm.wageForm_green.green_item_10_title,
 
                     // 工讀生
-                    blue_item_1: vm.wageForm_blue_servitor.blue_item_1,
-                    blue_item_1_hour: vm.wageForm_blue_servitor.blue_item_1_hour,
-                    blue_item_2: vm.wageForm_blue_servitor.blue_item_2,
-                    blue_item_3: vm.wageForm_blue_servitor.blue_item_3,
-                    blue_item_4: vm.wageForm_blue_servitor.blue_item_4,
-                    blue_item_5: vm.wageForm_blue_servitor.blue_item_5,
-                    blue_item_6: vm.wageForm_blue_servitor.blue_item_6,
-                    blue_item_6_title: vm.wageForm_blue_servitor.blue_item_6_title,
-                    blue_item_7: vm.wageForm_blue_servitor.blue_item_7,
-                    blue_item_7_title: vm.wageForm_blue_servitor.blue_item_7_title,
+                    blue_item_1: vm.wageForm_blue_servitor == undefined ? "0" : vm.wageForm_blue_servitor.blue_item_1,
+                    blue_item_1_hour: vm.wageForm_blue_servitor == undefined ? "0" : vm.wageForm_blue_servitor.blue_item_1_hour,
+                    blue_item_2: vm.wageForm_blue_servitor == undefined ? "0" : vm.wageForm_blue_servitor.blue_item_2,
+                    blue_item_3: vm.wageForm_blue_servitor == undefined ? "0" : vm.wageForm_blue_servitor.blue_item_3,
+                    blue_item_4: vm.wageForm_blue_servitor == undefined ? "0" : vm.wageForm_blue_servitor.blue_item_4,
+                    blue_item_5: vm.wageForm_blue_servitor == undefined ? "0" : vm.wageForm_blue_servitor.blue_item_5,
+                    blue_item_6: vm.wageForm_blue_servitor == undefined ? "0" : vm.wageForm_blue_servitor.blue_item_6,
+                    blue_item_6_title: vm.wageForm_blue_servitor == undefined ? "0" : vm.wageForm_blue_servitor.blue_item_6_title,
+                    blue_item_7: vm.wageForm_blue_servitor == undefined ? "0" : vm.wageForm_blue_servitor.blue_item_7,
+                    blue_item_7_title: vm.wageForm_blue_servitor == undefined ? "0" : vm.wageForm_blue_servitor.blue_item_7_title,
 
                 }
 
