@@ -26,6 +26,7 @@
                     'WageManageUtil',
                     'WorkHourAddItemUtil',
                     'WorkOffFormUtil',
+                    'WorkOffExchangeFormUtil',
                     'bsLoadingOverlayService',
                     'intiWorkOffAllService',
                     WageManageCtrl
@@ -47,6 +48,7 @@
                                  WageManageUtil,
                                  WorkHourAddItemUtil,
                                  WorkOffFormUtil,
+                                 WorkOffExchangeFormUtil,
                                  bsLoadingOverlayService,
                                  intiWorkOffAllService) {
 
@@ -268,6 +270,8 @@
                     .success(function (res) {
                         // $$$$$ 主要顯示 $$$$$
                         $scope.workAddConfirmTablesItems = $scope.filterData(res.payload);
+
+                        fetchExchangeData(userDID == null ? vm.main.selected._id : userDID, specificYear, specificMonth);
                     })
                     .error(function () {
                         console.log('ERROR  WorkHourAddItemUtil.getWorkHourAddItems');
@@ -501,6 +505,53 @@
                 result = Math.ceil(result_1_0) + Math.ceil(result_1_13) + Math.ceil(result_1_23) + Math.ceil(result_1_1);
 
                 return $scope.formatFloat(result, 0);
+            }
+
+            /**
+             * 顯示兌現單，目的找補休、特休兌換數
+             * @param user
+             */
+            function fetchExchangeData(userDID, year, month) {
+                var formData = {
+                    creatorDID: userDID,
+                    year: year,
+                    month: month,
+                }
+                WorkOffExchangeFormUtil.fetchExchangeItemsByYear(formData)
+                    .success(function (res) {
+
+                        res.payload = res.payload.sort(function (a, b) {
+                            return a._id > b._id ? 1 : -1;
+                        });
+
+                        var exchangeItems = res.payload;
+
+                        console.log(exchangeItems);
+
+                        $scope.exchange_special = 0.0;
+                        $scope.exchange_special_money = 0.0;
+                        $scope.exchange_observed = 0.0;
+                        $scope.exchange_observed_money = 0.0;
+                        for (var index = 0; index < exchangeItems.length; index ++) {
+                            if (exchangeItems[index].isConfirmed) {
+                                var salaryBase = Math.round(exchangeItems[index].userMonthSalary / 30 / 8);
+                                console.log(salaryBase);
+                                switch (exchangeItems[index].workOffType) {
+                                    case 2:
+                                        $scope.exchange_observed += parseFloat(exchangeItems[index].exchangeHour);
+                                        console.log(Math.ceil(parseFloat(exchangeItems[index].exchangeHour) * salaryBase));
+                                        $scope.exchange_observed_money += Math.ceil(parseFloat(exchangeItems[index].exchangeHour) * salaryBase);
+                                        break;
+                                    case 3:
+                                        $scope.exchange_special += parseFloat(exchangeItems[index].exchangeHour);
+                                        console.log(Math.ceil(parseFloat(exchangeItems[index].exchangeHour) * salaryBase));
+                                        $scope.exchange_special_money += Math.ceil(parseFloat(exchangeItems[index].exchangeHour) * salaryBase);
+                                        break;
+                                }
+                            }
+                        }
+
+                    })
             }
 
             $scope.showTotalWorkOffMoney_wage = function () {
@@ -769,6 +820,8 @@
                 var total_withholding =
                     // (isNaN(this.withholding_item_1) ? 0 : parseInt(this.withholding_item_1)) +
                     ($scope.showTotalOTMoney_wage() * 1) +
+                    + $scope.exchange_observed_money +
+                    $scope.exchange_special_money +
                     // (isNaN(this.withholding_item_2) ? 0 : parseInt(this.withholding_item_2)) +
                     (isNaN(this.withholding_item_3) ? 0 : parseInt(this.withholding_item_3)) +
                     (isNaN(this.withholding_item_4) ? 0 : parseInt(this.withholding_item_4)) +
