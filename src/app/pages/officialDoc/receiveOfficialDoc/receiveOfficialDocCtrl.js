@@ -59,7 +59,7 @@
                     thumbnailWidth: 120,
                     maxFilesize: 5, // MB
                     filesizeBase: 1000,
-                    acceptedFiles: ".pdf",
+                    acceptedFiles: ".pdf, .jpg, .jpeg",
                     thumbnail: function (file, dataUrl) {
                         if (file.previewElement) {
                             file.previewElement.classList.remove("dz-file-preview");
