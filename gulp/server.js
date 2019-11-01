@@ -38,8 +38,8 @@ function browserSyncInit(baseDir, browser) {
   var proxy = require('http-proxy-middleware')
 
   var proxyTableAPI = {
-      'localhost:3000/api': 'http://localhost:8000',
-      '172.20.10.3:3000/api': 'http://localhost:8000'
+      'localhost:4009/api': 'http://localhost:17988',
+      '172.20.10.3:4009/api': 'http://localhost:17988'
   }
   // 设置代理
   var apiProxy = proxy('/api', {
@@ -57,7 +57,8 @@ function browserSyncInit(baseDir, browser) {
     server: server,
     browser: browser,
     ghostMode: false,
-    middleware: [apiProxy]
+    middleware: [apiProxy],
+    port: 4009
   });
 }
 
