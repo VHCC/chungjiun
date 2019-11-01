@@ -165,6 +165,11 @@ global.apiUrl = {
     //
     post_official_doc_create_item : '/api/post_official_doc_create_item',
 
+    // DNS
+    post_dns_upload_file : '/api/post_dns_upload_file',
+    get_dns_check_server_status : '/api/get_dns_check_server_status',
+
+
     // OfficialDocVendorUtil
     get_fetch_official_doc_vendor : '/api/get_fetch_official_doc_vendor',
     post_insert_official_doc_vendor : '/api/post_insert_official_doc_vendor',
