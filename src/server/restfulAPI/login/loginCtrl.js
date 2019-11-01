@@ -70,7 +70,7 @@
 
                         console.log('cookies.username= ' + cookies.username);
                         console.log('cookies.username= ' + cookies.get('username'));
-                        window.location.href = 'http://localhost:4009';
+                        window.location.href = 'https://dns.ichenprocin.dsmynas.com';
 
                         scope.todos = data; // assign our new list of todos
                     })
