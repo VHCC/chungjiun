@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var localDB = 'mongodb://192.168.1.151:27017/dnsgame';
-var remoteDB = 'mongodb://ichenprocin.dsmynas.com:27017/workhourexpress';
+var remoteDB = 'mongodb://ichenprocin.dsmynas.com:27017/dnsgame';
 
 module.exports = {
     remoteUrl: remoteDB,
