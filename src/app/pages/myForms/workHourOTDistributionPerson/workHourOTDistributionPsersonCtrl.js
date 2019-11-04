@@ -286,7 +286,8 @@
                     result_1_1 += $scope.workAddConfirmTablesItems[index].dis_1_1 * salaryBase * (2);
                 }
 
-                result = Math.ceil(result_1_0) + Math.ceil(result_1_13) + Math.ceil(result_1_23) + Math.ceil(result_1_1);
+                // result = Math.ceil(result_1_0) + Math.ceil(result_1_13) + Math.ceil(result_1_23) + Math.ceil(result_1_1);
+                result = Math.ceil(result_1_0 + result_1_13 + result_1_23 + result_1_1);
 
 
                 return $scope.formatFloat(result, 0);
