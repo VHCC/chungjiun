@@ -576,15 +576,15 @@
 
                         switch ($scope.specificUserWorkOffItems[index].workOffType) {
                             case 0: // *1
-                                result += Math.ceil(parseFloat(hour) * salaryBase * 1);
+                                result += parseFloat(hour) * salaryBase * 1;
                                 break;
                             case 1: // *0.5
-                                result += Math.ceil(parseFloat(hour) * salaryBase * 0.5);
+                                result += parseFloat(hour) * salaryBase * 0.5;
                                 break;
                         }
                     }
                 }
-                return result
+                return Math.ceil(result)
             }
 
             //小數點2
