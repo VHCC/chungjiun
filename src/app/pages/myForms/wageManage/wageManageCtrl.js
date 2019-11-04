@@ -502,7 +502,10 @@
                     result_1_1 += $scope.workAddConfirmTablesItems[index].dis_1_1 * salaryBase * (2);
                 }
 
-                result = Math.ceil(result_1_0) + Math.ceil(result_1_13) + Math.ceil(result_1_23) + Math.ceil(result_1_1);
+                // result = Math.ceil(result_1_0) + Math.ceil(result_1_13) + Math.ceil(result_1_23) + Math.ceil(result_1_1);
+                result = Math.ceil(result_1_0 + result_1_13 + result_1_23 + result_1_1);
+
+                console.log(result)
 
                 return $scope.formatFloat(result, 0);
             }
@@ -562,11 +565,14 @@
                     for (var index = 0; index < $scope.specificUserWorkOffItems.length; index ++) {
 
                         var salaryBase = Math.round($scope.specificUserWorkOffItems[index].userMonthSalary / 30 / 8);
+                        console.log("userMonthSalary= " + $scope.specificUserWorkOffItems[index].userMonthSalary + ", salaryBase= " + salaryBase);
 
                         var hour = $scope.getHourDiffByTime(
                             $scope.specificUserWorkOffItems[index].start_time,
                             $scope.specificUserWorkOffItems[index].end_time,
                             $scope.specificUserWorkOffItems[index].workOffType)
+
+                        console.log("workOffType= " + $scope.specificUserWorkOffItems[index].workOffType + ", hour= " + hour);
 
                         switch ($scope.specificUserWorkOffItems[index].workOffType) {
                             case 0: // *1

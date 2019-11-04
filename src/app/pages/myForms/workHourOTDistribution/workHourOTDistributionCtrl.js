@@ -275,17 +275,24 @@
 
                 for (var index = 0; index < $scope.workAddConfirmTablesItems.length; index ++) {
                     var salaryBase =  Math.round($scope.workAddConfirmTablesItems[index].userMonthSalary / 30 / 8);
-                    // console.log(salaryBase);
+                    console.log(salaryBase);
                     result_1_0 += $scope.workAddConfirmTablesItems[index].dis_1_0 * salaryBase * 1;
                     result_1_13 += $scope.workAddConfirmTablesItems[index].dis_1_13 * salaryBase * (4/3);
                     result_1_23 += $scope.workAddConfirmTablesItems[index].dis_1_23 * salaryBase * (5/3);
                     result_1_1 += $scope.workAddConfirmTablesItems[index].dis_1_1 * salaryBase * (2);
                 }
 
-                result = Math.ceil(result_1_0) + Math.ceil(result_1_13) + Math.ceil(result_1_23) + Math.ceil(result_1_1);
+                // result = Math.ceil(result_1_0) + Math.ceil(result_1_13) + Math.ceil(result_1_23) + Math.ceil(result_1_1);
+                result = Math.ceil(result_1_0 + result_1_13 + result_1_23 + result_1_1);
 
-
+                console.log(result);
                 return $scope.formatFloat(result, 0);
+            }
+
+            //小數點2
+            $scope.formatFloat = function (num, pos) {
+                var size = Math.pow(10, pos);
+                return Math.round(num * size) / size;
             }
 
             // 顯示分配
