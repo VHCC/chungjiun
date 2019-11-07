@@ -37,7 +37,7 @@ require('./restfulAPI/lineNotify/auth/auth.route')(app);
 require('./restfulAPI/notificationMsg/notificationMsg.route')(app);
 
 // dns
-require('./restfulAPI/dns/dns.routes')(app);
+require('./restfulAPI/dns/dnsGameRoom.routes')(app);
 require('./restfulAPI/dns/dnsGoogleDrive.routes')(app);
 require('./restfulAPI/dns/dnsChain.routes')(app);
 

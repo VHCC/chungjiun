@@ -8,15 +8,20 @@ module.exports = mongoose.model('dnsGameChain', {
         type: String
     },
 
+    creator: {
+        type: String,
+    },
+
     playerChained: {
         type: Array
     },
 
     resultsChained: {
-        type: Array
+        type: Array,
+        default: []
     },
 
-    subJect: {
+    subject: {
         type: String
     },
 
