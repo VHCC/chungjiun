@@ -66,6 +66,24 @@ function createDNSCloudFolder(auth, targetFolderName, folderID, callback) {
     });
 }
 
+function getCloudFile(auth, fileID, callback) {
+    const drive = google.drive({version: 'v3', auth});
+    drive.files.get({
+            fileId: fileID,
+            fields: 'thumbnailLink, name'
+            // fields: '*'
+        }, function(err, res){
+            if (err) {
+                // Handle error
+                console.error(err);
+            } else {
+                // console.log(res.data);
+                callback(res.data);
+            }
+        }
+    );
+}
+
 /**
  * Lists the names and IDs of up to 10 files.
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
@@ -136,8 +154,6 @@ function getDriveFolderID(auth, targetFolderName, callback) {
     });
 }
 
-
-
 var fileName;
 
 module.exports = function (app) {
@@ -175,27 +191,36 @@ module.exports = function (app) {
     // test
     app.get(global.apiUrl.get_dns_google_drive_test, function (req, res) {
 
-        var folderName = "QQ123Q";
+        var fileID = "1dY0f6-lELIweHYtZISKbY6ahtjvX7gD7";
+        getCloudFile(oAuth2Client, fileID, function (resData) {
+            console.log(resData);
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+                fileName: resData.name,
+                fileUrl: resData.thumbnailLink
+            });
+        })
+    })
 
+    // get folder id by specific folder name
+    app.get(global.apiUrl.post_dns_google_drive_get_folder_id, function (req, res) {
+        var folderName = req.body.folderName;
         getDriveFolderID(oAuth2Client, folderName, function (folderID) {
             console.log("folderName: " + folderName + ", folderID: " + folderID);
             res.status(200).send({
                 code: 200,
                 error: global.status._200,
+                folderName: folderName,
                 folderID: folderID
             });
         })
     })
 
-    // create folder
-    app.get(global.apiUrl.post_dns_google_drive_create_folder, function (req, res) {
-        console.log(req.body);
-        getDriveFolderID(oAuth2Client);
-        res.status(200).send({
-            code: 200,
-            error: global.status._200,
-        });
-    })
+    // get file
+    // post_dns_google_drive_get_file
+
+
 
 }
 
