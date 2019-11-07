@@ -6,7 +6,7 @@ module.exports = mongoose.model('dnsPlayRoom', {
 
     // 填文人
     roomOwner: {
-        type: String,
+        type: Array,
         required: true,
     },
 
@@ -19,15 +19,25 @@ module.exports = mongoose.model('dnsPlayRoom', {
         type: Array
     },
 
+    difficulty: {
+        type: Number
+    },
+
+    isAdult: {
+        type: Boolean,
+        default: false
+    },
+
     joinNumber: {
         type: String,
         require: true
     },
 
-    // 1: ready to join
-    // 2: playing
-    // 3: closed
-    // 4: game-over
+    // 1: setting
+    // 2: ready to play
+    // 3: playing
+    // 4: closed
+    // 5: game-over
     roomStatus: {
         type: Number,
         default: 1

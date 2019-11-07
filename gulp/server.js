@@ -40,7 +40,8 @@ function browserSyncInit(baseDir, browser) {
   var proxyTableAPI = {
       'localhost:4009/api': 'http://localhost:17988',
       '172.20.10.3:4009/api': 'http://localhost:17988',
-      '172.22.212.168:4009/api': 'http://localhost:17988',
+      '172.22.212.159:4009/api': 'http://localhost:17988',
+      '192.168.1.105:4009/api': 'http://localhost:17988',
   }
   // 设置代理
   var apiProxy = proxy('/api', {

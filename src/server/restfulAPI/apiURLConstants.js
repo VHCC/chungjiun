@@ -166,14 +166,19 @@ global.apiUrl = {
     post_official_doc_create_item : '/api/post_official_doc_create_item',
 
     // DNS
-    post_dns_upload_file : '/api/post_dns_upload_file',
     get_dns_check_server_status : '/api/get_dns_check_server_status',
     post_dns_create_game_room : '/api/post_dns_create_game_room',
-    post_dns_update_game_room_status : '/api/post_dns_update_game_room_status',
     post_dns_join_game_room : '/api/post_dns_join_game_room',
     post_dns_quit_game_room : '/api/post_dns_quit_game_room',
     post_dns_check_room_owner : '/api/post_dns_check_room_owner',
+    post_dns_fetch_room_info : '/api/post_dns_fetch_room_info',
+    post_dns_update_room_status : '/api/post_dns_update_room_status',
 
+
+    // DNS Google Drive
+    post_dns_google_drive_upload_file : '/api/post_dns_google_drive_upload_file',
+    get_dns_google_drive_test : '/api/get_dns_google_drive_test',
+    post_dns_google_drive_create_folder : '/api/post_dns_google_drive_create_folder',
 
     // OfficialDocVendorUtil
     get_fetch_official_doc_vendor : '/api/get_fetch_official_doc_vendor',
