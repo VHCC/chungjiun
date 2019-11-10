@@ -4,7 +4,7 @@ var moment = require('moment');
 // 收文、發文項目
 module.exports = mongoose.model('dnsGameChain', {
 
-    roomID: {
+    chainID: {
         type: String
     },
 
@@ -31,7 +31,6 @@ module.exports = mongoose.model('dnsGameChain', {
 
     timestamp: {
         type : String,
-        default: moment(new Date()).format("YYYYMMDD_HHmmss")
     },
 
 

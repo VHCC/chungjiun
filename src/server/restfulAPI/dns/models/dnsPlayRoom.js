@@ -19,6 +19,10 @@ module.exports = mongoose.model('dnsPlayRoom', {
         type: Array
     },
 
+    playOrders: {
+        type:Array
+    },
+
     difficulty: {
         type: Number
     },
@@ -45,7 +49,6 @@ module.exports = mongoose.model('dnsPlayRoom', {
 
     timestamp: {
         type : String,
-        default: moment(new Date()).format("YYYYMMDD_HHmmss")
     },
 
 

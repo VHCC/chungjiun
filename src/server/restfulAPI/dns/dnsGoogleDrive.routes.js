@@ -21,10 +21,11 @@ fs.readFile('credentials.json', (err, content) => {
 /**
  * Describe with given media and metaData and upload it using google.drive.create method()
  */
-function uploadFile(auth) {
+function uploadFile(auth, folderID, callback) {
     const drive = google.drive({version: 'v3', auth});
     const fileMetadata = {
-        'name': fileName
+        'name': fileName,
+        parents: [folderID],
     };
     const media = {
         mimeType: 'image/jpeg',
@@ -40,6 +41,7 @@ function uploadFile(auth) {
             console.error(err);
         } else {
             console.log('File Id: ' + file.data.id);
+            return callback(file.data.id);
         }
     });
 }
@@ -177,11 +179,14 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_dns_google_drive_upload_file,
         upload.single('file'),
         function (req, res) {
-            uploadFile(oAuth2Client);
 
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
+            console.log(req.body);
+            uploadFile(oAuth2Client, req.body.folderID, function (callback) {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: callback,
+                });
             });
             // req.file is the `avatar` file
             // req.body will hold the text fields, if there were any
@@ -204,7 +209,8 @@ module.exports = function (app) {
     })
 
     // get folder id by specific folder name
-    app.get(global.apiUrl.post_dns_google_drive_get_folder_id, function (req, res) {
+    app.post(global.apiUrl.post_dns_google_drive_get_folder_id, function (req, res) {
+        console.log(req.body);
         var folderName = req.body.folderName;
         getDriveFolderID(oAuth2Client, folderName, function (folderID) {
             console.log("folderName: " + folderName + ", folderID: " + folderID);
@@ -219,7 +225,21 @@ module.exports = function (app) {
 
     // get file
     // post_dns_google_drive_get_file
+    app.post(global.apiUrl.post_dns_google_drive_get_file, function (req, res) {
 
+        console.log(req.body);
+
+        var fileID = req.body.fileID;
+        getCloudFile(oAuth2Client, fileID, function (resData) {
+            console.log(resData);
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+                fileName: resData.name,
+                fileUrl: resData.thumbnailLink
+            });
+        })
+    })
 
 
 }
