@@ -173,6 +173,7 @@ global.apiUrl = {
     post_dns_check_room_owner : '/api/post_dns_check_room_owner',
     post_dns_fetch_room_info : '/api/post_dns_fetch_room_info',
     post_dns_update_room_status : '/api/post_dns_update_room_status',
+    post_dns_make_random_orders_participants : '/api/post_dns_make_random_orders_participants',
 
     // DNS Google Drive
     post_dns_google_drive_upload_file : '/api/post_dns_google_drive_upload_file',
@@ -180,8 +181,13 @@ global.apiUrl = {
     post_dns_google_drive_get_folder_id : '/api/post_dns_google_drive_get_folder_id',
     post_dns_google_drive_get_file : '/api/post_dns_google_drive_get_file',
 
-    //DNS Game Chain
+    // DNS Game Chain
     post_dns_game_chain_create_game_chain : '/api/post_dns_game_chain_create_game_chain',
+    post_dns_game_chain_get_game_chain_info : '/api/post_dns_game_chain_get_game_chain_info',
+    post_dns_game_chain_update_game_chain : '/api/post_dns_game_chain_update_game_chain',
+
+    // DNS Subject
+    post_dns_game_subject_get : '/api/post_dns_game_subject_get',
 
     // OfficialDocVendorUtil
     get_fetch_official_doc_vendor : '/api/get_fetch_official_doc_vendor',

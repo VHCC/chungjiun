@@ -7,7 +7,7 @@ var fReadName = '../HR/CARD/' + fileDate + '.txt';
 
 var fRead = fs.createReadStream(fReadName);
 
-var hrMAchineModel = require('../server/restfulAPI/models/hrMachine')(fileDate);
+var hrMachineModel = require('../server/restfulAPI/models/hrMachine')(fileDate);
 
 try {
     var fileContents = fs.readFileSync(fReadName);
@@ -24,7 +24,7 @@ fs.readFile(fReadName, function (err, data) {
     }
     console.log("Readline start !!!, " + fileDate);
 
-    hrMAchineModel.remove({
+    hrMachineModel.remove({
     }, function (err) {
         if (err) {
             res.send(err);
@@ -64,7 +64,7 @@ fs.readFile(fReadName, function (err, data) {
                     break;
             }
         }
-        hrMAchineModel.create({
+        hrMachineModel.create({
             location: tempObject.location,
             did: tempObject.did,
             date: tempObject.date,

@@ -40,5 +40,6 @@ require('./restfulAPI/notificationMsg/notificationMsg.route')(app);
 require('./restfulAPI/dns/dnsGameRoom.routes')(app);
 require('./restfulAPI/dns/dnsGoogleDrive.routes')(app);
 require('./restfulAPI/dns/dnsChain.routes')(app);
+require('./restfulAPI/dns/dnnSubject.routes')(app);
 
 

@@ -28,6 +28,7 @@ module.exports = function (app) {
                 isAdult: req.body.isAdult,
                 joinNumber: Math.floor(100000 + Math.random() * 900000),
                 participants: participants,
+                timestamp: moment(new Date()).format("YYYYMMDD_HHmmss"),
             },
             function (err, room) {
                 if (err) {
@@ -183,10 +184,78 @@ module.exports = function (app) {
                     res.status(200).send({
                         code: 200,
                         error: global.status._200,
-                        payload: room
+                        payload: req.body.roomStatus
                     });
                 }
             })
     })
 
+    // make random orders of participants
+    app.post(global.apiUrl.post_dns_make_random_orders_participants, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_dns_make_random_orders_participants");
+        console.log(req.body);
+
+        DNSPlayRoom.findOne(
+            {
+                joinNumber: req.body.joinNumber
+            }, function (err, room) {
+                var results = shuffle(room.participants);
+
+                DNSPlayRoom.updateOne(
+                    {
+                        joinNumber: req.body.joinNumber
+                    }, {
+                        $set: {
+                            playOrders: results,
+                        }
+                    }, function (err) {
+                        if (err) {
+                            console.log(global.timeFormat(new Date()) + global.log.e + "API, post_dns_make_random_orders_participants");
+                            console.log(req.body);
+                            console.log(" ***** ERROR ***** ");
+                            console.log(err);
+                            res.send(err);
+                        } else {
+                            DNSPlayRoom.findOne(
+                                {
+                                    joinNumber: req.body.joinNumber
+                                }, function (err, room) {
+                                    if (err) {
+                                        console.log(global.timeFormat(new Date()) + global.log.e + "API, post_dns_make_random_orders_participants");
+                                        console.log(req.body);
+                                        console.log(" ***** ERROR ***** ");
+                                        console.log(err);
+                                        res.send(err);
+                                    } else {
+                                        res.status(200).send({
+                                            code: 200,
+                                            error: global.status._200,
+                                            payload: room
+                                        });
+                                    }
+                                })
+                        }
+                    })
+            })
+    })
+
+}
+
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
 }
