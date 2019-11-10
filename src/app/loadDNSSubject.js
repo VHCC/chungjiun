@@ -2,7 +2,7 @@ var fs = require('fs');
 var readline = require('readline');
 var moment = require('moment');
 
-const dnsRawFolder = './dnsRaw/';
+var dnsRawFolder = './dnsRaw/';
 
 var dnsSubjectModel = require('../server/restfulAPI/dns/models/dnsSubject')();
 
@@ -13,9 +13,9 @@ dnsSubjectModel.remove({
         }
     })
 
-fs.readdir(dnsRawFolder, (err, files) => {
-    files.forEach(file => {
-        console.log(file);
+fs.readdir(dnsRawFolder, function (err, files) {
+    files.forEach(function(file) {
+        console.log("file= " + file);
 
         var fileName = file;
         var fReadName = './dnsRaw/' + fileName;
