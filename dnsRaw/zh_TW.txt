@@ -12,8 +12,8 @@
 4,false,醫生,zh_TW
 5,false,正妹,zh_TW
 0,true,手牽手,zh_TW
-1,true,舌吻,zh_TW
-2,true,老漢推車,zh_TW
-3,true,一柱擎天,zh_TW
-4,true,我還要,zh_TW
-5,true,車陣,zh_TW
+2,true,射你滿臉,zh_TW
+2,true,一柱擎天,zh_TW
+2,true,一夜三次,zh_TW
+2,true,尻一發,zh_TW
+2,true,早洩,zh_TW
