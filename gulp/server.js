@@ -38,7 +38,8 @@ function browserSyncInit(baseDir, browser) {
   var proxy = require('http-proxy-middleware')
 
   var proxyTableAPI = {
-       'dns.ichenprocin.dsmynas.com/api': 'http://192.168.1.151:17988'
+       'dns.ichenprocin.dsmynas.com/api': 'http://192.168.1.151:17988',
+       'dns.ichenprocin.dsmynas.com/appmetrics-dash': 'http://192.168.1.151:17988'
   }
   // 设置代理
   var apiProxy = proxy('/api', {
@@ -46,7 +47,8 @@ function browserSyncInit(baseDir, browser) {
       changeOrigin: true,
       logLevel: 'info',
       pathRewrite: {
-          '^/api' : '/api'
+          '^/api' : '/api',
+          '^/appmetrics-dash' : '/appmetrics-dash'
       },
       router: proxyTableAPI,
   });
