@@ -54,7 +54,9 @@
     "wrench": "~1.5.8"
   },
   "scripts": {
-    "postinstall": "bower install"
+    "postinstall": "bower install",
+    "dev": "pandora dev",
+    "stop": "pandora stop"
   },
   "repository": {
     "type": "git",
@@ -63,8 +65,12 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
+    "appmetrics-dash": "^5.2.0",
     "bower": "^1.8.4",
     "connect-timeout": "^1.9.0",
-    "googleapis": "^39.2.0"
+    "googleapis": "^39.2.0",
+    "express-status-monitor": "^1.2.7",
+    "pandora": "^1.10.6",
+    "pandora-dashboard": "^1.0.14"
   }
 }
