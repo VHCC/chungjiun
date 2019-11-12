@@ -109,7 +109,7 @@
                             return a._id > b._id ? 1 : -1;
                         });
 
-                        console.log(res.payload);
+                        // console.log(res.payload);
 
                         var arrayResult = res.payload;
 
@@ -1098,7 +1098,7 @@
                 }
 
                 if (result != undefined) {
-                    console.log(result);
+                    // console.log(result);
                     return result;
                 } else {
                     return undefined;
