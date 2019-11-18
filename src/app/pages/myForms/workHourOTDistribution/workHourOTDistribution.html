@@ -40,6 +40,15 @@
             </button>
         </div>
 
+        <div class="col-md-12">
+            <button type="button" class="btn btn-default"
+                    id="modifiedSalaryBtn"
+                    ng-click="changeSalary_All()">
+                修正月薪為:{{workHourOTDistributionCtrlVm.workAdd.selected.userMonthSalary}}
+            </button>
+            <br>
+        </div>
+
         <!--<div class="col-md-12" id="includeHead">-->
         <!--</div>-->
 
@@ -71,6 +80,7 @@
                 <th style="vertical-align: inherit; text-align: center" width="100px">1 + 1</th>
                 <th style="vertical-align: inherit; text-align: center" width="100px">加班時數</th>
                 <th style="vertical-align: inherit; text-align: center" width="100px">換休時數</th>
+                <th style="vertical-align: inherit; text-align: center" width="30px">加班單月薪</th>
                 <!--<th style="vertical-align: inherit; text-align: center" width="30px">填表時月薪</th>-->
             </tr>
             </thead>
@@ -151,6 +161,13 @@
                 <!--<td style="text-align: center">-->
                     <!--{{table_add.userMonthSalary}}-->
                 <!--</td>-->
+                <!--加班單月薪-->
+                <td style="vertical-align: inherit;">
+                    <my >
+                        {{table_add.userMonthSalary}}
+                    </my>
+
+                </td>
             </tr>
             </tbody>
 

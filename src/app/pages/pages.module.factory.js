@@ -496,6 +496,10 @@
 
                 updateWorkAddItemsMonthSalary: function (formData) {
                     return http.post('/api/post_work_hour_work_add_month_salary_update', formData);
+                },
+
+                updateWorkAddItemsMonthSalaryAll: function (formData) {
+                    return http.post('/api/post_work_hour_work_add_month_salary_update_all', formData);
                 }
 
 
