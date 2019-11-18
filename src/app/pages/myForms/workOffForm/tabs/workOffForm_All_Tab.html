@@ -46,6 +46,7 @@
 
         <div class="col-md-12">
             <button type="button" class="btn btn-default"
+                    ng-show="workOffFormCtrlVm.userReview.selected !== undefined"
                     id="modifiedSalaryBtn"
                     ng-click="modifiedSalary()">
                 修正月薪為:{{workOffFormCtrlVm.userReview.selected.userMonthSalary}}
