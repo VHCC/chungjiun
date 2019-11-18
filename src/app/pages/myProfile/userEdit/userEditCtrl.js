@@ -48,6 +48,7 @@
         User.findUserByUserDID(formData)
             .success(function (user) {
                 $scope.password = user.password;
+                $scope.userMonthSalary = user.userMonthSalary;
             })
 
         var filename = $filter('userAvatar')(cookies.get('userDID'));
