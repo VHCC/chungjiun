@@ -8,6 +8,7 @@
             <th style="width: 10%">時間</th>
             <th style="width: 5%">休假時數</th>
             <!--<th style="width: 5%">年度累積</th>-->
+            <th style="width: 5%">本月月薪</th>
         </tr>
 
         </thead>
@@ -33,6 +34,8 @@
             <td style="width: 5%">{{getHourDiffByTime(tableItem.start_time, tableItem.end_time, tableItem.workOffType)}}</td>
             <!--年度累積-->
             <!--<td class="select-td" style="width: 5%">-->
+            <!--該月月薪-->
+            <td class="select-td" style="width: 5%">{{tableItem.userMonthSalary}}</td>
         </tr>
         </tbody>
         <tfoot>

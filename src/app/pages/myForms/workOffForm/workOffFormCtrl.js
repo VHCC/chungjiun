@@ -95,6 +95,7 @@
             $scope.username = cookies.get('username');
             $scope.userDID = cookies.get('userDID');
             $scope.roleType = cookies.get('roletype');
+            $scope.userMonthSalary = cookies.get('userMonthSalary');
 
             // 行政總管、經理專屬，主任無權
             if ($scope.roleType == 100 || $scope.roleType == 2) {
@@ -1615,6 +1616,8 @@
 
             $scope.changeWorkOffHistoryMonth = function(changeCount, dom) {
 
+                document.getElementById('modifiedSalaryBtn').style.display="block";
+
                 bsLoadingOverlayService.start({
                     referenceId: 'allHistory_workOff'
                 });
@@ -1750,6 +1753,9 @@
 
             $scope.initWorkOffMonthCheck = function (specificUser) {
                 console.log(specificUser);
+
+                document.getElementById('modifiedSalaryBtn').style.display="none";
+
                 bsLoadingOverlayService.start({
                     referenceId: 'allHistory_workOff'
                 });
@@ -1845,6 +1851,79 @@
                     .success(function (res) {
                         workOffTables.splice(index, 1);
                     })
+            }
+
+            $scope.modifiedSalary = function () {
+                console.log($scope.workOffTables);
+                console.log($scope.monthPicker);
+
+                // $scope.monthPicker = dom;
+
+                document.getElementById('includeHead').innerHTML = "";
+
+                // console.log("dom.myMonth= " + $scope.monthPicker.myMonth);
+
+                var year = parseInt($scope.monthPicker.myDT.year()) - 1911;
+                var month = parseInt($scope.monthPicker.myDT.month()) + 1;
+
+                var formData = {
+                    creatorDID: vm.userSelected == undefined ? $scope.userDID : vm.userSelected._id,
+                    year: year,
+                    month: month,
+                    isSendReview: true,
+                    isBossCheck: true,
+                    isExecutiveCheck: true,
+                    userMonthSalary: $scope.userMonthSalary
+                }
+                console.log(formData);
+                WorkOffFormUtil.updateWorkOffTableSalary(formData)
+                    .success(function (res) {
+                        // console.log(res);
+
+                        bsLoadingOverlayService.start({
+                            referenceId: 'allHistory_workOff'
+                        });
+
+                        // console.log(formData);
+                        WorkOffFormUtil.findWorkOffTableFormByUserDID(formData)
+                            .success(function (workOffTables) {
+                                // console.log(workOffTables.payload);
+                                $scope.workOffTables = workOffTables.payload;
+                                angular.element(
+                                    document.getElementById('includeHead'))
+                                    .append($compile(
+                                        "<div ba-panel ba-panel-title=" +
+                                        "'" + (vm.userSelected == undefined ? $scope.username : vm.userSelected.name) + " "+ year + "年" +
+                                        month + "月" +
+                                        "請假單列表 - " + workOffTables.payload.length + "'" +
+                                        "ba-panel-class= " +
+                                        "'with-scroll'" + ">" +
+                                        "<div " +
+                                        "ng-include=\"'app/pages/myForms/workOffForm/tabs/workOffForm_AllHistory.html'\">" +
+                                        "</div>" +
+                                        "</div>"
+                                    )($scope));
+
+                                $timeout(function () {
+                                    bsLoadingOverlayService.stop({
+                                        referenceId: 'allHistory_workOff'
+                                    });
+                                } ,300);
+
+                            })
+                            .error(function () {
+                                $timeout(function () {
+                                    bsLoadingOverlayService.stop({
+                                        referenceId: 'allHistory_workOff'
+                                    });
+                                }, 500)
+                                console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByUserDID');
+                                toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
+                            });
+
+
+                    })
+
             }
 
 

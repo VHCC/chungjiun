@@ -364,6 +364,65 @@ module.exports = function (app) {
         });
     })
 
+    // 20191118 add
+    app.post(global.apiUrl.post_work_off_table_update_salary, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_update_salary");
+        console.log(JSON.stringify(req.body));
+        var query = {};
+        if (req.body.month !== null) {
+            query.month = req.body.month;
+        }
+
+        if (req.body.year !== null) {
+            query.year = req.body.year;
+        }
+
+        // if (req.body.isSendReview !== null) {
+        //     query.isSendReview = req.body.isSendReview;
+        // }
+        //
+        // if (req.body.isBossCheck !== null) {
+        //     query.isBossCheck = req.body.isBossCheck;
+        // }
+        //
+        // if (req.body.isExecutiveCheck !== null) {
+        //     query.isExecutiveCheck = req.body.isExecutiveCheck;
+        // }
+
+        query.creatorDID = req.body.creatorDID;
+        query.isSendReview = true;
+        query.isBossCheck = true;
+        query.isExecutiveCheck = true;
+
+        console.log(query);
+
+        WorkOffTableForm.updateMany({
+            creatorDID: req.body.creatorDID,
+            year: req.body.year,
+            month: req.body.month,
+            isSendReview: true,
+            isBossCheck: true,
+            isExecutiveCheck: true,
+        }, {
+            $set: {
+                userMonthSalary: req.body.userMonthSalary
+            }
+        }, function (err, result) {
+            console.log(result);
+            if (err) {
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload:result
+                });
+            }
+        })
+    })
+
+
+
     // 20190201 add
     // find table by creatorDID
     app.post(global.apiUrl.post_work_off_table_find_by_user_did, function (req, res) {
@@ -416,6 +475,8 @@ module.exports = function (app) {
                 }
 
             });
+
+
     })
 
 }
