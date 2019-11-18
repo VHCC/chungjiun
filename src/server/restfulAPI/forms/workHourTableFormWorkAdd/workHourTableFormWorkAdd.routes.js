@@ -258,4 +258,31 @@ module.exports = function (app) {
             })
         }
     });
+
+
+    app.post(global.apiUrl.post_work_hour_work_add_month_salary_update_all, function (req, res) {
+        console.log(req.body);
+
+        WorkHourTableFormWorkAdd.updateMany({
+            creatorDID: req.body.creatorDID,
+            year: req.body.year,
+            month: req.body.month,
+            isExecutiveConfirm: true
+        }, {
+            $set: {
+                userMonthSalary: req.body.userMonthSalary,
+            }
+        }, function (err, results) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: results
+                });
+            }
+        })
+    });
+
 }

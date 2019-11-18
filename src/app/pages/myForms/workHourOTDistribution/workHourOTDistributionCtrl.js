@@ -275,7 +275,7 @@
 
                 for (var index = 0; index < $scope.workAddConfirmTablesItems.length; index ++) {
                     var salaryBase =  Math.round($scope.workAddConfirmTablesItems[index].userMonthSalary / 30 / 8);
-                    console.log(salaryBase);
+                    // console.log(salaryBase);
                     result_1_0 += $scope.workAddConfirmTablesItems[index].dis_1_0 * salaryBase * 1;
                     result_1_13 += $scope.workAddConfirmTablesItems[index].dis_1_13 * salaryBase * (4/3);
                     result_1_23 += $scope.workAddConfirmTablesItems[index].dis_1_23 * salaryBase * (5/3);
@@ -285,7 +285,7 @@
                 // result = Math.ceil(result_1_0) + Math.ceil(result_1_13) + Math.ceil(result_1_23) + Math.ceil(result_1_1);
                 result = Math.ceil(result_1_0 + result_1_13 + result_1_23 + result_1_1);
 
-                console.log(result);
+                // console.log(result);
                 return $scope.formatFloat(result, 0);
             }
 
@@ -337,6 +337,25 @@
                 WorkHourAddItemUtil.distributeWorkAdd(formData)
                     .success(function (res) {
                         console.log(res);
+                    })
+            }
+
+            $scope.changeSalary_All = function () {
+                // console.log($scope.workAddConfirmTablesItems);
+
+                var formData = {
+                    creatorDID: vm.workAdd.selected._id,
+                    year: specificYear,
+                    month: specificMonth,
+                    isExecutiveConfirm: true,
+                    userMonthSalary: vm.workAdd.selected.userMonthSalary
+                }
+
+                WorkHourAddItemUtil.updateWorkAddItemsMonthSalaryAll(formData)
+                    .success(function (res) {
+                        console.log(res);
+                        $scope.fetchWorkHourAdd_confirmed(vm.workAdd.selected, specificMonth);
+
                     })
             }
 
