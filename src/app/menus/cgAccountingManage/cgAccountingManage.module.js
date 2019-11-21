@@ -28,7 +28,7 @@
                     templateUrl: 'app/pages/myForms/paymentForm/paymentFormPage.html',
                     controller: 'paymentFormCtrl',
                     controllerAs: 'paymentFormCtrlVm',
-                    title: '墊付款[測試]',
+                    title: '墊付款',
                     sidebarMeta: {
                         order: global.pages.cgAccountingManage_paymentForm,
                     },
@@ -37,7 +37,7 @@
                 {
                     url: '/wageManagement',
                     templateUrl: 'app/pages/myForms/wageManage/wageManageHomePage.html',
-                    title: '公司行政[測試]',
+                    title: '薪資',
                     controller: 'wageManageCtrl',
                     controllerAs: 'wageManageCtrlVm',
                     sidebarMeta: {
