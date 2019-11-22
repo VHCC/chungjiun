@@ -21,7 +21,7 @@ fs.readFile('credentials.json', (err, content) => {
 /**
  * Describe with given media and metaData and upload it using google.drive.create method()
  */
-function uploadFile(auth, folderID, callback) {
+function uploadFile(auth, fileName, folderID, callback) {
     const drive = google.drive({version: 'v3', auth});
     const fileMetadata = {
         'name': fileName,
@@ -156,7 +156,7 @@ function getDriveFolderID(auth, targetFolderName, callback) {
     });
 }
 
-var fileName;
+// var fileName;
 
 module.exports = function (app) {
 
@@ -167,9 +167,9 @@ module.exports = function (app) {
             cb(null, dir)
         },
         filename: function (req, file, cb) {
-            fileName = req.body.name;
-            console.log("build Official Doc name: " + fileName);
-            cb(null, fileName);
+            // fileName = req.body.name;
+            console.log("build Official Doc name: " + req.body.name);
+            cb(null, req.body.name);
         }
     });
 
@@ -181,7 +181,7 @@ module.exports = function (app) {
         function (req, res) {
 
             console.log(req.body);
-            uploadFile(oAuth2Client, req.body.folderID, function (callback) {
+            uploadFile(oAuth2Client, req.body.name, req.body.folderID, function (callback) {
                 res.status(200).send({
                     code: 200,
                     error: global.status._200,

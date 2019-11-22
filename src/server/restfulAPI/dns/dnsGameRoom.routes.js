@@ -18,6 +18,8 @@ module.exports = function (app) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_dns_create_game_room");
         console.log(req.body);
 
+        req.body.roomOwner.status = 1;
+
         var participants = [req.body.roomOwner];
         var owner = [req.body.roomOwner];
         DNSPlayRoom.create(
@@ -94,6 +96,37 @@ module.exports = function (app) {
                         code: 200,
                         error: global.status._200,
                         payload: room
+                    });
+                }
+            })
+    })
+
+    // ready game Room
+    app.post(global.apiUrl.post_dns_ready_game_room, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_dns_ready_game_room");
+        console.log(req.body);
+
+        DNSPlayRoom.updateOne(
+            {
+                joinNumber: req.body.joinNumber,
+                "participants.email": req.body.player.email,
+            }, {
+                $set: {
+                    "participants.$.status": 2,
+                }
+            }, function (err, result) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_dns_ready_game_room");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    console.log(result);
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: result
                     });
                 }
             })

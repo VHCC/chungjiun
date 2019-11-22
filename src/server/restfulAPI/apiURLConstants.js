@@ -169,6 +169,7 @@ global.apiUrl = {
     get_dns_check_server_status : '/api/get_dns_check_server_status',
     post_dns_create_game_room : '/api/post_dns_create_game_room',
     post_dns_join_game_room : '/api/post_dns_join_game_room',
+    post_dns_ready_game_room : '/api/post_dns_ready_game_room',
     post_dns_quit_game_room : '/api/post_dns_quit_game_room',
     post_dns_check_room_owner : '/api/post_dns_check_room_owner',
     post_dns_fetch_room_info : '/api/post_dns_fetch_room_info',
