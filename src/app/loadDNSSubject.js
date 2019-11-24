@@ -58,34 +58,39 @@ fs.readdir(dnsRawFolder, function (err, files) {
 
             var index = 1;
             objReadline.on('line', function (line) {
+                console.log(line);
+
                 var tempObject = [];
-                for (var lineIndex = 0; lineIndex < line.split(',').length; lineIndex ++) {
-                    switch (lineIndex) {
-                        case 0:
-                            tempObject.difficulty = line.split(',')[lineIndex];
-                            break;
-                        case 1:
-                            tempObject.isAdult = line.split(',')[lineIndex];
-                            break;
-                        case 2:
-                            tempObject.content = line.split(',')[lineIndex];
-                            break;
-                        case 3:
-                            tempObject.locale = line.split(',')[lineIndex];
-                            break;
+                if (line != "") {
+                    for (var lineIndex = 0; lineIndex < line.split(',').length; lineIndex ++) {
+                        switch (lineIndex) {
+                            case 0:
+                                tempObject.difficulty = line.split(',')[lineIndex];
+                                break;
+                            case 1:
+                                tempObject.isAdult = line.split(',')[lineIndex];
+                                break;
+                            case 2:
+                                tempObject.content = line.split(',')[lineIndex];
+                                break;
+                            case 3:
+                                tempObject.locale = line.split(',')[lineIndex];
+                                break;
+                        }
                     }
+                    dnsSubjectModel.create({
+                        difficulty: tempObject.difficulty,
+                        isAdult: tempObject.isAdult,
+                        content: tempObject.content,
+                        locale: tempObject.locale,
+                    }, function (err) {
+                        if (err) {
+                            console.log("err= " + err);
+                            res.send(err);
+                        }
+                    })
                 }
-                dnsSubjectModel.create({
-                    difficulty: tempObject.difficulty,
-                    isAdult: tempObject.isAdult,
-                    content: tempObject.content,
-                    locale: tempObject.locale,
-                }, function (err) {
-                    if (err) {
-                        console.log("err= " + err);
-                        res.send(err);
-                    }
-                })
+
                 index ++;
             });
 

@@ -9,6 +9,10 @@ module.exports = function (app) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_dns_game_subject_get");
         console.log(req.body);
 
+        if (req.body.isAdult) {
+            req.body.difficulty = 0;
+        }
+
         DNSGameSubject.aggregate([
                 {
                     $match: {
