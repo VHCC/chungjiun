@@ -886,7 +886,6 @@
                 .success(function (res) {
                     console.log(" ======== users work off ======== ");
                     console.log(res.payload);
-                    console.log(" ======== users work off ======== ");
                     // 填入表單資訊
                     for (var index = 0; index < res.payload.length; index++) {
                         var detail = {
@@ -2535,11 +2534,23 @@
                 } else {
                     result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
                 }
+
+                console.log(result);
+
                 var resultFinal;
                 if (TimeUtil.getHour(start) <= 12 && TimeUtil.getHour(end) >= 13) {
-                    resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 1 : result -1;
+                    if (workOffType == 2) {
+                        resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 0.5 : result -1;
+                    } else {
+                        resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 1 : result -1;
+                    }
                 } else {
-                    resultFinal = result <= 1 ? 1 : result >= 8 ? 8 : result;
+                    if (workOffType == 2) {
+                        resultFinal = result < 1 ? 0.5 : result >= 8 ? 8 : result;
+                    } else {
+                        resultFinal = result < 1 ? 1 : result >= 8 ? 8 : result;
+                    }
+                    // resultFinal = result <= 1 ? 1 : result >= 8 ? 8 : result;
                 }
 
                 // 總攬
@@ -2548,6 +2559,8 @@
 
                     resultFinal = resultFinal <= 4 ? 4 : 8;
                 }
+
+                console.log(resultFinal);
 
                 return resultFinal;
 
