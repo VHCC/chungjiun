@@ -1,0 +1,33 @@
+<!doctype html>
+
+<!-- SET THE CONTROLLER -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-150100097-2"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-150100097-2');
+</script>
+<div class="col-md-12">
+    <div
+            ba-panel
+            ba-panel-title="公文列表"
+            ba-panel-class="with-scroll">
+        <div ng-include="'app/pages/officialDoc/listOfficialDoc/listOfficialDocTabHome.html'"></div>
+    </div>
+</div>
+
+<style>
+
+    tr {
+        color:black;
+    }
+
+    .row1 {
+        background: rgba(255, 209, 102, 0.41);
+    }
+
+</style>

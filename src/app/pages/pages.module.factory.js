@@ -189,6 +189,40 @@
                 createOfficialDocItem : function (formData) {
                     return http.post('/api/post_official_doc_create_item', formData);
                 },
+
+                fetchOfficialDocItem : function (formData) {
+                    return http.get('/api/get_official_doc_fetch_all_item');
+                },
+
+                getDocType: function (type) {
+                    switch (type) {
+                        case 0:
+                            return "函";
+                        case 1:
+                            return "會勘";
+                        case 2:
+                            return "開會";
+                    }
+                }
+            }
+        }])
+        .factory('OfficialDocVendorUtil', ['$http', function (http) {
+            return {
+                fetchOfficialDocVendor: function () {
+                    return http.get('/api/get_fetch_official_doc_vendor');
+                },
+
+                createOfficialDocVendor: function (formData) {
+                    return http.post('/api/post_insert_official_doc_vendor', formData);
+                },
+
+                updateOfficialDocVendor: function (formData) {
+                    return http.post('/api/post_update_official_doc_vendor', formData);
+                },
+
+                removeOfficialDocVendor: function (formData) {
+                    return http.post('/api/post_remove_official_doc_vendor', formData);
+                },
             }
         }])
         .factory('WageManageUtil', ['$http', function (http) {
@@ -525,25 +559,6 @@
                 },
                 loadHrMachineDataByDate: function (formData) {
                     return http.post('/api/post_load_hrmachine_data_by_date', formData);
-                },
-            }
-        }])
-        .factory('OfficialDocVendorUtil', ['$http', function (http) {
-            return {
-                fetchOfficialDocVendor: function () {
-                    return http.get('/api/get_fetch_official_doc_vendor');
-                },
-
-                createOfficialDocVendor: function (formData) {
-                    return http.post('/api/post_insert_official_doc_vendor', formData);
-                },
-
-                updateOfficialDocVendor: function (formData) {
-                    return http.post('/api/post_update_official_doc_vendor', formData);
-                },
-
-                removeOfficialDocVendor: function (formData) {
-                    return http.post('/api/post_remove_official_doc_vendor', formData);
                 },
             }
         }])

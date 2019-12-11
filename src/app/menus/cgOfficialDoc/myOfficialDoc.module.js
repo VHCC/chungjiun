@@ -25,8 +25,8 @@
             .state('cgOfficialDoc.officialDocList',
                 {
                     url: '/officialDocList',
-                    templateUrl: 'app/pages/myProject/listProjectAll/listProjectAll.html',
-                    controller: 'listOfficialDocCtrl',
+                    templateUrl: 'app/pages/officialDoc/listOfficialDoc/listOfficialDocHomePage.html',
+                    // controller: 'listOfficialDocCtrl',
                     title: '公文列表',
                     // accessLevel: [9999],
                     sidebarMeta: {
