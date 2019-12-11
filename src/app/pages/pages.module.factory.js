@@ -154,6 +154,7 @@
         }])
         .factory('OfficialDocUtil', ['$http', function (http) {
             return {
+                // 電子檔 pdf
                 uploadOfficialDocFile: function (uploadData) {
                     return http.post('/api/post_official_doc_upload_file', uploadData, {
                         transformRequest: angular.identity,
@@ -183,6 +184,10 @@
 
                 downloadOfficialDocFile : function (formData) {
                     return http.post('/api/post_official_doc_download_file', formData);
+                },
+
+                createPDFFolder : function (formData) {
+                  return http.post('/api/post_official_doc_rename_and_folder', formData);
                 },
 
                 // 公文

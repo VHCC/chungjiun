@@ -164,8 +164,10 @@ global.apiUrl = {
     post_official_doc_get_file : '/api/post_official_doc_get_file',
     post_official_doc_fetch_file : '/api/post_official_doc_fetch_file',
     post_official_doc_download_file : '/api/post_official_doc_download_file',
+    post_official_doc_rename_and_folder : '/api/post_official_doc_rename_and_folder',
     //
     post_official_doc_create_item : '/api/post_official_doc_create_item',
+    get_official_doc_fetch_all_item : '/api/get_official_doc_fetch_all_item',
 
     // OfficialDocVendorUtil
     get_fetch_official_doc_vendor : '/api/get_fetch_official_doc_vendor',
