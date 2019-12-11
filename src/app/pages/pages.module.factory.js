@@ -170,6 +170,7 @@
                     return http.post('/api/post_official_doc_delete_file', formData);
                 },
 
+                // Deprecated
                 detectOfficialDocFiles : function (formData) {
                     return http.post('/api/post_official_doc_detect_file', formData);
                 },

@@ -301,7 +301,7 @@
                     </div>
                 </section>
 
-                <div class="attachedzone" ng-init="fetchPDFFiles()">
+                <div class="attachedzone" ng-init="fetchPDFFiles()" ng-show="false">
 
                     <my ng-if="pdfList != undefined" ng-repeat="pdfItem in pdfList">
                         <div class="pdf-item" ng-click="showPDF(this)">

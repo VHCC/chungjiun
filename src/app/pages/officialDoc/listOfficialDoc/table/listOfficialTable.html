@@ -72,7 +72,8 @@
         <tr ng-repeat="item in officialDocItems" class="editable-tr-wrap"
             ng-class="{officialDocItem: hover}"
             ng-mouseover="hover = true"
-            ng-mouseleave="hover = false">
+            ng-mouseleave="hover = false"
+            ng-click="showOfficialDocInfo(item) && fetchPDFFiles()">
             <!--崇峻文號-->
             <td class="table-id" style="width: 10%">{{item.archiveNumber}}</td>
             <!--主旨-->
