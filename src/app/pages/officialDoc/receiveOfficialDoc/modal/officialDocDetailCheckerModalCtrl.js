@@ -34,12 +34,16 @@
         $scope.roleType = $cookies.get('roletype');
 
         $scope.docData._receiveDate = moment($scope.docData._receiveDate).format('YYYY/MM/DD');
+        $scope.docData._lastDate = moment($scope.docData._lastDate).format('YYYY/MM/DD');
         $scope.docData._dueDate = moment($scope.docData._dueDate).format('YYYY/MM/DD');
-        $scope.docData.creatorDID = $scope.userDID;
+
+        $scope.docData.creatorDID = $scope.userDID; // 收文人
 
         $scope.confirmCreateDoc = function () {
 
             var formData = $scope.docData;
+
+            console.log($scope.docData);
 
             OfficialDocUtil.createOfficialDocItem(formData)
                 .success(function (res) {

@@ -16,7 +16,7 @@
                     <span id="prjCode">{{$index + 1}}</span>
                     <button class="btn btn-danger editable-table-button btn-xs"
                             ng-show="vendor.isEnable"
-                            ng-click="removeVendorItem(vendor);">
+                            ng-click="removeVendorItemCheck(vendor);">
                         移除
                     </button>
                     <!--設定-->
@@ -35,7 +35,7 @@
                     <my ng-show="!vendor.isEnable">
                         <input type="text"
                                class="form-control"
-                               placeholder="機關名稱"
+                               placeholder="{{vendor.vendorName}}"
                                ng-model="vendorSetName"
                                style="color: #000000;">
                     </my>

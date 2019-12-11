@@ -49,7 +49,7 @@
         $scope.fetchVendor = function () {
             OfficialDocVendorUtil.fetchOfficialDocVendor()
                 .success(function (res) {
-                    console.log(res);
+                    // console.log(res);
                     $scope.officialDocVendors = res.payload;
                 })
                 .error(function (res) {
@@ -59,11 +59,11 @@
 
         $scope.addVendorItem = function () {
             var inserted = {
-                vendorName: "廠商名稱(預設)"
+                vendorName: "請輸入廠商名稱"
             };
             OfficialDocVendorUtil.createOfficialDocVendor(inserted)
                 .success(function (res) {
-                    console.log(res);
+                    // console.log(res);
                     $scope.fetchVendor();
                 })
                 .error(function (res) {
@@ -87,12 +87,25 @@
                 })
         }
 
+        // Remove Check
+        $scope.removeVendorItemCheck = function (item) {
+            $scope.checkText = '確定移除 ' + item.vendorName + "  ？";
+            $scope.checkingItem = item;
+            ngDialog.open({
+                template: 'app/pages/officialDoc/receiveOfficialDoc/modal/officialDocVendorDeleteModal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+
+        // 使用者確定移除發文機關項目
         $scope.removeVendorItem = function (item) {
             var formData = {
                 "_id": item._id,
             }
 
-            OfficialDocVendorUtil.updateOfficialDocVendor(formData)
+            OfficialDocVendorUtil.removeOfficialDocVendor(formData)
                 .success(function (res) {
                     $scope.fetchVendor();
                 })

@@ -4,7 +4,7 @@ var moment = require('moment');
 // 收文、發文項目
 module.exports = mongoose.model('officialDocItem', {
 
-    // 填文人
+    // 收文人（收發人員）
     creatorDID: {
         type: String,
         required: true,
@@ -28,30 +28,29 @@ module.exports = mongoose.model('officialDocItem', {
         required: true,
     },
 
-    // 來文日期
-    receiveDate: {
-        type: String,
-        required: true,
-    },
-
     // 專案ＤＩＤ
     prjDID: {
         type: String,
         required: true,
     },
 
-    // 處理期限 sendDate + 4
-    dueDate: {
+    // 來文日期
+    receiveDate: {
         type: String,
         required: true,
     },
 
-    // 處理期限 sendDate + 6
+    // 內部處理期限 receiveDate + 3
     lastDate: {
         type: String,
-        default: "",
     },
 
+    // 正本處理期限 (可以為空)
+    dueDate: {
+        type: String,
+    },
+
+    // 文負責人
     chargerDID: {
         type: String,
         required: true,
@@ -63,22 +62,19 @@ module.exports = mongoose.model('officialDocItem', {
         default: ""
     },
 
-    // 總收文號
+    // 崇峻文號
     archiveNumber: {
         type: String,
-        required: true,
     },
 
     // 文號字
-    _receiveType: {
+    receiveType: {
         type: String,
-        required: true,
     },
 
     // 文號編號
     receiveNumber: {
         type: String,
-        required: true,
     },
 
     // 文別

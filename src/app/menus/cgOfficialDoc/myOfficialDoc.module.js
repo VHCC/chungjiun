@@ -19,10 +19,10 @@
                     title: '公文管理',
                     sidebarMeta: {
                         icon: 'ion-compose',
-                        order: global.pages.cgKPI,
+                        order: global.pages.cgOfficialDoc,
                     },
                 })
-            .state('cgOfficialDoc.100',
+            .state('cgOfficialDoc.officialDocList',
                 {
                     url: '/officialDocList',
                     templateUrl: 'app/pages/myProject/listProjectAll/listProjectAll.html',
@@ -33,7 +33,7 @@
                         order: global.pages.cgOfficialDoc_list,
                     },
                 })
-            .state('cgOfficialDoc.200',
+            .state('cgOfficialDoc.officialDocReceive',
                 {
                     url: '/officialDocReceive',
                     templateUrl: 'app/pages/officialDoc/receiveOfficialDoc/receiveOfficialDocHomePage.html',
@@ -45,25 +45,25 @@
                         order: global.pages.cgOfficialDoc_receive,
                     },
                 })
-            .state('cgOfficialDoc.300',
+            .state('cgOfficialDoc.officialDocHandle',
                 {
-                    url: '/300',
+                    url: '/officialDocHandle',
                     templateUrl: 'app/pages/myNewPage/empty.html',
                     title: '公文辦理',
                     // accessLevel: [9999],
                     sidebarMeta: {
-                        order: global.pages.cgOfficialDoc_300,
+                        order: global.pages.cgOfficialDoc_handle,
                     },
                 })
-            .state('cgOfficialDoc.400',
-                {
-                    url: '/400',
-                    templateUrl: 'app/pages/myNewPage/empty.html',
-                    title: '發文作業',
-                    // accessLevel: [9999],
-                    sidebarMeta: {
-                        order: global.pages.cgOfficialDoc_400,
-                    },
-                })
+            // .state('cgOfficialDoc.400',
+            //     {
+            //         url: '/400',
+            //         templateUrl: 'app/pages/myNewPage/empty.html',
+            //         title: '發文作業',
+            //         // accessLevel: [9999],
+            //         sidebarMeta: {
+            //             order: global.pages.cgOfficialDoc_400,
+            //         },
+            //     })
     }
 })();

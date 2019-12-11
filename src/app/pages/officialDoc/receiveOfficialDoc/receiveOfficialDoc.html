@@ -74,7 +74,7 @@
                     ba-panel-class="with-scroll">
 
                 <div class="form-group">
-                    <label class="col-md-3 control-label">總收文號</label>
+                    <label class="col-md-3 control-label">崇峻文號</label>
                     <input type="text"
                            class="form-control"
                            placeholder="空白"
@@ -83,11 +83,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-3 control-label">收文日期</label>
+                    <label class="col-md-3 control-label">最後期限</label>
                     <my-date-picker formatted="yyyy/MM/dd"
-                                    default="2019/11/14"
-                                    ng-init="setDateModel('_receiveDate', this)"
-                                    ng-click="setDateModel('_receiveDate', this)">
+                                    ng-init="setDateModel('_dueDate', this)"
+                                    ng-click="setDateModel('_dueDate', this)">
 
                     </my-date-picker>
                 </div>
@@ -96,42 +95,53 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">文別</label>
-                                <ui-select ng-model="receiveOfficialDocCtrlVm.docOption.selected"
-                                           class="btn-group bootstrap-select form-control"
-                                           append-to-body="true"
-                                           search-enabled="true">
-                                    <ui-select-match placeholder="請選擇文別">
-                                        {{$select.selected.name}}
-                                    </ui-select-match>
-                                    <ui-select-choices
-                                            repeat="option in receiveOfficialDocCtrlVm.docOptions">
-                                        <span ng-bind-html="option.name"></span>
-                                    </ui-select-choices>
-                                </ui-select>
-                            </div>
+                            <label class="col-md-3 control-label">文別</label>
+                            <ui-select ng-model="receiveOfficialDocCtrlVm.docOption.selected"
+                                       class="btn-group bootstrap-select form-control"
+                                       append-to-body="true"
+                                       search-enabled="true">
+                                <ui-select-match placeholder="請選擇文別">
+                                    {{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="option in receiveOfficialDocCtrlVm.docOptions">
+                                    <span ng-bind-html="option.name"></span>
+                                </ui-select-choices>
+                            </ui-select>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-3 control-label">收文字</label>
-                    <input type="text"
-                           class="form-control"
-                           placeholder="空白"
-                           style="color: #000000;"
-                           ng-model="_receiveType">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="col-sm-6 control-label">收文字</label>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="空白"
+                                   style="color: #000000;"
+                                   ng-model="_receiveType">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-6 control-label">收文文號</label>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="空白"
+                                   style="color: #000000;"
+                                   ng-model="_receiveNumber">
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="form-group">
-                    <label class="col-md-3 control-label">收文文號</label>
-                    <input type="text"
-                           class="form-control"
-                           placeholder="空白"
-                           style="color: #000000;"
-                           ng-model="_receiveNumber">
-                </div>
+                <!--<div class="form-group">-->
+                    <!--<label class="col-md-3 control-label">收文文號</label>-->
+                    <!--<input type="text"-->
+                           <!--class="form-control"-->
+                           <!--placeholder="空白"-->
+                           <!--style="color: #000000;"-->
+                           <!--ng-model="_receiveNumber">-->
+                <!--</div>-->
 
                 <div class="form-group">
                     <label class="col-md-3 control-label">主旨</label>
@@ -147,7 +157,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="col-md-3 control-label">機關</label>
+                                <label class="col-md-3 control-label">發文機關</label>
                                 <ui-select ng-model="receiveOfficialDocCtrlVm.vendorItem.selected"
                                            class="btn-group bootstrap-select form-control"
                                            ng-disabled="false"
@@ -187,49 +197,51 @@
 
         <div class="col-md-6">
             <div
-                    ba-panel
-                    ba-panel-title="專案設定"
-                    ba-panel-class="with-scroll">
+                ba-panel
+                ba-panel-title="專案設定"
+                ba-panel-class="with-scroll">
 
-                <div class="row"
-                     id="rowHead">
-                    <div class="col-md-12"
-                         id="colHead">
-                        <div class="form-group">
-                            <label for="projectName">總案名稱 - 專案名稱 - 子案名稱 - 代碼</label>
-                            <ui-select ng-model="receiveOfficialDocCtrlVm.prjItems.selected"
-                                       class="btn-group bootstrap-select form-control"
-                                       id="projectName"
-                                       ng-disabled="false"
-                                       ng-change="projectSelected($select.selected);"
-                                       append-to-body="true"
-                                       search-enabled="true">
-                                <ui-select-match placeholder="選擇">
-                                    {{$select.selected.mainName}} -
-                                    {{$select.selected.prjName}} -
-                                    {{$select.selected.prjSubName}} -
-                                    {{prjTypeToName($select.selected.type)}} -
-                                    {{$select.selected.prjCode}}
-                                </ui-select-match>
-                                <ui-select-choices
-                                        ng-model="prjName"
-                                        repeat="prjItems in receiveOfficialDocCtrlVm.allProjectData |
-                                        groupSelectpickerOptions: {
-                                        mainName: $select.search,
-                                        prjName: $select.search,
-                                        prjSubName: $select.search,
-                                        prjCode: $select.search
-                                    }"
-                                        group-by="'mainName'">
-                                    <span ng-bind-html="prjItems.prjName + ' - ' +
-                                        prjItems.prjSubName + ' - ' +
-                                        prjTypeToName(prjItems.type) + ' - ' +
-                                        prjItems.prjCode | highlight: $select.search"></span>
-                                </ui-select-choices>
-                            </ui-select>
-                        </div>
-                        <hr>
-                    </div>
+                <div class="form-group">
+                    <label for="projectName">總案名稱 - 專案名稱 - 子案名稱 - 代碼</label>
+                    <ui-select ng-model="receiveOfficialDocCtrlVm.prjItems.selected"
+                               class="btn-group bootstrap-select form-control"
+                               id="projectName"
+                               ng-disabled="false"
+                               ng-change="projectSelected($select.selected);"
+                               append-to-body="true"
+                               search-enabled="true">
+                        <ui-select-match placeholder="選擇">
+                            {{$select.selected.mainName}} -
+                            {{$select.selected.prjName}} -
+                            {{$select.selected.prjSubName}} -
+                            {{prjTypeToName($select.selected.type)}} -
+                            {{$select.selected.prjCode}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                ng-model="prjName"
+                                repeat="prjItems in receiveOfficialDocCtrlVm.allProjectData |
+                                groupSelectpickerOptions: {
+                                mainName: $select.search,
+                                prjName: $select.search,
+                                prjSubName: $select.search,
+                                prjCode: $select.search
+                            }"
+                                group-by="'mainName'">
+                            <span ng-bind-html="prjItems.prjName + ' - ' +
+                                prjItems.prjSubName + ' - ' +
+                                prjTypeToName(prjItems.type) + ' - ' +
+                                prjItems.prjCode | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">收文日期</label>
+                    <my-date-picker formatted="yyyy/MM/dd"
+                                    ng-init="setDateModel('_receiveDate', this)"
+                                    ng-click="setDateModel('_receiveDate', this)">
+
+                    </my-date-picker>
                 </div>
 
             </div>
@@ -237,9 +249,9 @@
 
         <div class="col-md-6">
             <div
-                    ba-panel
-                    ba-panel-title="承辦人設定"
-                    ba-panel-class="with-scroll">
+                ba-panel
+                ba-panel-title="承辦人設定"
+                ba-panel-class="with-scroll">
 
                 <div class="form-group">
                     <label class="col-md-3 control-label">承辦人</label>
@@ -260,11 +272,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-3 control-label">處理期限</label>
+                    <label class="col-md-3 control-label">內部處理期限</label>
                     <my-date-picker formatted="yyyy/MM/dd"
-                                    default="2019/11/14"
-                                    ng-init="setDateModel('_dueDate', this)"
-                                    ng-click="setDateModel('_dueDate', this)">
+                                    ng-init="setDateModel('_lastDate', this)"
+                                    ng-click="setDateModel('_lastDate', this)">
 
                     </my-date-picker>
                 </div>

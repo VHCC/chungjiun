@@ -3,6 +3,7 @@ var fs = require('fs');
 const dir = '../temp';
 var Vendor = require('../models/officialDocVendor');
 var OfficialDocItem = require('../models/officialDocItem');
+var moment = require('moment');
 
 
 module.exports = function (app) {
@@ -150,22 +151,38 @@ module.exports = function (app) {
     // ----------- item ------------
     app.post(global.apiUrl.post_official_doc_create_item, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_create_item");
+
+        var _year = moment(req.body._receiveDate).format('YYYY') - 1911;
+        console.log(_year);
+
+        var _month = moment(req.body._receiveDate).format('MM');
+        console.log(_month);
+
         console.log(req.body);
+
         OfficialDocItem.create(
             {
                 creatorDID: req.body.creatorDID,
+
+                year: _year,
+                month: _month,
+
                 vendorDID: req.body.vendorItem._id,
-                receiveDate: req.body._receiveDate,
-                dueDate: req.body._dueDate,
                 prjDID: req.body.prjItem._id,
+
+                receiveDate: req.body._receiveDate,
+                lastDate: req.body._lastDate,
+                dueDate: req.body._dueDate,
+
                 chargerDID: req.body.chargeUser._id,
                 subject: req.body._subject,
                 archiveNumber: req.body._archiveNumber,
                 receiveType: req.body._receiveType,
                 receiveNumber: req.body._receiveNumber,
                 docType: req.body.docOption.option,
-            },
-            function (err) {
+
+                timestamp: req.body.timestamp,
+            }, function (err) {
                 if (err) {
                     console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_create_item");
                     console.log(req.body);
@@ -205,8 +222,10 @@ module.exports = function (app) {
         })
     })
 
+    // insert
     app.post(global.apiUrl.post_insert_official_doc_vendor, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_insert_official_doc_vendor");
+        console.log(req.body);
         Vendor.create(
             {
                 vendorName: req.body.vendorName
@@ -227,6 +246,7 @@ module.exports = function (app) {
             })
     })
 
+    // update
     app.post(global.apiUrl.post_update_official_doc_vendor, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_update_official_doc_vendor");
         console.log(req.body);
@@ -244,6 +264,29 @@ module.exports = function (app) {
             function (err) {
                 if (err) {
                     console.log(global.timeFormat(new Date()) + global.log.e + "API, post_update_official_doc_vendor");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                    });
+                }
+            })
+    })
+
+    app.post(global.apiUrl.post_remove_official_doc_vendor, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_remove_official_doc_vendor");
+        console.log(req.body);
+
+        Vendor.remove(
+            {
+                _id: req.body._id
+            }, function (err) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_remove_official_doc_vendor");
                     console.log(req.body);
                     console.log(" ***** ERROR ***** ");
                     console.log(err);
