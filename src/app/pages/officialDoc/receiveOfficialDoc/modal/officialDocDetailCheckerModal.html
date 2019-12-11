@@ -6,7 +6,7 @@
 <div>
     <div class="modal-header bg-info">
         <i class="ion-android-warning modal-icon"></i>
-        <strong style="color: red;">總收文號：{{docData._archiveNumber}}</strong>
+        <strong style="color: red;">崇峻文號：{{docData._archiveNumber}}</strong>
     </div>
     <hr>
 
@@ -34,7 +34,7 @@
         </div>
 
         <div style="padding: 5px">
-            <label >收文字/收文號</label>
+            <label >收文字 / 收文號</label>
             <input type="text" class="form-control"
                    value="{{docData._receiveType}} - {{docData._receiveNumber}}"
                    ng-disabled="true">
@@ -64,7 +64,14 @@
         </div>
 
         <div style="padding: 5px">
-            <label >到期日期</label>
+            <label >內部處理期限</label>
+            <input type="text" class="form-control"
+                   value="{{docData._lastDate}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px">
+            <label >最後期限</label>
             <input type="text" class="form-control"
                    value="{{docData._dueDate}}"
                    ng-disabled="true">

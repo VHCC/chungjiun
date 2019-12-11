@@ -270,10 +270,12 @@
                 _subject: dom._subject,
                 _receiveDate: $scope._receiveDate,
                 _dueDate: $scope._dueDate,
+                _lastDate: $scope._lastDate,
                 vendorItem: vm.vendorItem.selected,
                 prjItem: vm.prjItems.selected,
                 chargeUser: vm.chargeUser.selected,
                 docOption: vm.docOption.selected,
+                timestamp: moment(new Date()).format("YYYYMMDD_HHmmss")
             }
 
             $uibModal.open({
@@ -290,6 +292,7 @@
                 }
             }).result.then(function (data) {
                 console.log(data);
+                window.location.reload();
             });
         };
 
