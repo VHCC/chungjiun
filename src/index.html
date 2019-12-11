@@ -107,7 +107,9 @@
 </body>
 <script>
 
-    if (decodeURI(readCookie('username')) == '' || decodeURI(readCookie('username')) === 'null') {
+    if (decodeURI(readCookie('username')) == '' ||
+        decodeURI(readCookie('username')) == 'null' ||
+        decodeURI(readCookie('userDID')) == 'null') {
         window.location.href = 'https://erm.chongjun.myds.me/login.html';
     }
 
