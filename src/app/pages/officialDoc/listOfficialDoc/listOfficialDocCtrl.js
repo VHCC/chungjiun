@@ -15,6 +15,7 @@
                 '$scope',
                 '$filter',
                 '$cookies',
+                '$uibModal',
                 'User',
                 'OfficialDocUtil',
                 'OfficialDocVendorUtil',
@@ -23,6 +24,7 @@
                 function (scope,
                           filter,
                           $cookies,
+                          $uibModal,
                           User,
                           OfficialDocUtil,
                           OfficialDocVendorUtil,
@@ -32,6 +34,7 @@
                         scope,
                         filter,
                         $cookies,
+                        $uibModal,
                         User,
                         OfficialDocUtil,
                         OfficialDocVendorUtil,
@@ -47,17 +50,16 @@
     function ListOfficialDocCtrl($scope,
                                  $filter,
                                  $cookies,
+                                 $uibModal,
                                  User,
                                  OfficialDocUtil,
                                  OfficialDocVendorUtil,
                                  $compile,
                                  intiOfficialDocAllService) {
-        console.log('ListOfficialDocCtrl');
 
         intiOfficialDocAllService.then(function (resp) {
             console.log(resp.data);
             $scope.officialDocItems = resp.data.payload;
-            console.log($scope.officialDocItems);
             $scope.officialDocItems.slice(0, resp.data.payload.length);
 
             angular.element(
@@ -107,12 +109,24 @@
                 })
         })
 
-
+        // *** Biz Logic ***
         $scope.showDocType = function (type) {
             return OfficialDocUtil.getDocType(type);
         }
 
+        $scope.showReceiver = function (officialItem) {
+            var selected = [];
+            if ($scope.allUsers === undefined) return;
+            if (officialItem.creatorDID) {
+                selected = $filter('filter')($scope.allUsers, {
+                    value: officialItem.creatorDID
+                });
+            }
+            return selected.length ? selected[0].name : 'Not Set';
+        }
+
         $scope.showCharger = function (officialItem) {
+            // console.log(officialItem);
             var selected = [];
             if ($scope.allUsers === undefined) return;
             if (officialItem.chargerDID) {
@@ -134,6 +148,25 @@
                 });
             }
             return selected.length ? selected[0].name : 'Not Set';
+        }
+
+        $scope.showOfficialDocInfo = function (item) {
+            $uibModal.open({
+                animation: true,
+                controller: 'officialDocInfoModalCtrl',
+                templateUrl: 'app/pages/officialDoc/listOfficialDoc/modal/officialDocInfoModal.html',
+                size: 'lg',
+                resolve: {
+                    docData: function () {
+                        return item;
+                    },
+                    parent: function () {
+                        return $scope;
+                    },
+                }
+            }).result.then(function () {
+                // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
+            });
         }
     }
 

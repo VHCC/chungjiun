@@ -195,6 +195,8 @@
                     $scope.pdfList = res.payload;
                 })
         }
+
+        // No used
         $scope.isAttached = function () {
 
             var formData = {

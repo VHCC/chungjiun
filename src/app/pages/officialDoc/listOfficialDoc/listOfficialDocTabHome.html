@@ -4,6 +4,45 @@
         cursor: pointer;
     }
 
+    .attachedzone {
+        background: white;
+        border-radius: 5px;
+        border: 1px solid rgb(0, 135, 247);
+        border-image: none;
+        max-width: 700px;
+        min-height: 150px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .pdf-item {
+        margin: 5px;
+        cursor: pointer;
+        vertical-align: top;
+        position: relative;
+        display: inline-block;
+    }
+
+    .pdf-item:hover {
+        border-radius: 10px;
+        border: 2px solid rgba(206, 206, 206, 0.88);
+    }
+
+    .pdf-img {
+        width: 120px;
+        height: 120px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .pdf-detail {
+        text-align: center;
+    }
+
+    .pdf-delete-buttons {
+        text-align: center;
+    }
+
 </style>
 
 <uib-tabset active="$tabSetStatus.activeTab">

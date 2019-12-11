@@ -27,6 +27,7 @@
         // Main Data
         $scope.parent = $scope.$resolve.parent;
         $scope.dom = $scope.$resolve.dom;
+        $scope.docData = $scope.$resolve.docData;
 
         // initial
         $scope.username = $cookies.get('username');
@@ -41,8 +42,11 @@
         $scope.getPDF = function (dom) {
 
             var formData = {
+                archiveNumber: $scope.docData.archiveNumber,
                 fileName: dom.$parent.pdfItem.name
             }
+
+            console.log(formData);
 
             $scope.viewPage = 1;
 
@@ -122,6 +126,7 @@
             // console.log(dom);
 
             var formData = {
+                archiveNumber: $scope.docData.archiveNumber,
                 fileName: dom.dom.$parent.pdfItem.name
             }
 
