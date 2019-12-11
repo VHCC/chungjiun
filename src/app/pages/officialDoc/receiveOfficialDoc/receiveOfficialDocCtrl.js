@@ -81,7 +81,8 @@
                             file.previewElement.parentNode.removeChild(file.previewElement);
 
                             var formData = {
-                                userDID: $cookies.get('userDID')
+                                fileName: file.name,
+                                userDID: $cookies.get('userDID'),
                             }
 
                             OfficialDocUtil.deleteOfficialDocFile(formData);
@@ -89,9 +90,10 @@
                     },
 
                     success: function (file) {
-
+                        console.log(file);
                         var uploadData = new FormData();
                         uploadData.append('userDID', $cookies.get('userDID'));
+                        uploadData.append('fileName', file.name);
                         uploadData.append('file', file);
 
                         OfficialDocUtil.uploadOfficialDocFile(uploadData);
@@ -239,6 +241,7 @@
 
         // check doc detail
         $scope.checkDocDetail = function (dom) {
+
             console.log(dom);
             console.log($scope);
             console.log(vm);
@@ -263,37 +266,56 @@
                 return
             }
 
-            var docData = {
+
+            var formData = {
                 _archiveNumber: dom._archiveNumber,
-                _receiveType: dom._receiveType,
-                _receiveNumber: dom._receiveNumber,
-                _subject: dom._subject,
-                _receiveDate: $scope._receiveDate,
-                _dueDate: $scope._dueDate,
-                _lastDate: $scope._lastDate,
-                vendorItem: vm.vendorItem.selected,
-                prjItem: vm.prjItems.selected,
-                chargeUser: vm.chargeUser.selected,
-                docOption: vm.docOption.selected,
-                timestamp: moment(new Date()).format("YYYYMMDD_HHmmss")
+                userDID: $cookies.get('userDID'),
             }
 
-            $uibModal.open({
-                animation: true,
-                controller: 'officialDocDetailCheckerModalCtrl',
-                templateUrl: 'app/pages/officialDoc/receiveOfficialDoc/modal/officialDocDetailCheckerModal.html',
-                resolve: {
-                    parent: function () {
-                        return $scope;
-                    },
-                    docData: function () {
-                        return docData;
-                    },
-                }
-            }).result.then(function (data) {
-                console.log(data);
-                window.location.reload();
-            });
+            OfficialDocUtil.createPDFFolder(formData)
+                .success(function (req) {
+
+                    var stageInfo = {
+                        timestamp: moment(new Date()).format("YYYYMMDD_HHmmss"),
+                        stage: "收文"
+                    }
+
+                    var docData = {
+                        _archiveNumber: dom._archiveNumber,
+                        _receiveType: dom._receiveType,
+                        _receiveNumber: dom._receiveNumber,
+                        _subject: dom._subject,
+                        _receiveDate: $scope._receiveDate,
+                        _dueDate: $scope._dueDate,
+                        _lastDate: $scope._lastDate,
+                        vendorItem: vm.vendorItem.selected,
+                        prjItem: vm.prjItems.selected,
+                        chargeUser: vm.chargeUser.selected,
+                        docOption: vm.docOption.selected,
+                        timestamp: moment(new Date()).format("YYYYMMDD_HHmmss"),
+                        stageInfo: stageInfo
+                    }
+
+                    $uibModal.open({
+                        animation: true,
+                        controller: 'officialDocDetailCheckerModalCtrl',
+                        templateUrl: 'app/pages/officialDoc/receiveOfficialDoc/modal/officialDocDetailCheckerModal.html',
+                        resolve: {
+                            parent: function () {
+                                return $scope;
+                            },
+                            docData: function () {
+                                return docData;
+                            },
+                        }
+                    }).result.then(function (data) {
+                        console.log(data);
+                        window.location.reload();
+                    });
+
+                })
+
+
         };
 
         // 0 : 函

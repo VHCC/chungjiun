@@ -22,7 +22,7 @@ module.exports = mongoose.model('officialDocItem', {
         required: true,
     },
 
-    // 來文機關
+    // 來文機關DID
     vendorDID: {
         type: String,
         required: true,
@@ -30,6 +30,11 @@ module.exports = mongoose.model('officialDocItem', {
 
     // 專案ＤＩＤ
     prjDID: {
+        type: String,
+        required: true,
+    },
+
+    prjCode: {
         type: String,
         required: true,
     },
@@ -100,8 +105,11 @@ module.exports = mongoose.model('officialDocItem', {
 
     timestamp: {
         type : String,
-        default: moment(new Date()).format("YYYYMMDD_HHmmss")
     },
+
+    stageInfo: {
+        type: Array,
+    }
 
 
 

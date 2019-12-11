@@ -1,6 +1,11 @@
 var User = require('../models/user');
 var fs = require('fs');
-const dir = '../temp';
+var path = require('path')
+
+const dirTemp = '../temp';
+const fileStorageDir = '../OfficialDocs'
+
+
 var Vendor = require('../models/officialDocVendor');
 var OfficialDocItem = require('../models/officialDocItem');
 var moment = require('moment');
@@ -12,11 +17,17 @@ module.exports = function (app) {
 
     var storage = multer.diskStorage({
         destination: function (req, file, cb) {
-            cb(null, dir)
+            if (!fs.existsSync(dirTemp + '/' + req.body.userDID)){
+                fs.mkdirSync(dirTemp + '/' + req.body.userDID);
+            }
+            cb(null, dirTemp + '/' + req.body.userDID);
         },
         filename: function (req, file, cb) {
-            console.log("build Official Doc name:" + req.body.userDID + ".pdf");
-            cb(null, req.body.userDID + '.pdf');
+            console.log(req.body);
+            // console.log("build Official Doc name:" + req.body.userDID + ".pdf");
+            // cb(null, req.body.userDID + '.pdf');
+            console.log("build Official Doc name: " + req.body.fileName);
+            cb(null, req.body.fileName);
         }
     });
 
@@ -37,7 +48,8 @@ module.exports = function (app) {
     // remove file
     app.post(global.apiUrl.post_official_doc_delete_file, function (req, res) {
 
-        fs.unlink(dir + '/' + req.body.userDID + '.pdf', function (err) {
+        // fs.unlink(dir + '/' + req.body.userDID + '.pdf', function (err) {
+        fs.unlink(dirTemp + '/' + req.body.userDID + '/' + req.body.fileName, function (err) {
             if (err) {
                 console.error(err);
             } else {
@@ -53,7 +65,7 @@ module.exports = function (app) {
     // detect is there attachments ?
     app.post(global.apiUrl.post_official_doc_detect_file, function (req, res) {
 
-        fs.readdir(dir, function (err, files) {
+        fs.readdir(dirTemp, function (err, files) {
 
             console.log(files);
 
@@ -76,7 +88,7 @@ module.exports = function (app) {
 
     // fetch files
     app.post(global.apiUrl.post_official_doc_fetch_file, function (req, res) {
-        fs.readdir(dir, function (err, files) {
+        fs.readdir(dirTemp, function (err, files) {
             if (err) {
                 // some sort of error
             } else {
@@ -94,14 +106,13 @@ module.exports = function (app) {
                         // console.log(files[index]);
                         // console.log(files[index].indexOf(".pdf"));
                         if (files[index].indexOf(".pdf") > 0) {
-                            var stats = fs.statSync(dir + "/" + files[index]);
+                            var stats = fs.statSync(dirTemp + "/" + files[index]);
                             // console.log(stats.size + " bytes");
                             // console.log(Math.round(stats.size / 1000) + " KB");
                             pdfItem.size = Math.round(stats.size / 1000) + " KB";
                             filesResult.push(pdfItem);
                         }
                     }
-
 
                     res.status(200).send({
                         code: 200,
@@ -113,12 +124,47 @@ module.exports = function (app) {
         });
     })
 
+    // rename folder and files
+    app.post(global.apiUrl.post_official_doc_rename_and_folder, function (req, res) {
+        console.log(req.body);
+
+        var archiveDir = fileStorageDir + '/' + req.body._archiveNumber
+
+        if (!fs.existsSync(archiveDir)){
+            fs.mkdirSync(archiveDir);
+        }
+
+        var cacheDir = dirTemp + '/' + req.body.userDID;
+
+        fs.readdir(cacheDir, function (err, files) {
+            files.forEach(function(fileName) {
+                console.log("file= " + fileName);
+
+                if (path.extname(fileName) == '.pdf') {
+                    var oldPath = cacheDir + '/' + fileName;
+                    var newPath = archiveDir + '/' + fileName;
+
+                    fs.rename(oldPath, newPath, function (err) {
+                        if (err) throw err
+                        console.log('Successfully renamed - AKA moved!')
+                    })
+                }
+
+            });
+        });
+
+        res.status(200).send({
+            code: 200,
+            error: global.status._200,
+        });
+    })
+
     // get file
     app.post(global.apiUrl.post_official_doc_get_file, function (req, res) {
 
         console.log(req.body);
 
-        fs.readFile(dir + '/' + req.body.fileName,
+        fs.readFile(dirTemp + '/' + req.body.fileName,
             'base64',
             function (err, data) {
                 if (err) {
@@ -137,7 +183,7 @@ module.exports = function (app) {
         //     'Content-disposition': 'attachment; filename=demo.pdf'
         // }); //here you can add more headers
         // files.pipe(res)
-        fs.readFile(dir + '/' + req.body.fileName,
+        fs.readFile(dirTemp + '/' + req.body.fileName,
             'base64',
             function (err, data) {
                 if (err) {
@@ -148,7 +194,8 @@ module.exports = function (app) {
             });
     })
 
-    // ----------- item ------------
+    // ----------- official doc item ------------
+
     app.post(global.apiUrl.post_official_doc_create_item, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_create_item");
 
@@ -169,6 +216,7 @@ module.exports = function (app) {
 
                 vendorDID: req.body.vendorItem._id,
                 prjDID: req.body.prjItem._id,
+                prjCode: req.body.prjItem.prjCode,
 
                 receiveDate: req.body._receiveDate,
                 lastDate: req.body._lastDate,
@@ -182,6 +230,8 @@ module.exports = function (app) {
                 docType: req.body.docOption.option,
 
                 timestamp: req.body.timestamp,
+
+                stageInfo: req.body.stageInfo,
             }, function (err) {
                 if (err) {
                     console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_create_item");
@@ -193,6 +243,27 @@ module.exports = function (app) {
                     res.status(200).send({
                         code: 200,
                         error: global.status._200,
+                    });
+                }
+            })
+    })
+
+    app.get(global.apiUrl.get_official_doc_fetch_all_item, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, get_official_doc_fetch_all_item");
+        OfficialDocItem.find(
+            {
+            }, function (err, items) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, get_official_doc_fetch_all_item");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: items
                     });
                 }
             })
