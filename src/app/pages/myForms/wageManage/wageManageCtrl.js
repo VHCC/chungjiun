@@ -77,6 +77,7 @@
             }
 
             $scope.showWageTable = function (userDID) {
+                console.log(userDID);
                 var formData = {
                     creatorDID: userDID == null ? vm.main.selected._id : userDID,
                     year: specificYear,
@@ -505,7 +506,7 @@
                 // result = Math.ceil(result_1_0) + Math.ceil(result_1_13) + Math.ceil(result_1_23) + Math.ceil(result_1_1);
                 result = Math.ceil(result_1_0 + result_1_13 + result_1_23 + result_1_1);
 
-                console.log(result)
+                // console.log(result)
 
                 return $scope.formatFloat(result, 0);
             }
@@ -529,7 +530,7 @@
 
                         var exchangeItems = res.payload;
 
-                        console.log(exchangeItems);
+                        // console.log(exchangeItems);
 
                         $scope.exchange_special = 0.0;
                         $scope.exchange_special_money = 0.0;
@@ -565,14 +566,14 @@
                     for (var index = 0; index < $scope.specificUserWorkOffItems.length; index ++) {
 
                         var salaryBase = Math.round($scope.specificUserWorkOffItems[index].userMonthSalary / 30 / 8);
-                        console.log("userMonthSalary= " + $scope.specificUserWorkOffItems[index].userMonthSalary + ", salaryBase= " + salaryBase);
+                        // console.log("userMonthSalary= " + $scope.specificUserWorkOffItems[index].userMonthSalary + ", salaryBase= " + salaryBase);
 
                         var hour = $scope.getHourDiffByTime(
                             $scope.specificUserWorkOffItems[index].start_time,
                             $scope.specificUserWorkOffItems[index].end_time,
                             $scope.specificUserWorkOffItems[index].workOffType)
 
-                        console.log("workOffType= " + $scope.specificUserWorkOffItems[index].workOffType + ", hour= " + hour);
+                        // console.log("workOffType= " + $scope.specificUserWorkOffItems[index].workOffType + ", hour= " + hour);
 
                         switch ($scope.specificUserWorkOffItems[index].workOffType) {
                             case 0: // *1
@@ -601,7 +602,7 @@
                     month: specificMonth == 1 ? 12 : specificMonth - 1
                 }
 
-                console.log(formData);
+                // console.log(formData);
                 bsLoadingOverlayService.start({
                     referenceId: 'mainPage_wageManage'
                 });
@@ -610,7 +611,7 @@
 
                 WageManageUtil.fetchUserWageMain(formData)
                     .success(function (res) {
-                        console.log(res);
+                        // console.log(res);
 
                         if (vm.wageForm_blue) {
 
@@ -756,7 +757,7 @@
                 dom.$watch('myMonth',function(newValue, oldValue) {
                     if (dom.isShiftMonthSelect) {
                         dom.isShiftMonthSelect = false;
-                        $scope.changeWageMonth(0, dom.monthPickerDom);
+                        $scope.changeWageMonth_person(0, dom.monthPickerDom);
                     }
                 });
             }
