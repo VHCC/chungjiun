@@ -67,6 +67,7 @@
                         cookies.put('bossID', data[0].bossID);
                         cookies.put('userMonthSalary', data[0].userMonthSalary);
                         cookies.put('machineDID', data[0].machineDID);
+                        cookies.put('feature_official_doc', data[0].feature_official_doc);
 
                         console.log('cookies.username= ' + cookies.username);
                         console.log('cookies.username= ' + cookies.get('username'));

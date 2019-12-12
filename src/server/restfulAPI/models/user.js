@@ -66,6 +66,11 @@ module.exports = mongoose.model('User', {
         default: false
     },
 
+    feature_official_doc: {
+        type: Boolean,
+        default: false
+    },
+
     timestamp: {
         type : String,
         default: moment(new Date()).format("YYYYMMDD_HHmmss")

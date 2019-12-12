@@ -41,6 +41,7 @@
                     controllerAs: 'receiveOfficialDocCtrlVm',
                     title: '收文作業',
                     // accessLevel: [9999],
+                    accessFeature: ['feature_official_doc'],
                     sidebarMeta: {
                         order: global.pages.cgOfficialDoc_receive,
                     },
@@ -48,7 +49,7 @@
             .state('cgOfficialDoc.officialDocHandle',
                 {
                     url: '/officialDocHandle',
-                    templateUrl: 'app/pages/myNewPage/empty.html',
+                    templateUrl: 'app/pages/officialDoc/handleOfficialDoc/handleOfficialDocHomePage.html',
                     title: '公文辦理',
                     // accessLevel: [9999],
                     sidebarMeta: {

@@ -367,6 +367,23 @@
                     </div>
                 </div>
 
+                <!-- 收發功能 -->
+                <div class="row" ng-if="userEditCtrlVm.user.selected">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-md-3 control-label" style="color:blue">公文收發模組</label>
+                            <div class="col-md-9" >
+                                <switch
+                                        class="wide"
+                                        ng-model="userEditCtrlVm.feature_official_doc"
+                                        on="開啟"
+                                        off="關閉"
+                                        value="{{userEditCtrlVm.feature_official_doc}}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
                 <h3 class="with-line"></h3>
                 <div class="form-group">
