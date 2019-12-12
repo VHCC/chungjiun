@@ -32,6 +32,8 @@
         function openDatePicker() {
             console.log($scope.format);
             $scope.opened = true;
+            // $('.aaa').find('.panel-body').height(300);
+            // console.log(this);
         }
 
         $scope.reloadDatePicker = function (type) {
@@ -102,5 +104,6 @@
             }
             $scope.myDT = "";
         }
+
     }
 })();

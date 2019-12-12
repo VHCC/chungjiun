@@ -70,13 +70,14 @@
 
         <div class="col-md-4">
             <div
+                id="_receiveDate_panel"
                 ba-panel
                 ba-panel-title="收文日期"
                 ba-panel-class="with-scroll">
                 <div class="form-group">
                     <my-date-picker formatted="yyyy/MM/dd"
                                     ng-init="setDateModel('_receiveDate', this)"
-                                    ng-click="setDateModel('_receiveDate', this)">
+                                    ng-click="setDateModel('_receiveDate', this); listenDatePicker_official(this)">
 
                     </my-date-picker>
                 </div>
@@ -91,13 +92,15 @@
 
         <div class="col-md-4">
             <div
+                    id="_lastDate_panel"
                     ba-panel
                     ba-panel-title="內部處理期限"
                     ba-panel-class="with-scroll">
                 <div class="form-group">
                     <my-date-picker formatted="yyyy/MM/dd"
+                                    id="_lastDate_dom"
                                     ng-init="setDateModel('_lastDate', this)"
-                                    ng-click="setDateModel('_lastDate', this)">
+                                    ng-click="setDateModel('_lastDate', this); listenDatePicker_official(this)">
 
                     </my-date-picker>
                 </div>
@@ -112,13 +115,14 @@
 
         <div class="col-md-4">
             <div
+                    id="_dueDate_panel"
                 ba-panel
                 ba-panel-title="最後期限"
                 ba-panel-class="with-scroll">
                 <div class="form-group">
                     <my-date-picker formatted="yyyy/MM/dd"
                                     ng-init="setDateModel('_dueDate', this)"
-                                    ng-click="setDateModel('_dueDate', this)">
+                                    ng-click="setDateModel('_dueDate', this); listenDatePicker_official(this)">
 
                     </my-date-picker>
                 </div>
