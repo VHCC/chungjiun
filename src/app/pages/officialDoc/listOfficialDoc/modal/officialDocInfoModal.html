@@ -1,4 +1,5 @@
 <div ng-init="fetchPDFFiles()">
+
     <div class="modal-header bg-info">
         <i class="ion-android-warning modal-icon"></i>
         <strong style="color: red;">崇峻文號：{{docData.archiveNumber}}</strong>
@@ -7,106 +8,173 @@
 
     <div class="modal-body text-left">
 
-        <div style="padding: 5px">
-            <label >收文人</label>
-            <input type="text" class="form-control"
-                   value="{{showReceiver(docData)}}"
-                   ng-disabled="true">
-        </div>
+        <div class="row">
 
-        <div style="padding: 5px">
-            <label >收文日期</label>
-            <input type="text" class="form-control"
-                   value="{{docData.receiveDate}}"
-                   ng-disabled="true">
-        </div>
+            <!-- Left -->
+            <div class="col-md-4">
 
-        <div style="padding: 5px">
-            <label >機關名稱</label>
-            <input type="text" class="form-control"
-                   value="{{showVendorName(docData)}}"
-                   ng-disabled="true">
-        </div>
+                <div
+                    ba-panel
+                    ba-panel-title="公文資訊"
+                    ba-panel-class="with-scroll">
 
-        <div style="padding: 5px">
-            <label >文別</label>
-            <input type="text" class="form-control"
-                   value="{{showDocType(docData.docType)}}"
-                   ng-disabled="true">
-        </div>
-
-        <div style="padding: 5px">
-            <label >收文字 / 收文號</label>
-            <input type="text" class="form-control"
-                   value="{{docData.receiveType}} - {{docData.receiveNumber}}"
-                   ng-disabled="true">
-        </div>
-
-        <div style="padding: 5px">
-            <label >主旨</label>
-            <input type="text" class="form-control"
-                   value="{{docData.subject}}"
-                   ng-disabled="true">
-        </div>
-
-        <hr>
-
-        <div style="padding: 5px">
-            <label >專案代碼</label>
-            <input type="text" class="form-control"
-                   value="{{docData.prjCode}}"
-                   ng-disabled="true">
-        </div>
-
-        <div style="padding: 5px">
-            <label >承辦人</label>
-            <input type="text" class="form-control"
-                   value="{{showCharger(docData)}}"
-                   ng-disabled="true">
-        </div>
-
-        <div style="padding: 5px">
-            <label >內部處理期限</label>
-            <input type="text" class="form-control"
-                   value="{{docData.lastDate}}"
-                   ng-disabled="true">
-        </div>
-
-        <div style="padding: 5px">
-            <label >最後期限</label>
-            <input type="text" class="form-control"
-                   value="{{docData.dueDate}}"
-                   ng-disabled="true">
-        </div>
-
-
-    </div>
-
-    <div >
-        <!--<button type="button" class="btn btn-danger"-->
-                <!--ng-click="confirmCreateDoc()">建檔-->
-        <!--</button>-->
-        <div class="attachedzone">
-
-            <my ng-if="pdfList != undefined" ng-repeat="pdfItem in pdfList">
-                <div class="pdf-item" ng-click="showPDF(this, docData)">
-                    <div class="pdf-img">
-                        <img src="assets/img/pdf-svgrepo-com.svg"/>
+                    <div style="padding: 5px">
+                        <label >收文人</label>
+                        <input type="text" class="form-control"
+                               value="{{showReceiver(docData)}}"
+                               ng-disabled="true">
                     </div>
-                    <div class="pdf-detail">
-                        <div class="pdf-size"><span data-pdf-size="">{{pdfItem.size}}</span></div>
-                        <div class="pdf-filename"><span data-pdf-name="">{{pdfItem.name}}</span></div>
+
+                    <div style="padding: 5px">
+                        <label >收文日期</label>
+                        <input type="text" class="form-control"
+                               value="{{docData.receiveDate}}"
+                               ng-disabled="true">
                     </div>
-                    <div class="pdf-delete-buttons" ng-show="false">
-                        <button class="btn btn-danger" ng-click="deleteFile(this)">刪除</button>
+
+                    <div style="padding: 5px">
+                        <label >機關名稱</label>
+                        <input type="text" class="form-control"
+                               value="{{showVendorName(docData)}}"
+                               ng-disabled="true">
                     </div>
+
+                    <div style="padding: 5px">
+                        <label >文別</label>
+                        <input type="text" class="form-control"
+                               value="{{showDocType(docData.docType)}}"
+                               ng-disabled="true">
+                    </div>
+
+                    <div style="padding: 5px">
+                        <label >收文字 / 收文號</label>
+                        <input type="text" class="form-control"
+                               value="{{docData.receiveType}} - {{docData.receiveNumber}}"
+                               ng-disabled="true">
+                    </div>
+
+                    <div style="padding: 5px">
+                        <label >主旨</label>
+                        <input type="text" class="form-control"
+                               value="{{docData.subject}}"
+                               ng-disabled="true">
+                    </div>
+
+                    <hr>
+
+                    <div style="padding: 5px">
+                        <label >專案代碼</label>
+                        <input type="text" class="form-control"
+                               value="{{docData.prjCode}}"
+                               ng-disabled="true">
+                    </div>
+
+                    <div style="padding: 5px">
+                        <label >承辦人</label>
+                        <input type="text" class="form-control"
+                               value="{{showCharger(docData)}}"
+                               ng-disabled="true">
+                    </div>
+
+                    <div style="padding: 5px">
+                        <label >內部處理期限</label>
+                        <input type="text" class="form-control"
+                               value="{{docData.lastDate}}"
+                               ng-disabled="true">
+                    </div>
+
+                    <div style="padding: 5px">
+                        <label >最後期限</label>
+                        <input type="text" class="form-control"
+                               value="{{docData.dueDate}}"
+                               ng-disabled="true">
+                    </div>
+
                 </div>
-            </my>
+
+            </div>
+
+            <!-- Right -->
+            <div class="col-md-8">
+                <div
+                    ba-panel
+                    ba-panel-title="公文辦理情形"
+                    ba-panel-class="with-scroll">
+
+                    <div class="horizontal-scroll">
+                        <table class="table table-hover" st-table="docData.stageInfo">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%">No.</th>
+                                    <th style="width: 10%">處理人</th>
+                                    <th style="width: 10%">處理階段</th>
+
+                                    <th style="width: 10%">辦理情形</th>
+                                    <th style="width: 10%">審核結果</th>
+
+                                    <th style="width: 10%">處理時間</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in docData.stageInfo" class="editable-tr-wrap">
+                                    <td style="width: 5%">{{$index + 1}}</td>
+                                    <td style="width: 10%">{{item.handleName}}</td>
+                                    <td style="width: 10%">{{item.stage}}</td>
+
+                                    <td style="width: 10%">{{item.process}}</td>
+                                    <td style="width: 10%">{{item.result}}</td>
+
+                                    <td style="width: 10%">{{item.timestamp}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                </div>
+            </div>
 
         </div>
+
+        <div
+                ba-panel
+                ba-panel-title="公文附件"
+                ba-panel-class="with-scroll">
+
+            <!--<button type="button" class="btn btn-danger"-->
+            <!--ng-click="confirmCreateDoc()">建檔-->
+            <!--</button>-->
+            <div class="attachedzone_none">
+
+                <my ng-if="pdfList != undefined" ng-repeat="pdfItem in pdfList">
+                    <div class="pdf-item" ng-click="showPDF(this, docData)">
+                        <div class="pdf-img">
+                            <img src="assets/img/pdf-svgrepo-com.svg"/>
+                        </div>
+                        <div class="pdf-detail">
+                            <div class="pdf-size"><span data-pdf-size="">{{pdfItem.size}}</span></div>
+                            <div class="pdf-filename"><span data-pdf-name="">{{pdfItem.name}}</span></div>
+                        </div>
+                        <div class="pdf-delete-buttons" ng-show="false">
+                            <button class="btn btn-danger" ng-click="deleteFile(this)">刪除</button>
+                        </div>
+                    </div>
+                </my>
+
+            </div>
+
+        </div>
+
     </div>
+
+
 
     <div class="modal-footer">
 
     </div>
+
+
+
+
 </div>

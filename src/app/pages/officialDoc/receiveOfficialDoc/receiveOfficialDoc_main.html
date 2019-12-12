@@ -19,9 +19,9 @@
         border-radius: 5px;
         border: 2px dashed rgb(0, 135, 247);
         border-image: none;
-        max-width: 500px;
-        margin-left: auto;
-        margin-right: auto;
+        /*max-width: 500px;*/
+        /*margin-left: auto;*/
+        /*margin-right: auto;*/
     }
 
     .attachedzone {
@@ -29,7 +29,7 @@
         border-radius: 5px;
         border: 1px solid rgb(0, 135, 247);
         border-image: none;
-        max-width: 500px;
+        /*max-width: 500px;*/
         min-height: 150px;
         margin-left: auto;
         margin-right: auto;
@@ -67,11 +67,75 @@
 
 <div>
     <div class="row">
-        <div class="col-md-6">
+
+        <div class="col-md-4">
+            <div
+                ba-panel
+                ba-panel-title="收文日期"
+                ba-panel-class="with-scroll">
+                <div class="form-group">
+                    <my-date-picker formatted="yyyy/MM/dd"
+                                    ng-init="setDateModel('_receiveDate', this)"
+                                    ng-click="setDateModel('_receiveDate', this)">
+
+                    </my-date-picker>
+                </div>
+
+                <div class="form-group">
+                    <p>
+                        說明：公文的收文日期
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
             <div
                     ba-panel
-                    ba-panel-title="收文資訊設定"
+                    ba-panel-title="內部處理期限"
                     ba-panel-class="with-scroll">
+                <div class="form-group">
+                    <my-date-picker formatted="yyyy/MM/dd"
+                                    ng-init="setDateModel('_lastDate', this)"
+                                    ng-click="setDateModel('_lastDate', this)">
+
+                    </my-date-picker>
+                </div>
+
+                <div class="form-group">
+                    <p>
+                        說明：預設＝收文日期 + 3 天
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div
+                ba-panel
+                ba-panel-title="最後期限"
+                ba-panel-class="with-scroll">
+                <div class="form-group">
+                    <my-date-picker formatted="yyyy/MM/dd"
+                                    ng-init="setDateModel('_dueDate', this)"
+                                    ng-click="setDateModel('_dueDate', this)">
+
+                    </my-date-picker>
+                </div>
+
+                <div class="form-group">
+                    <p>
+                        說明：預設＝公文中若有最後處理期限請填入，若無可為空
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div
+                ba-panel
+                ba-panel-title="收文資訊設定"
+                ba-panel-class="with-scroll">
 
                 <div class="form-group">
                     <label class="col-md-3 control-label">崇峻文號</label>
@@ -80,15 +144,6 @@
                            placeholder="空白"
                            style="color: #000000;"
                            ng-model="_archiveNumber">
-                </div>
-
-                <div class="form-group">
-                    <label class="col-md-3 control-label">最後期限</label>
-                    <my-date-picker formatted="yyyy/MM/dd"
-                                    ng-init="setDateModel('_dueDate', this)"
-                                    ng-click="setDateModel('_dueDate', this)">
-
-                    </my-date-picker>
                 </div>
 
                 <div class="form-group">
@@ -235,15 +290,6 @@
                     </ui-select>
                 </div>
 
-                <div class="form-group">
-                    <label class="col-md-3 control-label">收文日期</label>
-                    <my-date-picker formatted="yyyy/MM/dd"
-                                    ng-init="setDateModel('_receiveDate', this)"
-                                    ng-click="setDateModel('_receiveDate', this)">
-
-                    </my-date-picker>
-                </div>
-
             </div>
         </div>
 
@@ -271,22 +317,13 @@
                         </ui-select>
                 </div>
 
-                <div class="form-group">
-                    <label class="col-md-3 control-label">內部處理期限</label>
-                    <my-date-picker formatted="yyyy/MM/dd"
-                                    ng-init="setDateModel('_lastDate', this)"
-                                    ng-click="setDateModel('_lastDate', this)">
-
-                    </my-date-picker>
-                </div>
-
             </div>
         </div>
 
         <div class="col-md-6">
             <div
                     ba-panel
-                    ba-panel-title="附件"
+                    ba-panel-title="附件[只支援pdf]"
                     ba-panel-class="with-scroll">
 
                 <section>
