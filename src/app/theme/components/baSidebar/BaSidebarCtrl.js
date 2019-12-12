@@ -53,7 +53,6 @@
             }
 
             if (subitem.accessFeature !== undefined) {
-                console.log(subitem);
                 for (var index = 0; index < subitem.accessFeature.length; index ++) {
 
                     if (cookies.get(subitem.accessFeature[index]) === 'true') {

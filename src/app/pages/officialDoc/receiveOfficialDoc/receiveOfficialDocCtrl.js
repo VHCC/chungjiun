@@ -289,8 +289,8 @@
                         _receiveNumber: dom._receiveNumber,
                         _subject: dom._subject,
                         _receiveDate: $scope._receiveDate,
-                        _dueDate: $scope._dueDate,
                         _lastDate: $scope._lastDate,
+                        _dueDate: $scope._dueDate,
                         vendorItem: vm.vendorItem.selected,
                         prjItem: vm.prjItems.selected,
                         chargeUser: vm.chargeUser.selected,
@@ -340,6 +340,72 @@
         ];
 
         vm.docOptions = options_regular;
+
+        var originHeight;
+
+        $scope.listenDatePicker_official = function (dom) {
+
+            $scope.$watch('_receiveDate',function(newValue, oldValue) {
+
+                $scope._lastDate = moment(oldValue).add(2, 'days').format('YYYY/MM/DD');
+                $('#_lastDate_dom').find('#myDT')[0].value = $scope._lastDate;
+
+                dom.$watch('opened',function(newVal, oldVal){
+                    if (newVal) {
+                        if (!originHeight) {
+                            originHeight = $('#_receiveDate_panel').find('.panel-body').height();
+                            console.log(originHeight);
+                        }
+                        // console.log("open");
+                        $('#_receiveDate_panel').find('.panel-body').height(300);
+                    }
+                    if(newVal != oldVal && !newVal){
+                        //close event
+                        // console.log("close");
+                        $('#_receiveDate_panel').find('.panel-body').height(originHeight);
+                    }
+                })
+            });
+
+            $scope.$watch('_lastDate',function(newValue, oldValue) {
+
+                dom.$watch('opened',function(newVal, oldVal){
+                    if (newVal) {
+                        if (!originHeight) {
+                            originHeight = $('#_lastDate_panel').find('.panel-body').height();
+                            console.log(originHeight);
+                        }
+                        // console.log("open");
+                        $('#_lastDate_panel').find('.panel-body').height(300);
+                    }
+                    if(newVal != oldVal && !newVal){
+                        //close event
+                        // console.log("close");
+                        $('#_lastDate_panel').find('.panel-body').height(originHeight);
+                    }
+                })
+            });
+
+            $scope.$watch('_dueDate',function(newValue, oldValue) {
+
+                dom.$watch('opened',function(newVal, oldVal){
+                    if (newVal) {
+                        if (!originHeight) {
+                            originHeight = $('#_dueDate_panel').find('.panel-body').height();
+                            console.log(originHeight);
+                        }
+                        // console.log("open");
+                        $('#_dueDate_panel').find('.panel-body').height(300);
+                    }
+                    if(newVal != oldVal && !newVal){
+                        //close event
+                        // console.log("close");
+                        $('#_dueDate_panel').find('.panel-body').height(originHeight);
+                    }
+                })
+            });
+
+        }
 
     }
 
