@@ -165,6 +165,7 @@
                 bossID: vm.userBoss._id,
                 machineDID: $('#userMachineDID')[0].value,
                 workStatus: vm.workStatus,
+                feature_official_doc: vm.feature_official_doc,
             }
 
             // console.log(formData);
@@ -249,6 +250,9 @@
 
             vm.workStatus = user.workStatus;
 
+            // 公文收發模組
+            vm.feature_official_doc = user.feature_official_doc;
+
             $('.workOffFormNumberInput').mask('00.Z', {
                 translation: {
                     'Z': {
@@ -260,16 +264,16 @@
         }
 
         $scope.showUserStatus = function (user) {
-            var workStatus = user.workStatus ? "" : "(無法登入)"
-            if (!user.bossID && user.userMonthSalary === 0) {
-                return user.name + " (未設定主管、薪水)" + workStatus
-            } else if (!user.bossID) {
-                return user.name + " (未設定主管)" + workStatus
-            } else if (user.userMonthSalary === 0) {
-                return user.name + " (未設定薪水)" + workStatus
-            } else {
-                return user.name + workStatus;
-            }
+
+            var isSalary = user.userMonthSalary === 0 ? " (未設定薪水)" : ""
+            var isBoss = user.bossID ? "" : " (未設定主管)"
+
+            var workStatus = user.workStatus ? "" : " **無法登入**"
+            var feature_official_doc = user.feature_official_doc ? " (公文收發人員)" : ""
+
+            var userInfo = isSalary + isBoss + feature_official_doc + workStatus;
+
+            return user.name + userInfo;
         }
 
         $scope.setUserResidualRestHour = function () {

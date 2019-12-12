@@ -77,6 +77,7 @@
                   order: meta.order,
                   icon: meta.icon,
                   accessLevel: s.accessLevel,
+                  accessFeature: s.accessFeature,
                   disabled: s.disabled,
                   stateRef: s.name,
                 };

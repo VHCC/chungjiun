@@ -65,6 +65,7 @@ module.exports = function (app) {
                 bossID: req.body.bossID,
                 machineDID: req.body.machineDID,
                 workStatus: req.body.workStatus,
+                feature_official_doc: req.body.feature_official_doc,
             }
         }, function (err) {
             if (err) {
