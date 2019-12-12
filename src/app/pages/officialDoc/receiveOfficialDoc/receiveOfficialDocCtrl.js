@@ -278,8 +278,9 @@
                 .success(function (req) {
 
                     var stageInfo = {
-                        timestamp: moment(new Date()).format("YYYYMMDD_HHmmss"),
-                        stage: "收文"
+                        timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
+                        stage: "收文",
+                        handleName: $scope.username
                     }
 
                     var docData = {
