@@ -8,17 +8,6 @@
         cursor: pointer;
     }
 
-    .attachedzone {
-        background: white;
-        border-radius: 5px;
-        border: 1px solid rgb(0, 135, 247);
-        border-image: none;
-        max-width: 700px;
-        min-height: 150px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
     .pdf-item {
         margin: 5px;
         cursor: pointer;
@@ -50,9 +39,18 @@
 </style>
 
 <uib-tabset active="$tabSetStatus.activeTab">
-    <uib-tab heading="公文查詢">
-        <div class="row" ng-controller="listOfficialDocCtrl">
-            <div class="col-md-12" id="includeHead">
+    <uib-tab heading="待辦公文" >
+        <div class="row"
+             ng-controller="handleOfficialDocCtrl">
+            <div class="col-md-12"
+                 id="includeHead">
+            </div>
+        </div>
+    </uib-tab>
+    <uib-tab heading="待簽公文">
+        <div class="row"
+             ng-controller="signOfficialDocCtrl">
+            <div class="col-md-12" id="includeHead_sign">
             </div>
         </div>
     </uib-tab>

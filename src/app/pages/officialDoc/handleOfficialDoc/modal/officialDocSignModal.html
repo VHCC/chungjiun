@@ -9,6 +9,7 @@
     <div class="modal-body text-left">
 
         <div class="row">
+
             <!-- Left -->
             <div class="col-md-4">
 
@@ -55,9 +56,9 @@
                     <div style="padding: 5px">
                         <label >主旨</label>
                         <textarea type="text" class="form-control"
-                                  value="{{docData.subject}}"
-                                  placeholder="{{docData.subject}}"
-                                  ng-disabled="true"/>
+                               value="{{docData.subject}}"
+                               placeholder="{{docData.subject}}"
+                               ng-disabled="true"/>
                     </div>
 
                     <hr>
@@ -130,9 +131,45 @@
                         </table>
                     </div>
 
+                </div>
 
+                <div
+                        ba-panel
+                        ba-panel-title="公文審核情形"
+                        ba-panel-class="with-scroll"
+                        ng-show="docData.isDocSignStage">
+
+                    <div >
+                        <textarea placeholder="請輸入審核情形"
+                                  ng-model="handleResult"
+                                  class="form-control"></textarea>
+                    </div>
+
+                    <hr>
+
+                    <div >
+                        <label >承辦簽結權限</label>
+                        <br>
+                        <ba-switcher
+                                ng-model="isApproveDocClose"
+                                switcher-style="danger"
+                                switcher-value="docData.isApproveDocClose">
+
+                        </ba-switcher>
+                    </div>
+
+                    <div>
+                        <button type="submit"
+                                style="float: right; margin-right: 10px"
+                                ng-click="sendSign(this, docData)"
+                                class="btn btn-warning">
+                            提交
+                        </button>
+                    </div>
 
                 </div>
+
+
             </div>
 
         </div>
@@ -171,7 +208,6 @@
 
 
     <div class="modal-footer">
-
     </div>
 
 

@@ -9,6 +9,7 @@
     <div class="modal-body text-left">
 
         <div class="row">
+
             <!-- Left -->
             <div class="col-md-4">
 
@@ -55,9 +56,9 @@
                     <div style="padding: 5px">
                         <label >主旨</label>
                         <textarea type="text" class="form-control"
-                                  value="{{docData.subject}}"
-                                  placeholder="{{docData.subject}}"
-                                  ng-disabled="true"/>
+                               value="{{docData.subject}}"
+                               placeholder="{{docData.subject}}"
+                               ng-disabled="true"/>
                     </div>
 
                     <hr>
@@ -122,7 +123,15 @@
                                     <td style="width: 10%">{{item.stage}}</td>
 
                                     <td style="width: 10%">{{item.handleRecord}}</td>
-                                    <td style="width: 10%">{{item.handleResult}}</td>
+                                    <td style="width: 10%">
+                                        {{item.handleResult}}
+                                        <div ng-show=" (docData.stageInfo.length == $index + 1)
+                                        && docData.isApproveDocClose && !docData.isDocClose">
+                                            <button class="btn btn-primary btn-xs">
+                                                可簽結
+                                            </button>
+                                        </div>
+                                    </td>
 
                                     <td style="width: 10%">{{item.timestamp}}</td>
                                 </tr>
@@ -130,9 +139,45 @@
                         </table>
                     </div>
 
+                </div>
 
+                <div
+                        ba-panel
+                        ba-panel-title="公文辦理情形"
+                        ba-panel-class="with-scroll"
+                        ng-show="!docData.isDocSignStage && !docData.isDocClose">
+
+                    <div class="form-group">
+                        <textarea placeholder="請輸入辦理情形"
+                                  ng-model="handleRecord"
+                                  class="form-control"></textarea>
+                    </div>
+
+                    <button type="submit"
+                            style="float: right; margin-right: 10px"
+                            ng-click="sendProcess(this, docData)"
+                            class="btn btn-warning">
+                        提交
+                    </button>
 
                 </div>
+
+                <div
+                        ba-panel
+                        ba-panel-title="公文簽結"
+                        ba-panel-class="with-scroll"
+                        ng-show="docData.isApproveDocClose && !docData.isDocClose">
+
+                    <button type="submit"
+                            style="float: right; margin-right: 10px"
+                            ng-click="sendArchive(this, docData)"
+                            class="btn btn-danger">
+                        簽結
+                    </button>
+
+                </div>
+
+
             </div>
 
         </div>
@@ -171,7 +216,6 @@
 
 
     <div class="modal-footer">
-
     </div>
 
 

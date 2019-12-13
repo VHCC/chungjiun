@@ -2,44 +2,54 @@
     'user strict';
 
     angular.module('BlurAdmin.pages.cgOfficialDoc')
-        .service('intiOfficialDocAllService', function ($http, $cookies) {
+        .service('intiOfficialWaitSignService', function ($http, $cookies) {
 
-            var promise = $http.get('/api/get_official_doc_fetch_all_item')
-                .success(function (allOfficialDocItems) {
-                    return allOfficialDocItems;
+            var formData = {
+                handlerDID: $cookies.get("userDID"),
+                isDocClose: false,
+                isDocSignStage: true,
+            }
+
+            var promise = $http.post('/api/post_official_doc_search_item', formData)
+                .success(function (officialDocItems) {
+                    console.log(officialDocItems);
+                    return officialDocItems;
                 });
             return promise;
         })
-        .controller('listOfficialDocCtrl',
+        .controller('signOfficialDocCtrl',
             [
                 '$scope',
                 '$filter',
                 '$cookies',
                 '$uibModal',
                 'User',
+                'Project',
                 'OfficialDocUtil',
                 'OfficialDocVendorUtil',
                 '$compile',
-                'intiOfficialDocAllService',
+                'intiOfficialWaitSignService',
                 function (scope,
                           filter,
                           $cookies,
                           $uibModal,
                           User,
+                          Project,
                           OfficialDocUtil,
                           OfficialDocVendorUtil,
                           $compile,
-                          intiOfficialDocAllService) {
+                          intiOfficialWaitSignService) {
                     return new ListOfficialDocCtrl(
                         scope,
                         filter,
                         $cookies,
                         $uibModal,
                         User,
+                        Project,
                         OfficialDocUtil,
                         OfficialDocVendorUtil,
                         $compile,
-                        intiOfficialDocAllService
+                        intiOfficialWaitSignService
                     );
                 }])
     ;
@@ -52,28 +62,42 @@
                                  $cookies,
                                  $uibModal,
                                  User,
+                                 Project,
                                  OfficialDocUtil,
                                  OfficialDocVendorUtil,
                                  $compile,
-                                 intiOfficialDocAllService) {
+                                 intiOfficialWaitSignService) {
 
-        intiOfficialDocAllService.then(function (resp) {
-            console.log(resp.data);
+        intiOfficialWaitSignService.then(function (resp) {
             $scope.officialDocItems = resp.data.payload;
             $scope.officialDocItems.slice(0, resp.data.payload.length);
 
             angular.element(
-                document.getElementById('includeHead'))
+                document.getElementById('includeHead_sign'))
                 .append($compile(
                     "<div ba-panel ba-panel-title=" +
-                    "'所有公文列表 - " + resp.data.payload.length + "'" +
+                    "'待簽公文列表 - " + resp.data.payload.length + "'" +
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
-                    "ng-include=\"'app/pages/officialDoc/listOfficialDoc/table/listOfficialTable.html'\">" +
+                    "ng-include=\"'app/pages/officialDoc/handleOfficialDoc/table/signOfficialTable.html'\">" +
                     "</div>" +
                     "</div>"
                 )($scope));
+
+            Project.findAllEnable()
+                .success(function (relatedProjects) {
+                    console.log(" ======== related login user Projects ======== ");
+                    // console.log(relatedProjects);
+                    $scope.relatedProjects = [];
+                    for (var i = 0; i < relatedProjects.length; i++) {
+                        $scope.relatedProjects[i] = {
+                            value: relatedProjects[i]._id,
+                            managerID: relatedProjects[i].managerID
+                        };
+                    }
+                    // console.log($scope);
+                });
 
             User.getAllUsers()
                 .success(function (allUsers) {
@@ -94,7 +118,7 @@
 
             OfficialDocVendorUtil.fetchOfficialDocVendor()
                 .success(function (response) {
-                    console.log(response);
+                    // console.log(response);
                     $scope.allVendors = [];
                     $scope.allVendors[0] = {
                         value: "",
@@ -137,16 +161,22 @@
             return selected.length ? selected[0].name : 'Not Set';
         }
 
-        $scope.showHandler = function (officialItem) {
-            // console.log(officialItem);
+        $scope.showManager = function (officialItem) {
             var selected = [];
-            if ($scope.allUsers === undefined) return;
-            if (officialItem.handlerDID) {
-                selected = $filter('filter')($scope.allUsers, {
-                    value: officialItem.handlerDID
+            if ($scope.relatedProjects === undefined) return;
+            if (officialItem.prjDID) {
+                selected = $filter('filter')($scope.relatedProjects, {
+                    value: officialItem.prjDID
                 });
             }
-            return selected.length ? selected[0].name : 'Not Set';
+            var selected_manager = [];
+            if (selected.length) {
+                selected_manager = $filter('filter')($scope.allUsers, {
+                    value: selected[0].managerID
+                });
+            }
+
+            return selected_manager.length ? selected_manager[0].name : 'Not Set';
         }
 
         $scope.showVendorName = function (officialItem) {
@@ -162,11 +192,11 @@
             return selected.length ? selected[0].name : 'Not Set';
         }
 
-        $scope.showOfficialDocInfo = function (item) {
+        $scope.showOfficialDocHandleInfo = function (item) {
             $uibModal.open({
                 animation: true,
-                controller: 'officialDocInfoModalCtrl',
-                templateUrl: 'app/pages/officialDoc/listOfficialDoc/modal/officialDocInfoModal.html',
+                controller: 'officialDocSignModalCtrl',
+                templateUrl: 'app/pages/officialDoc/handleOfficialDoc/modal/officialDocSignModal.html',
                 size: 'lg',
                 resolve: {
                     docData: function () {
@@ -179,7 +209,54 @@
             }).result.then(function () {
                 // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
             });
+
+            // $scope.readOfficialDoc(item);
         }
+
+        // read doc
+        // $scope.readOfficialDoc = function (item) {
+        //     console.log(item);
+        //     var formData = {
+        //         _id: item._id,
+        //         isDocOpened: true,
+        //     }
+        //     OfficialDocUtil.updateOfficialDocItem(formData)
+        //         .success(function (res) {
+        //             item.isDocOpened = true;
+        //         })
+        // }
+
+        $scope.reloadDocData = function () {
+            var formData = {
+                handlerDID: $cookies.get("userDID"),
+                isDocClose: false,
+                isDocSignStage: true,
+            }
+
+            OfficialDocUtil.searchOfficialDocItem(formData)
+                .success(function (resp) {
+                    console.log(resp);
+
+                    $scope.officialDocItems = resp.payload;
+                    $scope.officialDocItems.slice(0, resp.payload.length);
+
+                    document.getElementById('includeHead').innerText = "";
+
+                    angular.element(
+                        document.getElementById('includeHead_sign'))
+                        .append($compile(
+                            "<div ba-panel ba-panel-title=" +
+                            "'待簽公文列表 - " + resp.payload.length + "'" +
+                            "ba-panel-class= " +
+                            "'with-scroll'" + ">" +
+                            "<div " +
+                            "ng-include=\"'app/pages/officialDoc/handleOfficialDoc/table/signOfficialTable.html'\">" +
+                            "</div>" +
+                            "</div>"
+                        )($scope));
+                });
+        }
+
     }
 
 })();
