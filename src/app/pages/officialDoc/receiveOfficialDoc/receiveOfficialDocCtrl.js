@@ -5,6 +5,7 @@
         .controller('receiveOfficialDocCtrl',
             [
                 '$scope',
+                '$filter',
                 '$cookies',
                 '$uibModal',
                 'Project',
@@ -20,6 +21,7 @@
      * @ngInject
      */
     function ReceiveOfficialDocCtrl($scope,
+                                    $filter,
                                     $cookies,
                                     $uibModal,
                                     Project,
@@ -44,6 +46,18 @@
         User.getAllUsers()
             .success(function (allUsers) {
                 vm.chargeUsers = allUsers;
+
+                $scope.allUsers = [];
+                $scope.allUsers[0] = {
+                    value: "",
+                    name: "None"
+                };
+                for (var i = 0; i < allUsers.length; i++) {
+                    $scope.allUsers[i] = {
+                        value: allUsers[i]._id,
+                        name: allUsers[i].name
+                    };
+                }
 
             });
 
@@ -405,6 +419,37 @@
                 })
             });
 
+        }
+
+        $scope.docProjectSelected = function (projectInfo) {
+            console.log(projectInfo);
+            if (projectInfo.majorID != "" && projectInfo.majorID != null && projectInfo.majorID != undefined) {
+                console.log("QQQ")
+                vm.chargeUser = {};
+                vm.chargeUser.selected = {
+                    _id: projectInfo.majorID,
+                    name: $scope.showChargerName(projectInfo.majorID)
+                }
+            } else {
+                console.log("AAA")
+                vm.chargeUser = {};
+                vm.chargeUser.selected = {
+                    _id: projectInfo.managerID,
+                    name: $scope.showChargerName(projectInfo.managerID)
+                }
+            }
+        }
+
+        $scope.showChargerName = function (userDID) {
+            // console.log(officialItem);
+            var selected = [];
+            if ($scope.allUsers === undefined) return;
+            if (userDID) {
+                selected = $filter('filter')($scope.allUsers, {
+                    value: userDID
+                });
+            }
+            return selected.length ? selected[0].name : 'Not Set';
         }
 
     }
