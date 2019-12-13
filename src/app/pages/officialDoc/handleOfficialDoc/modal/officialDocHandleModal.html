@@ -126,7 +126,7 @@
                                     <td style="width: 10%">
                                         {{item.handleResult}}
                                         <div ng-show=" (docData.stageInfo.length == $index + 1)
-                                        && docData.isApproveDocClose && !docData.isDocClose">
+                                        && docData.isApproveDocClose && !docData.isDocClose && !docData.isDocSignStage">
                                             <button class="btn btn-primary btn-xs">
                                                 可簽結
                                             </button>
@@ -164,15 +164,15 @@
 
                 <div
                         ba-panel
-                        ba-panel-title="公文簽結"
+                        ba-panel-title="公文存查"
                         ba-panel-class="with-scroll"
-                        ng-show="docData.isApproveDocClose && !docData.isDocClose">
+                        ng-show="docData.isApproveDocClose && !docData.isDocClose && !docData.isDocSignStage">
 
                     <button type="submit"
                             style="float: right; margin-right: 10px"
                             ng-click="sendArchive(this, docData)"
                             class="btn btn-danger">
-                        簽結
+                        送歸檔
                     </button>
 
                 </div>

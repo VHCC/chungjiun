@@ -220,7 +220,6 @@
                                 <ui-select ng-model="receiveOfficialDocCtrlVm.vendorItem.selected"
                                            class="btn-group bootstrap-select form-control"
                                            ng-disabled="false"
-                                           ng-change="projectSelected($select.selected);"
                                            append-to-body="true"
                                            search-enabled="true">
                                     <ui-select-match placeholder="選擇機關">
@@ -261,12 +260,12 @@
                 ba-panel-class="with-scroll">
 
                 <div class="form-group">
-                    <label for="projectName">總案名稱 - 專案名稱 - 子案名稱 - 代碼</label>
+                    <label class="col-md-12 control-label" for="projectName">總案名稱 - 專案名稱 - 子案名稱 - 代碼</label>
                     <ui-select ng-model="receiveOfficialDocCtrlVm.prjItems.selected"
                                class="btn-group bootstrap-select form-control"
                                id="projectName"
                                ng-disabled="false"
-                               ng-change="projectSelected($select.selected);"
+                               ng-change="docProjectSelected($select.selected);"
                                append-to-body="true"
                                search-enabled="true">
                         <ui-select-match placeholder="選擇">
@@ -304,11 +303,10 @@
                 ba-panel-class="with-scroll">
 
                 <div class="form-group">
-                    <label class="col-md-3 control-label">承辦人</label>
+                    <label class="col-md-12 control-label">承辦人 (預設為專案承辦人，若無承辦人，則預設為專案經理)</label>
                         <ui-select ng-model="receiveOfficialDocCtrlVm.chargeUser.selected"
                                    class="btn-group bootstrap-select form-control"
                                    ng-disabled="false"
-                                   ng-change="showHistoryTable()"
                                    append-to-body="true"
                                    search-enabled="true">
                             <ui-select-match placeholder="選擇員工">
