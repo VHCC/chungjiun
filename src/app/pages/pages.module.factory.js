@@ -191,7 +191,7 @@
                   return http.post('/api/post_official_doc_rename_and_folder', formData);
                 },
 
-                // 公文
+                // ----- Doc Item ----
                 createOfficialDocItem : function (formData) {
                     return http.post('/api/post_official_doc_create_item', formData);
                 },
@@ -200,6 +200,16 @@
                     return http.get('/api/get_official_doc_fetch_all_item');
                 },
 
+                searchOfficialDocItem : function (formData) {
+                    return http.post('/api/post_official_doc_search_item', formData);
+                },
+
+                updateOfficialDocItem: function (formData) {
+                    return http.post('/api/post_official_doc_update_item', formData);
+                },
+
+
+                // Util
                 getDocType: function (type) {
                     switch (type) {
                         case 0:

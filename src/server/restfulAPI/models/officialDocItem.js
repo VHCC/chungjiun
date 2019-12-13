@@ -55,11 +55,18 @@ module.exports = mongoose.model('officialDocItem', {
         type: String,
     },
 
+    // 關卡處理人
+    handlerDID: {
+        type: String,
+        required: true,
+    },
+
     // 文負責人
     chargerDID: {
         type: String,
         required: true,
     },
+
 
     // 主旨
     subject: {
@@ -91,25 +98,39 @@ module.exports = mongoose.model('officialDocItem', {
         required: true,
     },
 
-    // 辦理情形, 另立追蹤Schema
-    // processing: {
-    //     type: String,
-    //     default: ""
-    // },
+    // 經理是否允許簽結
+    isApproveDocClose: {
+        type: Boolean,
+        default: false
+    },
 
-    // 簽結
+    // 是否簽結
     isDocClose: {
         type: Boolean,
         default: false
     },
 
+    // 是否閱讀
+    isDocOpened: {
+        type: Boolean,
+        default: false
+    },
+
+    // 是否審核關卡
+    isDocSignStage: {
+        type: Boolean,
+        default: false
+    },
+
+    // 處理情形
+    stageInfo: {
+        type: Array,
+    },
+
+    // 物件建立時間點
     timestamp: {
         type : String,
     },
-
-    stageInfo: {
-        type: Array,
-    }
 
 
 

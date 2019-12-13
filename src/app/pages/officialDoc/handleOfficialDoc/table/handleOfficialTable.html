@@ -3,26 +3,28 @@
         <thead>
         <tr>
             <td colspan="10" class="text-center">
-                <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
+                <div st-pagination="" st-items-by-page="30" st-displayed-pages="11"></div>
             </td>
         </tr>
         <tr class="sortable">
             <th class="table-id"
-                st-sort="archiveNumber" st-sort-default="true" style="width: 8%">崇峻文號</th>
+                st-sort="archiveNumber" st-sort-default="true" style="width: 7%">崇峻文號</th>
             <th st-sort="subject" style="width: 20%">主旨</th>
 
             <th st-sort="receiveType" style="width: 7%">文號字</th>
-            <th st-sort="receiveNumber" style="width: 8%">文號編號</th>
+            <th st-sort="receiveNumber" style="width: 7%">文號編號</th>
 
             <th st-sort="docType" style="width: 4%">文別</th>
-            <th st-sort="chargerDID" style="width: 5%">承辦人</th>
-            <th st-sort="chargerDID" style="width: 5%">關卡</th>
+            <!--<th st-sort="chargerDID" style="width: 5%">承辦人</th>-->
+            <th style="width: 5%">經理</th>
 
-            <th st-sort="prjCode" style="width: 8%">專案編號</th>
+            <th st-sort="prjCode" style="width: 10%">專案編號</th>
             <th st-sort="vendorDID" style="width: 5%">來文機關</th>
 
             <th st-sort="receiveDate" style="width: 7%">來文日期</th>
             <th st-sort="dueDate" style="width: 7%">處理期限</th>
+
+            <th st-sort="dueDate" style="width: 3%">已讀</th>
         </tr>
         <tr>
             <th>
@@ -53,7 +55,6 @@
 
             <th/>
             <th/>
-            <th/>
 
             <th>
                 <input st-search="prjCode"
@@ -63,6 +64,7 @@
             </th>
             <th/>
 
+            <th/>
             <th/>
             <th/>
 
@@ -75,16 +77,11 @@
             ng-class="{officialDocItem: hover}"
             ng-mouseover="hover = true"
             ng-mouseleave="hover = false"
-            ng-click="showOfficialDocInfo(item) && fetchPDFFiles()">
+            ng-click="showOfficialDocHandleInfo(item)
+            ;fetchPDFFiles()">
+
             <!--崇峻文號-->
-            <td class="table-id" style="width: 8%">
-                {{item.archiveNumber}}
-                <div ng-show="item.isDocClose">
-                    <button class="btn btn-danger btn-xs">
-                        簽結
-                    </button>
-                </div>
-            </td>
+            <td class="table-id" style="width: 8%">{{item.archiveNumber}}</td>
             <!--主旨-->
             <td style="width: 20%">{{item.subject}}</td>
 
@@ -96,21 +93,9 @@
             <!--文別-->
             <td style="width: 4%">{{ showDocType(item.docType) }}</td>
             <!--承辦人-->
-            <td style="width: 5%">
-                {{ showCharger(item) }}
-                <div ng-show="!item.isDocOpened">
-                    <button class="btn btn-danger btn-xs">
-                        未讀
-                    </button>
-                </div>
-                <div ng-show="item.isDocOpened">
-                    <button class="btn btn-primary btn-xs">
-                        已讀
-                    </button>
-                </div>
-            </td>
-            <!--處理人-->
-            <td style="width: 5%">{{ showHandler(item) }}</td>
+            <!--<td style="width: 5%">{{ showCharger(item) }}</td>-->
+            <!--經理-->
+            <td style="width: 5%">{{ showManager(item) }}</td>
 
             <!--專案編號-->
             <td style="width: 8%">{{ item.prjCode }}</td>
@@ -122,11 +107,25 @@
             <!--處理期限-->
             <td style="width: 7%">{{ item.dueDate }}</td>
 
+            <!--已讀-->
+            <td style="width: 7%">
+                <div ng-show="!item.isDocOpened">
+                    <button class="btn btn-danger btn-xs">
+                        未讀
+                    </button>
+                </div>
+                <div ng-show="item.isDocOpened">
+                    <button class="btn btn-primary btn-xs">
+                        已讀
+                    </button>
+                </div>
+            </td>
+
         </tr>
         </tbody>
         <tfoot>
         <tr>
-            <td colspan="10" class="text-center">
+            <td colspan="11" class="text-center">
                 <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
             </td>
         </tr>

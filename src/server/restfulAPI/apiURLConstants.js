@@ -157,7 +157,7 @@ global.apiUrl = {
     post_over_time_day_data_form_remove : '/api/post_over_time_day_data_form_remove',
     post_over_time_day_data_form_fetch_with_parameters : '/api/post_over_time_day_data_form_fetch_with_parameters',
 
-    // Official Doc
+    // Official Doc file
     post_official_doc_upload_file : '/api/post_official_doc_upload_file',
     post_official_doc_delete_file : '/api/post_official_doc_delete_file',
     post_official_doc_detect_file : '/api/post_official_doc_detect_file',
@@ -165,9 +165,12 @@ global.apiUrl = {
     post_official_doc_fetch_file : '/api/post_official_doc_fetch_file',
     post_official_doc_download_file : '/api/post_official_doc_download_file',
     post_official_doc_rename_and_folder : '/api/post_official_doc_rename_and_folder',
-    //
+
+    // Official Doc item
     post_official_doc_create_item : '/api/post_official_doc_create_item',
     get_official_doc_fetch_all_item : '/api/get_official_doc_fetch_all_item',
+    post_official_doc_search_item : '/api/post_official_doc_search_item',
+    post_official_doc_update_item : '/api/post_official_doc_update_item',
 
     // OfficialDocVendorUtil
     get_fetch_official_doc_vendor : '/api/get_fetch_official_doc_vendor',

@@ -12,7 +12,8 @@ var moment = require('moment');
 
 
 module.exports = function (app) {
-// application -------------------------------------------------------------
+
+    // ------------ official Doc File (PDF) --------------
     var multer = require('multer');
 
     var storage = multer.diskStorage({
@@ -219,6 +220,8 @@ module.exports = function (app) {
             });
     })
 
+
+
     // ----------- official doc item ------------
 
     app.post(global.apiUrl.post_official_doc_create_item, function (req, res) {
@@ -247,6 +250,7 @@ module.exports = function (app) {
                 lastDate: req.body._lastDate,
                 dueDate: req.body._dueDate,
 
+                handlerDID: req.body.chargeUser._id,
                 chargerDID: req.body.chargeUser._id,
                 subject: req.body._subject,
                 archiveNumber: req.body._archiveNumber,
@@ -273,6 +277,7 @@ module.exports = function (app) {
             })
     })
 
+    // fetch all
     app.get(global.apiUrl.get_official_doc_fetch_all_item, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, get_official_doc_fetch_all_item");
         OfficialDocItem.find(
@@ -294,10 +299,117 @@ module.exports = function (app) {
             })
     })
 
-    // ----------- Vendor ------------
+    // search by parameters
+    app.post(global.apiUrl.post_official_doc_search_item, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_search_item");
 
+        console.log(req.body);
+
+        var query = {};
+
+        if (req.body._id !== null
+            && req.body._id !== undefined) {
+            query._id = req.body._id;
+        }
+
+        if (req.body.chargerDID !== null
+            && req.body.chargerDID !== undefined) {
+            query.chargerDID = req.body.chargerDID;
+        }
+
+        if (req.body.handlerDID !== null
+            && req.body.handlerDID !== undefined) {
+            query.handlerDID = req.body.handlerDID;
+        }
+
+        if (req.body.isDocClose !== null
+            && req.body.isDocClose !== undefined) {
+            query.isDocClose = req.body.isDocClose;
+        }
+
+        if (req.body.isDocOpened !== null
+            && req.body.isDocOpened !== undefined) {
+            query.isDocOpened = req.body.isDocOpened;
+        }
+
+        if (req.body.isDocSignStage !== null
+            && req.body.isDocSignStage !== undefined) {
+            query.isDocSignStage = req.body.isDocSignStage;
+        }
+
+        console.log(" === query ===");
+        console.log(query);
+
+        OfficialDocItem.find(
+                query,
+                function (err, items) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_search_item");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: items
+                    });
+                }
+            })
+    })
+
+    // update item
+    app.post(global.apiUrl.post_official_doc_update_item, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_update_item");
+
+        console.log(req.body);
+
+        var keyArray = Object.keys(req.body);
+        var updateRequest = {};
+        for (var index = 0; index < keyArray.length; index++) {
+            var evalString = "updateRequest.";
+            evalString += keyArray[index];
+
+            var evalFooter = "req.body.";
+            evalFooter += keyArray[index];
+            eval(evalString + " = " + evalFooter);
+        }
+
+        delete updateRequest._id;
+        console.log("--- updateRequest ---");
+        console.log(updateRequest);
+
+        OfficialDocItem.updateOne(
+            {
+                _id:req.body._id
+
+            }, {
+                $set: updateRequest
+            }, function (err, result) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_update_item");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: result
+                    });
+                }
+            })
+
+    })
+
+
+
+    // ----------- Vendor ------------
     app.get(global.apiUrl.get_fetch_official_doc_vendor, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, get_fetch_official_doc_vendor");
+
         Vendor.find(
             {
             },
@@ -322,6 +434,7 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_insert_official_doc_vendor, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_insert_official_doc_vendor");
         console.log(req.body);
+
         Vendor.create(
             {
                 vendorName: req.body.vendorName
