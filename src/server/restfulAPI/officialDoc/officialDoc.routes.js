@@ -110,6 +110,11 @@ module.exports = function (app) {
                     // console.log("files= " + files.length);
                     if (!files.length) {
                         // directory appears to be empty
+                        res.status(200).send({
+                            code: 200,
+                            payload: filesResult,
+                            error: global.status._200,
+                        });
                     } else {
 
                         var filesResult = [];
@@ -297,6 +302,46 @@ module.exports = function (app) {
                     });
                 }
             })
+    })
+
+    // fetch period
+    app.post(global.apiUrl.post_official_doc_fetch_item_period, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_fetch_item_period");
+        console.log(req.body);
+
+        var query = {
+            receiveDate:
+                {
+                    // $gte: "2019/12/01",
+                    $gte: req.body.startDay,
+                    // $lt:  "2019/12/07"
+                    $lte:  req.body.endDay
+                    // $lte:  endDate
+                },
+        }
+
+        console.log(query);
+
+        OfficialDocItem.find(query)
+            .sort({
+                "receiveDate": 1,
+            })
+            .exec(function (err, items) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_fetch_item_period");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    console.log(items);
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: items
+                    });
+                }
+            });
     })
 
     // search by parameters

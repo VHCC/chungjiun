@@ -196,8 +196,12 @@
                     return http.post('/api/post_official_doc_create_item', formData);
                 },
 
-                fetchOfficialDocItem : function (formData) {
+                fetchOfficialDocAllItem : function (formData) {
                     return http.get('/api/get_official_doc_fetch_all_item');
+                },
+
+                fetchOfficialDocItemPeriod : function (formData) {
+                    return http.post('/api/post_official_doc_fetch_item_period', formData);
                 },
 
                 searchOfficialDocItem : function (formData) {

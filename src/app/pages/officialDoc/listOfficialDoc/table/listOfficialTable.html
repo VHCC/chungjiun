@@ -1,14 +1,17 @@
+
+
+
 <div class="horizontal-scroll">
     <table class="table table-hover" st-table="officialDocItems">
         <thead>
         <tr>
-            <td colspan="10" class="text-center">
+            <td colspan="11" class="text-center">
                 <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
             </td>
         </tr>
         <tr class="sortable">
             <th class="table-id"
-                st-sort="archiveNumber" st-sort-default="true" style="width: 8%">崇峻文號</th>
+                st-sort="archiveNumber" style="width: 8%">崇峻文號</th>
             <th st-sort="subject" style="width: 20%">主旨</th>
 
             <th st-sort="receiveType" style="width: 7%">文號字</th>
@@ -21,7 +24,7 @@
             <th st-sort="prjCode" style="width: 8%">專案編號</th>
             <th st-sort="vendorDID" style="width: 5%">來文機關</th>
 
-            <th st-sort="receiveDate" style="width: 7%">來文日期</th>
+            <th st-sort="receiveDate" st-sort-default="true" style="width: 7%">來文日期</th>
             <th st-sort="dueDate" style="width: 7%">處理期限</th>
         </tr>
         <tr>
@@ -126,7 +129,7 @@
         </tbody>
         <tfoot>
         <tr>
-            <td colspan="10" class="text-center">
+            <td colspan="11" class="text-center">
                 <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
             </td>
         </tr>
