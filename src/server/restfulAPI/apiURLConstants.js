@@ -169,6 +169,7 @@ global.apiUrl = {
     // Official Doc item
     post_official_doc_create_item : '/api/post_official_doc_create_item',
     get_official_doc_fetch_all_item : '/api/get_official_doc_fetch_all_item',
+    post_official_doc_fetch_item_period : '/api/post_official_doc_fetch_item_period',
     post_official_doc_search_item : '/api/post_official_doc_search_item',
     post_official_doc_update_item : '/api/post_official_doc_update_item',
 

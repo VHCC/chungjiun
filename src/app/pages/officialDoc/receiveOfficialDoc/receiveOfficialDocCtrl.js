@@ -309,7 +309,7 @@
                         prjItem: vm.prjItems.selected,
                         chargeUser: vm.chargeUser.selected,
                         docOption: vm.docOption.selected,
-                        timestamp: moment(new Date()).format("YYYYMMDD_HHmmss"),
+                        timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
                         stageInfo: stageInfo
                     }
 

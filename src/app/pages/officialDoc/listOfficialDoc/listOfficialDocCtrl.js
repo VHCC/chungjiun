@@ -4,7 +4,18 @@
     angular.module('BlurAdmin.pages.cgOfficialDoc')
         .service('intiOfficialDocAllService', function ($http, $cookies) {
 
-            var promise = $http.get('/api/get_official_doc_fetch_all_item')
+            var formData = {
+                startDay: moment().format("YYYY/MM/DD"),
+                endDay: moment().format("YYYY/MM/DD"),
+            }
+
+            // var promise = $http.get('/api/get_official_doc_fetch_all_item')
+            //     .success(function (allOfficialDocItems) {
+            //         return allOfficialDocItems;
+            //     });
+            // return promise;
+
+            var promise = $http.post('/api/post_official_doc_fetch_item_period', formData)
                 .success(function (allOfficialDocItems) {
                     return allOfficialDocItems;
                 });
@@ -66,7 +77,9 @@
                 document.getElementById('includeHead'))
                 .append($compile(
                     "<div ba-panel ba-panel-title=" +
-                    "'所有公文列表 - " + resp.data.payload.length + "'" +
+                    "'公文列表 - " + resp.data.payload.length +
+                    " ( " + $('#inputStartDay')[0].value + "~" + $('#inputEndDay')[0].value + " )" +
+                    "'" +
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
@@ -94,7 +107,6 @@
 
             OfficialDocVendorUtil.fetchOfficialDocVendor()
                 .success(function (response) {
-                    console.log(response);
                     $scope.allVendors = [];
                     $scope.allVendors[0] = {
                         value: "",
@@ -180,6 +192,7 @@
                 // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
             });
         }
+
     }
 
 })();

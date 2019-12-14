@@ -51,7 +51,51 @@
 
 <uib-tabset active="$tabSetStatus.activeTab">
     <uib-tab heading="公文查詢">
+
         <div class="row" ng-controller="listOfficialDocCtrl">
+
+            <div class="col-md-12" ng-controller="listOfficialDocDatePeriodCtrl" >
+                <div
+                        ba-panel
+                        ba-panel-title="時間區間 (來文日期)"
+                        ba-panel-class="with-scroll">
+
+                    <div class="form-group col-md-6">
+                        <label for="inputStartDay" class="col-md-3 control-label">起始日</label>
+                        <input type="text"
+                               class="form-control statisticsDate"
+                               id="inputStartDay"
+                               placeholder="YYYY/MM/DD"
+                               style="color: #000000;">
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="inputEndDay" class="col-md-3 control-label">結束日</label>
+                        <input type="text"
+                               class="form-control statisticsDate"
+                               id="inputEndDay"
+                               placeholder="YYYY/MM/DD"
+                               style="color: #000000;">
+                    </div>
+
+                    <button ng-click="searchDocPeriod()"
+                            style="float: right; padding: 0 60px; line-height: 4"
+                            id="btnReview"
+                            pb-style="shrink"
+                            class="btn btn-primary">
+                        搜尋
+                    </button>
+
+                    <!--<button ng-click="getAllDocs()"-->
+                            <!--style="float: right; padding: 0 60px; line-height: 4"-->
+                            <!--pb-style="shrink"-->
+                            <!--class="btn btn-primary">-->
+                        <!--ALL-->
+                    <!--</button>-->
+                </div>
+
+            </div>
+
             <div class="col-md-12" id="includeHead">
             </div>
         </div>
