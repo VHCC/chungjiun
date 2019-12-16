@@ -1,0 +1,75 @@
+<style>
+
+
+</style>
+
+<div>
+    <div class="modal-header bg-info">
+        <i class="ion-android-warning modal-icon"></i>
+        <strong style="color: red;">崇峻文號：{{docData._archiveNumber}}</strong>
+    </div>
+    <hr>
+
+    <div class="modal-body text-left">
+
+        <div style="padding: 5px">
+            <label >發文日期</label>
+            <input type="text" class="form-control"
+                   value="{{docData._publicDate}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px">
+            <label >正本受文機關</label>
+            <input type="text" class="form-control"
+                   value="{{showVendorNameList()}}"
+                   ng-disabled="true">
+
+        </div>
+
+        <div style="padding: 5px">
+            <label >副本受文機關</label>
+            <input type="text" class="form-control"
+                   value="{{showVendorCopyNameList()}}"
+                   ng-disabled="true">
+
+        </div>
+
+        <div style="padding: 5px">
+            <label >文別</label>
+            <input type="text" class="form-control"
+                   value="{{docData.docOption.name}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px">
+            <label >類型</label>
+            <input type="text" class="form-control"
+                   value="{{docData.docType.name}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px">
+            <label >主旨</label>
+            <input type="text" class="form-control"
+                   value="{{docData._subject}}"
+                   ng-disabled="true">
+        </div>
+
+        <hr>
+
+        <div style="padding: 5px">
+            <label >專案代碼</label>
+            <input type="text" class="form-control"
+                   value="{{docData.prjItem.prjCode}}"
+                   ng-disabled="true">
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger"
+                ng-click="confirmCreateDocPublic()">確認
+        </button>
+    </div>
+</div>

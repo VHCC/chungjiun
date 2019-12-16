@@ -4,7 +4,7 @@ var moment = require('moment');
 // 收文、發文項目
 module.exports = mongoose.model('officialDocItem', {
 
-    // 收文人（收發人員）
+    // 建檔人
     creatorDID: {
         type: String,
         required: true,
@@ -25,7 +25,7 @@ module.exports = mongoose.model('officialDocItem', {
     // 來文機關DID
     vendorDID: {
         type: String,
-        required: true,
+        // required: true,
     },
 
     // 專案ＤＩＤ
@@ -42,7 +42,7 @@ module.exports = mongoose.model('officialDocItem', {
     // 來文日期
     receiveDate: {
         type: String,
-        required: true,
+        // required: true,
     },
 
     // 內部處理期限 receiveDate + 3
@@ -95,7 +95,6 @@ module.exports = mongoose.model('officialDocItem', {
     // 2 : 開會
     docType: {
         type: Number,
-        required: true,
     },
 
     // 經理是否允許簽結
@@ -131,6 +130,50 @@ module.exports = mongoose.model('officialDocItem', {
     timestamp: {
         type : String,
     },
+
+
+    // 0 : 電子
+    // 1 : 紙本
+    // 發文屬性
+    publicType: {
+        type: Number,
+    },
+
+    // 發文日期 (可以為空)
+    publicDate: {
+        type: String,
+    },
+
+    // 是否被同意發文
+    isDocCanPublic: {
+        type: Boolean,
+        default: false
+    },
+
+    isDocPublic: {
+        type: Boolean,
+        default: false
+    },
+
+    // 正本
+    targetOrigin: {
+        type: Array,
+    },
+
+    // 副本
+    targetCopy: {
+        type: Array,
+    },
+
+    // 資料類
+    // 0 : 收文
+    // 1 : 發文
+    type: {
+        type: Number,
+        require: true
+    }
+
+
 
 
 

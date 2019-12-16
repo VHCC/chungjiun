@@ -54,7 +54,7 @@ module.exports = function (app) {
             if (err) {
                 console.error(err);
             } else {
-                console.log('File has been Deleted');
+                console.log(req.body.fileName + ' has been Deleted');
                 res.status(200).send({
                     code: 200,
                     error: global.status._200,
@@ -152,35 +152,82 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_official_doc_rename_and_folder, function (req, res) {
         console.log(req.body);
 
-        var archiveDir = fileStorageDir + '/' + req.body._archiveNumber
-
-        if (!fs.existsSync(archiveDir)){
-            fs.mkdirSync(archiveDir);
-        }
-
         var cacheDir = dirTemp + '/' + req.body.userDID;
 
-        fs.readdir(cacheDir, function (err, files) {
-            files.forEach(function(fileName) {
-                console.log("file= " + fileName);
+        if (!fs.existsSync(cacheDir)){
 
-                if (path.extname(fileName) == '.pdf') {
-                    var oldPath = cacheDir + '/' + fileName;
-                    var newPath = archiveDir + '/' + fileName;
-
-                    fs.rename(oldPath, newPath, function (err) {
-                        if (err) throw err
-                        console.log('Successfully renamed - AKA moved!')
-                    })
-                }
-
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
             });
-        });
 
-        res.status(200).send({
-            code: 200,
-            error: global.status._200,
-        });
+        } else {
+            var archiveDir = fileStorageDir + '/' + req.body._archiveNumber
+
+            if (!fs.existsSync(archiveDir)){
+                fs.mkdirSync(archiveDir);
+            }
+
+            fs.readdir(cacheDir, function (err, files) {
+                files.forEach(function(fileName) {
+                    console.log("file= " + fileName);
+
+                    if (path.extname(fileName) == '.pdf') {
+                        var oldPath = cacheDir + '/' + fileName;
+                        var newPath = archiveDir + '/' + fileName;
+
+                        fs.rename(oldPath, newPath, function (err) {
+                            if (err) throw err
+                            console.log('Successfully renamed - AKA moved!')
+                        })
+                    }
+
+                    if (fileName == 'origin') {
+
+                        fs.readdir(cacheDir + "/" + fileName, function (err, subFiles) {
+                            subFiles.forEach(function(subFileName) {
+                                var oldPath = cacheDir + "/" + fileName + '/' + subFileName;
+                                var newPath = archiveDir + "/" + fileName + '/' + subFileName;
+
+                                if (!fs.existsSync(archiveDir + "/" + fileName)){
+                                    fs.mkdirSync(archiveDir + "/" + fileName);
+                                }
+
+                                fs.rename(oldPath, newPath, function (err) {
+                                    if (err) throw err
+                                    console.log('Successfully renamed - AKA moved!')
+                                })
+                            });
+                        });
+                    }
+
+                    if (fileName == 'copy') {
+                        fs.readdir(cacheDir + "/" + fileName, function (err, subFiles) {
+                            subFiles.forEach(function(subFileName) {
+                                var oldPath = cacheDir + "/" + fileName + '/' + subFileName;
+                                var newPath = archiveDir + "/" + fileName + '/' + subFileName;
+
+                                if (!fs.existsSync(archiveDir + "/" + fileName)){
+                                    fs.mkdirSync(archiveDir + "/" + fileName);
+                                }
+
+                                fs.rename(oldPath, newPath, function (err) {
+                                    if (err) throw err
+                                    console.log('Successfully renamed - AKA moved!')
+                                })
+                            });
+                        });
+                    }
+
+                });
+            });
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        }
+
+
     })
 
     // get file
@@ -266,6 +313,8 @@ module.exports = function (app) {
                 timestamp: req.body.timestamp,
 
                 stageInfo: req.body.stageInfo,
+
+                type: 0,
             }, function (err) {
                 if (err) {
                     console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_create_item");
@@ -541,6 +590,150 @@ module.exports = function (app) {
             }, function (err) {
                 if (err) {
                     console.log(global.timeFormat(new Date()) + global.log.e + "API, post_remove_official_doc_vendor");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                    });
+                }
+            })
+    })
+
+
+
+    var storage_public = multer.diskStorage({
+        destination: function (req, file, cb) {
+
+            var subTarget = "";
+
+            switch (req.body.type) {
+                case '0':
+                    subTarget = "origin";
+                    // origin
+                    break;
+                case '1':
+                    subTarget = "copy";
+                    // copy
+                    break;
+            }
+
+            if (!fs.existsSync(dirTemp + '/' + req.body.userDID)){
+                fs.mkdirSync(dirTemp + '/' + req.body.userDID);
+            }
+
+            if (!fs.existsSync(dirTemp + '/' + req.body.userDID + "/" + subTarget)){
+                fs.mkdirSync(dirTemp + '/' + req.body.userDID + "/" + subTarget);
+            }
+
+            cb(null, dirTemp + '/' + req.body.userDID + "/" + subTarget);
+        },
+        filename: function (req, file, cb) {
+            console.log(req.body);
+            // console.log("build Official Doc name:" + req.body.userDID + ".pdf");
+            // cb(null, req.body.userDID + '.pdf');
+            console.log("build Official Doc name: " + req.body.fileName);
+            cb(null, req.body.fileName);
+        }
+    });
+
+    var upload_public = multer({storage: storage_public});
+
+
+    // PUBLIC
+    // upload file
+    app.post(global.apiUrl.post_official_doc_upload_file_public,
+        upload_public.single('file'),
+        function (req, res) {
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+            // req.file is the `avatar` file
+            // req.body will hold the text fields, if there were any
+        })
+
+    // remove file from cache
+    app.post(global.apiUrl.post_official_doc_delete_file_public, function (req, res) {
+
+        var subTarget = "";
+
+        switch (req.body.type) {
+            case 0:
+                subTarget = "origin";
+                // origin
+                break;
+            case 1:
+                subTarget = "copy";
+                // copy
+                break;
+        }
+
+        // fs.unlink(dir + '/' + req.body.userDID + '.pdf', function (err) {
+        fs.unlink(dirTemp + '/' + req.body.userDID + '/' + subTarget + '/' + req.body.fileName, function (err) {
+            if (err) {
+                console.error(err);
+            } else {
+                console.log(req.body.fileName + ' has been Deleted');
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
+            }
+        });
+    })
+
+    app.post(global.apiUrl.post_official_doc_create_item_public, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_create_item");
+
+        var _year = moment(req.body._publicDate).format('YYYY') - 1911;
+        console.log(_year);
+
+        var _month = moment(req.body._publicDate).format('MM');
+        console.log(_month);
+
+        console.log(req.body);
+
+        OfficialDocItem.create(
+            {
+                creatorDID: req.body.creatorDID,
+
+                year: _year,
+                month: _month,
+
+                // vendorDID: req.body.vendorItem._id,
+                prjDID: req.body.prjItem._id,
+                prjCode: req.body.prjItem.prjCode,
+
+                // receiveDate: req.body._receiveDate,
+                // lastDate: req.body._lastDate,
+                // dueDate: req.body._dueDate,
+                publicDate: req.body._publicDate,
+
+                handlerDID: req.body.creatorDID,
+                // handlerDID: req.body.chargeUser._id,
+                chargerDID: req.body.creatorDID,
+                subject: req.body._subject,
+                archiveNumber: req.body._archiveNumber,
+                // receiveType: req.body._receiveType,
+                // receiveNumber: req.body._receiveNumber,
+                docType: req.body.docOption.option,
+                publicType: req.body.docType.option,
+
+                timestamp: req.body.timestamp,
+
+                stageInfo: req.body.stageInfo,
+
+                targetOrigin: req.body.vendorItem,
+                targetCopy: req.body.vendorItemCopy,
+
+                type: 1,
+            }, function (err) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_create_item");
                     console.log(req.body);
                     console.log(" ***** ERROR ***** ");
                     console.log(err);

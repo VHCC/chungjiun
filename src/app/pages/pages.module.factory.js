@@ -191,6 +191,27 @@
                   return http.post('/api/post_official_doc_rename_and_folder', formData);
                 },
 
+                // 發文
+                uploadOfficialDocFile_public: function (uploadData) {
+                    return http.post('/api/post_official_doc_upload_file_public', uploadData, {
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': undefined}
+                    }).success(function () {
+                        console.log("success!!");
+                    }).error(function () {
+                        console.log("error!!");
+                    });
+                },
+
+                deleteOfficialDocFile_public : function (formData) {
+                    return http.post('/api/post_official_doc_delete_file_public', formData);
+                },
+
+                createOfficialDocItem_public : function (formData) {
+                    return http.post('/api/post_official_doc_create_item_public', formData);
+                },
+
+
                 // ----- Doc Item ----
                 createOfficialDocItem : function (formData) {
                     return http.post('/api/post_official_doc_create_item', formData);

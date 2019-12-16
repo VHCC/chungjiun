@@ -78,7 +78,7 @@
                 .append($compile(
                     "<div ba-panel ba-panel-title=" +
                     "'公文列表 - " + resp.data.payload.length +
-                    " ( " + $('#inputStartDay')[0].value + "~" + $('#inputEndDay')[0].value + " )" +
+                    " ( " + moment().format("YYYY/MM/DD") + "~" + moment().format("YYYY/MM/DD") + " )" +
                     "'" +
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +

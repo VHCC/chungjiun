@@ -50,21 +50,24 @@
                 {
                     url: '/officialDocHandle',
                     templateUrl: 'app/pages/officialDoc/handleOfficialDoc/handleOfficialDocHomePage.html',
+                    controller: 'handleOfficialDocHomeCtrl',
                     title: '公文辦理',
                     // accessLevel: [9999],
                     sidebarMeta: {
                         order: global.pages.cgOfficialDoc_handle,
                     },
                 })
-            // .state('cgOfficialDoc.400',
-            //     {
-            //         url: '/400',
-            //         templateUrl: 'app/pages/myNewPage/empty.html',
-            //         title: '發文作業',
-            //         // accessLevel: [9999],
-            //         sidebarMeta: {
-            //             order: global.pages.cgOfficialDoc_400,
-            //         },
-            //     })
+            .state('cgOfficialDoc.cgOfficialDocPublic',
+                {
+                    url: '/officialDocPublic',
+                    templateUrl: 'app/pages/officialDoc/publicOfficialDoc/publicOfficialDocHomePage.html',
+                    title: '發文作業',
+                    controller: 'publicOfficialDocCtrl',
+                    controllerAs: 'publicOfficialDocCtrlVm',
+                    // accessLevel: [9999],
+                    sidebarMeta: {
+                        order: global.pages.cgOfficialDoc_public,
+                    },
+                })
     }
 })();

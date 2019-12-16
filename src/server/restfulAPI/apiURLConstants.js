@@ -170,6 +170,11 @@ global.apiUrl = {
     post_official_doc_download_file : '/api/post_official_doc_download_file',
     post_official_doc_rename_and_folder : '/api/post_official_doc_rename_and_folder',
 
+    // public
+    post_official_doc_upload_file_public : '/api/post_official_doc_upload_file_public',
+    post_official_doc_delete_file_public : '/api/post_official_doc_delete_file_public',
+    post_official_doc_create_item_public : '/api/post_official_doc_create_item_public',
+
     // Official Doc item
     post_official_doc_create_item : '/api/post_official_doc_create_item',
     get_official_doc_fetch_all_item : '/api/get_official_doc_fetch_all_item',
