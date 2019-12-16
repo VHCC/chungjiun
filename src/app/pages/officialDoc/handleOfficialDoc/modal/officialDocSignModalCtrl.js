@@ -45,7 +45,7 @@
         $scope.userDID = $cookies.get('userDID');
         $scope.roleType = $cookies.get('roletype');
 
-        Project.findAllEnable()
+        Project.findAll()
             .success(function (relatedProjects) {
                 $scope.relatedProjects = [];
                 for (var i = 0; i < relatedProjects.length; i++) {
