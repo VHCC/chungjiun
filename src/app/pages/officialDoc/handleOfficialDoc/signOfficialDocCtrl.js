@@ -86,7 +86,7 @@
                     "</div>"
                 )($scope));
 
-            Project.findAllEnable()
+            Project.findAll()
                 .success(function (relatedProjects) {
                     console.log(" ======== related login user Projects ======== ");
                     // console.log(relatedProjects);
