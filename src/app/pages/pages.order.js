@@ -43,7 +43,7 @@ global.pages = {
     cgOfficialDoc_list : 100,
     cgOfficialDoc_receive : 200,
     cgOfficialDoc_handle : 300,
-    cgOfficialDoc_400 : 400,
+    cgOfficialDoc_public : 400,
     cgOfficialDoc_500 : 500,
 
     //
