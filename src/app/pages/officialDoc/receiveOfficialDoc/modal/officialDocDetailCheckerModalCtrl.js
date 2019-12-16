@@ -27,6 +27,7 @@
         // Main Data
         $scope.parent = $scope.$resolve.parent;
         $scope.docData = $scope.$resolve.docData;
+        $scope.folderDir = $scope.$resolve.folderDir;
 
         // initial
         $scope.username = $cookies.get('username');
@@ -41,21 +42,29 @@
 
         $scope.confirmCreateDoc = function () {
 
-            var formData = $scope.docData;
+            var formData = {
+                _archiveNumber: $scope.docData._archiveNumber,
+                userDID: $scope.folderDir,
+            }
 
-            console.log($scope.docData);
+            console.log(formData);
 
-            OfficialDocUtil.createOfficialDocItem(formData)
+            OfficialDocUtil.createPDFFolder(formData)
                 .success(function (res) {
-                    console.log(res);
-                    $uibModalInstance.close();
-                })
-                .error(function (res) {
-                    console.log(res);
-                    $uibModalInstance.close();
-                })
+                    var formData = $scope.docData;
 
+                    console.log($scope.docData);
 
+                    OfficialDocUtil.createOfficialDocItem(formData)
+                        .success(function (res) {
+                            console.log(res);
+                            $uibModalInstance.close();
+                        })
+                        .error(function (res) {
+                            console.log(res);
+                            $uibModalInstance.close();
+                        })
+                })
 
         }
 

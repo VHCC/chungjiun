@@ -8,6 +8,8 @@
                 chargerDID: $cookies.get("userDID"),
                 isDocClose: false,
                 isDocSignStage: false,
+                type: 0,
+
             }
 
             var promise = $http.post('/api/post_official_doc_search_item', formData)
@@ -232,6 +234,7 @@
                 chargerDID: $cookies.get("userDID"),
                 isDocClose: false,
                 isDocSignStage: false,
+                type: 0,
             }
 
             OfficialDocUtil.searchOfficialDocItem(formData)

@@ -33,6 +33,8 @@
         var vm = this;
         $scope.username = $cookies.get('username');
 
+        var fileUnique = moment().format("hhmmss");
+
         // 所有專案
         Project.findAll()
             .success(function (allProjects) {
@@ -96,7 +98,7 @@
 
                             var formData = {
                                 fileName: file.name,
-                                userDID: $cookies.get('userDID'),
+                                userDID: $cookies.get('userDID') + fileUnique,
                             }
 
                             OfficialDocUtil.deleteOfficialDocFile(formData);
@@ -106,7 +108,7 @@
                     success: function (file) {
                         console.log(file);
                         var uploadData = new FormData();
-                        uploadData.append('userDID', $cookies.get('userDID'));
+                        uploadData.append('userDID', $cookies.get('userDID') + fileUnique);
                         uploadData.append('fileName', file.name);
                         uploadData.append('file', file);
 
@@ -283,13 +285,13 @@
             }
 
 
-            var formData = {
-                _archiveNumber: dom._archiveNumber,
-                userDID: $cookies.get('userDID'),
-            }
-
-            OfficialDocUtil.createPDFFolder(formData)
-                .success(function (req) {
+            // var formData = {
+            //     _archiveNumber: dom._archiveNumber,
+            //     userDID: $cookies.get('userDID'),
+            // }
+            //
+            // OfficialDocUtil.createPDFFolder(formData)
+            //     .success(function (req) {
 
                     var stageInfo = {
                         timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
@@ -324,13 +326,16 @@
                             docData: function () {
                                 return docData;
                             },
+                            folderDir: function () {
+                                return $cookies.get('userDID') + fileUnique;
+                            }
                         }
                     }).result.then(function (data) {
                         console.log(data);
                         window.location.reload();
                     });
 
-                })
+                // })
 
 
         };
@@ -424,14 +429,12 @@
         $scope.docProjectSelected = function (projectInfo) {
             console.log(projectInfo);
             if (projectInfo.majorID != "" && projectInfo.majorID != null && projectInfo.majorID != undefined) {
-                console.log("QQQ")
                 vm.chargeUser = {};
                 vm.chargeUser.selected = {
                     _id: projectInfo.majorID,
                     name: $scope.showChargerName(projectInfo.majorID)
                 }
             } else {
-                console.log("AAA")
                 vm.chargeUser = {};
                 vm.chargeUser.selected = {
                     _id: projectInfo.managerID,

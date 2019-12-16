@@ -2,13 +2,11 @@
     'user strict';
 
     angular.module('BlurAdmin.pages.cgOfficialDoc')
-        .service('intiOfficialWaitSignService', function ($http, $cookies) {
+        .service('intiOfficialCheckPublicService', function ($http, $cookies) {
 
             var formData = {
-                handlerDID: $cookies.get("userDID"),
-                isDocClose: false,
-                isDocSignStage: true,
-                type: 0,
+                type: 1,
+                isDocCanPublic: false,
             }
 
             var promise = $http.post('/api/post_official_doc_search_item', formData)
@@ -18,7 +16,7 @@
                 });
             return promise;
         })
-        .controller('signOfficialDocCtrl',
+        .controller('checkPublicOfficialDocCtrl',
             [
                 '$scope',
                 '$filter',
@@ -29,7 +27,7 @@
                 'OfficialDocUtil',
                 'OfficialDocVendorUtil',
                 '$compile',
-                'intiOfficialWaitSignService',
+                'intiOfficialCheckPublicService',
                 function (scope,
                           filter,
                           $cookies,
@@ -39,8 +37,8 @@
                           OfficialDocUtil,
                           OfficialDocVendorUtil,
                           $compile,
-                          intiOfficialWaitSignService) {
-                    return new ListOfficialDocCtrl(
+                          intiOfficialCheckPublicService) {
+                    return new ListCheckOfficialDocCtrl(
                         scope,
                         filter,
                         $cookies,
@@ -50,7 +48,7 @@
                         OfficialDocUtil,
                         OfficialDocVendorUtil,
                         $compile,
-                        intiOfficialWaitSignService
+                        intiOfficialCheckPublicService
                     );
                 }])
     ;
@@ -58,7 +56,7 @@
     /**
      * @ngInject
      */
-    function ListOfficialDocCtrl($scope,
+    function ListCheckOfficialDocCtrl($scope,
                                  $filter,
                                  $cookies,
                                  $uibModal,
@@ -67,21 +65,22 @@
                                  OfficialDocUtil,
                                  OfficialDocVendorUtil,
                                  $compile,
-                                 intiOfficialWaitSignService) {
+                                 intiOfficialCheckPublicService) {
 
-        intiOfficialWaitSignService.then(function (resp) {
+        intiOfficialCheckPublicService.then(function (resp) {
+            // console.log(resp.data);
             $scope.officialDocItems = resp.data.payload;
             $scope.officialDocItems.slice(0, resp.data.payload.length);
 
             angular.element(
-                document.getElementById('includeHead_sign'))
+                document.getElementById('includeHead'))
                 .append($compile(
                     "<div ba-panel ba-panel-title=" +
-                    "'待簽公文列表 - " + resp.data.payload.length + "'" +
+                    "'待確認發文列表 - " + resp.data.payload.length + "'" +
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
-                    "ng-include=\"'app/pages/officialDoc/handleOfficialDoc/table/signOfficialTable.html'\">" +
+                    "ng-include=\"'app/pages/officialDoc/publicOfficialDoc/table/checkPublicOfficialTable.html'\">" +
                     "</div>" +
                     "</div>"
                 )($scope));
@@ -196,8 +195,8 @@
         $scope.showOfficialDocHandleInfo = function (item) {
             $uibModal.open({
                 animation: true,
-                controller: 'officialDocSignModalCtrl',
-                templateUrl: 'app/pages/officialDoc/handleOfficialDoc/modal/officialDocSignModal.html',
+                controller: 'officialDocCheckPublicModalCtrl',
+                templateUrl: 'app/pages/officialDoc/publicOfficialDoc/modal/officialDocCheckPublicModal.html',
                 size: 'lg',
                 resolve: {
                     docData: function () {
@@ -211,52 +210,20 @@
                 // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
             });
 
-            // $scope.readOfficialDoc(item);
+            $scope.readOfficialDoc(item);
         }
 
         // read doc
-        // $scope.readOfficialDoc = function (item) {
-        //     console.log(item);
-        //     var formData = {
-        //         _id: item._id,
-        //         isDocOpened: true,
-        //     }
-        //     OfficialDocUtil.updateOfficialDocItem(formData)
-        //         .success(function (res) {
-        //             item.isDocOpened = true;
-        //         })
-        // }
-
-        $scope.reloadDocData = function () {
+        $scope.readOfficialDoc = function (item) {
+            console.log(item);
             var formData = {
-                handlerDID: $cookies.get("userDID"),
-                isDocClose: false,
-                isDocSignStage: true,
-                type: 0,
+                _id: item._id,
+                isDocOpened: true,
             }
-
-            OfficialDocUtil.searchOfficialDocItem(formData)
-                .success(function (resp) {
-                    console.log(resp);
-
-                    $scope.officialDocItems = resp.payload;
-                    $scope.officialDocItems.slice(0, resp.payload.length);
-
-                    document.getElementById('includeHead').innerText = "";
-
-                    angular.element(
-                        document.getElementById('includeHead_sign'))
-                        .append($compile(
-                            "<div ba-panel ba-panel-title=" +
-                            "'待簽公文列表 - " + resp.payload.length + "'" +
-                            "ba-panel-class= " +
-                            "'with-scroll'" + ">" +
-                            "<div " +
-                            "ng-include=\"'app/pages/officialDoc/handleOfficialDoc/table/signOfficialTable.html'\">" +
-                            "</div>" +
-                            "</div>"
-                        )($scope));
-                });
+            OfficialDocUtil.updateOfficialDocItem(formData)
+                .success(function (res) {
+                    item.isDocOpened = true;
+                })
         }
 
     }
