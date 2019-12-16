@@ -20,6 +20,7 @@
                 'Project',
                 'ProjectUtil',
                 'PaymentFormsUtil',
+                'GlobalConfigUtil',
                 'bsLoadingOverlayService',
                 PaymentFormCtrl
             ])
@@ -37,6 +38,7 @@
                              Project,
                              ProjectUtil,
                              PaymentFormsUtil,
+                             GlobalConfigUtil,
                              bsLoadingOverlayService) {
 
         $scope.userDID = $cookies.get('userDID');
@@ -127,13 +129,32 @@
                 }
             });
 
+        GlobalConfigUtil.getConfig()
+            .success(function (resp) {
+                console.log(resp);
+                vm.paymentsflag = resp.payload[0].paymentsSwitch;
+            })
+
+        $scope.updatePaymentsGlobalConfig = function() {
+
+            console.log(vm.paymentsflag);
+
+            var formData = {
+                paymentsSwitch: vm.paymentsflag,
+            }
+
+            GlobalConfigUtil.updateConfig(formData)
+                .success(function (resp) {
+                    console.log(resp)
+                })
+        }
+
         $scope.initProject = function() {
             Project.findAllEnable()
                 .success(function (allProjects) {
                     // console.log(allProjects);
                     vm.projects = allProjects.slice();
                     vm.projects_executiveAdd = allProjects.slice();
-
                 });
         }
 
@@ -585,6 +606,9 @@
         // main tab, type = 0
         // executive_Add, type = 2
         $scope.saveItems = function (type) {
+
+            console.log(vm);
+            console.log($scope);
 
             var target;
             switch (type) {
