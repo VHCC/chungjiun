@@ -211,6 +211,18 @@
                     return http.post('/api/post_official_doc_create_item_public', formData);
                 },
 
+                fetchOfficialDocFiles_public : function (formData) {
+                    return http.post('/api/post_official_doc_fetch_file_public', formData);
+                },
+
+                getOfficialDocFile_public : function (formData) {
+                    return http.post('/api/post_official_doc_get_file_public', formData);
+                },
+
+                downloadOfficialDocFile_public : function (formData) {
+                    return http.post('/api/post_official_doc_download_file_public', formData);
+                },
+
 
                 // ----- Doc Item ----
                 createOfficialDocItem : function (formData) {

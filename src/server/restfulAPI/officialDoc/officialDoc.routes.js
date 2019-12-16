@@ -94,7 +94,7 @@ module.exports = function (app) {
 
         console.log(req.body);
 
-        var fetchDir = fileStorageDir + '/' + req.body.archiveNumber
+        var fetchDir = fileStorageDir + '/' + req.body.archiveNumber;
 
         if (!fs.existsSync(fetchDir)){
             res.status(200).send({
@@ -144,7 +144,6 @@ module.exports = function (app) {
                 }
             });
         }
-
     })
 
     // rename folder and files
@@ -429,6 +428,16 @@ module.exports = function (app) {
         if (req.body.isDocSignStage !== null
             && req.body.isDocSignStage !== undefined) {
             query.isDocSignStage = req.body.isDocSignStage;
+        }
+
+        if (req.body.type !== null
+            && req.body.type !== undefined) {
+            query.type = req.body.type;
+        }
+
+        if (req.body.isDocCanPublic !== null
+            && req.body.isDocCanPublic !== undefined) {
+            query.isDocCanPublic = req.body.isDocCanPublic;
         }
 
         console.log(" === query ===");
@@ -745,6 +754,133 @@ module.exports = function (app) {
                     });
                 }
             })
+    })
+
+    // fetch files
+    // from storage
+    app.post(global.apiUrl.post_official_doc_fetch_file_public, function (req, res) {
+
+        console.log(req.body);
+
+        var subTarget = ""
+
+        if (req.body.type != null && req.body.type != undefined) {
+            switch (req.body.type) {
+                case 0:
+                    subTarget = "origin";
+                    // origin
+                    break;
+                case 1:
+                    subTarget = "copy";
+                    // copy
+                    break;
+            }
+        }
+
+
+        var fetchDir = fileStorageDir + '/' + req.body.archiveNumber + "/" + subTarget;
+
+        if (!fs.existsSync(fetchDir)){
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        } else {
+            // fs.readdir(dirTemp, function (err, files) {
+            fs.readdir(fetchDir, function (err, files) {
+                if (err) {
+                    // some sort of error
+                } else {
+                    // console.log("files= " + files.length);
+                    if (!files.length) {
+                        // directory appears to be empty
+                        res.status(200).send({
+                            code: 200,
+                            payload: filesResult,
+                            error: global.status._200,
+                        });
+                    } else {
+
+                        var filesResult = [];
+
+                        for (var index = 0; index < files.length; index++) {
+                            var pdfItem = {
+                                name: files[index]
+                            };
+                            // console.log(files[index]);
+                            // console.log(files[index].indexOf(".pdf"));
+                            if (files[index].indexOf(".pdf") > 0) {
+                                // var stats = fs.statSync(dirTemp + "/" + files[index]);
+                                var stats = fs.statSync(fetchDir + "/" + files[index]);
+                                // console.log(stats.size + " bytes");
+                                // console.log(Math.round(stats.size / 1000) + " KB");
+                                pdfItem.size = Math.round(stats.size / 1000) + " KB";
+                                filesResult.push(pdfItem);
+                            }
+                        }
+
+                        res.status(200).send({
+                            code: 200,
+                            payload: filesResult,
+                            error: global.status._200,
+                        });
+                    }
+                }
+            });
+        }
+    })
+
+    // get file
+    // from storage
+    app.post(global.apiUrl.post_official_doc_get_file_public, function (req, res) {
+
+        console.log(req.body);
+
+        var subTarget = "";
+
+        if (!req.body.isCopy) {
+            subTarget = "origin";
+        } else {
+            subTarget = "copy";
+        }
+
+        var storageDir = fileStorageDir + '/' + req.body.archiveNumber + "/" + subTarget;
+
+        // fs.readFile(dirTemp + '/' + req.body.fileName,
+        fs.readFile(storageDir + '/' + req.body.fileName,
+            'base64',
+            function (err, data) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.send(data);
+                }
+            });
+    })
+
+    // download file
+    app.post(global.apiUrl.post_official_doc_download_file_public, function (req, res) {
+
+        var subTarget = "";
+
+        if (!req.body.isCopy) {
+            subTarget = "origin";
+        } else {
+            subTarget = "copy";
+        }
+
+        var storageDir = fileStorageDir + '/' + req.body.archiveNumber + "/" + subTarget;
+
+        // fs.readFile(dirTemp + '/' + req.body.fileName,
+        fs.readFile(storageDir + '/' + req.body.fileName,
+            'base64',
+            function (err, data) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.send(data);
+                }
+            });
     })
 
 }

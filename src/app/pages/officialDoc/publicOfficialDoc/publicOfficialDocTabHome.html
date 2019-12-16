@@ -42,7 +42,13 @@
     <uib-tab heading="發文建檔" >
         <div ng-include="'app/pages/officialDoc/publicOfficialDoc/publicOfficialDoc_main.html'"></div>
     </uib-tab>
-    <uib-tab heading="待確認">
+    <uib-tab heading="待確認" >
+        <div class="row"
+             ng-controller="checkPublicOfficialDocCtrl">
+            <div class="col-md-12"
+                 id="includeHead">
+            </div>
+        </div>
     </uib-tab>
     <uib-tab heading="待發文" >
     </uib-tab>
