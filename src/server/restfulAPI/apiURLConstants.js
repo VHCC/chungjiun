@@ -73,6 +73,10 @@ global.apiUrl = {
     post_payment_items_update_by_id : '/api/post_payment_items_update_by_id',
     post_payment_multiple_get : '/api/post_payment_multiple_get',
 
+    // global configs
+    fetch_global_configs: '/api/fetch_global_configs',
+    post_global_configs_update: '/api/post_global_configs_update',
+
     // wageManage
     post_wage_manage_fetch_item : '/api/post_wage_manage_fetch_item',
     post_wage_manage_create_item : '/api/post_wage_manage_create_item',

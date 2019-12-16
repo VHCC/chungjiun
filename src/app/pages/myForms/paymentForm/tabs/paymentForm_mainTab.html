@@ -7,7 +7,7 @@
             <ui-select ng-model="paymentFormCtrlVm.prjItems.selected"
                        class="btn-group bootstrap-select form-control"
                        id="projectName"
-                       ng-disabled="false"
+                       ng-disabled="!paymentFormCtrlVm.paymentsflag"
                        ng-change="insertPaymentItem($select.selected._id, 0)"
                        append-to-body="true"
                        search-enabled="true">
@@ -34,6 +34,24 @@
         </div>
     </div>
 </div>
+
+<div class="row col-md-6">
+    <div class="col-md-2" ng-show="roleType === '100'">
+        <ba-switcher switcher-style="primary"
+                     ng-click="updatePaymentsGlobalConfig()"
+                     switcher-value="paymentFormCtrlVm.paymentsflag">
+        </ba-switcher>
+    </div>
+
+    <div class="col-md-10" ng-show="paymentFormCtrlVm.paymentsflag">
+
+    </div>
+    <div class="col-md-10" ng-show="!paymentFormCtrlVm.paymentsflag">
+        墊付款新增功能關閉。
+    </div>
+</div>
+
+<br>
 
 <div class="row col-md-12" ng-init="fetchPaymentsData(null, 0)">
 

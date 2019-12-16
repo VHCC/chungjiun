@@ -295,6 +295,17 @@
                 },
             }
         }])
+        .factory('GlobalConfigUtil', ['$http', function (http) {
+            return {
+                getConfig: function () {
+                    return http.get('/api/fetch_global_configs')
+                },
+
+                updateConfig : function (formData) {
+                    return http.post('/api/post_global_configs_update', formData)
+                },
+            }
+        }])
         .factory('HolidayDataForms', ['$http', function (http) {
             return {
                 createForms: function (formData) {
