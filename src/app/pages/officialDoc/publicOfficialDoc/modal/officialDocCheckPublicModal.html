@@ -196,9 +196,25 @@
                     <label >正本</label>
                     <my ng-if="pdfList != undefined"
                         ng-repeat="pdfItem in pdfList">
-                        <div class="pdf-item" ng-click="showPDFOrigin(this, docData)">
+                        <div class="pdf-item"
+                             ng-if="pdfItem.name.indexOf('.pdf') > 0"
+                             ng-click="showPDFOrigin(this, docData)">
                             <div class="pdf-img">
                                 <img src="assets/img/pdf-svgrepo-com.svg"/>
+                            </div>
+                            <div class="pdf-detail">
+                                <div class="pdf-size"><span data-pdf-size="">{{pdfItem.size}}</span></div>
+                                <div class="pdf-filename"><span data-pdf-name="">{{pdfItem.name}}</span></div>
+                            </div>
+                            <div class="pdf-delete-buttons" ng-show="false">
+                                <button class="btn btn-danger" ng-click="deleteFile(this)">刪除</button>
+                            </div>
+                        </div>
+                        <div class="pdf-item"
+                             ng-if="pdfItem.name.indexOf('.pdf') < 0"
+                             ng-click="downloadCJFile(this, false)">
+                            <div class="pdf-img">
+                                <img src="assets/img/cloud-download-2.svg" width="120px" height="120px"/>
                             </div>
                             <div class="pdf-detail">
                                 <div class="pdf-size"><span data-pdf-size="">{{pdfItem.size}}</span></div>
@@ -216,9 +232,25 @@
                     <label >副本</label>
                     <my ng-if="pdfListCopy != undefined"
                         ng-repeat="pdfItem in pdfListCopy">
-                        <div class="pdf-item" ng-click="showPDFCopy(this, docData)">
+                        <div class="pdf-item"
+                             ng-if="pdfItem.name.indexOf('.pdf') > 0"
+                             ng-click="showPDFCopy(this, docData)">
                             <div class="pdf-img">
                                 <img src="assets/img/pdf-svgrepo-com.svg"/>
+                            </div>
+                            <div class="pdf-detail">
+                                <div class="pdf-size"><span data-pdf-size="">{{pdfItem.size}}</span></div>
+                                <div class="pdf-filename"><span data-pdf-name="">{{pdfItem.name}}</span></div>
+                            </div>
+                            <div class="pdf-delete-buttons" ng-show="false">
+                                <button class="btn btn-danger" ng-click="deleteFile(this)">刪除</button>
+                            </div>
+                        </div>
+                        <div class="pdf-item"
+                             ng-if="pdfItem.name.indexOf('.pdf') < 0"
+                             ng-click="downloadCJFile(this, true)">
+                            <div class="pdf-img">
+                                <img src="assets/img/cloud-download-2.svg" width="120px" height="120px"/>
                             </div>
                             <div class="pdf-detail">
                                 <div class="pdf-size"><span data-pdf-size="">{{pdfItem.size}}</span></div>

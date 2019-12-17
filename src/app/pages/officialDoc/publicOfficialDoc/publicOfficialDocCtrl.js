@@ -73,9 +73,9 @@
                     parallelUploads: 2,
                     thumbnailHeight: 120,
                     thumbnailWidth: 120,
-                    maxFilesize: 5, // MB
+                    maxFilesize: 500, // MB
                     filesizeBase: 1000,
-                    acceptedFiles: ".pdf",
+                    // acceptedFiles: ".pdf",
                     thumbnail: function (file, dataUrl) {
                         if (file.previewElement) {
                             file.previewElement.classList.remove("dz-file-preview");
@@ -107,7 +107,7 @@
                     },
 
                     success: function (file) {
-                        console.log(file);
+                        // console.log(file);
                         var uploadData = new FormData();
                         uploadData.append('userDID', $cookies.get('userDID') + fileUnique);
                         uploadData.append('type', 0);
@@ -122,7 +122,7 @@
                         // console.log(message);
                         if (file.previewElement != null && file.previewElement.parentNode != null) {
                             file.previewElement.parentNode.removeChild(file.previewElement);
-                            toastr.error('新增失敗', '只開放接收.pdf檔案');
+                            // toastr.error('新增失敗', '只開放接收.pdf檔案');
                         }
                     },
 
@@ -157,9 +157,9 @@
                     parallelUploads: 2,
                     thumbnailHeight: 120,
                     thumbnailWidth: 120,
-                    maxFilesize: 5, // MB
+                    maxFilesize: 500, // MB
                     filesizeBase: 1000,
-                    acceptedFiles: ".pdf",
+                    // acceptedFiles: ".pdf",
                     thumbnail: function (file, dataUrl) {
                         if (file.previewElement) {
                             file.previewElement.classList.remove("dz-file-preview");
@@ -198,7 +198,10 @@
                         uploadData.append('fileName', file.name);
                         uploadData.append('file', file);
 
-                        OfficialDocUtil.uploadOfficialDocFile_public(uploadData);
+                        OfficialDocUtil.uploadOfficialDocFile_public(uploadData)
+                            .success(function (res) {
+                                $scope.fileList.push(file.name);
+                            })
                     },
 
                     error: function (file, message) {
@@ -232,6 +235,7 @@
 
                 });
 
+            $scope.fileList = [];
 
             // Now fake the file upload, since GitHub does not handle file uploads
             // and returns a 404
@@ -365,8 +369,8 @@
 
         // check doc detail
         $scope.checkDocDetail = function (dom) {
-            console.log(vm);
-            console.log(dom);
+            // console.log(vm);
+            // console.log(dom);
 
             if (!vm.docOption) {
                 toastr.error('注意', '請選擇文別');
@@ -411,9 +415,11 @@
 
                     var stageInfo = {
                         timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
-                        stage: "發文草擬",
+                        stage: "發文草擬建檔",
                         handleName: $scope.username
                     }
+
+                    var isAttached = $scope.fileList.length > 0 ? true : false;
 
                     var docData = {
                         _archiveNumber: dom._publicNumber,
@@ -431,7 +437,8 @@
                         docOption: vm.docOption.selected,
                         docType: vm.docType.selected,
                         timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
-                        stageInfo: stageInfo
+                        stageInfo: stageInfo,
+                        isAttached: isAttached,
                     }
 
                     $uibModal.open({
