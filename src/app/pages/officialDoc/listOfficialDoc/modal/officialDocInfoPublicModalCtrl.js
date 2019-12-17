@@ -44,6 +44,7 @@
         $scope.username = $cookies.get('username');
         $scope.userDID = $cookies.get('userDID');
         $scope.roleType = $cookies.get('roletype');
+        $scope.officialDocRight = $cookies.get('feature_official_doc') == "true";
 
         Project.findAll()
             .success(function (relatedProjects) {
@@ -286,106 +287,29 @@
             return bytes;
         }
 
-        // main
-        // 提交審查
-        $scope.sendPublic = function (dom, docData) {
-            $scope.checkText = "同意發文：" + dom.handleRecord;
-            $scope.handleRecord = dom.handleRecord;
+        $scope.deleteDocItem = function (item, docData) {
+            $scope.checkText = "是否刪除：" + docData.archiveNumber;
             $scope.docData = docData;
             ngDialog.open({
-                template: 'app/pages/officialDoc/publicOfficialDoc/dialog/checkPublicOfficialDocReviewSend_Modal.html',
+                template: 'app/pages/officialDoc/listOfficialDoc/dialog/deleteOfficialDocReviewSend_Modal.html',
                 className: 'ngdialog-theme-default',
                 scope: $scope,
                 showClose: false,
             });
         }
 
-        $scope.updateOfficialDocToServerPublic = function(docData, handleRecord) {
-            console.log(handleRecord);
-            console.log(docData);
-
-            var handleInfo = docData.stageInfo;
-
-            var stageInfoHandle = {
-                timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
-                stage: "同意發文",
-                handleName: $scope.username,
-                handleRecord: handleRecord
-            }
-
-            handleInfo.push(stageInfoHandle);
+        $scope.updateOfficialDocToServer_Delete = function(docData) {
 
             var formData = {
                 _id: docData._id,
-                stageInfo: handleInfo,
-                isDocCanPublic: true
             }
-            OfficialDocUtil.updateOfficialDocItem(formData)
+            OfficialDocUtil.deleteOfficialDocItem(formData)
                 .success(function (res) {
                     console.log(res);
-                    docData.isDocCanPublic = true;
-
-                    var formData = {
-                        _id: docData._id,
-                        isDocClose: false,
-                    }
-
-                    OfficialDocUtil.searchOfficialDocItem(formData)
-                        .success(function (res) {
-                            console.log(res.payload);
-                            docData = res.payload[0];
-                        })
-
+                    window.location.reload();
                 })
         }
 
-        // 提交簽結
-        $scope.sendArchive = function (dom, docData) {
-            $scope.checkText = "是否簽結：" + docData.archiveNumber;
-            $scope.docData = docData;
-            ngDialog.open({
-                template: 'app/pages/officialDoc/handleOfficialDoc/dialog/closeOfficialDocReviewSend_Modal.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope,
-                showClose: false,
-            });
-        }
-
-        $scope.updateOfficialDocToServer_Archive = function(docData) {
-
-            var handleInfo = docData.stageInfo;
-
-            var stageInfoHandle = {
-                timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
-                stage: "簽結",
-                handleName: $scope.username,
-            }
-
-            handleInfo.push(stageInfoHandle);
-
-            var formData = {
-                _id: docData._id,
-                stageInfo: handleInfo,
-                isDocClose: true
-            }
-            OfficialDocUtil.updateOfficialDocItem(formData)
-                .success(function (res) {
-                    console.log(res);
-                    docData.isDocClose = true;
-
-                    var formData = {
-                        _id: docData._id,
-                        isDocClose: false,
-                    }
-
-                    OfficialDocUtil.searchOfficialDocItem(formData)
-                        .success(function (res) {
-                            console.log(res.payload);
-                            docData = res.payload[0];
-                        })
-
-                })
-        }
     }
 
 })();

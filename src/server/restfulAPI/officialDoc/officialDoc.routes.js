@@ -522,7 +522,33 @@ module.exports = function (app) {
                     });
                 }
             })
+    })
 
+    // delete item
+    app.post(global.apiUrl.post_official_doc_delete_item, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_delete_item");
+
+        console.log(req.body);
+
+        OfficialDocItem.remove(
+            {
+                _id:req.body._id
+
+            }, function (err, result) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_delete_item");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: result
+                    });
+                }
+            })
     })
 
 
