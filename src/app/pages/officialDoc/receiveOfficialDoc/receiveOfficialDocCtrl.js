@@ -114,7 +114,6 @@
 
                         OfficialDocUtil.uploadOfficialDocFile(uploadData)
                             .success(function (res) {
-                                console.log(res);
                                 $scope.fileList.push(file.name);
                             })
                     },
@@ -265,9 +264,9 @@
         // check doc detail
         $scope.checkDocDetail = function (dom) {
 
-            console.log($scope.fileList);
+            // console.log($scope.fileList);
 
-            console.log(dom);
+            // console.log(dom);
 
             if (!vm.docOption) {
                 toastr.error('注意', '請選擇文別');
@@ -300,7 +299,7 @@
 
                     var stageInfo = {
                         timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
-                        stage: "收文",
+                        stage: "收文建檔",
                         handleName: $scope.username
                     }
 

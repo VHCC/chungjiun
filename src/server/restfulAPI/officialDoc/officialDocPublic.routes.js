@@ -140,6 +140,8 @@ module.exports = function (app) {
                 targetOrigin: req.body.vendorItem,
                 targetCopy: req.body.vendorItemCopy,
 
+                isAttached: req.body.isAttached,
+
                 type: 1,
             }, function (err) {
                 if (err) {
@@ -208,14 +210,26 @@ module.exports = function (app) {
                             var pdfItem = {
                                 name: files[index]
                             };
-                            // console.log(files[index]);
-                            // console.log(files[index].indexOf(".pdf"));
-                            if (files[index].indexOf(".pdf") > 0) {
+                            // if (files[index].indexOf(".pdf") > 0) {
+                            //     // var stats = fs.statSync(dirTemp + "/" + files[index]);
+                            //     var stats = fs.statSync(fetchDir + "/" + files[index]);
+                            //     // console.log(stats.size + " bytes");
+                            //     // console.log(Math.round(stats.size / 1000) + " KB");
+                            //     pdfItem.size = Math.round(stats.size / 1000) + " KB";
+                            //     filesResult.push(pdfItem);
+                            // }
+
+                            if (files[index].indexOf(".") > 0) {
                                 // var stats = fs.statSync(dirTemp + "/" + files[index]);
                                 var stats = fs.statSync(fetchDir + "/" + files[index]);
                                 // console.log(stats.size + " bytes");
                                 // console.log(Math.round(stats.size / 1000) + " KB");
                                 pdfItem.size = Math.round(stats.size / 1000) + " KB";
+
+                                if ((stats.size/ 1000) > 1000) {
+                                    pdfItem.size = Math.round(stats.size / 1000 / 1000) + " MB";
+                                }
+
                                 filesResult.push(pdfItem);
                             }
                         }

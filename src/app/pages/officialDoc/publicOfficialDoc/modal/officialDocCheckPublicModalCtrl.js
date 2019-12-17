@@ -173,6 +173,7 @@
 
             OfficialDocUtil.fetchOfficialDocFiles_public(formData)
                 .success(function (res) {
+                    console.log(res);
                     switch (type) {
                         case 0:
                             $scope.pdfList = res.payload;
@@ -187,7 +188,7 @@
 
         // show pdf View
         $scope.showPDFOrigin = function (dom, docData) {
-            console.log($scope);
+            // console.log($scope);
             $uibModal.open({
                 animation: true,
                 controller: 'officialDocPDFViewerPublicModalCtrl',
@@ -236,6 +237,50 @@
 
             });
         };
+
+        $scope.downloadCJFile = function (dom, isCopy) {
+            // console.log(dom);
+
+            var formData = {
+                archiveNumber: $scope.docData.archiveNumber,
+                fileName: dom.$parent.$parent.pdfItem.name,
+                isCopy: isCopy
+            }
+
+            OfficialDocUtil.downloadOfficialDocFile_public(formData)
+                .success(function (res) {
+
+                    var saveByteArray = (function () {
+                        var a = document.createElement("a");
+                        document.body.appendChild(a);
+                        a.style = "display: none";
+                        return function (data, fileName) {
+                            var blob = new Blob(data, {type: "octet/stream"}),
+                                url = window.URL.createObjectURL(blob);
+                            a.href = url;
+                            a.download = fileName;
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                        };
+                    }());
+
+                    var downloadDataBuffer = base64ToArrayBuffer(res);
+
+                    saveByteArray([downloadDataBuffer], moment().format('YYYYMMDD_HHmmss') + "_" + dom.$parent.$parent.pdfItem.name);
+
+                })
+        }
+
+        function base64ToArrayBuffer(base64) {
+            var binaryString =  window.atob(base64);
+            var binaryLen = binaryString.length;
+            var bytes = new Uint8Array(binaryLen);
+            for (var i = 0; i < binaryLen; i++)        {
+                var ascii = binaryString.charCodeAt(i);
+                bytes[i] = ascii;
+            }
+            return bytes;
+        }
 
         // main
         // 提交審查
