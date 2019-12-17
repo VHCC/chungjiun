@@ -163,9 +163,9 @@
                         $scope.workOffExchangeTablesItems = res.payload;
 
                         if ($scope.$parent.$parent.$parent.$parent.getWorkOffTable != undefined) {
-                            $scope.$parent.$parent.$parent.$parent.getWorkOffTable(userID, null, $scope);
+                            $scope.$parent.$parent.$parent.$parent.getWorkOffTable(userID, null, null, $scope);
                         } else {
-                            $scope.$parent.$parent.$parent.$parent.$parent.getWorkOffTable(userID, null, $scope);
+                            $scope.$parent.$parent.$parent.$parent.$parent.getWorkOffTable(userID, null, null, $scope);
                         }
 
                         $timeout(function () {

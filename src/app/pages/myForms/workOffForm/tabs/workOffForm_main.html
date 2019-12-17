@@ -2,7 +2,8 @@
      bs-loading-overlay-reference-id="mainPage_workOff">
 
     <uib-tabset active="$tabSetStatus.activeTab">
-        <uib-tab heading="個人填寫" ng-click="getWorkOffTable()">
+        <uib-tab heading="個人填寫"
+                 ng-click="getWorkOffTable()">
             <div class="row">
                 <table class="table table-bordered table-hover table-condensed"
                        ng-if="workOffFormCtrlVm.loginUserHolidayForm">
@@ -257,6 +258,13 @@
                     </tbody>
                 </table>
             </div>
+
+            <hr>
+
+            <my-year-picker ng-click="listenYear(this)"></my-year-picker>
+
+            <h3 class="with-line">{{year}} 年</h3>
+
             <h3 class="with-line">{{username}} 休假單</h3>
 
             <div class="row" ng-init="getWorkOffTable()">
