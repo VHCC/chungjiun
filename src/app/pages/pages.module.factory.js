@@ -253,6 +253,10 @@
                     return http.post('/api/post_official_doc_update_item', formData);
                 },
 
+                deleteOfficialDocItem: function (formData) {
+                    return http.post('/api/post_official_doc_delete_item', formData);
+                },
+
 
                 // Util
                 getDocType: function (type) {

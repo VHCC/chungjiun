@@ -60,12 +60,12 @@
             ng-class="{officialDocItem: hover}"
             ng-mouseover="hover = true"
             ng-mouseleave="hover = false"
-            ng-click="showOfficialDocInfo(item) && fetchPDFFiles()">
+            ng-click="showOfficialDocInfo(item)">
             <!--崇峻文號-->
             <td class="table-id" style="width: 8%">
                 {{item.archiveNumber}}
                 <div ng-show="item.isDocClose">
-                    <button class="btn btn-danger btn-xs">
+                    <button class="btn btn-success btn-xs">
                         簽結
                     </button>
                 </div>

@@ -142,6 +142,21 @@
 
                 </div>
 
+                <div
+                        ba-panel
+                        ba-panel-title="公文刪除"
+                        ba-panel-class="with-scroll"
+                        ng-show="!docData.isDocClose && officialDocRight">
+
+                    <button type="submit"
+                            style="float: right; margin-right: 10px"
+                            ng-click="deleteDocItem(this, docData)"
+                            class="btn btn-danger">
+                        刪除（注意！）
+                    </button>
+
+                </div>
+
             </div>
 
         </div>

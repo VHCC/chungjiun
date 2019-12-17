@@ -68,6 +68,10 @@
                                  $compile,
                                  intiOfficialDocReceiveService) {
 
+        $scope.username = $cookies.get('username');
+        $scope.roleType = $cookies.get('roletype');
+        $scope.officialDocRight = $cookies.get('feature_official_doc') == "true";
+
         intiOfficialDocReceiveService.then(function (resp) {
             console.log(resp.data);
             $scope.officialDocItems = resp.data.payload;

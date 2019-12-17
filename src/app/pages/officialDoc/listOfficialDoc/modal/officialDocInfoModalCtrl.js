@@ -12,6 +12,7 @@
                 '$filter',
                 '$cookies',
                 '$uibModal',
+                'ngDialog',
                 'User',
                 'OfficialDocUtil',
                 'OfficialDocVendorUtil',
@@ -26,6 +27,7 @@
                                                $filter,
                                                $cookies,
                                                $uibModal,
+                                               ngDialog,
                                                User,
                                                OfficialDocUtil,
                                                OfficialDocVendorUtil,
@@ -40,6 +42,7 @@
         $scope.username = $cookies.get('username');
         $scope.userDID = $cookies.get('userDID');
         $scope.roleType = $cookies.get('roletype');
+        $scope.officialDocRight = $cookies.get('feature_official_doc') == "true";
 
         // console.log($scope.docData);
 
@@ -198,6 +201,32 @@
                 bytes[i] = ascii;
             }
             return bytes;
+        }
+
+        $scope.deleteDocItem = function (item, docData) {
+            console.log(item);
+            console.log(docData);
+
+            $scope.checkText = "是否刪除：" + docData.archiveNumber;
+            $scope.docData = docData;
+            ngDialog.open({
+                template: 'app/pages/officialDoc/listOfficialDoc/dialog/deleteOfficialDocReviewSend_Modal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+
+        $scope.updateOfficialDocToServer_Delete = function(docData) {
+
+            var formData = {
+                _id: docData._id,
+            }
+            OfficialDocUtil.deleteOfficialDocItem(formData)
+                .success(function (res) {
+                    console.log(res);
+                    window.location.reload();
+                })
         }
     }
 
