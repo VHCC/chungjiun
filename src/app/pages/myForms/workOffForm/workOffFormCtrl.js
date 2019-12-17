@@ -1874,9 +1874,9 @@
                     isSendReview: true,
                     isBossCheck: true,
                     isExecutiveCheck: true,
-                    userMonthSalary: $scope.userMonthSalary
+                    userMonthSalary: vm.userSelected.userMonthSalary
                 }
-                console.log(formData);
+                
                 WorkOffFormUtil.updateWorkOffTableSalary(formData)
                     .success(function (res) {
                         // console.log(res);
