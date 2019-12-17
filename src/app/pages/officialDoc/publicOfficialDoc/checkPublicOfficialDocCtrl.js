@@ -5,7 +5,7 @@
         .service('intiOfficialCheckPublicService', function ($http, $cookies) {
 
             var formData = {
-                type: 1,
+                type: 1, // receive = 0, public = 1
                 isDocCanPublic: false,
             }
 

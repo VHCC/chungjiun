@@ -298,4 +298,45 @@ module.exports = function (app) {
             });
     })
 
+
+    // fetch period
+    app.post(global.apiUrl.post_official_doc_fetch_item_period_public, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_fetch_item_period_public");
+        console.log(req.body);
+
+        var query = {
+            publicDate:
+                {
+                    // $gte: "2019/12/01",
+                    $gte: req.body.startDay,
+                    // $lt:  "2019/12/07"
+                    $lte:  req.body.endDay
+                    // $lte:  endDate
+                },
+        }
+
+        console.log(query);
+
+        OfficialDocItem.find(query)
+            .sort({
+                "publicDate": 1,
+            })
+            .exec(function (err, items) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_fetch_item_period_public");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    console.log(items);
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: items
+                    });
+                }
+            });
+    })
+
 }

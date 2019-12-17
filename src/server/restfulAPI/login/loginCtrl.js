@@ -99,6 +99,7 @@
             cookies.put('userMonthSalary', null);
             cookies.put('machineDID', null);
             cookies.put('email', null);
+            cookies.put('feature_official_doc', null);
             window.signOutSucess();
         }
 
@@ -113,6 +114,7 @@
             cookies.put('userMonthSalary', null);
             cookies.put('machineDID', null);
             cookies.put('email', null);
+            cookies.put('feature_official_doc', null);
         };
 
     }

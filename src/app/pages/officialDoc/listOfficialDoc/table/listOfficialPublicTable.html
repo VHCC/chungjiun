@@ -1,0 +1,106 @@
+
+
+
+<div class="horizontal-scroll">
+    <table class="table table-hover" st-table="officialDocItems">
+        <thead>
+        <tr>
+            <td colspan="11" class="text-center">
+                <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
+            </td>
+        </tr>
+        <tr class="sortable">
+            <th class="table-id"
+                st-sort="archiveNumber" style="width: 8%">崇峻文號</th>
+
+            <th st-sort="isAttached" style="width: 5%">附件</th>
+            <th st-sort="subject" style="width: 20%">主旨</th>
+
+            <th st-sort="docType" style="width: 4%">文別</th>
+            <th st-sort="chargerDID" style="width: 5%">承辦人</th>
+
+            <th st-sort="prjCode" style="width: 8%">專案編號</th>
+
+            <th st-sort="publicDate" st-sort-default="true" style="width: 7%">發文日期</th>
+        </tr>
+        <tr>
+            <th>
+                <input st-search="archiveNumber"
+                       placeholder="尋找崇峻文號"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+
+            <!--附件-->
+            <th>
+            <th>
+                <input st-search="subject"
+                       placeholder="輸入主旨"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+
+            <th/>
+            <th/>
+
+            <th>
+                <input st-search="prjCode"
+                       placeholder="輸入專案編號"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+            <th/>
+
+        </tr>
+
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="item in officialDocItems" class="editable-tr-wrap"
+            ng-class="{officialDocItem: hover}"
+            ng-mouseover="hover = true"
+            ng-mouseleave="hover = false"
+            ng-click="showOfficialDocInfo(item) && fetchPDFFiles()">
+            <!--崇峻文號-->
+            <td class="table-id" style="width: 8%">
+                {{item.archiveNumber}}
+                <div ng-show="item.isDocClose">
+                    <button class="btn btn-danger btn-xs">
+                        簽結
+                    </button>
+                </div>
+            </td>
+
+            <!--附件-->
+            <td style="width: 5%">
+                <div ng-show="!item.isAttached">
+                    無
+                </div>
+                <div ng-show="item.isAttached">
+                    有
+                </div>
+            </td>
+            <!--主旨-->
+            <td style="width: 20%">{{item.subject}}</td>
+
+            <!--文別-->
+            <td style="width: 4%">{{ showDocType(item.docType) }}</td>
+            <!--處理人-->
+            <td style="width: 5%">{{ showHandler(item) }}</td>
+
+            <!--專案編號-->
+            <td style="width: 8%">{{ item.prjCode }}</td>
+            <!--發文日期-->
+            <td style="width: 7%">{{ item.publicDate }}</td>
+
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="11" class="text-center">
+                <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>

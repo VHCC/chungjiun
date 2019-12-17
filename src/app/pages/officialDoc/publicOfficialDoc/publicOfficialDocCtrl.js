@@ -32,6 +32,8 @@
 
         var vm = this;
         $scope.username = $cookies.get('username');
+        $scope.roleType = $cookies.get('roletype');
+        $scope.officialDocRight = $cookies.get('feature_official_doc') == "true";
 
         var fileUnique = moment().format("hhmmss");
 

@@ -144,24 +144,19 @@
 
                 <div
                         ba-panel
-                        ba-panel-title="公文辦理情形"
+                        ba-panel-title="公文存查"
                         ba-panel-class="with-scroll"
-                        ng-show="!docData.isDocCanPublic">
-
-                    <div class="form-group">
-                        <textarea placeholder="請輸入辦理情形"
-                                  ng-model="handleRecord"
-                                  class="form-control"></textarea>
-                    </div>
+                        ng-show="docData.isDocCanPublic && !docData.isDocPublic">
 
                     <button type="submit"
                             style="float: right; margin-right: 10px"
-                            ng-click="sendPublic(this, docData)"
-                            class="btn btn-warning">
-                        同意發文
+                            ng-click="sendArchive(this, docData)"
+                            class="btn btn-danger">
+                        送歸檔
                     </button>
 
                 </div>
+
 
             </div>
 
