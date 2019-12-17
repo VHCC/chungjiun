@@ -178,6 +178,7 @@ global.apiUrl = {
     post_official_doc_get_file_public : '/api/post_official_doc_get_file_public',
     post_official_doc_download_file_public : '/api/post_official_doc_download_file_public',
     post_official_doc_fetch_item_period_public : '/api/post_official_doc_fetch_item_period_public',
+    get_official_doc_create_item_archive_number_public : '/api/get_official_doc_create_item_archive_number_public',
 
     // Official Doc item
     post_official_doc_create_item : '/api/post_official_doc_create_item',

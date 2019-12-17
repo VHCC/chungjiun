@@ -13,6 +13,7 @@
                 '$uibModalInstance',
                 'TimeUtil',
                 'DateUtil',
+                'toastr',
                 'OfficialDocUtil',
                 OfficialDocDetailCheckerModalCtrl
             ]);
@@ -23,6 +24,7 @@
                                            $uibModalInstance,
                                            TimeUtil,
                                            DateUtil,
+                                           toastr,
                                            OfficialDocUtil) {
         // Main Data
         $scope.parent = $scope.$resolve.parent;
@@ -43,35 +45,42 @@
 
         $scope.confirmCreateDocPublic = function () {
 
-            var formData = {
-                _archiveNumber: $scope.docData._archiveNumber,
-                userDID: $scope.folderDir,
-            }
-
-            console.log(formData);
-
-            OfficialDocUtil.createPDFFolder(formData)
-                .success(function (req) {
-                    var formData = $scope.docData;
-
-                    console.log($scope.docData);
-
-                    OfficialDocUtil.createOfficialDocItem_public(formData)
-                        .success(function (res) {
-                            console.log(res);
-                            $uibModalInstance.close();
-                        })
-                        .error(function (res) {
-                            console.log(res);
-                            $uibModalInstance.close();
-                        })
-                });
 
 
+            OfficialDocUtil.generatePublicNumber_public()
+                .success(function (res) {
+                    // console.log(res);
 
+                    var publicNumber = res.payload;
 
+                    toastr.error('發文文號', publicNumber);
 
+                    var formData = {
+                        _archiveNumber: publicNumber,
+                        userDID: $scope.folderDir,
+                    }
 
+                    $scope.docData._archiveNumber = publicNumber;
+
+                    console.log(formData);
+
+                    OfficialDocUtil.createPDFFolder(formData)
+                        .success(function (req) {
+                            var formData = $scope.docData;
+
+                            console.log($scope.docData);
+
+                            OfficialDocUtil.createOfficialDocItem_public(formData)
+                                .success(function (res) {
+                                    console.log(res);
+                                    $uibModalInstance.close();
+                                })
+                                .error(function (res) {
+                                    console.log(res);
+                                    $uibModalInstance.close();
+                                })
+                        });
+                })
         }
 
         $scope.showVendorNameList = function () {

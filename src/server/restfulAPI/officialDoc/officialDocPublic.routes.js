@@ -339,4 +339,49 @@ module.exports = function (app) {
             });
     })
 
+
+    // generate item archive number
+    app.get(global.apiUrl.get_official_doc_create_item_archive_number_public, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, get_official_doc_create_item_archive_number_public");
+
+        var today = moment().format('YYYY/MM/DD');
+
+        var year = moment().format('YYYY') - 1911;
+        var month = moment().format('MM');
+        var day = moment().format('DD');
+
+
+        console.log(req.body);
+
+        OfficialDocItem.find(
+            {
+                publicDate: today
+            }, function (err, items) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, get_official_doc_create_item_archive_number_public");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+
+                    var result = "" + year + month + day + "";
+
+                    if (items.length <= 8 ) {
+                        result += ("00" + (items.length + 1));
+                    } else if (items.length > 8 && items.length <= 98) {
+                        result += ("0" + (items.length + 1));
+                    } else {
+                        result += (items.length + 1);
+                    }
+
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: result,
+                    });
+                }
+            })
+    })
+
 }
