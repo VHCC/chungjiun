@@ -223,6 +223,10 @@
                     return http.post('/api/post_official_doc_download_file_public', formData);
                 },
 
+                fetchOfficialDocItemPeriod_public : function (formData) {
+                    return http.post('/api/post_official_doc_fetch_item_period_public', formData);
+                },
+
 
                 // ----- Doc Item ----
                 createOfficialDocItem : function (formData) {
@@ -256,7 +260,16 @@
                         case 2:
                             return "開會";
                     }
-                }
+                },
+
+                getDocPublicType: function (type) {
+                    switch (type) {
+                        case 0:
+                            return "電子";
+                        case 1:
+                            return "紙本";
+                    }
+                },
             }
         }])
         .factory('OfficialDocVendorUtil', ['$http', function (http) {

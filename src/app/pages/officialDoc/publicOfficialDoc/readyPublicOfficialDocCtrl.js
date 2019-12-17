@@ -2,95 +2,99 @@
     'user strict';
 
     angular.module('BlurAdmin.pages.cgOfficialDoc')
-        .service('intiOfficialDocReceiveService', function ($http, $cookies) {
+        .service('intiOfficialReadyPublicService', function ($http, $cookies) {
 
             var formData = {
-                startDay: moment().format("YYYY/MM/DD"),
-                endDay: moment().format("YYYY/MM/DD"),
+                type: 1, // receive = 0, public = 1
+                isDocCanPublic: true,
+                isDocPublic: false,
             }
 
-            // var promise = $http.get('/api/get_official_doc_fetch_all_item')
-            //     .success(function (allOfficialDocItems) {
-            //         return allOfficialDocItems;
-            //     });
-            // return promise;
-
-            var promise = $http.post('/api/post_official_doc_fetch_item_period', formData)
-                .success(function (allOfficialDocItems) {
-                    return allOfficialDocItems;
+            var promise = $http.post('/api/post_official_doc_search_item', formData)
+                .success(function (officialDocItems) {
+                    return officialDocItems;
                 });
             return promise;
         })
-        .controller('listOfficialDocCtrl',
+        .controller('readyPublicOfficialDocCtrl',
             [
                 '$scope',
                 '$filter',
                 '$cookies',
                 '$uibModal',
                 'User',
+                'Project',
                 'OfficialDocUtil',
                 'OfficialDocVendorUtil',
                 '$compile',
-                'intiOfficialDocReceiveService',
+                'intiOfficialReadyPublicService',
                 function (scope,
                           filter,
                           $cookies,
                           $uibModal,
                           User,
+                          Project,
                           OfficialDocUtil,
                           OfficialDocVendorUtil,
                           $compile,
-                          intiOfficialDocReceiveService) {
-                    return new ListOfficialDocReceiveCtrl(
+                          intiOfficialReadyPublicService) {
+                    return new ListCheckOfficialDocCtrl(
                         scope,
                         filter,
                         $cookies,
                         $uibModal,
                         User,
+                        Project,
                         OfficialDocUtil,
                         OfficialDocVendorUtil,
                         $compile,
-                        intiOfficialDocReceiveService
+                        intiOfficialReadyPublicService
                     );
                 }])
-    ;
 
     /**
      * @ngInject
      */
-    function ListOfficialDocReceiveCtrl($scope,
+    function ListCheckOfficialDocCtrl($scope,
                                  $filter,
                                  $cookies,
                                  $uibModal,
                                  User,
+                                 Project,
                                  OfficialDocUtil,
                                  OfficialDocVendorUtil,
                                  $compile,
-                                 intiOfficialDocReceiveService) {
-
-        intiOfficialDocReceiveService.then(function (resp) {
-            console.log(resp.data);
+                                 intiOfficialReadyPublicService) {
+        intiOfficialReadyPublicService.then(function (resp) {
             $scope.officialDocItems = resp.data.payload;
             $scope.officialDocItems.slice(0, resp.data.payload.length);
 
             angular.element(
-                document.getElementById('includeHead'))
+                document.getElementById('includeHead_public'))
                 .append($compile(
                     "<div ba-panel ba-panel-title=" +
-                    "'收文列表 - " + resp.data.payload.length +
-                    " ( " + moment().format("YYYY/MM/DD") + "~" + moment().format("YYYY/MM/DD") + " )" +
-                    "'" +
+                    "'待發文列表 - " + resp.data.payload.length + "'" +
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
-                    "ng-include=\"'app/pages/officialDoc/listOfficialDoc/table/listOfficialTable.html'\">" +
+                    "ng-include=\"'app/pages/officialDoc/publicOfficialDoc/table/readyPublicOfficialTable.html'\">" +
                     "</div>" +
                     "</div>"
                 )($scope));
 
+            Project.findAll()
+                .success(function (relatedProjects) {
+                    $scope.relatedProjects = [];
+                    for (var i = 0; i < relatedProjects.length; i++) {
+                        $scope.relatedProjects[i] = {
+                            value: relatedProjects[i]._id,
+                            managerID: relatedProjects[i].managerID
+                        };
+                    }
+                });
+
             User.getAllUsers()
                 .success(function (allUsers) {
-                    // console.log(allUsers);
                     // 經理、主承辦
                     $scope.allUsers = [];
                     $scope.allUsers[0] = {
@@ -138,7 +142,6 @@
         }
 
         $scope.showCharger = function (officialItem) {
-            // console.log(officialItem);
             var selected = [];
             if ($scope.allUsers === undefined) return;
             if (officialItem.chargerDID) {
@@ -149,21 +152,24 @@
             return selected.length ? selected[0].name : 'Not Set';
         }
 
-        $scope.showHandler = function (officialItem) {
-            // console.log(officialItem);
+        $scope.showManager = function (officialItem) {
             var selected = [];
-            if ($scope.allUsers === undefined) return;
-            if (officialItem.handlerDID) {
-                selected = $filter('filter')($scope.allUsers, {
-                    value: officialItem.handlerDID
+            if ($scope.relatedProjects === undefined) return;
+            if (officialItem.prjDID) {
+                selected = $filter('filter')($scope.relatedProjects, {
+                    value: officialItem.prjDID
                 });
             }
-            return selected.length ? selected[0].name : 'Not Set';
+            var selected_manager = [];
+            if (selected.length) {
+                selected_manager = $filter('filter')($scope.allUsers, {
+                    value: selected[0].managerID
+                });
+            }
+            return selected_manager.length ? selected_manager[0].name : 'Not Set';
         }
 
         $scope.showVendorName = function (officialItem) {
-            // console.log(officialItem);
-            // console.log($scope.allVendors);
             var selected = [];
             if ($scope.allVendors === undefined) return;
             if (officialItem.vendorDID) {
@@ -174,11 +180,11 @@
             return selected.length ? selected[0].name : 'Not Set';
         }
 
-        $scope.showOfficialDocInfo = function (item) {
+        $scope.showOfficialDocHandleInfo = function (item) {
             $uibModal.open({
                 animation: true,
-                controller: 'officialDocInfoModalCtrl',
-                templateUrl: 'app/pages/officialDoc/listOfficialDoc/modal/officialDocInfoModal.html',
+                controller: 'officialDocReadyPublicModalCtrl',
+                templateUrl: 'app/pages/officialDoc/publicOfficialDoc/modal/officialDocReadyPublicModal.html',
                 size: 'lg',
                 resolve: {
                     docData: function () {
@@ -191,6 +197,19 @@
             }).result.then(function () {
                 // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
             });
+            $scope.readOfficialDoc(item);
+        }
+
+        // read doc
+        $scope.readOfficialDoc = function (item) {
+            var formData = {
+                _id: item._id,
+                isDocOpened: true,
+            }
+            OfficialDocUtil.updateOfficialDocItem(formData)
+                .success(function (res) {
+                    item.isDocOpened = true;
+                })
         }
 
     }

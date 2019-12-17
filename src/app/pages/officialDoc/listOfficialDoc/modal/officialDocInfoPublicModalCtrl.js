@@ -6,7 +6,7 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.myForms')
-        .controller('officialDocCheckPublicModalCtrl',
+        .controller('officialDocInfoPublicModalCtrl',
             [
                 '$scope',
                 '$filter',

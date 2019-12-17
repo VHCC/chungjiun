@@ -161,6 +161,7 @@ module.exports = mongoose.model('officialDocItem', {
         default: false
     },
 
+    // 是否發文歸檔
     isDocPublic: {
         type: Boolean,
         default: false

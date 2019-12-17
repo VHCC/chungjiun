@@ -2,26 +2,20 @@
     'user strict';
 
     angular.module('BlurAdmin.pages.cgOfficialDoc')
-        .service('intiOfficialDocReceiveService', function ($http, $cookies) {
+        .service('intiOfficialDocPublicService', function ($http, $cookies) {
 
             var formData = {
                 startDay: moment().format("YYYY/MM/DD"),
                 endDay: moment().format("YYYY/MM/DD"),
             }
 
-            // var promise = $http.get('/api/get_official_doc_fetch_all_item')
-            //     .success(function (allOfficialDocItems) {
-            //         return allOfficialDocItems;
-            //     });
-            // return promise;
-
-            var promise = $http.post('/api/post_official_doc_fetch_item_period', formData)
+            var promise = $http.post('/api/post_official_doc_fetch_item_period_public', formData)
                 .success(function (allOfficialDocItems) {
                     return allOfficialDocItems;
                 });
             return promise;
         })
-        .controller('listOfficialDocCtrl',
+        .controller('listOfficialDocPublicCtrl',
             [
                 '$scope',
                 '$filter',
@@ -31,7 +25,7 @@
                 'OfficialDocUtil',
                 'OfficialDocVendorUtil',
                 '$compile',
-                'intiOfficialDocReceiveService',
+                'intiOfficialDocPublicService',
                 function (scope,
                           filter,
                           $cookies,
@@ -40,8 +34,8 @@
                           OfficialDocUtil,
                           OfficialDocVendorUtil,
                           $compile,
-                          intiOfficialDocReceiveService) {
-                    return new ListOfficialDocReceiveCtrl(
+                          intiOfficialDocPublicService) {
+                    return new ListOfficialDocPublicCtrl(
                         scope,
                         filter,
                         $cookies,
@@ -50,7 +44,7 @@
                         OfficialDocUtil,
                         OfficialDocVendorUtil,
                         $compile,
-                        intiOfficialDocReceiveService
+                        intiOfficialDocPublicService
                     );
                 }])
     ;
@@ -58,7 +52,7 @@
     /**
      * @ngInject
      */
-    function ListOfficialDocReceiveCtrl($scope,
+    function ListOfficialDocPublicCtrl($scope,
                                  $filter,
                                  $cookies,
                                  $uibModal,
@@ -66,24 +60,24 @@
                                  OfficialDocUtil,
                                  OfficialDocVendorUtil,
                                  $compile,
-                                 intiOfficialDocReceiveService) {
+                                 intiOfficialDocPublicService) {
 
-        intiOfficialDocReceiveService.then(function (resp) {
-            console.log(resp.data);
+        intiOfficialDocPublicService.then(function (resp) {
+            console.log(resp);
             $scope.officialDocItems = resp.data.payload;
             $scope.officialDocItems.slice(0, resp.data.payload.length);
 
             angular.element(
-                document.getElementById('includeHead'))
+                document.getElementById('includeHead_public'))
                 .append($compile(
                     "<div ba-panel ba-panel-title=" +
-                    "'收文列表 - " + resp.data.payload.length +
+                    "'發文列表 - " + resp.data.payload.length +
                     " ( " + moment().format("YYYY/MM/DD") + "~" + moment().format("YYYY/MM/DD") + " )" +
                     "'" +
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
-                    "ng-include=\"'app/pages/officialDoc/listOfficialDoc/table/listOfficialTable.html'\">" +
+                    "ng-include=\"'app/pages/officialDoc/listOfficialDoc/table/listOfficialPublicTable.html'\">" +
                     "</div>" +
                     "</div>"
                 )($scope));
@@ -177,8 +171,8 @@
         $scope.showOfficialDocInfo = function (item) {
             $uibModal.open({
                 animation: true,
-                controller: 'officialDocInfoModalCtrl',
-                templateUrl: 'app/pages/officialDoc/listOfficialDoc/modal/officialDocInfoModal.html',
+                controller: 'officialDocInfoPublicModalCtrl',
+                templateUrl: 'app/pages/officialDoc/listOfficialDoc/modal/officialDocInfoPublicModal.html',
                 size: 'lg',
                 resolve: {
                     docData: function () {

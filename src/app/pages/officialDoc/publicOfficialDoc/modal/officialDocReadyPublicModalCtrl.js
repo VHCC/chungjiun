@@ -6,7 +6,7 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.myForms')
-        .controller('officialDocCheckPublicModalCtrl',
+        .controller('officialDocReadyPublicModalCtrl',
             [
                 '$scope',
                 '$filter',
@@ -341,7 +341,7 @@
 
         // 提交簽結
         $scope.sendArchive = function (dom, docData) {
-            $scope.checkText = "是否簽結：" + docData.archiveNumber;
+            $scope.checkText = "是否歸檔：" + docData.archiveNumber;
             $scope.docData = docData;
             ngDialog.open({
                 template: 'app/pages/officialDoc/handleOfficialDoc/dialog/closeOfficialDocReviewSend_Modal.html',
@@ -357,7 +357,7 @@
 
             var stageInfoHandle = {
                 timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
-                stage: "簽結",
+                stage: "發文歸檔",
                 handleName: $scope.username,
             }
 
@@ -366,11 +366,11 @@
             var formData = {
                 _id: docData._id,
                 stageInfo: handleInfo,
-                isDocClose: true
+                isDocClose: true,
+                isDocPublic: true,
             }
             OfficialDocUtil.updateOfficialDocItem(formData)
                 .success(function (res) {
-                    console.log(res);
                     docData.isDocClose = true;
 
                     var formData = {

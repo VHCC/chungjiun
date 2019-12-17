@@ -453,6 +453,11 @@ module.exports = function (app) {
             query.isDocCanPublic = req.body.isDocCanPublic;
         }
 
+        if (req.body.isDocPublic !== null
+            && req.body.isDocPublic !== undefined) {
+            query.isDocPublic = req.body.isDocPublic;
+        }
+
         console.log(" === query ===");
         console.log(query);
 
