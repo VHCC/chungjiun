@@ -372,6 +372,7 @@
             OfficialDocUtil.updateOfficialDocItem(formData)
                 .success(function (res) {
                     docData.isDocClose = true;
+                    docData.isDocPublic = true;
 
                     var formData = {
                         _id: docData._id,
