@@ -34,6 +34,13 @@
         </div>
 
         <div style="padding: 5px">
+            <label >發文日期</label>
+            <input type="text" class="form-control"
+                   value="{{docData._officialPublicDate}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px">
             <label >收文字 / 收文號</label>
             <input type="text" class="form-control"
                    value="{{docData._receiveType}} - {{docData._receiveNumber}}"
