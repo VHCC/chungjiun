@@ -233,11 +233,11 @@
             }
 
             //取得使用者個人休假表，userDID
-            $scope.getWorkOffTable = function (userDID, month, subVM) {
+            $scope.getWorkOffTable = function (userDID, year, month, subVM) {
                 $scope.specificUserTablesItems = [];
                 var getData = {
                     creatorDID: (userDID === undefined || userDID == null)? $scope.userDID : userDID,
-                    year: null,
+                    year: year === undefined ? thisYear : year,
                     month: month === undefined ? null : month,
                     isSendReview: null,
                     isBossCheck: null,
@@ -1334,6 +1334,7 @@
                         $scope.year = specificYear = newValue - 1911;
                         $scope.fetchNationHolidays_workOff(specificYear);
                         $scope.fetchOverTimeDays(specificYear);
+                        $scope.getWorkOffTable(null, specificYear, null)
                     }
                 });
             }
