@@ -39,7 +39,12 @@ module.exports = mongoose.model('officialDocItem', {
         required: true,
     },
 
-    // 來文日期
+    // 機關發文日期
+    officialPublicDate: {
+        type: String,
+    },
+
+    // 收文日期
     receiveDate: {
         type: String,
         // required: true,
@@ -117,6 +122,12 @@ module.exports = mongoose.model('officialDocItem', {
 
     // 是否審核關卡
     isDocSignStage: {
+        type: Boolean,
+        default: false
+    },
+
+    // 是否有附件
+    isAttached: {
         type: Boolean,
         default: false
     },

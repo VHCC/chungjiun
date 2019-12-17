@@ -19,7 +19,11 @@ require('./restfulAPI/register/register.routes')(app);
 require('./restfulAPI/myProject/createProject/createProject.routes')(app);
 require('./restfulAPI/myProject/listProject/listProject.routes')(app);
 require('./restfulAPI/myNewPage/todo.routes')(app);
+
 require('./restfulAPI/officialDoc/officialDoc.routes')(app);
+require('./restfulAPI/officialDoc/officialDocPublic.routes')(app);
+require('./restfulAPI/officialDoc/officialDocVendor.routes')(app);
+
 require('./restfulAPI/forms/paymentForm/paymentForm.routes')(app);
 require('./restfulAPI/forms/wageManageForm/wageManageForm.routes')(app);
 require('./restfulAPI/forms/workHourTableForm/workHourTableForm.routes')(app);

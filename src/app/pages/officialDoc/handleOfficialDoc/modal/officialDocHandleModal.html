@@ -47,6 +47,13 @@
                     </div>
 
                     <div style="padding: 5px">
+                        <label >發文日期</label>
+                        <input type="text" class="form-control"
+                               value="{{docData.officialPublicDate}}"
+                               ng-disabled="true">
+                    </div>
+
+                    <div style="padding: 5px">
                         <label >收文字 / 收文號</label>
                         <input type="text" class="form-control"
                                value="{{docData.receiveType}} - {{docData.receiveNumber}}"
@@ -193,9 +200,25 @@
             <div class="attachedzone_none">
 
                 <my ng-if="pdfList != undefined" ng-repeat="pdfItem in pdfList">
-                    <div class="pdf-item" ng-click="showPDF(this, docData)">
+                    <div class="pdf-item"
+                         ng-if="pdfItem.name.indexOf('.pdf') > 0"
+                         ng-click="showPDF(this, docData)">
                         <div class="pdf-img">
                             <img src="assets/img/pdf-svgrepo-com.svg"/>
+                        </div>
+                        <div class="pdf-detail">
+                            <div class="pdf-size"><span data-pdf-size="">{{pdfItem.size}}</span></div>
+                            <div class="pdf-filename"><span data-pdf-name="">{{pdfItem.name}}</span></div>
+                        </div>
+                        <div class="pdf-delete-buttons" ng-show="false">
+                            <button class="btn btn-danger" ng-click="deleteFile(this)">刪除</button>
+                        </div>
+                    </div>
+                    <div class="pdf-item"
+                         ng-if="pdfItem.name.indexOf('.pdf') < 0"
+                         ng-click="downloadCJFile(this)">
+                        <div class="pdf-img">
+                            <img src="assets/img/cloud-download-2.svg" width="120px" height="120px"/>
                         </div>
                         <div class="pdf-detail">
                             <div class="pdf-size"><span data-pdf-size="">{{pdfItem.size}}</span></div>

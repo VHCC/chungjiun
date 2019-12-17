@@ -172,6 +172,15 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="col-md-3 control-label">發文日期</label>
+                    <my-date-picker formatted="yyyy/MM/dd"
+                                    ng-init="setDateModel('_officialPublicDate', this)"
+                                    ng-click="setDateModel('_officialPublicDate', this)">
+
+                    </my-date-picker>
+                </div>
+
+                <div class="form-group">
                     <div class="row">
                         <div class="col-sm-6">
                             <label class="col-sm-6 control-label">收文字</label>
@@ -325,7 +334,7 @@
         <div class="col-md-6">
             <div
                     ba-panel
-                    ba-panel-title="附件[只支援pdf]"
+                    ba-panel-title="附件"
                     ba-panel-class="with-scroll">
 
                 <section>

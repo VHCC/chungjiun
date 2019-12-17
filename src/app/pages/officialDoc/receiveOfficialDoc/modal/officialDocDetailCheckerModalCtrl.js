@@ -37,6 +37,7 @@
         $scope.docData._receiveDate = moment($scope.docData._receiveDate).format('YYYY/MM/DD');
         $scope.docData._lastDate = moment($scope.docData._lastDate).format('YYYY/MM/DD');
         $scope.docData._dueDate = moment($scope.docData._dueDate).format('YYYY/MM/DD');
+        $scope.docData._officialPublicDate = moment($scope.docData._officialPublicDate).format('YYYY/MM/DD');
 
         $scope.docData.creatorDID = $scope.userDID; // 收文人
 

@@ -73,9 +73,9 @@
                     parallelUploads: 2,
                     thumbnailHeight: 120,
                     thumbnailWidth: 120,
-                    maxFilesize: 5, // MB
+                    maxFilesize: 500, // MB
                     filesizeBase: 1000,
-                    acceptedFiles: ".pdf",
+                    // acceptedFiles: ".pdf",
                     thumbnail: function (file, dataUrl) {
                         if (file.previewElement) {
                             file.previewElement.classList.remove("dz-file-preview");
@@ -112,7 +112,11 @@
                         uploadData.append('fileName', file.name);
                         uploadData.append('file', file);
 
-                        OfficialDocUtil.uploadOfficialDocFile(uploadData);
+                        OfficialDocUtil.uploadOfficialDocFile(uploadData)
+                            .success(function (res) {
+                                console.log(res);
+                                $scope.fileList.push(file.name);
+                            })
                     },
 
                     error: function (file, message) {
@@ -120,7 +124,7 @@
                         // console.log(message);
                         if (file.previewElement != null && file.previewElement.parentNode != null) {
                             file.previewElement.parentNode.removeChild(file.previewElement);
-                            toastr.error('新增失敗', '只開放接收.pdf檔案');
+                            // toastr.error('新增失敗', '只開放接收.pdf檔案');
                         }
                     },
 
@@ -146,6 +150,7 @@
 
                 });
 
+            $scope.fileList = [];
 
             // Now fake the file upload, since GitHub does not handle file uploads
             // and returns a 404
@@ -260,9 +265,9 @@
         // check doc detail
         $scope.checkDocDetail = function (dom) {
 
+            console.log($scope.fileList);
+
             console.log(dom);
-            console.log($scope);
-            console.log(vm);
 
             if (!vm.docOption) {
                 toastr.error('注意', '請選擇文別');
@@ -299,6 +304,8 @@
                         handleName: $scope.username
                     }
 
+                    var isAttached = $scope.fileList.length > 0 ? true : false;
+
                     var docData = {
                         _archiveNumber: dom._archiveNumber,
                         _receiveType: dom._receiveType,
@@ -307,12 +314,14 @@
                         _receiveDate: $scope._receiveDate,
                         _lastDate: $scope._lastDate,
                         _dueDate: $scope._dueDate,
+                        _officialPublicDate: $scope._officialPublicDate,
                         vendorItem: vm.vendorItem.selected,
                         prjItem: vm.prjItems.selected,
                         chargeUser: vm.chargeUser.selected,
                         docOption: vm.docOption.selected,
                         timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
-                        stageInfo: stageInfo
+                        stageInfo: stageInfo,
+                        isAttached: isAttached,
                     }
 
                     $uibModal.open({
@@ -427,7 +436,6 @@
         }
 
         $scope.docProjectSelected = function (projectInfo) {
-            console.log(projectInfo);
             if (projectInfo.majorID != "" && projectInfo.majorID != null && projectInfo.majorID != undefined) {
                 vm.chargeUser = {};
                 vm.chargeUser.selected = {
