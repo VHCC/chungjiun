@@ -61,7 +61,7 @@
                     templateUrl: 'app/pages/myForms/hrMachine/hrMachinePage.html',
                     controller: 'hrMachineCtrl',
                     controllerAs: 'hrMachineCtrlVm',
-                    title: '打卡機',
+                    title: '差勤紀錄',
                     sidebarMeta: {
                         order: global.pages.cgWorkManage_hrMachine,
                     },
