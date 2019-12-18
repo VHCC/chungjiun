@@ -126,6 +126,14 @@ module.exports = mongoose.model('officialDocItem', {
         default: false
     },
 
+    // 附件類別
+    // 0 : 無
+    // 1 : 電子
+    // 2 : 紙本
+    docAttachedType: {
+        type: Number,
+    },
+
     // 是否有附件
     isAttached: {
         type: Boolean,

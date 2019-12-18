@@ -85,6 +85,10 @@
             return OfficialDocUtil.getDocType(type);
         }
 
+        $scope.showDocAttachedType = function (type) {
+            return OfficialDocUtil.getDocAttachedType(type);
+        }
+
         $scope.showReceiver = function (officialItem) {
             var selected = [];
             if ($scope.allUsers === undefined) return;
@@ -204,9 +208,6 @@
         }
 
         $scope.deleteDocItem = function (item, docData) {
-            console.log(item);
-            console.log(docData);
-
             $scope.checkText = "是否刪除：" + docData.archiveNumber;
             $scope.docData = docData;
             ngDialog.open({
@@ -224,7 +225,6 @@
             }
             OfficialDocUtil.deleteOfficialDocItem(formData)
                 .success(function (res) {
-                    console.log(res);
                     window.location.reload();
                 })
         }

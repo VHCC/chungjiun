@@ -14,8 +14,7 @@
                 'OfficialDocVendorUtil',
                 'OfficialDocUtil',
                 ReceiveOfficialDocCtrl
-            ])
-    ;
+            ]);
 
     /**
      * @ngInject
@@ -264,12 +263,13 @@
         // check doc detail
         $scope.checkDocDetail = function (dom) {
 
-            // console.log($scope.fileList);
-
-            // console.log(dom);
-
             if (!vm.docOption) {
                 toastr.error('注意', '請選擇文別');
+                return
+            }
+
+            if (!vm.docAttachedType) {
+                toastr.error('注意', '請選擇附件類別');
                 return
             }
 
@@ -288,65 +288,52 @@
                 return
             }
 
-            var _dueDate = $('#_dueDate').find("input")[0].value;
+            var stageInfo = {
+                timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
+                stage: "收文建檔",
+                handleName: $scope.username
+            }
 
-            console.log(aaa);
-            // var formData = {
-            //     _archiveNumber: dom._archiveNumber,
-            //     userDID: $cookies.get('userDID'),
-            // }
-            //
-            // OfficialDocUtil.createPDFFolder(formData)
-            //     .success(function (req) {
+            var isAttached = $scope.fileList.length > 0 ? true : false;
 
-                    var stageInfo = {
-                        timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
-                        stage: "收文建檔",
-                        handleName: $scope.username
+            var docData = {
+                _archiveNumber: dom._archiveNumber,
+                _receiveType: dom._receiveType,
+                _receiveNumber: dom._receiveNumber,
+                _subject: dom._subject,
+                _receiveDate: $scope._receiveDate,
+                _lastDate: $scope._lastDate,
+                _dueDate: $scope._dueDate,
+                _officialPublicDate: $scope._officialPublicDate,
+                vendorItem: vm.vendorItem.selected,
+                prjItem: vm.prjItems.selected,
+                chargeUser: vm.chargeUser.selected,
+                docOption: vm.docOption.selected,
+                docAttachedType: vm.docAttachedType.selected,
+                timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
+                stageInfo: stageInfo,
+                isAttached: isAttached,
+            }
+
+            $uibModal.open({
+                animation: true,
+                controller: 'officialDocDetailCheckerModalCtrl',
+                templateUrl: 'app/pages/officialDoc/receiveOfficialDoc/modal/officialDocDetailCheckerModal.html',
+                resolve: {
+                    parent: function () {
+                        return $scope;
+                    },
+                    docData: function () {
+                        return docData;
+                    },
+                    folderDir: function () {
+                        return $cookies.get('userDID') + fileUnique;
                     }
-
-                    var isAttached = $scope.fileList.length > 0 ? true : false;
-
-                    var docData = {
-                        _archiveNumber: dom._archiveNumber,
-                        _receiveType: dom._receiveType,
-                        _receiveNumber: dom._receiveNumber,
-                        _subject: dom._subject,
-                        _receiveDate: $scope._receiveDate,
-                        _lastDate: $scope._lastDate,
-                        _dueDate: _dueDate,
-                        _officialPublicDate: $scope._officialPublicDate,
-                        vendorItem: vm.vendorItem.selected,
-                        prjItem: vm.prjItems.selected,
-                        chargeUser: vm.chargeUser.selected,
-                        docOption: vm.docOption.selected,
-                        timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
-                        stageInfo: stageInfo,
-                        isAttached: isAttached,
-                    }
-
-                    $uibModal.open({
-                        animation: true,
-                        controller: 'officialDocDetailCheckerModalCtrl',
-                        templateUrl: 'app/pages/officialDoc/receiveOfficialDoc/modal/officialDocDetailCheckerModal.html',
-                        resolve: {
-                            parent: function () {
-                                return $scope;
-                            },
-                            docData: function () {
-                                return docData;
-                            },
-                            folderDir: function () {
-                                return $cookies.get('userDID') + fileUnique;
-                            }
-                        }
-                    }).result.then(function (data) {
-                        console.log(data);
-                        window.location.reload();
-                    });
-
-                // })
-
+                }
+            }).result.then(function (data) {
+                console.log(data);
+                window.location.reload();
+            });
 
         };
 
@@ -370,14 +357,37 @@
 
         vm.docOptions = options_regular;
 
+        // 0 : 無
+        // 1 : 電子
+        // 2 : 開會
+        var attached_regular = [
+            {
+                name: "無",
+                option: 0
+            },
+            {
+                name: "電子",
+                option: 1
+            },
+            {
+                name: "紙本",
+                option: 2
+            },
+        ];
+
+        vm.docAttachedTypes = attached_regular;
+
         var originHeight;
 
         $scope.listenDatePicker_official = function (dom) {
 
             $scope.$watch('_receiveDate',function(newValue, oldValue) {
 
-                $scope._lastDate = moment(oldValue).add(2, 'days').format('YYYY/MM/DD');
+                $scope._lastDate = moment(oldValue).add(3, 'days').format('YYYY/MM/DD');
                 $('#_lastDate_dom').find('#myDT')[0].value = $scope._lastDate;
+
+                $scope._lastDate = moment(oldValue).add(6, 'days').format('YYYY/MM/DD');
+                $('#_dueDate_dom').find('#myDT')[0].value = $scope._lastDate;
 
                 dom.$watch('opened',function(newVal, oldVal){
                     if (newVal) {

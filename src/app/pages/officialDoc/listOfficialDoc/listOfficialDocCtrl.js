@@ -130,6 +130,10 @@
             return OfficialDocUtil.getDocType(type);
         }
 
+        $scope.showDocAttachedType = function (type) {
+            return OfficialDocUtil.getDocAttachedType(type);
+        }
+
         $scope.showReceiver = function (officialItem) {
             var selected = [];
             if ($scope.allUsers === undefined) return;
