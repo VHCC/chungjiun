@@ -288,7 +288,9 @@
                 return
             }
 
+            var _dueDate = $('#_dueDate').find("input")[0].value;
 
+            console.log(aaa);
             // var formData = {
             //     _archiveNumber: dom._archiveNumber,
             //     userDID: $cookies.get('userDID'),
@@ -312,7 +314,7 @@
                         _subject: dom._subject,
                         _receiveDate: $scope._receiveDate,
                         _lastDate: $scope._lastDate,
-                        _dueDate: $scope._dueDate,
+                        _dueDate: _dueDate,
                         _officialPublicDate: $scope._officialPublicDate,
                         vendorItem: vm.vendorItem.selected,
                         prjItem: vm.prjItems.selected,
