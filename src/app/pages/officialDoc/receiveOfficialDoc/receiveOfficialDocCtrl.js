@@ -386,8 +386,8 @@
                 $scope._lastDate = moment(oldValue).add(3, 'days').format('YYYY/MM/DD');
                 $('#_lastDate_dom').find('#myDT')[0].value = $scope._lastDate;
 
-                $scope._lastDate = moment(oldValue).add(6, 'days').format('YYYY/MM/DD');
-                $('#_dueDate_dom').find('#myDT')[0].value = $scope._lastDate;
+                $scope._dueDate = moment(oldValue).add(6, 'days').format('YYYY/MM/DD');
+                $('#_dueDate_dom').find('#myDT')[0].value = $scope._dueDate;
 
                 dom.$watch('opened',function(newVal, oldVal){
                     if (newVal) {
