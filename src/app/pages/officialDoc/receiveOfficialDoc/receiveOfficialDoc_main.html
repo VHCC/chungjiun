@@ -107,7 +107,7 @@
 
                 <div class="form-group">
                     <p>
-                        說明：預設＝收文日期 (含當天) + 3 天。
+                        說明：預設＝收文日期 (不含當天) + 3 天。
                     </p>
                 </div>
             </div>
@@ -121,7 +121,7 @@
                 ba-panel-class="with-scroll">
                 <div class="form-group">
                     <my-date-picker formatted="yyyy/MM/dd"
-                                    id="_dueDate"
+                                    id="_dueDate_dom"
                                     ng-init="setDateModel('_dueDate', this)"
                                     ng-click="setDateModel('_dueDate', this); listenDatePicker_official(this)">
 
@@ -130,7 +130,7 @@
 
                 <div class="form-group">
                     <p>
-                        說明：預設＝公文中若有最後處理期限請填入，若無可為空。
+                        說明：預設＝最後日期 (含當天) + 7 天。
                     </p>
                 </div>
             </div>
@@ -225,30 +225,48 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">發文機關</label>
-                                <ui-select ng-model="receiveOfficialDocCtrlVm.vendorItem.selected"
-                                           class="btn-group bootstrap-select form-control"
-                                           ng-disabled="false"
-                                           append-to-body="true"
-                                           search-enabled="true">
-                                    <ui-select-match placeholder="選擇機關">
-                                        {{$select.selected.vendorName}}
-                                    </ui-select-match>
-                                    <ui-select-choices
-                                            ng-model="vendorName"
-                                            repeat="vendorItem in receiveOfficialDocCtrlVm.officialDocVendors |
-                                                groupSelectpickerOptions: {
-                                                    vendorName: $select.search
-                                                }">
-                                        <span ng-bind-html="vendorItem.vendorName | highlight: $select.search"></span>
-                                    </ui-select-choices>
-                                </ui-select>
-                            </div>
-                            <hr>
+                            <label class="col-md-3 control-label">發文機關</label>
+                            <ui-select ng-model="receiveOfficialDocCtrlVm.vendorItem.selected"
+                                       class="btn-group bootstrap-select form-control"
+                                       ng-disabled="false"
+                                       append-to-body="true"
+                                       search-enabled="true">
+                                <ui-select-match placeholder="選擇機關">
+                                    {{$select.selected.vendorName}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        ng-model="vendorName"
+                                        repeat="vendorItem in receiveOfficialDocCtrlVm.officialDocVendors |
+                                            groupSelectpickerOptions: {
+                                                vendorName: $select.search
+                                            }">
+                                    <span ng-bind-html="vendorItem.vendorName | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
                         </div>
                     </div>
 
+                </div>
+
+                <div class="form-group">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="col-md-3 control-label">附件類型</label>
+                            <ui-select ng-model="receiveOfficialDocCtrlVm.docAttachedType.selected"
+                                       class="btn-group bootstrap-select form-control"
+                                       append-to-body="true"
+                                       search-enabled="true">
+                                <ui-select-match placeholder="請選擇附件類型">
+                                    {{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="type in receiveOfficialDocCtrlVm.docAttachedTypes">
+                                    <span ng-bind-html="type.name"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
                 </div>
 
                 <section class="col-md-12" >
@@ -335,7 +353,7 @@
         <div class="col-md-6">
             <div
                     ba-panel
-                    ba-panel-title="附件"
+                    ba-panel-title="公文及附件內容"
                     ba-panel-class="with-scroll">
 
                 <section>

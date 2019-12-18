@@ -270,6 +270,17 @@
                     }
                 },
 
+                getDocAttachedType: function (type) {
+                    switch (type) {
+                        case 0:
+                            return "無";
+                        case 1:
+                            return "電子";
+                        case 2:
+                            return "紙本";
+                    }
+                },
+
                 getDocPublicType: function (type) {
                     switch (type) {
                         case 0:

@@ -319,6 +319,7 @@ module.exports = function (app) {
                 receiveType: req.body._receiveType,
                 receiveNumber: req.body._receiveNumber,
                 docType: req.body.docOption.option,
+                docAttachedType: req.body.docAttachedType.option,
 
                 isAttached: req.body.isAttached,
 
