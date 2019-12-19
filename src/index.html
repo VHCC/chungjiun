@@ -52,7 +52,7 @@
   <!--<script src="../bower_components/socket.io-client/dist/socket.io.js"></script>-->
 
 </head>
-<body>
+<body onhashchange="hashTagChange()">
 <div class="body-bg"></div>
 <main ng-if="$pageFinishedLoading" ng-class="{ 'menu-collapsed': $baSidebarService.isMenuCollapsed() }">
 
@@ -62,7 +62,8 @@
   <div class="al-main">
     <div class="al-content">
       <content-top></content-top>
-      <div ui-view autoscroll="true" autoscroll-body-top></div>
+      <div ui-view autoscroll="true"
+           autoscroll-body-top></div>
     </div>
   </div>
 
@@ -106,7 +107,7 @@
 
 </body>
 <script>
-
+    console.log("index.html");
     if (decodeURI(readCookie('username')) == '' ||
         decodeURI(readCookie('username')) == 'null' ||
         decodeURI(readCookie('userDID')) == 'null') {
@@ -122,6 +123,15 @@
             if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
         }
         return null;
+    }
+
+    function hashTagChange() {
+        console.log("hashTagChange");
+        if (decodeURI(readCookie('username')) == '' ||
+            decodeURI(readCookie('username')) == 'null' ||
+            decodeURI(readCookie('userDID')) == 'null') {
+            window.location.href = 'http://localhost:3000/login.html';
+        }
     }
 
     function globalNoty(type, text) {
