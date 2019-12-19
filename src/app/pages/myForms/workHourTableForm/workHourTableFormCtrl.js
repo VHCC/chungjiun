@@ -1570,6 +1570,15 @@
         // ************************ CREATE SUBMIT ***************************
         $scope.createSubmit = function (delayTime, isRefreshProjectSelector) {
             return $timeout(function () {
+
+                if ($cookies.get('userDID') == undefined ||
+                    $cookies.get('userDID') == null ||
+                    $cookies.get('userDID') == "null") {
+                    window.location.reload();
+                    return;
+                }
+
+
                 // 更新old Table ID Array
                 var needUpdateWorkTableIDArray = [];
                 for (var majorIndex = 0; majorIndex < $scope.tables.length; majorIndex ++) {
