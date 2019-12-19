@@ -105,79 +105,64 @@
 
                 HrMachineUtil.fetchUserHrMachineDataOneDayByMachineDID(formData)
                     .success(function (res) {
+
                         res.payload = res.payload.sort(function (a, b) {
                             return a._id > b._id ? 1 : -1;
                         });
 
-                        // console.log(res.payload);
-
                         var arrayResult = res.payload;
 
-                        var hrMachineTableSorted = {};
-                        var lastDate = "";
+                        if (arrayResult.length == 0) {
+                            $timeout(function () {
+                                bsLoadingOverlayService.stop({
+                                    referenceId: 'overlay_hrMachine'
+                                });
+                            }, 500)
+                        } else {
+                            var hrMachineTableSorted = {};
+                            var lastDate = "";
 
-                        for (var index = 0; index < arrayResult[0].length; index++) {
-                            // console.log(arrayResult[0][index].date);
+                            for (var index = 0; index < arrayResult[0].length; index++) {
+                                // console.log(arrayResult[0][index].date);
 
-                            var yearString = parseInt(arrayResult[0][index].date.substr(0, 3)) + 1911;
-                            var dateString = arrayResult[0][index].date.substr(3, arrayResult[0][index].date.length);
-                            // console.log(yearString + dateString);
-                            var newDate = yearString + dateString;
+                                var yearString = parseInt(arrayResult[0][index].date.substr(0, 3)) + 1911;
+                                var dateString = arrayResult[0][index].date.substr(3, arrayResult[0][index].date.length);
+                                // console.log(yearString + dateString);
+                                var newDate = yearString + dateString;
 
-                            // console.log(moment(newDate).format('MM'));
+                                // console.log(moment(newDate).format('MM'));
 
-                            if (type == 2) {
-                                if (moment(newDate).format('MM') != moment(specificDate).format('MM')) {
-                                    continue;
-                                }
-                            }
-
-
-                            var hrMachineItem = {
-                                date: "",
-                                did: "",
-                                location: "",
-                                printType: "",
-                                time: "",
-                                workType: ""
-                            }
-                            // console.log(hrMachineTableSorted);
-                            if (hrMachineTableSorted[arrayResult[0][index].date] === undefined) {
-                                hrMachineItem.date = arrayResult[0][index].date;
-                                hrMachineItem.did = arrayResult[0][index].did;
-                                hrMachineItem.location = arrayResult[0][index].location;
-                                hrMachineItem.printType = arrayResult[0][index].printType;
-                                hrMachineItem.time = arrayResult[0][index].time;
-                                hrMachineItem.workType = arrayResult[0][index].workType;
-
-                                var hrMachineCollection = [];
-                                hrMachineCollection.push(hrMachineItem);
-                                // console.log(hrMachineCollection);
-                                hrMachineTableSorted[arrayResult[0][index].date] = hrMachineCollection;
-
-                                if (arrayResult[0][index].workType == 4) {
-                                    var hrMachineItemTemp = {
-                                        date: "",
-                                        did: "",
-                                        location: "",
-                                        printType: "",
-                                        time: "",
-                                        workType: ""
+                                if (type == 2) {
+                                    if (moment(newDate).format('MM') != moment(specificDate).format('MM')) {
+                                        continue;
                                     }
-                                    hrMachineItemTemp.date = arrayResult[0][index].date;
-                                    hrMachineItemTemp.did = arrayResult[0][index].did;
-                                    hrMachineItemTemp.location = arrayResult[0][index].location;
-                                    hrMachineItemTemp.printType = arrayResult[0][index].printType;
-                                    hrMachineItemTemp.time = "0000";
-                                    hrMachineItemTemp.workType = "3";
-                                    hrMachineTableSorted[arrayResult[0][index].date].push(hrMachineItemTemp);
+                                }
 
-                                    // console.log(lastDate);
-                                    // console.log(hrMachineTableSorted[lastDate]);
 
-                                    if (hrMachineTableSorted[lastDate] !== undefined) {
+                                var hrMachineItem = {
+                                    date: "",
+                                    did: "",
+                                    location: "",
+                                    printType: "",
+                                    time: "",
+                                    workType: ""
+                                }
+                                // console.log(hrMachineTableSorted);
+                                if (hrMachineTableSorted[arrayResult[0][index].date] === undefined) {
+                                    hrMachineItem.date = arrayResult[0][index].date;
+                                    hrMachineItem.did = arrayResult[0][index].did;
+                                    hrMachineItem.location = arrayResult[0][index].location;
+                                    hrMachineItem.printType = arrayResult[0][index].printType;
+                                    hrMachineItem.time = arrayResult[0][index].time;
+                                    hrMachineItem.workType = arrayResult[0][index].workType;
 
-                                        var hrMachineItemLastDate = {
+                                    var hrMachineCollection = [];
+                                    hrMachineCollection.push(hrMachineItem);
+                                    // console.log(hrMachineCollection);
+                                    hrMachineTableSorted[arrayResult[0][index].date] = hrMachineCollection;
+
+                                    if (arrayResult[0][index].workType == 4) {
+                                        var hrMachineItemTemp = {
                                             date: "",
                                             did: "",
                                             location: "",
@@ -185,50 +170,72 @@
                                             time: "",
                                             workType: ""
                                         }
-                                        hrMachineItemLastDate.date = arrayResult[0][index].date;
-                                        hrMachineItemLastDate.did = arrayResult[0][index].did;
-                                        hrMachineItemLastDate.location = arrayResult[0][index].location;
-                                        hrMachineItemLastDate.printType = arrayResult[0][index].printType;
-                                        hrMachineItemLastDate.time = "2400";
-                                        hrMachineItemLastDate.workType = "4";
-                                        hrMachineTableSorted[lastDate].push(hrMachineItemLastDate);
+                                        hrMachineItemTemp.date = arrayResult[0][index].date;
+                                        hrMachineItemTemp.did = arrayResult[0][index].did;
+                                        hrMachineItemTemp.location = arrayResult[0][index].location;
+                                        hrMachineItemTemp.printType = arrayResult[0][index].printType;
+                                        hrMachineItemTemp.time = "0000";
+                                        hrMachineItemTemp.workType = "3";
+                                        hrMachineTableSorted[arrayResult[0][index].date].push(hrMachineItemTemp);
 
+                                        // console.log(lastDate);
+                                        // console.log(hrMachineTableSorted[lastDate]);
+
+                                        if (hrMachineTableSorted[lastDate] !== undefined) {
+
+                                            var hrMachineItemLastDate = {
+                                                date: "",
+                                                did: "",
+                                                location: "",
+                                                printType: "",
+                                                time: "",
+                                                workType: ""
+                                            }
+                                            hrMachineItemLastDate.date = arrayResult[0][index].date;
+                                            hrMachineItemLastDate.did = arrayResult[0][index].did;
+                                            hrMachineItemLastDate.location = arrayResult[0][index].location;
+                                            hrMachineItemLastDate.printType = arrayResult[0][index].printType;
+                                            hrMachineItemLastDate.time = "2400";
+                                            hrMachineItemLastDate.workType = "4";
+                                            hrMachineTableSorted[lastDate].push(hrMachineItemLastDate);
+
+                                        }
                                     }
+
+                                    lastDate = arrayResult[0][index].date;
+
+                                } else {
+                                    hrMachineItem.date = arrayResult[0][index].date;
+                                    hrMachineItem.did = arrayResult[0][index].did;
+                                    hrMachineItem.location = arrayResult[0][index].location;
+                                    hrMachineItem.printType = arrayResult[0][index].printType;
+                                    hrMachineItem.time = arrayResult[0][index].time;
+                                    hrMachineItem.workType = arrayResult[0][index].workType;
+                                    hrMachineTableSorted[arrayResult[0][index].date].push(hrMachineItem);
+                                    // console.log(hrMachineTableSorted[arrayResult[0][index].date]);
+
+                                    lastDate = arrayResult[0][index].date;
                                 }
-
-                                lastDate = arrayResult[0][index].date;
-
-                            } else {
-                                hrMachineItem.date = arrayResult[0][index].date;
-                                hrMachineItem.did = arrayResult[0][index].did;
-                                hrMachineItem.location = arrayResult[0][index].location;
-                                hrMachineItem.printType = arrayResult[0][index].printType;
-                                hrMachineItem.time = arrayResult[0][index].time;
-                                hrMachineItem.workType = arrayResult[0][index].workType;
-                                hrMachineTableSorted[arrayResult[0][index].date].push(hrMachineItem);
-                                // console.log(hrMachineTableSorted[arrayResult[0][index].date]);
-
-                                lastDate = arrayResult[0][index].date;
                             }
-                        }
 
-                        switch(type) {
-                            case 0:
-                                $scope.hrMachineTable = hrMachineTableSorted;
-                                break;
-                            case 1:
-                                $scope.hrMachineTable_specific = hrMachineTableSorted;
-                                break;
-                            case 2:
-                                $scope.hrMachineTable_month_reports = hrMachineTableSorted;
-                                break;
+                            switch(type) {
+                                case 0:
+                                    $scope.hrMachineTable = hrMachineTableSorted;
+                                    break;
+                                case 1:
+                                    $scope.hrMachineTable_specific = hrMachineTableSorted;
+                                    break;
+                                case 2:
+                                    $scope.hrMachineTable_month_reports = hrMachineTableSorted;
+                                    break;
 
+                            }
+                            $timeout(function () {
+                                bsLoadingOverlayService.stop({
+                                    referenceId: 'overlay_hrMachine'
+                                });
+                            }, 500)
                         }
-                        $timeout(function () {
-                            bsLoadingOverlayService.stop({
-                                referenceId: 'overlay_hrMachine'
-                            });
-                        }, 500)
                     })
                     .error(function () {
                         $timeout(function () {
