@@ -195,6 +195,7 @@
             var evalString = '$scope.' + modelName + "= dom.myDT";
             // console.log(evalString);
             // console.log(dom);
+            // console.log($scope);
             eval(evalString);
         }
 
@@ -383,12 +384,6 @@
 
             $scope.$watch('_receiveDate',function(newValue, oldValue) {
 
-                $scope._lastDate = moment(oldValue).add(3, 'days').format('YYYY/MM/DD');
-                $('#_lastDate_dom').find('#myDT')[0].value = $scope._lastDate;
-
-                $scope._dueDate = moment(oldValue).add(6, 'days').format('YYYY/MM/DD');
-                $('#_dueDate_dom').find('#myDT')[0].value = $scope._dueDate;
-
                 dom.$watch('opened',function(newVal, oldVal){
                     if (newVal) {
                         if (!originHeight) {
@@ -404,6 +399,15 @@
                         $('#_receiveDate_panel').find('.panel-body').height(originHeight);
                     }
                 })
+
+                if(newValue != oldValue){
+
+                    $scope._lastDate = moment(newValue).add(3, 'days').format('YYYY/MM/DD');
+                    $('#_lastDate_dom').find('#myDT')[0].value = $scope._lastDate;
+
+                    $scope._dueDate = moment(newValue).add(6, 'days').format('YYYY/MM/DD');
+                    $('#_dueDate_dom').find('#myDT')[0].value = $scope._dueDate;
+                }
             });
 
             $scope.$watch('_lastDate',function(newValue, oldValue) {

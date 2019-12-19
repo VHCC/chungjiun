@@ -78,7 +78,6 @@
                     <my-date-picker formatted="yyyy/MM/dd"
                                     ng-init="setDateModel('_receiveDate', this)"
                                     ng-click="setDateModel('_receiveDate', this); listenDatePicker_official(this)">
-
                     </my-date-picker>
                 </div>
 
@@ -99,6 +98,7 @@
                 <div class="form-group">
                     <my-date-picker formatted="yyyy/MM/dd"
                                     id="_lastDate_dom"
+                                    ng-model="_lastDate"
                                     ng-init="setDateModel('_lastDate', this)"
                                     ng-click="setDateModel('_lastDate', this); listenDatePicker_official(this)">
 
@@ -122,6 +122,7 @@
                 <div class="form-group">
                     <my-date-picker formatted="yyyy/MM/dd"
                                     id="_dueDate_dom"
+                                    ng-model="_dueDate"
                                     ng-init="setDateModel('_dueDate', this)"
                                     ng-click="setDateModel('_dueDate', this); listenDatePicker_official(this)">
 
