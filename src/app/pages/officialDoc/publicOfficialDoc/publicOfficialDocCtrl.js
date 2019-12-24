@@ -471,6 +471,8 @@
         // 0 : 函
         // 1 : 會勘
         // 2 : 開會
+        // 3 : 書函
+        // 4 : 紀錄
         var options_regular = [
             {
                 name: "函",
@@ -483,6 +485,14 @@
             {
                 name: "開會",
                 option: 2
+            },
+            {
+                name: "書函",
+                option: 3
+            },
+            {
+                name: "紀錄",
+                option: 4
             },
         ];
 
