@@ -98,6 +98,8 @@ module.exports = mongoose.model('officialDocItem', {
     // 0 : 函
     // 1 : 會勘
     // 2 : 開會
+    // 3 : 書函
+    // 4 : 紀錄
     docType: {
         type: Number,
     },

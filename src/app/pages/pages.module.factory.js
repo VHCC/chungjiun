@@ -267,6 +267,10 @@
                             return "會勘";
                         case 2:
                             return "開會";
+                        case 3:
+                            return "書函";
+                        case 4:
+                            return "紀錄"
                     }
                 },
 
