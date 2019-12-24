@@ -366,13 +366,20 @@
         }])
         .factory('GlobalConfigUtil', ['$http', function (http) {
             return {
-                getConfig: function () {
-                    return http.get('/api/fetch_global_configs')
+
+                insertConfig: function(formData) {
+                    return http.post('/api/post_global_configs_insert', formData)
+                },
+
+                getConfig: function (formData) {
+                    return http.post('/api/fetch_global_configs', formData)
                 },
 
                 updateConfig : function (formData) {
                     return http.post('/api/post_global_configs_update', formData)
                 },
+
+
             }
         }])
         .factory('HolidayDataForms', ['$http', function (http) {

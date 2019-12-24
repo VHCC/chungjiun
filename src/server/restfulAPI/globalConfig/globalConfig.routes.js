@@ -2,12 +2,35 @@ var globalConfigModel = require('../models/globalConfig');
 
 module.exports = function(app) {
     'use strict';
+
+    // insert
+    app.post(global.apiUrl.post_global_configs_insert, function(req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_global_configs_insert");
+
+        console.log(req.body);
+
+        globalConfigModel.create({
+            year: req.body.year,
+            month: req.body.month,
+        }, function(err, configs) {
+            console.log(configs);
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+                payload: configs
+            });
+        });
+    });
+
     // fetch
-    app.get(global.apiUrl.fetch_global_configs, function(req, res) {
+    app.post(global.apiUrl.fetch_global_configs, function(req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, fetch_global_configs");
 
-        globalConfigModel.find({
+        console.log(req.body);
 
+        globalConfigModel.find({
+            year: req.body.year,
+            month: req.body.month,
         }, function(err, configs) {
             console.log(configs);
             res.status(200).send({

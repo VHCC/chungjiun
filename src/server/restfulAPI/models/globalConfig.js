@@ -7,4 +7,13 @@ module.exports = mongoose.model('globalConfig', {
         type: Boolean,
         default: true,
     },
+
+    year: {
+        type: Number
+    },
+
+    month: {
+        type: Number
+    }
+
 });

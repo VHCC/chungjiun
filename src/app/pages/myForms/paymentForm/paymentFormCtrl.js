@@ -129,17 +129,35 @@
                 }
             });
 
-        GlobalConfigUtil.getConfig()
-            .success(function (resp) {
-                console.log(resp);
-                vm.paymentsflag = resp.payload[0].paymentsSwitch;
-            })
+        $scope.getGlobalConfig = function() {
+
+            var formData = {
+                year: specificYear,
+                month: specificMonth,
+            }
+
+            GlobalConfigUtil.getConfig(formData)
+                .success(function (resp) {
+                    console.log(resp);
+                    if (resp.payload.length > 0 ) {
+                        vm.paymentsflag = resp.payload[0].paymentsSwitch;
+                    } else {
+                        console.log(formData);
+                        GlobalConfigUtil.insertConfig(formData)
+                            .success(function (resp) {
+                                console.log(resp);
+                                $scope.getGlobalConfig();
+                            })
+                    }
+                })
+        }
+
 
         $scope.updatePaymentsGlobalConfig = function() {
 
-            console.log(vm.paymentsflag);
-
             var formData = {
+                year: specificYear,
+                month: specificMonth,
                 paymentsSwitch: vm.paymentsflag,
             }
 
@@ -472,6 +490,8 @@
                     // } else {
                     //     $scope.displayPaymentItems_history = res.payload;
                     // }
+
+                    $scope.getGlobalConfig();
 
                     $timeout(function () {
                         bsLoadingOverlayService.stop({
