@@ -76,6 +76,7 @@ global.apiUrl = {
     // global configs
     fetch_global_configs: '/api/fetch_global_configs',
     post_global_configs_update: '/api/post_global_configs_update',
+    post_global_configs_insert: '/api/post_global_configs_insert',
 
     // wageManage
     post_wage_manage_fetch_item : '/api/post_wage_manage_fetch_item',
