@@ -269,24 +269,28 @@
             OfficialDocUtil.updateOfficialDocItem(formData)
                 .success(function (res) {
                     console.log(res);
-                    docData.isDocSignStage = true;
 
-                    var formData = {
-                        _id: docData._id,
-                        isDocClose: false,
-                    }
-
-                    OfficialDocUtil.searchOfficialDocItem(formData)
-                        .success(function (res) {
-                            console.log(res.payload);
-                            docData = res.payload[0];
-                        })
+                    // docData.isDocSignStage = true;
+                    $uibModalInstance.close();
+                    // $scope.reloadDocData_handle();
+                    //
+                    // var formData = {
+                    //     _id: docData._id,
+                    //     isDocClose: false,
+                    // }
+                    //
+                    // OfficialDocUtil.searchOfficialDocItem(formData)
+                    //     .success(function (res) {
+                    //         console.log(res.payload);
+                    //         docData = res.payload[0];
+                    //     })
 
                 })
         }
 
         // 提交簽結
         $scope.sendArchive = function (dom, docData) {
+
             $scope.checkText = "是否簽結：" + docData.archiveNumber;
             $scope.docData = docData;
             ngDialog.open({
@@ -317,18 +321,22 @@
             OfficialDocUtil.updateOfficialDocItem(formData)
                 .success(function (res) {
                     console.log(res);
-                    docData.isDocClose = true;
+                    $uibModalInstance.close();
+                    // $scope.reloadDocData_handle();
 
-                    var formData = {
-                        _id: docData._id,
-                        isDocClose: false,
-                    }
 
-                    OfficialDocUtil.searchOfficialDocItem(formData)
-                        .success(function (res) {
-                            console.log(res.payload);
-                            docData = res.payload[0];
-                        })
+                    // docData.isDocClose = true;
+                    //
+                    // var formData = {
+                    //     _id: docData._id,
+                    //     isDocClose: false,
+                    // }
+                    //
+                    // OfficialDocUtil.searchOfficialDocItem(formData)
+                    //     .success(function (res) {
+                    //         console.log(res.payload);
+                    //         docData = res.payload[0];
+                    //     })
 
                 })
         }
