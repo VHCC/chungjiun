@@ -208,6 +208,7 @@
                     },
                 }
             }).result.then(function () {
+                $scope.reloadDocData_sign();
                 // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
             });
 
@@ -227,7 +228,7 @@
         //         })
         // }
 
-        $scope.reloadDocData = function () {
+        $scope.reloadDocData_sign = function () {
             var formData = {
                 handlerDID: $cookies.get("userDID"),
                 isDocClose: false,
@@ -242,7 +243,7 @@
                     $scope.officialDocItems = resp.payload;
                     $scope.officialDocItems.slice(0, resp.payload.length);
 
-                    document.getElementById('includeHead').innerText = "";
+                    document.getElementById('includeHead_sign').innerText = "";
 
                     angular.element(
                         document.getElementById('includeHead_sign'))

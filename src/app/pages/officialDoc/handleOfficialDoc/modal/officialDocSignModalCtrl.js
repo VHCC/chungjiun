@@ -270,21 +270,24 @@
             OfficialDocUtil.updateOfficialDocItem(formData)
                 .success(function (res) {
                     console.log(res);
-                    docData.isDocSignStage = false;
+                    // docData.isDocSignStage = false;
 
-                    var formData = {
-                        _id: docData._id,
-                        isDocClose: false,
-                    }
+                    $uibModalInstance.close();
 
-                    OfficialDocUtil.searchOfficialDocItem(formData)
-                        .success(function (res) {
-                            console.log(res.payload);
-                            docData = res.payload[0];
-                        })
+                    // var formData = {
+                    //     _id: docData._id,
+                    //     isDocClose: false,
+                    // }
+                    //
+                    // OfficialDocUtil.searchOfficialDocItem(formData)
+                    //     .success(function (res) {
+                    //         console.log(res.payload);
+                    //         docData = res.payload[0];
+                    //     })
 
                 })
         }
+
     }
 
 })();

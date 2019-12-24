@@ -2,6 +2,14 @@
     <table class="table table-hover" st-table="officialDocItems">
         <thead>
         <tr>
+            <td>
+                <button type="button" class="btn btn-info"
+                        ng-click="reloadDocData_sign()">
+                    重整公文列表
+                </button>
+            </td>
+        </tr>
+        <tr>
             <td colspan="10" class="text-center">
                 <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
             </td>

@@ -9,7 +9,6 @@
                 isDocClose: false,
                 isDocSignStage: false,
                 type: 0,
-
             }
 
             var promise = $http.post('/api/post_official_doc_search_item', formData)
@@ -87,6 +86,8 @@
                     "</div>" +
                     "</div>"
                 )($scope));
+
+            console.log($scope);
 
             Project.findAll()
                 .success(function (relatedProjects) {
@@ -210,6 +211,7 @@
                     },
                 }
             }).result.then(function () {
+                $scope.reloadDocData_handle();
                 // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
             });
 
@@ -229,7 +231,9 @@
                 })
         }
 
+
         $scope.reloadDocData_handle = function () {
+            console.log("QQQQ");
             var formData = {
                 chargerDID: $cookies.get("userDID"),
                 isDocClose: false,
