@@ -339,7 +339,7 @@
                 })
         }
 
-        // 提交簽結
+        // 提交歸檔
         $scope.sendArchive = function (dom, docData) {
             $scope.checkText = "是否歸檔：" + docData.archiveNumber;
             $scope.docData = docData;

@@ -288,10 +288,10 @@
                 })
         }
 
-        // 提交簽結
+        // 提交歸檔
         $scope.sendArchive = function (dom, docData) {
 
-            $scope.checkText = "是否簽結：" + docData.archiveNumber;
+            $scope.checkText = "是否歸檔：" + docData.archiveNumber;
             $scope.docData = docData;
             ngDialog.open({
                 template: 'app/pages/officialDoc/handleOfficialDoc/dialog/closeOfficialDocReviewSend_Modal.html',
@@ -307,7 +307,7 @@
 
             var stageInfoHandle = {
                 timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
-                stage: "簽結",
+                stage: "歸檔",
                 handleName: $scope.username,
             }
 

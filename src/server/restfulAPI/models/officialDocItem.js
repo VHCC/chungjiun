@@ -104,13 +104,13 @@ module.exports = mongoose.model('officialDocItem', {
         type: Number,
     },
 
-    // 經理是否允許簽結
+    // 經理是否允許歸檔
     isApproveDocClose: {
         type: Boolean,
         default: false
     },
 
-    // 是否簽結
+    // 是否歸檔
     isDocClose: {
         type: Boolean,
         default: false
