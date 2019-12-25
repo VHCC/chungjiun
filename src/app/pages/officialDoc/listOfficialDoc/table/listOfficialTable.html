@@ -60,8 +60,18 @@
             </th>
 
             <th/>
-            <th/>
-            <th/>
+            <th>
+                <input st-search="chargerName"
+                       placeholder="輸入承辦人"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+            <th>
+                <input st-search="handlerName"
+                       placeholder="輸入待辦人"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
 
             <th>
                 <input st-search="prjCode"
@@ -89,7 +99,7 @@
                 {{item.archiveNumber}}
                 <div ng-show="item.isDocClose">
                     <button class="btn btn-success btn-xs">
-                        簽結
+                        歸檔
                     </button>
                 </div>
             </td>

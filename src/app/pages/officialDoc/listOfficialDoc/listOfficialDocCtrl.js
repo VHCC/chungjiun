@@ -72,10 +72,47 @@
         $scope.roleType = $cookies.get('roletype');
         $scope.officialDocRight = $cookies.get('feature_official_doc') == "true";
 
+        User.getAllUsers()
+            .success(function (allUsers) {
+                // console.log(allUsers);
+                // 經理、主承辦
+                $scope.allUsers = [];
+                $scope.allUsers[0] = {
+                    value: "",
+                    name: "None"
+                };
+                for (var i = 0; i < allUsers.length; i++) {
+                    $scope.allUsers[i] = {
+                        value: allUsers[i]._id,
+                        name: allUsers[i].name
+                    };
+                }
+            })
+
+        OfficialDocVendorUtil.fetchOfficialDocVendor()
+            .success(function (response) {
+                $scope.allVendors = [];
+                $scope.allVendors[0] = {
+                    value: "",
+                    name: "None"
+                };
+                for (var i = 0; i < response.payload.length; i++) {
+                    $scope.allVendors[i] = {
+                        value: response.payload[i]._id,
+                        name: response.payload[i].vendorName
+                    };
+                }
+            })
+
         intiOfficialDocReceiveService.then(function (resp) {
             console.log(resp.data);
             $scope.officialDocItems = resp.data.payload;
             $scope.officialDocItems.slice(0, resp.data.payload.length);
+
+            for (var index = 0; index < resp.data.payload.length; index ++) {
+                $scope.officialDocItems[index].chargerName = $scope.showCharger($scope.officialDocItems[index]);
+                $scope.officialDocItems[index].handlerName = $scope.showHandler($scope.officialDocItems[index]);
+            }
 
             angular.element(
                 document.getElementById('includeHead'))
@@ -92,37 +129,6 @@
                     "</div>"
                 )($scope));
 
-            User.getAllUsers()
-                .success(function (allUsers) {
-                    // console.log(allUsers);
-                    // 經理、主承辦
-                    $scope.allUsers = [];
-                    $scope.allUsers[0] = {
-                        value: "",
-                        name: "None"
-                    };
-                    for (var i = 0; i < allUsers.length; i++) {
-                        $scope.allUsers[i] = {
-                            value: allUsers[i]._id,
-                            name: allUsers[i].name
-                        };
-                    }
-                })
-
-            OfficialDocVendorUtil.fetchOfficialDocVendor()
-                .success(function (response) {
-                    $scope.allVendors = [];
-                    $scope.allVendors[0] = {
-                        value: "",
-                        name: "None"
-                    };
-                    for (var i = 0; i < response.payload.length; i++) {
-                        $scope.allVendors[i] = {
-                            value: response.payload[i]._id,
-                            name: response.payload[i].vendorName
-                        };
-                    }
-                })
         })
 
         // *** Biz Logic ***
