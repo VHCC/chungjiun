@@ -207,6 +207,7 @@
                     },
                 }
             }).result.then(function () {
+                $scope.reloadDocData_check();
                 // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
             });
 
@@ -224,6 +225,35 @@
                 .success(function (res) {
                     item.isDocOpened = true;
                 })
+        }
+
+        $scope.reloadDocData_check = function () {
+            var formData = {
+                type: 1, // receive = 0, public = 1
+                isDocCanPublic: false,
+            }
+
+            OfficialDocUtil.searchOfficialDocItem(formData)
+                .success(function (resp) {
+
+                    $scope.officialDocItems = resp.payload;
+                    $scope.officialDocItems.slice(0, resp.payload.length);
+
+                    document.getElementById('includeHead').innerText = "";
+
+                    angular.element(
+                        document.getElementById('includeHead'))
+                        .append($compile(
+                            "<div ba-panel ba-panel-title=" +
+                            "'待確認發文列表 - " + resp.payload.length + "'" +
+                            "ba-panel-class= " +
+                            "'with-scroll'" + ">" +
+                            "<div " +
+                            "ng-include=\"'app/pages/officialDoc/publicOfficialDoc/table/checkPublicOfficialTable.html'\">" +
+                            "</div>" +
+                            "</div>"
+                        )($scope));
+                });
         }
 
     }

@@ -196,6 +196,7 @@
                 }
             }).result.then(function () {
                 // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
+                $scope.reloadDocData_ready();
             });
             $scope.readOfficialDoc(item);
         }
@@ -210,6 +211,36 @@
                 .success(function (res) {
                     item.isDocOpened = true;
                 })
+        }
+
+        $scope.reloadDocData_ready = function () {
+            var formData = {
+                type: 1, // receive = 0, public = 1
+                isDocCanPublic: true,
+                isDocPublic: false,
+            }
+
+            OfficialDocUtil.searchOfficialDocItem(formData)
+                .success(function (resp) {
+
+                    $scope.officialDocItems = resp.payload;
+                    $scope.officialDocItems.slice(0, resp.payload.length);
+
+                    document.getElementById('includeHead_public').innerText = "";
+
+                    angular.element(
+                        document.getElementById('includeHead_public'))
+                        .append($compile(
+                            "<div ba-panel ba-panel-title=" +
+                            "'待發文列表 - " + resp.payload.length + "'" +
+                            "ba-panel-class= " +
+                            "'with-scroll'" + ">" +
+                            "<div " +
+                            "ng-include=\"'app/pages/officialDoc/publicOfficialDoc/table/officialDocReadyPublicModal.html'\">" +
+                            "</div>" +
+                            "</div>"
+                        )($scope));
+                });
         }
 
     }

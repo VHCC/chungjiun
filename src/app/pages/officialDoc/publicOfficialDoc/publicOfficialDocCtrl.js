@@ -374,6 +374,11 @@
             // console.log(vm);
             // console.log(dom);
 
+            if ($('#_publicDate_dom').find('#myDT')[0].value== "") {
+                toastr.error('注意', '請選擇發文日期');
+                return
+            }
+
             if (!vm.docOption) {
                 toastr.error('注意', '請選擇文別');
                 return

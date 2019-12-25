@@ -45,9 +45,12 @@
 
         $scope.confirmCreateDocPublic = function () {
 
+            var formData = {
+                publicDate: $scope.docData._publicDate
+            }
 
 
-            OfficialDocUtil.generatePublicNumber_public()
+            OfficialDocUtil.generatePublicNumber_public(formData)
                 .success(function (res) {
                     // console.log(res);
 
@@ -68,7 +71,7 @@
                         .success(function (req) {
                             var formData = $scope.docData;
 
-                            console.log($scope.docData);
+                            // console.log($scope.docData);
 
                             OfficialDocUtil.createOfficialDocItem_public(formData)
                                 .success(function (res) {
