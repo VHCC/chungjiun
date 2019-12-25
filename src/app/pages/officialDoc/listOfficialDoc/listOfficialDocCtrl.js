@@ -112,6 +112,7 @@
             for (var index = 0; index < resp.data.payload.length; index ++) {
                 $scope.officialDocItems[index].chargerName = $scope.showCharger($scope.officialDocItems[index]);
                 $scope.officialDocItems[index].handlerName = $scope.showHandler($scope.officialDocItems[index]);
+                $scope.officialDocItems[index].expireDate = $scope.showExpireDay($scope.officialDocItems[index]);
             }
 
             angular.element(
@@ -173,6 +174,10 @@
                 });
             }
             return selected.length ? selected[0].name : 'Not Set';
+        }
+
+        $scope.showExpireDay = function(officialItem) {
+            console.log(officialItem);
         }
 
         $scope.showVendorName = function (officialItem) {
