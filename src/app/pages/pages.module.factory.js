@@ -227,8 +227,8 @@
                     return http.post('/api/post_official_doc_fetch_item_period_public', formData);
                 },
 
-                generatePublicNumber_public : function() {
-                    return http.get('/api/get_official_doc_create_item_archive_number_public');
+                generatePublicNumber_public : function(formData) {
+                    return http.post('/api/post_official_doc_create_item_archive_number_public', formData);
                 },
 
 

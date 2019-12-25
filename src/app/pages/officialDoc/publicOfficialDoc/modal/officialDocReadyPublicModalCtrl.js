@@ -323,18 +323,19 @@
             OfficialDocUtil.updateOfficialDocItem(formData)
                 .success(function (res) {
                     console.log(res);
-                    docData.isDocCanPublic = true;
-
-                    var formData = {
-                        _id: docData._id,
-                        isDocClose: false,
-                    }
-
-                    OfficialDocUtil.searchOfficialDocItem(formData)
-                        .success(function (res) {
-                            console.log(res.payload);
-                            docData = res.payload[0];
-                        })
+                    $uibModalInstance.close();
+                    // docData.isDocCanPublic = true;
+                    //
+                    // var formData = {
+                    //     _id: docData._id,
+                    //     isDocClose: false,
+                    // }
+                    //
+                    // OfficialDocUtil.searchOfficialDocItem(formData)
+                    //     .success(function (res) {
+                    //         console.log(res.payload);
+                    //         docData = res.payload[0];
+                    //     })
 
                 })
         }
@@ -371,19 +372,20 @@
             }
             OfficialDocUtil.updateOfficialDocItem(formData)
                 .success(function (res) {
-                    docData.isDocClose = true;
-                    docData.isDocPublic = true;
-
-                    var formData = {
-                        _id: docData._id,
-                        isDocClose: false,
-                    }
-
-                    OfficialDocUtil.searchOfficialDocItem(formData)
-                        .success(function (res) {
-                            console.log(res.payload);
-                            docData = res.payload[0];
-                        })
+                    $uibModalInstance.close();
+                    // docData.isDocClose = true;
+                    // docData.isDocPublic = true;
+                    //
+                    // var formData = {
+                    //     _id: docData._id,
+                    //     isDocClose: false,
+                    // }
+                    //
+                    // OfficialDocUtil.searchOfficialDocItem(formData)
+                    //     .success(function (res) {
+                    //         console.log(res.payload);
+                    //         docData = res.payload[0];
+                    //     })
 
                 })
         }

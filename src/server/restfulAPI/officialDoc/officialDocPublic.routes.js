@@ -341,24 +341,24 @@ module.exports = function (app) {
 
 
     // generate item archive number
-    app.get(global.apiUrl.get_official_doc_create_item_archive_number_public, function (req, res) {
-        console.log(global.timeFormat(new Date()) + global.log.i + "API, get_official_doc_create_item_archive_number_public");
+    app.post(global.apiUrl.post_official_doc_create_item_archive_number_public, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_create_item_archive_number_public");
 
-        var today = moment().format('YYYY/MM/DD');
+        var publicDate = moment(req.body.publicDate).format('YYYY/MM/DD');
 
-        var year = moment().format('YYYY') - 1911;
-        var month = moment().format('MM');
-        var day = moment().format('DD');
+        var year = moment(req.body.publicDate).format('YYYY') - 1911;
+        var month = moment(req.body.publicDate).format('MM');
+        var day = moment(req.body.publicDate).format('DD');
 
 
         console.log(req.body);
 
         OfficialDocItem.find(
             {
-                publicDate: today
+                publicDate: publicDate
             }, function (err, items) {
                 if (err) {
-                    console.log(global.timeFormat(new Date()) + global.log.e + "API, get_official_doc_create_item_archive_number_public");
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_create_item_archive_number_public");
                     console.log(req.body);
                     console.log(" ***** ERROR ***** ");
                     console.log(err);
