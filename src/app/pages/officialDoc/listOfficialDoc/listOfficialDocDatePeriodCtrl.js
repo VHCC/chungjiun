@@ -111,6 +111,32 @@
             return selected.length ? selected[0].name : 'Not Set';
         }
 
+        $scope.showExpireDay = function(officialItem) {
+            console.log(officialItem);
+
+            console.log(officialItem.stageInfo.length);
+
+            if (officialItem.stageInfo.length == 1) {
+                console.log(officialItem.stageInfo[0].timestamp);
+                var receiveDate = moment(officialItem.stageInfo[0].timestamp);
+                var now = moment(new Date());
+
+                // console.log(moment(officialItem.stageInfo[0].timestamp).add(3, 'days').format("YYYY/MM/DD-HH:mm:ss"));
+                var diffDay = now.diff(receiveDate, 'days');
+                console.log(now.format("YYYY/MM/DD-HH:mm:ss"));
+                if (diffDay >= 3) {
+                    return now.diff(receiveDate, 'days');
+                }
+                return "";
+            } else {
+                return "";
+            }
+
+
+
+
+        }
+
         $(document).ready(function () {
             $('#inputStartDay')[0].value = DateUtil.getShiftDatefromFirstDate(
                 DateUtil.getFirstDayofThisWeek(moment()),
@@ -153,6 +179,7 @@
                     for (var index = 0; index < resp.payload.length; index ++) {
                         $scope.officialDocItems[index].chargerName = $scope.showCharger($scope.officialDocItems[index]);
                         $scope.officialDocItems[index].handlerName = $scope.showHandler($scope.officialDocItems[index]);
+                        $scope.officialDocItems[index].expireDay = $scope.showExpireDay($scope.officialDocItems[index]);
                     }
 
                     document.getElementById('includeHead').innerText = "";
