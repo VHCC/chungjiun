@@ -114,18 +114,19 @@
         $scope.showExpireDay = function(officialItem) {
             console.log(officialItem);
 
-            console.log(officialItem.stageInfo.length);
+            // console.log(officialItem.stageInfo.length);
 
             if (officialItem.stageInfo.length == 1) {
                 console.log(officialItem.stageInfo[0].timestamp);
                 var receiveDate = moment(officialItem.stageInfo[0].timestamp);
+                var lastDate = moment(moment(officialItem.stageInfo[0].timestamp).add(3, 'days').format("YYYY/MM/DD-HH:mm:ss"));
                 var now = moment(new Date());
 
                 // console.log(moment(officialItem.stageInfo[0].timestamp).add(3, 'days').format("YYYY/MM/DD-HH:mm:ss"));
-                var diffDay = now.diff(receiveDate, 'days');
+                var diffDay = now.diff(lastDate, 'days');
                 console.log(now.format("YYYY/MM/DD-HH:mm:ss"));
                 if (diffDay >= 3) {
-                    return now.diff(receiveDate, 'days');
+                    return now.diff(lastDate, 'days');
                 }
                 return "";
             } else {
