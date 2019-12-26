@@ -84,7 +84,8 @@
                 ba-panel
                 ba-panel-title="發文日期"
                 ba-panel-class="with-scroll">
-                <div class="form-group">
+
+                <div class="form-group col-md-12">
                     <my-date-picker formatted="yyyy/MM/dd"
                                     id="_publicDate_dom"
                                     ng-init="setDateModel('_publicDate', this)"
@@ -109,13 +110,34 @@
                 ba-panel-class="with-scroll">
 
                 <div class="form-group">
-                    <label class="col-md-12 control-label">崇峻發文號</label>
-                    <input type="text"
-                           class="form-control"
-                           placeholder="(建檔後生成)"
-                           style="color: #000000;"
-                           ng-disabled="true"
-                           ng-model="_publicNumber">
+
+                    <div class="row">
+                        <div class="col-md-9">
+                            <label class="col-md-12 control-label">崇峻發文號</label>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="(建檔後生成)"
+                                   style="color: #000000;"
+                                   ng-disabled="true"
+                                   ng-model="_publicNumber">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-md-12 control-label">分部</label>
+                            <ui-select ng-model="publicOfficialDocCtrlVm.docDivision.selected"
+                                       class="btn-group bootstrap-select form-control"
+                                       append-to-body="true"
+                                       search-enabled="true">
+                                <ui-select-match placeholder="請選擇分部">
+                                    {{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="division in publicOfficialDocCtrlVm.docDivisions">
+                                    <span ng-bind-html="division.name"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="form-group">

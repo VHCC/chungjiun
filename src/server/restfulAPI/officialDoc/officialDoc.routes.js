@@ -320,6 +320,7 @@ module.exports = function (app) {
                 receiveType: req.body._receiveType,
                 receiveNumber: req.body._receiveNumber,
                 docType: req.body.docOption.option,
+                docDivision: req.body.docDivision.option,
                 docAttachedType: req.body.docAttachedType.option,
 
                 isAttached: req.body.isAttached,
@@ -548,6 +549,52 @@ module.exports = function (app) {
                         code: 200,
                         error: global.status._200,
                         payload: result
+                    });
+                }
+            })
+    })
+
+    // generate item archive number
+    app.post(global.apiUrl.post_official_doc_create_item_archive_number, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_create_item_archive_number");
+
+        var receiveDate = moment(req.body.receiveDate).format('YYYY/MM/DD');
+
+        var year = moment(req.body.receiveDate).format('YYYY') - 1911;
+        var month = moment(req.body.receiveDate).format('MM');
+        var day = moment(req.body.receiveDate).format('DD');
+
+
+        console.log(req.body);
+
+        OfficialDocItem.find(
+            {
+                docDivision: req.body.docDivision,
+                receiveDate: receiveDate,
+                type: req.body.type
+            }, function (err, items) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_create_item_archive_number");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+
+                    var result = "" + year + month + day + "";
+
+                    if (items.length <= 8 ) {
+                        result += ("00" + (items.length + 1));
+                    } else if (items.length > 8 && items.length <= 98) {
+                        result += ("0" + (items.length + 1));
+                    } else {
+                        result += (items.length + 1);
+                    }
+
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: result,
                     });
                 }
             })

@@ -73,6 +73,14 @@
             $scope.officialDocItems = resp.data.payload;
             $scope.officialDocItems.slice(0, resp.data.payload.length);
 
+            for (var index = 0; index < $scope.officialDocItems.length; index ++) {
+                if ($scope.officialDocItems[index].archiveNumber.length != 11) {
+                    $scope.officialDocItems[index].archiveNumber =
+                        OfficialDocUtil.getDivision($scope.officialDocItems[index].docDivision) +
+                        $scope.officialDocItems[index].archiveNumber;
+                }
+            }
+
             angular.element(
                 document.getElementById('includeHead_sign'))
                 .append($compile(
@@ -253,6 +261,14 @@
 
                     $scope.officialDocItems = resp.payload;
                     $scope.officialDocItems.slice(0, resp.payload.length);
+
+                    for (var index = 0; index < $scope.officialDocItems.length; index ++) {
+                        if ($scope.officialDocItems[index].archiveNumber.length != 11) {
+                            $scope.officialDocItems[index].archiveNumber =
+                                OfficialDocUtil.getDivision($scope.officialDocItems[index].docDivision) +
+                                $scope.officialDocItems[index].archiveNumber;
+                        }
+                    }
 
                     document.getElementById('includeHead_sign').innerText = "";
 

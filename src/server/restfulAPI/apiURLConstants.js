@@ -188,6 +188,7 @@ global.apiUrl = {
     post_official_doc_search_item : '/api/post_official_doc_search_item',
     post_official_doc_update_item : '/api/post_official_doc_update_item',
     post_official_doc_delete_item : '/api/post_official_doc_delete_item',
+    post_official_doc_create_item_archive_number : '/api/post_official_doc_create_item_archive_number',
 
     // OfficialDocVendorUtil
     get_fetch_official_doc_vendor : '/api/get_fetch_official_doc_vendor',

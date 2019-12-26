@@ -46,9 +46,10 @@
         $scope.confirmCreateDocPublic = function () {
 
             var formData = {
-                publicDate: $scope.docData._publicDate
+                docDivision: $scope.docData.docDivision.option,
+                publicDate: $scope.docData._publicDate,
+                type: 1
             }
-
 
             OfficialDocUtil.generatePublicNumber_public(formData)
                 .success(function (res) {
@@ -56,16 +57,14 @@
 
                     var publicNumber = res.payload;
 
-                    toastr.error('發文文號', publicNumber);
+                    toastr.error('發文文號', publicNumber + $scope.docData.docDivision.name);
 
                     var formData = {
-                        _archiveNumber: publicNumber,
+                        _archiveNumber: publicNumber + $scope.docData.docDivision.name,
                         userDID: $scope.folderDir,
                     }
 
                     $scope.docData._archiveNumber = publicNumber;
-
-                    console.log(formData);
 
                     OfficialDocUtil.createPDFFolder(formData)
                         .success(function (req) {

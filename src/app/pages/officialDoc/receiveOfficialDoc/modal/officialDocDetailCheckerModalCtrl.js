@@ -13,6 +13,7 @@
                 '$uibModalInstance',
                 'TimeUtil',
                 'DateUtil',
+                'toastr',
                 'OfficialDocUtil',
                 OfficialDocDetailCheckerModalCtrl
             ]);
@@ -23,6 +24,7 @@
                                            $uibModalInstance,
                                            TimeUtil,
                                            DateUtil,
+                                           toastr,
                                            OfficialDocUtil) {
         // Main Data
         $scope.parent = $scope.$resolve.parent;
@@ -44,28 +46,46 @@
         $scope.confirmCreateDoc = function () {
 
             var formData = {
-                _archiveNumber: $scope.docData._archiveNumber,
-                userDID: $scope.folderDir,
+                docDivision: $scope.docData.docDivision.option,
+                receiveDate: $scope.docData._receiveDate,
+                type: 0
             }
 
-            console.log(formData);
-
-            OfficialDocUtil.createPDFFolder(formData)
+            OfficialDocUtil.generateReceiveNumber(formData)
                 .success(function (res) {
-                    var formData = $scope.docData;
 
-                    console.log($scope.docData);
+                    var archiveNumber = res.payload;
 
-                    OfficialDocUtil.createOfficialDocItem(formData)
+                    toastr.error('收文文號', $scope.docData.docDivision.name + archiveNumber);
+
+
+                    var formData = {
+                        // _archiveNumber: $scope.docData._archiveNumber,
+                        _archiveNumber: $scope.docData.docDivision.name + archiveNumber,
+                        userDID: $scope.folderDir,
+                    }
+
+
+                    OfficialDocUtil.createPDFFolder(formData)
                         .success(function (res) {
-                            console.log(res);
-                            $uibModalInstance.close();
+                            var formData = $scope.docData;
+                            formData._archiveNumber = archiveNumber;
+
+                            OfficialDocUtil.createOfficialDocItem(formData)
+                                .success(function (res) {
+                                    console.log(res);
+                                    $uibModalInstance.close();
+                                })
+                                .error(function (res) {
+                                    console.log(res);
+                                    $uibModalInstance.close();
+                                })
                         })
-                        .error(function (res) {
-                            console.log(res);
-                            $uibModalInstance.close();
-                        })
+
                 })
+
+
+
 
         }
 

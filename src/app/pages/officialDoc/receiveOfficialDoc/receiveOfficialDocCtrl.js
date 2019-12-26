@@ -273,6 +273,11 @@
         // check doc detail
         $scope.checkDocDetail = function (dom) {
 
+            if (!vm.docDivision) {
+                toastr.error('注意', '請選擇分部');
+                return
+            }
+
             if (!vm.docOption) {
                 toastr.error('注意', '請選擇文別');
                 return
@@ -320,6 +325,7 @@
                 chargeUser: vm.chargeUser.selected,
                 signer: vm.signer.selected,
                 docOption: vm.docOption.selected,
+                docDivision: vm.docDivision.selected,
                 docAttachedType: vm.docAttachedType.selected,
                 timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
                 stageInfo: stageInfo,
@@ -377,6 +383,36 @@
         ];
 
         vm.docOptions = options_regular;
+
+        // 0 : F
+        // 1 : N
+        // 2 : G
+        // 3 : D
+        // 4 : P
+        var division_regular = [
+            {
+                name: "F",
+                option: 0
+            },
+            {
+                name: "N",
+                option: 1
+            },
+            {
+                name: "G",
+                option: 2
+            },
+            {
+                name: "D",
+                option: 3
+            },
+            {
+                name: "P",
+                option: 4
+            },
+        ];
+
+        vm.docDivisions = division_regular;
 
         // 0 : 無
         // 1 : 電子

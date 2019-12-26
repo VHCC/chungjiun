@@ -157,6 +157,10 @@
 
         $scope.showVendorCopyNameList = function () {
             var result = "";
+            if ($scope.docData.targetCopy[0] == null) {
+                return ""
+            }
+
             for (var index = 0; index < $scope.docData.targetCopy.length; index ++) {
                 result += $scope.docData.targetCopy[index].vendorName + ", ";
             }
