@@ -191,6 +191,10 @@
                   return http.post('/api/post_official_doc_rename_and_folder', formData);
                 },
 
+                generateReceiveNumber : function(formData) {
+                    return http.post('/api/post_official_doc_create_item_archive_number', formData);
+                },
+
                 // 發文
                 uploadOfficialDocFile_public: function (uploadData) {
                     return http.post('/api/post_official_doc_upload_file_public', uploadData, {
@@ -291,6 +295,21 @@
                             return "電子";
                         case 1:
                             return "紙本";
+                    }
+                },
+
+                getDivision: function (type) {
+                    switch (type) {
+                        case 0:
+                            return "F";
+                        case 1:
+                            return "N";
+                        case 2:
+                            return "G";
+                        case 3:
+                            return "D";
+                        case 4:
+                            return "P"
                     }
                 },
             }

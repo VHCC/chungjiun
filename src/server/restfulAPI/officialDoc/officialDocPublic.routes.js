@@ -131,6 +131,7 @@ module.exports = function (app) {
                 // receiveType: req.body._receiveType,
                 // receiveNumber: req.body._receiveNumber,
                 docType: req.body.docOption.option,
+                docDivision: req.body.docDivision.option,
                 publicType: req.body.docType.option,
 
                 timestamp: req.body.timestamp,
@@ -340,7 +341,7 @@ module.exports = function (app) {
     })
 
 
-    // generate item archive number
+    // generate item archive number public doc
     app.post(global.apiUrl.post_official_doc_create_item_archive_number_public, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_create_item_archive_number_public");
 
@@ -355,7 +356,9 @@ module.exports = function (app) {
 
         OfficialDocItem.find(
             {
-                publicDate: publicDate
+                docDivision: req.body.docDivision,
+                publicDate: publicDate,
+                type: req.body.type
             }, function (err, items) {
                 if (err) {
                     console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_create_item_archive_number_public");

@@ -132,10 +132,6 @@
             } else {
                 return "";
             }
-
-
-
-
         }
 
         $(document).ready(function () {
@@ -181,6 +177,11 @@
                         $scope.officialDocItems[index].chargerName = $scope.showCharger($scope.officialDocItems[index]);
                         $scope.officialDocItems[index].handlerName = $scope.showHandler($scope.officialDocItems[index]);
                         $scope.officialDocItems[index].expireDay = $scope.showExpireDay($scope.officialDocItems[index]);
+                        if ($scope.officialDocItems[index].archiveNumber.length != 11) {
+                            $scope.officialDocItems[index].archiveNumber =
+                                OfficialDocUtil.getDivision($scope.officialDocItems[index].docDivision) +
+                                $scope.officialDocItems[index].archiveNumber;
+                        }
                     }
 
                     document.getElementById('includeHead').innerText = "";

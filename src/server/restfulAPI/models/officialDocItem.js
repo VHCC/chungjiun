@@ -99,6 +99,16 @@ module.exports = mongoose.model('officialDocItem', {
         type: String,
     },
 
+    // 分部
+    // 0 : F
+    // 1 : N
+    // 2 : G
+    // 3 : D
+    // 4 : P
+    docDivision: {
+        type: Number,
+    },
+
     // 文別
     // 0 : 函
     // 1 : 會勘
