@@ -404,6 +404,11 @@
                 return
             }
 
+            if(vm.vendorItemCopy == undefined) {
+                vm.vendorItemCopy = {};
+                vm.vendorItemCopy.selected = {};
+            }
+
             // if (!vm.chargeUser) {
             //     toastr.error('注意', '請選擇專案承辦人');
             //     return

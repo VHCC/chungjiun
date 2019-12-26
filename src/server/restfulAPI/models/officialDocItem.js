@@ -75,7 +75,6 @@ module.exports = mongoose.model('officialDocItem', {
     // 簽核人
     signerDID: {
         type: String,
-        required: true,
     },
 
 
