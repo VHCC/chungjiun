@@ -314,6 +314,7 @@ module.exports = function (app) {
 
                 handlerDID: req.body.chargeUser._id,
                 chargerDID: req.body.chargeUser._id,
+                signerDID: req.body.signer._id,
                 subject: req.body._subject,
                 archiveNumber: req.body._archiveNumber,
                 receiveType: req.body._receiveType,

@@ -64,6 +64,13 @@
         </div>
 
         <div style="padding: 5px">
+            <label >簽核人</label>
+            <input type="text" class="form-control"
+                   value="{{docData.signer.name}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px">
             <label >承辦人</label>
             <input type="text" class="form-control"
                    value="{{docData.chargeUser.name}}"

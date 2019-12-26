@@ -47,6 +47,7 @@
         User.getAllUsers()
             .success(function (allUsers) {
                 vm.chargeUsers = allUsers;
+                vm.signers = [];
 
                 $scope.allUsers = [];
                 $scope.allUsers[0] = {
@@ -58,6 +59,14 @@
                         value: allUsers[i]._id,
                         name: allUsers[i].name
                     };
+
+                    switch (allUsers[i].roleType) {
+                        case 2:
+                        case 6:
+                        case 100:
+                            vm.signers.push(allUsers[i]);
+                            break;
+                    }
                 }
 
             });
@@ -309,6 +318,7 @@
                 vendorItem: vm.vendorItem.selected,
                 prjItem: vm.prjItems.selected,
                 chargeUser: vm.chargeUser.selected,
+                signer: vm.signer.selected,
                 docOption: vm.docOption.selected,
                 docAttachedType: vm.docAttachedType.selected,
                 timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
@@ -461,13 +471,29 @@
         }
 
         $scope.docProjectSelected = function (projectInfo) {
-            if (projectInfo.majorID != "" && projectInfo.majorID != null && projectInfo.majorID != undefined) {
+            if (projectInfo.majorID != "" &&
+                projectInfo.majorID != null &&
+                projectInfo.majorID != undefined) {
+
+                vm.signer = {};
+                vm.signer.selected = {
+                    _id: projectInfo.managerID,
+                    name: $scope.showChargerName(projectInfo.managerID)
+                }
+
                 vm.chargeUser = {};
                 vm.chargeUser.selected = {
                     _id: projectInfo.majorID,
                     name: $scope.showChargerName(projectInfo.majorID)
                 }
             } else {
+
+                vm.signer = {};
+                vm.signer.selected = {
+                    _id: projectInfo.managerID,
+                    name: $scope.showChargerName(projectInfo.managerID)
+                }
+
                 vm.chargeUser = {};
                 vm.chargeUser.selected = {
                     _id: projectInfo.managerID,

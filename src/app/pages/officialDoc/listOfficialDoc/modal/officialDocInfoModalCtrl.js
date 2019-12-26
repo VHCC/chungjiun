@@ -14,6 +14,7 @@
                 '$uibModal',
                 'ngDialog',
                 'User',
+                'Project',
                 'OfficialDocUtil',
                 'OfficialDocVendorUtil',
                 '$uibModalInstance',
@@ -29,6 +30,7 @@
                                                $uibModal,
                                                ngDialog,
                                                User,
+                                               Project,
                                                OfficialDocUtil,
                                                OfficialDocVendorUtil,
                                                $uibModalInstance,
@@ -45,6 +47,18 @@
         $scope.officialDocRight = $cookies.get('feature_official_doc') == "true";
 
         // console.log($scope.docData);
+
+        Project.findAll()
+            .success(function (relatedProjects) {
+                $scope.relatedProjects = [];
+                for (var i = 0; i < relatedProjects.length; i++) {
+                    $scope.relatedProjects[i] = {
+                        value: relatedProjects[i]._id,
+                        managerID: relatedProjects[i].managerID
+                    };
+                }
+                // console.log($scope);
+            });
 
         User.getAllUsers()
             .success(function (allUsers) {
@@ -109,6 +123,34 @@
                 });
             }
             return selected.length ? selected[0].name : 'Not Set';
+        }
+
+        $scope.showSigner = function (officialItem) {
+            var selected = [];
+            if ($scope.allUsers === undefined) return;
+            if (officialItem.signerDID) {
+                selected = $filter('filter')($scope.allUsers, {
+                    value: officialItem.signerDID
+                });
+            }
+            return selected.length ? selected[0].name : 'Not Set';
+        }
+
+        $scope.showManager = function (officialItem) {
+            var selected = [];
+            if ($scope.relatedProjects === undefined) return;
+            if (officialItem.prjDID) {
+                selected = $filter('filter')($scope.relatedProjects, {
+                    value: officialItem.prjDID
+                });
+            }
+            var selected_manager = [];
+            if (selected.length) {
+                selected_manager = $filter('filter')($scope.allUsers, {
+                    value: selected[0].managerID
+                });
+            }
+            return selected_manager.length ? selected_manager[0].name : 'Not Set';
         }
 
         $scope.showVendorName = function (officialItem) {

@@ -122,6 +122,34 @@
             return selected.length ? selected[0].name : 'Not Set';
         }
 
+        $scope.showSigner = function (officialItem) {
+            var selected = [];
+            if ($scope.allUsers === undefined) return;
+            if (officialItem.signerDID) {
+                selected = $filter('filter')($scope.allUsers, {
+                    value: officialItem.signerDID
+                });
+            }
+            return selected.length ? selected[0].name : 'Not Set';
+        }
+
+        $scope.showManager = function (officialItem) {
+            var selected = [];
+            if ($scope.relatedProjects === undefined) return;
+            if (officialItem.prjDID) {
+                selected = $filter('filter')($scope.relatedProjects, {
+                    value: officialItem.prjDID
+                });
+            }
+            var selected_manager = [];
+            if (selected.length) {
+                selected_manager = $filter('filter')($scope.allUsers, {
+                    value: selected[0].managerID
+                });
+            }
+            return selected_manager.length ? selected_manager[0].name : 'Not Set';
+        }
+
         $scope.showVendorName = function (officialItem) {
             // console.log(officialItem);
             // console.log($scope.allVendors);

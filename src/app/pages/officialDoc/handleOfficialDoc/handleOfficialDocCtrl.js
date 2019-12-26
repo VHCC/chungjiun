@@ -87,8 +87,6 @@
                     "</div>"
                 )($scope));
 
-            console.log($scope);
-
             Project.findAll()
                 .success(function (relatedProjects) {
                     console.log(" ======== related login user Projects ======== ");
@@ -165,6 +163,17 @@
             return selected.length ? selected[0].name : 'Not Set';
         }
 
+        $scope.showSigner = function (officialItem) {
+            var selected = [];
+            if ($scope.allUsers === undefined) return;
+            if (officialItem.signerDID) {
+                selected = $filter('filter')($scope.allUsers, {
+                    value: officialItem.signerDID
+                });
+            }
+            return selected.length ? selected[0].name : 'Not Set';
+        }
+
         $scope.showManager = function (officialItem) {
             var selected = [];
             if ($scope.relatedProjects === undefined) return;
@@ -179,7 +188,6 @@
                     value: selected[0].managerID
                 });
             }
-
             return selected_manager.length ? selected_manager[0].name : 'Not Set';
         }
 

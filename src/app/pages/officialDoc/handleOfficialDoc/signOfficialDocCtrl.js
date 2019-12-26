@@ -162,6 +162,17 @@
             return selected.length ? selected[0].name : 'Not Set';
         }
 
+        $scope.showSigner = function (officialItem) {
+            var selected = [];
+            if ($scope.allUsers === undefined) return;
+            if (officialItem.signerDID) {
+                selected = $filter('filter')($scope.allUsers, {
+                    value: officialItem.signerDID
+                });
+            }
+            return selected.length ? selected[0].name : 'Not Set';
+        }
+
         $scope.showManager = function (officialItem) {
             var selected = [];
             if ($scope.relatedProjects === undefined) return;
