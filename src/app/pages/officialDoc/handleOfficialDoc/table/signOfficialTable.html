@@ -24,7 +24,7 @@
 
             <th st-sort="docType" style="width: 4%">文別</th>
             <!--<th st-sort="chargerDID" style="width: 5%">承辦人</th>-->
-            <th style="width: 5%">經理</th>
+            <th style="width: 5%">簽核人</th>
 
             <th st-sort="prjCode" style="width: 10%">專案編號</th>
             <th st-sort="vendorDID" style="width: 5%">來文機關</th>
@@ -103,7 +103,9 @@
             <!--承辦人-->
             <!--<td style="width: 5%">{{ showCharger(item) }}</td>-->
             <!--經理-->
-            <td style="width: 5%">{{ showManager(item) }}</td>
+            <td style="width: 5%" ng-if="!item.signerDID">{{ showManager(item) }}</td>
+            <!--簽核人-->
+            <td style="width: 5%" ng-if="item.signerDID">{{ showSigner(item) }}</td>
 
             <!--專案編號-->
             <td style="width: 8%">{{ item.prjCode }}</td>

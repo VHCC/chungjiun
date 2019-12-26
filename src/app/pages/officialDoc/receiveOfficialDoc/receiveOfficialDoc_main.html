@@ -328,24 +328,50 @@
         <div class="col-md-6">
             <div
                 ba-panel
-                ba-panel-title="承辦人設定"
+                ba-panel-title="簽核人設定"
                 ba-panel-class="with-scroll">
 
                 <div class="form-group">
-                    <label class="col-md-12 control-label">承辦人 (預設為專案承辦人，若無承辦人，則預設為專案經理)</label>
-                        <ui-select ng-model="receiveOfficialDocCtrlVm.chargeUser.selected"
+                    <label class="col-md-12 control-label">簽核人(預設只有經理、主任、行政總管)</label>
+                        <ui-select ng-model="receiveOfficialDocCtrlVm.signer.selected"
                                    class="btn-group bootstrap-select form-control"
                                    ng-disabled="false"
                                    append-to-body="true"
                                    search-enabled="true">
-                            <ui-select-match placeholder="選擇員工">
+                            <ui-select-match placeholder="選簽核人">
                                 {{$select.selected.name}}
                             </ui-select-match>
                             <ui-select-choices
-                                    repeat="user in receiveOfficialDocCtrlVm.chargeUsers | groupSelectpickerOptions: {name: $select.search}">
-                                <span ng-bind-html="user.name| highlight: $select.search"></span>
+                                    repeat="signer in receiveOfficialDocCtrlVm.signers | groupSelectpickerOptions: {name: $select.search}">
+                                <span ng-bind-html="signer.name| highlight: $select.search"></span>
                             </ui-select-choices>
                         </ui-select>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div
+                    ba-panel
+                    ba-panel-title="承辦人設定"
+                    ba-panel-class="with-scroll">
+
+                <div class="form-group">
+                    <label class="col-md-12 control-label">承辦人 (預設為專案承辦人，若無承辦人，則預設為專案經理)</label>
+                    <ui-select ng-model="receiveOfficialDocCtrlVm.chargeUser.selected"
+                               class="btn-group bootstrap-select form-control"
+                               ng-disabled="false"
+                               append-to-body="true"
+                               search-enabled="true">
+                        <ui-select-match placeholder="選擇員工">
+                            {{$select.selected.name}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                repeat="user in receiveOfficialDocCtrlVm.chargeUsers | groupSelectpickerOptions: {name: $select.search}">
+                            <span ng-bind-html="user.name| highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
                 </div>
 
             </div>

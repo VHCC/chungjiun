@@ -72,6 +72,12 @@ module.exports = mongoose.model('officialDocItem', {
         required: true,
     },
 
+    // 簽核人
+    signerDID: {
+        type: String,
+        required: true,
+    },
+
 
     // 主旨
     subject: {
