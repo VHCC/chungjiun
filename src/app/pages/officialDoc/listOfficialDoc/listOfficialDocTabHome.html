@@ -50,6 +50,8 @@
 </style>
 
 <uib-tabset active="$tabSetStatus.activeTab">
+
+    <!-- 收文查詢 -->
     <uib-tab heading="收文查詢">
 
         <div class="row" ng-controller="listOfficialDocCtrl">
@@ -61,7 +63,7 @@
                         ba-panel-class="with-scroll">
 
                     <div class="form-group col-md-6">
-                        <label for="inputStartDay" class="col-md-3 control-label">起始日</label>
+                        <label class="col-md-3 control-label">起始日</label>
                         <input type="text"
                                class="form-control statisticsDate"
                                id="inputStartDay"
@@ -70,7 +72,7 @@
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="inputEndDay" class="col-md-3 control-label">結束日</label>
+                        <label class="col-md-3 control-label">結束日</label>
                         <input type="text"
                                class="form-control statisticsDate"
                                id="inputEndDay"
@@ -100,6 +102,58 @@
         </div>
     </uib-tab>
 
+    <!-- 收文修改 -->
+    <uib-tab heading="收文修改">
+
+        <div class="row" ng-controller="listOfficialDocModifiedCtrl">
+
+            <div class="col-md-12" ng-controller="listOfficialDocDatePeriodModifiedCtrl" >
+                <div
+                        ba-panel
+                        ba-panel-title="時間區間 (收文日期)"
+                        ba-panel-class="with-scroll">
+
+                    <div class="form-group col-md-6">
+                        <label class="col-md-3 control-label">起始日</label>
+                        <input type="text"
+                               class="form-control statisticsDate"
+                               id="inputStartDay_modified"
+                               placeholder="YYYY/MM/DD"
+                               style="color: #000000;">
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="col-md-3 control-label">結束日</label>
+                        <input type="text"
+                               class="form-control statisticsDate"
+                               id="inputEndDay_modified"
+                               placeholder="YYYY/MM/DD"
+                               style="color: #000000;">
+                    </div>
+
+                    <button ng-click="searchDocPeriod_modified()"
+                            style="float: right; padding: 0 60px; line-height: 4"
+                            pb-style="shrink"
+                            class="btn btn-primary">
+                        搜尋
+                    </button>
+
+                    <!--<button ng-click="getAllDocs()"-->
+                    <!--style="float: right; padding: 0 60px; line-height: 4"-->
+                    <!--pb-style="shrink"-->
+                    <!--class="btn btn-primary">-->
+                    <!--ALL-->
+                    <!--</button>-->
+                </div>
+
+            </div>
+
+            <div class="col-md-12" id="includeHead_modified">
+            </div>
+        </div>
+    </uib-tab>
+
+    <!-- 發文查詢 -->
     <uib-tab heading="發文查詢">
 
         <div class="row" ng-controller="listOfficialDocPublicCtrl">
@@ -111,7 +165,7 @@
                         ba-panel-class="with-scroll">
 
                     <div class="form-group col-md-6">
-                        <label for="inputStartDay" class="col-md-3 control-label">起始日</label>
+                        <label class="col-md-3 control-label">起始日</label>
                         <input type="text"
                                class="form-control statisticsDate"
                                id="inputStartDay_public"
@@ -120,7 +174,7 @@
                     </div>
 
                     <div class="form-group col-md-6">
-                        <label for="inputEndDay" class="col-md-3 control-label">結束日</label>
+                        <label class="col-md-3 control-label">結束日</label>
                         <input type="text"
                                class="form-control statisticsDate"
                                id="inputEndDay_public"
@@ -128,7 +182,7 @@
                                style="color: #000000;">
                     </div>
 
-                    <button ng-click="searchDocPeriod()"
+                    <button ng-click="searchDocPeriod_public()"
                             style="float: right; padding: 0 60px; line-height: 4"
                             pb-style="shrink"
                             class="btn btn-primary">
@@ -140,6 +194,50 @@
             </div>
 
             <div class="col-md-12" id="includeHead_public">
+            </div>
+        </div>
+    </uib-tab>
+
+    <uib-tab heading="發文修改" ng-if="false">
+
+        <div class="row" ng-controller="listOfficialDocPublicModifiedCtrl">
+
+            <div class="col-md-12" ng-controller="listOfficialDocDatePeriodPublicModifiedCtrl" >
+                <div
+                        ba-panel
+                        ba-panel-title="時間區間 (發文日期)"
+                        ba-panel-class="with-scroll">
+
+                    <div class="form-group col-md-6">
+                        <label class="col-md-3 control-label">起始日</label>
+                        <input type="text"
+                               class="form-control statisticsDate"
+                               id="inputStartDay_public_modified"
+                               placeholder="YYYY/MM/DD"
+                               style="color: #000000;">
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="col-md-3 control-label">結束日</label>
+                        <input type="text"
+                               class="form-control statisticsDate"
+                               id="inputEndDay_public_modified"
+                               placeholder="YYYY/MM/DD"
+                               style="color: #000000;">
+                    </div>
+
+                    <button ng-click="searchDocPeriod_public_modified()"
+                            style="float: right; padding: 0 60px; line-height: 4"
+                            pb-style="shrink"
+                            class="btn btn-primary">
+                        搜尋
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-12" id="includeHead_public_modified">
             </div>
         </div>
     </uib-tab>

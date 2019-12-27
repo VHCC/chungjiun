@@ -2,7 +2,7 @@
     'user strict';
 
     angular.module('BlurAdmin.pages.cgOfficialDoc')
-        .controller('listOfficialDocDatePeriodPublicCtrl',
+        .controller('listOfficialDocDatePeriodPublicModifiedCtrl',
             [
                 '$scope',
                 '$filter',
@@ -58,10 +58,10 @@
         $(document).ready(function () {
             console.log(" ====== initMask document ready ====== ")
 
-            $('#inputStartDay_public')[0].value = DateUtil.getShiftDatefromFirstDate(
+            $('#inputStartDay_public_modified')[0].value = DateUtil.getShiftDatefromFirstDate(
                 DateUtil.getFirstDayofThisWeek(moment()),
                 moment().day() === 0 ? 6 : moment().day() - 1);
-            $('#inputEndDay_public')[0].value = DateUtil.getShiftDatefromFirstDate(
+            $('#inputEndDay_public_modified')[0].value = DateUtil.getShiftDatefromFirstDate(
                 DateUtil.getFirstDayofThisWeek(moment()),
                 moment().day() === 0 ? 6 : moment().day() - 1);
 
@@ -83,10 +83,10 @@
             });
         });
 
-        $scope.searchDocPeriod_public = function () {
+        $scope.searchDocPeriod_public_modified = function () {
             var formData = {
-                startDay: $('#inputStartDay_public')[0].value,
-                endDay: $('#inputEndDay_public')[0].value,
+                startDay: $('#inputStartDay_public_modified')[0].value,
+                endDay: $('#inputEndDay_public_modified')[0].value,
             }
 
             OfficialDocUtil.fetchOfficialDocItemPeriod_public(formData)
@@ -95,13 +95,13 @@
                     $scope.officialDocItems = resp.payload;
                     $scope.officialDocItems.slice(0, resp.payload.length);
 
-                    document.getElementById('includeHead_public').innerText = "";
+                    document.getElementById('includeHead_public_modified').innerText = "";
                     angular.element(
-                        document.getElementById('includeHead_public'))
+                        document.getElementById('includeHead_public_modified'))
                         .append($compile(
                             "<div ba-panel ba-panel-title=" +
                             "'公文列表 - " + resp.payload.length +
-                            " ( " + $('#inputStartDay_public')[0].value + "~" + $('#inputEndDay_public')[0].value + " )" +
+                            " ( " + $('#inputStartDay_public_modified')[0].value + "~" + $('#inputEndDay_public_modified')[0].value + " )" +
                             "'" +
                             "ba-panel-class= " +
                             "'with-scroll'" + ">" +
