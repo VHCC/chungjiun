@@ -2,10 +2,17 @@ var mongoose = require('mongoose');
 var moment = require('moment');
 
 module.exports = mongoose.model('User', {
+
     // 登入帳號
     email: {
         type: String
     },
+
+    // CJ Mail
+    cjMail: {
+        type: String
+    },
+
     //登入密碼
     password: {
         type: String

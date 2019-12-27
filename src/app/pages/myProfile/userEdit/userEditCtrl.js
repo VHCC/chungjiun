@@ -49,6 +49,7 @@
             .success(function (user) {
                 $scope.password = user.password;
                 $scope.userMonthSalary = user.userMonthSalary;
+                $scope.cjMail = user.cjMail;
             })
 
         var filename = $filter('userAvatar')(cookies.get('userDID'));
@@ -160,6 +161,7 @@
                 userDID: vm.user.selected._id,
                 userName: $('#userNewName')[0].value,
                 email: vm.email,
+                cjMail: vm.cjMail,
                 roleType: vm.userRole.roleType,
                 userMonthSalary: $('#userMonthSalary')[0].value,
                 bossID: vm.userBoss._id,
@@ -218,6 +220,7 @@
         $scope.selectUserProfile = function (user) {
             vm.userMonthSalary = user.userMonthSalary;
             vm.email = user.email;
+            vm.cjMail = user.cjMail;
             vm.machineDID = user.machineDID;
             vm.residualRestHour = user.residualRestHour;
             vm.isSetResidualRestHour = user.isSetResidualRestHour;
@@ -267,11 +270,12 @@
 
             var isSalary = user.userMonthSalary === 0 ? " (未設定薪水)" : ""
             var isBoss = user.bossID ? "" : " (未設定主管)"
+            var isCJMail = user.cjMail ? "" : " (未設定崇峻信箱)"
 
             var workStatus = user.workStatus ? "" : " **無法登入**"
             var feature_official_doc = user.feature_official_doc ? " (公文收發人員)" : ""
 
-            var userInfo = isSalary + isBoss + feature_official_doc + workStatus;
+            var userInfo = isSalary + isBoss + isCJMail + feature_official_doc + workStatus;
 
             return user.name + userInfo;
         }
@@ -308,6 +312,29 @@
             });
         }
         $scope.userRole = userRole[0].name;
+
+        $scope.sendTestMail = function () {
+
+            if (!vm.cjMail) {
+                toastr['error']('測試信發信錯誤', '尚未設定崇峻信箱');
+                return;
+            }
+
+            var formData = {
+                name: $('#userNewName')[0].value,
+                cjMail: vm.cjMail
+            }
+
+            UserEditUtil.sendTestMail(formData)
+                .success(function (resp) {
+                    console.log(resp);
+                    if (resp.code == 200) {
+                        toastr['success']('測試信，發信成功');
+                    } else {
+                        toastr['error']('測試信發信錯誤', resp.response);
+                    }
+                })
+        }
 
     }
 

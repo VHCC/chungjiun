@@ -202,6 +202,8 @@ global.apiUrl = {
     post_user_change_password_by_userdid : '/api/userChangePasswordByuserDID',
     post_user_update_profile : '/api/userUpdateProfile',
     post_user_set_residual_rest_hour : '/api/setUserResidualRestHour',
+    post_user_send_test_mail : '/api/post_user_send_test_mail',
+
 
     // WorkAddConfirmFormUtil
     post_create_work_add_confirm_form : '/api/post_create_work_add_confirm_form',

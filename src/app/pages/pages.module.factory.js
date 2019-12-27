@@ -856,6 +856,10 @@
                     }).error(function () {
                         console.log("error!!");
                     });
+                },
+
+                sendTestMail: function (formData) {
+                    return http.post('/api/post_user_send_test_mail', formData);
                 }
             }
         }])
