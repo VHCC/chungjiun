@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row clearfix">
-                            <label for="inputFirstName" class="col-md-3 control-label">大頭貼</label>
+                            <label class="col-md-3 control-label">大頭貼</label>
 
                             <div class="col-md-9">
                                 <div class="userpic">
@@ -29,7 +29,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group row clearfix">
-                        <label for="inputFirstName" class="col-md-3 control-label">姓名</label>
+                        <label class="col-md-3 control-label">姓名</label>
 
                         <div class="col-md-9">
                             <input type="text"
@@ -47,7 +47,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group row clearfix">
-                        <label for="inputFirstName" class="col-md-3 control-label">系統帳號</label>
+                        <label class="col-md-3 control-label">系統帳號</label>
 
                         <div class="col-md-9">
                             <input type="text"
@@ -61,11 +61,32 @@
                     </div>
                 </div>
             </div>
+
+            <!--CJ MAil-->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row clearfix">
+                        <label class="col-md-3 control-label">崇峻信箱</label>
+
+                        <div class="col-md-9">
+                            <input type="text"
+                                   class="form-control"
+                                   id="userCJMail"
+                                   placeholder=""
+                                   style="color: #000000;"
+                                   disabled="true"
+                                   value="{{cjMail}}">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
             <!--職位-->
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group row clearfix">
-                        <label for="inputFirstName" class="col-md-3 control-label">職位</label>
+                        <label class="col-md-3 control-label">職位</label>
 
                         <div class="col-md-9">
                             <input type="text"
@@ -83,7 +104,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group row clearfix">
-                        <label for="inputFirstName" class="col-md-3 control-label">主管</label>
+                        <label class="col-md-3 control-label">主管</label>
 
                         <div class="col-md-9">
                             <input type="text"
@@ -101,7 +122,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group row clearfix">
-                        <label for="inputFirstName" class="col-md-3 control-label">打卡機編號</label>
+                        <label class="col-md-3 control-label">打卡機編號</label>
 
                         <div class="col-md-9">
                             <input type="text"
@@ -119,7 +140,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group row clearfix">
-                        <label for="inputFirstName" class="col-md-3 control-label">薪資</label>
+                        <label class="col-md-3 control-label">薪資</label>
 
                         <div class="col-md-9">
                             <input type="text"
@@ -139,7 +160,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group row clearfix">
-                        <label for="inputPassword" class="col-md-3 control-label">新密碼</label>
+                        <label class="col-md-3 control-label">新密碼</label>
 
                         <div class="col-md-9">
                             <input type="password"
@@ -152,7 +173,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group row clearfix">
-                        <label for="inputConfirmPassword" class="col-md-3 control-label">確認密碼</label>
+                        <label class="col-md-3 control-label">確認密碼</label>
 
                         <div class="col-md-9">
                             <input type="password"
@@ -177,7 +198,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="userName">選擇員工</label>
+                            <label >選擇員工</label>
                             <ui-select ng-model="userEditCtrlVm.user.selected"
                                        class="btn-group bootstrap-select form-control"
                                        id="userName"
@@ -225,7 +246,6 @@
                                 <input type="text"
                                        class="form-control"
                                        ng-model="userEditCtrlVm.email"
-                                       id="userNewEmail"
                                        placeholder=""
                                        required
                                        value="{{userEditCtrlVm.email}}">
@@ -233,6 +253,29 @@
                         </div>
                     </div>
                 </div>
+
+                <!--CJ MAil-->
+                <div class="row" ng-if="userEditCtrlVm.user.selected">
+                    <div class="col-md-6">
+                        <div class="form-group row clearfix">
+                            <label class="col-md-3 control-label">崇峻信箱</label>
+
+                            <div class="col-md-9">
+                                <input type="text"
+                                       class="form-control"
+                                       ng-model="userEditCtrlVm.cjMail"
+                                       placeholder=""
+                                       style="color: #000000;"
+                                       value="{{userEditCtrlVm.cjMail}}">
+                                <button type="button"
+                                        ng-click="sendTestMail()"
+                                        class="btn btn-primary btn-with-icon save-profile">測試信
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!--角色-->
                 <div class="row" ng-if="userEditCtrlVm.user.selected">
                     <div class="col-md-6">

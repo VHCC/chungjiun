@@ -1,4 +1,15 @@
 var User = require('../models/user');
+var nodemailer = require('nodemailer');
+
+var mailTransport = nodemailer.createTransport({
+    host: 'mail.chongjun.tw',
+    secureConnecton: false,
+    port: 25,
+    auth: {
+        user: '0973138343',
+        pass: '123456'
+    }
+});
 
 module.exports = function (app) {
 // application -------------------------------------------------------------
@@ -61,6 +72,7 @@ module.exports = function (app) {
                 roleType: req.body.roleType,
                 name: req.body.userName,
                 email: req.body.email,
+                cjMail: req.body.cjMail,
                 userMonthSalary: req.body.userMonthSalary,
                 bossID: req.body.bossID,
                 machineDID: req.body.machineDID,
@@ -100,5 +112,36 @@ module.exports = function (app) {
             }
 
         })
+    })
+
+
+
+    // send test mail
+    app.post(global.apiUrl.post_user_send_test_mail, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_user_send_test_mail");
+
+        console.log(req.body);
+
+        mailTransport.sendMail({
+            from: 'ERM System <0973138343@chongjun.tw>',
+            to: req.body.name + ' <' + req.body.cjMail + '>',
+            subject: '崇峻 ERM 測試信件',
+            html: '<h1> 崇峻工程股份有限公司 </h1> ERM 測試信件' +
+                'https://erm.chongjun.myds.me/'
+        }, function(err){
+            if(err){
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, get_official_doc_fetch_all_item");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log('Unable to send email: ' + err);
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
+                console.log('Send Successfully:');
+            }
+        });
     })
 }

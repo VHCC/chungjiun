@@ -83,5 +83,22 @@ gulp.task('reloadHrMachine', function () {
     });
 });
 
+gulp.task('loadMailCheck', function () {
+    console.log('-------------  Mail Process --------------');
+    nodemon({
+        // the script to run the app
+        script: './src/server/loadMailCheck.js',
+        // this listens to changes in any of these files/routes and restarts the application
+        // watch: ["../HR/CARD/"],
+        env: {
+            'NODE_ENV': 'development'
+        },
+        ext: 'txt'
+        // Below i'm using es6 arrow functions but you can remove the arrow and have it a normal .on('restart', function() { // then place your stuff in here }
+    }).on('start', function() {
+        console.log('--------- Process Started. ---------')
+    });
+});
+
 
 
