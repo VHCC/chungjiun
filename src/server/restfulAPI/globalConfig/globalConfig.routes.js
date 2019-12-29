@@ -46,24 +46,13 @@ module.exports = function(app) {
 
         console.log(req.body);
 
-        var keyArray = Object.keys(req.body);
-        var updateRequest = {};
-        for (var index = 0; index < keyArray.length; index++) {
-            var evalString = "updateRequest.";
-            evalString += keyArray[index];
-
-            var evalFooter = "req.body.";
-            evalFooter += keyArray[index];
-            eval(evalString + " = " + evalFooter);
-        }
-
-        delete updateRequest._id;
-        console.log("--- updateRequest ---");
-
         globalConfigModel.updateOne({
-
+            year: req.body.year,
+            month: req.body.month,
         }, {
-            $set: updateRequest
+            $set: {
+                paymentsSwitch: req.body.paymentsSwitch
+            }
         }, function(err, result) {
             res.status(200).send({
                 code: 200,
