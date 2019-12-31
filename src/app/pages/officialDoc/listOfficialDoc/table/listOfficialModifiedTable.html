@@ -1,0 +1,165 @@
+
+
+
+<div class="horizontal-scroll">
+    <table class="table table-hover" st-table="officialDocItems">
+        <thead>
+        <tr>
+            <td colspan="12" class="text-center">
+                <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
+            </td>
+        </tr>
+        <tr class="sortable">
+            <th class="table-id"
+                st-sort="archiveNumber" style="width: 8%">崇峻文號</th>
+
+            <th st-sort="docAttachedType" style="width: 5%">附件類型</th>
+            <th st-sort="subject" style="width: 20%">主旨</th>
+
+            <th st-sort="receiveType" style="width: 7%">文號字</th>
+            <th st-sort="receiveNumber" style="width: 8%">文號編號</th>
+
+            <th st-sort="docType" style="width: 4%">文別</th>
+            <th st-sort="chargerDID" style="width: 5%">承辦人</th>
+            <th st-sort="chargerDID" style="width: 5%">待辦人</th>
+
+            <th st-sort="prjCode" style="width: 8%">專案編號</th>
+            <th st-sort="vendorDID" style="width: 5%">來文機關</th>
+
+            <th st-sort="receiveDate" st-sort-default="true" style="width: 7%">來文日期</th>
+            <th st-sort="dueDate" style="width: 7%">最後期限</th>
+            <th st-sort="expireDay" style="width: 5%">逾期天數</th>
+        </tr>
+        <tr>
+            <th>
+                <input st-search="archiveNumber"
+                       placeholder="尋找崇峻文號"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+
+            <!--附件-->
+            <th>
+            <th>
+                <input st-search="subject"
+                       placeholder="輸入主旨"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+
+            <th>
+                <input st-search="receiveType"
+                       placeholder="輸入文號字"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+            <th>
+                <input st-search="receiveNumber"
+                       placeholder="輸入文號編號"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+
+            <th/>
+            <th>
+                <input st-search="chargerName"
+                       placeholder="輸入承辦人"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+            <th>
+                <input st-search="handlerName"
+                       placeholder="輸入待辦人"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+
+            <th>
+                <input st-search="prjCode"
+                       placeholder="輸入專案編號"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+            <th/>
+
+            <th/>
+            <th/>
+            <th/>
+
+        </tr>
+
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="item in officialDocItems" class="editable-tr-wrap"
+            ng-class="{officialDocItem: hover}"
+            ng-mouseover="hover = true"
+            ng-mouseleave="hover = false"
+            ng-click="showOfficialDocInfo(item) && fetchPDFFiles()">
+            <!--崇峻文號-->
+            <td class="table-id" style="width: 8%">
+                {{item.archiveNumber}}
+                <div ng-show="item.isDocClose">
+                    <button class="btn btn-success btn-xs">
+                        歸檔
+                    </button>
+                </div>
+            </td>
+
+            <!--附件類型-->
+            <td style="width: 5%">
+                {{ showDocAttachedType(item.docAttachedType) }}
+            </td>
+            <!--主旨-->
+            <td style="width: 20%">{{item.subject}}</td>
+
+            <!--文號字-->
+            <td style="width: 7%">{{item.receiveType}}</td>
+            <!--文號編號-->
+            <td style="width: 8%">{{item.receiveNumber}}</td>
+
+            <!--文別-->
+            <td style="width: 4%">{{ showDocType(item.docType) }}</td>
+            <!--承辦人-->
+            <td style="width: 5%">
+                {{ showCharger(item) }}
+                <div ng-show="!item.isDocOpened">
+                    <button class="btn btn-danger btn-xs">
+                        未讀
+                    </button>
+                </div>
+                <div ng-show="item.isDocOpened">
+                    <button class="btn btn-primary btn-xs">
+                        已讀
+                    </button>
+                </div>
+            </td>
+            <!--處理人-->
+            <td style="width: 5%">{{ showHandler(item) }}</td>
+
+            <!--專案編號-->
+            <td style="width: 8%">{{ item.prjCode }}</td>
+            <!--來文機關-->
+            <td style="width: 5%">{{ showVendorName(item) }}</td>
+
+            <!--來文日期-->
+            <td style="width: 7%">{{ item.receiveDate }}</td>
+            <!--處理期限-->
+            <td style="width: 7%">{{ item.dueDate }}</td>
+            <!--預期天數-->
+            <td style="width: 5%">
+                {{ item.expireDay }}
+            </td>
+
+
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="13" class="text-center">
+                <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>

@@ -130,7 +130,7 @@
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
-                    "ng-include=\"'app/pages/officialDoc/listOfficialDoc/table/listOfficialTable.html'\">" +
+                    "ng-include=\"'app/pages/officialDoc/listOfficialDoc/table/listOfficialModifiedTable.html'\">" +
                     "</div>" +
                     "</div>"
                 )($scope));
@@ -201,8 +201,11 @@
         $scope.showOfficialDocInfo = function (item) {
             $uibModal.open({
                 animation: true,
-                controller: 'officialDocInfoModalCtrl',
-                templateUrl: 'app/pages/officialDoc/listOfficialDoc/modal/officialDocInfoModal.html',
+                // controller: 'officialDocModifiedModalCtrl',
+                controller: 'receiveOfficialDocModifiedCtrl',
+                controllerAs: 'receiveOfficialDocModifiedCtrlVm',
+                // templateUrl: 'app/pages/officialDoc/listOfficialDoc/modal/officialDocModifiedModal.html',
+                templateUrl: 'app/pages/officialDoc/listOfficialDoc/modal/receiveOfficialDoc_ModifiedModal.html',
                 size: 'lg',
                 resolve: {
                     docData: function () {
@@ -212,9 +215,15 @@
                         return $scope;
                     },
                 }
-            }).result.then(function () {
-                // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
-            });
+            }).opened.then(function() {
+                console.log("PPPPP");
+            })
+            // .result.then(function () {
+            //     console.log("TTTTT");
+            //     // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
+            // })
+
+
         }
 
     }
