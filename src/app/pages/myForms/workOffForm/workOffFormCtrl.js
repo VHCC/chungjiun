@@ -7,21 +7,6 @@
 
         angular.module('BlurAdmin.pages.myForms')
             .service('intiWorkOffAllService', function ($http, $cookies) {
-
-                // var formData = {
-                //     creatorDID: $cookies.get('userDID'),
-                //     year: null,
-                //     month: null,
-                //     isSendReview: true,
-                //     isBossCheck: true,
-                //     isExecutiveCheck: true
-                // }
-                //
-                // var promise = $http.post('/api/post_work_off_table_find_by_user_did', formData)
-                //     .success(function (workOffTables) {
-                //         return workOffTables;
-                //     });
-                // return promise;
                 return "";
             })
             .controller('workOffFormCtrl',
@@ -73,25 +58,6 @@
                                  bsLoadingOverlayService,
                                  intiWorkOffAllService) {
 
-            // intiWorkOffAllService.then(function (resp) {
-            //     console.log("===intiWorkOffAllService===");
-                // console.log(resp.data.payload);
-                // $scope.workOffTables = resp.data.payload;
-                //
-                // angular.element(
-                //     document.getElementById('includeHead'))
-                //     .append($compile(
-                //         "<div ba-panel ba-panel-title=" +
-                //         "'所有請假單列表 - " + resp.data.payload.length + "'" +
-                //         "ba-panel-class= " +
-                //         "'with-scroll'" + ">" +
-                //         "<div " +
-                //         "ng-include=\"'app/pages/myForms/forms/workOffForm_AllHistory.html'\">" +
-                //         "</div>" +
-                //         "</div>"
-                //     )($scope));
-            // })
-
             $scope.username = cookies.get('username');
             $scope.userDID = cookies.get('userDID');
             $scope.roleType = cookies.get('roletype');
@@ -111,7 +77,6 @@
             }
             User.findUserByUserDID(formData)
                 .success(function (user) {
-                    // $scope.userHourSalary = user.userHourSalary;
                     $scope.userMonthSalary = user.userMonthSalary;
                     $scope.bossID = user.bossID;
                     $scope.residualRestHour = user.residualRestHour;
@@ -119,7 +84,6 @@
 
             Project.findAllEnable()
                 .success(function (allProjects) {
-                    // console.log(allProjects);
                     vm.projects = allProjects;
                 });
 
@@ -133,7 +97,6 @@
                             WorkOffFormUtil.fetchAllExecutiveItem()
                                 .success(function (res) {
                                     for (var outIndex = 0; outIndex < res.payload.length; outIndex++) {
-                                        // console.log(res.payload[outIndex]);
                                         for (var index = 0; index < allUsers.length; index++) {
                                             if (res.payload[outIndex]._id === allUsers[index]._id) {
                                                 allUsers[index].excutive_count = res.payload[outIndex].count;
@@ -177,6 +140,7 @@
 
             // 主要顯示
             $scope.specificUserTablesItems = [];
+            $scope.specificUserTablesItems_lastYear = [];
 
             var vm = this;
             var thisYear = new Date().getFullYear() - 1911;
@@ -201,7 +165,7 @@
 
             $scope.getUserHolidayForm = function () {
                 var formData = {
-                    year: thisYear, // 年度
+                    year: specificYear, // 年度
                     creatorDID: $scope.userDID,
                 };
                 HolidayDataForms.findFormByUserDID(formData)
@@ -228,7 +192,8 @@
                                 })
                         }
                         fetchWorkOffTableData($scope.userDID, 1);
-                        fetchExchangeData($scope.userDID, 1, thisYear);
+                        fetchWorkOffTableData_lastYear($scope.userDID, 1);
+                        fetchExchangeData($scope.userDID, 1, specificYear);
                     })
             }
 
@@ -237,7 +202,7 @@
                 $scope.specificUserTablesItems = [];
                 var getData = {
                     creatorDID: (userDID === undefined || userDID == null)? $scope.userDID : userDID,
-                    year: year === undefined ? thisYear : year,
+                    year: year === undefined ? specificYear : year,
                     month: month === undefined ? null : month,
                     isSendReview: null,
                     isBossCheck: null,
@@ -252,7 +217,6 @@
                     .success(function (res) {
                         // 填入表單資訊
                         var workOffTableIDArray = [];
-                        $scope.tableData = {};
                         for (var index = 0; index < res.payload.length; index++) {
                             workOffTableIDArray[index] = res.payload[index]._id;
                             var detail = {
@@ -285,7 +249,7 @@
                             $scope.specificUserTablesItems.push(detail);
                         }
                         console.log($scope.specificUserTablesItems);
-                        if (userDID !== undefined) {
+                        if (userDID !== undefined && userDID !== null) {
                             $scope.findHolidayFormByUserDID(userDID === undefined ? $scope.userDID : userDID, subVM);
                         } else {
                             $scope.getUserHolidayForm();
@@ -332,6 +296,54 @@
                         console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByUserDID');
                         toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
                     })
+
+                $scope.specificUserTablesItems_lastYear = [];
+                var getData = {
+                    creatorDID: (userDID === undefined || userDID == null)? $scope.userDID : userDID,
+                    year: year === undefined ? thisYear -1 : year -1,
+                    month: month === undefined ? null : month,
+                    isSendReview: null,
+                    isBossCheck: null,
+                    isExecutiveCheck: null
+                }
+
+                WorkOffFormUtil.findWorkOffTableFormByUserDID(getData)
+                    .success(function (res) {
+                        // 填入表單資訊
+                        var workOffTableIDArray_lastYear = [];
+                        for (var index = 0; index < res.payload.length; index++) {
+                            workOffTableIDArray_lastYear[index] = res.payload[index]._id;
+                            var detail = {
+                                tableID: res.payload[index]._id,
+
+                                creatorDID: res.payload[index].creatorDID,
+                                workOffType: res.payload[index].workOffType,
+                                create_formDate: res.payload[index].create_formDate,
+                                year: res.payload[index].year,
+                                month: res.payload[index].month,
+                                day: res.payload[index].day,
+                                start_time: res.payload[index].start_time,
+                                end_time: res.payload[index].end_time,
+
+                                //RIGHT
+                                isSendReview: res.payload[index].isSendReview,
+                                isBossCheck: res.payload[index].isBossCheck,
+                                isExecutiveCheck: res.payload[index].isExecutiveCheck,
+
+                                // Reject
+                                isBossReject: res.payload[index].isBossReject,
+                                bossReject_memo: res.payload[index].bossReject_memo,
+
+                                isExecutiveReject: res.payload[index].isExecutiveReject,
+                                executiveReject_memo: res.payload[index].executiveReject_memo,
+
+                                userMonthSalary: res.payload[index].userMonthSalary,
+                                // userHourSalary: res.payload[index].userHourSalary,
+                            };
+                            $scope.specificUserTablesItems_lastYear.push(detail);
+                        }
+                        console.log($scope.specificUserTablesItems_lastYear);
+                    })
             }
 
             $scope.showWorkOffCount = function(workOffType) {
@@ -341,6 +353,55 @@
                     if ($scope.specificUserTablesItems[index].workOffType === workOffType && $scope.specificUserTablesItems[index].isExecutiveCheck) {
                         result += $scope.getHourDiffByTime($scope.specificUserTablesItems[index].start_time
                             , $scope.specificUserTablesItems[index].end_time, $scope.specificUserTablesItems[index].workOffType);
+                    }
+                }
+                switch (workOffType) {
+                    // 事
+                    case 0: {
+                        return result;
+                    }
+                    // 病
+                    case 1: {
+                        return result;
+                    }
+                    // 補休
+                    case 2: {
+                        return result ;
+                    }
+                    // 特
+                    case 3: {
+                        return result / 8;
+                    }
+                    // 婚
+                    case 4:
+                        return result / 8;
+                    // 喪
+                    case 5:
+                        return result / 8;
+                    // 公
+                    case 6:
+                        return result;
+                    // 公傷
+                    case 7:
+                        return result / 8;
+                    // 產
+                    case 8:
+                        return result / 8;
+                    // 陪產
+                    case 9:
+                        return result / 8;
+                    case 1001:
+                        return result;
+                }
+            }
+
+            $scope.showWorkOffCount_lastYear = function(workOffType) {
+                var index = 0;
+                var result = 0;
+                for (index = 0; index < $scope.specificUserTablesItems_lastYear.length; index ++) {
+                    if ($scope.specificUserTablesItems_lastYear[index].workOffType === workOffType && $scope.specificUserTablesItems_lastYear[index].isExecutiveCheck) {
+                        result += $scope.getHourDiffByTime($scope.specificUserTablesItems_lastYear[index].start_time
+                            , $scope.specificUserTablesItems_lastYear[index].end_time, $scope.specificUserTablesItems_lastYear[index].workOffType);
                     }
                 }
                 switch (workOffType) {
@@ -410,8 +471,6 @@
             }
 
             $scope.removeHolidayItem = function (index) {
-                // console.log(index)
-                // $scope.specificUserTablesItems.splice(index, 1);
                 console.log('removeHolidayItem, Index= ' + index);
 
                 var formData = {
@@ -462,7 +521,6 @@
 
             // 顯示假期名
             $scope.showWorkOffTypeString = function (type) {
-                // console.log(type);
                 return WorkOffTypeUtil.getWorkOffString(type);
             }
 
@@ -483,7 +541,6 @@
 
             // 休假規則，未滿一小算一小
             $scope.getHourDiff = function (dom) {
-                // console.log(dom);
                 if (dom.tableTimeStart && dom.tableTimeEnd) {
                     dom.table.start_time = dom.tableTimeStart;
                     dom.table.end_time = dom.tableTimeEnd;
@@ -505,10 +562,7 @@
                     ];
 
                     if (TimeUtil.getHour(dom.table.end_time) == 12) {
-                        // console.log(result[0])
-                        // console.log(result[1])
                         result = result[0] + (result[1] > 0 ? 0.5 : 0);
-                        // console.log(result)
                     } else {
                         result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
                     }
@@ -537,7 +591,6 @@
             }
 
             $scope.getHourDiffByTime = function (start, end, type) {
-                // console.log("- workOffFormCtrl, start= " + start + ", end= " + end + ", type= " + type);
                 if (isNaN(parseInt(start)) || isNaN(parseInt(end))) {
                     return "輸入格式錯誤";
                 }
@@ -565,21 +618,12 @@
                     // return result <= 1 ? 1 : result >= 8 ? 8 : result;
 
                     if (TimeUtil.getHour(end) == 12) {
-                        // console.log(result[0])
-                        // console.log(result[1])
                         result = result[0] + (result[1] > 0 ? 0.5 : 0);
-                        // console.log(result)
                     } else {
                         result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
                     }
                     var resultFinal;
                     if (TimeUtil.getHour(start) <= 12 && TimeUtil.getHour(end) >= 13) {
-                        // if (this.table != undefined && this.workOffType.type == 2) {
-                        //     resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 0.5 : result -1;
-                        // } else {
-                        //     resultFinal = result <= 1 ? 0 : result >= 9 ? 8 : result - 1 < 1 ? 1 : result -1;
-                        // }
-
                         if (this.workOffType !== undefined) {
                             // 請假單
                             if (this.workOffType.type == 2) {
@@ -605,11 +649,6 @@
                         }
 
                     } else {
-                        // if (this.table != undefined && this.workOffType.type == 2) {
-                        //     resultFinal = result < 1 ? 0.5 : result >= 8 ? 8 : result;
-                        // } else {
-                        //     resultFinal = result < 1 ? 1 : result >= 8 ? 8 : result;
-                        // }
 
                         if (this.workOffType !== undefined) {
                             // 請假單
@@ -644,8 +683,6 @@
                             resultFinal = resultFinal <= 4 ? 4 : 8;
                         }
 
-                        // console.log("this.workOffType= " + this.workOffType + ", resultFinal= " + resultFinal);
-
                         return resultFinal;
                     } else if (this.table != undefined) {
                         // 主管審核、行政審核
@@ -667,13 +704,11 @@
 
                         return resultFinal;
                     }
-
                 }
             }
 
             // 換休換算專用
             $scope.getHourDiffByTime_for_work_add = function (start, end, type) {
-                // console.log("- workOffFormCtrl, start= " + start + ", end= " + end + ", type= " + type);
                 if (isNaN(parseInt(start)) || isNaN(parseInt(end))) {
                     return "輸入格式錯誤";
                 }
@@ -691,10 +726,6 @@
                         // difference % 60 // SECONDS
                     ];
 
-                    // console.log(result);
-                    // console.log(result[0]);
-                    // console.log(result[1]);
-
                     result = result[0] + (result[1] < 30 ? 0 : result[1] === 0 ? 0 : 0.5);
                     return result;
                 }
@@ -703,7 +734,6 @@
             // Send WorkOffTable to Review
             $scope.reviewWorkOffTable = function (table, button, index) {
                 $timeout(function () {
-                    // console.log(table)
                     console.log($scope.specificUserTablesItems[index]);
                     var workOffString = $scope.showWorkOffTypeString($scope.specificUserTablesItems[index].workOffType);
                     $scope.checkText = '確定提交 ' + workOffString + '：' +
@@ -748,18 +778,6 @@
                 // WorkOffFormUtil.updateWorkOffTableSendReview(formData)
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-
-                        // var formData = {
-                        //     creatorDID: cookies.get('userDID'),
-                        //     msgTargetArray: targetList,
-                        //     msgMemoArray: memoList,
-                        //     msgTopicArray: msgTopicList,
-                        //     msgDetailArray: msgDetailList,
-                        // }
-                        // NotificationMsgUtil.createMsgItem(formData)
-                        //     .success(function (req) {
-                        //
-                        //     })
                         $scope.specificUserTablesItems[checkingIndex].isSendReview = true;
                     })
             }
@@ -795,18 +813,6 @@
                 // WorkOffFormUtil.updateExecutiveAgree(formData)
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-
-                        // var formData = {
-                        //     creatorDID: cookies.get('userDID'),
-                        //     msgTargetArray: targetList,
-                        //     msgMemoArray: memoList,
-                        //     msgTopicArray: msgTopicList,
-                        //     msgDetailArray: msgDetailList,
-                        // }
-                        // NotificationMsgUtil.createMsgItem(formData)
-                        //     .success(function (req) {
-                        //
-                        //     })
                         $scope.executiveCheckTablesItems.splice(index, 1);
 
                     })
@@ -848,18 +854,6 @@
                 // WorkOffFormUtil.updateDisAgree(formData)
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-
-                        // var formData = {
-                        //     creatorDID: cookies.get('userDID'),
-                        //     msgTargetArray: targetList,
-                        //     msgMemoArray: memoList,
-                        //     msgTopicArray: msgTopicList,
-                        //     msgDetailArray: msgDetailList,
-                        // }
-                        // NotificationMsgUtil.createMsgItem(formData)
-                        //     .success(function (req) {
-                        //
-                        //     })
                         $scope.executiveCheckTablesItems.splice(index, 1);
                     })
             }
@@ -895,18 +889,6 @@
                 // WorkOffFormUtil.updateBossAgree(formData)
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-
-                        // var formData = {
-                        //     creatorDID: vm.boss.selected._id,
-                        //     msgTargetArray: targetList,
-                        //     msgMemoArray: memoList,
-                        //     msgTopicArray: msgTopicList,
-                        //     msgDetailArray: msgDetailList,
-                        // }
-                        // NotificationMsgUtil.createMsgItem(formData)
-                        //     .success(function (req) {
-                        //
-                        //     })
                         $scope.bossCheckTablesItems.splice(index, 1);
                     })
             }
@@ -948,19 +930,6 @@
                 // WorkOffFormUtil.updateDisAgree(formData)
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-                        // console.log(res.code + ", sendDisagree_boss");
-
-                        // var formData = {
-                        //     creatorDID: cookies.get('userDID'),
-                        //     msgTargetArray: targetList,
-                        //     msgMemoArray: memoList,
-                        //     msgTopicArray: msgTopicList,
-                        //     msgDetailArray: msgDetailList,
-                        // }
-                        // NotificationMsgUtil.createMsgItem(formData)
-                        //     .success(function (req) {
-                        //
-                        //     })
                         $scope.bossCheckTablesItems.splice(index, 1);
                     })
             }
@@ -997,8 +966,6 @@
                         }
                         workOffTableData.push(dataItem);
                     }
-                    // console.log(formDataTable);
-                    // console.log(workOffTableData);
                     var formData = {
                         creatorDID: $scope.userDID,
                         year: thisYear,
@@ -1006,18 +973,13 @@
                         formTables: workOffTableData,
                         oldTables: formDataTable,
                     }
-                    // console.log(formDataTable);
                     WorkOffFormUtil.createWorkOffTableForm(formData)
                         .success(function (res) {
                             // 更新old Table ID Array
-                            // $scope.getWorkOffTable();
                             var workOffTableIDArray = [];
-                            // console.log(res.payload);
                             if (res.payload.length > 0) {
                                 for (var index = 0; index < res.payload.length; index++) {
-                                    // console.log(res.payload[index]);
                                     workOffTableIDArray[index] = res.payload[index].tableID;
-                                    // $scope.specificUserTablesItems[index] = res.payload[index];
                                     $scope.specificUserTablesItems[index].tableID = res.payload[index].tableID;
                                 }
                             }
@@ -1064,7 +1026,6 @@
                     }
                     WorkOffFormUtil.insertWorkOffTableItem(formData)
                         .success(function (res) {
-                            // console.log(res.payload);
                             $scope.specificUserTablesItems[$scope.specificUserTablesItems.length - 1].tableID = res.payload.tableID;
                             console.log($scope.specificUserTablesItems);
                         })
@@ -1152,7 +1113,6 @@
             // ***********************  更新假期確認 ************************
             $scope.updateUserHolidayData = function () {
                 var formData = vm.holidayForm;
-                // console.log(vm.holidayForm);
                 HolidayDataForms.updateFormByFormDID(formData)
                     .success(function (res) {
                         toastr['success']('成功', '更新成功');
@@ -1161,17 +1121,16 @@
 
             // -------------選取 指定人員之 假期確認表 ----------------------
             $scope.findHolidayFormByUserDID = function (userDID, subVM) {
-                console.log("假期確認表");
+                console.log(" = 假期確認表 = ");
                 var formData = {
                     userDID: userDID,
                 }
                 User.findUserByUserDID(formData)
                     .success(function (user) {
-                        // $scope.userHourSalary = user.userHourSalary;
                         $scope.preciseResidualRestHour = user.residualRestHour;
 
                         var formData = {
-                            year: thisYear,
+                            year: specificYear,
                             creatorDID: userDID,
                         };
                         HolidayDataForms.findFormByUserDID(formData)
@@ -1200,7 +1159,6 @@
                                 }
                                 if (subVM) {
                                     subVM.exchangeForm = res.payload[0];
-                                    // console.log(subVM.exchangeForm);
                                     subVM.exchangeForm.calculate_sick = $scope.showWorkOffCount(1);
                                     subVM.exchangeForm.calculate_private = $scope.showWorkOffCount(0);
                                     subVM.exchangeForm.calculate_observed = $scope.showWorkOffCount(2);
@@ -1213,12 +1171,12 @@
                                     subVM.exchangeForm.calculate_paternity = $scope.showWorkOffCount(9);
                                     subVM.exchangeForm.calculate_others = $scope.showWorkOffCount(1001);
                                     subVM.exchangeForm.person_residual_rest_hour = parseFloat($scope.preciseResidualRestHour);
-                                    // console.log(subVM.exchangeForm);
                                     fetchWorkOffTableData(userDID, null, subVM);
-
+                                    fetchWorkOffTableData_lastYear(userDID, null, subVM);
                                 } else {
                                     fetchWorkOffTableData(userDID, 2);
-                                    fetchExchangeData(userDID, 2, thisYear);
+                                    fetchWorkOffTableData_lastYear(userDID, 2);
+                                    fetchExchangeData(userDID, 2, specificYear);
                                 }
                             })
 
@@ -1291,7 +1249,6 @@
                     NationalHolidayUtil.createNationalHoliday(formData)
                         .success(function (res) {
                             $scope.fetchNationHolidays_workOff(table.year);
-                            // console.log(res.code + ", createNationalHoliday");
                         })
                         .error(function () {
                             console.log('ERROR NationalHolidayUtil.createNationalHoliday');
@@ -1300,7 +1257,6 @@
             }
 
             $scope.saveNationalHoliday = function (checkingTable, checkingButton) {
-                console.log(checkingButton);
                 var formData = {
                     tableID: checkingTable.tableID,
                     create_formDate: checkingTable.create_formDate,
@@ -1325,12 +1281,9 @@
             }
 
             $scope.listenYear = function (dom) {
-                // console.log(dom);
                 dom.$watch('myYear',function(newValue, oldValue) {
                     if (dom.isShiftYearSelect) {
                         dom.isShiftYearSelect = false;
-                        console.log(oldValue);
-                        console.log(newValue);
                         $scope.year = specificYear = newValue - 1911;
                         $scope.fetchNationHolidays_workOff(specificYear);
                         $scope.fetchOverTimeDays(specificYear);
@@ -1346,31 +1299,78 @@
             function fetchWorkOffTableData(userDID, showType, subVM) {
                 var formData = {
                     creatorDID: userDID,
-                    workAddType: 2
+                    workAddType: 2,
                     // month: thisMonth,
+                    year: specificYear
                 }
                 WorkHourAddItemUtil.getWorkHourAddItems(formData)
                     .success(function (res) {
-                        var tables = res.payload;
+                        console.log(res);
 
-                        tables = $scope.filterData(res.payload);
+                        var tables = res.payload;
+                        if (tables.length > 0) {
+                            tables = $scope.filterData(res.payload);
+                        }
 
                         var result = 0.0;
-                        console.log(tables);
                         switch (showType) {
                             // login User
                             case 1:
-                                // vm.loginUserHolidayForm.rest_observed = (result);
+                                vm.loginUserHolidayForm.rest_observed = 0;
                                 vm.loginUserHolidayForm.rest_observed = $scope.showTotalAddHour(tables, 2);
                                 break;
                             // specific user
                             case 2:
-                                // vm.holidayForm.rest_observed = (result);
+                                vm.holidayForm.rest_observed = 0;
                                 vm.holidayForm.rest_observed = $scope.showTotalAddHour(tables, 2);
                                 break;
                         }
                         if (subVM) {
+                            subVM.exchangeForm.rest_observed = 0;
                             subVM.exchangeForm.rest_observed = $scope.showTotalAddHour(tables, 2);
+                        }
+                    })
+                    .error(function () {
+                        console.log('ERROR  WorkHourAddItemUtil.getWorkHourAddItems')
+                    })
+            }
+
+            /**
+             * 顯示加班單，目的找補休
+             * @param user
+             */
+            function fetchWorkOffTableData_lastYear(userDID, showType, subVM) {
+                var formData = {
+                    creatorDID: userDID,
+                    workAddType: 2,
+                    // month: thisMonth,
+                    year: specificYear - 1
+                }
+                WorkHourAddItemUtil.getWorkHourAddItems(formData)
+                    .success(function (res) {
+                        console.log(res);
+
+                        var tables = res.payload;
+                        if (tables.length > 0) {
+                            tables = $scope.filterData(res.payload);
+                        }
+
+                        var result = 0.0;
+                        switch (showType) {
+                            // login User
+                            case 1:
+                                vm.loginUserHolidayForm.rest_observed_lastYear = 0;
+                                vm.loginUserHolidayForm.rest_observed_lastYear = $scope.showTotalAddHour(tables, 2);
+                                break;
+                            // specific user
+                            case 2:
+                                vm.holidayForm.rest_observed_lastYear = 0;
+                                vm.holidayForm.rest_observed_lastYear = $scope.showTotalAddHour(tables, 2);
+                                break;
+                        }
+                        if (subVM) {
+                            subVM.exchangeForm.rest_observed_lastYear = 0;
+                            subVM.exchangeForm.rest_observed_lastYear = $scope.showTotalAddHour(tables, 2);
                         }
                     })
                     .error(function () {
@@ -1390,14 +1390,12 @@
                 console.log(formData);
                 WorkOffExchangeFormUtil.fetchExchangeItemsByYear(formData)
                     .success(function (res) {
-
+                        console.log(res);
                         res.payload = res.payload.sort(function (a, b) {
                             return a._id > b._id ? 1 : -1;
                         });
 
                         var exchangeItems = res.payload;
-
-                        console.log(exchangeItems);
 
                         switch (showType) {
                             // login User
@@ -1435,14 +1433,11 @@
                                 }
                                 break;
                         }
-
                     })
             }
 
             // 整理數據
             $scope.filterData = function(rawData) {
-                console.log(rawData);
-
                 var itemList = [];
 
                 var workOT_date = [];
@@ -1452,8 +1447,6 @@
                         , 0) + "_" +
                         rawData[index].day + "_" +
                         rawData[index].prjDID;
-
-                    // console.log(item);
 
                     var detail = {
                         item_start_time: rawData[index].start_time,
@@ -1483,15 +1476,11 @@
 
                 }
 
-                // console.log(workOT_date);
-
                 var result = [];
 
                 for (var index = 0; index < itemList.length; index ++) {
                     result.push(workOT_date[itemList[index]]);
                 }
-
-                console.log(result);
 
                 return result;
             }
@@ -1533,7 +1522,6 @@
                 }
                 OverTimeDayUtil.fetchAllOverTimeDays(getData)
                     .success(function (res) {
-                        // console.log(res.payload);
                         $scope.overTimeDayTablesItems = [];
                         // 取得 Table Data
                         for (var index = 0; index < res.payload.length; index++) {
@@ -1642,10 +1630,8 @@
                     isBossCheck: true,
                     isExecutiveCheck: true
                 }
-                // console.log(formData);
                 WorkOffFormUtil.findWorkOffTableFormByUserDID(formData)
                     .success(function (workOffTables) {
-                        // console.log(workOffTables.payload);
                         $scope.workOffTables = workOffTables.payload;
                         angular.element(
                             document.getElementById('includeHead'))
@@ -1681,8 +1667,6 @@
             }
 
             $scope.$watch('myMonth',function(newValue, oldValue) {
-                // console.log(oldValue);
-                // console.log(newValue);
                 if ($scope.isShiftMonthSelect) {
                     $scope.isShiftMonthSelect = false;
                     $scope.changeWorkOffHistoryMonth(0, $scope.monthPickerDom);
@@ -1697,7 +1681,7 @@
 
                 document.getElementById('includeHead').innerHTML = "";
 
-                var year = thisYear;
+                var year = specificYear;
                 var month = thisMonth;
                 if ($scope.monthPicker != undefined) {
                     year = parseInt($scope.monthPicker.myDT.year()) - 1911;
@@ -1714,10 +1698,8 @@
                     isBossCheck: true,
                     isExecutiveCheck: true
                 }
-                // console.log(formData);
                 WorkOffFormUtil.findWorkOffTableFormByUserDID(formData)
                     .success(function (workOffTables) {
-                        // console.log(workOffTables.payload);
                         $scope.workOffTables = workOffTables.payload;
                         angular.element(
                             document.getElementById('includeHead'))
@@ -1753,8 +1735,6 @@
             }
 
             $scope.initWorkOffMonthCheck = function (specificUser) {
-                console.log(specificUser);
-
                 document.getElementById('modifiedSalaryBtn').style.display="none";
 
                 bsLoadingOverlayService.start({
@@ -1774,7 +1754,6 @@
 
                 WorkOffFormUtil.findWorkOffTableFormByUserDID(formData)
                     .success(function (workOffTables) {
-                        // console.log(workOffTables.payload);
                         $scope.workOffTables = workOffTables.payload;
                         angular.element(
                             document.getElementById('includeHead'))
@@ -1818,8 +1797,6 @@
 
             // ************* 行政核定後退回 ****************
             $scope.repentWorkItem_executive = function (workOffTables, table, index) {
-                console.log(table);
-                console.log(index);
 
                 $scope.checkText = '確定 恢復成行政審核前狀態：' +
                     $scope.showDate(table) +
@@ -1839,11 +1816,6 @@
 
             //行政核定後退回 -2
             $scope.sendWorkRepent_executive = function (workOffTables, checkingTable, index) {
-
-                // console.log(workOffTables);
-                // console.log(checkingTable);
-                // console.log(index);
-
                 var formData = {
                     tableID: checkingTable._id,
                     isExecutiveCheck: false,
@@ -1855,14 +1827,7 @@
             }
 
             $scope.modifiedSalary = function () {
-                console.log($scope.workOffTables);
-                console.log($scope.monthPicker);
-
-                // $scope.monthPicker = dom;
-
                 document.getElementById('includeHead').innerHTML = "";
-
-                // console.log("dom.myMonth= " + $scope.monthPicker.myMonth);
 
                 var year = parseInt($scope.monthPicker.myDT.year()) - 1911;
                 var month = parseInt($scope.monthPicker.myDT.month()) + 1;
@@ -1879,16 +1844,13 @@
                 
                 WorkOffFormUtil.updateWorkOffTableSalary(formData)
                     .success(function (res) {
-                        // console.log(res);
 
                         bsLoadingOverlayService.start({
                             referenceId: 'allHistory_workOff'
                         });
 
-                        // console.log(formData);
                         WorkOffFormUtil.findWorkOffTableFormByUserDID(formData)
                             .success(function (workOffTables) {
-                                // console.log(workOffTables.payload);
                                 $scope.workOffTables = workOffTables.payload;
                                 angular.element(
                                     document.getElementById('includeHead'))
@@ -1921,10 +1883,7 @@
                                 console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByUserDID');
                                 toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
                             });
-
-
                     })
-
             }
 
 
