@@ -398,7 +398,7 @@ module.exports = function (app) {
                     console.log(err);
                     res.send(err);
                 } else {
-                    console.log(items);
+                    // console.log(items);
                     res.status(200).send({
                         code: 200,
                         error: global.status._200,
@@ -459,6 +459,16 @@ module.exports = function (app) {
         if (req.body.isDocPublic !== null
             && req.body.isDocPublic !== undefined) {
             query.isDocPublic = req.body.isDocPublic;
+        }
+
+        if (req.body.archiveNumber !== null
+            && req.body.archiveNumber !== undefined) {
+            query.archiveNumber = req.body.archiveNumber;
+        }
+
+        if (req.body.docDivision !== null
+            && req.body.docDivision !== undefined) {
+            query.docDivision = req.body.docDivision;
         }
 
         console.log(" === query ===");
