@@ -96,7 +96,10 @@
 
     <div class="modal-footer">
         <button type="button" class="btn btn-danger"
-                ng-click="confirmCreateDoc()">修改
+                ng-if="canModified"
+                ng-click="confirmCreateDoc()">
+                修改
         </button>
+        <p ng-show="!canModified">文號已存在</p>
     </div>
 </div>
