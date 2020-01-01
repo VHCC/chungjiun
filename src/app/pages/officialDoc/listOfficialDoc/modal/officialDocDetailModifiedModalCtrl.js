@@ -43,6 +43,23 @@
 
         $scope.docData.creatorDID = $scope.userDID; // 收文人
 
+        var formData = {
+            archiveNumber: $scope.docData._archiveNumber,
+            docDivision: $scope.docData.docDivision.option,
+            type: 0,
+        }
+
+        $scope.canModified = true;
+
+        OfficialDocUtil.searchOfficialDocItem(formData)
+            .success(function (resp) {
+                console.log(resp);
+                $scope.canModified = true;
+                if (resp.payload.length > 0) {
+                    $scope.canModified = false;
+                }
+            });
+
         console.log($scope.docData);
 
         $scope.confirmCreateDoc = function () {
