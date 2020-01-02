@@ -216,12 +216,7 @@
                     },
                 }
             }).opened.then(function() {
-                console.log("PPPPP");
             })
-            // .result.then(function () {
-            //     console.log("TTTTT");
-            //     // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
-            // })
 
 
         }

@@ -165,7 +165,7 @@
                         ba-panel
                         ba-panel-title="公文辦理情形"
                         ba-panel-class="with-scroll"
-                        ng-show="!docData.isDocSignStage && !docData.isDocClose">
+                        ng-show="!docData.isDocSignStage && !docData.isDocClose && canModified">
 
                     <div class="form-group">
                         <textarea placeholder="請輸入辦理情形"
@@ -186,7 +186,7 @@
                         ba-panel
                         ba-panel-title="公文存查"
                         ba-panel-class="with-scroll"
-                        ng-show="docData.isApproveDocClose && !docData.isDocClose && !docData.isDocSignStage">
+                        ng-show="docData.isApproveDocClose && !docData.isDocClose && !docData.isDocSignStage && canModified">
 
                     <button type="submit"
                             style="float: right; margin-right: 10px"

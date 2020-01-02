@@ -369,6 +369,27 @@
 
                 })
         }
+
+        var formData = {
+            archiveNumber: $scope.docData.archiveNumber.substring(1, $scope.docData.archiveNumber.length),
+            docDivision: $scope.docData.docDivision,
+            type: 0,
+        }
+
+        $scope.canModified = true;
+
+
+        console.log(formData);
+
+        OfficialDocUtil.searchOfficialDocItem(formData)
+            .success(function (resp) {
+                console.log(resp);
+                $scope.canModified = true;
+                if (resp.payload[0].handlerDID != $scope.userDID) {
+                    $scope.canModified = false;
+                }
+
+            });
     }
 
 })();

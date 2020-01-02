@@ -29,6 +29,7 @@
         // Main Data
         $scope.parent = $scope.$resolve.parent;
         $scope.docData = $scope.$resolve.docData;
+        $scope.old_docData = $scope.$resolve.old_docData;
         $scope.folderDir = $scope.$resolve.folderDir;
 
         // initial
@@ -57,18 +58,29 @@
                 $scope.canModified = true;
                 if (resp.payload.length > 0) {
                     $scope.canModified = false;
+                } else {
+                    return;
+                }
+
+                if (resp.payload[0].archiveNumber == $scope.old_docData._archiveNumber &&
+                    resp.payload[0].docDivision == $scope.old_docData.docDivision.option) {
+                    console.log($scope.old_docData);
+                    $scope.canModified = true;
                 }
             });
 
         console.log($scope.docData);
 
-        $scope.confirmCreateDoc = function () {
+        var handlerDID = "";
 
-            // var formData = {
-            //     docDivision: $scope.docData.docDivision.option,
-            //     receiveDate: $scope.docData._receiveDate,
-            //     type: 0
-            // }
+        if ($scope.docData.isDocSignStage) {
+            handlerDID = $scope.docData.signer._id
+        } else {
+            handlerDID = $scope.docData.chargeUser._id
+        }
+
+
+        $scope.confirmUpdateDoc = function () {
 
             var _year = moment($scope.docData._receiveDate).format('YYYY') - 1911;
             console.log(_year);
@@ -92,6 +104,7 @@
 
                 chargerDID: $scope.docData.chargeUser._id,
                 signerDID: $scope.docData.signer._id,
+                handlerDID: handlerDID,
 
                 subject: $scope.docData._subject,
                 archiveNumber: $scope.docData._archiveNumber,
