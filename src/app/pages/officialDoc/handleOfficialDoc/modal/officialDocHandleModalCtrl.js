@@ -292,7 +292,8 @@
                 _id: docData._id,
                 stageInfo: handleInfo,
                 // handlerDID: $scope.showManagerID(docData),
-                handlerDID: docData.signerDID,
+                handlerDID: (docData.signerDID == undefined || docData.signerDID == null ) ?
+                    $scope.showManagerID(docData) : docData.signerDID,
                 isDocSignStage: true
             }
             OfficialDocUtil.updateOfficialDocItem(formData)
