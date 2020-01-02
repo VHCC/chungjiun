@@ -321,6 +321,7 @@
                 docDivision: vm.docDivision.selected,
                 docAttachedType: vm.docAttachedType.selected,
                 timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
+                isDocSignStage: $scope.docData.isDocSignStage,
                 // stageInfo: stageInfo,
                 // isAttached: isAttached,
             }
@@ -338,7 +339,10 @@
                     },
                     folderDir: function () {
                         return $cookies.get('userDID') + fileUnique;
-                    }
+                    },
+                    old_docData: function () {
+                        return old_docData;
+                    },
                 }
             }).result.then(function (data) {
                 console.log(data);
@@ -537,8 +541,33 @@
             vm.prjItems = [];
             vm.prjItems.selected = selectedTemp[0];
 
-            console.log(vm);
+            // console.log(vm);
+
+
+            old_docData = {
+                _id: $scope.docData._id,
+                _archiveNumber: $scope._archiveNumber,
+                // _receiveType: dom._receiveType,
+                // _receiveNumber: dom._receiveNumber,
+                // _subject: dom._subject,
+                // _receiveDate: $scope._receiveDate,
+                // _lastDate: $scope._lastDate,
+                // _dueDate: $scope._dueDate,
+                // _officialPublicDate: $scope._officialPublicDate,
+                // vendorItem: vm.vendorItem.selected,
+                // prjItem: vm.prjItems.selected,
+                // chargeUser: vm.chargeUser.selected,
+                // signer: vm.signer.selected,
+                // docOption: vm.docOption.selected,
+                docDivision: vm.docDivision.selected,
+                // docAttachedType: vm.docAttachedType.selected,
+                // timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
+                // stageInfo: stageInfo,
+                // isAttached: isAttached,
+            }
         }
+
+        var old_docData = {};
 
         var originHeight;
 

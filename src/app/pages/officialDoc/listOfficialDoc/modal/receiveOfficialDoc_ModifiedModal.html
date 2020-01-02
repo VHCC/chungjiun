@@ -312,12 +312,14 @@
 
                     <section class="col-md-12" >
                         <button ng-click="checkDocDetail(this)"
+                                ng-if="!docData.isDocClose"
                                 style="float: right; padding: 0 60px; line-height: 4"
                                 id="btnReview"
                                 pb-style="shrink"
                                 class="btn btn-primary">
                             確認修改
                         </button>
+                        <p ng-if="docData.isDocClose">檔案已歸檔</p>
                     </section>
                 </div>
             </div>
