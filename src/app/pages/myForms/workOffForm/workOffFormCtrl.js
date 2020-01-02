@@ -248,6 +248,8 @@
                             };
                             $scope.specificUserTablesItems.push(detail);
                         }
+
+                        console.log(" === 取得使用者個人休假表 === ");
                         console.log($scope.specificUserTablesItems);
                         if (userDID !== undefined && userDID !== null) {
                             $scope.findHolidayFormByUserDID(userDID === undefined ? $scope.userDID : userDID, subVM);
@@ -1200,7 +1202,6 @@
             $scope.nationalHolidayTablesItems = [];
 
             $scope.fetchNationHolidays_workOff = function (year) {
-                // console.log(year);
                 var getData = {
                     year: year == null ? thisYear : year,
                 }
@@ -1305,6 +1306,7 @@
                 }
                 WorkHourAddItemUtil.getWorkHourAddItems(formData)
                     .success(function (res) {
+                        console.log(" === 顯示加班單，目的找補休 [resp] === ");
                         console.log(res);
 
                         var tables = res.payload;
@@ -1348,6 +1350,7 @@
                 }
                 WorkHourAddItemUtil.getWorkHourAddItems(formData)
                     .success(function (res) {
+                        console.log(" === 顯示加班單，目的找補休 (去年) [resp] === ");
                         console.log(res);
 
                         var tables = res.payload;
@@ -1387,9 +1390,11 @@
                     creatorDID: userDID,
                     year: year,
                 }
+                console.log(" === 顯示兌現單，目的找補休、特休兌換數 [request] === ");
                 console.log(formData);
                 WorkOffExchangeFormUtil.fetchExchangeItemsByYear(formData)
                     .success(function (res) {
+                        console.log(" === 顯示兌現單，目的找補休、特休兌換數 [resp] === ");
                         console.log(res);
                         res.payload = res.payload.sort(function (a, b) {
                             return a._id > b._id ? 1 : -1;

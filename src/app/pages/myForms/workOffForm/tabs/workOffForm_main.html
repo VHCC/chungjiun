@@ -120,7 +120,8 @@
                         </td>
                         <!-- 特休 -->
                         <td class="form-group " style="vertical-align: inherit;">
-                            <t>{{showWorkOffCount(3)}}</t>
+                            <t>{{showWorkOffCount(3) +
+                                showWorkOffCount_lastYear(3)}}</t>
                         </td>
                         <td class="form-group " style="vertical-align: inherit;">
                             <t>{{showWorkOffCount(4)}}</t>
@@ -151,12 +152,13 @@
                             未休假
                         </td>
 
+                        <!-- 病假 -->
                         <td class="form-group " style="vertical-align: inherit;">
-                            <!--<t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_sick}}</t>-->
                         </td>
+                        <!-- 事假 -->
                         <td class="form-group " style="vertical-align: inherit;">
-                            <!--<t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_private}}</t>-->
                         </td>
+                        <!-- 補休 -->
                         <td class="form-group " style="vertical-align: inherit;">
                             <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_observed +
                                 workOffFormCtrlVm.loginUserHolidayForm.rest_observed_lastYear +
@@ -168,6 +170,7 @@
                         <td class="form-group " style="vertical-align: inherit;">
                             <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_special -
                                 workOffFormCtrlVm.loginUserHolidayForm.calculate_special -
+                                showWorkOffCount_lastYear(3) -
                                 (loginUser_exchange_special / 8)}}</t>
                         </td>
                         <td class="form-group " style="vertical-align: inherit;">
@@ -207,15 +210,9 @@
                         </td>
                         <!--病假(時)-->
                         <td class="form-group " style="vertical-align: inherit;">
-                            <!--<t>{{total(workOffFormCtrlVm.loginUserHolidayForm.calculate_sick,-->
-                                <!--workOffFormCtrlVm.loginUserHolidayForm.rest_sick)}}-->
-                            <!--</t>-->
                         </td>
                         <!--事假(時)-->
                         <td class="form-group " style="vertical-align: inherit;">
-                            <!--<t>{{total(workOffFormCtrlVm.loginUserHolidayForm.calculate_private,-->
-                                <!--workOffFormCtrlVm.loginUserHolidayForm.rest_private)}}-->
-                            <!--</t>-->
                         </td>
                         <!--補休(時)-->
                         <td class="form-group " style="vertical-align: inherit;">
