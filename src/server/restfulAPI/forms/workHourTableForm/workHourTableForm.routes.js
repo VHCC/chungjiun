@@ -575,6 +575,7 @@ module.exports = function (app) {
                             },
                             {
                                 $sort:{
+                                    year: 1,
                                     month:1,
                                 }
                             },
