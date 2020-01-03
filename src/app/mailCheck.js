@@ -13,7 +13,7 @@ var mailTransport = nodemailer.createTransport({
 });
 
 var dueDate = moment().add(3, 'days').format("YYYY/MM/DD");
-console.log("dueDate= " + dueDate);
+console.log(" ------ dueDate= " + dueDate + " ------ ");
 
 var officialDocModel = require('../server/restfulAPI/models/officialDocItem');
 var userModel = require('../server/restfulAPI/models/user');
@@ -24,7 +24,7 @@ userModel.find({}, function (err, allUsers) {
     if (err) {
         console.log(err);
     } else {
-        console.log("user counts= " + allUsers.length);
+        // console.log("user counts= " + allUsers.length);
         allUsersCache = [];
         allUsersCache[0] = {
             value: "",
@@ -88,10 +88,24 @@ userModel.find({}, function (err, allUsers) {
 //     }
 // })
 
+var defaultMail_1;
+var defaultMail_2;
 
-schedule.scheduleJob('0 00 08 * * *', function(){
+schedule.scheduleJob('0 00 08 * * *', function() {
+// schedule.scheduleJob('* * * * * *', function() {
+
+    defaultMail_1 = allUsersCache.find(function (item) {
+        return item.name == "林佳樞";
+    })
+
+    defaultMail_2 = allUsersCache.find(function (item) {
+        return item.name == "蕭鈺樺";
+    })
+
 
     checkDueDateMail ();
+    // console.log(defaultMail_1);
+    // console.log(defaultMail_2);
     console.log('scheduleCronstyle:' + new Date());
 });
 
@@ -154,11 +168,22 @@ function checkDueDateMail () {
                                     return item.value == items[mailIndex].handlerDID;
                                 })
 
-                                // console.log(output);
+                                console.log(signer);
+
+                                var sendTarget = ""
+
+                                if (signer.cjMail == undefined || signer.cjMail == null) {
+                                    sendTarget = defaultMail_1.name + ' <' + defaultMail_1.cjMail + '>;' +
+                                        defaultMail_2.name + ' <' + defaultMail_2.cjMail + '>'
+                                }  else {
+                                    sendTarget = signer.name + ' <' + signer.cjMail + '>';
+                                }
+
+                                console.log(sendTarget);
 
                                 mailTransport.sendMail({
                                     from: 'ERM System <0973138343@chongjun.tw>',
-                                    to: signer.name + ' <' + signer.cjMail + '>',
+                                    to: sendTarget,
                                     subject: '公文 ' + getDocDivisionName(items[mailIndex].docDivision) + items[mailIndex].archiveNumber + ' 即將到期，請留意',
                                     html: '<h1>公文 ' + getDocDivisionName(items[mailIndex].docDivision) + items[mailIndex].archiveNumber + '</h1>' +
                                     '<p> 最後期限即將到期，請注意</p><br/>' +
