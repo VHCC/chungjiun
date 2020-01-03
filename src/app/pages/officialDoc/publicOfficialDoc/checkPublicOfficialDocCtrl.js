@@ -76,7 +76,9 @@
                 if ($scope.officialDocItems[index].archiveNumber.length != 11) {
                     $scope.officialDocItems[index].archiveNumber =
                         $scope.officialDocItems[index].archiveNumber +
-                        OfficialDocUtil.getDivision($scope.officialDocItems[index].docDivision);
+                        (($scope.officialDocItems[index].docDivision != undefined ||
+                            $scope.officialDocItems[index].docDivision != null) ?
+                            OfficialDocUtil.getDivision($scope.officialDocItems[index].docDivision) : "");
                 }
             }
 
