@@ -17,18 +17,43 @@ module.exports = function(fileDate) {
             did: {
                 type: String,
             },
+
+            // 日期
             date: {
                 type: String,
             },
+
+            // 時間
             time: {
                 type: String,
             },
+
+            // 上下班狀態
             workType: {
                 type: String,
             },
+
+            // 打卡方式
+            // F：指紋
+            // G：GPS
+            // P：卡片
+
             printType: {
                 type: String,
+            },
+
+            gps_location: {
+                type: String,
+            },
+
+            gps_type: {
+                type: String,
+            },
+
+            gps_status: {
+                type: String,
             }
+
         });
     }
     return mongoModel

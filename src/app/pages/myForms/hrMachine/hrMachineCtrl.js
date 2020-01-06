@@ -155,6 +155,10 @@
                                     hrMachineItem.printType = arrayResult[0][index].printType;
                                     hrMachineItem.time = arrayResult[0][index].time;
                                     hrMachineItem.workType = arrayResult[0][index].workType;
+                                    // GPS
+                                    hrMachineItem.gps_location = arrayResult[0][index].gps_location;
+                                    hrMachineItem.gps_type = arrayResult[0][index].gps_type;
+                                    hrMachineItem.gps_status = arrayResult[0][index].gps_status;
 
                                     var hrMachineCollection = [];
                                     hrMachineCollection.push(hrMachineItem);

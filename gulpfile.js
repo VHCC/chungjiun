@@ -72,7 +72,7 @@ gulp.task('reloadHrMachine', function () {
         // the script to run the app
         script: './src/server/loadHrMachine.js',
         // this listens to changes in any of these files/routes and restarts the application
-        watch: ["../../HR/CARD/"],
+        watch: ["../../HR/CARD/", "../../HR/GPS/"],
         env: {
             'NODE_ENV': 'development'
         },

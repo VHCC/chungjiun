@@ -64,6 +64,15 @@
 
             <!--是否遲到-->
             <td style="vertical-align: inherit; text-align: center">遲到</td>
+
+            <!-- 地址 -->
+            <td style="vertical-align: inherit; text-align: center">地址</td>
+
+            <!-- 機身編號 -->
+            <td style="vertical-align: inherit; text-align: center">機身編號</td>
+
+            <!-- 打卡是否異常 -->
+            <td style="vertical-align: inherit; text-align: center">打卡是否異常</td>
         </tr>
         </thead>
 
@@ -222,6 +231,21 @@
                 <div ng-show="(isLate(tableItem, 0) || isLate(tableItem, 1))">
                     遲
                 </div>
+            </td>
+
+            <!-- 地址 -->
+            <td style="vertical-align: inherit;">
+                {{tableItem[0].gps_location}}
+            </td>
+
+            <!-- 機身編號 -->
+            <td style="vertical-align: inherit;">
+                {{tableItem[0].gps_type}}
+            </td>
+
+            <!-- 打卡是否異常 -->
+            <td style="vertical-align: inherit;">
+                {{tableItem[0].gps_status}}
             </td>
         </tr>
 
