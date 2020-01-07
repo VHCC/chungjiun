@@ -264,6 +264,7 @@
 
             var formData = {
                 _id: docData._id,
+                folder: docData.archiveNumber
             }
             OfficialDocUtil.deleteOfficialDocItem(formData)
                 .success(function (res) {
