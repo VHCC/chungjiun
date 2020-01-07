@@ -555,6 +555,11 @@ module.exports = function (app) {
                     console.log(err);
                     res.send(err);
                 } else {
+
+                    var deleteFolder = fileStorageDir + '/' + req.body.folder;
+
+                    deleteFolderRecursive(deleteFolder);
+
                     res.status(200).send({
                         code: 200,
                         error: global.status._200,
@@ -563,6 +568,20 @@ module.exports = function (app) {
                 }
             })
     })
+
+    const deleteFolderRecursive = function(dir) {
+        if (fs.existsSync(dir)) {
+            fs.readdirSync(dir).forEach((file, index) => {
+                const curPath = path.join(dir, file);
+                if (fs.lstatSync(curPath).isDirectory()) { // recurse
+                    deleteFolderRecursive(curPath);
+                } else { // delete file
+                    fs.unlinkSync(curPath);
+                }
+            });
+            fs.rmdirSync(dir);
+        }
+    };
 
     // generate item archive number
     app.post(global.apiUrl.post_official_doc_create_item_archive_number, function (req, res) {
