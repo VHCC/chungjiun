@@ -33,6 +33,7 @@
             <th st-sort="dueDate" style="width: 7%">處理期限</th>
 
             <th st-sort="dueDate" style="width: 3%">已讀</th>
+            <th st-sort="isApproveDocClose" style="width: 3%">備註</th>
         </tr>
         <tr>
             <th>
@@ -74,6 +75,9 @@
 
             <th/>
             <th/>
+            <th/>
+
+            <!-- 備註 -->
             <th/>
 
         </tr>
@@ -127,6 +131,15 @@
                 <div ng-show="item.isDocOpened">
                     <button class="btn btn-primary btn-xs">
                         已讀
+                    </button>
+                </div>
+            </td>
+
+            <!--備註-->
+            <td style="width: 7%">
+                <div ng-show="item.isApproveDocClose">
+                    <button class="btn btn-primary btn-xs">
+                        可歸檔
                     </button>
                 </div>
             </td>
