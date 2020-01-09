@@ -370,13 +370,26 @@ module.exports = function (app) {
 
                     var result = "" + year + month + day + "";
 
-                    if (items.length <= 8 ) {
+                    if (items.length == 0) {
                         result += ("00" + (items.length + 1));
-                    } else if (items.length > 8 && items.length <= 98) {
-                        result += ("0" + (items.length + 1));
                     } else {
-                        result += (items.length + 1);
+                        var archiveNumber = items[items.length - 1].archiveNumber.substring(7, 10);
+                        var numberString = (parseInt(archiveNumber) + 1).toString();
+                        if (numberString.length == 1) {
+                            numberString = "00" + numberString;
+                        } else if (numberString.length == 2) {
+                            numberString = "0" + numberString;
+                        }
+                        result += numberString;
                     }
+
+                    // if (items.length <= 8 ) {
+                    //     result += ("00" + (items.length + 1));
+                    // } else if (items.length > 8 && items.length <= 98) {
+                    //     result += ("0" + (items.length + 1));
+                    // } else {
+                    //     result += (items.length + 1);
+                    // }
 
                     res.status(200).send({
                         code: 200,
