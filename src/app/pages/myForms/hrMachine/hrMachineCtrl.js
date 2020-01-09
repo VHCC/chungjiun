@@ -741,7 +741,7 @@
 
                 var isLate = false;
 
-                // console.log(tableItem);
+                console.log(tableItem);
 
                 for (var index = 0; index < tableItem.length; index++) {
                     if (tableItem[index].workType === "1") {
@@ -752,9 +752,9 @@
                 // console.log(operateArray);
                 // console.log("isLate, type= " + type);
 
-                if (operateArray.length > 0 && operateArray[type] != undefined) {
-                    var workOnHour = parseInt(operateArray[type].time.substr(0,2));
-                    var workOnMin = parseInt(operateArray[type].time.substr(2,4));
+                if (operateArray.length > 0 && operateArray[0][type] != undefined) {
+                    var workOnHour = parseInt(operateArray[0][type].time.substr(0,2));
+                    var workOnMin = parseInt(operateArray[0][type].time.substr(2,4));
                     // console.log("workOnHour= " + workOnHour + ", workOnMin= " + workOnMin);
                     if (workOnHour <= 8) {
                         isLate = false
