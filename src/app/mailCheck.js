@@ -126,6 +126,10 @@ function getDocDivisionName(division) {
 
 
 function checkDueDateMail () {
+
+    dueDate = moment().add(3, 'days').format("YYYY/MM/DD");
+    console.log(" checkDueDateMail: ------ dueDate= " + dueDate + " ------ ");
+
     officialDocModel.find(
         {
             dueDate: dueDate,
