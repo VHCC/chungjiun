@@ -749,13 +749,15 @@
                     }
                 }
 
-                // console.log(operateArray);
-                // console.log("isLate, type= " + type);
+                console.log(operateArray);
+                console.log("isLate, type= " + type);
 
-                if (operateArray.length > 0 && operateArray[0][type] != undefined) {
-                    var workOnHour = parseInt(operateArray[0][type].time.substr(0,2));
-                    var workOnMin = parseInt(operateArray[0][type].time.substr(2,4));
-                    // console.log("workOnHour= " + workOnHour + ", workOnMin= " + workOnMin);
+
+
+                if (operateArray.length > 0 && operateArray[0] != undefined) {
+                    var workOnHour = parseInt(operateArray[0].time.substr(0,2));
+                    var workOnMin = parseInt(operateArray[0].time.substr(2,4));
+                    console.log("workOnHour= " + workOnHour + ", workOnMin= " + workOnMin);
                     if (workOnHour <= 8) {
                         isLate = false
                     } else if (workOnHour == 9 && workOnMin == 0) {
@@ -764,23 +766,6 @@
                         isLate = true;
                     }
                 }
-
-                // for (var index = 0; index < tableItem.length; index++) {
-                //     if (tableItem[index].workType === "1") {
-                //         // console.log(tableItem[index]);
-                //         var workOnHour = parseInt(tableItem[index].time.substr(0,2));
-                //         var workOnMin = parseInt(tableItem[index].time.substr(2,4));
-                //         if (workOnHour <= 8) {
-                //             // return false;
-                //         } else {}
-                //
-                //         if (workOnHour == 9 && workOnMin == 0) {
-                //             // return false;
-                //         } else {
-                //             isLate = true;
-                //         }
-                //     }
-                // }
 
                 // console.log("isLate= " + isLate);
                 return isLate;
