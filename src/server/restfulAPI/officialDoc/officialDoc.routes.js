@@ -499,6 +499,17 @@ module.exports = function (app) {
 
         console.log(req.body);
 
+        if (req.body.old_archiveNumber) {
+
+            var oldDir = fileStorageDir + '/' + getDivision(req.body.docDivision) + req.body.old_archiveNumber;
+            var newDir = fileStorageDir + '/' + getDivision(req.body.docDivision) + req.body.archiveNumber;
+
+            fs.rename(oldDir, newDir, function (err) {
+                if (err) throw err;
+                console.log('renamed complete');
+            });
+        }
+
         var keyArray = Object.keys(req.body);
         var updateRequest = {};
         for (var index = 0; index < keyArray.length; index++) {
@@ -583,6 +594,21 @@ module.exports = function (app) {
         }
     };
 
+    const getDivision = function (type) {
+        switch (type) {
+            case 0:
+                return "F";
+            case 1:
+                return "N";
+            case 2:
+                return "G";
+            case 3:
+                return "D";
+            case 4:
+                return "P"
+        }
+    };
+
     // generate item archive number
     app.post(global.apiUrl.post_official_doc_create_item_archive_number, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_create_item_archive_number");
@@ -593,7 +619,6 @@ module.exports = function (app) {
         var month = moment(req.body.receiveDate).format('MM');
         var day = moment(req.body.receiveDate).format('DD');
 
-
         console.log(req.body);
 
         OfficialDocItem.find(
@@ -601,7 +626,9 @@ module.exports = function (app) {
                 docDivision: req.body.docDivision,
                 receiveDate: receiveDate,
                 type: req.body.type
-            }, function (err, items) {
+            }).sort({
+                archiveNumber: 1
+            }).exec(function (err, items) {
                 if (err) {
                     console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_create_item_archive_number");
                     console.log(req.body);
@@ -609,7 +636,6 @@ module.exports = function (app) {
                     console.log(err);
                     res.send(err);
                 } else {
-
                     var result = "" + year + month + day + "";
 
                     if (items.length == 0) {
@@ -617,6 +643,9 @@ module.exports = function (app) {
                     } else {
                         var archiveNumber = items[items.length - 1].archiveNumber.substring(7, 10);
                         var numberString = (parseInt(archiveNumber) + 1).toString();
+
+                        console.log(archiveNumber);
+                        console.log(numberString);
                         if (numberString.length == 1) {
                             numberString = "00" + numberString;
                         } else if (numberString.length == 2) {
@@ -625,23 +654,14 @@ module.exports = function (app) {
                         result += numberString;
                     }
 
-                    // console.log(items[items.length - 1]);
-
-                    // if (items.length <= 8 ) {
-                    //     result += ("00" + (items.length + 1));
-                    // } else if (items.length > 8 && items.length <= 98) {
-                    //     result += ("0" + (items.length + 1));
-                    // } else {
-                    //     result += (items.length + 1);
-                    // }
-
                     res.status(200).send({
                         code: 200,
                         error: global.status._200,
                         payload: result,
                     });
                 }
-            })
+            });
+
     })
 
 
