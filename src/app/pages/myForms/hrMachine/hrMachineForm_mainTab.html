@@ -84,20 +84,24 @@
                 ({{showDay(tableItem[0].date)}})
             </td>
             <!--上班 1-->
-            <td class="form-group" style="vertical-align: inherit;">
+            <td ng-class="(isGPS(tableItem, 21)) ? 'gps' : 'sunNormal'"
+                    class="form-group" style="vertical-align: inherit;">
                 {{showHrMachineTime(tableItem, 11)}}
             </td>
             <!--下班 1-->
-            <td class="form-group" style="vertical-align: inherit;">
+            <td ng-class="(isGPS(tableItem, 21)) ? 'gps' : 'sunNormal'"
+                    class="form-group" style="vertical-align: inherit;">
                 {{showHrMachineTime(tableItem, 21)}}
             </td>
             <!--上班 2-->
-            <td class="form-group" style="vertical-align: inherit;">
+            <td ng-class="(isGPS(tableItem, 21)) ? 'gps' : 'sunNormal'"
+                    class="form-group" style="vertical-align: inherit;">
                 {{showHrMachineTime(tableItem, 12)}}
             </td>
             <!--下班 2-->
-            <td class="form-group" style="vertical-align: inherit;">
-                {{showHrMachineTime(tableItem,22)}}
+            <td ng-class="(isGPS(tableItem, 21)) ? 'gps' : 'sunNormal'"
+                    class="form-group" style="vertical-align: inherit;">
+                {{showHrMachineTime(tableItem, 22)}}
             </td>
 
             <!--加班1-->
@@ -236,16 +240,19 @@
             <!-- 地址 -->
             <td style="vertical-align: inherit;">
                 {{tableItem[0].gps_location}}
+                {{showGPSInfo(tableItem, 0)}}
             </td>
 
             <!-- 機身編號 -->
             <td style="vertical-align: inherit;">
                 {{tableItem[0].gps_type}}
+                {{showGPSInfo(tableItem, 1)}}
             </td>
 
             <!-- 打卡是否異常 -->
             <td style="vertical-align: inherit;">
                 {{tableItem[0].gps_status}}
+                {{showGPSInfo(tableItem, 2)}}
             </td>
         </tr>
 

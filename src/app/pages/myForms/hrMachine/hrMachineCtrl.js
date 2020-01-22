@@ -213,6 +213,11 @@
                                     hrMachineItem.printType = arrayResult[0][index].printType;
                                     hrMachineItem.time = arrayResult[0][index].time;
                                     hrMachineItem.workType = arrayResult[0][index].workType;
+                                    // GPS
+                                    hrMachineItem.gps_location = arrayResult[0][index].gps_location;
+                                    hrMachineItem.gps_type = arrayResult[0][index].gps_type;
+                                    hrMachineItem.gps_status = arrayResult[0][index].gps_status;
+
                                     hrMachineTableSorted[arrayResult[0][index].date].push(hrMachineItem);
                                     // console.log(hrMachineTableSorted[arrayResult[0][index].date]);
 
@@ -1161,6 +1166,396 @@
                         console.log($scope.hrMachineTable);
                         console.log($scope.travelApplicationItems);
                     })
+
+                $scope.showGPSInfo = function (tables, type) {
+                    var results = "";
+
+                    switch (type) {
+                        case 0:
+                            var workOnArray = [];
+                            for (var index = 0; index < tables.length; index ++) {
+                                if (tables[index].gps_location != undefined && tables[index].gps_location != "") {
+                                    if (tables[index].workType === "1") {
+                                        workOnArray.push(tables[index]);
+                                    }
+                                }
+                            }
+                            if (workOnArray.length > 0) {
+                                results += workOnArray[0].gps_location;
+                            }
+
+                            var workOffArray = [];
+                            var isFirstWorkOff = false;
+                            for (var index = 0; index < tables.length; index++) {
+                                if (tables[index].gps_location != undefined && tables[index].gps_location != "") {
+                                    if (tables[index].workType === "2") {
+                                        workOffArray.push(tables[index]);
+                                        isFirstWorkOff = true;
+                                    }
+                                    if (isFirstWorkOff && tables[index].workType === "1") {
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (workOffArray.length > 0) {
+                                results += ", " + workOffArray[workOffArray.length - 1].gps_location;
+                            }
+
+                            break;
+                        case 1:
+                            var workOnArray = [];
+                            for (var index = 0; index < tables.length; index ++) {
+                                if (tables[index].gps_type != undefined && tables[index].gps_type != "") {
+                                    if (tables[index].workType === "1") {
+                                        workOnArray.push(tables[index]);
+                                    }
+                                }
+                            }
+                            if (workOnArray.length > 0) {
+                                results += workOnArray[0].gps_type;
+                            }
+
+                            var workOffArray = [];
+                            var isFirstWorkOff = false;
+                            for (var index = 0; index < tables.length; index++) {
+                                if (tables[index].gps_type != undefined && tables[index].gps_type != "") {
+                                    if (tables[index].workType === "2") {
+                                        workOffArray.push(tables[index]);
+                                        isFirstWorkOff = true;
+                                    }
+                                    if (isFirstWorkOff && tables[index].workType === "1") {
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (workOffArray.length > 0) {
+                                results += ", " + workOffArray[workOffArray.length - 1].gps_type;
+                            }
+
+                            break;
+                        case 2:
+                            var workOnArray = [];
+                            for (var index = 0; index < tables.length; index ++) {
+                                if (tables[index].gps_status != undefined && tables[index].gps_status != "") {
+                                    if (tables[index].workType === "1") {
+                                        workOnArray.push(tables[index]);
+                                    }
+                                }
+                            }
+                            if (workOnArray.length > 0) {
+                                results += workOnArray[0].gps_status;
+                            }
+
+                            var workOffArray = [];
+                            var isFirstWorkOff = false;
+                            for (var index = 0; index < tables.length; index++) {
+                                if (tables[index].gps_status != undefined && tables[index].gps_status != "") {
+                                    if (tables[index].workType === "2") {
+                                        workOffArray.push(tables[index]);
+                                        isFirstWorkOff = true;
+                                    }
+                                    if (isFirstWorkOff && tables[index].workType === "1") {
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (workOffArray.length > 0) {
+                                results += ", " + workOffArray[workOffArray.length - 1].gps_status;
+                            }
+
+                            break;
+                    }
+
+                    return results;
+                }
+            }
+
+            // 遲到判斷
+            $scope.isGPS = function (tableItem, type) {
+                console.log(tableItem);
+                switch(type) {
+                    // 上班 1
+                    // 連續多筆type=1，以第一筆為主
+                    case 11:
+                        var workOnArray = [];
+                        for (var index = 0; index < tableItem.length; index++) {
+                            if (tableItem[index].workType === "1") {
+                                workOnArray.push(tableItem[index]);
+                                // return datas[index].time;
+                            }
+                        }
+
+                        if (workOnArray.length > 0) {
+                            return workOnArray[0].printType == "G";
+                        }
+                        break;
+                    // 下班 1
+                    // 連續多筆type=2，以最後一筆為主
+                    // 遇到 上班 2 就停止
+                    case 21:
+                        var workOffArray = [];
+                        var isFirstWorkOff = false;
+                        for (var index = 0; index < tableItem.length; index++) {
+                            if (tableItem[index].workType === "2") {
+                                // return datas[index].time
+                                workOffArray.push(tableItem[index]);
+                                isFirstWorkOff = true;
+                            }
+                            if (isFirstWorkOff && tableItem[index].workType === "1") {
+                                break;
+                            }
+                        }
+
+                        if (workOffArray.length > 0) {
+                            return workOffArray[workOffArray.length - 1].printType == "G";
+                        }
+                        break;
+                    // 上班 2
+                    // 一定要有 下班 1
+                    //
+                    case 12: //
+                        var workOnArray = [];
+                        var isSecondWorkOn = false;
+                        for (var index = 0; index < tableItem.length; index++) {
+                            if (tableItem[index].workType === "2") {
+                                isSecondWorkOn = true;
+                            }
+                            if (tableItem[index].workType === "1") {
+                                if (isSecondWorkOn) {
+                                    workOnArray.push(tableItem[index]);
+                                }
+                            }
+                        }
+                        // console.log(workOnArray)
+                        if (workOnArray.length > 0) {
+                            return workOnArray[0].printType == "G";
+                        }
+                        break;
+                    // 下班 2
+                    // 一定要有 上班 2
+                    case 22:
+                        var workOnArray = [];
+                        var isSecondWorkOn = false;
+                        var workOffArray = [];
+                        for (var index = 0; index < tableItem.length; index++) {
+                            if (tableItem[index].workType === "2") {
+                                isSecondWorkOn = true;
+                            }
+                            if (tableItem[index].workType === "1") {
+                                if (isSecondWorkOn) {
+                                    workOnArray.push(tableItem[index]);
+                                }
+                            }
+                            if (workOnArray.length > 0 && tableItem[index].workType === "2") {
+                                workOffArray.push(tableItem[index]);
+                            }
+                        }
+                        // console.log(workOffArray)
+                        if (workOffArray.length > 0) {
+                            return workOffArray[workOffArray.length - 1].printType == "G";
+                        }
+                        break;
+                    // 加班簽到 1
+                    // 連續多筆type=3，以第一筆為主
+                    case 31:
+                        var workOverOnArray = [];
+                        for (var index = 0; index < tableItem.length; index++) {
+                            if (tableItem[index].workType === "3") {
+                                workOverOnArray.push(tableItem[index]);
+                                // return datas[index].time
+                            }
+                        }
+                        if (workOverOnArray.length > 0) {
+                            return workOverOnArray[0].printType == "G";
+                        }
+                        break;
+                    // 加班簽退 1
+                    // 連續多筆type=4，以最後一筆為主
+                    // 遇到 加班簽退 2 就停止
+                    case 41:
+                        var workOverOffArray = [];
+                        var isFirstWorkOverOff = false;
+                        for (var index = 0; index < tableItem.length; index++) {
+                            if (tableItem[index].workType === "4") {
+                                workOverOffArray.push(tableItem[index]);
+                                isFirstWorkOverOff = true;
+                                // return datas[index].time
+                            }
+                            if (isFirstWorkOverOff && tableItem[index].workType === "3") {
+                                break;
+                            }
+                        }
+                        if (workOverOffArray.length > 0) {
+                            return workOverOffArray[workOverOffArray.length - 1].printType == "G";
+                        }
+                        break;
+                    //  加班簽到2
+                    // 一定要有 加班簽退 1
+                    case 32:
+                        var workOverOnArray = [];
+                        var isSecondWorkOverOn = false;
+                        for (var index = 0; index < tableItem.length; index++) {
+                            if (tableItem[index].workType === "4") {
+                                isSecondWorkOverOn = true;
+                            }
+                            if (tableItem[index].workType === "3" && tableItem[index].time != "0000") {
+                                if (isSecondWorkOverOn) {
+                                    workOverOnArray.push(tableItem[index]);
+                                }
+                            }
+                        }
+                        if (workOverOnArray.length > 0) {
+                            return workOverOnArray[0].time;
+                        }
+                        break;
+                    //  加班簽退2
+                    // 一定要有 加班簽到 2
+                    case 42:
+                        var workOverOnArray = [];
+                        var isSecondWorkOverOn = false;
+                        var workOverOffArray = [];
+                        var isSecondWorkOffOn = false;
+                        for (var index = 0; index < tableItem.length; index++) {
+
+                            if (tableItem[index].workType === "4") {
+                                isSecondWorkOverOn = true;
+                            }
+                            if (tableItem[index].workType === "3" && tableItem[index].time != "0000") {
+                                if (isSecondWorkOverOn) {
+                                    workOverOnArray.push(tableItem[index]);
+                                }
+                                if (isSecondWorkOffOn) {
+                                    break;
+                                }
+
+                            }
+                            if (workOverOnArray.length > 0 && tableItem[index].workType === "4") {
+                                workOverOffArray.push(tableItem[index]);
+                                isSecondWorkOffOn = true;
+                            }
+                        }
+                        if (workOverOffArray.length > 0) {
+                            return workOverOffArray[workOverOffArray.length - 1].printType == "G";
+                        }
+                        break;
+                    //  加班簽到3
+                    // 一定要有 加班簽退 2
+                    case 33:
+                        var workOverOnArray = [];
+                        var isSecondWorkOverOn = false;
+                        var workOverOffArray = [];
+                        var isSecondWorkOffOn = false;
+                        var workOverOnThirdArray = [];
+                        for (var index = 0; index < tableItem.length; index++) {
+                            if (tableItem[index].workType === "4") {
+                                isSecondWorkOverOn = true;
+                            }
+                            if (tableItem[index].workType === "3" && tableItem[index].time != "0000") {
+                                if (isSecondWorkOverOn) {
+                                    workOverOnArray.push(tableItem[index]);
+                                }
+                                if (isSecondWorkOffOn) {
+                                    workOverOnThirdArray.push(tableItem[index]);
+                                }
+                            }
+                            if (workOverOnArray.length > 0 && tableItem[index].workType === "4") {
+                                workOverOffArray.push(tableItem[index]);
+                                isSecondWorkOffOn = true;
+                            }
+                        }
+                        if (workOverOnThirdArray.length > 0) {
+                            return workOverOnThirdArray[0].printType == "G";
+                        }
+                        break;
+                    //  加班簽退3
+                    case 43:
+                        var workOverOnArray = [];
+                        var isSecondWorkOverOn = false;
+                        var workOverOffArray = [];
+                        var isSecondWorkOffOn = false;
+                        var workOverOnThirdArray = [];
+                        var isThirdWorkOffOn = false;
+                        var workOverOffThirdArray = [];
+                        for (var index = 0; index < tableItem.length; index++) {
+                            if (tableItem[index].workType === "4") {
+                                isSecondWorkOverOn = true;
+                            }
+                            if (tableItem[index].workType === "3" && tableItem[index].time != "0000") {
+                                if (isSecondWorkOverOn) {
+                                    workOverOnArray.push(tableItem[index]);
+                                }
+                                if (isSecondWorkOffOn) {
+                                    workOverOnThirdArray.push(tableItem[index]);
+                                }
+                                if (isThirdWorkOffOn) {
+                                    break;
+                                }
+                            }
+                            if (workOverOnArray.length > 0 && tableItem[index].workType === "4") {
+                                workOverOffArray.push(tableItem[index]);
+                                isSecondWorkOffOn = true;
+                            }
+                            if (workOverOnThirdArray.length > 0 && tableItem[index].workType === "4") {
+                                workOverOffThirdArray.push(tableItem[index]);
+                                isThirdWorkOffOn = true;
+                            }
+                        }
+                        if (workOverOffThirdArray.length > 0) {
+                            return workOverOffThirdArray[workOverOffThirdArray.length - 1].printType == "G";
+                        }
+                        break;
+                    //  加班簽到4
+                    case 34:
+                        var count = 0;
+                        var OverOnTime;
+                        for (var index = 0; index < tableItem.length; index++) {
+                            if (tableItem[index].workType === "3") {
+                                if (count == 3) {
+                                    if (tableItem[index].time != OverOnTime) {
+                                        return tableItem[index].printType == "G"
+                                    }
+                                }
+                                count ++
+                                OverOnTime = tableItem[index].time;
+                            }
+                        }
+                        break;
+                    //  加班簽退4
+                    case 44:
+                        var count = 0;
+                        var OverOffTime;
+                        for (var index = 0; index < tableItem.length; index++) {
+                            if (tableItem[index].workType === "4") {
+                                if (count == 3) {
+                                    if (tableItem[index].time != OverOffTime) {
+                                        return tableItem[index].printType == "G"
+                                    }
+                                }
+                                count ++
+                                OverOffTime = tableItem[index].time;
+                            }
+                        }
+                        break;
+                    //  外出
+                    case 5:
+                        for (var index = 0; index < tableItem.length; index++) {
+                            if (tableItem[index].workType === "5") {
+                                return tableItem[index].printType == "G"
+                            }
+                        }
+                        break;
+                    //  返回
+                    case 6:
+                        for (var index = 0; index < tableItem.length; index++) {
+                            if (tableItem[index].workType === "6") {
+                                return tableItem[index].printType == "G"
+                            }
+                        }
+                        break;
+                }
             }
 
         } // End of function
