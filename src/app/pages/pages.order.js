@@ -25,6 +25,7 @@ global.pages = {
     cgWorkManage_userEdit: 100,
     cgWorkManage_workHourTable  : 200,
     cgWorkManage_workOff  : 300,
+    cgWorkManage_travelApplication  : 400,
     cgWorkManage_hrMachine  : 500,
     cgWorkManage_workStatistics  : 600,
     cgWorkManage_workStatistics_CJ  : 601,

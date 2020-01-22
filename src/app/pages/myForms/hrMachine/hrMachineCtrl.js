@@ -17,24 +17,26 @@
                     'User',
                     'DateUtil',
                     'TimeUtil',
+                    'TravelApplicationUtil',
                     'toastr',
                     'bsLoadingOverlayService',
                     HrMachineCtrl
                 ]);
 
         /** @ngInject */
-        function HrMachineCtrl($scope,
-                                 $filter,
-                                 cookies,
-                                 $timeout,
-                                 ngDialog,
-                                 HrMachineUtil,
-                                 User,
-                                 DateUtil,
-                                 TimeUtil,
-                                 toastr,
-                                 bsLoadingOverlayService) {
-
+        function HrMachineCtrl(
+                                $scope,
+                                $filter,
+                                cookies,
+                                $timeout,
+                                ngDialog,
+                                HrMachineUtil,
+                                User,
+                                DateUtil,
+                                TimeUtil,
+                                TravelApplicationUtil,
+                                toastr,
+                                bsLoadingOverlayService) {
 
             $scope.username = cookies.get('username');
             $scope.userDID = cookies.get('userDID');
@@ -51,10 +53,10 @@
             var thisDay = new Date().getDay();
             // ***********************  個人填寫 ************************
 
-            console.log($scope.username);
-            console.log($scope.userDID);
-            console.log($scope.roleType);
-            console.log($scope.machineDID);
+            // console.log($scope.username);
+            // console.log($scope.userDID);
+            // console.log($scope.roleType);
+            // console.log($scope.machineDID);
 
             // 行政總管專屬
             if ($scope.roleType == 100 || $scope.roleType == 2) {
@@ -182,9 +184,6 @@
                                         hrMachineItemTemp.workType = "3";
                                         hrMachineTableSorted[arrayResult[0][index].date].push(hrMachineItemTemp);
 
-                                        // console.log(lastDate);
-                                        // console.log(hrMachineTableSorted[lastDate]);
-
                                         if (hrMachineTableSorted[lastDate] !== undefined) {
 
                                             var hrMachineItemLastDate = {
@@ -202,7 +201,6 @@
                                             hrMachineItemLastDate.time = "2400";
                                             hrMachineItemLastDate.workType = "4";
                                             hrMachineTableSorted[lastDate].push(hrMachineItemLastDate);
-
                                         }
                                     }
 
@@ -232,7 +230,6 @@
                                 case 2:
                                     $scope.hrMachineTable_month_reports = hrMachineTableSorted;
                                     break;
-
                             }
                             $timeout(function () {
                                 bsLoadingOverlayService.stop({
@@ -248,6 +245,8 @@
                             });
                         }, 500)
                     })
+
+                $scope.getUsersTravelApplicationData($scope.userDID, thisYear);
             }
 
             function convertDate(mString) {
@@ -256,13 +255,6 @@
                 resultString += mString.substring(3, 5) + "/";
                 resultString += mString.substring(5, 7);
                 return resultString;
-            }
-
-            // @Deprecated
-            $scope.changeHrMachineMonth = function(changeCount, dom) {
-                // dom.myMonth = moment(dom.myDT).add(changeCount, 'M').format('YYYY/MM');
-                // dom.myDT = moment(dom.myDT).add(changeCount, 'M');
-                // $scope.fetchData(dom.myMonth);
             }
 
             // 打卡機檔案讀取
@@ -287,9 +279,7 @@
 
             // 月報表
             $scope.loadHrMachineMonth = function (dom) {
-                // var fileDate = moment(dom.myDT).format('YYYYMMDD');
                 var fileDate = moment(dom.myDT).endOf('month').format('YYYYMMDD')
-                // console.log(fileDate);
 
                 if (vm.users_month_report.selected == undefined) {
                     toastr.error('操作異常', '請先選取員工');
@@ -563,12 +553,7 @@
                                     // console.log(workOnHour2 + ":" + workOffHour2);
                                     return parseInt(hour2) + min2;
                                 }
-
-                                // return min;
-                                // return parseInt(hour);
-
                             }
-
                         }
                         break;
                     //  加班簽到3
@@ -664,8 +649,6 @@
                                     // console.log(workOnHour3 + ":" + workOffHour3);
                                     return parseInt(hour3) + min3;
                                 }
-                                // return parseInt(hour);
-                                // return min;
                                 count ++
                             }
 
@@ -741,7 +724,7 @@
 
                 var isLate = false;
 
-                console.log(tableItem);
+                // console.log(tableItem);
 
                 for (var index = 0; index < tableItem.length; index++) {
                     if (tableItem[index].workType === "1") {
@@ -749,15 +732,13 @@
                     }
                 }
 
-                console.log(operateArray);
-                console.log("isLate, type= " + type);
-
-
+                // console.log(operateArray);
+                // console.log("isLate, type= " + type);
 
                 if (operateArray.length > 0 && operateArray[0] != undefined) {
                     var workOnHour = parseInt(operateArray[0].time.substr(0,2));
                     var workOnMin = parseInt(operateArray[0].time.substr(2,4));
-                    console.log("workOnHour= " + workOnHour + ", workOnMin= " + workOnMin);
+                    // console.log("workOnHour= " + workOnHour + ", workOnMin= " + workOnMin);
                     if (workOnHour <= 8) {
                         isLate = false
                     } else if (workOnHour == 9 && workOnMin == 0) {
@@ -767,7 +748,6 @@
                     }
                 }
 
-                // console.log("isLate= " + isLate);
                 return isLate;
             }
 
@@ -789,11 +769,6 @@
                         $scope.showHrMachineTime(tableItem, 21),
                         $scope.showHrMachineTime(tableItem, 12),
                         $scope.showHrMachineTime(tableItem, 22)) : 0 ;
-                    // console.log(result);
-                    // console.log($scope.showHrMachineTime(tableItem, 11));
-                    // console.log($scope.showHrMachineTime(tableItem, 21));
-                    // console.log($scope.showHrMachineTime(tableItem, 12));
-                    // console.log($scope.showHrMachineTime(tableItem, 22));
                     if (result == 0) {
                         return "";
                     }
@@ -803,118 +778,9 @@
                     } else {
                         // console.log(result);
                         return Math.floor(result/60) + (((result % 60) / 60 > 0.5) ? 1 : (result % 60) == 0 ? 0 : 0.5);
-                        // return result;
-                        // return Math.floor(result/60);
                     }
                 }
             }
-
-            // 上班時數
-            // Deprecated
-            // $scope.workHour2 = function (tableItem) {
-            //     // console.log(tableItem);
-            //     var result = undefined;
-            //     var isBeforeNoon = false;
-            //     var isAfterNoon = false;
-            //     var workOnCount = 0;
-            //     var workOffCount = 0;
-            //     for (var index = 0; index < tableItem.length; index++) {
-            //         if (tableItem[index].workType === "1") {
-            //             // console.log("上班");
-            //             var workOnHour = parseInt(tableItem[index].time.substr(0,2));
-            //             var workOnMin = parseInt(tableItem[index].time.substr(2,4));
-            //
-            //             if (workOnHour < 8) { // before 0800 => 0800, ex: 0759 => 0800
-            //                 workOnHour = 8;
-            //                 workOnMin = 0;
-            //             }
-            //
-            //             //遲到規則
-            //             if (workOnCount == 0) {
-            //                 if (workOnHour >= 9 && workOnMin >= 1) {
-            //                     if (workOnMin <= 30) {
-            //                         workOnMin = 30;
-            //                     } else if (workOnMin > 30) {
-            //                         workOnHour += 1;
-            //                         workOnMin = 0;
-            //                     }
-            //                 }
-            //                 // 20190408設計
-            //             }
-            //
-            //             if (workOnHour < 12) {
-            //                 isBeforeNoon = true;
-            //             }
-            //             // console.log("index:" + index);
-            //             // console.log(workOnHour + ":" + workOnMin);
-            //             workOnCount ++;
-            //         }
-            //         if (tableItem[index].workType === "2") {
-            //             // console.log("下班");
-            //             var workOffHour = parseInt(tableItem[index].time.substr(0,2));
-            //             var workOffMin = parseInt(tableItem[index].time.substr(2,4));
-            //
-            //             if ($scope.isLate(tableItem) && workOffHour >= 18) { //若是遲到
-            //                 workOffHour = 17;
-            //                 workOffMin = 30;
-            //             } else if (workOffHour >= 18) {
-            //                 workOffHour = 18;
-            //                 workOffMin = 0;
-            //             }
-            //
-            //             if (workOffHour > 13) {
-            //                 isAfterNoon = true;
-            //             }
-            //             // console.log("index:" + index);
-            //             // console.log(workOffHour + ":" + workOffMin);
-            //             workOffCount++;
-            //         }
-            //         if (workOnHour && workOffHour) {
-            //
-            //             if (workOnCount == 1 && workOffCount == 1 ) {
-            //                 if (isAfterNoon && isBeforeNoon) {
-            //                     // console.log("A index:" + index);
-            //                     // console.log("A result:" + result);
-            //                     // console.log(workOffHour - workOnHour - 1);
-            //                     // return (workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin);
-            //                     result =  parseInt((workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin));
-            //                 } else {
-            //                     // console.log("B index:" + index);
-            //                     // console.log("B result:" + result);
-            //                     // console.log((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
-            //                     // return (workOffHour - workOnHour) * 60 + (workOffMin - workOnMin);
-            //                     result =  parseInt((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
-            //                 }
-            //                 isAfterNoon = false;
-            //                 isBeforeNoon = false;
-            //             }
-            //
-            //             if (workOnCount == 2 && workOffCount == 2 ) {
-            //                 if (isAfterNoon && isBeforeNoon) {
-            //                     // console.log("C index:" + index);
-            //                     // console.log("C result:" + result);
-            //                     // console.log(workOffHour - workOnHour - 1);
-            //                     // return (workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin);
-            //                     result +=  parseInt((workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin));
-            //                 } else {
-            //                     // console.log("D index:" + index);
-            //                     // console.log("D result:" + result);
-            //                     // console.log((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
-            //                     // return (workOffHour - workOnHour) * 60 + (workOffMin - workOnMin);
-            //                     result += parseInt((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin));
-            //                 }
-            //             }
-            //         }
-            //     }
-            //
-            //     if (result != undefined) {
-            //         // console.log(result);
-            //         return result;
-            //     } else {
-            //         return undefined;
-            //     }
-            //
-            // }
 
             // 上班時數
             $scope.showWorkHour = function (tableItem, workOn1, workOff1, workOn2, workOff2) {
@@ -923,7 +789,6 @@
                 var isAfterNoon = false;
                 if (workOn1 && workOff1) {
                     // console.log(workOn1);
-
                     // console.log("上班");
                     var workOnHour = parseInt(workOn1.substr(0,2));
                     var workOnMin = parseInt(workOn1.substr(2,4));
@@ -1005,7 +870,6 @@
                     }
                     isAfterNoon = false;
                     isBeforeNoon = false;
-
                 }
                 if (workOn2 && workOff2) {
                     // console.log("workOn2: " + workOn2);
@@ -1212,6 +1076,92 @@
                 });
             }
 
+            $scope.travelApplicationItems = [];
+
+            $scope.getUsersTravelApplicationData = function (userDID, year) {
+                $scope.travelApplicationItems = [];
+                var formData = {
+                    creatorDID: userDID,
+                    year: year,
+                    isSendReview: true,
+                    isBossCheck: true,
+                };
+                TravelApplicationUtil.getTravelApplicationItem(formData)
+                    .success(function (resp) {
+                        console.log(resp);
+                        $scope.lookUpUserTablesItems = [];
+                        for (var index = 0; index < resp.payload.length; index ++) {
+                            $scope.travelApplicationItems.push(resp.payload[index]);
+
+                            var yearTemp = moment(resp.payload[index].taStartDate).format("YYYY") - 1911;
+                            var monthDayTemp = moment(resp.payload[index].taStartDate).format("MMDD");
+
+                            var dateTemp = yearTemp + monthDayTemp;
+                            console.log(dateTemp);
+
+                            var hrMachineItem_start = {
+                                date: "",
+                                did: "",
+                                location: "",
+                                printType: "",
+                                time: "",
+                                workType: ""
+                            }
+
+                            var hrMachineItem_end = {
+                                date: "",
+                                did: "",
+                                location: "",
+                                printType: "",
+                                time: "",
+                                workType: ""
+                            }
+
+                            if ($scope.hrMachineTable[dateTemp] === undefined) {
+                                var hrMachineCollection = [];
+
+                                hrMachineItem_start.date = dateTemp;
+                                hrMachineItem_start.location = resp.payload[index].location;
+                                // hrMachineItem.printType = arrayResult[0][index].printType;
+                                hrMachineItem_start.time = resp.payload[index].start_time.replace(":", "");
+                                hrMachineItem_start.workType = "1";
+
+                                hrMachineCollection.push(hrMachineItem_start);
+
+                                hrMachineItem_end.date = dateTemp;
+                                hrMachineItem_end.location = resp.payload[index].location;
+                                // hrMachineItem.printType = arrayResult[0][index].printType;
+                                hrMachineItem_end.time = resp.payload[index].end_time.replace(":", "");
+                                hrMachineItem_end.workType = "2";
+
+                                hrMachineCollection.push(hrMachineItem_end);
+
+                                $scope.hrMachineTable[dateTemp] = hrMachineCollection;
+
+
+                            } else {
+                                hrMachineItem_start.date = dateTemp;
+                                hrMachineItem_start.location = resp.payload[index].location;
+                                // hrMachineItem.printType = arrayResult[0][index].printType;
+                                hrMachineItem_start.time = resp.payload[index].start_time.replace(":", "");
+                                hrMachineItem_start.workType = "1";
+
+                                $scope.hrMachineTable[dateTemp].push(hrMachineItem_start);
+
+                                hrMachineItem_end.date = dateTemp;
+                                hrMachineItem_end.location = resp.payload[index].location;
+                                // hrMachineItem.printType = arrayResult[0][index].printType;
+                                hrMachineItem_end.time = resp.payload[index].end_time.replace(":", "");
+                                hrMachineItem_end.workType = "2";
+
+                                $scope.hrMachineTable[dateTemp].push(hrMachineItem_end);
+                            }
+                        }
+
+                        console.log($scope.hrMachineTable);
+                        console.log($scope.travelApplicationItems);
+                    })
+            }
 
         } // End of function
     }

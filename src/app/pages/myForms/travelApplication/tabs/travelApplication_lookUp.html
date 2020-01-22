@@ -1,0 +1,275 @@
+<div bs-loading-overlay
+     bs-loading-overlay-reference-id="travelApplication_tab_lookUp">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>選擇員工</label>
+                <ui-select ng-model="travelApplicationLookUpCtrlVm.specificUser.selected"
+                           class="btn-group bootstrap-select form-control"
+                           ng-disabled="false"
+                           ng-change="fetchTravelApplicationData($select.selected._id)"
+                           append-to-body="true"
+                           search-enabled="true">
+                    <ui-select-match placeholder="選擇員工">
+                        {{$select.selected.name}}
+                    </ui-select-match>
+                    <ui-select-choices
+                            repeat="user in travelApplicationLookUpCtrlVm.specificUsers |
+                            groupSelectpickerOptions: {name: $select.search}">
+                        <span ng-bind-html="user.name| highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="travelApplicationLookUpCtrlVm.specificUser.selected">
+        <my-year-picker ng-click="listenYear(this)"></my-year-picker>
+
+        <h3 class="with-line">{{year}} 年</h3>
+
+        <h3 class="with-line">{{travelApplicationLookUpCtrlVm.specificUser.selected.name}} 出差單</h3>
+
+        <div>
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                <tr style="white-space:nowrap">
+                    <td style="vertical-align: inherit; text-align: center" width="80px"></td>
+
+                    <td style="vertical-align: inherit; text-align: center" width="150px">專案代碼</td>
+
+                    <td style="vertical-align: inherit; text-align: center" width="150px">起始日期</td>
+                    <td style="vertical-align: inherit; text-align: center" width="120px">起始時間</td>
+
+                    <td style="vertical-align: inherit; text-align: center" width="150px">結束日期</td>
+                    <td style="vertical-align: inherit; text-align: center" width="120px">結束時間</td>
+
+                    <td style="vertical-align: inherit; text-align: center" width="150px">地點</td>
+
+                    <td style="vertical-align: inherit; text-align: center" width="120px">申請時數</td>
+
+                    <td style="vertical-align: inherit; text-align: center">狀態</td>
+                    <td style="vertical-align: inherit; text-align: center">經理確認</td>
+                    <!--<td style="vertical-align: inherit; text-align: center">行政確認</td>-->
+                </tr>
+                </thead>
+                <tbody ng-repeat="item in lookUpUserTablesItems">
+                <tr style="vertical-align: inherit; text-align: center">
+
+                    <!--序號-->
+                    <td style="vertical-align: inherit; text-align: center">
+                        <span id="prjCode">{{$index + 1}}</span>
+                        <!--<button class="btn btn-danger editable-table-button btn-xs"-->
+                        <!--ng-show="!rowform1.$waiting && !item.isSendReview"-->
+                        <!--ng-click="removeTravelApplication($index);">移除-->
+                        <!--</button>-->
+                    </td>
+
+                    <!--專案代碼-->
+                    <td class="form-group" style="vertical-align: inherit; text-align: center">
+                        <span>{{showPrjCode(item.prjDID)}}</span>
+                    </td>
+
+                    <!--起始日期-->
+                    <td class="form-group" style="vertical-align: inherit; text-align: center">
+                        <!--<div ng-show="!rowform1.$waiting && !item.isSendReview">-->
+                        <!--<input type="text"-->
+                        <!--class="form-control customDate"-->
+                        <!--id="inputStartDate"-->
+                        <!--placeholder="YYYY/MM/DD"-->
+                        <!--value="{{item.taStartDate}}"-->
+                        <!--ng-model="item.taStartDate"-->
+                        <!--style="color: #000000; text-align: center">-->
+                        <!--</div>-->
+                        <my ng-show="rowform1.$waiting || item.isSendReview">
+                            {{item.taStartDate}}
+                        </my>
+                    </td>
+
+                    <!--起始時間-->
+                    <td class="form-group" style="vertical-align: inherit; text-align: center">
+                        <!--<my ng-show="!rowform1.$waiting && !item.isSendReview" >-->
+                        <!--<my-time-picker-single myFormatTime="HH:mm"-->
+                        <!--timetype="0"-->
+                        <!--time="{{item.start_time}}"/>-->
+                        <!--</my>-->
+                        <my ng-show="rowform1.$waiting || item.isSendReview">
+                            {{item.start_time}}
+                        </my>
+                    </td>
+
+                    <!--結束日期-->
+                    <td class="form-group" style="vertical-align: inherit; text-align: center">
+                        <!--<div ng-show="!rowform1.$waiting && !item.isSendReview">-->
+                        <!--<input type="text"-->
+                        <!--class="form-control customDate"-->
+                        <!--id="inputEndDate"-->
+                        <!--placeholder="YYYY/MM/DD"-->
+                        <!--value="{{item.taEndDate}}"-->
+                        <!--ng-model="item.taEndDate"-->
+                        <!--style="color: #000000; text-align: center">-->
+                        <!--</div>-->
+                        <my ng-show="rowform1.$waiting || item.isSendReview">
+                            {{item.taEndDate}}
+                        </my>
+                    </td>
+
+                    <!--結束時間-->
+                    <td class="form-group" style="vertical-align: inherit; text-align: center">
+                        <!--<div ng-show="!rowform1.$waiting && !item.isSendReview">-->
+                        <!--<my-time-picker-single myFormatTime="HH:mm"-->
+                        <!--timetype="1"-->
+                        <!--time="{{item.end_time}}"/>-->
+                        <!--</div>-->
+                        <my ng-show="rowform1.$waiting || item.isSendReview">
+                            {{item.end_time}}
+                        </my>
+                    </td>
+
+                    <!--地點-->
+                    <td class="form-group has-success" style="vertical-align: inherit;">
+                        <!--<div ng-show="!rowform1.$waiting && !item.isSendReview">-->
+                        <!--<input type="text"-->
+                        <!--class="form-control"-->
+                        <!--placeholder="出差地點"-->
+                        <!--value="{{item.location}}"-->
+                        <!--ng-model="item.location"-->
+                        <!--style="color: #000000; text-align: center">-->
+                        <!--</div>-->
+                        <div ng-show="rowform1.$waiting || item.isSendReview">
+                            {{item.location}}
+                        </div>
+                    </td>
+
+                    <!--申請時數-->
+                    <td class="form-group has-success" style="vertical-align: inherit;">
+                        <!--<div ng-show="!rowform1.$waiting && !item.isSendReview">-->
+                        <!--<input type="text"-->
+                        <!--class="form-control"-->
+                        <!--placeholder="申請時數"-->
+                        <!--value="{{item.applyHour}}"-->
+                        <!--ng-model="item.applyHour"-->
+                        <!--style="color: #000000; text-align: center">-->
+                        <!--</div>-->
+                        <div ng-show="rowform1.$waiting || item.isSendReview">
+                            {{item.applyHour}}
+                        </div>
+                    </td>
+
+                    <!--狀態-->
+                    <td style="vertical-align: inherit;" rowspan="2">
+                        <form editable-form name="rowform1" ng-show="rowform1.$visible"
+                              class="form-buttons form-inline">
+                        </form>
+                        <!--審查中-->
+                        <div ng-show="rowform1.$waiting || (item.isSendReview && (!item.isBossCheck))">
+                            <button class="btn btn-warning editable-table-button btn-xs">
+                                審查中
+                            </button>
+                        </div>
+                        <!--審查完成-->
+                        <div ng-show="(item.isBossCheck)">
+                            <button class="btn btn-success editable-table-button btn-xs">
+                                審查完成
+                            </button>
+                        </div>
+                        <!--提交-->
+                        <!--<div ng-show="!rowform1.$waiting && !item.isSendReview">-->
+                        <!--<div class="buttons" ng-show="!rowform1.$visible">-->
+                        <!--<button class="btn btn-danger editable-table-button btn-xs"-->
+                        <!--ng-click="reviewTravelApplicationItem(item, this, $index) ">提交審查-->
+                        <!--</button>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                    </td>
+
+                    <!--經理確認-->
+                    <td rowspan="2" style="vertical-align: inherit;">
+                        <div ng-show="rowform1.$waiting || (item.isSendReview && !item.isBossCheck)">
+                            <button class="btn btn-warning editable-table-button btn-xs"
+                                    style="color: black">
+                                {{ showProjectManager(item.prjDID)}}
+                                <br>
+                                確認作業中
+                            </button>
+                        </div>
+                        <div ng-show="item.isBossCheck">
+                            <button class="btn btn-info editable-table-button btn-xs"
+                                    style="color: black">
+                                {{ showProjectManager(item.prjDID)}}
+                                <br>
+                                確認完成
+                            </button>
+                        </div>
+                        <div ng-show="!item.isSendReview && item.isBossReject">
+                            <button class="btn btn-warning editable-table-button btn-xs"
+                                    style="color: black">
+                                {{ showProjectManager(item.prjDID)}}
+                                <br>
+                                退回
+                            </button>
+                        </div>
+                        <my ng-show="!item.isSendReview && item.isBossReject"
+                            ng-class="{workAdd: hover}"
+                            class="mytooltip"
+                            ng-mouseover="hover = true"
+                            ng-mouseleave="hover = false">
+                            原因：<i class="ion-clipboard"></i>
+                            <span class="tooltiptext">{{item.bossReject_memo}}</span>
+                        </my>
+                    </td>
+
+                    <!--行政確認-->
+                    <!--<td rowspan="2" style="vertical-align: inherit;">-->
+                    <!--<div ng-show="rowform1.$waiting || item.isSendReview && !item.isExecutiveCheck">-->
+                    <!--<button class="btn btn-warning editable-table-button btn-xs"-->
+                    <!--style="color: black">-->
+                    <!--行政-->
+                    <!--<br>-->
+                    <!--確認作業中-->
+                    <!--</button>-->
+                    <!--</div>-->
+                    <!--<div ng-show="item.isExecutiveCheck">-->
+                    <!--<button class="btn btn-info editable-table-button btn-xs"-->
+                    <!--style="color: black">-->
+                    <!--行政-->
+                    <!--<br>-->
+                    <!--確認完成-->
+                    <!--</button>-->
+                    <!--</div>-->
+                    <!--<div ng-show="!item.isSendReview && item.isExecutiveReject">-->
+                    <!--<button class="btn btn-warning editable-table-button btn-xs"-->
+                    <!--style="color: black">-->
+                    <!--行政-->
+                    <!--<br>-->
+                    <!--退回-->
+                    <!--</button>-->
+                    <!--</div>-->
+                    <!--<my ng-show="!item.isSendReview && item.isExecutiveReject"-->
+                    <!--ng-class="{workAdd: hover}"-->
+                    <!--class="mytooltip"-->
+                    <!--ng-mouseover="hover = true"-->
+                    <!--ng-mouseleave="hover = false">-->
+                    <!--原因：<i class="ion-clipboard"></i>-->
+                    <!--<span class="tooltiptext">{{item.executiveReject_memo}}</span>-->
+                    <!--</my>-->
+                    <!--</td>-->
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div ng-if="false">
+            <button type="button"
+                    ng-click="addTravelApplicationItem()"
+                    class="btn btn-info btn-icon">
+                <i class="ion-plus-round"/>
+            </button>
+        </div>
+    </div>
+
+
+
+</div>
+

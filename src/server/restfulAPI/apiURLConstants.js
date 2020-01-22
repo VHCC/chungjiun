@@ -222,4 +222,11 @@ global.apiUrl = {
     post_notification_msg_by_user_did : '/api/post_notification_msg_by_user_did',
     post_notification_msg_update : '/api/post_notification_msg_update',
     post_notification_msg_update_all : '/api/post_notification_msg_update_all',
+
+    // travel Application
+    post_travel_application_insert_item : '/api/post_travel_application_insert_item', // 20200120
+    post_travel_application_get_item : '/api/post_travel_application_get_item', // 20200120
+    post_travel_application_remove_item : '/api/post_travel_application_remove_item', // 20200120
+    post_travel_application_update_item : '/api/post_travel_application_update_item', // 20200120
+    post_travel_application_search_item : '/api/post_travel_application_search_item', // 20200120
 };
