@@ -1,0 +1,37 @@
+<style type='text/css'>
+
+    .modal-lg {
+        width: 1300px;
+    }
+
+    .travelApplicationItem {
+        cursor: pointer;
+    }
+
+</style>
+
+<div bs-loading-overlay
+     bs-loading-overlay-reference-id="travelApplication_tab_main">
+    <uib-tabset active="$tabSetStatus.activeTab" >
+        <uib-tab heading="申請" >
+            <div class="row"
+                 ng-controller="travelApplicationApplyCtrl as travelApplicationApplyCtrlVm"
+                 ng-include="'app/pages/myForms/travelApplication/tabs/travelApplication_main.html'"></div>
+        </uib-tab>
+        <uib-tab heading="審核"
+                 ng-if="roleType === '2' || roleType === '100' || roleType === '6'">
+            <div class="row"
+                 ng-controller="travelApplicationReviewCtrl">
+                <div class="col-md-12" id="includeHead_review">
+                </div>
+            </div>
+        </uib-tab>
+        <uib-tab heading="查詢" ng-if="roleType === '2' || roleType === '100' || roleType === '6'">
+            <div class="row"
+                 ng-controller="travelApplicationLookUpCtrl as travelApplicationLookUpCtrlVm"
+                 ng-include="'app/pages/myForms/travelApplication/tabs/travelApplication_lookUp.html'">
+            </div>
+        </uib-tab>
+    </uib-tabset>
+</div>
+

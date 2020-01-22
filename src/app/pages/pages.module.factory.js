@@ -571,6 +571,30 @@
                 },
             }
         }])
+        .factory('TravelApplicationUtil', ['$http', function (http) {
+            return {
+                insertTravelApplicationItem: function (formData) {
+                    return http.post('/api/post_travel_application_insert_item', formData);
+                },
+
+                getTravelApplicationItem: function (formData) {
+                    return http.post('/api/post_travel_application_get_item', formData);
+                },
+
+                removeTravelApplicationItem: function (formData) {
+                    return http.post('/api/post_travel_application_remove_item', formData);
+                },
+
+                updateTravelApplicationItem: function (formData) {
+                    return http.post('/api/post_travel_application_update_item', formData);
+                },
+
+                searchTravelApplicationItem: function (formData) {
+                    return http.post('/api/post_travel_application_search_item', formData);
+                },
+
+            }
+        }])
         .factory('WorkOffExchangeFormUtil', ['$http', function (http) {
             return {
                 // insert new Exchange item

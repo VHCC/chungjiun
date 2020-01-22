@@ -44,6 +44,17 @@
                         order: global.pages.cgWorkManage_workHourTable,
                     },
                 })
+            .state('cgWorkManage.travelApplication',
+                {
+                    url: '/travelApplication',
+                    templateUrl: 'app/pages/myForms/travelApplication/travelApplicationHomePage.html',
+                    controller: 'travelApplicationHomeCtrl',
+                    controllerAs: 'travelApplicationHomeCtrlVm',
+                    title: '出差申請[測試]',
+                    sidebarMeta: {
+                        order: global.pages.cgWorkManage_travelApplication,
+                    },
+                })
             .state('cgWorkManage.workOffForm',
                 {
                     url: '/workOffForm',
