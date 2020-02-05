@@ -833,6 +833,9 @@
                     } else if (workOffHour >= 18) {
                         workOffHour = 18;
                         workOffMin = 0;
+                    } else if (workOnHour == 13 && workOffHour == 12) {
+                        workOffHour = 13;
+                        workOffMin = 0;
                     } else if (workOffHour == 12) {
                         workOffHour = 12;
                         workOffMin = 0;
@@ -849,7 +852,7 @@
                     }
 
                     // console.log("Sec, "
-                    //     + "isLate= " + $scope.isLate(tableItem, 0) +
+                    //     + "isLate= " + $scope.isLate(tableItem, 0)
                     //     + ", isBeforeNoon= " + isBeforeNoon
                     //     + ", isAfterNoon= " + isAfterNoon + ", "
                     //     + workOnHour + ":" + workOnMin
@@ -863,12 +866,17 @@
                         var culc = (workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin);
                         if (culc > 0) {
                             result =  parseInt( Math.abs((workOffHour - workOnHour - 1)) * 60 + (workOffMin - workOnMin));
+                        } else {
+                            result = 0;
                         }
                         // console.log("A result:" + result);
                     } else {
                         var culc = (workOffHour - workOnHour) * 60 + (workOffMin - workOnMin);
+                        // console.log(culc);
                         if (culc > 0) {
                             result =  parseInt( Math.abs((workOffHour - workOnHour)) * 60 + (workOffMin - workOnMin));
+                        } else {
+                            result = 0;
                         }
                         // console.log( Math.abs((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin)));
                         // console.log("B result:" + result);
@@ -897,19 +905,25 @@
                     //     }
                     // }
 
-                    //遲到規則
-                    if (workOnHour >= 9 && workOnMin >= 1) {
-                        if (workOnMin <= 30) {
-                            workOnMin = 30;
-                        } else if (workOnMin > 30) {
-                            workOnHour += 1;
-                            workOnMin = 0;
-                        }
-                        if (workOnHour == 12 ) {
-                            workOnHour = 13;
-                            workOnMin = 0;
-                        }
+                    // 20200205
+                    if (workOnHour == 12 ) {
+                        workOnHour = 13;
+                        workOnMin = 0;
                     }
+
+                    // 遲到規則
+                    // if (workOnHour >= 9 && workOnMin >= 1) {
+                        // if (workOnMin <= 30) {
+                        //     workOnMin = 30;
+                        // } else if (workOnMin > 30) {
+                        //     workOnHour += 1;
+                        //     workOnMin = 0;
+                        // }
+                        // if (workOnHour == 12 ) {
+                        //     workOnHour = 13;
+                        //     workOnMin = 0;
+                        // }
+                    // }
 
                     // 20190408設計
                     if (workOnHour <= 12) {
@@ -934,7 +948,7 @@
                     }
 
                     // console.log("Sec, "
-                    //     + "isLate= " + $scope.isLate(tableItem, 1) +
+                    //     + "isLate= " + $scope.isLate(tableItem, 1)
                     //     + ", isBeforeNoon= " + isBeforeNoon
                     //     + ", isAfterNoon= " + isAfterNoon + ", "
                     //     + workOnHour + ":" + workOnMin
@@ -949,6 +963,8 @@
                         // console.log(culc);
                         if (culc > 0) {
                             result +=  parseInt( Math.abs((workOffHour - workOnHour - 1)) * 60 + (workOffMin - workOnMin));
+                        } else {
+                            result = 0;
                         }
                         // console.log("C result:" + result);
 
@@ -957,6 +973,8 @@
                         // console.log(culc);
                         if (culc > 0) {
                             result +=  parseInt( Math.abs((workOffHour - workOnHour)) * 60 + (workOffMin - workOnMin));
+                        } else {
+                            result = 0;
                         }
                         // console.log("D result:" + result);
                     }
