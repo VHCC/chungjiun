@@ -21,10 +21,10 @@
 
             <td style="vertical-align: inherit; text-align: center; width: 5%" >專案代碼</td>
 
-            <td style="vertical-align: inherit; text-align: center; width: 5%" >起始日期</td>
+            <td style="vertical-align: inherit; text-align: center; width: 5%" >日期</td>
             <td style="vertical-align: inherit; text-align: center; width: 5%" >起始時間</td>
 
-            <td style="vertical-align: inherit; text-align: center; width: 5%" >結束日期</td>
+            <!--<td style="vertical-align: inherit; text-align: center; width: 5%" >結束日期</td>-->
             <td style="vertical-align: inherit; text-align: center; width: 5%" >結束時間</td>
 
             <td style="vertical-align: inherit; text-align: center; width: 15%" >地點</td>
@@ -57,7 +57,7 @@
                 <span>{{showPrjCode(item.prjDID)}}</span>
             </td>
 
-            <!--起始日期-->
+            <!--日期-->
             <td class="form-group" style="vertical-align: inherit; text-align: center; width: 5%">
                 <my ng-show="rowform1.$waiting || item.isSendReview">
                     {{item.taStartDate}}
@@ -72,11 +72,11 @@
             </td>
 
             <!--結束日期-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center; width: 5%">
-                <my ng-show="rowform1.$waiting || item.isSendReview">
-                    {{item.taEndDate}}
-                </my>
-            </td>
+            <!--<td class="form-group" style="vertical-align: inherit; text-align: center; width: 5%">-->
+                <!--<my ng-show="rowform1.$waiting || item.isSendReview">-->
+                    <!--{{item.taEndDate}}-->
+                <!--</my>-->
+            <!--</td>-->
 
             <!--結束時間-->
             <td class="form-group" style="vertical-align: inherit; text-align: center; width: 5%">
