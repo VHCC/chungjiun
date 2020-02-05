@@ -130,7 +130,7 @@
 
                 getData.branch = $('#prjBranch')[0].value == (undefined || "") ? undefined : $('#prjBranch')[0].value;
                 getData.year = $('#prjYear')[0].value == (undefined || "") ? undefined : $('#prjYear')[0].value;
-                getData.code = $('#prjCode')[0].value == (undefined || "") ? undefined : $('#prjCode')[0].value;
+                getData.code = $('#prjCode_statistic')[0].value == (undefined || "") ? undefined : $('#prjCode_statistic')[0].value;
                 getData.prjNumber = $('#prjNumber')[0].value == (undefined || "") ? undefined : $('#prjNumber')[0].value;
                 getData.prjSubNumber = $('#prjSubNumber')[0].value == (undefined || "") ? undefined : $('#prjSubNumber')[0].value;
                 getData.type = $('#prjType')[0].value == (undefined || "") ? undefined : $('#prjType')[0].value;
@@ -1372,7 +1372,7 @@
                 // console.log(projectInfo);
                 this._branch = $scope._branch = $('#prjBranch')[0].value = projectInfo.branch;
                 this._year = $scope._year = $('#prjYear')[0].value = projectInfo.year;
-                this._code = $scope._code = $('#prjCode')[0].value = projectInfo.code;
+                this._code = $scope._code = $('#prjCode_statistic')[0].value = projectInfo.code;
                 this._number = $scope._number = $('#prjNumber')[0].value = projectInfo.prjNumber;
                 this._subNumber = $scope._subNumber = $('#prjSubNumber')[0].value = projectInfo.prjSubNumber;
                 this._type = $scope._type = $('#prjType')[0].value = projectInfo.type;
