@@ -96,7 +96,7 @@
 
                 vm.specificUsers = allUsers; // 歷史檢視
 
-                // 經理、主承辦
+                // 經理、主承辦、主管
                 $scope.allUsers = [];
                 $scope.allUsers[0] = {
                     value: "",
@@ -120,6 +120,16 @@
             }
             if (!selected) return 'Not Set'
             return selected.length > 0 ? selected[0].prjCode : 'Not Set';
+        };
+
+        $scope.showBoss = function (bossID) {
+            var selected = [];
+            if (bossID) {
+                selected = $filter('filter')($scope.allUsers, {
+                    value: bossID
+                });
+            }
+            return selected.length ? selected[0].name : 'Not Set';
         };
 
         $scope.showProjectManager = function (prjDID) {
@@ -182,6 +192,16 @@
                         });
 
                     });
+                })
+
+            var formData = {
+                userDID: userDID,
+            }
+            User.findUserByUserDID(formData)
+                .success(function (user) {
+                    // $scope.userMonthSalary = user.userMonthSalary;
+                    $scope.bossID = user.bossID;
+                    // $scope.residualRestHour = user.residualRestHour;
                 })
         }
 

@@ -54,7 +54,7 @@ module.exports = mongoose.model('travelApplicationItem', {
         type: Boolean,
         default: false,
     },
-    // 經理審核
+    // 主管審核
     isBossCheck: {
         type: Boolean,
         default: false,
@@ -71,13 +71,13 @@ module.exports = mongoose.model('travelApplicationItem', {
         type: Number,
     },
 
-    // 經理是否退回
+    // 主管是否退回
     isBossReject: {
         type: Boolean,
         default: false,
     },
 
-    // 經理退回事由
+    // 主管退回事由
     bossReject_memo: {
         type: String,
     },

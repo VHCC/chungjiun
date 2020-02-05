@@ -42,7 +42,7 @@
                     <td style="vertical-align: inherit; text-align: center" width="150px">起始日期</td>
                     <td style="vertical-align: inherit; text-align: center" width="120px">起始時間</td>
 
-                    <td style="vertical-align: inherit; text-align: center" width="150px">結束日期</td>
+                    <!--<td style="vertical-align: inherit; text-align: center" width="150px">結束日期</td>-->
                     <td style="vertical-align: inherit; text-align: center" width="120px">結束時間</td>
 
                     <td style="vertical-align: inherit; text-align: center" width="150px">地點</td>
@@ -50,7 +50,7 @@
                     <td style="vertical-align: inherit; text-align: center" width="120px">申請時數</td>
 
                     <td style="vertical-align: inherit; text-align: center">狀態</td>
-                    <td style="vertical-align: inherit; text-align: center">經理確認</td>
+                    <td style="vertical-align: inherit; text-align: center">主管確認</td>
                     <!--<td style="vertical-align: inherit; text-align: center">行政確認</td>-->
                 </tr>
                 </thead>
@@ -59,7 +59,7 @@
 
                     <!--序號-->
                     <td style="vertical-align: inherit; text-align: center">
-                        <span id="prjCode">{{$index + 1}}</span>
+                        <!--<span id="prjCode">{{$index + 1}}</span>-->
                         <!--<button class="btn btn-danger editable-table-button btn-xs"-->
                         <!--ng-show="!rowform1.$waiting && !item.isSendReview"-->
                         <!--ng-click="removeTravelApplication($index);">移除-->
@@ -71,7 +71,7 @@
                         <span>{{showPrjCode(item.prjDID)}}</span>
                     </td>
 
-                    <!--起始日期-->
+                    <!--日期-->
                     <td class="form-group" style="vertical-align: inherit; text-align: center">
                         <!--<div ng-show="!rowform1.$waiting && !item.isSendReview">-->
                         <!--<input type="text"-->
@@ -100,20 +100,11 @@
                     </td>
 
                     <!--結束日期-->
-                    <td class="form-group" style="vertical-align: inherit; text-align: center">
-                        <!--<div ng-show="!rowform1.$waiting && !item.isSendReview">-->
-                        <!--<input type="text"-->
-                        <!--class="form-control customDate"-->
-                        <!--id="inputEndDate"-->
-                        <!--placeholder="YYYY/MM/DD"-->
-                        <!--value="{{item.taEndDate}}"-->
-                        <!--ng-model="item.taEndDate"-->
-                        <!--style="color: #000000; text-align: center">-->
-                        <!--</div>-->
-                        <my ng-show="rowform1.$waiting || item.isSendReview">
-                            {{item.taEndDate}}
-                        </my>
-                    </td>
+                    <!--<td class="form-group" style="vertical-align: inherit; text-align: center">-->
+                        <!--<my ng-show="rowform1.$waiting || item.isSendReview">-->
+                            <!--{{item.taEndDate}}-->
+                        <!--</my>-->
+                    <!--</td>-->
 
                     <!--結束時間-->
                     <td class="form-group" style="vertical-align: inherit; text-align: center">
@@ -184,12 +175,13 @@
                         <!--</div>-->
                     </td>
 
-                    <!--經理確認-->
+                    <!--主管確認-->
                     <td rowspan="2" style="vertical-align: inherit;">
                         <div ng-show="rowform1.$waiting || (item.isSendReview && !item.isBossCheck)">
                             <button class="btn btn-warning editable-table-button btn-xs"
                                     style="color: black">
-                                {{ showProjectManager(item.prjDID)}}
+                                <!--{{ showProjectManager(item.prjDID)}}-->
+                                {{ showBoss(bossID)}}
                                 <br>
                                 確認作業中
                             </button>
@@ -197,7 +189,8 @@
                         <div ng-show="item.isBossCheck">
                             <button class="btn btn-info editable-table-button btn-xs"
                                     style="color: black">
-                                {{ showProjectManager(item.prjDID)}}
+                                <!--{{ showProjectManager(item.prjDID)}}-->
+                                {{ showBoss(bossID)}}
                                 <br>
                                 確認完成
                             </button>
@@ -205,7 +198,8 @@
                         <div ng-show="!item.isSendReview && item.isBossReject">
                             <button class="btn btn-warning editable-table-button btn-xs"
                                     style="color: black">
-                                {{ showProjectManager(item.prjDID)}}
+                                <!--{{ showProjectManager(item.prjDID)}}-->
+                                {{ showBoss(bossID)}}
                                 <br>
                                 退回
                             </button>

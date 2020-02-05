@@ -208,4 +208,50 @@ module.exports = function (app) {
         }
     });
 
+    app.post(global.apiUrl.post_travel_application_search_item_2, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_travel_application_search_item_2");
+        // console.log(JSON.stringify(req.body));
+        try {
+            var findData = [];
+            for (var index = 0; index < req.body.creatorDIDList.length; index++) {
+                var target = {
+                    creatorDID: req.body.creatorDIDList[index],
+                }
+                findData.push(target);
+            }
+            TravelApplicationItem.aggregate(
+                [
+                    {
+                        $match: {
+                            $or: findData,
+                            isSendReview: true,
+                            isBossCheck: false
+                        }
+                    },
+                    {
+                        $sort: {
+                            timestamp: 1
+                        }
+                    }
+                ], function (err, items) {
+                    if (err) {
+                        console.log(err);
+                        res.send(err);
+                    } else {
+                        res.status(200).send({
+                            code: 200,
+                            error: global.status._200,
+                            payload: items,
+                        });
+                    }
+                }
+            )
+
+        } catch (err) {
+            if (err) {
+                res.send(err);
+            }
+        }
+    });
+
 }

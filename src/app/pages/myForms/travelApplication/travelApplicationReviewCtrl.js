@@ -35,46 +35,82 @@
 
         var vm = this;
 
+        $scope.roleType = $cookies.get('roletype');
+
+        var creatorDIDArray = [];
+
         $scope.getReviewData = function () {
 
             document.getElementById('includeHead_review').innerHTML = "";
 
             // 找跟 Login User有關係的 Project
-            var formData = {
-                relatedID: $cookies.get('userDID'),
+            // var formData = {
+            //     relatedID: $cookies.get('userDID'),
+            // }
+            // Project.getProjectRelated(formData)
+            //     .success(function (relatedProjects) {
+            //
+            //         var formData = {
+            //             prjItems: relatedProjects
+            //         }
+            //
+            //         $http.post('/api/post_travel_application_search_item', formData)
+            //             .success(function (response) {
+            //                 console.log(response);
+            //
+            //                 $scope.travelApplicationReviewItems = response.payload;
+            //                 $scope.travelApplicationReviewItems.slice(0, response.payload.length);
+            //
+            //                 angular.element(
+            //                     document.getElementById('includeHead_review'))
+            //                     .append($compile(
+            //                         "<div ba-panel ba-panel-title=" +
+            //                         "'待審列表 - " + response.payload.length + "'" +
+            //                         "ba-panel-class= " +
+            //                         "'with-scroll'" + ">" +
+            //                         "<div " +
+            //                         "ng-include=\"'app/pages/myForms/travelApplication/table/travelApplicationReviewTable.html'\">" +
+            //                         "</div>" +
+            //                         "</div>"
+            //                     )($scope));
+            //
+            //             });
+            //     });
+
+            for (var index = 0; index < $scope.allUsers.length; index++) {
+                if ($scope.allUsers[index].bossID === $cookies.get('userDID')) {
+                    creatorDIDArray.push($scope.allUsers[index]._id)
+                }
             }
-            Project.getProjectRelated(formData)
-                .success(function (relatedProjects) {
 
-                    var formData = {
-                        prjItems: relatedProjects
-                    }
+            var formData = {
+                creatorDIDList: creatorDIDArray
+            }
 
-                    $http.post('/api/post_travel_application_search_item', formData)
-                        .success(function (response) {
-                            console.log(response);
+            $http.post('/api/post_travel_application_search_item_2', formData)
+                .success(function (response) {
+                    console.log(response);
 
-                            $scope.travelApplicationReviewItems = response.payload;
-                            $scope.travelApplicationReviewItems.slice(0, response.payload.length);
+                    $scope.travelApplicationReviewItems = response.payload;
+                    $scope.travelApplicationReviewItems.slice(0, response.payload.length);
 
-                            angular.element(
-                                document.getElementById('includeHead_review'))
-                                .append($compile(
-                                    "<div ba-panel ba-panel-title=" +
-                                    "'待審列表 - " + response.payload.length + "'" +
-                                    "ba-panel-class= " +
-                                    "'with-scroll'" + ">" +
-                                    "<div " +
-                                    "ng-include=\"'app/pages/myForms/travelApplication/table/travelApplicationReviewTable.html'\">" +
-                                    "</div>" +
-                                    "</div>"
-                                )($scope));
+                    angular.element(
+                        document.getElementById('includeHead_review'))
+                        .append($compile(
+                            "<div ba-panel ba-panel-title=" +
+                            "'待審列表 - " + response.payload.length + "'" +
+                            "ba-panel-class= " +
+                            "'with-scroll'" + ">" +
+                            "<div " +
+                            "ng-include=\"'app/pages/myForms/travelApplication/table/travelApplicationReviewTable.html'\">" +
+                            "</div>" +
+                            "</div>"
+                        )($scope));
 
-                        });
                 });
         }
 
-        $scope.getReviewData();
+        // $scope.getReviewData();
 
         Project.findAllEnable()
             .success(function (allProjects) {
@@ -111,7 +147,7 @@
         User.getAllUsers()
             .success(function (allUsers) {
                 // console.log(allUsers);
-                // 經理、主承辦
+                // 經理、主承辦、主管
                 $scope.allUsers = [];
                 $scope.allUsers[0] = {
                     value: "",
@@ -122,6 +158,40 @@
                         value: allUsers[i]._id,
                         name: allUsers[i].name
                     };
+                }
+
+                if ($scope.roleType === '2' || $scope.roleType === '100') {
+                    for (var index = 0; index < allUsers.length; index++) {
+                        if (allUsers[index].bossID === $cookies.get('userDID')) {
+                            creatorDIDArray.push(allUsers[index]._id)
+                        }
+                    }
+
+                    var formData = {
+                        creatorDIDList: creatorDIDArray
+                    }
+
+                    $http.post('/api/post_travel_application_search_item_2', formData)
+                        .success(function (response) {
+                            console.log(response);
+
+                            $scope.travelApplicationReviewItems = response.payload;
+                            $scope.travelApplicationReviewItems.slice(0, response.payload.length);
+
+                            angular.element(
+                                document.getElementById('includeHead_review'))
+                                .append($compile(
+                                    "<div ba-panel ba-panel-title=" +
+                                    "'待審列表 - " + response.payload.length + "'" +
+                                    "ba-panel-class= " +
+                                    "'with-scroll'" + ">" +
+                                    "<div " +
+                                    "ng-include=\"'app/pages/myForms/travelApplication/table/travelApplicationReviewTable.html'\">" +
+                                    "</div>" +
+                                    "</div>"
+                                )($scope));
+
+                        });
                 }
             })
 
