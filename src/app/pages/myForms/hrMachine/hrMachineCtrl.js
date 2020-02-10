@@ -756,6 +756,19 @@
                 return isLate;
             }
 
+            // 出差時數
+            $scope.workTravelApplyHour = function (tableItem) {
+                console.log(tableItem);
+                for (var index = 0; index < tableItem.length; index ++) {
+                    if (tableItem[index].applyHour != undefined && tableItem[index].applyHour != "") {
+                        console.log(tableItem[index]);
+                        return tableItem[index].applyHour;
+                    }
+                }
+                return "";
+
+            }
+
             // 請假時數
             // Deprecated
             $scope.workOffHour = function (tableItem) {
@@ -1105,7 +1118,7 @@
                 $scope.travelApplicationItems = [];
                 var formData = {
                     creatorDID: userDID,
-                    year: year,
+                    // year: year,
                     isSendReview: true,
                     isBossCheck: true,
                 };
@@ -1122,63 +1135,98 @@
                             var dateTemp = yearTemp + monthDayTemp;
                             console.log(dateTemp);
 
-                            var hrMachineItem_start = {
-                                date: "",
-                                did: "",
-                                location: "",
-                                printType: "",
-                                time: "",
-                                workType: ""
-                            }
+                            // var hrMachineItem_start = {
+                            //     date: "",
+                            //     did: "",
+                            //     location: "",
+                            //     printType: "",
+                            //     time: "",
+                            //     workType: ""
+                            // }
+                            //
+                            // var hrMachineItem_end = {
+                            //     date: "",
+                            //     did: "",
+                            //     location: "",
+                            //     printType: "",
+                            //     time: "",
+                            //     workType: ""
+                            // }
+                            //
+                            // if ($scope.hrMachineTable[dateTemp] === undefined) {
+                            //     var hrMachineCollection = [];
+                            //
+                            //     hrMachineItem_start.date = dateTemp;
+                            //     hrMachineItem_start.location = resp.payload[index].location;
+                            //     // hrMachineItem.printType = arrayResult[0][index].printType;
+                            //     hrMachineItem_start.time = resp.payload[index].start_time.replace(":", "");
+                            //     hrMachineItem_start.workType = "1";
+                            //
+                            //     hrMachineCollection.push(hrMachineItem_start);
+                            //
+                            //     hrMachineItem_end.date = dateTemp;
+                            //     hrMachineItem_end.location = resp.payload[index].location;
+                            //     // hrMachineItem.printType = arrayResult[0][index].printType;
+                            //     hrMachineItem_end.time = resp.payload[index].end_time.replace(":", "");
+                            //     hrMachineItem_end.workType = "2";
+                            //
+                            //     hrMachineCollection.push(hrMachineItem_end);
+                            //
+                            //     $scope.hrMachineTable[dateTemp] = hrMachineCollection;
+                            //
+                            //
+                            // } else {
+                            //     hrMachineItem_start.date = dateTemp;
+                            //     hrMachineItem_start.location = resp.payload[index].location;
+                            //     // hrMachineItem.printType = arrayResult[0][index].printType;
+                            //     hrMachineItem_start.time = resp.payload[index].start_time.replace(":", "");
+                            //     hrMachineItem_start.workType = "1";
+                            //
+                            //     $scope.hrMachineTable[dateTemp].push(hrMachineItem_start);
+                            //
+                            //     hrMachineItem_end.date = dateTemp;
+                            //     hrMachineItem_end.location = resp.payload[index].location;
+                            //     // hrMachineItem.printType = arrayResult[0][index].printType;
+                            //     hrMachineItem_end.time = resp.payload[index].end_time.replace(":", "");
+                            //     hrMachineItem_end.workType = "2";
+                            //
+                            //     $scope.hrMachineTable[dateTemp].push(hrMachineItem_end);
+                            // }
 
-                            var hrMachineItem_end = {
+                            var hrMachineTravelItem = {
                                 date: "",
                                 did: "",
                                 location: "",
-                                printType: "",
-                                time: "",
-                                workType: ""
+                                applyHour: ""
+                                // printType: "",
+                                // time: "",
+                                // workType: ""
                             }
 
                             if ($scope.hrMachineTable[dateTemp] === undefined) {
                                 var hrMachineCollection = [];
 
-                                hrMachineItem_start.date = dateTemp;
-                                hrMachineItem_start.location = resp.payload[index].location;
+                                hrMachineTravelItem.date = dateTemp;
+                                hrMachineTravelItem.location = resp.payload[index].location;
                                 // hrMachineItem.printType = arrayResult[0][index].printType;
-                                hrMachineItem_start.time = resp.payload[index].start_time.replace(":", "");
-                                hrMachineItem_start.workType = "1";
+                                // hrMachineTravelItem.time = resp.payload[index].start_time.replace(":", "");
+                                // hrMachineTravelItem.workType = "1";
+                                hrMachineTravelItem.applyHour = resp.payload[index].applyHour;;
 
-                                hrMachineCollection.push(hrMachineItem_start);
-
-                                hrMachineItem_end.date = dateTemp;
-                                hrMachineItem_end.location = resp.payload[index].location;
-                                // hrMachineItem.printType = arrayResult[0][index].printType;
-                                hrMachineItem_end.time = resp.payload[index].end_time.replace(":", "");
-                                hrMachineItem_end.workType = "2";
-
-                                hrMachineCollection.push(hrMachineItem_end);
+                                hrMachineCollection.push(hrMachineTravelItem);
 
                                 $scope.hrMachineTable[dateTemp] = hrMachineCollection;
-
-
                             } else {
-                                hrMachineItem_start.date = dateTemp;
-                                hrMachineItem_start.location = resp.payload[index].location;
+                                hrMachineTravelItem.date = dateTemp;
+                                hrMachineTravelItem.location = resp.payload[index].location;
                                 // hrMachineItem.printType = arrayResult[0][index].printType;
-                                hrMachineItem_start.time = resp.payload[index].start_time.replace(":", "");
-                                hrMachineItem_start.workType = "1";
+                                // hrMachineTravelItem.time = resp.payload[index].start_time.replace(":", "");
+                                // hrMachineTravelItem.workType = "1";
+                                hrMachineTravelItem.applyHour = resp.payload[index].applyHour;;
 
-                                $scope.hrMachineTable[dateTemp].push(hrMachineItem_start);
-
-                                hrMachineItem_end.date = dateTemp;
-                                hrMachineItem_end.location = resp.payload[index].location;
-                                // hrMachineItem.printType = arrayResult[0][index].printType;
-                                hrMachineItem_end.time = resp.payload[index].end_time.replace(":", "");
-                                hrMachineItem_end.workType = "2";
-
-                                $scope.hrMachineTable[dateTemp].push(hrMachineItem_end);
+                                $scope.hrMachineTable[dateTemp].push(hrMachineTravelItem);
                             }
+
                         }
 
                         console.log($scope.hrMachineTable);
@@ -1293,7 +1341,7 @@
 
             // 遲到判斷
             $scope.isGPS = function (tableItem, type) {
-                console.log(tableItem);
+                // console.log(tableItem);
                 switch(type) {
                     // 上班 1
                     // 連續多筆type=1，以第一筆為主

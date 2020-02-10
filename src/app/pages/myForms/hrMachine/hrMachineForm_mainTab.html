@@ -51,13 +51,18 @@
             <td style="vertical-align: inherit; text-align: center">上班時數</td>
 
             <!--請假時數-->
+            <!--20200206-->
+            <td style="vertical-align: inherit; text-align: center">出差時數</td>
+
+            <!--請假時數-->
             <td style="vertical-align: inherit; text-align: center">請假時數</td>
 
             <!--上班分鐘數-->
             <!--<td style="vertical-align: inherit; text-align: center">上班分鐘數</td>-->
 
             <!--加班總時數-->
-            <td style="vertical-align: inherit; text-align: center">加班總時數</td>
+            <!--20200206-->
+            <td style="vertical-align: inherit; text-align: center">加班時數</td>
 
             <!--加班總時數-->
             <!--<td style="vertical-align: inherit; text-align: center">加班總分鐘數</td>-->
@@ -69,10 +74,12 @@
             <td style="vertical-align: inherit; text-align: center">地址</td>
 
             <!-- 機身編號 -->
-            <td style="vertical-align: inherit; text-align: center">機身編號</td>
+            <!--20200206-->
+            <td style="vertical-align: inherit; text-align: center">機身</td>
 
             <!-- 打卡是否異常 -->
-            <td style="vertical-align: inherit; text-align: center">打卡是否異常</td>
+            <!--20200206-->
+            <td style="vertical-align: inherit; text-align: center">異常</td>
         </tr>
         </thead>
 
@@ -172,10 +179,20 @@
 
             </td>
 
+            <!--出差時數-->
+            <!--20200206-->
+            <td ng-class="workTravelApplyHour(tableItem) != '' ? 'sumWarning' : 'sunNormal'"
+                style="vertical-align: inherit;">
+                {{workTravelApplyHour(tableItem)}}
+            </td>
+
             <!--請假時數-->
             <td ng-class="workOffHour(tableItem) != '' ? 'sumWarning' : 'sunNormal'"
                 style="vertical-align: inherit;">
-                {{workOffHour(tableItem)}}
+                <p ng-if="workOffHour(tableItem) - workTravelApplyHour(tableItem) > 0 ">
+                    {{workOffHour(tableItem) - workTravelApplyHour(tableItem)}}
+                </p>
+
             </td>
 
             <!--上班分鐘-->
