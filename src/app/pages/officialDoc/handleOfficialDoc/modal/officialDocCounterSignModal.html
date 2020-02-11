@@ -143,15 +143,7 @@
                                     <td style="width: 10%">{{item.stage}}</td>
 
                                     <td style="width: 10%">{{item.handleRecord}}</td>
-                                    <td style="width: 10%">
-                                        {{item.handleResult}}
-                                        <div ng-show=" (docData.stageInfo.length == $index + 1)
-                                        && docData.isApproveDocClose && !docData.isDocClose && !docData.isDocSignStage">
-                                            <button class="btn btn-primary btn-xs">
-                                                可歸檔
-                                            </button>
-                                        </div>
-                                    </td>
+                                    <td style="width: 10%">{{item.handleResult}}</td>
 
                                     <td style="width: 10%">{{item.timestamp}}</td>
                                 </tr>
@@ -163,68 +155,36 @@
 
                 <div
                         ba-panel
-                        ba-panel-title="公文辦理情形"
-                        ba-panel-class="with-scroll"
-                        ng-show="!docData.isDocSignStage && !docData.isDocClose && canModified">
-
-                    <div class="form-group">
-                        <textarea placeholder="請輸入辦理情形"
-                                  ng-model="handleRecord"
-                                  class="form-control"></textarea>
-                    </div>
-
-                    <button type="submit"
-                            style="float: right; margin-right: 10px"
-                            ng-click="sendProcess(this, docData)"
-                            class="btn btn-warning">
-                        提交（給經理）
-                    </button>
-
-                </div>
-
-                <div
-                        ba-panel
                         ba-panel-title="公文會簽"
-                        ba-panel-class="with-scroll"
-                        ng-show="!docData.isDocSignStage && !docData.isDocClose && canModified">
+                        ba-panel-class="with-scroll">
 
-                    <div class="form-group">
-                        <ui-select multiple
-                                   ng-model="officialDocHandleModalCtrlVm.counterSignUsers.selected"
-                                   ng-disabled="false"
-                                   search-enabled="true"
-                                   append-to-body="false"
-                                   class="form-control ">
-                            <ui-select-match placeholder="請選擇會簽人員">
-                                {{$select.selected[$index].name}}
-                            </ui-select-match>
-                            <ui-select-choices repeat="user in officialDocHandleModalCtrlVm.counterSignUsers | filter: $select.search">
-                                <span ng-bind-html="user.name | highlight: $select.search"></span>
-                            </ui-select-choices>
-                        </ui-select>
+                    <!--<div >-->
+                        <!--<textarea placeholder="請輸入審核情形"-->
+                                  <!--ng-model="handleResult"-->
+                                  <!--class="form-control"></textarea>-->
+                    <!--</div>-->
+
+                    <!--<hr>-->
+
+                    <!--<div >-->
+                        <!--<label >公文決行</label>-->
+                        <!--<br>-->
+                        <!--<my-switcher-->
+                                <!--ng-model="isApproveDocClose"-->
+                                <!--switcher-style="danger"-->
+                                <!--switcher-value="docData.isApproveDocClose">-->
+
+                        <!--</my-switcher>-->
+                    <!--</div>-->
+
+                    <div>
+                        <button type="submit"
+                                style="float: right; margin-right: 10px"
+                                ng-click="sendCounterSign(this, docData)"
+                                class="btn btn-warning">
+                            提交
+                        </button>
                     </div>
-
-                    <button type="submit"
-                            style="float: right; margin-right: 10px"
-                            ng-click="sendProcessCounterSign(this, docData, officialDocHandleModalCtrlVm.counterSignUsers.selected)"
-                            class="btn btn-warning">
-                        開始會簽（給設定人員）
-                    </button>
-
-                </div>
-
-                <div
-                        ba-panel
-                        ba-panel-title="公文存查"
-                        ba-panel-class="with-scroll"
-                        ng-show="docData.isApproveDocClose && !docData.isDocClose && !docData.isDocSignStage && canModified">
-
-                    <button type="submit"
-                            style="float: right; margin-right: 10px"
-                            ng-click="sendArchive(this, docData)"
-                            class="btn btn-danger">
-                        送歸檔
-                    </button>
 
                 </div>
 

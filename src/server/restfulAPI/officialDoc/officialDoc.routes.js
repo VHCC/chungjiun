@@ -471,25 +471,44 @@ module.exports = function (app) {
             query.docDivision = req.body.docDivision;
         }
 
+        if (req.body.isCounterSign !== null
+            && req.body.isCounterSign !== undefined) {
+            query.isCounterSign = req.body.isCounterSign;
+        }
+
+        // 會簽
+        if (req.body.counterDID !== null
+            && req.body.counterDID !== undefined) {
+
+            var $elemMatch = {
+                _id: req.body.counterDID,
+            }
+
+            query.counterSignList = {
+                $elemMatch
+            };
+
+        }
+
         console.log(" === query ===");
         console.log(query);
 
         OfficialDocItem.find(
                 query,
                 function (err, items) {
-                if (err) {
-                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_search_item");
-                    console.log(req.body);
-                    console.log(" ***** ERROR ***** ");
-                    console.log(err);
-                    res.send(err);
-                } else {
-                    res.status(200).send({
-                        code: 200,
-                        error: global.status._200,
-                        payload: items
-                    });
-                }
+                    if (err) {
+                        console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_search_item");
+                        console.log(req.body);
+                        console.log(" ***** ERROR ***** ");
+                        console.log(err);
+                        res.send(err);
+                    } else {
+                        res.status(200).send({
+                            code: 200,
+                            error: global.status._200,
+                            payload: items
+                        });
+                    }
             })
     })
 
