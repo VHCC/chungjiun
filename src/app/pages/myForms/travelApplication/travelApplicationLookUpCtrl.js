@@ -208,8 +208,43 @@
         // $scope.getUsersTravelApplicationData($scope.userDID, thisYear);
 
         $scope.fetchTravelApplicationData = function (userDID) {
+            vm.specificUserDID = userDID;
             $scope.getUsersTravelApplicationData(userDID, thisYear);
         }
+
+        $scope.removeTravelApplication = function (item) {
+            // console.log('removeTravelApplicationItem, Index= ' + index);
+
+            console.log(item);
+
+            var workOffString = item.taStartDate;
+
+            $scope.checkText = '確定刪除 ' + workOffString + "  ？";
+            $scope.checkingItem = item;
+            ngDialog.open({
+                template: 'app/pages/myForms/travelApplication/modal/travelApplicationDeleteModal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+
+        };
+
+        //跟後臺溝通
+        $scope.sendTravelApplicationDelete = function (travelApplicationItem) {
+
+            var formData = {
+                tableID: travelApplicationItem._id,
+            }
+
+            console.log(formData);
+
+            TravelApplicationUtil.removeTravelApplicationItem(formData)
+                .success(function (res) {
+                    $scope.getUsersTravelApplicationData(vm.specificUserDID, thisYear);
+                })
+        }
+
 
     }
 
