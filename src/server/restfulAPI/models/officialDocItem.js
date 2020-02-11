@@ -208,8 +208,18 @@ module.exports = mongoose.model('officialDocItem', {
     type: {
         type: Number,
         require: true
-    }
+    },
 
+
+    // 會簽
+    isCounterSign: {
+        type: Boolean,
+        default: false
+    },
+
+    counterSignList: {
+        type: Array,
+    }
 
 
 

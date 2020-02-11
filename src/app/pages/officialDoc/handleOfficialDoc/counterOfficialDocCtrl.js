@@ -2,13 +2,13 @@
     'user strict';
 
     angular.module('BlurAdmin.pages.cgOfficialDoc')
-        .service('intiOfficialWaitHandleService', function ($http, $cookies) {
+        .service('intiOfficialWaitCounterService', function ($http, $cookies) {
 
             var formData = {
-                chargerDID: $cookies.get("userDID"),
+                counterDID: $cookies.get("userDID"),
                 isDocClose: false,
                 isDocSignStage: false,
-                isCounterSign: false,
+                isCounterSign: true,
                 type: 0,
             }
 
@@ -19,7 +19,7 @@
                 });
             return promise;
         })
-        .controller('handleOfficialDocCtrl',
+        .controller('counterOfficialDocCtrl',
             [
                 '$scope',
                 '$filter',
@@ -30,15 +30,14 @@
                 'OfficialDocUtil',
                 'OfficialDocVendorUtil',
                 '$compile',
-                'intiOfficialWaitHandleService',
-                 HandleOfficialDocCtrl
-            ])
-    ;
+                'intiOfficialWaitCounterService',
+                CounterOfficialDocCtrl
+            ]);
 
     /**
      * @ngInject
      */
-    function HandleOfficialDocCtrl($scope,
+    function CounterOfficialDocCtrl($scope,
                                  $filter,
                                  $cookies,
                                  $uibModal,
@@ -47,10 +46,9 @@
                                  OfficialDocUtil,
                                  OfficialDocVendorUtil,
                                  $compile,
-                                 intiOfficialWaitHandleService) {
+                                 intiOfficialWaitCounterService) {
 
-        intiOfficialWaitHandleService.then(function (resp) {
-            // console.log(resp.data);
+        intiOfficialWaitCounterService.then(function (resp) {
             $scope.officialDocItems = resp.data.payload;
             $scope.officialDocItems.slice(0, resp.data.payload.length);
 
@@ -63,14 +61,14 @@
             }
 
             angular.element(
-                document.getElementById('includeHead'))
+                document.getElementById('includeHead_counter_sign'))
                 .append($compile(
                     "<div ba-panel ba-panel-title=" +
-                    "'待辦公文列表 - " + resp.data.payload.length + "'" +
+                    "'待會簽公文列表 - " + resp.data.payload.length + "'" +
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
-                    "ng-include=\"'app/pages/officialDoc/handleOfficialDoc/table/handleOfficialTable.html'\">" +
+                    "ng-include=\"'app/pages/officialDoc/handleOfficialDoc/table/counterSignOfficialTable.html'\">" +
                     "</div>" +
                     "</div>"
                 )($scope));
@@ -86,7 +84,6 @@
                             managerID: relatedProjects[i].managerID
                         };
                     }
-                    // console.log($scope);
                 });
 
             User.getAllUsers()
@@ -180,8 +177,6 @@
         }
 
         $scope.showVendorName = function (officialItem) {
-            // console.log(officialItem);
-            // console.log($scope.allVendors);
             var selected = [];
             if ($scope.allVendors === undefined) return;
             if (officialItem.vendorDID) {
@@ -195,9 +190,8 @@
         $scope.showOfficialDocHandleInfo = function (item) {
             $uibModal.open({
                 animation: true,
-                controller: 'officialDocHandleModalCtrl',
-                controllerAs: 'officialDocHandleModalCtrlVm',
-                templateUrl: 'app/pages/officialDoc/handleOfficialDoc/modal/officialDocHandleModal.html',
+                controller: 'officialDocCounterSignModalCtrl',
+                templateUrl: 'app/pages/officialDoc/handleOfficialDoc/modal/officialDocCounterSignModal.html',
                 size: 'lg',
                 resolve: {
                     docData: function () {
@@ -208,33 +202,17 @@
                     },
                 }
             }).result.then(function () {
-                $scope.reloadDocData_handle();
+                $scope.reloadDocData_counter_sign();
                 // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
             });
-
-            $scope.readOfficialDoc(item);
         }
 
-        // read doc
-        $scope.readOfficialDoc = function (item) {
-            console.log(item);
+        $scope.reloadDocData_counter_sign = function () {
             var formData = {
-                _id: item._id,
-                isDocOpened: true,
-            }
-            OfficialDocUtil.updateOfficialDocItem(formData)
-                .success(function (res) {
-                    item.isDocOpened = true;
-                })
-        }
-
-
-        $scope.reloadDocData_handle = function () {
-            var formData = {
-                chargerDID: $cookies.get("userDID"),
+                counterDID: $cookies.get("userDID"),
                 isDocClose: false,
                 isDocSignStage: false,
-                isCounterSign: false,
+                isCounterSign: true,
                 type: 0,
             }
 
@@ -253,17 +231,17 @@
                         }
                     }
 
-                    document.getElementById('includeHead').innerText = "";
+                    document.getElementById('includeHead_counter_sign').innerText = "";
 
                     angular.element(
-                        document.getElementById('includeHead'))
+                        document.getElementById('includeHead_counter_sign'))
                         .append($compile(
                             "<div ba-panel ba-panel-title=" +
-                            "'待辦公文列表 - " + resp.payload.length + "'" +
+                            "'待會簽公文列表 - " + resp.payload.length + "'" +
                             "ba-panel-class= " +
                             "'with-scroll'" + ">" +
                             "<div " +
-                            "ng-include=\"'app/pages/officialDoc/handleOfficialDoc/table/handleOfficialTable.html'\">" +
+                            "ng-include=\"'app/pages/officialDoc/handleOfficialDoc/table/counterSignOfficialTable.html'\">" +
                             "</div>" +
                             "</div>"
                         )($scope));

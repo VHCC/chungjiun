@@ -1,12 +1,12 @@
 /**
  * @author IChen.Chu
- * created on 13.04.2018
+ * created on 11.02.2020
  */
 (function () {
     'use strict';
 
     angular.module('BlurAdmin.pages.myForms')
-        .controller('officialDocHandleModalCtrl',
+        .controller('officialDocCounterSignModalCtrl',
             [
                 '$scope',
                 '$filter',
@@ -45,8 +45,6 @@
         $scope.userDID = $cookies.get('userDID');
         $scope.roleType = $cookies.get('roletype');
 
-        var vm = this;
-
         Project.findAll()
             .success(function (relatedProjects) {
                 $scope.relatedProjects = [];
@@ -74,8 +72,6 @@
                         name: allUsers[i].name
                     };
                 }
-
-                vm.counterSignUsers = allUsers;
             })
 
         OfficialDocVendorUtil.fetchOfficialDocVendor()
@@ -265,93 +261,38 @@
 
         // main
         // 提交會簽
-        $scope.sendProcessCounterSign = function (dom, docData, signSelected) {
-
-            // console.log(docData);
-            // console.log(signSelected);
-
-            var signUsers = "empty";
-            if (signSelected.length > 0) {
-                signUsers = "";
-            }
-            for (var index = 0; index < signSelected.length; index ++) {
-                signUsers += signSelected[index].name + ", ";
-            }
-            console.log(signUsers);
-
-            $scope.checkText = "會簽人員：" + signUsers;
-            $scope.handleRecord = "會簽給 " + signUsers;
-            $scope.signSelected = signSelected;
+        $scope.sendCounterSign = function (dom, docData) {
+            $scope.checkText = "會簽情形：" + "會簽完成";
+            $scope.handleResult = "會簽完成";
             $scope.docData = docData;
             ngDialog.open({
-                template: 'app/pages/officialDoc/handleOfficialDoc/dialog/handleOfficialDocReviewSounterSign_Modal.html',
+                template: 'app/pages/officialDoc/handleOfficialDoc/dialog/signOfficialDocReviewSend_Modal.html',
                 className: 'ngdialog-theme-default',
                 scope: $scope,
                 showClose: false,
             });
         }
 
-        $scope.updateOfficialDocToServerCounterSign = function(docData, handleRecord, signSelected) {
+        $scope.updateOfficialDocToServer = function(docData, handleResult) {
 
-            var handleInfo = docData.stageInfo;
-            var counterSignList = [];
-
-            for (var index = 0; index < signSelected.length; index ++) {
-                var counterSign = {
-                    _id: signSelected[index]._id,
-                }
-                counterSignList.push(counterSign);
-            }
-
-            var stageInfoHandle = {
-                timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
-                stage: "開始會簽",
-                handleName: "",
-                handleRecord: handleRecord,
-            }
-
-            handleInfo.push(stageInfoHandle);
-
-            var formData = {
-                _id: docData._id,
-                stageInfo: handleInfo,
-                handlerDID: (docData.signerDID == undefined || docData.signerDID == null ) ?
-                    $scope.showManagerID(docData) : docData.signerDID,
-                isDocSignStage: false,
-                isCounterSign: true,
-                counterSignList: counterSignList
-            }
-            OfficialDocUtil.updateOfficialDocItem(formData)
-                .success(function (res) {
-                    $uibModalInstance.close();
-                })
-        }
-
-        // main
-        // 提交審查
-        $scope.sendProcess = function (dom, docData) {
-            $scope.checkText = "辦理情形：" + dom.handleRecord;
-            $scope.handleRecord = dom.handleRecord;
-            $scope.docData = docData;
-            ngDialog.open({
-                template: 'app/pages/officialDoc/handleOfficialDoc/dialog/handleOfficialDocReviewSend_Modal.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope,
-                showClose: false,
-            });
-        }
-
-        $scope.updateOfficialDocToServer = function(docData, handleRecord) {
-            console.log(handleRecord);
             console.log(docData);
 
+            var newCounterSignList = []
+
+
+            for (var index = 0; index < docData.counterSignList.length; index ++) {
+                if ($cookies.get('userDID') != docData.counterSignList[index]._id) {
+                    newCounterSignList.push(docData.counterSignList[index]);
+                }
+            }
+
             var handleInfo = docData.stageInfo;
 
             var stageInfoHandle = {
                 timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
-                stage: "辦理",
+                stage: "會簽",
                 handleName: $scope.username,
-                handleRecord: handleRecord
+                handleResult: handleResult,
             }
 
             handleInfo.push(stageInfoHandle);
@@ -359,82 +300,14 @@
             var formData = {
                 _id: docData._id,
                 stageInfo: handleInfo,
-                // handlerDID: $scope.showManagerID(docData),
-                handlerDID: (docData.signerDID == undefined || docData.signerDID == null ) ?
-                    $scope.showManagerID(docData) : docData.signerDID,
-                isDocSignStage: true
-            }
-            OfficialDocUtil.updateOfficialDocItem(formData)
-                .success(function (res) {
-                    console.log(res);
-
-                    // docData.isDocSignStage = true;
-                    $uibModalInstance.close();
-                    // $scope.reloadDocData_handle();
-                    //
-                    // var formData = {
-                    //     _id: docData._id,
-                    //     isDocClose: false,
-                    // }
-                    //
-                    // OfficialDocUtil.searchOfficialDocItem(formData)
-                    //     .success(function (res) {
-                    //         console.log(res.payload);
-                    //         docData = res.payload[0];
-                    //     })
-
-                })
-        }
-
-        // 提交歸檔
-        $scope.sendArchive = function (dom, docData) {
-
-            $scope.checkText = "是否歸檔：" + docData.archiveNumber;
-            $scope.docData = docData;
-            ngDialog.open({
-                template: 'app/pages/officialDoc/handleOfficialDoc/dialog/closeOfficialDocReviewSend_Modal.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope,
-                showClose: false,
-            });
-        }
-
-        $scope.updateOfficialDocToServer_Archive = function(docData) {
-
-            var handleInfo = docData.stageInfo;
-
-            var stageInfoHandle = {
-                timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
-                stage: "歸檔",
-                handleName: $scope.username,
-            }
-
-            handleInfo.push(stageInfoHandle);
-
-            var formData = {
-                _id: docData._id,
-                stageInfo: handleInfo,
-                isDocClose: true
+                isCounterSign: newCounterSignList.length > 0,
+                counterSignList: newCounterSignList,
+                isDocSignStage: newCounterSignList.length == 0,
             }
             OfficialDocUtil.updateOfficialDocItem(formData)
                 .success(function (res) {
                     console.log(res);
                     $uibModalInstance.close();
-                    // $scope.reloadDocData_handle();
-
-
-                    // docData.isDocClose = true;
-                    //
-                    // var formData = {
-                    //     _id: docData._id,
-                    //     isDocClose: false,
-                    // }
-                    //
-                    // OfficialDocUtil.searchOfficialDocItem(formData)
-                    //     .success(function (res) {
-                    //         console.log(res.payload);
-                    //         docData = res.payload[0];
-                    //     })
 
                 })
         }
@@ -447,7 +320,6 @@
 
         $scope.canModified = true;
 
-
         console.log(formData);
 
         OfficialDocUtil.searchOfficialDocItem(formData)
@@ -459,6 +331,7 @@
                 }
 
             });
+
     }
 
 })();
