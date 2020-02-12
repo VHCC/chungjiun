@@ -33,6 +33,7 @@
                                  $compile) {
 
         $scope.userDID = $cookies.get('userDID');
+        $scope.roleType = $cookies.get('roletype');
 
         var vm = this;
         var thisYear = new Date().getFullYear() - 1911;
