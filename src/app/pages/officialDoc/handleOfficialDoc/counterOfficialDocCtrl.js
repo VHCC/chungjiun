@@ -14,7 +14,6 @@
 
             var promise = $http.post('/api/post_official_doc_search_item', formData)
                 .success(function (officialDocItems) {
-                    console.log(officialDocItems);
                     return officialDocItems;
                 });
             return promise;
@@ -76,7 +75,6 @@
             Project.findAll()
                 .success(function (relatedProjects) {
                     console.log(" ======== related login user Projects ======== ");
-                    // console.log(relatedProjects);
                     $scope.relatedProjects = [];
                     for (var i = 0; i < relatedProjects.length; i++) {
                         $scope.relatedProjects[i] = {
@@ -137,7 +135,6 @@
         }
 
         $scope.showCharger = function (officialItem) {
-            // console.log(officialItem);
             var selected = [];
             if ($scope.allUsers === undefined) return;
             if (officialItem.chargerDID) {
@@ -218,7 +215,6 @@
 
             OfficialDocUtil.searchOfficialDocItem(formData)
                 .success(function (resp) {
-                    console.log(resp);
 
                     $scope.officialDocItems = resp.payload;
                     $scope.officialDocItems.slice(0, resp.payload.length);

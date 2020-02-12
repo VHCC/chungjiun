@@ -476,6 +476,11 @@ module.exports = function (app) {
             query.isCounterSign = req.body.isCounterSign;
         }
 
+        if (req.body.signerDID !== null
+            && req.body.signerDID !== undefined) {
+            query.signerDID = req.body.signerDID;
+        }
+
         // 會簽
         if (req.body.counterDID !== null
             && req.body.counterDID !== undefined) {

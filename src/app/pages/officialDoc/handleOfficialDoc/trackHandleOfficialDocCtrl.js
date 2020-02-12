@@ -2,13 +2,11 @@
     'user strict';
 
     angular.module('BlurAdmin.pages.cgOfficialDoc')
-        .service('intiOfficialWaitHandleService', function ($http, $cookies) {
+        .service('intiOfficialWaitTrackHandleService', function ($http, $cookies) {
 
             var formData = {
                 chargerDID: $cookies.get("userDID"),
                 isDocClose: false,
-                isDocSignStage: false,
-                isCounterSign: false,
                 type: 0,
             }
 
@@ -18,7 +16,7 @@
                 });
             return promise;
         })
-        .controller('handleOfficialDocCtrl',
+        .controller('trackHandleOfficialDocCtrl',
             [
                 '$scope',
                 '$filter',
@@ -29,15 +27,14 @@
                 'OfficialDocUtil',
                 'OfficialDocVendorUtil',
                 '$compile',
-                'intiOfficialWaitHandleService',
-                 HandleOfficialDocCtrl
-            ])
-    ;
+                'intiOfficialWaitTrackHandleService',
+                 TrackHandleOfficialDocCtrl
+            ]);
 
     /**
      * @ngInject
      */
-    function HandleOfficialDocCtrl($scope,
+    function TrackHandleOfficialDocCtrl($scope,
                                  $filter,
                                  $cookies,
                                  $uibModal,
@@ -46,9 +43,9 @@
                                  OfficialDocUtil,
                                  OfficialDocVendorUtil,
                                  $compile,
-                                 intiOfficialWaitHandleService) {
+                                 intiOfficialWaitTrackHandleService) {
 
-        intiOfficialWaitHandleService.then(function (resp) {
+        intiOfficialWaitTrackHandleService.then(function (resp) {
             $scope.officialDocItems = resp.data.payload;
             $scope.officialDocItems.slice(0, resp.data.payload.length);
 
@@ -61,14 +58,14 @@
             }
 
             angular.element(
-                document.getElementById('includeHead'))
+                document.getElementById('includeHead_track_handler'))
                 .append($compile(
                     "<div ba-panel ba-panel-title=" +
-                    "'待辦公文列表 - " + resp.data.payload.length + "'" +
+                    "'未歸檔公文列表(承辦) - " + resp.data.payload.length + "'" +
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
-                    "ng-include=\"'app/pages/officialDoc/handleOfficialDoc/table/handleOfficialTable.html'\">" +
+                    "ng-include=\"'app/pages/officialDoc/handleOfficialDoc/table/trackHandleOfficialTable.html'\">" +
                     "</div>" +
                     "</div>"
                 )($scope));
@@ -76,6 +73,7 @@
             Project.findAll()
                 .success(function (relatedProjects) {
                     console.log(" ======== related login user Projects ======== ");
+                    // console.log(relatedProjects);
                     $scope.relatedProjects = [];
                     for (var i = 0; i < relatedProjects.length; i++) {
                         $scope.relatedProjects[i] = {
@@ -83,6 +81,7 @@
                             managerID: relatedProjects[i].managerID
                         };
                     }
+                    // console.log($scope);
                 });
 
             User.getAllUsers()
@@ -188,9 +187,9 @@
         $scope.showOfficialDocHandleInfo = function (item) {
             $uibModal.open({
                 animation: true,
-                controller: 'officialDocHandleModalCtrl',
-                controllerAs: 'officialDocHandleModalCtrlVm',
-                templateUrl: 'app/pages/officialDoc/handleOfficialDoc/modal/officialDocHandleModal.html',
+                controller: 'officialDocTrackHandleModalCtrl',
+                controllerAs: 'officialDocTrackHandleModalCtrlVm',
+                templateUrl: 'app/pages/officialDoc/handleOfficialDoc/modal/officialDocTrackHandleModal.html',
                 size: 'lg',
                 resolve: {
                     docData: function () {
@@ -205,34 +204,31 @@
                 // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
             });
 
-            $scope.readOfficialDoc(item);
+            // $scope.readOfficialDoc(item);
         }
 
         // read doc
-        $scope.readOfficialDoc = function (item) {
-            var formData = {
-                _id: item._id,
-                isDocOpened: true,
-            }
-            OfficialDocUtil.updateOfficialDocItem(formData)
-                .success(function (res) {
-                    item.isDocOpened = true;
-                })
-        }
+        // $scope.readOfficialDoc = function (item) {
+        //     var formData = {
+        //         _id: item._id,
+        //         isDocOpened: true,
+        //     }
+        //     OfficialDocUtil.updateOfficialDocItem(formData)
+        //         .success(function (res) {
+        //             item.isDocOpened = true;
+        //         })
+        // }
 
 
         $scope.reloadDocData_handle = function () {
             var formData = {
                 chargerDID: $cookies.get("userDID"),
                 isDocClose: false,
-                isDocSignStage: false,
-                isCounterSign: false,
                 type: 0,
             }
 
             OfficialDocUtil.searchOfficialDocItem(formData)
                 .success(function (resp) {
-
                     $scope.officialDocItems = resp.payload;
                     $scope.officialDocItems.slice(0, resp.payload.length);
 
@@ -244,17 +240,16 @@
                         }
                     }
 
-                    document.getElementById('includeHead').innerText = "";
-
+                    document.getElementById('includeHead_track_handler').innerText = "";
                     angular.element(
-                        document.getElementById('includeHead'))
+                        document.getElementById('includeHead_track_handler'))
                         .append($compile(
                             "<div ba-panel ba-panel-title=" +
-                            "'待辦公文列表 - " + resp.payload.length + "'" +
+                            "'未歸檔公文列表(承辦) - " + resp.payload.length + "'" +
                             "ba-panel-class= " +
                             "'with-scroll'" + ">" +
                             "<div " +
-                            "ng-include=\"'app/pages/officialDoc/handleOfficialDoc/table/handleOfficialTable.html'\">" +
+                            "ng-include=\"'app/pages/officialDoc/handleOfficialDoc/table/trackHandleOfficialTable.html'\">" +
                             "</div>" +
                             "</div>"
                         )($scope));

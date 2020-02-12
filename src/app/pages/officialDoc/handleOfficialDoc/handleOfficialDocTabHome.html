@@ -61,4 +61,18 @@
             </div>
         </div>
     </uib-tab>
+    <uib-tab heading="承辦公文追蹤" >
+        <div class="row"
+             ng-controller="trackHandleOfficialDocCtrl">
+            <div class="col-md-12" id="includeHead_track_handler">
+            </div>
+        </div>
+    </uib-tab>
+    <uib-tab heading="經理公文追蹤" ng-if="roleType === '2' || roleType === '100' || roleType === '6'">
+        <div class="row"
+             ng-controller="trackManagerOfficialDocCtrl">
+            <div class="col-md-12" id="includeHead_track_manager">
+            </div>
+        </div>
+    </uib-tab>
 </uib-tabset>
