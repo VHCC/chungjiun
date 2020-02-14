@@ -24,16 +24,6 @@
 
 <div class="row" ng-if="hrMachineCtrlVm.user.selected">
 
-    <!--<div>-->
-    <!--<my-month-picker-->
-    <!--formatted="MM"></my-month-picker>-->
-    <!--<button type="button" class="btn btn-default btn-icon" ng-click="changeHrMachineMonth(-1, this)">-->
-    <!--<i class="ion-chevron-left"></i></button>-->
-    <!--{{myMonth}}-->
-    <!--<button type="button" class="btn btn-default btn-icon" ng-click="changeHrMachineMonth(1, this)">-->
-    <!--<i class="ion-chevron-right"></i></button>-->
-    <!--</div>-->
-
     <hr>
 
     <table class="table table-bordered table-hover table-condensed">
@@ -67,14 +57,22 @@
             <!--上班時數-->
             <td style="vertical-align: inherit; text-align: center">上班時數</td>
 
+            <!--出差時數-->
+            <!--20200206-->
+            <td style="vertical-align: inherit; text-align: center">出差時數</td>
+
             <!--請假時數-->
             <td style="vertical-align: inherit; text-align: center">請假時數</td>
 
             <!--上班分鐘數-->
             <!--<td style="vertical-align: inherit; text-align: center">上班分鐘數</td>-->
 
+            <!--加班時數-->
+            <!--20200206-->
+            <td style="vertical-align: inherit; text-align: center">加班時數</td>
+
             <!--加班總時數-->
-            <td style="vertical-align: inherit; text-align: center">加班總時數</td>
+            <!--<td style="vertical-align: inherit; text-align: center">加班總分鐘數</td>-->
 
             <!--是否遲到-->
             <td style="vertical-align: inherit; text-align: center">遲到</td>
@@ -83,10 +81,10 @@
             <td style="vertical-align: inherit; text-align: center">地址</td>
 
             <!-- 機身編號 -->
-            <td style="vertical-align: inherit; text-align: center">機身編號</td>
+            <td style="vertical-align: inherit; text-align: center">機身</td>
 
             <!-- 打卡是否異常 -->
-            <td style="vertical-align: inherit; text-align: center">打卡是否異常</td>
+            <td style="vertical-align: inherit; text-align: center">異常</td>
         </tr>
         </thead>
 
@@ -186,10 +184,19 @@
 
             </td>
 
+            <!--出差時數-->
+            <!--20200206-->
+            <td ng-class="workTravelApplyHour(tableItem) != '' ? 'sumWarning' : 'sunNormal'"
+                style="vertical-align: inherit;">
+                {{workTravelApplyHour(tableItem)}}
+            </td>
+
             <!--請假時數-->
             <td ng-class="workOffHour(tableItem) != '' ? 'sumWarning' : 'sunNormal'"
                 style="vertical-align: inherit;">
-                {{workOffHour(tableItem)}}
+                <p ng-if="workOffHour(tableItem) - workTravelApplyHour(tableItem) > 0 ">
+                    {{workOffHour(tableItem) - workTravelApplyHour(tableItem)}}
+                </p>
             </td>
 
             <!--&lt;!&ndash;上班分鐘&ndash;&gt;-->
@@ -215,6 +222,20 @@
                 showHrMachineTime(tableItem, 43)))}}
             </td>
 
+            <!--加班分鐘數-->
+            <!--<td class="form-group" style="vertical-align: inherit;">-->
+            <!--&lt;!&ndash;{{showHrMachineTime(tableItem, 51) +&ndash;&gt;-->
+            <!--&lt;!&ndash;showHrMachineTime(tableItem, 52) +&ndash;&gt;-->
+            <!--&lt;!&ndash;showHrMachineTime(tableItem, 53)}}&ndash;&gt;-->
+
+            <!--{{showWorkOverMin(showHrMachineTime(tableItem, 31),-->
+            <!--showHrMachineTime(tableItem, 41)) +-->
+            <!--showWorkOverMin(showHrMachineTime(tableItem, 32),-->
+            <!--showHrMachineTime(tableItem, 42)) +-->
+            <!--showWorkOverMin(showHrMachineTime(tableItem, 33),-->
+            <!--showHrMachineTime(tableItem, 43))}}-->
+            <!--</td>-->
+
             <!--遲到-->
             <td ng-class="(isLate(tableItem, 0) || isLate(tableItem, 1)) ? 'sumWarning' : 'sunNormal'"
                 style="vertical-align: inherit;">
@@ -225,19 +246,16 @@
 
             <!-- 地址 -->
             <td style="vertical-align: inherit;">
-                <!--{{tableItem[0].gps_location}}-->
                 {{showGPSInfo(tableItem, 0)}}
             </td>
 
             <!-- 機身編號 -->
             <td style="vertical-align: inherit;">
-                <!--{{tableItem[0].gps_type}}-->
                 {{showGPSInfo(tableItem, 1)}}
             </td>
 
             <!-- 打卡是否異常 -->
             <td style="vertical-align: inherit;">
-                <!--{{tableItem[0].gps_status}}-->
                 {{showGPSInfo(tableItem, 2)}}
             </td>
         </tr>
