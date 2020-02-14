@@ -207,7 +207,7 @@
                     <label class="col-md-3 control-label">發文日期</label>
                     <my-date-picker formatted="yyyy/MM/dd"
                                     ng-init="setDateModel('_officialPublicDate', this)"
-                                    ng-click="setDateModel('_officialPublicDate', this)">
+                                    ng-click="setDateModel('_officialPublicDate', this); listenDatePicker_official_public(this)">
 
                     </my-date-picker>
                 </div>
