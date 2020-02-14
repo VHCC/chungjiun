@@ -53,11 +53,6 @@
             var thisDay = new Date().getDay();
             // ***********************  個人填寫 ************************
 
-            // console.log($scope.username);
-            // console.log($scope.userDID);
-            // console.log($scope.roleType);
-            // console.log($scope.machineDID);
-
             // 行政總管專屬
             if ($scope.roleType == 100 || $scope.roleType == 2) {
                 // 所有人，對照資料
@@ -77,7 +72,6 @@
             // ***** month reports 主要顯示 *****
             $scope.hrMachineTable_month_reports = [];
 
-
             // type 0 : main tab
             // type 1 : specific user tab
             // type 2 : month reports tab
@@ -91,14 +85,7 @@
                 $scope.hrMachineTable_specific = [];
                 $scope.hrMachineTable_month_reports = [];
 
-                // var startDate = moment().format('YYYYMM') + "01";
-                // var endDate = moment().format('YYYYMM') + moment().daysInMonth();
                 var today = moment().format('YYYYMMDD');
-
-                // if (month !== undefined) {
-                //     startDate = moment(month).format('YYYYMM') + "01";
-                //     endDate = moment(month).format('YYYYMM') + moment(month).daysInMonth();
-                // }
 
                 var formData = {
                     machineDID: machineDID == undefined ? $scope.machineDID : machineDID,
@@ -125,21 +112,16 @@
                             var lastDate = "";
 
                             for (var index = 0; index < arrayResult[0].length; index++) {
-                                // console.log(arrayResult[0][index].date);
 
                                 var yearString = parseInt(arrayResult[0][index].date.substr(0, 3)) + 1911;
                                 var dateString = arrayResult[0][index].date.substr(3, arrayResult[0][index].date.length);
-                                // console.log(yearString + dateString);
                                 var newDate = yearString + dateString;
-
-                                // console.log(moment(newDate).format('MM'));
 
                                 if (type == 2) {
                                     if (moment(newDate).format('MM') != moment(specificDate).format('MM')) {
                                         continue;
                                     }
                                 }
-
 
                                 var hrMachineItem = {
                                     date: "",
@@ -149,7 +131,7 @@
                                     time: "",
                                     workType: ""
                                 }
-                                // console.log(hrMachineTableSorted);
+
                                 if (hrMachineTableSorted[arrayResult[0][index].date] === undefined) {
                                     hrMachineItem.date = arrayResult[0][index].date;
                                     hrMachineItem.did = arrayResult[0][index].did;
@@ -164,7 +146,6 @@
 
                                     var hrMachineCollection = [];
                                     hrMachineCollection.push(hrMachineItem);
-                                    // console.log(hrMachineCollection);
                                     hrMachineTableSorted[arrayResult[0][index].date] = hrMachineCollection;
 
                                     if (arrayResult[0][index].workType == 4) {
@@ -203,7 +184,6 @@
                                             hrMachineTableSorted[lastDate].push(hrMachineItemLastDate);
                                         }
                                     }
-
                                     lastDate = arrayResult[0][index].date;
 
                                 } else {
@@ -219,7 +199,6 @@
                                     hrMachineItem.gps_status = arrayResult[0][index].gps_status;
 
                                     hrMachineTableSorted[arrayResult[0][index].date].push(hrMachineItem);
-                                    // console.log(hrMachineTableSorted[arrayResult[0][index].date]);
 
                                     lastDate = arrayResult[0][index].date;
                                 }
@@ -228,12 +207,15 @@
                             switch(type) {
                                 case 0:
                                     $scope.hrMachineTable = hrMachineTableSorted;
+                                    $scope.getUsersTravelApplicationData($scope.userDID, thisYear, 0);
                                     break;
                                 case 1:
                                     $scope.hrMachineTable_specific = hrMachineTableSorted;
+                                    $scope.getUsersTravelApplicationData($scope.userDID, thisYear, 1);
                                     break;
                                 case 2:
                                     $scope.hrMachineTable_month_reports = hrMachineTableSorted;
+                                    $scope.getUsersTravelApplicationData($scope.userDID, thisYear, 2);
                                     break;
                             }
                             $timeout(function () {
@@ -250,16 +232,6 @@
                             });
                         }, 500)
                     })
-
-                $scope.getUsersTravelApplicationData($scope.userDID, thisYear);
-            }
-
-            function convertDate(mString) {
-                var resultString = "";
-                resultString += String(parseInt(mString.substring(0,3),10) + 1911) + "/";
-                resultString += mString.substring(3, 5) + "/";
-                resultString += mString.substring(5, 7);
-                return resultString;
             }
 
             // 打卡機檔案讀取
@@ -269,7 +241,6 @@
                     return;
                 }
                 var fileDate = moment(dom.myDT).format('YYYYMMDD');
-                // console.log(fileDate);
                 var formData = {
                     loadDate: fileDate,
                 }
@@ -301,7 +272,6 @@
                 HrMachineUtil.loadHrMachineDataByDate(formData)
                     .success(function (res) {
                         $scope.fetchData(vm.users_month_report.selected.machineDID, res.fileDate, 2);
-
                     })
                     .error(function (res) {
                         $timeout(function () {
@@ -322,10 +292,8 @@
                         for (var index = 0; index < datas.length; index++) {
                             if (datas[index].workType === "1") {
                                 workOnArray.push(datas[index]);
-                                // return datas[index].time;
                             }
                         }
-
                         if (workOnArray.length > 0) {
                             return workOnArray[0].time;
                         }
@@ -338,7 +306,6 @@
                         var isFirstWorkOff = false;
                         for (var index = 0; index < datas.length; index++) {
                             if (datas[index].workType === "2") {
-                                // return datas[index].time
                                 workOffArray.push(datas[index]);
                                 isFirstWorkOff = true;
                             }
@@ -352,8 +319,7 @@
                         break;
                     // 上班 2
                     // 一定要有 下班 1
-                    //
-                    case 12: //
+                    case 12:
                         var workOnArray = [];
                         var isSecondWorkOn = false;
                         for (var index = 0; index < datas.length; index++) {
@@ -366,7 +332,6 @@
                                 }
                             }
                         }
-                        // console.log(workOnArray)
                         if (workOnArray.length > 0) {
                             return workOnArray[0].time;
                         }
@@ -390,7 +355,6 @@
                                 workOffArray.push(datas[index]);
                             }
                         }
-                        // console.log(workOffArray)
                         if (workOffArray.length > 0) {
                             return workOffArray[workOffArray.length - 1].time;
                         }
@@ -402,7 +366,6 @@
                         for (var index = 0; index < datas.length; index++) {
                             if (datas[index].workType === "3") {
                                 workOverOnArray.push(datas[index]);
-                                // return datas[index].time
                             }
                         }
                         if (workOverOnArray.length > 0) {
@@ -419,7 +382,6 @@
                             if (datas[index].workType === "4") {
                                 workOverOffArray.push(datas[index]);
                                 isFirstWorkOverOff = true;
-                                // return datas[index].time
                             }
                             if (isFirstWorkOverOff && datas[index].workType === "3") {
                                 break;
@@ -455,31 +417,21 @@
                                 var hour = Math.floor(((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))/60);
                                 var min = (((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))%60) / 60 >= 0.5 ? 0.5 : 0;
                                 return parseInt(hour) + min;
-                                // return parseInt(hour);
-                                // return min;
                             }
-
                             if (workOnHour == 0 && workOffHour) {
                                 // console.log("CC " + workOnHour + ":" + workOnMin);
                                 // console.log("DD " + workOffHour + ":" + workOffMin);
                                 var hour = Math.floor(((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))/60);
                                 var min = (((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))%60) / 60 >= 0.5 ? 0.5 : 0;
                                 return parseInt(hour) + min;
-                                // return parseInt(hour);
-                                // return min;
                             }
-
                             if (workOnHour == 0 && workOffHour == 0) {
                                 // console.log("CCC " + workOnHour + ":" + workOnMin);
                                 // console.log("DDD " + workOffHour + ":" + workOffMin);
                                 var hour = Math.floor(((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))/60);
                                 var min = (((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))%60) / 60 >= 0.5 ? 0.5 : 0;
                                 return parseInt(hour) + min;
-                                // return parseInt(hour);
-                                // return min;
                             }
-
-
                         }
                         break;
                     //  加班簽到2
@@ -509,7 +461,6 @@
                         var workOverOffArray = [];
                         var isSecondWorkOffOn = false;
                         for (var index = 0; index < datas.length; index++) {
-
                             if (datas[index].workType === "4") {
                                 isSecondWorkOverOn = true;
                             }
@@ -555,7 +506,6 @@
                                 var hour2 = Math.floor(((overOffHour2 - overOnHour2) * 60 + (overOffMin2 - overOnMin2))/60);
                                 var min2 = (((overOffHour2 - overOnHour2) * 60 + (overOffMin2 - overOnMin2))%60) / 60 >= 0.5 ? 0.5 : 0;
                                 if (count1 == 2 && count2 == 2) {
-                                    // console.log(workOnHour2 + ":" + workOffHour2);
                                     return parseInt(hour2) + min2;
                                 }
                             }
@@ -632,7 +582,6 @@
                         var count1 = 0;
                         var count2 = 0;
                         for (var index = 0; index < datas.length; index++) {
-
                             if (datas[index].workType === "3") {
                                 var overOnHour3 = parseInt(datas[index].time.substr(0,2));
                                 var overOnMin3 = parseInt(datas[index].time.substr(2,4));
@@ -711,12 +660,6 @@
             }
 
             $scope.showDay = function (date) {
-                // console.log(date);
-                // console.log(parseInt(date.substring(0,3)) + 1911);
-                // console.log(date.substring(3,7));
-                // console.log(parseInt(date.substring(0,3)) + 1911 + date.substring(3,7));
-                // console.log(moment(parseInt(date.substring(0,3)) + 1911 + date.substring(3,7)));
-                // console.log(moment(parseInt(date.substring(0,3)) + 1911 + date.substring(3,7)).day());
                 return DateUtil.getDay(moment(parseInt(date.substring(0,3)) + 1911 + date.substring(3,7)).day())
             }
 
@@ -724,22 +667,15 @@
 
             // 遲到判斷
             $scope.isLate = function (tableItem, type) {
-
                 var operateArray = [];
 
                 var isLate = false;
-
-                // console.log(tableItem);
 
                 for (var index = 0; index < tableItem.length; index++) {
                     if (tableItem[index].workType === "1") {
                         operateArray.push(tableItem[index]);
                     }
                 }
-
-                // console.log(operateArray);
-                // console.log("isLate, type= " + type);
-
                 if (operateArray.length > 0 && operateArray[0] != undefined) {
                     var workOnHour = parseInt(operateArray[0].time.substr(0,2));
                     var workOnMin = parseInt(operateArray[0].time.substr(2,4));
@@ -766,11 +702,9 @@
                     }
                 }
                 return "";
-
             }
 
             // 請假時數
-            // Deprecated
             $scope.workOffHour = function (tableItem) {
                 if ($scope.showWorkHour(tableItem,
                     $scope.showHrMachineTime(tableItem, 11),
@@ -790,7 +724,6 @@
                     if (result == 0) {
                         return "";
                     }
-
                     if (result <= 60) {
                         return 1;
                     } else {
@@ -853,12 +786,6 @@
                         workOffHour = 12;
                         workOffMin = 0;
                     }
-                    // console.log(tableItem);
-                    // console.log("isLate= " + $scope.isLate(tableItem, 0)
-                    //     + ", "
-                    //     + workOnHour + ":" + workOnMin
-                    //     + ", "
-                    //     + workOffHour + ":" + workOffMin);
 
                     if (workOffHour >= 13) {
                         isAfterNoon = true;
@@ -871,8 +798,6 @@
                     //     + workOnHour + ":" + workOnMin
                     //     + ", "
                     //     + workOffHour + ":" + workOffMin);
-
-                    // console.log("isAfterNoon= " + isAfterNoon + ", isBeforeNoon= " + isBeforeNoon);
 
                     if (isAfterNoon && isBeforeNoon) {
                         // console.log(Math.abs(parseInt(workOffHour) - parseInt(workOnHour) - 1));
@@ -891,7 +816,6 @@
                         } else {
                             result = 0;
                         }
-                        // console.log( Math.abs((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin)));
                         // console.log("B result:" + result);
                     }
                     isAfterNoon = false;
@@ -969,9 +893,6 @@
                     //     + workOffHour + ":" + workOffMin);
 
                     if (isAfterNoon && isBeforeNoon) {
-                        // console.log(workOffHour - workOnHour - 1);
-                        // console.log(workOffMin - workOnMin);
-                        // console.log("C pre_result:" + result);
                         var culc = (workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin);
                         // console.log(culc);
                         if (culc > 0) {
@@ -980,7 +901,6 @@
                             result = 0;
                         }
                         // console.log("C result:" + result);
-
                     } else {
                         var culc = (workOffHour - workOnHour) * 60 + (workOffMin - workOnMin);
                         // console.log(culc);
@@ -994,7 +914,6 @@
                 }
 
                 if (result != undefined) {
-                    // console.log(result);
                     return result;
                 } else {
                     return undefined;
@@ -1007,19 +926,14 @@
                 var workOffHour;
                 var workOffMin;
                 if (workOverOn && workOverOff) {
-                    // console.log("A " + datas[index].time);
                     workOnHour = parseInt(workOverOn.substr(0,2));
                     workOnMin = parseInt(workOverOn.substr(2,4));
-                    // console.log("AA " + workOnHour + ":" + workOnMin);
 
-                    // console.log("B " + datas[index].time);
                     workOffHour = parseInt(workOverOff.substr(0,2));
                     workOffMin = parseInt(workOverOff.substr(2,4));
                     // console.log("BB " + workOffHour + ":" + workOffMin);
 
                     if ((workOnHour && workOffHour) || (workOnHour == 0 && workOffHour) || (workOnHour == 0 && workOffHour == 0)) {
-                        // console.log("C " + workOnHour + ":" + workOnMin);
-                        // console.log("D " + workOffHour + ":" + workOffMin);
                         var min = ((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))
                         return min;
                     }
@@ -1028,12 +942,8 @@
 
             // 加班時數
             $scope.showWorkOverHourFromMin = function (workOverTotalMin) {
-                // console.log(workOverTotalMin);
                 if (workOverTotalMin) {
-                    // console.log("C " + workOnHour + ":" + workOnMin);
-                    // console.log("D " + workOffHour + ":" + workOffMin);
                     var hour = Math.floor(workOverTotalMin/60);
-                    // console.log(hour);
                     if (hour == 0 ) {
                         return 0;
                     }
@@ -1044,36 +954,36 @@
 
             // 加班時數
             // Deprecated
-            $scope.showWorkOverHour = function (workOverOn, workOverOff) {
-                var workOnHour;
-                var workOnMin;
-                var workOffHour;
-                var workOffMin;
-                if (workOverOn && workOverOff) {
-                    // console.log("A " + datas[index].time);
-                    workOnHour = parseInt(workOverOn.substr(0,2));
-                    workOnMin = parseInt(workOverOn.substr(2,4));
-                    // console.log("AA " + workOnHour + ":" + workOnMin);
-
-                    // console.log("B " + datas[index].time);
-                    workOffHour = parseInt(workOverOff.substr(0,2));
-                    workOffMin = parseInt(workOverOff.substr(2,4));
-                    // console.log("BB " + workOffHour + ":" + workOffMin);
-
-                    if ((workOnHour && workOffHour) || (workOnHour == 0 && workOffHour) || (workOnHour == 0 && workOffHour == 0)) {
-                        // console.log("C " + workOnHour + ":" + workOnMin);
-                        // console.log("D " + workOffHour + ":" + workOffMin);
-                        var hour = Math.floor(((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))/60);
-                        if (hour == 0 ) {
-                            return 0;
-                        }
-                        var min = (((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))%60) / 60 >= 0.5 ? 0.5 : 0;
-                        return parseInt(hour) + min;
-                        // return parseInt(hour);
-                        // return min;
-                    }
-                }
-            }
+            // $scope.showWorkOverHour = function (workOverOn, workOverOff) {
+            //     var workOnHour;
+            //     var workOnMin;
+            //     var workOffHour;
+            //     var workOffMin;
+            //     if (workOverOn && workOverOff) {
+            //         // console.log("A " + datas[index].time);
+            //         workOnHour = parseInt(workOverOn.substr(0,2));
+            //         workOnMin = parseInt(workOverOn.substr(2,4));
+            //         // console.log("AA " + workOnHour + ":" + workOnMin);
+            //
+            //         // console.log("B " + datas[index].time);
+            //         workOffHour = parseInt(workOverOff.substr(0,2));
+            //         workOffMin = parseInt(workOverOff.substr(2,4));
+            //         // console.log("BB " + workOffHour + ":" + workOffMin);
+            //
+            //         if ((workOnHour && workOffHour) || (workOnHour == 0 && workOffHour) || (workOnHour == 0 && workOffHour == 0)) {
+            //             // console.log("C " + workOnHour + ":" + workOnMin);
+            //             // console.log("D " + workOffHour + ":" + workOffMin);
+            //             var hour = Math.floor(((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))/60);
+            //             if (hour == 0 ) {
+            //                 return 0;
+            //             }
+            //             var min = (((workOffHour - workOnHour) * 60 + (workOffMin - workOnMin))%60) / 60 >= 0.5 ? 0.5 : 0;
+            //             return parseInt(hour) + min;
+            //             // return parseInt(hour);
+            //             // return min;
+            //         }
+            //     }
+            // }
 
             $scope.printPDF = function () {
                 $("#form_main_pdf").print({
@@ -1114,7 +1024,22 @@
 
             $scope.travelApplicationItems = [];
 
-            $scope.getUsersTravelApplicationData = function (userDID, year) {
+            $scope.getUsersTravelApplicationData = function (userDID, year, type) {
+
+                var operateTable = undefined;
+
+                switch (type) {
+                    case 0:
+                        operateTable = $scope.hrMachineTable;
+                        break;
+                    case 1:
+                        operateTable = $scope.hrMachineTable_specific;
+                        break;
+                    case 2:
+                        operateTable = $scope.hrMachineTable_month_reports;
+                        break;
+                }
+
                 $scope.travelApplicationItems = [];
                 var formData = {
                     creatorDID: userDID,
@@ -1124,7 +1049,6 @@
                 };
                 TravelApplicationUtil.getTravelApplicationItem(formData)
                     .success(function (resp) {
-                        console.log(resp);
                         $scope.lookUpUserTablesItems = [];
                         for (var index = 0; index < resp.payload.length; index ++) {
                             $scope.travelApplicationItems.push(resp.payload[index]);
@@ -1133,65 +1057,6 @@
                             var monthDayTemp = moment(resp.payload[index].taStartDate).format("MMDD");
 
                             var dateTemp = yearTemp + monthDayTemp;
-                            console.log(dateTemp);
-
-                            // var hrMachineItem_start = {
-                            //     date: "",
-                            //     did: "",
-                            //     location: "",
-                            //     printType: "",
-                            //     time: "",
-                            //     workType: ""
-                            // }
-                            //
-                            // var hrMachineItem_end = {
-                            //     date: "",
-                            //     did: "",
-                            //     location: "",
-                            //     printType: "",
-                            //     time: "",
-                            //     workType: ""
-                            // }
-                            //
-                            // if ($scope.hrMachineTable[dateTemp] === undefined) {
-                            //     var hrMachineCollection = [];
-                            //
-                            //     hrMachineItem_start.date = dateTemp;
-                            //     hrMachineItem_start.location = resp.payload[index].location;
-                            //     // hrMachineItem.printType = arrayResult[0][index].printType;
-                            //     hrMachineItem_start.time = resp.payload[index].start_time.replace(":", "");
-                            //     hrMachineItem_start.workType = "1";
-                            //
-                            //     hrMachineCollection.push(hrMachineItem_start);
-                            //
-                            //     hrMachineItem_end.date = dateTemp;
-                            //     hrMachineItem_end.location = resp.payload[index].location;
-                            //     // hrMachineItem.printType = arrayResult[0][index].printType;
-                            //     hrMachineItem_end.time = resp.payload[index].end_time.replace(":", "");
-                            //     hrMachineItem_end.workType = "2";
-                            //
-                            //     hrMachineCollection.push(hrMachineItem_end);
-                            //
-                            //     $scope.hrMachineTable[dateTemp] = hrMachineCollection;
-                            //
-                            //
-                            // } else {
-                            //     hrMachineItem_start.date = dateTemp;
-                            //     hrMachineItem_start.location = resp.payload[index].location;
-                            //     // hrMachineItem.printType = arrayResult[0][index].printType;
-                            //     hrMachineItem_start.time = resp.payload[index].start_time.replace(":", "");
-                            //     hrMachineItem_start.workType = "1";
-                            //
-                            //     $scope.hrMachineTable[dateTemp].push(hrMachineItem_start);
-                            //
-                            //     hrMachineItem_end.date = dateTemp;
-                            //     hrMachineItem_end.location = resp.payload[index].location;
-                            //     // hrMachineItem.printType = arrayResult[0][index].printType;
-                            //     hrMachineItem_end.time = resp.payload[index].end_time.replace(":", "");
-                            //     hrMachineItem_end.workType = "2";
-                            //
-                            //     $scope.hrMachineTable[dateTemp].push(hrMachineItem_end);
-                            // }
 
                             var hrMachineTravelItem = {
                                 date: "",
@@ -1203,7 +1068,7 @@
                                 // workType: ""
                             }
 
-                            if ($scope.hrMachineTable[dateTemp] === undefined) {
+                            if (operateTable[dateTemp] === undefined) {
                                 var hrMachineCollection = [];
 
                                 hrMachineTravelItem.date = dateTemp;
@@ -1215,7 +1080,7 @@
 
                                 hrMachineCollection.push(hrMachineTravelItem);
 
-                                $scope.hrMachineTable[dateTemp] = hrMachineCollection;
+                                operateTable[dateTemp] = hrMachineCollection;
                             } else {
                                 hrMachineTravelItem.date = dateTemp;
                                 hrMachineTravelItem.location = resp.payload[index].location;
@@ -1224,12 +1089,11 @@
                                 // hrMachineTravelItem.workType = "1";
                                 hrMachineTravelItem.applyHour = resp.payload[index].applyHour;;
 
-                                $scope.hrMachineTable[dateTemp].push(hrMachineTravelItem);
+                                operateTable[dateTemp].push(hrMachineTravelItem);
                             }
-
                         }
 
-                        console.log($scope.hrMachineTable);
+                        console.log(operateTable);
                         console.log($scope.travelApplicationItems);
                     })
 
@@ -1331,17 +1195,14 @@
                             if (workOffArray.length > 0) {
                                 results += ", " + workOffArray[workOffArray.length - 1].gps_status;
                             }
-
                             break;
                     }
-
                     return results;
                 }
             }
 
             // 遲到判斷
             $scope.isGPS = function (tableItem, type) {
-                // console.log(tableItem);
                 switch(type) {
                     // 上班 1
                     // 連續多筆type=1，以第一筆為主
@@ -1350,10 +1211,8 @@
                         for (var index = 0; index < tableItem.length; index++) {
                             if (tableItem[index].workType === "1") {
                                 workOnArray.push(tableItem[index]);
-                                // return datas[index].time;
                             }
                         }
-
                         if (workOnArray.length > 0) {
                             return workOnArray[0].printType == "G";
                         }
@@ -1366,7 +1225,6 @@
                         var isFirstWorkOff = false;
                         for (var index = 0; index < tableItem.length; index++) {
                             if (tableItem[index].workType === "2") {
-                                // return datas[index].time
                                 workOffArray.push(tableItem[index]);
                                 isFirstWorkOff = true;
                             }
@@ -1374,15 +1232,13 @@
                                 break;
                             }
                         }
-
                         if (workOffArray.length > 0) {
                             return workOffArray[workOffArray.length - 1].printType == "G";
                         }
                         break;
                     // 上班 2
                     // 一定要有 下班 1
-                    //
-                    case 12: //
+                    case 12:
                         var workOnArray = [];
                         var isSecondWorkOn = false;
                         for (var index = 0; index < tableItem.length; index++) {
@@ -1395,7 +1251,6 @@
                                 }
                             }
                         }
-                        // console.log(workOnArray)
                         if (workOnArray.length > 0) {
                             return workOnArray[0].printType == "G";
                         }
@@ -1419,7 +1274,6 @@
                                 workOffArray.push(tableItem[index]);
                             }
                         }
-                        // console.log(workOffArray)
                         if (workOffArray.length > 0) {
                             return workOffArray[workOffArray.length - 1].printType == "G";
                         }
@@ -1448,7 +1302,6 @@
                             if (tableItem[index].workType === "4") {
                                 workOverOffArray.push(tableItem[index]);
                                 isFirstWorkOverOff = true;
-                                // return datas[index].time
                             }
                             if (isFirstWorkOverOff && tableItem[index].workType === "3") {
                                 break;
@@ -1477,7 +1330,7 @@
                             return workOverOnArray[0].time;
                         }
                         break;
-                    //  加班簽退2
+                    // 加班簽退2
                     // 一定要有 加班簽到 2
                     case 42:
                         var workOverOnArray = [];
@@ -1485,7 +1338,6 @@
                         var workOverOffArray = [];
                         var isSecondWorkOffOn = false;
                         for (var index = 0; index < tableItem.length; index++) {
-
                             if (tableItem[index].workType === "4") {
                                 isSecondWorkOverOn = true;
                             }
@@ -1496,7 +1348,6 @@
                                 if (isSecondWorkOffOn) {
                                     break;
                                 }
-
                             }
                             if (workOverOnArray.length > 0 && tableItem[index].workType === "4") {
                                 workOverOffArray.push(tableItem[index]);
@@ -1623,7 +1474,6 @@
                         break;
                 }
             }
-
         } // End of function
     }
 )();

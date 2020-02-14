@@ -1,14 +1,5 @@
 
 <div class="row">
-    <!--<div>-->
-    <!--<my-month-picker-->
-    <!--formatted="MM"></my-month-picker>-->
-    <!--<button type="button" class="btn btn-default btn-icon" ng-click="changeHrMachineMonth(-1, this)">-->
-    <!--<i class="ion-chevron-left"></i></button>-->
-    <!--{{myMonth}}-->
-    <!--<button type="button" class="btn btn-default btn-icon" ng-click="changeHrMachineMonth(1, this)">-->
-    <!--<i class="ion-chevron-right"></i></button>-->
-    <!--</div>-->
 
     <hr/>
 
@@ -50,7 +41,7 @@
             <!--上班時數-->
             <td style="vertical-align: inherit; text-align: center">上班時數</td>
 
-            <!--請假時數-->
+            <!--出差時數-->
             <!--20200206-->
             <td style="vertical-align: inherit; text-align: center">出差時數</td>
 
@@ -60,7 +51,7 @@
             <!--上班分鐘數-->
             <!--<td style="vertical-align: inherit; text-align: center">上班分鐘數</td>-->
 
-            <!--加班總時數-->
+            <!--加班時數-->
             <!--20200206-->
             <td style="vertical-align: inherit; text-align: center">加班時數</td>
 
@@ -197,11 +188,11 @@
 
             <!--上班分鐘-->
             <!--<td class="form-group" style="vertical-align: inherit;">-->
-            <!--{{showWorkHour(tableItem,-->
-            <!--showHrMachineTime(tableItem, 11),-->
-            <!--showHrMachineTime(tableItem, 21),-->
-            <!--showHrMachineTime(tableItem, 12),-->
-            <!--showHrMachineTime(tableItem, 22))}}-->
+                <!--{{showWorkHour(tableItem,-->
+                <!--showHrMachineTime(tableItem, 11),-->
+                <!--showHrMachineTime(tableItem, 21),-->
+                <!--showHrMachineTime(tableItem, 12),-->
+                <!--showHrMachineTime(tableItem, 22))}}-->
             <!--</td>-->
 
             <!--加班時數-->
@@ -210,13 +201,6 @@
                 <!--showHrMachineTime(tableItem, 52) +-->
                 <!--showHrMachineTime(tableItem, 53)}}-->
 
-                <!--{{showWorkOverHour(showHrMachineTime(tableItem, 31),-->
-                <!--showHrMachineTime(tableItem, 41)) +-->
-                <!--showWorkOverHour(showHrMachineTime(tableItem, 32),-->
-                <!--showHrMachineTime(tableItem, 42)) +-->
-                <!--showWorkOverHour(showHrMachineTime(tableItem, 33),-->
-                <!--showHrMachineTime(tableItem, 43))}}-->
-
                 {{showWorkOverHourFromMin(showWorkOverMin(showHrMachineTime(tableItem, 31),
                 showHrMachineTime(tableItem, 41)) +
                 showWorkOverMin(showHrMachineTime(tableItem, 32),
@@ -224,12 +208,6 @@
                 showWorkOverMin(showHrMachineTime(tableItem, 33),
                 showHrMachineTime(tableItem, 43)))}}
 
-                <!--{{showWorkOverMin(showHrMachineTime(tableItem, 31),-->
-                <!--showHrMachineTime(tableItem, 41)) +-->
-                <!--showWorkOverMin(showHrMachineTime(tableItem, 32),-->
-                <!--showHrMachineTime(tableItem, 42)) +-->
-                <!--showWorkOverMin(showHrMachineTime(tableItem, 33),-->
-                <!--showHrMachineTime(tableItem, 43))}}-->
             </td>
 
             <!--加班分鐘數-->
@@ -256,26 +234,22 @@
 
             <!-- 地址 -->
             <td style="vertical-align: inherit;">
-                {{tableItem[0].gps_location}}
                 {{showGPSInfo(tableItem, 0)}}
             </td>
 
             <!-- 機身編號 -->
             <td style="vertical-align: inherit;">
-                {{tableItem[0].gps_type}}
                 {{showGPSInfo(tableItem, 1)}}
             </td>
 
             <!-- 打卡是否異常 -->
             <td style="vertical-align: inherit;">
-                {{tableItem[0].gps_status}}
                 {{showGPSInfo(tableItem, 2)}}
             </td>
         </tr>
 
         </tbody>
     </table>
-
 </div>
 
 
