@@ -667,6 +667,7 @@
 
             // 遲到判斷
             $scope.isLate = function (tableItem, type) {
+
                 var operateArray = [];
 
                 var isLate = false;
@@ -688,16 +689,31 @@
                         isLate = true;
                     }
                 }
-
                 return isLate;
+            }
+
+            $scope.isTravelNotLate = function (tableItem) {
+
+                var isTravelNotLate = false;
+
+                for (var index = 0; index < tableItem.length; index++) {
+                    if (tableItem[index].applyHour != undefined && tableItem[index].applyHour != "") {
+                        var travelApplicationWorkOnHour = parseInt(tableItem[index].time.substr(0,2));
+                        var travelApplicationWorkOnMin = parseInt(tableItem[index].time.substr(2,4));
+                        if (travelApplicationWorkOnHour <= 8 || (travelApplicationWorkOnHour == 9 && travelApplicationWorkOnMin == 0)) {
+                            isTravelNotLate = true;
+                        }
+                    }
+                }
+                return isTravelNotLate;
             }
 
             // 出差時數
             $scope.workTravelApplyHour = function (tableItem) {
-                console.log(tableItem);
+                // console.log(tableItem);
                 for (var index = 0; index < tableItem.length; index ++) {
                     if (tableItem[index].applyHour != undefined && tableItem[index].applyHour != "") {
-                        console.log(tableItem[index]);
+                        // console.log(tableItem[index]);
                         return tableItem[index].applyHour;
                     }
                 }
@@ -1074,7 +1090,7 @@
                                 hrMachineTravelItem.date = dateTemp;
                                 hrMachineTravelItem.location = resp.payload[index].location;
                                 // hrMachineItem.printType = arrayResult[0][index].printType;
-                                // hrMachineTravelItem.time = resp.payload[index].start_time.replace(":", "");
+                                hrMachineTravelItem.time = resp.payload[index].start_time.replace(":", "");
                                 // hrMachineTravelItem.workType = "1";
                                 hrMachineTravelItem.applyHour = resp.payload[index].applyHour;;
 
@@ -1085,7 +1101,7 @@
                                 hrMachineTravelItem.date = dateTemp;
                                 hrMachineTravelItem.location = resp.payload[index].location;
                                 // hrMachineItem.printType = arrayResult[0][index].printType;
-                                // hrMachineTravelItem.time = resp.payload[index].start_time.replace(":", "");
+                                hrMachineTravelItem.time = resp.payload[index].start_time.replace(":", "");
                                 // hrMachineTravelItem.workType = "1";
                                 hrMachineTravelItem.applyHour = resp.payload[index].applyHour;;
 
