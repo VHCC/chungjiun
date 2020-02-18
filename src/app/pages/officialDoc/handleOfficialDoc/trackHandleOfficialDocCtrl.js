@@ -220,7 +220,7 @@
         // }
 
 
-        $scope.reloadDocData_handle = function () {
+        $scope.reloadDocData_handle_track = function () {
             var formData = {
                 chargerDID: $cookies.get("userDID"),
                 isDocClose: false,

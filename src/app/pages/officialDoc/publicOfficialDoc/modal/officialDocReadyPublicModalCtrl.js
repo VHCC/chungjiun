@@ -39,6 +39,7 @@
         // Main Data
         $scope.parent = $scope.$resolve.parent;
         $scope.docData = $scope.$resolve.docData;
+        $scope.canDelete = $scope.$resolve.canDelete;
 
         // initial
         $scope.username = $cookies.get('username');
@@ -54,7 +55,6 @@
                         managerID: relatedProjects[i].managerID
                     };
                 }
-                // console.log($scope);
             });
 
         User.getAllUsers()
@@ -90,7 +90,6 @@
                 }
             })
 
-
         // *** Biz Logic ***
         $scope.showDocType = function (type) {
             return OfficialDocUtil.getDocType(type);
@@ -123,8 +122,6 @@
         }
 
         $scope.showVendorName = function (officialItem) {
-            // console.log(officialItem);
-            // console.log($scope.allVendors);
             var selected = [];
             if ($scope.allVendors === undefined) return;
             if (officialItem.vendorDID) {
@@ -191,13 +188,11 @@
                             $scope.pdfListCopy = res.payload;
                             break;
                     }
-
                 })
         }
 
         // show pdf View
         $scope.showPDFOrigin = function (dom, docData) {
-            // console.log($scope);
             $uibModal.open({
                 animation: true,
                 controller: 'officialDocPDFViewerPublicModalCtrl',
@@ -223,7 +218,6 @@
 
         // show pdf View
         $scope.showPDFCopy = function (dom, docData) {
-            console.log($scope);
             $uibModal.open({
                 animation: true,
                 controller: 'officialDocPDFViewerPublicModalCtrl',
@@ -248,8 +242,6 @@
         };
 
         $scope.downloadCJFile = function (dom, isCopy) {
-            // console.log(dom);
-
             var formData = {
                 archiveNumber: $scope.docData.archiveNumber,
                 fileName: dom.$parent.$parent.pdfItem.name,
@@ -274,9 +266,7 @@
                     }());
 
                     var downloadDataBuffer = base64ToArrayBuffer(res);
-
                     saveByteArray([downloadDataBuffer], moment().format('YYYYMMDD_HHmmss') + "_" + dom.$parent.$parent.pdfItem.name);
-
                 })
         }
 
@@ -306,9 +296,6 @@
         }
 
         $scope.updateOfficialDocToServerPublic = function(docData, handleRecord) {
-            console.log(handleRecord);
-            console.log(docData);
-
             var handleInfo = docData.stageInfo;
 
             var stageInfoHandle = {
@@ -327,21 +314,7 @@
             }
             OfficialDocUtil.updateOfficialDocItem(formData)
                 .success(function (res) {
-                    console.log(res);
                     $uibModalInstance.close();
-                    // docData.isDocCanPublic = true;
-                    //
-                    // var formData = {
-                    //     _id: docData._id,
-                    //     isDocClose: false,
-                    // }
-                    //
-                    // OfficialDocUtil.searchOfficialDocItem(formData)
-                    //     .success(function (res) {
-                    //         console.log(res.payload);
-                    //         docData = res.payload[0];
-                    //     })
-
                 })
         }
 
@@ -378,22 +351,25 @@
             OfficialDocUtil.updateOfficialDocItem(formData)
                 .success(function (res) {
                     $uibModalInstance.close();
-                    // docData.isDocClose = true;
-                    // docData.isDocPublic = true;
-                    //
-                    // var formData = {
-                    //     _id: docData._id,
-                    //     isDocClose: false,
-                    // }
-                    //
-                    // OfficialDocUtil.searchOfficialDocItem(formData)
-                    //     .success(function (res) {
-                    //         console.log(res.payload);
-                    //         docData = res.payload[0];
-                    //     })
 
                 })
         }
+
+        $scope.deletePublicDocFile = function (docData, pdfItem, type) {
+
+            var formData = {
+                archiveNumber: docData.archiveNumber,
+                fileName: pdfItem.name,
+                type: type,
+            }
+
+            OfficialDocUtil.deleteOfficialDocFile_public_fs(formData)
+                .success(function (resp) {
+                    $scope.fetchPDFFilesPublic(type);
+                })
+        }
+
+
     }
 
 })();
