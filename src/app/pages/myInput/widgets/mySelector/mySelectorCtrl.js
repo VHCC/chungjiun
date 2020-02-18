@@ -15,6 +15,7 @@
     /** @ngInject */
     function mySelectorCtrl($scope
                     , $filter) {
+
         $scope.workOffTypeOptions = [
             {
                 name: "事假",
@@ -33,6 +34,8 @@
                 type: 3
             },
         ];
+
+        // dynamic function
         $scope.workOffTypeChange = function (inputType) {
             var selectedRole = [];
             selectedRole = $filter('filter')($scope.workOffTypeOptions, {
@@ -41,6 +44,7 @@
             $scope.workOffType = selectedRole[0];
         }
 
+        // 補休特休 格式
         $scope.loadUserWorkOffExchangeForm = function () {
             $scope.workOffTypeOptions = [
                 {
@@ -54,7 +58,9 @@
             ];
         }
 
+        // 讀取允許假別
         $scope.loadUserWorkOffForm = function (table) {
+
             $scope.workOffTypeOptions = [
                 {
                     name: "事假",
@@ -73,6 +79,7 @@
                     type: 3
                 }
             ];
+
             $scope.loginUserForm = table;
 
             if ($scope.loginUserForm.start_married !== undefined
@@ -87,6 +94,7 @@
                     type: 4
                 })
             }
+
             if ($scope.loginUserForm.start_mourning !== undefined
                 && $scope.loginUserForm.start_mourning !== ""
                 && $scope.loginUserForm.start_mourning !== null
@@ -99,6 +107,7 @@
                     type: 5
                 })
             }
+
             if ($scope.loginUserForm.start_official !== undefined
                 && $scope.loginUserForm.start_official !== ""
                 && $scope.loginUserForm.start_official !== null
@@ -111,6 +120,7 @@
                     type: 6
                 })
             }
+
             if ($scope.loginUserForm.start_workinjury !== undefined
                 && $scope.loginUserForm.start_workinjury !== ""
                 && $scope.loginUserForm.start_workinjury !== null
@@ -123,6 +133,7 @@
                     type: 7
                 })
             }
+
             if ($scope.loginUserForm.start_maternity !== undefined
                 && $scope.loginUserForm.start_maternity !== ""
                 && $scope.loginUserForm.start_maternity !== null
@@ -135,6 +146,7 @@
                     type: 8
                 })
             }
+
             if ($scope.loginUserForm.start_paternity !== undefined
                 && $scope.loginUserForm.start_paternity !== ""
                 && $scope.loginUserForm.start_paternity !== null

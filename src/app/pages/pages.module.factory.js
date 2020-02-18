@@ -495,9 +495,11 @@
         .factory('WorkOffFormUtil', ['$http', function (http) {
             return {
                 // Create form
-                createWorkOffTableForm: function (formData) {
-                    return http.post('/api/createWorkOffTableForm', formData);
-                },
+                // Deprecated 20200218
+                // createWorkOffTableForm: function (formData) {
+                //     return http.post('/api/createWorkOffTableForm', formData);
+                // },
+
                 // Insert Work Off Item 20190515
                 insertWorkOffTableItem: function (formData) {
                     return http.post('/api/post_work_off_table_insert_item', formData);
@@ -505,42 +507,53 @@
                 removeWorkOffTableItem: function (formData) {
                     return http.post('/api/post_work_off_table_remove_item', formData);
                 },
+
                 // get form default
-                fetchUserWorkOffForm: function (formData) {
-                    return http.post('/api/fetchUserWorkOffForm', formData);
-                },
+                // Deprecated 20200218
+                // fetchUserWorkOffForm: function (formData) {
+                //     return http.post('/api/fetchUserWorkOffForm', formData);
+                // },
+
+                //@Deprecated 20200218
                 findWorkOffTableItemByUserDID_executive: function (formData) {
                     return http.post('/api/post_work_off_table_item_find_by_user_did_executive', formData);
                 },
+
+                //@Deprecated 20200218
                 findWorkOffTableItemByUserDID_boss: function (formData) {
                     return http.post('/api/post_work_off_table_item_find_by_user_did_boss', formData);
                 },
 
-                //@Deprecated
-                findWorkOffTableFormByTableIDArray: function (formData) {
-                    return http.post('/api/findWorkOffTableFormByTableIDArray', formData);
+                // integrated 20200218
+                findWorkOffTableItemByParameter: function(formData) {
+                    return http.post('/api/post_work_off_table_item_find_by_parameter', formData);
                 },
+
+                //@Deprecated
+                // findWorkOffTableFormByTableIDArray: function (formData) {
+                //     return http.post('/api/findWorkOffTableFormByTableIDArray', formData);
+                // },
                 /**
-                                         * @Deprecated
-                                         */
+                 * @Deprecated
+                 */
                 updateWorkOffTableSendReview: function (formData) {
                     return http.post('/api/updateWorkOffTableFormSendReview', formData);
                 },
                 /**
-                                         * @Deprecated
-                                         */
+                 * @Deprecated
+                 */
                 updateExecutiveAgree: function(formData) {
                     return http.post('/api/post_work_off_table_update_executive_agree', formData);
                 },
                 /**
-                                         * @Deprecated
-                                         */
+                 * @Deprecated
+                 */
                 updateBossAgree: function(formData) {
                     return http.post('/api/post_work_off_table_update_boss_agree', formData);
                 },
                 /**
-                                         * @Deprecated
-                                         */
+                 * @Deprecated
+                 */
                 updateDisAgree: function(formData) {
                     return http.post('/api/post_work_off_table_update_disagree', formData);
                 },
@@ -559,9 +572,14 @@
                 },
 
                 // find specify create form date
-                // @Deprecated
+                // @Deprecated no use check 20200219
                 findWorkOffTableFormByTableIDArrayAndParameters: function (formData) {
                     return http.post('/api/post_work_off_table_find_by_table_id_array_and_parameters', formData);
+                },
+
+                //get the count for agent check
+                fetchAllAgentItem: function(formData) {
+                    return http.post('/api/post_work_off_table_fetch_all_agent', formData);
                 },
 
                 // find specify user did form date

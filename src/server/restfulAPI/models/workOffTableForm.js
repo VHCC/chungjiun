@@ -104,7 +104,24 @@ module.exports = mongoose.model('workOffTableForm', {
 
     timestamp: {
         type : String,
-        default: moment(new Date()).format("YYYYMMDD_HHmmss")
+    },
+
+    agentID: {
+        type: String,
+    },
+
+    isAgentCheck: {
+        type: Boolean,
+        default: false,
+    },
+
+    isAgentReject: {
+        type: Boolean,
+        default: false,
+    },
+
+    agentReject_memo: {
+        type: String,
     },
 
 });
