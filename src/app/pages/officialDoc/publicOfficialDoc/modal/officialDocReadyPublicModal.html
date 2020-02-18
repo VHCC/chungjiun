@@ -37,7 +37,6 @@
                         <input type="text" class="form-control"
                                value="{{showVendorNameList()}}"
                                ng-disabled="true">
-
                     </div>
 
                     <div style="padding: 5px">
@@ -45,7 +44,6 @@
                         <input type="text" class="form-control"
                                value="{{showVendorCopyNameList()}}"
                                ng-disabled="true">
-
                     </div>
 
                     <div style="padding: 5px">
@@ -83,22 +81,7 @@
                                ng-disabled="true">
                     </div>
 
-                    <!--<div style="padding: 5px">-->
-                        <!--<label >內部處理期限</label>-->
-                        <!--<input type="text" class="form-control"-->
-                               <!--value="{{docData.lastDate}}"-->
-                               <!--ng-disabled="true">-->
-                    <!--</div>-->
-
-                    <!--<div style="padding: 5px">-->
-                        <!--<label >最後期限</label>-->
-                        <!--<input type="text" class="form-control"-->
-                               <!--value="{{docData.dueDate}}"-->
-                               <!--ng-disabled="true">-->
-                    <!--</div>-->
-
                 </div>
-
             </div>
 
             <!-- Right -->
@@ -146,7 +129,6 @@
                         ba-panel-title="公文存查"
                         ba-panel-class="with-scroll"
                         ng-show="docData.isDocCanPublic && !docData.isDocPublic">
-
                     <button type="submit"
                             style="float: right; margin-right: 10px"
                             ng-click="sendArchive(this, docData)"
@@ -156,16 +138,13 @@
 
                 </div>
 
-
             </div>
-
         </div>
 
         <div
                 ba-panel
                 ba-panel-title="公文及附件內容"
                 ba-panel-class="with-scroll">
-
             <div class="attachedzone_none col-md-12">
 
                 <div class="col-md-6">
@@ -182,8 +161,9 @@
                                 <div class="pdf-size"><span data-pdf-size="">{{pdfItem.size}}</span></div>
                                 <div class="pdf-filename"><span data-pdf-name="">{{pdfItem.name}}</span></div>
                             </div>
-                            <div class="pdf-delete-buttons" ng-show="false">
-                                <button class="btn btn-danger" ng-click="deleteFile(this)">刪除</button>
+                            <div class="pdf-delete-buttons"
+                                 ng-show="canDelete">
+                                <button class="btn btn-danger" ng-click="deletePublicDocFile(docData, pdfItem, 0)">刪除</button>
                             </div>
                         </div>
                         <div class="pdf-item"
@@ -196,13 +176,13 @@
                                 <div class="pdf-size"><span data-pdf-size="">{{pdfItem.size}}</span></div>
                                 <div class="pdf-filename"><span data-pdf-name="">{{pdfItem.name}}</span></div>
                             </div>
-                            <div class="pdf-delete-buttons" ng-show="false">
-                                <button class="btn btn-danger" ng-click="deleteFile(this)">刪除</button>
+                            <div class="pdf-delete-buttons"
+                                 ng-show="canDelete">
+                                <button class="btn btn-danger" ng-click="deletePublicDocFile(docData, pdfItem, 0)">刪除</button>
                             </div>
                         </div>
                     </my>
                 </div>
-
 
                 <div class="col-md-6">
                     <label >副本</label>
@@ -218,10 +198,12 @@
                                 <div class="pdf-size"><span data-pdf-size="">{{pdfItem.size}}</span></div>
                                 <div class="pdf-filename"><span data-pdf-name="">{{pdfItem.name}}</span></div>
                             </div>
-                            <div class="pdf-delete-buttons" ng-show="false">
-                                <button class="btn btn-danger" ng-click="deleteFile(this)">刪除</button>
+                            <div class="pdf-delete-buttons pdf-item"
+                                 ng-show="canDelete">
+                                <button class="btn btn-danger" ng-click="deletePublicDocFile(docData, pdfItem, 1)">刪除</button>
                             </div>
                         </div>
+
                         <div class="pdf-item"
                              ng-if="pdfItem.name.indexOf('.pdf') < 0"
                              ng-click="downloadCJFile(this, true)">
@@ -232,25 +214,22 @@
                                 <div class="pdf-size"><span data-pdf-size="">{{pdfItem.size}}</span></div>
                                 <div class="pdf-filename"><span data-pdf-name="">{{pdfItem.name}}</span></div>
                             </div>
-                            <div class="pdf-delete-buttons" ng-show="false">
-                                <button class="btn btn-danger" ng-click="deleteFile(this)">刪除</button>
+                            <div class="pdf-delete-buttons"
+                                 ng-if="pdfItem.name.indexOf('.pdf') < 0"
+                                 ng-show="canDelete">
+                                <button class="btn btn-danger" ng-click="deletePublicDocFile(docData, pdfItem, 1)">刪除</button>
                             </div>
                         </div>
+
                     </my>
                 </div>
 
             </div>
-
         </div>
 
     </div>
 
-
-
     <div class="modal-footer">
     </div>
-
-
-
 
 </div>

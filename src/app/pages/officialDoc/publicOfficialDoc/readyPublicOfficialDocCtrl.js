@@ -28,34 +28,13 @@
                 'OfficialDocVendorUtil',
                 '$compile',
                 'intiOfficialReadyPublicService',
-                function (scope,
-                          filter,
-                          $cookies,
-                          $uibModal,
-                          User,
-                          Project,
-                          OfficialDocUtil,
-                          OfficialDocVendorUtil,
-                          $compile,
-                          intiOfficialReadyPublicService) {
-                    return new ListCheckOfficialDocCtrl(
-                        scope,
-                        filter,
-                        $cookies,
-                        $uibModal,
-                        User,
-                        Project,
-                        OfficialDocUtil,
-                        OfficialDocVendorUtil,
-                        $compile,
-                        intiOfficialReadyPublicService
-                    );
-                }])
+                ReadyPublicOfficialDocCtrl
+            ])
 
     /**
      * @ngInject
      */
-    function ListCheckOfficialDocCtrl($scope,
+    function ReadyPublicOfficialDocCtrl($scope,
                                  $filter,
                                  $cookies,
                                  $uibModal,
@@ -190,7 +169,7 @@
             return selected.length ? selected[0].name : 'Not Set';
         }
 
-        $scope.showOfficialDocHandleInfo = function (item) {
+        $scope.showOfficialDocInfo = function (item) {
             $uibModal.open({
                 animation: true,
                 controller: 'officialDocReadyPublicModalCtrl',
@@ -202,6 +181,9 @@
                     },
                     parent: function () {
                         return $scope;
+                    },
+                    canDelete: function () {
+                        return true;
                     },
                 }
             }).result.then(function () {
@@ -223,7 +205,7 @@
                 })
         }
 
-        $scope.reloadDocData_ready = function () {
+        $scope.reloadDocData_ready_public = function () {
             var formData = {
                 type: 1, // receive = 0, public = 1
                 isDocCanPublic: true,
@@ -238,6 +220,19 @@
 
                     document.getElementById('includeHead_public').innerText = "";
 
+                    $scope.officialDocItems = resp.payload;
+                    $scope.officialDocItems.slice(0, resp.payload.length);
+
+                    for (var index = 0; index < resp.payload.length; index ++) {
+                        if ($scope.officialDocItems[index].archiveNumber.length != 11) {
+                            $scope.officialDocItems[index].archiveNumber =
+                                $scope.officialDocItems[index].archiveNumber +
+                                (($scope.officialDocItems[index].docDivision != undefined ||
+                                    $scope.officialDocItems[index].docDivision != null) ?
+                                    OfficialDocUtil.getDivision($scope.officialDocItems[index].docDivision) : "");
+                        }
+                    }
+
                     angular.element(
                         document.getElementById('includeHead_public'))
                         .append($compile(
@@ -246,10 +241,11 @@
                             "ba-panel-class= " +
                             "'with-scroll'" + ">" +
                             "<div " +
-                            "ng-include=\"'app/pages/officialDoc/publicOfficialDoc/table/officialDocReadyPublicModal.html'\">" +
+                            "ng-include=\"'app/pages/officialDoc/publicOfficialDoc/table/readyPublicOfficialTable.html'\">" +
                             "</div>" +
                             "</div>"
                         )($scope));
+
                 });
         }
 

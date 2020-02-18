@@ -96,6 +96,36 @@ module.exports = function (app) {
         });
     })
 
+    // remove doc file from storage
+    app.post(global.apiUrl.post_official_doc_delete_file_public_from_fs, function (req, res) {
+
+        var subTarget = "";
+
+        switch (req.body.type) {
+            case 0:
+                subTarget = "origin";
+                // origin
+                break;
+            case 1:
+                subTarget = "copy";
+                // copy
+                break;
+        }
+
+        var fetchDir = fileStorageDir + '/' + req.body.archiveNumber + "/" + subTarget;
+        fs.unlink(fetchDir + '/' + req.body.fileName, function (err) {
+            if (err) {
+                console.error(err);
+            } else {
+                console.log(req.body.fileName + ' has been Deleted');
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
+            }
+        });
+    })
+
     app.post(global.apiUrl.post_official_doc_create_item_public, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_create_item");
 

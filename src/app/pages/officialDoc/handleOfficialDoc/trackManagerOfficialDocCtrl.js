@@ -219,7 +219,7 @@
         //         })
         // }
 
-        $scope.reloadDocData_handle = function () {
+        $scope.reloadDocData_handle_manager = function () {
             var formData = {
                 signerDID: $cookies.get("userDID"),
                 isDocClose: false,
