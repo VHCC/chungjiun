@@ -282,6 +282,8 @@
                         <td style="vertical-align: inherit; text-align: center" width="180px">時間</td>
                         <td style="vertical-align: inherit; text-align: center">時數</td>
                         <td style="vertical-align: inherit; text-align: center">狀態</td>
+                        <!-- 20200218-->
+                        <td style="vertical-align: inherit; text-align: center">代理人</td>
                         <td style="vertical-align: inherit; text-align: center">主管確認</td>
                         <td style="vertical-align: inherit; text-align: center">行政確認</td>
                         <!--<td style="vertical-align: inherit; text-align: center">請假扣款</td>-->
@@ -295,7 +297,7 @@
                             <!--<span >{{table.tableID}}</span>-->
                             <button class="btn btn-danger editable-table-button btn-xs"
                                     ng-show="!rowform1.$waiting && !table.isSendReview"
-                                    ng-click="removeHolidayItem($index);">移除
+                                    ng-click="removeWorkOffItem($index);">移除
                             </button>
                         </td>
                         <!--日期-->
@@ -356,11 +358,64 @@
                             <div ng-show="!rowform1.$waiting && !table.isSendReview">
                                 <div class="buttons" ng-show="!rowform1.$visible">
                                     <button class="btn btn-danger editable-table-button btn-xs"
-                                            ng-click="reviewWorkOffTable(table, this, $index) ">提交審查
+                                            ng-click="reviewWorkOffItem(table, this, $index) ">提交審查
                                     </button>
                                 </div>
                             </div>
                         </td>
+
+                        <!--代理人確認-->
+                        <!--20200218-->
+                        <td class="form-group" style="vertical-align: inherit; text-align: center">
+                            <my ng-show="!rowform1.$waiting && !table.isSendReview">
+                                <ui-select ng-model="agent"
+                                           append-to-body="true"
+                                           on-select="changeWorkOffAgent(this)"
+                                           search-enabled="true">
+                                    <ui-select-match placeholder="選擇代理人">
+                                        {{$select.selected.name}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                            repeat="user in allUsers | filter: $select.search">
+                                        <span ng-bind-html="user.name"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </my>
+
+                            <div ng-show="!rowform1.$waiting && (table.isSendReview && !table.isAgentCheck) && (table.agentID)">
+                                <button class="btn btn-warning editable-table-button btn-xs"
+                                        style="color: black">
+                                    {{showAgentName(table)}}
+                                    <br>
+                                    確認作業中
+                                </button>
+                            </div>
+                            <div ng-show="table.isAgentCheck">
+                                <button class="btn btn-info editable-table-button btn-xs"
+                                        style="color: black">
+                                    {{showAgentName(table)}}
+                                    <br>
+                                    確認完成
+                                </button>
+                            </div>
+                            <div ng-show="!table.isSendReview && table.isAgentReject">
+                                <button class="btn btn-warning editable-table-button btn-xs"
+                                        style="color: black">
+                                    {{showAgentName(table)}}
+                                    <br>
+                                    退回
+                                </button>
+                            </div>
+                            <my ng-show="!table.isSendReview && table.isAgentReject"
+                                ng-class="{workAdd: hover}"
+                                class="mytooltip"
+                                ng-mouseover="hover = true"
+                                ng-mouseleave="hover = false">
+                                原因：<i class="ion-clipboard"></i>
+                                <span class="tooltiptext">{{table.agentReject_memo}}</span>
+                            </my>
+                        </td>
+
                         <!--主管確認-->
                         <td rowspan="2" style="vertical-align: inherit;">
                             <div ng-show="rowform1.$waiting || (table.isSendReview && !table.isBossCheck)">
@@ -450,26 +505,22 @@
             </div>
             <div class="row">
                 <button type="button"
-                        ng-click="addHolidayItem()"
+                        ng-click="addWorkOffItem()"
                         class="btn btn-info btn-icon">
                     <i class="ion-plus-round"/>
                 </button>
             </div>
             <hr>
-            <section class="col-md-6" ng-show="false">
-                <button progress-button="createSubmit(2000)"
-                        style="float: inherit;"
-                        id="btnCreate"
-                        pb-style="shrink"
-                        class="btn btn-warning">Save
-
-                </button>
-            </section>
 
         </uib-tab>
         <uib-tab heading="員工請假單" ng-click="initWorkOffMonthCheck()">
             <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_All_Tab.html'"></div>
         </uib-tab>
+
+        <uib-tab heading="代理人審核">
+             <work-off-agent></work-off-agent>
+        </uib-tab>
+
         <uib-tab heading="主管審核" ng-if="roleType === '2' || roleType === '100'"
                  ng-click="initUser()">
             <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_BossTab.html'"></div>

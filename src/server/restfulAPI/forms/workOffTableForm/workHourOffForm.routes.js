@@ -1,107 +1,11 @@
 var WorkOffForm = require('../../models/workOffForm');
 var WorkOffTableForm = require('../../models/workOffTableForm');
+var moment = require('moment');
 
 module.exports = function (app) {
     'use strict';
 
     // ----- define routes
-    // create table item
-    app.post(global.apiUrl.post_work_off_create_table, function (req, res) {
-        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_create_table");
-        console.log(JSON.stringify(req.body));
-        if (req.body.oldTables.hasOwnProperty('tableIDArray')) {
-            var findData = []
-            for (var index = 0; index < req.body.oldTables.tableIDArray.length; index++) {
-                var target = {
-                    _id: req.body.oldTables.tableIDArray[index],
-                    creatorDID: req.body.creatorDID,
-                }
-                findData.push(target);
-            }
-            // console.log(findData);
-            // 刪除既有 工時表格
-            WorkOffTableForm.remove(
-                {
-                    $or: findData,
-                }, function (err) {
-                    if (err) {
-                        console.log(err);
-                    }
-                })
-        }
-
-        var formTable = [];
-        var resultTable = [];
-        var resIndex = 0;
-        // New Items
-        for (var index = 0; index < req.body.formTables.length; index++) {
-            try {
-                WorkOffTableForm.create({
-                    creatorDID: req.body.formTables[index].creatorDID,
-
-                    workOffType: req.body.formTables[index].workOffType,
-                    create_formDate: req.body.formTables[index].create_formDate,
-                    year: req.body.formTables[index].year,
-                    month: req.body.formTables[index].month,
-                    day: req.body.formTables[index].day,
-                    start_time: req.body.formTables[index].start_time,
-                    end_time: req.body.formTables[index].end_time,
-
-                    //RIGHT
-                    isSendReview: req.body.formTables[index].isSendReview,
-                    isBossCheck: req.body.formTables[index].isBossCheck,
-                    isExecutiveCheck: req.body.formTables[index].isExecutiveCheck,
-
-                    // userHourSalary: req.body.formTables[index].userHourSalary,
-                    userMonthSalary: req.body.formTables[index].userMonthSalary,
-
-                }, function (err, workOffTable) {
-                    resIndex++;
-                    // workOffForm formTables 的參數
-                    var tableItem = {
-                        tableID: workOffTable._id,
-                    }
-                    // formTable.push(tableItem);
-                    if (resIndex === req.body.formTables.length) {
-
-                        var query = {
-                            creatorDID: req.body.creatorDID,
-                            // year: req.body.year,
-                        }
-
-                        WorkOffTableForm.find(query)
-                            .sort({
-                                _id: 1,
-                            })
-                            .exec(function (err, workOffTables) {
-                                if (err) {
-                                    res.send(err);
-                                } else {
-
-                                    for (var index = 0; index < workOffTables.length; index++) {
-                                        var tableItem = {
-                                            tableID: workOffTables[index]._id,
-                                        }
-                                        resultTable.push(tableItem);
-                                    }
-                                    res.status(200).send({
-                                        code: 200,
-                                        error: global.status._200,
-                                        payload: resultTable,
-                                    });
-                                }
-                            });
-                }
-                });
-            } catch (err) {
-                if (err) {
-                    res.send(err);
-                }
-            }
-        }
-
-
-    });
 
     // 20190515
     // insert work off item
@@ -109,7 +13,7 @@ module.exports = function (app) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_insert_item");
         console.log(JSON.stringify(req.body));
         // New Items
-            try {
+        try {
             WorkOffTableForm.create({
                 creatorDID: req.body.dataItem.creatorDID,
 
@@ -128,18 +32,27 @@ module.exports = function (app) {
 
                 userMonthSalary: req.body.dataItem.userMonthSalary,
 
+                timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
+
             }, function (err, workOffTable) {
-                var tableItem = {
-                    tableID: workOffTable._id,
+                if (err) {
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    var tableItem = {
+                        tableID: workOffTable._id,
+                    }
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: tableItem,
+                    });
                 }
-                res.status(200).send({
-                    code: 200,
-                    error: global.status._200,
-                    payload: tableItem,
-                });
+
             });
         } catch (err) {
             if (err) {
+                console.log(err);
                 res.send(err);
             }
         }
@@ -162,39 +75,50 @@ module.exports = function (app) {
             });
         } catch (err) {
             if (err) {
+                console.log(err);
                 res.send(err);
             }
         }
     });
 
-
-    // find table item by user DID to executive
-    // 請假單行政確認
-    app.post(global.apiUrl.post_work_off_table_item_find_by_user_did_executive, function (req, res) {
-        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_item_find_by_user_did_executive");
+    // find table item by parameter
+    app.post(global.apiUrl.post_work_off_table_item_find_by_parameter, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_item_find_by_parameter");
         console.log(JSON.stringify(req.body));
-        WorkOffTableForm.find({
-            creatorDID: req.body.creatorDID,
-            // year: req.body.year, // 年度
-            isSendReview: true,
-            isBossCheck: true,
-            isExecutiveCheck: false,
-        }, function (err, tables) {
-            if (err) {
-                res.send(err);
-            } else {
 
-                res.status(200).send({
-                    code: 200,
-                    error: global.status._200,
-                    payload: tables,
-                });
-            }
+        var keyArray = Object.keys(req.body);
+        var findQuery = {};
+        for (var index = 0; index < keyArray.length; index++) {
+            var evalString = "findQuery.";
+            evalString += keyArray[index];
+
+            var evalFooter = "req.body.";
+            evalFooter += keyArray[index];
+            eval(evalString + " = " + evalFooter);
+        }
+
+        console.log(findQuery);
+
+        WorkOffTableForm.find(
+            findQuery,
+            function (err, tables) {
+                if (err) {
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: tables,
+                    });
+                }
         })
     })
 
     // find table item by user DID to boss
     // 請假單主管確認
+    // stage 2
+    //@Deprecated 20200218
     app.post(global.apiUrl.post_work_off_table_item_find_by_user_did_boss, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_item_find_by_user_did_boss");
         console.log(JSON.stringify(req.body));
@@ -205,9 +129,9 @@ module.exports = function (app) {
             isBossCheck: false,
         }, function (err, tables) {
             if (err) {
+                console.log(err);
                 res.send(err);
             } else {
-
                 res.status(200).send({
                     code: 200,
                     error: global.status._200,
@@ -217,6 +141,31 @@ module.exports = function (app) {
         })
     })
 
+    // find table item by user DID to executive
+    // 請假單行政確認
+    // stage 3
+    //@Deprecated 20200218
+    app.post(global.apiUrl.post_work_off_table_item_find_by_user_did_executive, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_item_find_by_user_did_executive");
+        console.log(JSON.stringify(req.body));
+        WorkOffTableForm.find({
+            creatorDID: req.body.creatorDID,
+            isSendReview: true,
+            isBossCheck: true,
+            isExecutiveCheck: false,
+        }, function (err, tables) {
+            if (err) {
+                console.log(err);
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: tables,
+                });
+            }
+        })
+    })
 
     // 休假單更新
     // update table by parameters
@@ -233,7 +182,6 @@ module.exports = function (app) {
             evalFooter += keyArray[index];
             eval(evalString + " = " + evalFooter);
         }
-        // console.log(query);
 
         WorkOffTableForm.update({
             _id: req.body.tableID,
@@ -241,9 +189,9 @@ module.exports = function (app) {
             $set: query
         }, function (err) {
             if (err) {
+                console.log(err);
                 res.send(err);
             } else {
-
                 res.status(200).send({
                     code: 200,
                     error: global.status._200,
@@ -252,17 +200,18 @@ module.exports = function (app) {
         })
     })
 
-    // fetch all executive tables
-    app.post(global.apiUrl.post_work_off_table_fetch_all_executive, function (req, res) {
-        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_fetch_all_executive");
+    // fetch all agent related items
+    // stage 1
+    app.post(global.apiUrl.post_work_off_table_fetch_all_agent, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_fetch_all_agent");
         console.log(JSON.stringify(req.body));
         WorkOffTableForm.aggregate(
             [
                 {
                     $match: {
+                        agentID: req.body.userDID,
                         isSendReview: true,
-                        isBossCheck: true,
-                        isExecutiveCheck: false
+                        isAgentCheck: false
                     }
                 },
                 {
@@ -275,6 +224,7 @@ module.exports = function (app) {
                 }
             ], function (err, tables) {
                 if (err) {
+                    console.log(err);
                     res.send(err);
                 } else {
                     res.status(200).send({
@@ -288,6 +238,7 @@ module.exports = function (app) {
     })
 
     // fetch all boss tables
+    // stage 2
     app.post(global.apiUrl.post_work_off_table_fetch_all_boss, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_fetch_all_boss");
         console.log(JSON.stringify(req.body));
@@ -305,8 +256,8 @@ module.exports = function (app) {
                 {
                     $match: {
                         $or: findData,
-                        // year:108,
                         isSendReview: true,
+                        isAgentCheck: true,
                         isBossCheck: false
                     }
                 },
@@ -319,7 +270,44 @@ module.exports = function (app) {
                     }
                 }
             ], function (err, tables) {
-                console.log(tables);
+                if (err) {
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: tables,
+                    });
+                }
+            }
+        )
+    })
+
+    // fetch all executive tables
+    // stage 3
+    app.post(global.apiUrl.post_work_off_table_fetch_all_executive, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_fetch_all_executive");
+        console.log(JSON.stringify(req.body));
+        WorkOffTableForm.aggregate(
+            [
+                {
+                    $match: {
+                        isSendReview: true,
+                        isAgentCheck: true,
+                        isBossCheck: true,
+                        isExecutiveCheck: false
+                    }
+                },
+                {
+                    $group: {
+                        _id: "$creatorDID",
+                        count: {
+                            $sum: 1
+                        }
+                    }
+                }
+            ], function (err, tables) {
                 if (err) {
                     console.log(err);
                     res.send(err);
@@ -336,6 +324,7 @@ module.exports = function (app) {
 
 
     // find table by table id array and parameters
+    // Deprecated
     app.post(global.apiUrl.post_work_off_table_find_by_table_id_array_and_parameters, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_find_by_table_id_array_and_parameters");
         console.log(JSON.stringify(req.body));
@@ -348,11 +337,11 @@ module.exports = function (app) {
             }
             findData.push(target);
         }
-
         WorkOffTableForm.find({
             $or: findData,
         }, function (err, tables) {
             if (err) {
+                console.log(err);
                 res.send(err);
             } else {
                 res.status(200).send({
@@ -408,8 +397,8 @@ module.exports = function (app) {
                 userMonthSalary: req.body.userMonthSalary
             }
         }, function (err, result) {
-            console.log(result);
             if (err) {
+                console.log(err);
                 res.send(err);
             } else {
                 res.status(200).send({
@@ -420,8 +409,6 @@ module.exports = function (app) {
             }
         })
     })
-
-
 
     // 20190201 add
     // find table by creatorDID
@@ -455,8 +442,6 @@ module.exports = function (app) {
 
         query.creatorDID = req.body.creatorDID;
 
-        // console.log(query);
-
         WorkOffTableForm.find(query)
             .sort({
                 create_formDate: 1,
@@ -464,19 +449,16 @@ module.exports = function (app) {
             })
             .exec(function (err, tables) {
                 if (err) {
+                    console.log(err);
                     res.send(err);
                 } else {
-                    // console.log(tables.length);
                     res.status(200).send({
                         code: 200,
                         error: global.status._200,
                         payload: tables,
                     });
                 }
-
             });
-
-
     })
 
 }

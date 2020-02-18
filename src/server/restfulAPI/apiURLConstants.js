@@ -122,11 +122,9 @@ global.apiUrl = {
     post_work_off_table_insert_item : '/api/post_work_off_table_insert_item', // 20190515
     post_work_off_table_remove_item : '/api/post_work_off_table_remove_item', // 20190515
     post_work_off_table_find_by_table_id_array : '/api/findWorkOffTableFormByTableIDArray', //@Deprecated
-    post_work_off_table_find_by_table_id_array_and_parameters : '/api/post_work_off_table_find_by_table_id_array_and_parameters',
+    post_work_off_table_find_by_table_id_array_and_parameters : '/api/post_work_off_table_find_by_table_id_array_and_parameters', // Deprecated
     post_work_off_table_find_by_user_did : '/api/post_work_off_table_find_by_user_did',
     post_work_off_table_update_salary : '/api/post_work_off_table_update_salary',
-    post_work_off_table_item_find_by_user_did_executive : '/api/post_work_off_table_item_find_by_user_did_executive',
-    post_work_off_table_item_find_by_user_did_boss : '/api/post_work_off_table_item_find_by_user_did_boss',
     post_work_off_table_update_send_review : '/api/updateWorkOffTableFormSendReview', //@Deprecated
     post_work_off_table_update_executive_agree : '/api/post_work_off_table_update_executive_agree', //@Deprecated
     post_work_off_table_update_boss_agree : '/api/post_work_off_table_update_boss_agree', //@Deprecated
@@ -136,6 +134,11 @@ global.apiUrl = {
     post_work_off_table_fetch_all_user : '/api/fetchUserWorkOffForm', //@Deprecated
     post_work_off_table_fetch_all_executive : '/api/post_work_off_table_fetch_all_executive',
     post_work_off_table_fetch_all_boss : '/api/post_work_off_table_fetch_all_boss',
+    post_work_off_table_fetch_all_agent : '/api/post_work_off_table_fetch_all_agent',
+    post_work_off_table_item_find_by_user_did_boss : '/api/post_work_off_table_item_find_by_user_did_boss', //@Deprecated 20200218
+    post_work_off_table_item_find_by_user_did_executive : '/api/post_work_off_table_item_find_by_user_did_executive', //@Deprecated 20200218
+    // integrate
+    post_work_off_table_item_find_by_parameter : '/api/post_work_off_table_item_find_by_parameter',
 
     //workOffExchangeTable Form
     post_work_off_exchange_table_insert_item : '/api/post_work_off_exchange_table_insert_item',
