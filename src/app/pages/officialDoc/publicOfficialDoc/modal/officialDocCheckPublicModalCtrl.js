@@ -53,7 +53,8 @@
                 for (var i = 0; i < relatedProjects.length; i++) {
                     $scope.relatedProjects[i] = {
                         value: relatedProjects[i]._id,
-                        managerID: relatedProjects[i].managerID
+                        managerID: relatedProjects[i].managerID,
+                        majorID: relatedProjects[i].majorID
                     };
                 }
                 // console.log($scope);
@@ -124,6 +125,23 @@
             return selected.length ? selected[0].name : 'Not Set';
         }
 
+        $scope.showMajor = function (officialItem) {
+            var selected = [];
+            if ($scope.relatedProjects === undefined) return;
+            if (officialItem.prjDID) {
+                selected = $filter('filter')($scope.relatedProjects, {
+                    value: officialItem.prjDID
+                });
+            }
+            var selected_major = [];
+            if (selected.length) {
+                selected_major = $filter('filter')($scope.allUsers, {
+                    value: selected[0].majorID
+                });
+            }
+            return selected_major.length ? selected_major[0].name : 'Not Set';
+        }
+
         $scope.showVendorName = function (officialItem) {
             // console.log(officialItem);
             // console.log($scope.allVendors);
@@ -183,7 +201,6 @@
 
             OfficialDocUtil.fetchOfficialDocFiles_public(formData)
                 .success(function (res) {
-                    console.log(res);
                     switch (type) {
                         case 0:
                             $scope.pdfList = res.payload;
@@ -198,7 +215,6 @@
 
         // show pdf View
         $scope.showPDFOrigin = function (dom, docData) {
-            // console.log($scope);
             $uibModal.open({
                 animation: true,
                 controller: 'officialDocPDFViewerPublicModalCtrl',
@@ -224,7 +240,6 @@
 
         // show pdf View
         $scope.showPDFCopy = function (dom, docData) {
-            console.log($scope);
             $uibModal.open({
                 animation: true,
                 controller: 'officialDocPDFViewerPublicModalCtrl',

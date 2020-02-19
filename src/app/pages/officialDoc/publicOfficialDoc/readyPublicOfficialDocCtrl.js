@@ -77,7 +77,8 @@
                     for (var i = 0; i < relatedProjects.length; i++) {
                         $scope.relatedProjects[i] = {
                             value: relatedProjects[i]._id,
-                            managerID: relatedProjects[i].managerID
+                            managerID: relatedProjects[i].managerID,
+                            majorID: relatedProjects[i].majorID
                         };
                     }
                 });
@@ -141,6 +142,23 @@
             return selected.length ? selected[0].name : 'Not Set';
         }
 
+        $scope.showMajor = function (officialItem) {
+            var selected = [];
+            if ($scope.relatedProjects === undefined) return;
+            if (officialItem.prjDID) {
+                selected = $filter('filter')($scope.relatedProjects, {
+                    value: officialItem.prjDID
+                });
+            }
+            var selected_major = [];
+            if (selected.length) {
+                selected_major = $filter('filter')($scope.allUsers, {
+                    value: selected[0].majorID
+                });
+            }
+            return selected_major.length ? selected_major[0].name : 'Not Set';
+        }
+
         $scope.showManager = function (officialItem) {
             var selected = [];
             if ($scope.relatedProjects === undefined) return;
@@ -156,6 +174,11 @@
                 });
             }
             return selected_manager.length ? selected_manager[0].name : 'Not Set';
+        }
+
+        $scope.showSigner = function (officialItem) {
+            console.log(officialItem.stageInfo);
+            return officialItem.stageInfo[officialItem.stageInfo.length - 1].handleName;
         }
 
         $scope.showVendorName = function (officialItem) {

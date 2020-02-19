@@ -86,7 +86,6 @@
         }
 
         $scope.showVendorNameList = function () {
-            console.log($scope.docData.vendorItem);
             var result = "";
             for (var index = 0; index < $scope.docData.vendorItem.length; index ++) {
                 result += $scope.docData.vendorItem[index].vendorName + ", ";
@@ -95,7 +94,6 @@
         }
 
         $scope.showVendorCopyNameList = function () {
-            console.log($scope.docData.vendorItemCopy);
             var result = "";
             for (var index = 0; index < $scope.docData.vendorItemCopy.length; index ++) {
                 result += $scope.docData.vendorItemCopy[index].vendorName + ", ";
