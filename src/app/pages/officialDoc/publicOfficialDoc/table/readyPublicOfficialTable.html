@@ -23,8 +23,8 @@
             <!--<th st-sort="receiveNumber" style="width: 7%">文號編號</th>-->
 
             <th st-sort="docType" style="width: 4%">文別</th>
-            <!--<th st-sort="chargerDID" style="width: 5%">承辦人</th>-->
-            <th style="width: 5%">經理</th>
+            <th st-sort="chargerDID" style="width: 5%">承辦人</th>
+            <th style="width: 5%">審核人</th>
 
             <th st-sort="prjCode" style="width: 10%">專案編號</th>
             <!--<th st-sort="vendorDID" style="width: 5%">來文機關</th>-->
@@ -32,7 +32,7 @@
             <th st-sort="publicDate" style="width: 7%">發文日期</th>
             <!--<th st-sort="dueDate" style="width: 7%">處理期限</th>-->
 
-            <th st-sort="isDocCanPublic" style="width: 5%">已發文</th>
+            <!--<th st-sort="isDocCanPublic" style="width: 5%">已發文</th>-->
         </tr>
         <tr>
             <th>
@@ -63,6 +63,7 @@
 
             <th/>
             <th/>
+            <th/>
 
             <th>
                 <input st-search="prjCode"
@@ -74,7 +75,7 @@
 
             <th/>
             <!--<th/>-->
-            <th/>
+            <!--<th/>-->
 
         </tr>
 
@@ -101,9 +102,9 @@
             <!--文別-->
             <td style="width: 4%">{{ showDocType(item.docType) }}</td>
             <!--承辦人-->
-            <!--<td style="width: 5%">{{ showCharger(item) }}</td>-->
-            <!--經理-->
-            <td style="width: 5%">{{ showManager(item) }}</td>
+            <td style="width: 5%">{{ showMajor(item) }}</td>
+            <!--審核人-->
+            <td style="width: 5%">{{ showSigner(item) }}</td>
 
             <!--專案編號-->
             <td style="width: 8%">{{ item.prjCode }}</td>
@@ -116,18 +117,18 @@
             <!--<td style="width: 7%">{{ item.dueDate }}</td>-->
 
             <!--已讀-->
-            <td style="width: 7%">
-                <div ng-show="!item.isDocCanPublic">
-                    <button class="btn btn-danger btn-xs">
-                        未確認
-                    </button>
-                </div>
-                <div ng-show="item.isDocCanPublic">
-                    <button class="btn btn-primary btn-xs">
-                        同意發文
-                    </button>
-                </div>
-            </td>
+            <!--<td style="width: 7%">-->
+                <!--<div ng-show="!item.isDocCanPublic">-->
+                    <!--<button class="btn btn-danger btn-xs">-->
+                        <!--未確認-->
+                    <!--</button>-->
+                <!--</div>-->
+                <!--<div ng-show="item.isDocCanPublic">-->
+                    <!--<button class="btn btn-primary btn-xs">-->
+                        <!--同意發文-->
+                    <!--</button>-->
+                <!--</div>-->
+            <!--</td>-->
 
         </tr>
         </tbody>
