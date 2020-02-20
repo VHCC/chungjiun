@@ -397,7 +397,7 @@
                     // 產
                     case 8:
                         return result / 8;
-                    // 陪產
+                    // 陪產(檢)
                     case 9:
                         return result / 8;
                     case 1001:
@@ -446,7 +446,7 @@
                     // 產
                     case 8:
                         return result / 8;
-                    // 陪產
+                    // 陪產(檢)
                     case 9:
                         return result / 8;
                     case 1001:

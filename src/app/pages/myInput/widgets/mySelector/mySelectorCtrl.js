@@ -155,7 +155,7 @@
                 && $scope.loginUserForm.end_paternity !== null
             ) {
                 $scope.workOffTypeOptions.push({
-                    name: "陪產假",
+                    name: "陪產(檢)假",
                     type: 9
                 })
             }
