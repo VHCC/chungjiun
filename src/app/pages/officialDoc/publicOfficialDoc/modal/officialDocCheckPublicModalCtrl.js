@@ -17,6 +17,7 @@
                 'Project',
                 'OfficialDocUtil',
                 'OfficialDocVendorUtil',
+                'NotificationMsgUtil',
                 '$uibModalInstance',
                 'TimeUtil',
                 'DateUtil',
@@ -33,6 +34,7 @@
                                                Project,
                                                OfficialDocUtil,
                                                OfficialDocVendorUtil,
+                                               NotificationMsgUtil,
                                                $uibModalInstance,
                                                TimeUtil,
                                                DateUtil) {
@@ -341,21 +343,27 @@
             }
             OfficialDocUtil.updateOfficialDocItem(formData)
                 .success(function (res) {
-                    console.log(res);
-                    $uibModalInstance.close();
-                    // docData.isDocCanPublic = true;
-                    //
-                    // var formData = {
-                    //     _id: docData._id,
-                    //     isDocClose: false,
-                    // }
-                    //
-                    // OfficialDocUtil.searchOfficialDocItem(formData)
-                    //     .success(function (res) {
-                    //         console.log(res.payload);
-                    //         docData = res.payload[0];
-                    //     })
+                    // $uibModalInstance.close();
 
+                    var targetList = ["5b3c65903e93d2f3b0a0c582", "5ba4af019bdd2a0ef86dc5ec"];
+                    var msgTopicList = [1000];
+                    var msgDetailList = [1002];
+                    var memoList = [$scope.firstFullDate_manager];
+
+                    var formData = {
+                        creatorDID: $scope.userDID,
+                        msgTargetArray: targetList,
+                        msgMemoArray: memoList,
+                        msgTopicArray: msgTopicList,
+                        msgDetailArray: msgDetailList,
+                    }
+                    NotificationMsgUtil.createMsgItem(formData)
+                        .success(function (req) {
+                            $uibModalInstance.close();
+                        })
+                        .error(function (req) {
+                            $scope.fetchRelatedMembers();
+                        })
                 })
         }
 
@@ -392,18 +400,6 @@
                 .success(function (res) {
                     console.log(res);
                     $uibModalInstance.close();
-                    // docData.isDocClose = true;
-                    //
-                    // var formData = {
-                    //     _id: docData._id,
-                    //     isDocClose: false,
-                    // }
-                    //
-                    // OfficialDocUtil.searchOfficialDocItem(formData)
-                    //     .success(function (res) {
-                    //         console.log(res.payload);
-                    //         docData = res.payload[0];
-                    //     })
 
                 })
         }
