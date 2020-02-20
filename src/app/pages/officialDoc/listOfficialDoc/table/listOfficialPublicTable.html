@@ -18,6 +18,8 @@
 
             <th st-sort="docType" style="width: 4%">文別</th>
             <th st-sort="chargerDID" style="width: 5%">承辦人</th>
+            <th style="width: 5%">審核人</th>
+            <th style="width: 5%">發文人</th>
 
             <th st-sort="prjCode" style="width: 8%">專案編號</th>
 
@@ -40,6 +42,8 @@
                        type="search"/>
             </th>
 
+            <th/>
+            <th/>
             <th/>
             <th/>
 
@@ -85,8 +89,15 @@
 
             <!--文別-->
             <td style="width: 4%">{{ showDocType(item.docType) }}</td>
-            <!--處理人-->
-            <td style="width: 5%">{{ showHandler(item) }}</td>
+
+            <!--承辦人-->
+            <td style="width: 5%">{{ showMajor(item) }}</td>
+
+            <!--審核人-->
+            <td style="width: 5%">{{ showSigner(item) }}</td>
+
+            <!--發文人-->
+            <td style="width: 5%">{{ showPublisher(item) }}</td>
 
             <!--專案編號-->
             <td style="width: 8%">{{ item.prjCode }}</td>

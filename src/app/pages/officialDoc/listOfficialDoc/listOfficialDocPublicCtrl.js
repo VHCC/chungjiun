@@ -22,32 +22,13 @@
                 '$cookies',
                 '$uibModal',
                 'User',
+                'Project',
                 'OfficialDocUtil',
                 'OfficialDocVendorUtil',
                 '$compile',
                 'intiOfficialDocPublicService',
-                function (scope,
-                          filter,
-                          $cookies,
-                          $uibModal,
-                          User,
-                          OfficialDocUtil,
-                          OfficialDocVendorUtil,
-                          $compile,
-                          intiOfficialDocPublicService) {
-                    return new ListOfficialDocPublicCtrl(
-                        scope,
-                        filter,
-                        $cookies,
-                        $uibModal,
-                        User,
-                        OfficialDocUtil,
-                        OfficialDocVendorUtil,
-                        $compile,
-                        intiOfficialDocPublicService
-                    );
-                }])
-    ;
+                ListOfficialDocPublicCtrl
+            ])
 
     /**
      * @ngInject
@@ -57,13 +38,13 @@
                                  $cookies,
                                  $uibModal,
                                  User,
+                                 Project,
                                  OfficialDocUtil,
                                  OfficialDocVendorUtil,
                                  $compile,
                                  intiOfficialDocPublicService) {
 
         intiOfficialDocPublicService.then(function (resp) {
-            console.log(resp);
             $scope.officialDocItems = resp.data.payload;
             $scope.officialDocItems.slice(0, resp.data.payload.length);
 
@@ -91,6 +72,18 @@
                     "</div>" +
                     "</div>"
                 )($scope));
+
+            Project.findAll()
+                .success(function (relatedProjects) {
+                    $scope.relatedProjects = [];
+                    for (var i = 0; i < relatedProjects.length; i++) {
+                        $scope.relatedProjects[i] = {
+                            value: relatedProjects[i]._id,
+                            managerID: relatedProjects[i].managerID,
+                            majorID: relatedProjects[i].majorID
+                        };
+                    }
+                });
 
             User.getAllUsers()
                 .success(function (allUsers) {
@@ -142,7 +135,6 @@
         }
 
         $scope.showCharger = function (officialItem) {
-            // console.log(officialItem);
             var selected = [];
             if ($scope.allUsers === undefined) return;
             if (officialItem.chargerDID) {
@@ -154,7 +146,6 @@
         }
 
         $scope.showHandler = function (officialItem) {
-            // console.log(officialItem);
             var selected = [];
             if ($scope.allUsers === undefined) return;
             if (officialItem.handlerDID) {
@@ -163,6 +154,34 @@
                 });
             }
             return selected.length ? selected[0].name : 'Not Set';
+        }
+
+        $scope.showMajor = function (officialItem) {
+            var selected = [];
+            if ($scope.relatedProjects === undefined) return;
+            if (officialItem.prjDID) {
+                selected = $filter('filter')($scope.relatedProjects, {
+                    value: officialItem.prjDID
+                });
+            }
+            var selected_major = [];
+            if (selected.length) {
+                selected_major = $filter('filter')($scope.allUsers, {
+                    value: selected[0].majorID
+                });
+            }
+            return selected_major.length ? selected_major[0].name : 'Not Set';
+        }
+
+        $scope.showSigner = function (officialItem) {
+            if (officialItem.stageInfo.length == 2) {
+                return officialItem.stageInfo[officialItem.stageInfo.length - 1].handleName;
+            }
+            return officialItem.stageInfo.length > 1 ? officialItem.stageInfo[officialItem.stageInfo.length - 2].handleName : "尚未簽核";
+        }
+
+        $scope.showPublisher = function (officialItem) {
+            return officialItem.stageInfo.length > 2 ? officialItem.stageInfo[officialItem.stageInfo.length - 1].handleName : "尚未發文";
         }
 
         $scope.showVendorName = function (officialItem) {

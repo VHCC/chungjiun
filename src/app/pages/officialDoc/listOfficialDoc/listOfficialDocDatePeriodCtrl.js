@@ -13,28 +13,8 @@
                 'OfficialDocVendorUtil',
                 'DateUtil',
                 '$compile',
-                function (scope,
-                          filter,
-                          $cookies,
-                          $uibModal,
-                          User,
-                          OfficialDocUtil,
-                          OfficialDocVendorUtil,
-                          DateUtil,
-                          $compile) {
-                    return new ListOfficialDocCtrl(
-                        scope,
-                        filter,
-                        $cookies,
-                        $uibModal,
-                        User,
-                        OfficialDocUtil,
-                        OfficialDocVendorUtil,
-                        DateUtil,
-                        $compile
-                    );
-                }])
-    ;
+                ListOfficialDocCtrl
+            ])
 
     /**
      * @ngInject
