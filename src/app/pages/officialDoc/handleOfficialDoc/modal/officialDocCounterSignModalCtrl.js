@@ -262,7 +262,8 @@
         // main
         // 提交會簽
         $scope.sendCounterSign = function (dom, docData) {
-            $scope.checkText = "會簽情形：" + "會簽完成";
+            $scope.checkText = "會簽情形：" + dom.handleRecord;
+            $scope.handleRecord = dom.handleRecord;
             $scope.handleResult = "會簽完成";
             $scope.docData = docData;
             ngDialog.open({
@@ -273,9 +274,7 @@
             });
         }
 
-        $scope.updateOfficialDocToServer = function(docData, handleResult) {
-
-            console.log(docData);
+        $scope.updateOfficialDocToServer = function(docData, handleRecord, handleResult) {
 
             var newCounterSignList = []
 
@@ -292,6 +291,7 @@
                 timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
                 stage: "會簽",
                 handleName: $scope.username,
+                handleRecord: handleRecord,
                 handleResult: handleResult,
             }
 
