@@ -177,7 +177,6 @@
         }
 
         $scope.showSigner = function (officialItem) {
-            console.log(officialItem.stageInfo);
             return officialItem.stageInfo[officialItem.stageInfo.length - 1].handleName;
         }
 
@@ -211,7 +210,7 @@
                 }
             }).result.then(function () {
                 // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
-                $scope.reloadDocData_ready();
+                $scope.reloadDocData_ready_public();
             });
             $scope.readOfficialDoc(item);
         }

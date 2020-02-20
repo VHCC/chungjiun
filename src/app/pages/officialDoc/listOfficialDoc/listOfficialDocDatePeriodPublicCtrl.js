@@ -13,33 +13,13 @@
                 'OfficialDocVendorUtil',
                 'DateUtil',
                 '$compile',
-                function (scope,
-                          filter,
-                          $cookies,
-                          $uibModal,
-                          User,
-                          OfficialDocUtil,
-                          OfficialDocVendorUtil,
-                          DateUtil,
-                          $compile) {
-                    return new ListOfficialDocCtrl(
-                        scope,
-                        filter,
-                        $cookies,
-                        $uibModal,
-                        User,
-                        OfficialDocUtil,
-                        OfficialDocVendorUtil,
-                        DateUtil,
-                        $compile
-                    );
-                }])
+                ListOfficialDocPublicCtrl])
     ;
 
     /**
      * @ngInject
      */
-    function ListOfficialDocCtrl($scope,
+    function ListOfficialDocPublicCtrl($scope,
                                  $filter,
                                  $cookies,
                                  $uibModal,
@@ -110,7 +90,7 @@
                         document.getElementById('includeHead_public'))
                         .append($compile(
                             "<div ba-panel ba-panel-title=" +
-                            "'公文列表 - " + resp.payload.length +
+                            "'發文列表 - " + resp.payload.length +
                             " ( " + $('#inputStartDay_public')[0].value + "~" + $('#inputEndDay_public')[0].value + " )" +
                             "'" +
                             "ba-panel-class= " +
@@ -123,32 +103,6 @@
                 })
         }
 
-        // $scope.getAllDocs = function () {
-        //
-        //     OfficialDocUtil.fetchOfficialDocAllItem()
-        //         .success(function (resp) {
-        //             console.log(resp);
-        //
-        //             $scope.officialDocItems = resp.payload;
-        //             $scope.officialDocItems.slice(0, resp.payload.length);
-        //
-        //             document.getElementById('includeHead_public').innerText = "";
-        //             angular.element(
-        //                 document.getElementById('includeHead_public'))
-        //                 .append($compile(
-        //                     "<div ba-panel ba-panel-title=" +
-        //                     "'公文列表 - " + resp.payload.length +
-        //                     " ( " + $('#inputStartDay_public')[0].value + "~" + $('#inputEndDay_public')[0].value + " )" +
-        //                     "'" +
-        //                     "ba-panel-class= " +
-        //                     "'with-scroll'" + ">" +
-        //                     "<div " +
-        //                     "ng-include=\"'app/pages/officialDoc/listOfficialDoc/table/listOfficialPublicTable.html'\">" +
-        //                     "</div>" +
-        //                     "</div>"
-        //                 )($scope));
-        //         })
-        // }
     }
 
 })();
