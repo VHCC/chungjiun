@@ -1,5 +1,5 @@
 <div class="page-top clearfix" scroll-position="scrolled" max-height="50" ng-class="{'scrolled': scrolled}">
-    <a href="#/dashboard" class="al-logo clearfix"><span>保健視</span>眼鏡</a>
+    <a href="#/dashboard" class="al-logo clearfix"><span>崇峻</span>工程</a>
     <a href class="collapse-menu-link ion-navicon" ba-sidebar-toggle-menu></a>
 
     <div ng-controller="myPageTopController" ng-init="initPageTop()">
@@ -23,15 +23,26 @@
                 </a>
             </div>
 
-            <div class="breadcrumb al-breadcrumb" style="text-align: center; padding-right: 20px" ng-if="roleType == 2 || roleType ==100">
-                <span ng-if="roleType == 2 || roleType ==100"
-                      style=" color: #FFFFFFFF">經理需審核人數：{{managerNotification}}</span>
-                <br/>
-                <span ng-if="roleType ==100"
-                      style=" color: #FFFFFFFF">行政總管需審核人數：{{executiveNotification}}</span>
+            <div class="breadcrumb al-breadcrumb" style="text-align: center" id="registerLineNotify">
+                <!--<a href="https://notify-bot.line.me/oauth/authorize?response_type=code&client_id=8KVRmFQC5LQ0bCfjRVzmxV&redirect_uri=http://localhost:3000/api/post_line_notify_auth_register&scope=notify&state={{userDID}}" class="signout">-->
+                <a href="https://notify-bot.line.me/oauth/authorize?response_type=code&client_id=8KVRmFQC5LQ0bCfjRVzmxV&redirect_uri=https://vhc.ichenprocin.dsmynas.com/api/post_line_notify_auth_register&scope=notify&state={{userDID}}" class="signout">
+                    <i class="ion-android-person-add"/>
+                    <br>
+                    連動 Line 通知
+                    <br>
+                </a >
             </div>
 
+            <!--<div class="breadcrumb al-breadcrumb" style="text-align: center; padding-right: 20px" ng-if="roleType == 2 || roleType ==100">-->
+                <!--<span ng-if="roleType == 2 || roleType ==100"-->
+                      <!--style=" color: #FFFFFFFF">經理需審核人數：{{managerNotification}}</span>-->
+                <!--<br/>-->
+                <!--<span ng-if="roleType ==100"-->
+                      <!--style=" color: #FFFFFFFF">行政總管需審核人數：{{executiveNotification}}</span>-->
+            <!--</div>-->
+
             <my-msg-center></my-msg-center>
+            <!--<msg-center></msg-center>-->
 
         </div>
 
@@ -50,10 +61,6 @@
         <!--</div>-->
 
     </div>
-
-
-
-
 
 </div>
 
