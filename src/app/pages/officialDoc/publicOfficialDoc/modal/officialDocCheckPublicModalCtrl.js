@@ -322,9 +322,6 @@
         }
 
         $scope.updateOfficialDocToServerPublic = function(docData, handleRecord) {
-            console.log(handleRecord);
-            console.log(docData);
-
             var handleInfo = docData.stageInfo;
 
             var stageInfoHandle = {
@@ -343,64 +340,87 @@
             }
             OfficialDocUtil.updateOfficialDocItem(formData)
                 .success(function (res) {
-                    // $uibModalInstance.close();
+                    $uibModalInstance.close();
 
-                    var targetList = ["5b3c65903e93d2f3b0a0c582", "5ba4af019bdd2a0ef86dc5ec"];
-                    var msgTopicList = [1000];
-                    var msgDetailList = [1002];
-                    var memoList = [$scope.firstFullDate_manager];
-
-                    var formData = {
-                        creatorDID: $scope.userDID,
-                        msgTargetArray: targetList,
-                        msgMemoArray: memoList,
-                        msgTopicArray: msgTopicList,
-                        msgDetailArray: msgDetailList,
-                    }
-                    NotificationMsgUtil.createMsgItem(formData)
-                        .success(function (req) {
-                            $uibModalInstance.close();
-                        })
-                        .error(function (req) {
-                            $scope.fetchRelatedMembers();
-                        })
+                    // var targetList = ["5b3c65903e93d2f3b0a0c582", "5ba4af019bdd2a0ef86dc5ec"];
+                    // var msgTopicList = [1000];
+                    // var msgDetailList = [1002];
+                    // var memoList = [$scope.firstFullDate_manager];
+                    //
+                    // var formData = {
+                    //     creatorDID: $scope.userDID,
+                    //     msgTargetArray: targetList,
+                    //     msgMemoArray: memoList,
+                    //     msgTopicArray: msgTopicList,
+                    //     msgDetailArray: msgDetailList,
+                    // }
+                    // NotificationMsgUtil.createMsgItem(formData)
+                    //     .success(function (req) {
+                    //         $uibModalInstance.close();
+                    //     })
+                    //     .error(function (req) {
+                    //         $scope.fetchRelatedMembers();
+                    //     })
                 })
         }
 
         // 提交歸檔
-        $scope.sendArchive = function (dom, docData) {
-            $scope.checkText = "是否歸檔：" + docData.archiveNumber;
+        // $scope.sendArchive = function (dom, docData) {
+        //     $scope.checkText = "是否歸檔：" + docData.archiveNumber;
+        //     $scope.docData = docData;
+        //     ngDialog.open({
+        //         template: 'app/pages/officialDoc/handleOfficialDoc/dialog/closeOfficialDocReviewSend_Modal.html',
+        //         className: 'ngdialog-theme-default',
+        //         scope: $scope,
+        //         showClose: false,
+        //     });
+        // }
+        //
+        // $scope.updateOfficialDocToServer_Archive = function(docData) {
+        //
+        //     var handleInfo = docData.stageInfo;
+        //
+        //     var stageInfoHandle = {
+        //         timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
+        //         stage: "歸檔",
+        //         handleName: $scope.username,
+        //     }
+        //
+        //     handleInfo.push(stageInfoHandle);
+        //
+        //     var formData = {
+        //         _id: docData._id,
+        //         stageInfo: handleInfo,
+        //         isDocClose: true
+        //     }
+        //     OfficialDocUtil.updateOfficialDocItem(formData)
+        //         .success(function (res) {
+        //             console.log(res);
+        //             $uibModalInstance.close();
+        //         })
+        // }
+
+        // 刪除文
+        $scope.sendPublicRemove = function (dom, docData) {
+            $scope.checkText = "不同意發文：" + docData.archiveNumber;
+            $scope.handleRecord = dom.handleRecord;
             $scope.docData = docData;
             ngDialog.open({
-                template: 'app/pages/officialDoc/handleOfficialDoc/dialog/closeOfficialDocReviewSend_Modal.html',
+                template: 'app/pages/officialDoc/publicOfficialDoc/dialog/checkPublicOfficialDocRemoveSend_Modal.html',
                 className: 'ngdialog-theme-default',
                 scope: $scope,
                 showClose: false,
             });
         }
 
-        $scope.updateOfficialDocToServer_Archive = function(docData) {
-
-            var handleInfo = docData.stageInfo;
-
-            var stageInfoHandle = {
-                timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
-                stage: "歸檔",
-                handleName: $scope.username,
-            }
-
-            handleInfo.push(stageInfoHandle);
+        $scope.removeOfficialDocToServerPublic = function(docData, handleRecord) {
 
             var formData = {
                 _id: docData._id,
-                stageInfo: handleInfo,
-                isDocClose: true
             }
-            OfficialDocUtil.updateOfficialDocItem(formData)
+            OfficialDocUtil.deleteOfficialDocItem(formData)
                 .success(function (res) {
-                    console.log(res);
-                    $uibModalInstance.close();
-
+                    window.location.reload();
                 })
         }
     }
