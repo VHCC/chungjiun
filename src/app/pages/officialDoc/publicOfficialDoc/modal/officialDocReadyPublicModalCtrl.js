@@ -299,41 +299,41 @@
         }
 
         // main
-        // 提交審查
-        $scope.sendPublic = function (dom, docData) {
-            $scope.checkText = "同意發文：" + dom.handleRecord;
-            $scope.handleRecord = dom.handleRecord;
-            $scope.docData = docData;
-            ngDialog.open({
-                template: 'app/pages/officialDoc/publicOfficialDoc/dialog/checkPublicOfficialDocReviewSend_Modal.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope,
-                showClose: false,
-            });
-        }
-
-        $scope.updateOfficialDocToServerPublic = function(docData, handleRecord) {
-            var handleInfo = docData.stageInfo;
-
-            var stageInfoHandle = {
-                timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
-                stage: "同意發文",
-                handleName: $scope.username,
-                handleRecord: handleRecord
-            }
-
-            handleInfo.push(stageInfoHandle);
-
-            var formData = {
-                _id: docData._id,
-                stageInfo: handleInfo,
-                isDocCanPublic: true
-            }
-            OfficialDocUtil.updateOfficialDocItem(formData)
-                .success(function (res) {
-                    $uibModalInstance.close();
-                })
-        }
+        // // 提交審查
+        // $scope.sendPublic = function (dom, docData) {
+        //     $scope.checkText = "同意發文：" + dom.handleRecord;
+        //     $scope.handleRecord = dom.handleRecord;
+        //     $scope.docData = docData;
+        //     ngDialog.open({
+        //         template: 'app/pages/officialDoc/publicOfficialDoc/dialog/checkPublicOfficialDocReviewSend_Modal.html',
+        //         className: 'ngdialog-theme-default',
+        //         scope: $scope,
+        //         showClose: false,
+        //     });
+        // }
+        //
+        // $scope.updateOfficialDocToServerPublic = function(docData, handleRecord) {
+        //     var handleInfo = docData.stageInfo;
+        //
+        //     var stageInfoHandle = {
+        //         timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
+        //         stage: "同意發文",
+        //         handleName: $scope.username,
+        //         handleRecord: handleRecord
+        //     }
+        //
+        //     handleInfo.push(stageInfoHandle);
+        //
+        //     var formData = {
+        //         _id: docData._id,
+        //         stageInfo: handleInfo,
+        //         isDocCanPublic: true
+        //     }
+        //     OfficialDocUtil.updateOfficialDocItem(formData)
+        //         .success(function (res) {
+        //             $uibModalInstance.close();
+        //         })
+        // }
 
         // 提交歸檔
         $scope.sendArchive = function (dom, docData) {
