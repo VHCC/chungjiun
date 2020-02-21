@@ -257,6 +257,10 @@
                     return http.post('/api/post_official_doc_search_item', formData);
                 },
 
+                searchOfficialDocItemByManagerID : function (formData) {
+                    return http.post('/api/post_official_doc_search_item_by_managerID', formData);
+                },
+
                 updateOfficialDocItem: function (formData) {
                     return http.post('/api/post_official_doc_update_item', formData);
                 },

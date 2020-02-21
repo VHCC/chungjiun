@@ -2,20 +2,21 @@
     'user strict';
 
     angular.module('BlurAdmin.pages.cgOfficialDoc')
-        .service('intiOfficialCheckPublicService', function ($http, $cookies) {
-
+        .service('intiOfficialCheckPublic1v1Service', function ($http, $cookies) {
             var formData = {
+                managerID: $cookies.get('userDID'),
                 type: 1, // receive = 0, public = 1
                 isDocCanPublic: false,
             }
 
-            var promise = $http.post('/api/post_official_doc_search_item', formData)
+            var promise = $http.post('/api/post_official_doc_search_item_by_managerID', formData)
                 .success(function (officialDocItems) {
+                    console.log(officialDocItems);
                     return officialDocItems;
                 });
             return promise;
         })
-        .controller('checkPublicOfficialDocCtrl',
+        .controller('checkPublic1v1OfficialDocCtrl',
             [
                 '$scope',
                 '$filter',
@@ -26,14 +27,14 @@
                 'OfficialDocUtil',
                 'OfficialDocVendorUtil',
                 '$compile',
-                'intiOfficialCheckPublicService',
-                 CheckPublicOfficialDocCtrl
+                'intiOfficialCheckPublic1v1Service',
+                 CheckPublicOfficial1v1DocCtrl
             ])
 
     /**
      * @ngInject
      */
-    function CheckPublicOfficialDocCtrl($scope,
+    function CheckPublicOfficial1v1DocCtrl($scope,
                                  $filter,
                                  $cookies,
                                  $uibModal,
@@ -42,9 +43,9 @@
                                  OfficialDocUtil,
                                  OfficialDocVendorUtil,
                                  $compile,
-                                 intiOfficialCheckPublicService) {
+                                 intiOfficialCheckPublic1v1Service) {
 
-        intiOfficialCheckPublicService.then(function (resp) {
+        intiOfficialCheckPublic1v1Service.then(function (resp) {
             $scope.officialDocItems = resp.data.payload;
             $scope.officialDocItems.slice(0, resp.data.payload.length);
 
@@ -59,7 +60,7 @@
             }
 
             angular.element(
-                document.getElementById('includeHead'))
+                document.getElementById('includeHead_1v1'))
                 .append($compile(
                     "<div ba-panel ba-panel-title=" +
                     "'待確認發文列表 - " + resp.data.payload.length + "'" +
@@ -74,7 +75,6 @@
             Project.findAll()
                 .success(function (relatedProjects) {
                     console.log(" ======== related login user Projects ======== ");
-                    // console.log(relatedProjects);
                     $scope.relatedProjects = [];
                     for (var i = 0; i < relatedProjects.length; i++) {
                         $scope.relatedProjects[i] = {
@@ -135,7 +135,6 @@
         }
 
         $scope.showCharger = function (officialItem) {
-            // console.log(officialItem);
             var selected = [];
             if ($scope.allUsers === undefined) return;
             if (officialItem.chargerDID) {
@@ -165,8 +164,6 @@
         }
 
         $scope.showVendorName = function (officialItem) {
-            // console.log(officialItem);
-            // console.log($scope.allVendors);
             var selected = [];
             if ($scope.allVendors === undefined) return;
             if (officialItem.vendorDID) {
@@ -192,7 +189,7 @@
                     },
                 }
             }).result.then(function () {
-                $scope.reloadDocData_check();
+                $scope.reloadDocData_check_1v1();
                 // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
             });
 
@@ -211,22 +208,23 @@
                 })
         }
 
-        $scope.reloadDocData_check = function () {
+        $scope.reloadDocData_check_1v1 = function () {
             var formData = {
+                managerID: $cookies.get('userDID'),
                 type: 1, // receive = 0, public = 1
                 isDocCanPublic: false,
             }
 
-            OfficialDocUtil.searchOfficialDocItem(formData)
+            OfficialDocUtil.searchOfficialDocItemByManagerID(formData)
                 .success(function (resp) {
 
                     $scope.officialDocItems = resp.payload;
                     $scope.officialDocItems.slice(0, resp.payload.length);
 
-                    document.getElementById('includeHead').innerText = "";
+                    document.getElementById('includeHead_1v1').innerText = "";
 
                     angular.element(
-                        document.getElementById('includeHead'))
+                        document.getElementById('includeHead_1v1'))
                         .append($compile(
                             "<div ba-panel ba-panel-title=" +
                             "'待確認發文列表 - " + resp.payload.length + "'" +

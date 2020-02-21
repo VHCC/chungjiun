@@ -51,6 +51,15 @@
             </div>
         </div>
     </uib-tab>
+    <uib-tab heading="待確認"
+             ng-if="roleType === '2' || roleType === '100' || roleType === '6'">
+        <div class="row"
+             ng-controller="checkPublic1v1OfficialDocCtrl">
+            <div class="col-md-12"
+                 id="includeHead_1v1">
+            </div>
+        </div>
+    </uib-tab>
     <uib-tab heading="待發文"
              ng-if="officialDocRight">
         <div class="row"
