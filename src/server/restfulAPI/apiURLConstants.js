@@ -190,6 +190,7 @@ global.apiUrl = {
     get_official_doc_fetch_all_item : '/api/get_official_doc_fetch_all_item',
     post_official_doc_fetch_item_period : '/api/post_official_doc_fetch_item_period',
     post_official_doc_search_item : '/api/post_official_doc_search_item',
+    post_official_doc_search_item_by_managerID : '/api/post_official_doc_search_item_by_managerID',
     post_official_doc_update_item : '/api/post_official_doc_update_item',
     post_official_doc_delete_item : '/api/post_official_doc_delete_item',
     post_official_doc_create_item_archive_number : '/api/post_official_doc_create_item_archive_number',
