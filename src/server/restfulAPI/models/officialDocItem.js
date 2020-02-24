@@ -226,6 +226,10 @@ module.exports = mongoose.model('officialDocItem', {
         type: String,
     },
 
+    // 公文連結
+    docLink: {
+        type: Array,
+    }
 
 
 

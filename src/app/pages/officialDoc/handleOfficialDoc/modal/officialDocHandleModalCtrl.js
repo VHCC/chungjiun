@@ -18,6 +18,7 @@
                 'OfficialDocUtil',
                 'OfficialDocVendorUtil',
                 '$uibModalInstance',
+                'toastr',
                 'TimeUtil',
                 'DateUtil',
                 OfficialDocDetailCheckerModalCtrl
@@ -34,6 +35,7 @@
                                                OfficialDocUtil,
                                                OfficialDocVendorUtil,
                                                $uibModalInstance,
+                                               toastr,
                                                TimeUtil,
                                                DateUtil) {
         // Main Data
@@ -328,7 +330,7 @@
         }
 
         // main
-        // 提交審查
+        // 提交
         $scope.sendProcess = function (dom, docData) {
             $scope.checkText = "辦理情形：" + dom.handleRecord;
             $scope.handleRecord = dom.handleRecord;
@@ -342,8 +344,8 @@
         }
 
         $scope.updateOfficialDocToServer = function(docData, handleRecord) {
-            console.log(handleRecord);
-            console.log(docData);
+            // console.log(handleRecord);
+            // console.log(docData);
 
             var handleInfo = docData.stageInfo;
 
@@ -370,19 +372,6 @@
 
                     // docData.isDocSignStage = true;
                     $uibModalInstance.close();
-                    // $scope.reloadDocData_handle();
-                    //
-                    // var formData = {
-                    //     _id: docData._id,
-                    //     isDocClose: false,
-                    // }
-                    //
-                    // OfficialDocUtil.searchOfficialDocItem(formData)
-                    //     .success(function (res) {
-                    //         console.log(res.payload);
-                    //         docData = res.payload[0];
-                    //     })
-
                 })
         }
 
@@ -420,22 +409,6 @@
                 .success(function (res) {
                     console.log(res);
                     $uibModalInstance.close();
-                    // $scope.reloadDocData_handle();
-
-
-                    // docData.isDocClose = true;
-                    //
-                    // var formData = {
-                    //     _id: docData._id,
-                    //     isDocClose: false,
-                    // }
-                    //
-                    // OfficialDocUtil.searchOfficialDocItem(formData)
-                    //     .success(function (res) {
-                    //         console.log(res.payload);
-                    //         docData = res.payload[0];
-                    //     })
-
                 })
         }
 
@@ -447,7 +420,6 @@
 
         $scope.canModified = true;
 
-
         console.log(formData);
 
         OfficialDocUtil.searchOfficialDocItem(formData)
@@ -457,8 +429,176 @@
                 if (resp.payload[0].handlerDID != $scope.userDID) {
                     $scope.canModified = false;
                 }
-
             });
+
+        $scope.addDocLink = function (dom, docData) {
+
+            console.log(docData);
+
+            var docDivisionWord = dom.docLinkNumber.substring(0, 1);
+            var docArchiveNumber = dom.docLinkNumber.substring(1, dom.docLinkNumber.length);
+            var docType = 0;
+
+            if (OfficialDocUtil.getDivisionNumber(docDivisionWord) < 0) {
+                docDivisionWord = dom.docLinkNumber.substring(dom.docLinkNumber.length - 1, dom.docLinkNumber.length);
+                docArchiveNumber = dom.docLinkNumber.substring(0, dom.docLinkNumber.length - 1);
+                docType = 1;
+            }
+
+            var formData = {
+                archiveNumber: docArchiveNumber,
+                docDivision: OfficialDocUtil.getDivisionNumber(docDivisionWord),
+                type: docType,
+            }
+
+            OfficialDocUtil.searchOfficialDocItem(formData)
+                .success(function (resp) {
+                    console.log(resp);
+                    if (resp.payload.length == 0) {
+                        toastr.error('注意', dom.docLinkNumber + '公文不存在！');
+                    } else {
+
+                        if (resp.payload[0]._id == docData._id) {
+                            toastr.error('注意', '不可連結此公文');
+                            return;
+                        }
+
+                        if (docData.docLink.includes(resp.payload[0]._id)) {
+                            toastr.error('注意', '已經有此公文 ' + dom.docLinkNumber);
+                            return;
+                        }
+
+
+                        $scope.checkText = "是否新增連結：" + dom.docLinkNumber;
+                        $scope.docData = docData;
+                        $scope.linkData = resp.payload[0];
+                        ngDialog.open({
+                            template: 'app/pages/officialDoc/handleOfficialDoc/dialog/handleOfficialDocAddDocLinkSend_Modal.html',
+                            className: 'ngdialog-theme-default',
+                            scope: $scope,
+                            showClose: false,
+                        });
+                    }
+                });
+        }
+
+        $scope.addDocLinkOfficialDocToServer = function(docData, linkData) {
+            // console.log(handleRecord);
+            // console.log(docData);
+            // console.log(linkData);
+
+            // var handleInfo = docData.stageInfo;
+
+            // var stageInfoHandle = {
+            //     timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
+            //     stage: "辦理",
+            //     handleName: $scope.username,
+            //     handleRecord: handleRecord
+            // }
+            //
+            // handleInfo.push(stageInfoHandle);
+
+            var docLink = docData.docLink;
+            docLink.push(linkData._id)
+
+            var formData = {
+                _id: docData._id,
+                docLink: docLink
+            }
+            OfficialDocUtil.updateOfficialDocItem(formData)
+                .success(function (res) {
+                    console.log(res);
+                    $uibModalInstance.close();
+                })
+        }
+
+        $scope.docLinkArray = [];
+
+        $scope.fetchDocLinkData = function () {
+
+            for (var index = 0 ;index < $scope.docData.docLink.length; index ++) {
+                var formData = {
+                    _id: $scope.docData.docLink[index]
+                }
+                OfficialDocUtil.searchOfficialDocItem(formData)
+                    .success(function (resp) {
+
+                        var docArchiveNumber = resp.payload[0].archiveNumber;
+                        var linkTitle = ""
+
+                        if (resp.payload[0].type == 0) {
+                            linkTitle = OfficialDocUtil.getDivision(resp.payload[0].docDivision) + docArchiveNumber;
+                        } else {
+                            linkTitle = docArchiveNumber + OfficialDocUtil.getDivision(resp.payload[0].docDivision);
+                        }
+
+                        var docLinkItem = {
+                            _id: resp.payload[0]._id,
+                            linkTitle: linkTitle,
+                            type: resp.payload[0].type
+                        }
+
+                        $scope.docLinkArray.push(docLinkItem);
+                    });
+            }
+
+        }
+
+        $scope.fetchDocLinkData();
+
+        $scope.showDocLink = function (dom, rootDoc) {
+            var formData = {
+                _id: dom.docLink._id
+            }
+            OfficialDocUtil.searchOfficialDocItem(formData)
+                .success(function (resp) {
+                    console.log(resp);
+
+                    if (resp.payload[0].type == 0) {
+                        $uibModal.open({
+                            animation: true,
+                            controller: 'officialDocLinkInfoModalCtrl',
+                            templateUrl: 'app/pages/officialDoc/handleOfficialDoc/modal/docLink/officialDocLinkInfoModal.html',
+                            size: 'lg',
+                            resolve: {
+                                docData: function () {
+                                    return resp.payload[0];
+                                },
+                                rootDoc: function () {
+                                    return rootDoc;
+                                },
+                                parent: function () {
+                                    return $scope;
+                                },
+                            }
+                        }).result.then(function () {
+                            // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
+                        });
+                    } else {
+                        $uibModal.open({
+                            animation: true,
+                            controller: 'officialDocLinkInfoPublicModalCtrl',
+                            templateUrl: 'app/pages/officialDoc/handleOfficialDoc/modal/docLink/officialDocLinkInfoPublicModal.html',
+                            size: 'lg',
+                            resolve: {
+                                docData: function () {
+                                    return resp.payload[0];
+                                },
+                                rootDoc: function () {
+                                    return rootDoc;
+                                },
+                                parent: function () {
+                                    return $scope;
+                                },
+                            }
+                        }).result.then(function () {
+                            // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
+                        });
+                    }
+
+                });
+        }
+
     }
 
 })();

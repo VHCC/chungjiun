@@ -1,6 +1,6 @@
 <div ng-init="fetchPDFFiles()">
 
-    <div class="modal-header bg-info">
+    <div class="modal-header bg-warning">
         <i class="ion-android-warning modal-icon"></i>
         <strong style="color: red;">崇峻文號：{{docData.archiveNumber}}</strong>
     </div>
@@ -9,7 +9,6 @@
     <div class="modal-body text-left">
 
         <div class="row">
-
             <!-- Left -->
             <div class="col-md-4">
 
@@ -143,122 +142,44 @@
                                     <td style="width: 10%">{{item.stage}}</td>
 
                                     <td style="width: 10%">{{item.handleRecord}}</td>
-                                    <td style="width: 10%">
-                                        {{item.handleResult}}
-                                        <div ng-show=" (docData.stageInfo.length == $index + 1)
-                                        && docData.isApproveDocClose && !docData.isDocClose && !docData.isDocSignStage">
-                                            <button class="btn btn-primary btn-xs">
-                                                可歸檔
-                                            </button>
-                                        </div>
-                                    </td>
+                                    <td style="width: 10%">{{item.handleResult}}</td>
 
                                     <td style="width: 10%">{{item.timestamp}}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-
                 </div>
 
                 <div
                         ba-panel
-                        ba-panel-title="公文辦理情形"
+                        ba-panel-title="公文刪除"
                         ba-panel-class="with-scroll"
-                        ng-show="!docData.isDocSignStage && !docData.isDocClose && canModified">
-
-                    <div class="form-group">
-                        <textarea placeholder="請輸入辦理情形"
-                                  ng-model="handleRecord"
-                                  class="form-control"></textarea>
-                    </div>
+                        ng-if="false"
+                        ng-show="!docData.isDocClose && officialDocRight">
 
                     <button type="submit"
                             style="float: right; margin-right: 10px"
-                            ng-click="sendProcess(this, docData)"
-                            class="btn btn-warning">
-                        提交（給經理）
-                    </button>
-
-                </div>
-
-                <div
-                        ba-panel
-                        ba-panel-title="公文會簽"
-                        ba-panel-class="with-scroll"
-                        ng-show="!docData.isDocSignStage && !docData.isDocClose && canModified">
-
-                    <div class="form-group">
-                        <ui-select multiple
-                                   ng-model="officialDocHandleModalCtrlVm.counterSignUsers.selected"
-                                   ng-disabled="false"
-                                   search-enabled="true"
-                                   append-to-body="false"
-                                   class="form-control ">
-                            <ui-select-match placeholder="請選擇會簽人員">
-                                {{$select.selected[$index].name}}
-                            </ui-select-match>
-                            <ui-select-choices repeat="user in officialDocHandleModalCtrlVm.counterSignUsers | filter: $select.search">
-                                <span ng-bind-html="user.name | highlight: $select.search"></span>
-                            </ui-select-choices>
-                        </ui-select>
-                    </div>
-
-                    <button type="submit"
-                            style="float: right; margin-right: 10px"
-                            ng-click="sendProcessCounterSign(this, docData, officialDocHandleModalCtrlVm.counterSignUsers.selected)"
-                            class="btn btn-warning">
-                        開始會簽（給設定人員）
-                    </button>
-
-                </div>
-
-                <div
-                        ba-panel
-                        ba-panel-title="公文連結"
-                        ba-panel-class="with-scroll"
-                        ng-show="!docData.isDocSignStage && !docData.isDocClose && canModified">
-
-                    <div class="form-group">
-                        <input placeholder="請輸入公文文號"
-                                  ng-model="docLinkNumber"
-                                  class="form-control"></input>
-                    </div>
-
-                    <button type="submit"
-                            style="float: right; margin-right: 10px"
-                            ng-click="addDocLink(this, docData)"
-                            class="btn btn-warning">
-                        新增公文連結
-                    </button>
-
-                    <hr>
-
-                    <button ng-repeat="docLink in docLinkArray"
-                            style="margin: 3px"
-                            ng-click="showDocLink(this, docData)"
-                            class="btn btn-info">
-                        {{docLink.linkTitle}}
-                    </button>
-
-
-                </div>
-
-                <div
-                        ba-panel
-                        ba-panel-title="公文存查"
-                        ba-panel-class="with-scroll"
-                        ng-show="docData.isApproveDocClose && !docData.isDocClose && !docData.isDocSignStage && canModified">
-
-                    <button type="submit"
-                            style="float: right; margin-right: 10px"
-                            ng-click="sendArchive(this, docData)"
+                            ng-click="deleteDocItem(this, docData)"
                             class="btn btn-danger">
-                        送歸檔
+                        刪除（注意！）
                     </button>
 
                 </div>
 
+                <div
+                        ba-panel
+                        ba-panel-title="刪除連結"
+                        ba-panel-class="with-scroll">
+
+                    <button type="submit"
+                            style="float: right; margin-right: 10px"
+                            ng-click="removeDocLink(this, docData)"
+                            class="btn btn-danger">
+                        刪除（注意！）
+                    </button>
+
+                </div>
 
             </div>
 
@@ -314,6 +235,7 @@
 
 
     <div class="modal-footer">
+
     </div>
 
 

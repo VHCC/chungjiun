@@ -328,6 +328,23 @@
                             return "P"
                     }
                 },
+
+                getDivisionNumber: function (word) {
+                    switch(word) {
+                        case "F":
+                            return 0;
+                        case "N":
+                            return 1;
+                        case "G":
+                            return 2;
+                        case "D":
+                            return 3;
+                        case "P":
+                            return 4;
+                        default:
+                            return -1;
+                    }
+                }
             }
         }])
         .factory('OfficialDocVendorUtil', ['$http', function (http) {
