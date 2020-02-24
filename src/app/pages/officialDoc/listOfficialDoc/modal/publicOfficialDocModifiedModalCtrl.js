@@ -2,7 +2,7 @@
     'user strict';
 
     angular.module('BlurAdmin.pages.cgOfficialDoc')
-        .controller('receiveOfficialDocModifiedCtrl',
+        .controller('publicOfficialDocModifiedCtrl',
             [
                 '$scope',
                 '$filter',
@@ -13,13 +13,13 @@
                 'toastr',
                 'OfficialDocVendorUtil',
                 'OfficialDocUtil',
-                ReceiveOfficialDocCtrl
+                PublicOfficialDocModifiedCtrl
             ]);
 
     /**
      * @ngInject
      */
-    function ReceiveOfficialDocCtrl($scope,
+    function PublicOfficialDocModifiedCtrl($scope,
                                     $filter,
                                     $cookies,
                                     $uibModal,
@@ -207,12 +207,8 @@
 
         $scope.setDateModel = function (modelName, dom) {
             var evalString = '$scope.' + modelName + "= dom.myDT";
-            // console.log(evalString);
-            // console.log(dom);
-            // console.log($scope);
             eval(evalString);
         }
-
 
         $scope.pdfList = undefined;
 
@@ -252,8 +248,8 @@
         $scope.fetchVendor = function () {
             OfficialDocVendorUtil.fetchOfficialDocVendor()
                 .success(function (res) {
-                    console.log(res);
                     vm.officialDocVendors = res.payload;
+                    vm.officialDocVendors_copy = res.payload;
                 })
                 .error(function (res) {
                     console.log(res);
@@ -265,35 +261,35 @@
         // check doc detail
         $scope.checkDocDetail = function (dom) {
 
-            if (!vm.docDivision) {
-                toastr.error('注意', '請選擇分部');
-                return
-            }
+            // if (!vm.docDivision) {
+            //     toastr.error('注意', '請選擇分部');
+            //     return
+            // }
+            //
+            // if (!vm.docOption) {
+            //     toastr.error('注意', '請選擇文別');
+            //     return
+            // }
 
-            if (!vm.docOption) {
-                toastr.error('注意', '請選擇文別');
-                return
-            }
+            // if (!vm.docAttachedType) {
+            //     toastr.error('注意', '請選擇附件類別');
+            //     return
+            // }
 
-            if (!vm.docAttachedType) {
-                toastr.error('注意', '請選擇附件類別');
-                return
-            }
-
-            if (!vm.vendorItem) {
-                toastr.error('注意', '請選擇發文機關');
-                return
-            }
+            // if (!vm.vendorItem) {
+            //     toastr.error('注意', '請選擇發文機關');
+            //     return
+            // }
 
             if (!vm.prjItems) {
                 toastr.error('注意', '請選擇專案代碼');
                 return
             }
 
-            if (!vm.chargeUser) {
-                toastr.error('注意', '請選擇專案承辦人');
-                return
-            }
+            // if (!vm.chargeUser) {
+            //     toastr.error('注意', '請選擇專案承辦人');
+            //     return
+            // }
 
             // var stageInfo = {
             //     timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
@@ -319,6 +315,9 @@
                 signer: vm.signer.selected,
                 docOption: vm.docOption.selected,
                 docDivision: vm.docDivision.selected,
+                publicType: vm.publicType.selected,
+                targetOrigin: vm.targetOrigin.selected,
+                targetCopy: vm.targetCopy.selected,
                 docAttachedType: vm.docAttachedType.selected,
                 timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
                 isDocSignStage: $scope.docData.isDocSignStage,
@@ -328,8 +327,8 @@
 
             $uibModal.open({
                 animation: true,
-                controller: 'officialDocDetailModifiedModalCtrl',
-                templateUrl: 'app/pages/officialDoc/listOfficialDoc/modal/receive/officialDocDetailModifiedModal.html',
+                controller: 'officialDocDetailPublicModifiedModalCtrl',
+                templateUrl: 'app/pages/officialDoc/listOfficialDoc/modal/public/officialDocDetailPublicModifiedModal.html',
                 resolve: {
                     parent: function () {
                         return $scope;
@@ -431,61 +430,52 @@
 
         vm.docAttachedTypes = attached_regular;
 
+        // 0 : 電子
+        // 1 : 紙本
+        // 發文屬性
+        var publicType_regular = [
+            {
+                name: "電子",
+                option: 0
+            },
+            {
+                name: "紙本",
+                option: 1
+            },
+        ];
+
+        vm.publicTypes = publicType_regular;
+
         $(document).ready(function () {
             console.log(" ====== document ready ====== ");
             setTimeout(function(){
-                console.log('A');
                 $scope.initDocData();
             },1000);
-            // $('#inputStartDay')[0].value = DateUtil.getShiftDatefromFirstDate(
-            //     DateUtil.getFirstDayofThisWeek(moment()),
-            //     moment().day() === 0 ? 6 : moment().day() - 1);
-            // $('#inputEndDay')[0].value = DateUtil.getShiftDatefromFirstDate(
-            //     DateUtil.getFirstDayofThisWeek(moment()),
-            //     moment().day() === 0 ? 6 : moment().day() - 1);
-            //
-            // $('.statisticsDate').mask('2KY0/M0/D0', {
-            //     translation: {
-            //         'K': {
-            //             pattern: /[0]/,
-            //         },
-            //         'Y': {
-            //             pattern: /[012]/,
-            //         },
-            //         'M': {
-            //             pattern: /[01]/,
-            //         },
-            //         'D': {
-            //             pattern: /[0123]/,
-            //         }
-            //     }
-            // });
-
         });
 
         $scope.initDocData = function () {
 
             console.log($scope.docData);
 
-            $scope._receiveDate = $scope.docData.receiveDate;
-            $('#_receiveDate_dom').find('#myDT')[0].value = $scope.docData.receiveDate;
+            // $scope._receiveDate = $scope.docData.receiveDate;
+            // $('#_receiveDate_dom').find('#myDT')[0].value = $scope.docData.receiveDate;
+            //
+            // $scope._lastDate = $scope.docData.lastDate;
+            // $('#_lastDate_dom').find('#myDT')[0].value = $scope.docData.lastDate;
+            //
+            // $scope._dueDate = $scope.docData.dueDate;
+            // $('#_dueDate_dom').find('#myDT')[0].value = $scope.docData.dueDate;
 
-            $scope._lastDate = $scope.docData.lastDate;
-            $('#_lastDate_dom').find('#myDT')[0].value = $scope.docData.lastDate;
-
-            $scope._dueDate = $scope.docData.dueDate;
-            $('#_dueDate_dom').find('#myDT')[0].value = $scope.docData.dueDate;
-
-            $scope._officialPublicDate = $scope.docData.officialPublicDate;
-            $('#_officialPublicDate_dom').find('#myDT')[0].value = $scope.docData.officialPublicDate;
+            $scope._officialPublicDate = $scope.docData.publicDate;
+            $('#_officialPublicDate_dom').find('#myDT')[0].value = $scope.docData.publicDate;
 
             // 崇峻文號
-            $scope._archiveNumber = $scope.docData.archiveNumber.substring(1, $scope.docData.archiveNumber.length);
+            $scope._archiveNumber = $scope.docData.archiveNumber.substring(0, $scope.docData.archiveNumber.length - 1);
 
             // 文號字
-            $scope._receiveType = $scope.docData.receiveType;
+            // $scope._receiveType = $scope.docData.receiveType;
             // 文號編號
-            $scope._receiveNumber = $scope.docData.receiveNumber;
+            // $scope._receiveNumber = $scope.docData.receiveNumber;
 
             // 主旨
             $scope._subject = $scope.docData.subject;
@@ -534,6 +524,13 @@
             vm.docAttachedType = [];
             vm.docAttachedType.selected = selectedTemp[0];
 
+            // 發文屬性
+            selectedTemp = $filter('filter')(vm.publicTypes, {
+                option: $scope.docData.publicType,
+            });
+            vm.publicType = [];
+            vm.publicType.selected = selectedTemp[0];
+
             // 專案設定
             selectedTemp = $filter('filter')(vm.allProjectData, {
                 _id: $scope.docData.prjDID,
@@ -543,6 +540,11 @@
 
             // console.log(vm);
 
+            vm.targetOrigin = [];
+            vm.targetOrigin.selected = $scope.docData.targetOrigin;
+
+            vm.targetCopy = [];
+            vm.targetCopy.selected = $scope.docData.targetCopy;
 
             old_docData = {
                 _id: $scope.docData._id,
@@ -569,77 +571,77 @@
 
         var old_docData = {};
 
-        var originHeight;
-
-        $scope.listenDatePicker_official = function (dom) {
-
-            $scope.$watch('_receiveDate',function(newValue, oldValue) {
-
-                dom.$watch('opened',function(newVal, oldVal){
-                    if (newVal) {
-                        if (!originHeight) {
-                            originHeight = $('#_receiveDate_panel').find('.panel-body').height();
-                            console.log(originHeight);
-                        }
-                        // console.log("open");
-                        $('#_receiveDate_panel').find('.panel-body').height(300);
-                    }
-                    if(newVal != oldVal && !newVal){
-                        //close event
-                        // console.log("close");
-                        $('#_receiveDate_panel').find('.panel-body').height(originHeight);
-                    }
-                })
-
-                if(newValue != oldValue){
-
-                    $scope._lastDate = moment(newValue).add(3, 'days').format('YYYY/MM/DD');
-                    $('#_lastDate_dom').find('#myDT')[0].value = $scope._lastDate;
-
-                    $scope._dueDate = moment(newValue).add(6, 'days').format('YYYY/MM/DD');
-                    $('#_dueDate_dom').find('#myDT')[0].value = $scope._dueDate;
-                }
-            });
-
-            $scope.$watch('_lastDate',function(newValue, oldValue) {
-
-                dom.$watch('opened',function(newVal, oldVal){
-                    if (newVal) {
-                        if (!originHeight) {
-                            originHeight = $('#_lastDate_panel').find('.panel-body').height();
-                            console.log(originHeight);
-                        }
-                        // console.log("open");
-                        $('#_lastDate_panel').find('.panel-body').height(300);
-                    }
-                    if(newVal != oldVal && !newVal){
-                        //close event
-                        // console.log("close");
-                        $('#_lastDate_panel').find('.panel-body').height(originHeight);
-                    }
-                })
-            });
-
-            $scope.$watch('_dueDate',function(newValue, oldValue) {
-
-                dom.$watch('opened',function(newVal, oldVal){
-                    if (newVal) {
-                        if (!originHeight) {
-                            originHeight = $('#_dueDate_panel').find('.panel-body').height();
-                            console.log(originHeight);
-                        }
-                        // console.log("open");
-                        $('#_dueDate_panel').find('.panel-body').height(300);
-                    }
-                    if(newVal != oldVal && !newVal){
-                        //close event
-                        // console.log("close");
-                        $('#_dueDate_panel').find('.panel-body').height(originHeight);
-                    }
-                })
-            });
-
-        }
+        // var originHeight;
+        //
+        // $scope.listenDatePicker_official = function (dom) {
+        //
+        //     $scope.$watch('_receiveDate',function(newValue, oldValue) {
+        //
+        //         dom.$watch('opened',function(newVal, oldVal){
+        //             if (newVal) {
+        //                 if (!originHeight) {
+        //                     originHeight = $('#_receiveDate_panel').find('.panel-body').height();
+        //                     console.log(originHeight);
+        //                 }
+        //                 // console.log("open");
+        //                 $('#_receiveDate_panel').find('.panel-body').height(300);
+        //             }
+        //             if(newVal != oldVal && !newVal){
+        //                 //close event
+        //                 // console.log("close");
+        //                 $('#_receiveDate_panel').find('.panel-body').height(originHeight);
+        //             }
+        //         })
+        //
+        //         if(newValue != oldValue){
+        //
+        //             $scope._lastDate = moment(newValue).add(3, 'days').format('YYYY/MM/DD');
+        //             $('#_lastDate_dom').find('#myDT')[0].value = $scope._lastDate;
+        //
+        //             $scope._dueDate = moment(newValue).add(6, 'days').format('YYYY/MM/DD');
+        //             $('#_dueDate_dom').find('#myDT')[0].value = $scope._dueDate;
+        //         }
+        //     });
+        //
+        //     $scope.$watch('_lastDate',function(newValue, oldValue) {
+        //
+        //         dom.$watch('opened',function(newVal, oldVal){
+        //             if (newVal) {
+        //                 if (!originHeight) {
+        //                     originHeight = $('#_lastDate_panel').find('.panel-body').height();
+        //                     console.log(originHeight);
+        //                 }
+        //                 // console.log("open");
+        //                 $('#_lastDate_panel').find('.panel-body').height(300);
+        //             }
+        //             if(newVal != oldVal && !newVal){
+        //                 //close event
+        //                 // console.log("close");
+        //                 $('#_lastDate_panel').find('.panel-body').height(originHeight);
+        //             }
+        //         })
+        //     });
+        //
+        //     $scope.$watch('_dueDate',function(newValue, oldValue) {
+        //
+        //         dom.$watch('opened',function(newVal, oldVal){
+        //             if (newVal) {
+        //                 if (!originHeight) {
+        //                     originHeight = $('#_dueDate_panel').find('.panel-body').height();
+        //                     console.log(originHeight);
+        //                 }
+        //                 // console.log("open");
+        //                 $('#_dueDate_panel').find('.panel-body').height(300);
+        //             }
+        //             if(newVal != oldVal && !newVal){
+        //                 //close event
+        //                 // console.log("close");
+        //                 $('#_dueDate_panel').find('.panel-body').height(originHeight);
+        //             }
+        //         })
+        //     });
+        //
+        // }
 
         $scope.docProjectSelected = function (projectInfo) {
             if (projectInfo.majorID != "" &&

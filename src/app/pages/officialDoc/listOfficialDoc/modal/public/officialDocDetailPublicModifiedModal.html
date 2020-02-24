@@ -1,0 +1,128 @@
+<style>
+
+
+</style>
+
+<div>
+    <div class="modal-header bg-info">
+        <i class="ion-android-warning modal-icon"></i>
+        <strong style="color: red;">崇峻文號：{{docData._archiveNumber + getDocDivision(docData.docDivision.option)}}</strong>
+    </div>
+    <hr>
+
+    <div class="modal-body text-left">
+
+        <div style="padding: 5px" ng-show="false">
+            <label >收文日期</label>
+            <input type="text" class="form-control"
+                   value="{{docData._receiveDate}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px" ng-show="false">
+            <label >機關名稱</label>
+            <input type="text" class="form-control"
+                   value="{{docData.vendorItem.vendorName}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px">
+            <label >文別</label>
+            <input type="text" class="form-control"
+                   value="{{docData.docOption.name}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px">
+            <label >發文日期</label>
+            <input type="text" class="form-control"
+                   value="{{docData._officialPublicDate}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px" ng-show="false">
+            <label >收文字 / 收文號</label>
+            <input type="text" class="form-control"
+                   value="{{docData._receiveType}} - {{docData._receiveNumber}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px">
+            <label >主旨</label>
+            <input type="text" class="form-control"
+                   value="{{docData._subject}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px">
+            <label >正本受文機關</label>
+            <input type="text" class="form-control"
+                   value="{{showVendorNameList()}}"
+                   ng-disabled="true">
+
+        </div>
+
+        <div style="padding: 5px">
+            <label >副本受文機關</label>
+            <input type="text" class="form-control"
+                   value="{{showVendorCopyNameList()}}"
+                   ng-disabled="true">
+
+        </div>
+
+        <div style="padding: 5px">
+            <label >附件類型</label>
+            <input type="text" class="form-control"
+                   value="{{docData.publicType.name}}"
+                   ng-disabled="true">
+        </div>
+
+        <hr>
+
+        <div style="padding: 5px">
+            <label >專案代碼</label>
+            <input type="text" class="form-control"
+                   value="{{docData.prjItem.prjCode}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px" ng-show="false">
+            <label >簽核人</label>
+            <input type="text" class="form-control"
+                   value="{{docData.signer.name}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px" ng-show="false">
+            <label >承辦人</label>
+            <input type="text" class="form-control"
+                   value="{{docData.chargeUser.name}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px" ng-show="false">
+            <label >內部處理期限</label>
+            <input type="text" class="form-control"
+                   value="{{docData._lastDate}}"
+                   ng-disabled="true">
+        </div>
+
+        <div style="padding: 5px" ng-show="false">
+            <label >最後期限</label>
+            <input type="text" class="form-control"
+                   value="{{docData._dueDate}}"
+                   ng-disabled="true">
+        </div>
+
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger"
+                ng-if="canModified"
+                ng-click="confirmUpdateDoc()">
+                修改
+        </button>
+        <p ng-show="!canModified">文號已存在</p>
+    </div>
+</div>
