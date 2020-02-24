@@ -40,6 +40,7 @@
         $scope.parent = $scope.$resolve.parent;
         $scope.docData = $scope.$resolve.docData;
         $scope.rootDoc = $scope.$resolve.rootDoc;
+        $scope.canRemoveLink = $scope.$resolve.canRemoveLink;
 
         $scope.docData.archiveNumber = $scope.docData.archiveNumber + OfficialDocUtil.getDivision($scope.docData.docDivision);
 

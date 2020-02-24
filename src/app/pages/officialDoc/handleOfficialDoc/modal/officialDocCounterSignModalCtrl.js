@@ -90,7 +90,6 @@
                 }
             })
 
-
         // *** Biz Logic ***
         $scope.showDocType = function (type) {
             return OfficialDocUtil.getDocType(type);
@@ -174,7 +173,6 @@
 
             return selected.length ? selected[0].managerID : 'Not Set';
         }
-
 
         $scope.pdfList = undefined;
 
@@ -278,7 +276,6 @@
 
             var newCounterSignList = []
 
-
             for (var index = 0; index < docData.counterSignList.length; index ++) {
                 if ($cookies.get('userDID') != docData.counterSignList[index]._id) {
                     newCounterSignList.push(docData.counterSignList[index]);
@@ -332,6 +329,94 @@
 
             });
 
+        $scope.docLinkArray = [];
+
+        $scope.fetchDocLinkData = function () {
+
+            for (var index = 0 ;index < $scope.docData.docLink.length; index ++) {
+                var formData = {
+                    _id: $scope.docData.docLink[index]
+                }
+                OfficialDocUtil.searchOfficialDocItem(formData)
+                    .success(function (resp) {
+
+                        var docArchiveNumber = resp.payload[0].archiveNumber;
+                        var linkTitle = ""
+
+                        if (resp.payload[0].type == 0) {
+                            linkTitle = OfficialDocUtil.getDivision(resp.payload[0].docDivision) + docArchiveNumber;
+                        } else {
+                            linkTitle = docArchiveNumber + OfficialDocUtil.getDivision(resp.payload[0].docDivision);
+                        }
+                        var docLinkItem = {
+                            _id: resp.payload[0]._id,
+                            linkTitle: linkTitle,
+                            type: resp.payload[0].type
+                        }
+                        $scope.docLinkArray.push(docLinkItem);
+                    });
+            }
+        }
+
+        $scope.fetchDocLinkData();
+
+        $scope.showDocLink = function (dom, rootDoc) {
+            var formData = {
+                _id: dom.docLink._id
+            }
+            OfficialDocUtil.searchOfficialDocItem(formData)
+                .success(function (resp) {
+                    console.log(resp);
+
+                    if (resp.payload[0].type == 0) {
+                        $uibModal.open({
+                            animation: true,
+                            controller: 'officialDocLinkInfoModalCtrl',
+                            templateUrl: 'app/pages/officialDoc/handleOfficialDoc/modal/docLink/officialDocLinkInfoModal.html',
+                            size: 'lg',
+                            resolve: {
+                                docData: function () {
+                                    return resp.payload[0];
+                                },
+                                rootDoc: function () {
+                                    return rootDoc;
+                                },
+                                parent: function () {
+                                    return $scope;
+                                },
+                                canRemoveLink: function () {
+                                    return false;
+                                }
+                            }
+                        }).result.then(function () {
+                            // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
+                        });
+                    } else {
+                        $uibModal.open({
+                            animation: true,
+                            controller: 'officialDocLinkInfoPublicModalCtrl',
+                            templateUrl: 'app/pages/officialDoc/handleOfficialDoc/modal/docLink/officialDocLinkInfoPublicModal.html',
+                            size: 'lg',
+                            resolve: {
+                                docData: function () {
+                                    return resp.payload[0];
+                                },
+                                rootDoc: function () {
+                                    return rootDoc;
+                                },
+                                parent: function () {
+                                    return $scope;
+                                },
+                                canRemoveLink: function () {
+                                    return false;
+                                }
+                            }
+                        }).result.then(function () {
+                            // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
+                        });
+                    }
+                });
+        }
     }
 
 })();

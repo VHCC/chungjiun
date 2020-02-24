@@ -531,17 +531,14 @@
                         } else {
                             linkTitle = docArchiveNumber + OfficialDocUtil.getDivision(resp.payload[0].docDivision);
                         }
-
                         var docLinkItem = {
                             _id: resp.payload[0]._id,
                             linkTitle: linkTitle,
                             type: resp.payload[0].type
                         }
-
                         $scope.docLinkArray.push(docLinkItem);
                     });
             }
-
         }
 
         $scope.fetchDocLinkData();
@@ -570,6 +567,9 @@
                                 parent: function () {
                                     return $scope;
                                 },
+                                canRemoveLink: function () {
+                                    return true;
+                                }
                             }
                         }).result.then(function () {
                             // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
@@ -590,6 +590,9 @@
                                 parent: function () {
                                     return $scope;
                                 },
+                                canRemoveLink: function () {
+                                    return true;
+                                }
                             }
                         }).result.then(function () {
                             // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
