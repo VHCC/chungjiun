@@ -15,12 +15,23 @@
                 <span style=" color: #FFFFFFFF">{{username}}</span>
             </div>
 
-            <div class="breadcrumb al-breadcrumb" style="text-align: center" id="registerEntrance">
+            <div class="breadcrumb al-breadcrumb" ng-show="roleType == 100"
+                 style="text-align: center" id="registerEntrance">
                 <a href="/regNewUser.html" class="signout"><i class="ion-android-person-add"/>
                     <br>
                     新增員工
                     <br>
                 </a>
+            </div>
+
+            <div class="breadcrumb al-breadcrumb" style="text-align: center" >
+                <!--<a href="https://notify-bot.line.me/oauth/authorize?response_type=code&client_id=8KVRmFQC5LQ0bCfjRVzmxV&redirect_uri=http://localhost:3000/api/post_line_notify_auth_register&scope=notify&state={{userDID}}" class="signout">-->
+                <a href="https://notify-bot.line.me/oauth/authorize?response_type=code&client_id=8KVRmFQC5LQ0bCfjRVzmxV&redirect_uri=https://vhc.ichenprocin.dsmynas.com/api/post_line_notify_auth_register&scope=notify&state={{userDID}}" class="signout">
+                    <i class="ion-android-person-add"/>
+                    <br>
+                    連動 Line 通知
+                    <br>
+                </a >
             </div>
 
             <!--<div class="breadcrumb al-breadcrumb" style="text-align: center; padding-right: 20px" ng-if="roleType == 2 || roleType ==100">-->
@@ -51,10 +62,6 @@
         <!--</div>-->
 
     </div>
-
-
-
-
 
 </div>
 

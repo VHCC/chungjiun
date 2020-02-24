@@ -6,7 +6,7 @@
     'use strict';
 
     angular.module('BlurAdmin.theme.components')
-        .directive('myPageTop', myPageTop)
+        .directive('myPageTop', MyPageTop)
         .controller('myPageTopController', [
             '$scope',
             '$cookies',
@@ -19,41 +19,18 @@
             'NotificationUtil',
             'NotificationMsgUtil',
             '$document',
-            function (scope,
-                      cookies,
-                      toastr,
-                      User,
-                      Project,
-                      WorkHourUtil,
-                      DateUtil,
-                      window,
-                      NotificationUtil,
-                      NotificationMsgUtil,
-                      document) {
-                return new myPageTopController(
-                    scope,
-                    cookies,
-                    toastr,
-                    User,
-                    Project,
-                    WorkHourUtil,
-                    DateUtil,
-                    window,
-                    NotificationUtil,
-                    NotificationMsgUtil,
-                    document)
-            }]);
+            MyPageTopController]);
 
     /** @ngInject */
-    function myPageTop() {
+    function MyPageTop() {
         return {
             restrict: 'E',
             templateUrl: 'app/theme/components/myPageTop/pageTop.html'
         };
     }
 
-    function myPageTopController($scope,
-                                 cookies,
+    function MyPageTopController($scope,
+                                 $cookies,
                                  toastr,
                                  User,
                                  Project,
@@ -63,46 +40,30 @@
                                  NotificationUtil,
                                  NotificationMsgUtil,
                                  document) {
-        console.log(" - cookies.username= " + cookies.get('username'));
-        console.log(" - cookies.userDID= " + cookies.get('userDID'));
-        console.log(" - cookies.roletype= " + cookies.get('roletype'));
-        console.log(" - cookies.bossID= " + cookies.get('bossID'));
-        console.log(" - cookies.userMonthSalary= " + cookies.get('userMonthSalary'));
+        console.log(" - cookies.username= " + $cookies.get('username'));
+        console.log(" - cookies.userDID= " + $cookies.get('userDID'));
+        console.log(" - cookies.roletype= " + $cookies.get('roletype'));
+        console.log(" - cookies.bossID= " + $cookies.get('bossID'));
+        console.log(" - cookies.userMonthSalary= " + $cookies.get('userMonthSalary'));
 
-        $scope.username = cookies.get('username');
-        $scope.userDID = cookies.get('userDID');
-
-        $scope.managerNotification = 0;
-        $scope.executiveNotification = 0;
+        $scope.username = $cookies.get('username');
+        $scope.userDID = $cookies.get('userDID');
 
         $scope.initPageTop = function () {
-            // console.log("initPageTop.");
-            var roleType = cookies.get('roletype');
+            var roleType = $cookies.get('roletype');
             $scope.roleType = roleType;
 
-            if (cookies.get('bossID') === undefined || cookies.get('userMonthSalary') === undefined || cookies.get('userMonthSalary') === 0) {
+            if ($cookies.get('bossID') === undefined || $cookies.get('userMonthSalary') === undefined || $cookies.get('userMonthSalary') === 0) {
                 toastr['error']('您的系統資訊未設定完全，請聯絡 行政人員 設定 !', '系統初步設定 不完全');
             }
 
-            if (roleType !== '100') {
-                var entrance = window.document.getElementById('registerEntrance');
-                entrance.parentNode.removeChild(entrance);
-            }
-
-            // var socket = io('http://localhost:9000');
-
-            // socket.on("greet", function (msg) {
-            //     NotificationUtil.showMsg('Notification', msg, 2);
-            //
-            // });
-
-            // NotificationUtil.showMsg('歡迎使用　崇峻系統', '瀏覽器通知系統　已啟用', 1);
-
+            // if (roleType !== '100') {
+            //     var entrance = window.document.getElementById('registerEntrance');
+            //     entrance.parentNode.removeChild(entrance);
+            // }
 
             // ============== notification ==============
-
         };
-
     }
 
 })();

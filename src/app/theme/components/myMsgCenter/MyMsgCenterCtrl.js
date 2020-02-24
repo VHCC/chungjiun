@@ -1,6 +1,6 @@
 /**
  * @author v.lugovksy
- * created on 16.12.2015
+ * created on 19.02.2020
  */
 (function () {
     'use strict';
@@ -31,6 +31,8 @@
 
         var vm = this;
 
+        $scope.messages = [];
+
         $scope.roleType = $cookies.get('roletype');
 
         $scope.fetchNotification = function () {
@@ -54,10 +56,8 @@
                         // msgItem.timestamp = new Date(res.payload[index].timestamp);
                         msgItem.timeDiff = GetDateDiff(new Date(res.payload[index].timestamp), new Date(), "second");
                         msgItem.text = getMsgText(msgItem.topic, msgItem.detail, msgItem.msgMemo);
-                        // $scope.messages.push(msgItem);
                         msgQueue.push(msgItem);
                     }
-
                     $scope.messages = msgQueue.slice(0);
                 })
         }

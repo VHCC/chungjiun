@@ -1900,9 +1900,9 @@
                 var msgDetailList = [];
                 var memoList = [];
                 for (var index = 0; index < $scope.tables[tableIndex].tablesItems.length; index ++) {
-                    console.log($scope.tables[tableIndex].tablesItems[index]);
+                    // console.log($scope.tables[tableIndex].tablesItems[index]);
                     tableList[index] = $scope.tables[tableIndex].tablesItems[index].tableID;
-                    console.log($scope.tables[tableIndex].tablesItems[index].isSendReview);
+                    // console.log($scope.tables[tableIndex].tablesItems[index].isSendReview);
                     if (!$scope.tables[tableIndex].tablesItems[index].isSendReview) { // 未被審查的項目 才需要通知；已經遞交審查的不通知
                         if (!targetList.includes($scope.showProjectManagerDID($scope.tables[tableIndex].tablesItems[index].prjDID))) { // 一張表格多個項目有相同的經理的話，只通知一次
                             targetList[index] = $scope.showProjectManagerDID($scope.tables[tableIndex].tablesItems[index].prjDID);
@@ -2258,17 +2258,17 @@
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
 
-                    // var formData = {
-                    //     creatorDID: cookies.get('userDID'),
-                    //     msgTargetArray: targetList,
-                    //     msgMemoArray: memoList,
-                    //     msgTopicArray: msgTopicList,
-                    //     msgDetailArray: msgDetailList,
-                    // }
-                    // NotificationMsgUtil.createMsgItem(formData)
-                    //     .success(function (req) {
-                    //
-                    //     })
+                    var formData = {
+                        creatorDID: $cookies.get('userDID'),
+                        msgTargetArray: targetList,
+                        msgMemoArray: memoList,
+                        msgTopicArray: msgTopicList,
+                        msgDetailArray: msgDetailList,
+                    }
+                    NotificationMsgUtil.createMsgItem(formData)
+                        .success(function (req) {
+
+                        })
                     $scope.showTableOfItem(user, null, null, null, null, null, 1);
                 })
         }
@@ -2362,17 +2362,17 @@
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
 
-                    // var formData = {
-                    //     creatorDID: cookies.get('userDID'),
-                    //     msgTargetArray: targetList,
-                    //     msgMemoArray: memoList,
-                    //     msgTopicArray: msgTopicList,
-                    //     msgDetailArray: msgDetailList,
-                    // }
-                    // NotificationMsgUtil.createMsgItem(formData)
-                    //     .success(function (req) {
-                    //
-                    //     })
+                    var formData = {
+                        creatorDID: $cookies.get('userDID'),
+                        msgTargetArray: targetList,
+                        msgMemoArray: memoList,
+                        msgTopicArray: msgTopicList,
+                        msgDetailArray: msgDetailList,
+                    }
+                    NotificationMsgUtil.createMsgItem(formData)
+                        .success(function (req) {
+
+                        })
                     $scope.showTableOfItem(form, null, null, null, null, null, 2);
                 })
         }
