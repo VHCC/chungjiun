@@ -186,6 +186,36 @@
 
                 </div>
 
+                <div
+                        ba-panel
+                        ba-panel-title="公文連結"
+                        ba-panel-class="with-scroll">
+
+                    <!--<div class="form-group">-->
+                    <!--<input placeholder="請輸入公文文號"-->
+                    <!--ng-model="docLinkNumber"-->
+                    <!--class="form-control"></input>-->
+                    <!--</div>-->
+
+                    <!--<button type="submit"-->
+                    <!--style="float: right; margin-right: 10px"-->
+                    <!--ng-click="addDocLink(this, docData)"-->
+                    <!--class="btn btn-warning">-->
+                    <!--新增公文連結-->
+                    <!--</button>-->
+
+                    <hr>
+
+                    <button ng-repeat="docLink in docLinkArray"
+                            style="margin: 3px"
+                            ng-click="showDocLink(this, docData)"
+                            class="btn btn-info">
+                        {{docLink.linkTitle}}
+                    </button>
+
+
+                </div>
+
 
             </div>
 

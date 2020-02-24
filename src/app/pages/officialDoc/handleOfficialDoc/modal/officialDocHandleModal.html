@@ -216,16 +216,17 @@
                 <div
                         ba-panel
                         ba-panel-title="公文連結"
-                        ba-panel-class="with-scroll"
-                        ng-show="!docData.isDocSignStage && !docData.isDocClose && canModified">
+                        ba-panel-class="with-scroll">
 
-                    <div class="form-group">
+                    <div class="form-group"
+                         ng-show="!docData.isDocSignStage && !docData.isDocClose && canModified">
                         <input placeholder="請輸入公文文號"
                                   ng-model="docLinkNumber"
                                   class="form-control"></input>
                     </div>
 
                     <button type="submit"
+                            ng-show="!docData.isDocSignStage && !docData.isDocClose && canModified"
                             style="float: right; margin-right: 10px"
                             ng-click="addDocLink(this, docData)"
                             class="btn btn-warning">
