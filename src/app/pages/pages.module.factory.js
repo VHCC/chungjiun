@@ -215,6 +215,14 @@
                     return http.post('/api/post_official_doc_delete_file_public_from_fs', formData);
                 },
 
+                updateOfficialDocItem_public: function (formData) {
+                    return http.post('/api/post_official_doc_update_item_public', formData);
+                },
+
+                deleteOfficialDocItem_public: function (formData) {
+                    return http.post('/api/post_official_doc_delete_item_public', formData);
+                },
+
                 createOfficialDocItem_public : function (formData) {
                     return http.post('/api/post_official_doc_create_item_public', formData);
                 },

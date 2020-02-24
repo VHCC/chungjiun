@@ -13,33 +13,13 @@
                 'OfficialDocVendorUtil',
                 'DateUtil',
                 '$compile',
-                function (scope,
-                          filter,
-                          $cookies,
-                          $uibModal,
-                          User,
-                          OfficialDocUtil,
-                          OfficialDocVendorUtil,
-                          DateUtil,
-                          $compile) {
-                    return new ListOfficialDocCtrl(
-                        scope,
-                        filter,
-                        $cookies,
-                        $uibModal,
-                        User,
-                        OfficialDocUtil,
-                        OfficialDocVendorUtil,
-                        DateUtil,
-                        $compile
-                    );
-                }])
-    ;
+                ListOfficialDocDatePeriodPublicModifiedCtrl
+            ])
 
     /**
      * @ngInject
      */
-    function ListOfficialDocCtrl($scope,
+    function ListOfficialDocDatePeriodPublicModifiedCtrl($scope,
                                  $filter,
                                  $cookies,
                                  $uibModal,
@@ -48,12 +28,6 @@
                                  OfficialDocVendorUtil,
                                  DateUtil,
                                  $compile) {
-
-        // var thisYear = new Date().getFullYear() - 1911;
-        // var thisMonth = new Date().getMonth() + 1; //January is 0!;
-        //
-        // $scope.month = this.month = undefined;
-        // $scope.year = this.myYear;
 
         $(document).ready(function () {
             console.log(" ====== initMask document ready ====== ")
@@ -106,13 +80,12 @@
                             "ba-panel-class= " +
                             "'with-scroll'" + ">" +
                             "<div " +
-                            "ng-include=\"'app/pages/officialDoc/listOfficialDoc/table/listOfficialPublicTable.html'\">" +
+                            "ng-include=\"'app/pages/officialDoc/listOfficialDoc/table/listOfficialPublicModifiedTable.html'\">" +
                             "</div>" +
                             "</div>"
                         )($scope));
                 })
         }
-
     }
 
 })();

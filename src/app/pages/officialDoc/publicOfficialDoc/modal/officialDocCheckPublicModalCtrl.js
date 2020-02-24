@@ -417,8 +417,9 @@
 
             var formData = {
                 _id: docData._id,
+                folder: docData.archiveNumber
             }
-            OfficialDocUtil.deleteOfficialDocItem(formData)
+            OfficialDocUtil.deleteOfficialDocItem_public(formData)
                 .success(function (res) {
                     window.location.reload();
                 })

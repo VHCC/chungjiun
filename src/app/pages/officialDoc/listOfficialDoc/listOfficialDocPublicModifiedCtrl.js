@@ -22,48 +22,29 @@
                 '$cookies',
                 '$uibModal',
                 'User',
+                'Project',
                 'OfficialDocUtil',
                 'OfficialDocVendorUtil',
                 '$compile',
                 'intiOfficialDocPublicModifiedService',
-                function (scope,
-                          filter,
-                          $cookies,
-                          $uibModal,
-                          User,
-                          OfficialDocUtil,
-                          OfficialDocVendorUtil,
-                          $compile,
-                          intiOfficialDocPublicModifiedService) {
-                    return new ListOfficialDocPublicCtrl(
-                        scope,
-                        filter,
-                        $cookies,
-                        $uibModal,
-                        User,
-                        OfficialDocUtil,
-                        OfficialDocVendorUtil,
-                        $compile,
-                        intiOfficialDocPublicModifiedService
-                    );
-                }])
-    ;
+                ListOfficialDocPublicModifiedCtrl
+            ])
 
     /**
      * @ngInject
      */
-    function ListOfficialDocPublicCtrl($scope,
+    function ListOfficialDocPublicModifiedCtrl($scope,
                                  $filter,
                                  $cookies,
                                  $uibModal,
                                  User,
+                                 Project,
                                  OfficialDocUtil,
                                  OfficialDocVendorUtil,
                                  $compile,
-                                       intiOfficialDocPublicModifiedService) {
+                                 intiOfficialDocPublicModifiedService) {
 
         intiOfficialDocPublicModifiedService.then(function (resp) {
-            console.log(resp);
             $scope.officialDocItems = resp.data.payload;
             $scope.officialDocItems.slice(0, resp.data.payload.length);
 
@@ -85,10 +66,22 @@
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
-                    "ng-include=\"'app/pages/officialDoc/listOfficialDoc/table/listOfficialPublicTable.html'\">" +
+                    "ng-include=\"'app/pages/officialDoc/listOfficialDoc/table/listOfficialPublicModifiedTable.html'\">" +
                     "</div>" +
                     "</div>"
                 )($scope));
+
+            Project.findAll()
+                .success(function (relatedProjects) {
+                    $scope.relatedProjects = [];
+                    for (var i = 0; i < relatedProjects.length; i++) {
+                        $scope.relatedProjects[i] = {
+                            value: relatedProjects[i]._id,
+                            managerID: relatedProjects[i].managerID,
+                            majorID: relatedProjects[i].majorID
+                        };
+                    }
+                });
 
             User.getAllUsers()
                 .success(function (allUsers) {
@@ -163,9 +156,35 @@
             return selected.length ? selected[0].name : 'Not Set';
         }
 
+        $scope.showMajor = function (officialItem) {
+            var selected = [];
+            if ($scope.relatedProjects === undefined) return;
+            if (officialItem.prjDID) {
+                selected = $filter('filter')($scope.relatedProjects, {
+                    value: officialItem.prjDID
+                });
+            }
+            var selected_major = [];
+            if (selected.length) {
+                selected_major = $filter('filter')($scope.allUsers, {
+                    value: selected[0].majorID
+                });
+            }
+            return selected_major.length ? selected_major[0].name : 'Not Set';
+        }
+
+        $scope.showSigner = function (officialItem) {
+            if (officialItem.stageInfo.length == 2) {
+                return officialItem.stageInfo[officialItem.stageInfo.length - 1].handleName;
+            }
+            return officialItem.stageInfo.length > 1 ? officialItem.stageInfo[officialItem.stageInfo.length - 2].handleName : "尚未簽核";
+        }
+
+        $scope.showPublisher = function (officialItem) {
+            return officialItem.stageInfo.length > 2 ? officialItem.stageInfo[officialItem.stageInfo.length - 1].handleName : "尚未發文";
+        }
+
         $scope.showVendorName = function (officialItem) {
-            // console.log(officialItem);
-            // console.log($scope.allVendors);
             var selected = [];
             if ($scope.allVendors === undefined) return;
             if (officialItem.vendorDID) {
@@ -179,8 +198,9 @@
         $scope.showOfficialDocInfo = function (item) {
             $uibModal.open({
                 animation: true,
-                controller: 'officialDocInfoPublicModalCtrl',
-                templateUrl: 'app/pages/officialDoc/listOfficialDoc/modal/officialDocInfoPublicModal.html',
+                controller: 'publicOfficialDocModifiedCtrl',
+                controllerAs: 'publicOfficialDocModifiedCtrlVm',
+                templateUrl: 'app/pages/officialDoc/listOfficialDoc/modal/publicOfficialDocModifiedModal.html',
                 size: 'lg',
                 resolve: {
                     docData: function () {

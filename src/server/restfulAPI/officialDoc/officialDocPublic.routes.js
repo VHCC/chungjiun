@@ -66,6 +66,65 @@ module.exports = function (app) {
             // req.body will hold the text fields, if there were any
         })
 
+    // update item
+    app.post(global.apiUrl.post_official_doc_update_item_public, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_update_item_public");
+        console.log(req.body);
+
+        try {
+            if (req.body.old_archiveNumber) {
+
+                var oldDir = fileStorageDir + '/' + req.body.old_archiveNumber + getDivision(req.body.old_docDivision.option);
+                var newDir = fileStorageDir + '/'  + req.body.archiveNumber + getDivision(req.body.docDivision);
+
+                fs.rename(oldDir, newDir, function (err) {
+                    if (err) throw err;
+                    console.log('renamed complete');
+                });
+            }
+        } catch (e) {
+            console.log(e)
+        }
+
+
+        var keyArray = Object.keys(req.body);
+        var updateRequest = {};
+        for (var index = 0; index < keyArray.length; index++) {
+            var evalString = "updateRequest.";
+            evalString += keyArray[index];
+
+            var evalFooter = "req.body.";
+            evalFooter += keyArray[index];
+            eval(evalString + " = " + evalFooter);
+        }
+
+        delete updateRequest._id;
+        console.log("--- updateRequest ---");
+        console.log(updateRequest);
+
+        OfficialDocItem.updateOne(
+            {
+                _id:req.body._id
+
+            }, {
+                $set: updateRequest
+            }, function (err, result) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_update_item_public");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: result
+                    });
+                }
+            })
+    })
+
     // remove file from cache
     app.post(global.apiUrl.post_official_doc_delete_file_public, function (req, res) {
 
@@ -360,7 +419,7 @@ module.exports = function (app) {
                     console.log(err);
                     res.send(err);
                 } else {
-                    console.log(items);
+                    // console.log(items);
                     res.status(200).send({
                         code: 200,
                         error: global.status._200,
@@ -425,6 +484,53 @@ module.exports = function (app) {
                         code: 200,
                         error: global.status._200,
                         payload: result,
+                    });
+                }
+            })
+    })
+
+    const getDivision = function (type) {
+        switch (type) {
+            case 0:
+                return "F";
+            case 1:
+                return "N";
+            case 2:
+                return "G";
+            case 3:
+                return "D";
+            case 4:
+                return "P"
+        }
+    };
+
+    // delete item
+    app.post(global.apiUrl.post_official_doc_delete_item_public, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_delete_item_public");
+
+        console.log(req.body);
+
+        OfficialDocItem.remove(
+            {
+                _id:req.body._id
+
+            }, function (err, result) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_delete_item_public");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+
+                    var deleteFolder = fileStorageDir + '/' + req.body.folder;
+
+                    deleteFolderRecursive(deleteFolder);
+
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: result
                     });
                 }
             })

@@ -700,16 +700,21 @@ module.exports = function (app) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_update_item");
         console.log(req.body);
 
-        if (req.body.old_archiveNumber) {
+        try {
+            if (req.body.old_archiveNumber) {
 
-            var oldDir = fileStorageDir + '/' + getDivision(req.body.docDivision) + req.body.old_archiveNumber;
-            var newDir = fileStorageDir + '/' + getDivision(req.body.docDivision) + req.body.archiveNumber;
+                var oldDir = fileStorageDir + '/' + getDivision(req.body.old_docDivision.option) + req.body.old_archiveNumber;
+                var newDir = fileStorageDir + '/' + getDivision(req.body.docDivision) + req.body.archiveNumber;
 
-            fs.rename(oldDir, newDir, function (err) {
-                if (err) throw err;
-                console.log('renamed complete');
-            });
+                fs.rename(oldDir, newDir, function (err) {
+                    if (err) throw err;
+                    console.log('renamed complete');
+                });
+            }
+        } catch (e) {
+            console.log(e)
         }
+
 
         var keyArray = Object.keys(req.body);
         var updateRequest = {};

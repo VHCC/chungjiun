@@ -9,12 +9,6 @@
                 endDay: moment().format("YYYY/MM/DD"),
             }
 
-            // var promise = $http.get('/api/get_official_doc_fetch_all_item')
-            //     .success(function (allOfficialDocItems) {
-            //         return allOfficialDocItems;
-            //     });
-            // return promise;
-
             var promise = $http.post('/api/post_official_doc_fetch_item_period', formData)
                 .success(function (allOfficialDocItems) {
                     return allOfficialDocItems;
@@ -32,33 +26,13 @@
                 'OfficialDocVendorUtil',
                 '$compile',
                 'intiOfficialDocReceiveModifiedService',
-                function (scope,
-                          filter,
-                          $cookies,
-                          $uibModal,
-                          User,
-                          OfficialDocUtil,
-                          OfficialDocVendorUtil,
-                          $compile,
-                          intiOfficialDocReceiveModifiedService) {
-                    return new ListOfficialDocReceiveCtrl(
-                        scope,
-                        filter,
-                        $cookies,
-                        $uibModal,
-                        User,
-                        OfficialDocUtil,
-                        OfficialDocVendorUtil,
-                        $compile,
-                        intiOfficialDocReceiveModifiedService
-                    );
-                }])
-    ;
+                ListOfficialDocModifiedCtrl
+            ])
 
     /**
      * @ngInject
      */
-    function ListOfficialDocReceiveCtrl($scope,
+    function ListOfficialDocModifiedCtrl($scope,
                                  $filter,
                                  $cookies,
                                  $uibModal,
@@ -158,7 +132,6 @@
         }
 
         $scope.showCharger = function (officialItem) {
-            // console.log(officialItem);
             var selected = [];
             if ($scope.allUsers === undefined) return;
             if (officialItem.chargerDID) {
@@ -170,7 +143,6 @@
         }
 
         $scope.showHandler = function (officialItem) {
-            // console.log(officialItem);
             var selected = [];
             if ($scope.allUsers === undefined) return;
             if (officialItem.handlerDID) {
@@ -186,8 +158,6 @@
         }
 
         $scope.showVendorName = function (officialItem) {
-            // console.log(officialItem);
-            // console.log($scope.allVendors);
             var selected = [];
             if ($scope.allVendors === undefined) return;
             if (officialItem.vendorDID) {
@@ -201,11 +171,9 @@
         $scope.showOfficialDocInfo = function (item) {
             $uibModal.open({
                 animation: true,
-                // controller: 'officialDocModifiedModalCtrl',
                 controller: 'receiveOfficialDocModifiedCtrl',
                 controllerAs: 'receiveOfficialDocModifiedCtrlVm',
-                // templateUrl: 'app/pages/officialDoc/listOfficialDoc/modal/officialDocModifiedModal.html',
-                templateUrl: 'app/pages/officialDoc/listOfficialDoc/modal/receiveOfficialDoc_ModifiedModal.html',
+                templateUrl: 'app/pages/officialDoc/listOfficialDoc/modal/receiveOfficialDocModifiedModal.html',
                 size: 'lg',
                 resolve: {
                     docData: function () {

@@ -115,7 +115,8 @@
                 docDivision: $scope.docData.docDivision.option,
                 docAttachedType: $scope.docData.docAttachedType.option,
 
-                old_archiveNumber: $scope.old_docData._archiveNumber
+                old_archiveNumber: $scope.old_docData._archiveNumber,
+                old_docDivision: $scope.old_docData.docDivision
 
             }
             OfficialDocUtil.updateOfficialDocItem(formData)

@@ -1,0 +1,568 @@
+<style>
+    /*body {*/
+    /*background: rgb(243, 244, 245);*/
+    /*height: 100%;*/
+    /*color: rgb(100, 108, 127);*/
+    /*line-height: 1.4rem;*/
+    /*font-family: Roboto, "Open Sans", sans-serif;*/
+    /*font-size: 20px;*/
+    /*font-weight: 300;*/
+    /*text-rendering: optimizeLegibility;*/
+    /*}*/
+
+    h1 {
+        text-align: center;
+    }
+
+    .dropzone {
+        background: white;
+        border-radius: 5px;
+        border: 2px dashed rgb(0, 135, 247);
+        border-image: none;
+        /*max-width: 500px;*/
+        /*margin-left: auto;*/
+        /*margin-right: auto;*/
+    }
+
+    .attachedzone {
+        background: white;
+        border-radius: 5px;
+        border: 1px solid rgb(0, 135, 247);
+        border-image: none;
+        /*max-width: 500px;*/
+        min-height: 150px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .pdf-item {
+        margin: 5px;
+        cursor: pointer;
+        vertical-align: top;
+        position: relative;
+        display: inline-block;
+    }
+
+    .pdf-item:hover {
+        border-radius: 10px;
+        border: 2px solid rgba(206, 206, 206, 0.88);
+    }
+
+    .pdf-img {
+        width: 120px;
+        height: 120px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .pdf-detail {
+        text-align: center;
+    }
+
+    .pdf-delete-buttons {
+        text-align: center;
+    }
+
+</style>
+
+<div>
+
+    <div class="modal-header bg-info">
+        <i class="ion-android-warning modal-icon"></i>
+        <strong style="color: red;">崇峻文號：{{docData.archiveNumber}}</strong>
+    </div>
+    <hr>
+
+    <div class="modal-body text-left">
+        <div class="row">
+
+            <!--<div class="col-md-4">-->
+                <!--<div-->
+                        <!--id="_receiveDate_panel"-->
+                        <!--ba-panel-->
+                        <!--ba-panel-title="收文日期"-->
+                        <!--ba-panel-class="with-scroll">-->
+                    <!--<div class="form-group">-->
+                        <!--<my-date-picker formatted="yyyy/MM/dd"-->
+                                        <!--id="_receiveDate_dom"-->
+                                        <!--ng-init="setDateModel('_receiveDate', this)"-->
+                                        <!--ng-click="setDateModel('_receiveDate', this);-->
+                                        <!--listenDatePicker_official(this)">-->
+                        <!--</my-date-picker>-->
+                    <!--</div>-->
+
+                    <!--<div class="form-group">-->
+                        <!--<p>-->
+                            <!--說明：公文的收文日期。-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="col-md-4">-->
+                <!--<div-->
+                        <!--id="_lastDate_panel"-->
+                        <!--ba-panel-->
+                        <!--ba-panel-title="內部處理期限"-->
+                        <!--ba-panel-class="with-scroll">-->
+                    <!--<div class="form-group">-->
+                        <!--<my-date-picker formatted="yyyy/MM/dd"-->
+                                        <!--id="_lastDate_dom"-->
+                                        <!--ng-model="_lastDate"-->
+                                        <!--ng-init="setDateModel('_lastDate', this)"-->
+                                        <!--ng-click="setDateModel('_lastDate', this); listenDatePicker_official(this)">-->
+
+                        <!--</my-date-picker>-->
+                    <!--</div>-->
+
+                    <!--<div class="form-group">-->
+                        <!--<p>-->
+                            <!--說明：預設＝收文日期 (不含當天) + 3 天。-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="col-md-4">-->
+                <!--<div-->
+                        <!--id="_dueDate_panel"-->
+                        <!--ba-panel-->
+                        <!--ba-panel-title="最後期限"-->
+                        <!--ba-panel-class="with-scroll">-->
+                    <!--<div class="form-group">-->
+                        <!--<my-date-picker formatted="yyyy/MM/dd"-->
+                                        <!--id="_dueDate_dom"-->
+                                        <!--ng-model="_dueDate"-->
+                                        <!--ng-init="setDateModel('_dueDate', this)"-->
+                                        <!--ng-click="setDateModel('_dueDate', this); listenDatePicker_official(this)">-->
+
+                        <!--</my-date-picker>-->
+                    <!--</div>-->
+
+                    <!--<div class="form-group">-->
+                        <!--<p>-->
+                            <!--說明：預設＝最後日期 (含當天) + 7 天。-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <div class="col-md-6">
+                <div
+                        ba-panel
+                        ba-panel-title="發文資訊設定"
+                        ba-panel-class="with-scroll">
+
+                    <div class="form-group">
+                        <!--<label class="col-md-3 control-label">崇峻文號</label>-->
+                        <!--<input type="text"-->
+                        <!--class="form-control"-->
+                        <!--placeholder="空白"-->
+                        <!--style="color: #000000;"-->
+                        <!--ng-model="_archiveNumber">-->
+
+                        <div class="row">
+
+                            <div class="col-md-9">
+                                <label class="col-md-12 control-label">崇峻發文號</label>
+                                <input type="text"
+                                       class="form-control"
+                                       style="color: #000000;"
+                                       ng-disabled="false"
+                                       ng-model="_archiveNumber">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="col-md-12 control-label">分部</label>
+                                <ui-select ng-model="publicOfficialDocModifiedCtrlVm.docDivision.selected"
+                                           class="btn-group bootstrap-select form-control"
+                                           append-to-body="false"
+                                           search-enabled="true">
+                                    <ui-select-match placeholder="請選擇分部">
+                                        {{$select.selected.name}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                            repeat="division in publicOfficialDocModifiedCtrlVm.docDivisions">
+                                        <span ng-bind-html="division.name"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="col-md-3 control-label">文別</label>
+                                <ui-select ng-model="publicOfficialDocModifiedCtrlVm.docOption.selected"
+                                           class="btn-group bootstrap-select form-control"
+                                           append-to-body="false"
+                                           search-enabled="true">
+                                    <ui-select-match placeholder="請選擇文別">
+                                        {{$select.selected.name}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                            repeat="option in publicOfficialDocModifiedCtrlVm.docOptions">
+                                        <span ng-bind-html="option.name"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">發文日期</label>
+                        <my-date-picker formatted="yyyy/MM/dd"
+                                        id="_officialPublicDate_dom"
+                                        ng-init="setDateModel('_officialPublicDate', this)"
+                                        ng-click="setDateModel('_officialPublicDate', this)">
+
+                        </my-date-picker>
+                    </div>
+
+                    <!--<div class="form-group">-->
+                        <!--<div class="row">-->
+                            <!--<div class="col-sm-6">-->
+                                <!--<label class="col-sm-6 control-label">收文字</label>-->
+                                <!--<input type="text"-->
+                                       <!--class="form-control"-->
+                                       <!--placeholder="空白"-->
+                                       <!--style="color: #000000;"-->
+                                       <!--ng-model="_receiveType">-->
+                            <!--</div>-->
+                            <!--<div class="col-sm-6">-->
+                                <!--<label class="col-sm-6 control-label">收文文號</label>-->
+                                <!--<input type="text"-->
+                                       <!--class="form-control"-->
+                                       <!--placeholder="空白"-->
+                                       <!--style="color: #000000;"-->
+                                       <!--ng-model="_receiveNumber">-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                    <!--</div>-->
+
+                    <!--<div class="form-group">-->
+                    <!--<label class="col-md-3 control-label">收文文號</label>-->
+                    <!--<input type="text"-->
+                    <!--class="form-control"-->
+                    <!--placeholder="空白"-->
+                    <!--style="color: #000000;"-->
+                    <!--ng-model="_receiveNumber">-->
+                    <!--</div>-->
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">主旨</label>
+                        <input type="text"
+                               class="form-control"
+                               placeholder="空白"
+                               style="color: #000000;"
+                               ng-model="_subject">
+                    </div>
+
+                    <div class="form-group" ng-show="false">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="col-md-3 control-label">發文機關</label>
+                                <ui-select ng-model="publicOfficialDocModifiedCtrlVm.vendorItem.selected"
+                                           class="btn-group bootstrap-select form-control"
+                                           ng-disabled="false"
+                                           append-to-body="true"
+                                           search-enabled="true">
+                                    <ui-select-match placeholder="選擇機關">
+                                        {{$select.selected.vendorName}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                            ng-model="vendorName"
+                                            repeat="vendorItem in publicOfficialDocModifiedCtrlVm.officialDocVendors |
+                                            groupSelectpickerOptions: {
+                                                vendorName: $select.search
+                                            }">
+                                        <span ng-bind-html="vendorItem.vendorName | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="col-md-12 control-label">正本受文機關</label>
+                            </div>
+                            <div class="col-md-12">
+                                <ui-select multiple
+                                           ng-model="publicOfficialDocModifiedCtrlVm.targetOrigin.selected"
+                                           class="form-control"
+                                           ng-disabled="false"
+                                           search-enabled="true"
+                                           append-to-body="false">
+                                    <ui-select-match placeholder="正本受文機關">
+                                        {{$item.vendorName}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                            ng-model="vendorName"
+                                            repeat="vendorItem in publicOfficialDocModifiedCtrlVm.officialDocVendors |
+                                            groupSelectpickerOptions: {
+                                                        vendorName: $select.search
+                                                    }">
+                                        <span ng-bind-html="vendorItem.vendorName | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="col-md-12 control-label">副本受文機關</label>
+                            </div>
+                            <div class="col-md-12">
+                                <ui-select multiple
+                                           ng-model="publicOfficialDocModifiedCtrlVm.targetCopy.selected"
+                                           class="form-control"
+                                           ng-disabled="false"
+                                           search-enabled="true"
+                                           append-to-body="false">
+                                    <ui-select-match placeholder="副本受文機關">
+                                        {{$item.vendorName}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                            ng-model="vendorName"
+                                            repeat="vendorItem in publicOfficialDocModifiedCtrlVm.officialDocVendors_copy |
+                                            groupSelectpickerOptions: {
+                                                        vendorName: $select.search
+                                                    }">
+                                        <span ng-bind-html="vendorItem.vendorName | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="col-md-3 control-label">附件類型</label>
+                                <ui-select ng-model="publicOfficialDocModifiedCtrlVm.publicType.selected"
+                                           class="btn-group bootstrap-select form-control"
+                                           append-to-body="false"
+                                           search-enabled="true">
+                                    <ui-select-match placeholder="請選擇發文類型">
+                                        {{$select.selected.name}}
+                                    </ui-select-match>
+                                    <ui-select-choices
+                                            repeat="type in publicOfficialDocModifiedCtrlVm.publicTypes">
+                                        <span ng-bind-html="type.name"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <section class="col-md-12" >
+                        <button ng-click="checkDocDetail(this)"
+                                ng-if="!docData.isDocClose"
+                                style="float: right; padding: 0 60px; line-height: 4"
+                                id="btnReview"
+                                pb-style="shrink"
+                                class="btn btn-primary">
+                            確認修改
+                        </button>
+                        <p ng-if="docData.isDocClose">檔案已歸檔</p>
+                    </section>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div
+                        ba-panel
+                        ba-panel-title="專案設定"
+                        ba-panel-class="with-scroll">
+
+                    <div class="form-group">
+                        <label class="col-md-12 control-label" for="projectName">總案名稱 - 專案名稱 - 子案名稱 - 代碼</label>
+                        <ui-select ng-model="publicOfficialDocModifiedCtrlVm.prjItems.selected"
+                                   class="btn-group bootstrap-select form-control"
+                                   id="projectName"
+                                   ng-disabled="false"
+                                   ng-change="docProjectSelected($select.selected);"
+                                   append-to-body="false"
+                                   search-enabled="true">
+                            <ui-select-match placeholder="選擇">
+                                {{$select.selected.mainName}} -
+                                {{$select.selected.prjName}} -
+                                {{$select.selected.prjSubName}} -
+                                {{prjTypeToName($select.selected.type)}} -
+                                {{$select.selected.prjCode}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    ng-model="prjName"
+                                    repeat="prjItems in publicOfficialDocModifiedCtrlVm.allProjectData |
+                                groupSelectpickerOptions: {
+                                mainName: $select.search,
+                                prjName: $select.search,
+                                prjSubName: $select.search,
+                                prjCode: $select.search
+                            }"
+                                    group-by="'mainName'">
+                            <span ng-bind-html="prjItems.prjName + ' - ' +
+                                prjItems.prjSubName + ' - ' +
+                                prjTypeToName(prjItems.type) + ' - ' +
+                                prjItems.prjCode | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-6" ng-show="false">
+                <div
+                        ba-panel
+                        ba-panel-title="簽核人設定"
+                        ba-panel-class="with-scroll">
+
+                    <div class="form-group">
+                        <label class="col-md-12 control-label">簽核人(預設只有經理、主任、行政總管)</label>
+                        <ui-select ng-model="publicOfficialDocModifiedCtrlVm.signer.selected"
+                                   class="btn-group bootstrap-select form-control"
+                                   ng-disabled="false"
+                                   append-to-body="false"
+                                   search-enabled="true">
+                            <ui-select-match placeholder="選簽核人">
+                                {{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    repeat="signer in publicOfficialDocModifiedCtrlVm.signers | groupSelectpickerOptions: {name: $select.search}">
+                                <span ng-bind-html="signer.name| highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-6" ng-show="false">
+                <div
+                        ba-panel
+                        ba-panel-title="承辦人設定"
+                        ba-panel-class="with-scroll">
+
+                    <div class="form-group">
+                        <label class="col-md-12 control-label">承辦人 (預設為專案承辦人，若無承辦人，則預設為專案經理)</label>
+                        <ui-select ng-model="publicOfficialDocModifiedCtrlVm.chargeUser.selected"
+                                   class="btn-group bootstrap-select form-control"
+                                   ng-disabled="false"
+                                   append-to-body="false"
+                                   search-enabled="true">
+                            <ui-select-match placeholder="選擇員工">
+                                {{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    repeat="user in publicOfficialDocModifiedCtrlVm.chargeUsers | groupSelectpickerOptions: {name: $select.search}">
+                                <span ng-bind-html="user.name| highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-6" ng-show="false">
+                <div
+                        ba-panel
+                        ba-panel-title="公文及附件內容"
+                        ba-panel-class="with-scroll">
+
+                    <section>
+                        <div id="dropzone">
+                            <form class="dropzone needsclick"
+                                  id="demo-upload">
+                                <div class="dz-message needsclick">
+                                    收文檔案(拖拉或點擊上傳)
+                                    <BR>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+
+                    <div class="attachedzone" ng-init="fetchPDFFiles()" ng-show="false">
+
+                        <my ng-if="pdfList != undefined" ng-repeat="pdfItem in pdfList">
+                            <div class="pdf-item" ng-click="showPDF(this)">
+                                <div class="pdf-img">
+                                    <img src="assets/img/pdf-svgrepo-com.svg"/>
+                                </div>
+                                <div class="pdf-detail">
+                                    <div class="pdf-size"><span data-pdf-size="">{{pdfItem.size}}</span></div>
+                                    <div class="pdf-filename"><span data-pdf-name="">{{pdfItem.name}}</span></div>
+                                </div>
+                                <div class="pdf-delete-buttons">
+                                    <button class="btn btn-danger" ng-click="deleteFile(this)">刪除</button>
+                                </div>
+                            </div>
+                        </my>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-footer">
+    </div>
+
+</div>
+
+
+<div ng-init="initDropZone()" id="preview-template" style="display: none;">
+    <div class="dz-preview dz-file-preview">
+        <div class="dz-image"><img data-dz-thumbnail=""></div>
+        <div class="dz-details">
+            <div class="dz-size"><span data-dz-size=""></span></div>
+            <div class="dz-filename"><span data-dz-name=""></span></div>
+        </div>
+        <div class="dz-progress"><span class="dz-upload"
+                                       data-dz-uploadprogress=""></span></div>
+        <div class="dz-error-message"><span data-dz-errormessage=""></span></div>
+        <div class="dz-success-mark">
+            <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                 xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+                <title>Check</title>
+                <desc>Created with Sketch.</desc>
+                <defs></defs>
+                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                    <path d="M23.5,31.8431458 L17.5852419,25.9283877 C16.0248253,24.3679711 13.4910294,24.366835 11.9289322,25.9289322 C10.3700136,27.4878508 10.3665912,30.0234455 11.9283877,31.5852419 L20.4147581,40.0716123 C20.5133999,40.1702541 20.6159315,40.2626649 20.7218615,40.3488435 C22.2835669,41.8725651 24.794234,41.8626202 26.3461564,40.3106978 L43.3106978,23.3461564 C44.8771021,21.7797521 44.8758057,19.2483887 43.3137085,17.6862915 C41.7547899,16.1273729 39.2176035,16.1255422 37.6538436,17.6893022 L23.5,31.8431458 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z"
+                          id="Oval-2" stroke-opacity="0.198794158" stroke="#747474" fill-opacity="0.816519475"
+                          fill="#FFFFFF" sketch:type="MSShapeGroup"></path>
+                </g>
+            </svg>
+        </div>
+        <div class="dz-error-mark">
+            <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                 xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+                <title>error</title>
+                <desc>Created with Sketch.</desc>
+                <defs></defs>
+                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                    <g id="Check-+-Oval-2" sketch:type="MSLayerGroup" stroke="#747474" stroke-opacity="0.198794158"
+                       fill="#FFFFFF" fill-opacity="0.816519475">
+                        <path d="M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z"
+                              id="Oval-2" sketch:type="MSShapeGroup"></path>
+                    </g>
+                </g>
+            </svg>
+        </div>
+    </div>
+</div>
+
