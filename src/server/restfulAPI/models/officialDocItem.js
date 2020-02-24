@@ -219,7 +219,12 @@ module.exports = mongoose.model('officialDocItem', {
 
     counterSignList: {
         type: Array,
-    }
+    },
+
+    // 發文備註 (可以為空)
+    publicMemo: {
+        type: String,
+    },
 
 
 

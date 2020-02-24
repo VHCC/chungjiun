@@ -121,6 +121,8 @@
                 old_archiveNumber: $scope.old_docData._archiveNumber,
                 old_docDivision: $scope.old_docData.docDivision,
 
+                publicMemo: $scope.docData.publicMemo,
+
                 type: 1
             }
             OfficialDocUtil.updateOfficialDocItem_public(formData)
