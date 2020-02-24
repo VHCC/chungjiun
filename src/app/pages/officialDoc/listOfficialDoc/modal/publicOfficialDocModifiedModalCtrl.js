@@ -299,6 +299,8 @@
 
             // var isAttached = $scope.fileList.length > 0 ? true : false;
 
+            console.log(dom);
+
             var docData = {
                 _id: $scope.docData._id,
                 _archiveNumber: dom._archiveNumber,
@@ -323,7 +325,10 @@
                 isDocSignStage: $scope.docData.isDocSignStage,
                 // stageInfo: stageInfo,
                 // isAttached: isAttached,
+                publicMemo: vm.publicMemo,
             }
+
+            console.log(docData);
 
             $uibModal.open({
                 animation: true,
@@ -545,6 +550,9 @@
 
             vm.targetCopy = [];
             vm.targetCopy.selected = $scope.docData.targetCopy;
+
+            //發文備註
+            vm.publicMemo = $scope.docData.publicMemo;
 
             old_docData = {
                 _id: $scope.docData._id,

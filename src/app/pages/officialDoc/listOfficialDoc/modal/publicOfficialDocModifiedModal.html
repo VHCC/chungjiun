@@ -76,77 +76,6 @@
     <div class="modal-body text-left">
         <div class="row">
 
-            <!--<div class="col-md-4">-->
-                <!--<div-->
-                        <!--id="_receiveDate_panel"-->
-                        <!--ba-panel-->
-                        <!--ba-panel-title="收文日期"-->
-                        <!--ba-panel-class="with-scroll">-->
-                    <!--<div class="form-group">-->
-                        <!--<my-date-picker formatted="yyyy/MM/dd"-->
-                                        <!--id="_receiveDate_dom"-->
-                                        <!--ng-init="setDateModel('_receiveDate', this)"-->
-                                        <!--ng-click="setDateModel('_receiveDate', this);-->
-                                        <!--listenDatePicker_official(this)">-->
-                        <!--</my-date-picker>-->
-                    <!--</div>-->
-
-                    <!--<div class="form-group">-->
-                        <!--<p>-->
-                            <!--說明：公文的收文日期。-->
-                        <!--</p>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-
-            <!--<div class="col-md-4">-->
-                <!--<div-->
-                        <!--id="_lastDate_panel"-->
-                        <!--ba-panel-->
-                        <!--ba-panel-title="內部處理期限"-->
-                        <!--ba-panel-class="with-scroll">-->
-                    <!--<div class="form-group">-->
-                        <!--<my-date-picker formatted="yyyy/MM/dd"-->
-                                        <!--id="_lastDate_dom"-->
-                                        <!--ng-model="_lastDate"-->
-                                        <!--ng-init="setDateModel('_lastDate', this)"-->
-                                        <!--ng-click="setDateModel('_lastDate', this); listenDatePicker_official(this)">-->
-
-                        <!--</my-date-picker>-->
-                    <!--</div>-->
-
-                    <!--<div class="form-group">-->
-                        <!--<p>-->
-                            <!--說明：預設＝收文日期 (不含當天) + 3 天。-->
-                        <!--</p>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-
-            <!--<div class="col-md-4">-->
-                <!--<div-->
-                        <!--id="_dueDate_panel"-->
-                        <!--ba-panel-->
-                        <!--ba-panel-title="最後期限"-->
-                        <!--ba-panel-class="with-scroll">-->
-                    <!--<div class="form-group">-->
-                        <!--<my-date-picker formatted="yyyy/MM/dd"-->
-                                        <!--id="_dueDate_dom"-->
-                                        <!--ng-model="_dueDate"-->
-                                        <!--ng-init="setDateModel('_dueDate', this)"-->
-                                        <!--ng-click="setDateModel('_dueDate', this); listenDatePicker_official(this)">-->
-
-                        <!--</my-date-picker>-->
-                    <!--</div>-->
-
-                    <!--<div class="form-group">-->
-                        <!--<p>-->
-                            <!--說明：預設＝最後日期 (含當天) + 7 天。-->
-                        <!--</p>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-
             <div class="col-md-6">
                 <div
                         ba-panel
@@ -419,6 +348,32 @@
                                 prjItems.prjCode | highlight: $select.search"></span>
                             </ui-select-choices>
                         </ui-select>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div
+                        ba-panel
+                        ba-panel-title="發文備註"
+                        ba-panel-class="with-scroll">
+
+                    <div class="form-group">
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <label class="col-md-12 control-label">發文備註</label>
+                                <input type="text"
+                                       class="form-control"
+                                       style="color: #000000;"
+                                       ng-disabled="false"
+                                       ng-model="publicOfficialDocModifiedCtrlVm.publicMemo">
+                            </div>
+
+                        </div>
+
                     </div>
 
                 </div>
