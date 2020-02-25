@@ -269,9 +269,6 @@
         // 提交會簽
         $scope.sendProcessCounterSign = function (dom, docData, signSelected) {
 
-            // console.log(docData);
-            // console.log(signSelected);
-
             var signUsers = "empty";
             if (signSelected.length > 0) {
                 signUsers = "";
@@ -279,21 +276,21 @@
             for (var index = 0; index < signSelected.length; index ++) {
                 signUsers += signSelected[index].name + ", ";
             }
-            console.log(signUsers);
 
             $scope.checkText = "會簽人員：" + signUsers;
-            $scope.handleRecord = "會簽給 " + signUsers;
+            $scope.signRecord = dom.signRecord;
+            $scope.handleResult = "會簽給 " + signUsers;
             $scope.signSelected = signSelected;
             $scope.docData = docData;
             ngDialog.open({
-                template: 'app/pages/officialDoc/handleOfficialDoc/dialog/handleOfficialDocReviewSounterSign_Modal.html',
+                template: 'app/pages/officialDoc/handleOfficialDoc/dialog/handleOfficialDocReviewCounterSign_Modal.html',
                 className: 'ngdialog-theme-default',
                 scope: $scope,
                 showClose: false,
             });
         }
 
-        $scope.updateOfficialDocToServerCounterSign = function(docData, handleRecord, signSelected) {
+        $scope.updateOfficialDocToServerCounterSign = function(docData, handleRecord, handleResult, signSelected) {
 
             var handleInfo = docData.stageInfo;
             var counterSignList = [];
@@ -310,6 +307,7 @@
                 stage: "開始會簽",
                 handleName: "",
                 handleRecord: handleRecord,
+                handleResult: handleResult,
             }
 
             handleInfo.push(stageInfoHandle);
@@ -344,9 +342,6 @@
         }
 
         $scope.updateOfficialDocToServer = function(docData, handleRecord) {
-            // console.log(handleRecord);
-            // console.log(docData);
-
             var handleInfo = docData.stageInfo;
 
             var stageInfoHandle = {
@@ -377,7 +372,6 @@
 
         // 提交歸檔
         $scope.sendArchive = function (dom, docData) {
-
             $scope.checkText = "是否歸檔：" + docData.archiveNumber;
             $scope.docData = docData;
             ngDialog.open({
@@ -389,7 +383,6 @@
         }
 
         $scope.updateOfficialDocToServer_Archive = function(docData) {
-
             var handleInfo = docData.stageInfo;
 
             var stageInfoHandle = {
@@ -432,7 +425,6 @@
             });
 
         $scope.addDocLink = function (dom, docData) {
-
             console.log(docData);
 
             var docDivisionWord = dom.docLinkNumber.substring(0, 1);
@@ -483,10 +475,6 @@
         }
 
         $scope.addDocLinkOfficialDocToServer = function(docData, linkData) {
-            // console.log(handleRecord);
-            // console.log(docData);
-            // console.log(linkData);
-
             // var handleInfo = docData.stageInfo;
 
             // var stageInfoHandle = {
@@ -598,10 +586,8 @@
                             // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
                         });
                     }
-
                 });
         }
-
     }
 
 })();
