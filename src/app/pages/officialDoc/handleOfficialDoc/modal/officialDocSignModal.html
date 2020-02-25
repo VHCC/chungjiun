@@ -99,18 +99,26 @@
 
                     <div style="padding: 5px">
                         <label >內部處理期限</label>
-                        <input type="text" class="form-control"
+                        <input type="text" class="form-control datePicker"
                                value="{{docData.lastDate}}"
-                               ng-disabled="true">
+                               ng-model="docData.lastDate"
+                               ng-disabled="false">
                     </div>
 
                     <div style="padding: 5px">
                         <label >最後期限</label>
-                        <input type="text" class="form-control"
+                        <input type="text" class="form-control datePicker"
                                value="{{docData.dueDate}}"
-                               ng-disabled="true">
+                               ng-model="docData.dueDate"
+                               ng-disabled="false">
                     </div>
 
+                    <button type="submit"
+                            style="float: right; margin-right: 10px"
+                            ng-click="sendModified(this, docData)"
+                            class="btn btn-default">
+                        修改
+                    </button>
                 </div>
 
             </div>
