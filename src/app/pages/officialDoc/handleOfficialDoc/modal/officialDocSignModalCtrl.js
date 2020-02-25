@@ -250,9 +250,50 @@
             return bytes;
         }
 
+        // 提交修改
+        $scope.sendModified = function (dom, docData) {
+
+            $scope.checkText = "修改 內部處理期限：" + docData.lastDate + ", 最後期限：" +docData.dueDate ;
+            $scope.modifiedMsg = "修改 內部處理期限：" + docData.lastDate + ", 最後期限：" +docData.dueDate;
+            $scope.docData = docData;
+            ngDialog.open({
+                template: 'app/pages/officialDoc/handleOfficialDoc/dialog/signOfficialDocModifiedReviewSend_Modal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+
+        $scope.updateOfficialDocToServer_sign = function(docData, handleRecord) {
+
+            var handleInfo = docData.stageInfo;
+
+            var stageInfoHandle = {
+                timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
+                stage: "修改",
+                handleName: $scope.username,
+                handleRecord: handleRecord,
+            }
+
+            handleInfo.push(stageInfoHandle);
+
+            var formData = {
+                _id: docData._id,
+                stageInfo: handleInfo,
+                lastDate: docData.lastDate,
+                dueDate: docData.dueDate,
+            }
+            OfficialDocUtil.updateOfficialDocItem(formData)
+                .success(function (res) {
+                    console.log(res);
+                    $uibModalInstance.close();
+                })
+        }
+
         // main
         // 提交審查
         $scope.sendSign = function (dom, docData) {
+
             $scope.checkText = "審核情形：" + dom.handleResult;
             $scope.handleResult = dom.handleResult;
             $scope.docData = docData;
@@ -405,6 +446,21 @@
 
                 });
         }
+
+        $(document).ready(function () {
+
+            // $('.datePicker').mask('M0/D0', {
+            //     translation: {
+            //         'M': {
+            //             pattern: /[01]/,
+            //         },
+            //         'D': {
+            //             pattern: /[0123]/,
+            //         }
+            //     }
+            // });
+
+        });
     }
 
 })();
