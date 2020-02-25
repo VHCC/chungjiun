@@ -196,8 +196,21 @@
                 },
 
                 // 發文
+                // cache
                 uploadOfficialDocFile_public: function (uploadData) {
                     return http.post('/api/post_official_doc_upload_file_public', uploadData, {
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': undefined}
+                    }).success(function () {
+                        console.log("success!!");
+                    }).error(function () {
+                        console.log("error!!");
+                    });
+                },
+
+                // fs
+                uploadOfficialDocFile_public_fs: function (uploadData) {
+                    return http.post('/api/post_official_doc_upload_file_public_fs', uploadData, {
                         transformRequest: angular.identity,
                         headers: {'Content-Type': undefined}
                     }).success(function () {

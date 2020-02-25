@@ -193,7 +193,7 @@
                     },
 
                     success: function (file) {
-                        console.log(file);
+                        // console.log(file);
                         var uploadData = new FormData();
                         uploadData.append('userDID', $cookies.get('userDID') + fileUnique);
                         uploadData.append('type', 1);

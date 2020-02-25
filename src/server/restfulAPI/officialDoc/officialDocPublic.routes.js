@@ -51,12 +51,61 @@ module.exports = function (app) {
         }
     });
 
+    var storage_public_fs = multer.diskStorage({
+        destination: function (req, file, cb) {
+
+            var subTarget = "";
+
+            switch (req.body.type) {
+                case '0':
+                    subTarget = "origin";
+                    // origin
+                    break;
+                case '1':
+                    subTarget = "copy";
+                    // copy
+                    break;
+            }
+
+            // if (!fs.existsSync(dirTemp + '/' + req.body.userDID)){
+            //     fs.mkdirSync(dirTemp + '/' + req.body.userDID);
+            // }
+
+            // if (!fs.existsSync(dirTemp + '/' + req.body.userDID + "/" + subTarget)){
+            //     fs.mkdirSync(dirTemp + '/' + req.body.userDID + "/" + subTarget);
+            // }
+
+            cb(null, fileStorageDir + "/" + req.body.folder + "/" + subTarget);
+        },
+        filename: function (req, file, cb) {
+            console.log(req.body);
+            // console.log("build Official Doc name:" + req.body.userDID + ".pdf");
+            // cb(null, req.body.userDID + '.pdf');
+            console.log("build Official Doc name: " + req.body.fileName);
+            cb(null, req.body.fileName);
+        }
+    });
+
     var upload_public = multer({storage: storage_public});
 
+    var upload_public_fs = multer({storage: storage_public_fs});
+
     // PUBLIC
-    // upload file
+    // upload file to cache
     app.post(global.apiUrl.post_official_doc_upload_file_public,
         upload_public.single('file'),
+        function (req, res) {
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+            // req.file is the `avatar` file
+            // req.body will hold the text fields, if there were any
+        })
+
+    // upload file to fs
+    app.post(global.apiUrl.post_official_doc_upload_file_public_fs,
+        upload_public_fs.single('file'),
         function (req, res) {
             res.status(200).send({
                 code: 200,
@@ -85,7 +134,6 @@ module.exports = function (app) {
         } catch (e) {
             console.log(e)
         }
-
 
         var keyArray = Object.keys(req.body);
         var updateRequest = {};
@@ -127,6 +175,8 @@ module.exports = function (app) {
 
     // remove file from cache
     app.post(global.apiUrl.post_official_doc_delete_file_public, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_delete_file_public");
+        console.log(req.body);
 
         var subTarget = "";
 
@@ -144,7 +194,11 @@ module.exports = function (app) {
         // fs.unlink(dir + '/' + req.body.userDID + '.pdf', function (err) {
         fs.unlink(dirTemp + '/' + req.body.userDID + '/' + subTarget + '/' + req.body.fileName, function (err) {
             if (err) {
-                console.error(err);
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_delete_file_public");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
+                res.send(err);
             } else {
                 console.log(req.body.fileName + ' has been Deleted');
                 res.status(200).send({
@@ -157,6 +211,8 @@ module.exports = function (app) {
 
     // remove doc file from storage
     app.post(global.apiUrl.post_official_doc_delete_file_public_from_fs, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_delete_file_public_from_fs");
+        console.log(req.body);
 
         var subTarget = "";
 
@@ -174,7 +230,11 @@ module.exports = function (app) {
         var fetchDir = fileStorageDir + '/' + req.body.archiveNumber + "/" + subTarget;
         fs.unlink(fetchDir + '/' + req.body.fileName, function (err) {
             if (err) {
-                console.error(err);
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_delete_file_public_from_fs");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
+                res.send(err);
             } else {
                 console.log(req.body.fileName + ' has been Deleted');
                 res.status(200).send({
@@ -186,15 +246,12 @@ module.exports = function (app) {
     })
 
     app.post(global.apiUrl.post_official_doc_create_item_public, function (req, res) {
-        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_create_item");
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_create_item_public");
+        console.log(req.body);
 
         var _year = moment(req.body._publicDate).format('YYYY') - 1911;
-        console.log(_year);
 
         var _month = moment(req.body._publicDate).format('MM');
-        console.log(_month);
-
-        console.log(req.body);
 
         OfficialDocItem.create(
             {
@@ -235,7 +292,7 @@ module.exports = function (app) {
                 type: 1,
             }, function (err) {
                 if (err) {
-                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_create_item");
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_create_item_public");
                     console.log(req.body);
                     console.log(" ***** ERROR ***** ");
                     console.log(err);
@@ -252,7 +309,7 @@ module.exports = function (app) {
     // fetch files
     // from storage
     app.post(global.apiUrl.post_official_doc_fetch_file_public, function (req, res) {
-
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_fetch_file_public");
         console.log(req.body);
 
         var subTarget = ""
@@ -270,7 +327,6 @@ module.exports = function (app) {
             }
         }
 
-
         var fetchDir = fileStorageDir + '/' + req.body.archiveNumber + "/" + subTarget;
 
         if (!fs.existsSync(fetchDir)){
@@ -282,6 +338,11 @@ module.exports = function (app) {
             // fs.readdir(dirTemp, function (err, files) {
             fs.readdir(fetchDir, function (err, files) {
                 if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_fetch_file_public");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
                     // some sort of error
                 } else {
                     // console.log("files= " + files.length);
@@ -300,14 +361,6 @@ module.exports = function (app) {
                             var pdfItem = {
                                 name: files[index]
                             };
-                            // if (files[index].indexOf(".pdf") > 0) {
-                            //     // var stats = fs.statSync(dirTemp + "/" + files[index]);
-                            //     var stats = fs.statSync(fetchDir + "/" + files[index]);
-                            //     // console.log(stats.size + " bytes");
-                            //     // console.log(Math.round(stats.size / 1000) + " KB");
-                            //     pdfItem.size = Math.round(stats.size / 1000) + " KB";
-                            //     filesResult.push(pdfItem);
-                            // }
 
                             if (files[index].indexOf(".") > 0) {
                                 // var stats = fs.statSync(dirTemp + "/" + files[index]);
@@ -338,7 +391,7 @@ module.exports = function (app) {
     // get file
     // from storage
     app.post(global.apiUrl.post_official_doc_get_file_public, function (req, res) {
-
+        console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_get_file_public");
         console.log(req.body);
 
         var subTarget = "";
@@ -356,7 +409,11 @@ module.exports = function (app) {
             'base64',
             function (err, data) {
                 if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_get_file_public");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
                     console.log(err);
+                    res.send(err);
                 } else {
                     res.send(data);
                 }
@@ -365,6 +422,8 @@ module.exports = function (app) {
 
     // download file
     app.post(global.apiUrl.post_official_doc_download_file_public, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_download_file_public");
+        console.log(req.body);
 
         var subTarget = "";
 
@@ -381,7 +440,11 @@ module.exports = function (app) {
             'base64',
             function (err, data) {
                 if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_download_file_public");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
                     console.log(err);
+                    res.send(err);
                 } else {
                     res.send(data);
                 }
@@ -406,7 +469,6 @@ module.exports = function (app) {
         }
 
         console.log(query);
-
         OfficialDocItem.find(query)
             .sort({
                 "publicDate": 1,
@@ -433,15 +495,13 @@ module.exports = function (app) {
     // generate item archive number public doc
     app.post(global.apiUrl.post_official_doc_create_item_archive_number_public, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_create_item_archive_number_public");
+        console.log(req.body);
 
         var publicDate = moment(req.body.publicDate).format('YYYY/MM/DD');
-
         var year = moment(req.body.publicDate).format('YYYY') - 1911;
         var month = moment(req.body.publicDate).format('MM');
+
         var day = moment(req.body.publicDate).format('DD');
-
-
-        console.log(req.body);
 
         OfficialDocItem.find(
             {
@@ -472,14 +532,6 @@ module.exports = function (app) {
                         result += numberString;
                     }
 
-                    // if (items.length <= 8 ) {
-                    //     result += ("00" + (items.length + 1));
-                    // } else if (items.length > 8 && items.length <= 98) {
-                    //     result += ("0" + (items.length + 1));
-                    // } else {
-                    //     result += (items.length + 1);
-                    // }
-
                     res.status(200).send({
                         code: 200,
                         error: global.status._200,
@@ -507,7 +559,6 @@ module.exports = function (app) {
     // delete item
     app.post(global.apiUrl.post_official_doc_delete_item_public, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_delete_item_public");
-
         console.log(req.body);
 
         OfficialDocItem.remove(

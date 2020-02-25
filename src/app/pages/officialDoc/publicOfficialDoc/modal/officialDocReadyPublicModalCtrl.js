@@ -386,6 +386,254 @@
                 })
         }
 
+        $scope.initDropZone = function () {
+            var dropzone = new Dropzone('#demo-upload',
+                {
+                    url: "handle-upload.php",
+                    previewTemplate: document.querySelector('#preview-template').innerHTML,
+                    addRemoveLinks: true,
+                    dictRemoveFile: "移除",
+                    parallelUploads: 2,
+                    thumbnailHeight: 120,
+                    thumbnailWidth: 120,
+                    maxFilesize: 500, // MB
+                    filesizeBase: 1000,
+                    // acceptedFiles: ".pdf",
+                    thumbnail: function (file, dataUrl) {
+                        if (file.previewElement) {
+                            file.previewElement.classList.remove("dz-file-preview");
+                            var images = file.previewElement.querySelectorAll("[data-dz-thumbnail]");
+                            for (var i = 0; i < images.length; i++) {
+                                var thumbnailElement = images[i];
+                                thumbnailElement.alt = file.name;
+                                thumbnailElement.src = dataUrl;
+                            }
+                            setTimeout(function () {
+                                file.previewElement.classList.add("dz-image-preview");
+                            }, 1);
+                        }
+                    },
+
+                    removedfile: function (file) {
+                        // console.log(file);
+                        if (file.previewElement != null && file.previewElement.parentNode != null) {
+                            file.previewElement.parentNode.removeChild(file.previewElement);
+
+                            var formData = {
+                                fileName: file.name,
+                                type: 0,
+                                archiveNumber: $scope.docData.archiveNumber,
+                            }
+
+                            OfficialDocUtil.deleteOfficialDocFile_public_fs(formData);
+                        }
+                    },
+
+                    success: function (file) {
+                        // console.log(file);
+                        var uploadData = new FormData();
+                        // uploadData.append('userDID', $cookies.get('userDID') + fileUnique);
+                        uploadData.append('folder', $scope.docData.archiveNumber);
+                        uploadData.append('type', 0);
+                        uploadData.append('fileName', file.name);
+                        uploadData.append('file', file);
+
+                        OfficialDocUtil.uploadOfficialDocFile_public_fs(uploadData);
+                    },
+
+                    error: function (file, message) {
+                        // console.log(file);
+                        // console.log(message);
+                        if (file.previewElement != null && file.previewElement.parentNode != null) {
+                            file.previewElement.parentNode.removeChild(file.previewElement);
+                            // toastr.error('新增失敗', '只開放接收.pdf檔案');
+                        }
+                    },
+
+                    // drop: function (event) {
+                    //   console.log(event);
+                    // },
+                    //
+                    // dragstart: function (event) {
+                    //     console.log(event);
+                    // },
+                    //
+                    // dragend: function (event) {
+                    //     console.log(event);
+                    // },
+                    //
+                    // dragenter: function (event) {
+                    //     console.log(event);
+                    // },
+                    //
+                    // dragover: function (event) { // 停留在zone
+                    //     // console.log(event);
+                    // },
+
+                });
+
+            var dropzone_copy = new Dropzone('#demo-upload_copy',
+                {
+                    url: "handle-upload.php",
+                    previewTemplate: document.querySelector('#preview-template').innerHTML,
+                    addRemoveLinks: true,
+                    dictRemoveFile: "移除",
+                    parallelUploads: 2,
+                    thumbnailHeight: 120,
+                    thumbnailWidth: 120,
+                    maxFilesize: 500, // MB
+                    filesizeBase: 1000,
+                    // acceptedFiles: ".pdf",
+                    thumbnail: function (file, dataUrl) {
+                        if (file.previewElement) {
+                            file.previewElement.classList.remove("dz-file-preview");
+                            var images = file.previewElement.querySelectorAll("[data-dz-thumbnail]");
+                            for (var i = 0; i < images.length; i++) {
+                                var thumbnailElement = images[i];
+                                thumbnailElement.alt = file.name;
+                                thumbnailElement.src = dataUrl;
+                            }
+                            setTimeout(function () {
+                                file.previewElement.classList.add("dz-image-preview");
+                            }, 1);
+                        }
+                    },
+
+                    removedfile: function (file) {
+                        // console.log(file);
+                        if (file.previewElement != null && file.previewElement.parentNode != null) {
+                            file.previewElement.parentNode.removeChild(file.previewElement);
+
+                            var formData = {
+                                fileName: file.name,
+                                type: 1,
+                                archiveNumber: $scope.docData.archiveNumber,
+                            }
+
+                            OfficialDocUtil.deleteOfficialDocFile_public_fs(formData);
+                        }
+                    },
+
+                    success: function (file) {
+                        // console.log(file);
+                        var uploadData = new FormData();
+                        // uploadData.append('userDID', $cookies.get('userDID') + fileUnique);
+                        uploadData.append('folder', $scope.docData.archiveNumber);
+                        uploadData.append('type', 1);
+                        uploadData.append('fileName', file.name);
+                        uploadData.append('file', file);
+
+                        OfficialDocUtil.uploadOfficialDocFile_public_fs(uploadData)
+                            .success(function (res) {
+                                $scope.fileList.push(file.name);
+                            })
+                    },
+
+                    error: function (file, message) {
+                        // console.log(file);
+                        // console.log(message);
+                        if (file.previewElement != null && file.previewElement.parentNode != null) {
+                            file.previewElement.parentNode.removeChild(file.previewElement);
+                            toastr.error('新增失敗', '只開放接收.pdf檔案');
+                        }
+                    },
+
+                    // drop: function (event) {
+                    //   console.log(event);
+                    // },
+                    //
+                    // dragstart: function (event) {
+                    //     console.log(event);
+                    // },
+                    //
+                    // dragend: function (event) {
+                    //     console.log(event);
+                    // },
+                    //
+                    // dragenter: function (event) {
+                    //     console.log(event);
+                    // },
+                    //
+                    // dragover: function (event) { // 停留在zone
+                    //     // console.log(event);
+                    // },
+
+                });
+
+            $scope.fileList = [];
+
+            // Now fake the file upload, since GitHub does not handle file uploads
+            // and returns a 404
+
+            var minSteps = 6,
+                maxSteps = 60,
+                timeBetweenSteps = 100,
+                bytesPerStep = 100000;
+
+            dropzone.uploadFiles = function (files) {
+                var self = this;
+
+                for (var i = 0; i < files.length; i++) {
+
+                    var file = files[i];
+                    var totalSteps = Math.round(Math.min(maxSteps, Math.max(minSteps, file.size / bytesPerStep)));
+
+                    for (var step = 0; step < totalSteps; step++) {
+                        var duration = timeBetweenSteps * (step + 1);
+                        setTimeout(function (file, totalSteps, step) {
+                            return function () {
+                                file.upload = {
+                                    progress: 100 * (step + 1) / totalSteps,
+                                    total: file.size,
+                                    bytesSent: (step + 1) * file.size / totalSteps
+                                };
+
+                                self.emit('uploadprogress', file, file.upload.progress, file.upload.bytesSent);
+                                if (file.upload.progress == 100) {
+                                    file.status = Dropzone.SUCCESS;
+                                    self.emit("success", file, 'success', null);
+                                    self.emit("complete", file);
+                                    self.processQueue();
+                                    // document.getElementsByClassName("dz-success-mark")[0].style.opacity = "1";
+                                }
+                            };
+                        }(file, totalSteps, step), duration);
+                    }
+                }
+            }
+
+            dropzone_copy.uploadFiles = function (files) {
+                var self = this;
+
+                for (var i = 0; i < files.length; i++) {
+
+                    var file = files[i];
+                    var totalSteps = Math.round(Math.min(maxSteps, Math.max(minSteps, file.size / bytesPerStep)));
+
+                    for (var step = 0; step < totalSteps; step++) {
+                        var duration = timeBetweenSteps * (step + 1);
+                        setTimeout(function (file, totalSteps, step) {
+                            return function () {
+                                file.upload = {
+                                    progress: 100 * (step + 1) / totalSteps,
+                                    total: file.size,
+                                    bytesSent: (step + 1) * file.size / totalSteps
+                                };
+
+                                self.emit('uploadprogress', file, file.upload.progress, file.upload.bytesSent);
+                                if (file.upload.progress == 100) {
+                                    file.status = Dropzone.SUCCESS;
+                                    self.emit("success", file, 'success', null);
+                                    self.emit("complete", file);
+                                    self.processQueue();
+                                    // document.getElementsByClassName("dz-success-mark")[0].style.opacity = "1";
+                                }
+                            };
+                        }(file, totalSteps, step), duration);
+                    }
+                }
+            }
+        }
 
     }
 
