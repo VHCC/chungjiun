@@ -176,6 +176,7 @@ global.apiUrl = {
 
     // public
     post_official_doc_upload_file_public : '/api/post_official_doc_upload_file_public',
+    post_official_doc_upload_file_public_fs : '/api/post_official_doc_upload_file_public_fs',
     post_official_doc_delete_file_public : '/api/post_official_doc_delete_file_public',
     post_official_doc_update_item_public : '/api/post_official_doc_update_item_public',
     post_official_doc_delete_item_public : '/api/post_official_doc_delete_item_public',
