@@ -103,7 +103,7 @@
     </uib-tab>
 
     <!-- 收文修改 -->
-    <uib-tab heading="收文修改">
+    <uib-tab heading="收文修改" ng-if="officialDocRight">
 
         <div class="row" ng-controller="listOfficialDocModifiedCtrl">
 
@@ -198,7 +198,7 @@
         </div>
     </uib-tab>
 
-    <uib-tab heading="發文修改" >
+    <uib-tab heading="發文修改" ng-if="officialDocRight">
 
         <div class="row" ng-controller="listOfficialDocPublicModifiedCtrl">
 
