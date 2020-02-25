@@ -587,4 +587,18 @@ module.exports = function (app) {
             })
     })
 
+    const deleteFolderRecursive = function(dir) {
+        if (fs.existsSync(dir)) {
+            fs.readdirSync(dir).forEach((file, index) => {
+                const curPath = path.join(dir, file);
+                if (fs.lstatSync(curPath).isDirectory()) { // recurse
+                    deleteFolderRecursive(curPath);
+                } else { // delete file
+                    fs.unlinkSync(curPath);
+                }
+            });
+            fs.rmdirSync(dir);
+        }
+    };
+
 }
