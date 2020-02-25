@@ -189,6 +189,14 @@
                         ng-show="!docData.isDocSignStage && !docData.isDocClose && canModified">
 
                     <div class="form-group">
+                        <textarea placeholder="請輸入會簽辦理情形"
+                                  ng-model="signRecord"
+                                  class="form-control"></textarea>
+                    </div>
+
+                    <hr>
+
+                    <div class="form-group">
                         <ui-select multiple
                                    ng-model="officialDocHandleModalCtrlVm.counterSignUsers.selected"
                                    ng-disabled="false"
