@@ -16,7 +16,8 @@
             ba-panel
             ba-panel-title="公文列表"
             ba-panel-class="with-scroll">
-        <div ng-include="'app/pages/officialDoc/listOfficialDoc/listOfficialDocTabHome.html'"></div>
+        <div    ng-controller="listOfficialDocHomePageCtrl"
+                ng-include="'app/pages/officialDoc/listOfficialDoc/listOfficialDocTabHome.html'"></div>
     </div>
 </div>
 
