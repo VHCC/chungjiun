@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var localDB = 'mongodb://192.168.0.200:32768/workhourexpress';
-var remoteDB = 'mongodb://erm.chongjun.myds.me:27017/workhourexpress';
+var remoteDB = 'mongodb://erm.chongjun.synology.me:27017/workhourexpress';
 
 module.exports = {
     remoteUrl: remoteDB,

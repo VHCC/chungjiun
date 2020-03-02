@@ -71,7 +71,7 @@
 
                         console.log('cookies.username= ' + cookies.username);
                         console.log('cookies.username= ' + cookies.get('username'));
-                        window.location.href = 'https://erm.chongjun.myds.me';
+                        window.location.href = 'https://erm.chongjun.synology.me';
 
                         scope.todos = data; // assign our new list of todos
                     })
