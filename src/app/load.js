@@ -158,9 +158,12 @@ function readGPSFile() {
                         tempObject.gps_location = line.split(',')[lineIndex];
                         break;
                     case 7:
-                        tempObject.gps_type = line.split(',')[lineIndex];
+                        tempObject.gps_location += ", " + line.split(',')[lineIndex];
                         break;
                     case 8:
+                        tempObject.gps_type = line.split(',')[lineIndex];
+                        break;
+                    case 9:
                         tempObject.gps_status = line.split(',')[lineIndex];
                         break;
                 }
