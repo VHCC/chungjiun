@@ -305,7 +305,7 @@
             });
         }
 
-        $scope.updateOfficialDocToServer = function(docData, handleResult) {
+        $scope.updateOfficialDocToServer = function(docData,handleRecord, handleResult) {
             console.log(handleResult);
             console.log(docData);
 
