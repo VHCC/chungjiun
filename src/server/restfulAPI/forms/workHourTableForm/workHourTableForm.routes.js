@@ -3,6 +3,7 @@ var WorkHourTable = require('../../models/workHourTableForm');
 var Project = require('../../models/project');
 var Temp = require('../../models/temp');
 // var NotificationMsgItem = require('../../models/notificationMsgItem');
+var moment = require('moment');
 
 module.exports = function (app) {
     'use strict';
@@ -130,6 +131,8 @@ module.exports = function (app) {
 
                     userMonthSalary: req.body.formTables[index].userMonthSalary,
 
+                    timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
+
                 }, function (err, workTable) {
                     resIndex++;
                     // workHourForm formTables 的參數
@@ -150,6 +153,7 @@ module.exports = function (app) {
                             creatorDID: req.body.creatorDID,
                             create_formDate: req.body.create_formDate,
                             formTables: formTable,
+                            timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
                         }, function (err) {
                             if (err) {
                                 console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_create_table");
