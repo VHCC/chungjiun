@@ -165,13 +165,15 @@
                                 workOffFormCtrlVm.loginUserHolidayForm.person_residual_rest_hour -
                                 showWorkOffCount(2) -
                                 loginUser_exchange_observed -
+                                loginUser_exchange_observed_lastyear -
                                 showWorkOffCount_lastYear(2)}}</t>
                         </td>
                         <td class="form-group " style="vertical-align: inherit;">
                             <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_special -
                                 workOffFormCtrlVm.loginUserHolidayForm.calculate_special -
                                 showWorkOffCount_lastYear(3) -
-                                (loginUser_exchange_special / 8)}}</t>
+                                (loginUser_exchange_special / 8) -
+                                (loginUser_exchange_special_lastyear / 8)}}</t>
                         </td>
                         <td class="form-group " style="vertical-align: inherit;">
                             <t>{{workOffFormCtrlVm.loginUserHolidayForm.rest_married-
