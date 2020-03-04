@@ -306,7 +306,7 @@
             console.log($scope.loginUserTablesItems[index]);
             var workOffString = $scope.loginUserTablesItems[index].taStartDate + " " +
                 $scope.loginUserTablesItems[index].start_time + " ~ " +
-                $scope.loginUserTablesItems[index].taEndDate + " " +
+                $scope.loginUserTablesItems[index].taStartDate + " " +
                 $scope.loginUserTablesItems[index].end_time;
 
             $scope.checkText = '確定提交 ' + workOffString + '：' + "  審查？";
