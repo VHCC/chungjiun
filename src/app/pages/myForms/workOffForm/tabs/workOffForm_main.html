@@ -382,26 +382,26 @@
                                 </ui-select>
                             </my>
 
-                            <div ng-show="!rowform1.$waiting && (table.isSendReview && !table.isAgentCheck) && (table.agentID)">
+                            <div ng-if="!rowform1.$waiting && (table.isSendReview && !table.isAgentCheck) && (table.agentID)">
                                 <button class="btn btn-warning editable-table-button btn-xs"
                                         style="color: black">
-                                    {{showAgentName(table)}}
+                                    <!--{{showAgentName(table)}}-->
                                     <br>
                                     確認作業中
                                 </button>
                             </div>
-                            <div ng-show="table.isAgentCheck">
+                            <div ng-if="table.isAgentCheck">
                                 <button class="btn btn-info editable-table-button btn-xs"
                                         style="color: black">
-                                    {{showAgentName(table)}}
+                                    <!--{{showAgentName(table)}}-->
                                     <br>
                                     確認完成
                                 </button>
                             </div>
-                            <div ng-show="!table.isSendReview && table.isAgentReject">
+                            <div ng-if="!table.isSendReview && table.isAgentReject">
                                 <button class="btn btn-warning editable-table-button btn-xs"
                                         style="color: black">
-                                    {{showAgentName(table)}}
+                                    <!--{{showAgentName(table)}}-->
                                     <br>
                                     退回
                                 </button>

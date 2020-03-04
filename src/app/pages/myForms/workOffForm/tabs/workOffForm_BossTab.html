@@ -31,6 +31,7 @@
 
             <td style="vertical-align: inherit; text-align: center" width="180px">時間</td>
             <td style="vertical-align: inherit; text-align: center">時數</td>
+            <td style="vertical-align: inherit; text-align: center">代理人</td>
             <td style="vertical-align: inherit; text-align: center">主管確認</td>
         </tr>
         </thead>
@@ -66,6 +67,10 @@
             <!--時數/天數-->
             <td class="form-group has-success" style="vertical-align: inherit;">
                 {{getHourDiffByTime(table.start_time, table.end_time, table.workOffType)}}
+            </td>
+            <!--代理人-->
+            <td class="form-group has-success" style="vertical-align: inherit;">
+                {{showAgentName(table)}}
             </td>
             <!--行政確認-->
             <td rowspan="2" style="vertical-align: inherit;">
