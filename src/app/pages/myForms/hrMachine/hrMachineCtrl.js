@@ -75,7 +75,7 @@
             // type 0 : main tab
             // type 1 : specific user tab
             // type 2 : month reports tab
-            $scope.fetchData = function(machineDID, specificDate, type) {
+            $scope.fetchData = function(selectedUser, specificDate, type) {
 
                 bsLoadingOverlayService.start({
                     referenceId: 'overlay_hrMachine'
@@ -88,7 +88,7 @@
                 var today = moment().format('YYYYMMDD');
 
                 var formData = {
-                    machineDID: machineDID == undefined ? $scope.machineDID : machineDID,
+                    machineDID: selectedUser == undefined ? $scope.machineDID : selectedUser.machineDID,
                     date: specificDate == undefined ? today : specificDate,
                 }
 
@@ -211,11 +211,11 @@
                                     break;
                                 case 1:
                                     $scope.hrMachineTable_specific = hrMachineTableSorted;
-                                    $scope.getUsersTravelApplicationData($scope.userDID, thisYear, 1);
+                                    $scope.getUsersTravelApplicationData(selectedUser._id, thisYear, 1);
                                     break;
                                 case 2:
                                     $scope.hrMachineTable_month_reports = hrMachineTableSorted;
-                                    $scope.getUsersTravelApplicationData($scope.userDID, thisYear, 2);
+                                    $scope.getUsersTravelApplicationData(selectedUser._id, thisYear, 2);
                                     break;
                             }
                             $timeout(function () {
@@ -271,7 +271,7 @@
                 }
                 HrMachineUtil.loadHrMachineDataByDate(formData)
                     .success(function (res) {
-                        $scope.fetchData(vm.users_month_report.selected.machineDID, res.fileDate, 2);
+                        $scope.fetchData(vm.users_month_report.selected, res.fileDate, 2);
                     })
                     .error(function (res) {
                         $timeout(function () {
@@ -1041,7 +1041,6 @@
             $scope.travelApplicationItems = [];
 
             $scope.getUsersTravelApplicationData = function (userDID, year, type) {
-
                 var operateTable = undefined;
 
                 switch (type) {
