@@ -6,7 +6,7 @@
             <ui-select ng-model="hrMachineCtrlVm.user.selected"
                        class="btn-group bootstrap-select form-control"
                        ng-disabled="false"
-                       ng-change="fetchData(hrMachineCtrlVm.user.selected.machineDID, undefined, 1)"
+                       ng-change="fetchData(hrMachineCtrlVm.user.selected, undefined, 1)"
                        append-to-body="true"
                        search-enabled="true">
                 <ui-select-match placeholder="選擇員工">
@@ -194,9 +194,9 @@
             <!--請假時數-->
             <td ng-class="workOffHour(tableItem) != '' ? 'sumWarning' : 'sunNormal'"
                 style="vertical-align: inherit;">
-                <p ng-if="workOffHour(tableItem) - workTravelApplyHour(tableItem) > 0 ">
+                <span ng-if="workOffHour(tableItem) - workTravelApplyHour(tableItem) > 0 ">
                     {{workOffHour(tableItem) - workTravelApplyHour(tableItem)}}
-                </p>
+                </span>
             </td>
 
             <!--&lt;!&ndash;上班分鐘&ndash;&gt;-->
