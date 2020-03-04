@@ -195,6 +195,7 @@
                         fetchWorkOffTableData($scope.userDID, 1);
                         fetchWorkOffTableData_lastYear($scope.userDID, 1);
                         fetchExchangeData($scope.userDID, 1, specificYear);
+                        fetchExchangeData_lastyear($scope.userDID, 1, specificYear - 1);
                     })
             }
 
@@ -1160,10 +1161,14 @@
                                     subVM.exchangeForm.person_residual_rest_hour = parseFloat($scope.preciseResidualRestHour);
                                     fetchWorkOffTableData(userDID, null, subVM);
                                     fetchWorkOffTableData_lastYear(userDID, null, subVM);
+                                    fetchExchangeData(userDID, null, specificYear, subVM);
+                                    fetchExchangeData_lastyear(userDID, null, specificYear - 1, subVM);
+
                                 } else {
                                     fetchWorkOffTableData(userDID, 2);
                                     fetchWorkOffTableData_lastYear(userDID, 2);
                                     fetchExchangeData(userDID, 2, specificYear);
+                                    fetchExchangeData_lastyear(userDID, 2, specificYear - 1);
                                 }
                             })
                     })
@@ -1281,6 +1286,7 @@
              * 顯示加班單，目的找補休
              * @param user
              */
+            // subVM = 兌換單
             function fetchWorkOffTableData(userDID, showType, subVM) {
                 var formData = {
                     creatorDID: userDID,
@@ -1325,6 +1331,7 @@
              * 顯示加班單，目的找補休
              * @param user
              */
+            // subVM = 兌換單
             function fetchWorkOffTableData_lastYear(userDID, showType, subVM) {
                 var formData = {
                     creatorDID: userDID,
@@ -1369,7 +1376,7 @@
              * 顯示兌現單，目的找補休、特休兌換數
              * @param user
              */
-            function fetchExchangeData(userDID, showType, year) {
+            function fetchExchangeData(userDID, showType, year, subVM) {
                 var formData = {
                     creatorDID: userDID,
                     year: year,
@@ -1421,6 +1428,100 @@
                                     }
                                 }
                                 break;
+                        }
+
+                        if (subVM) {
+                            subVM.exchangeForm.specificUser_exchange_special = 0.0;
+                            subVM.exchangeForm.specificUser_exchange_observed = 0.0;
+                            for (var index = 0; index < exchangeItems.length; index ++) {
+                                if (exchangeItems[index].isConfirmed) {
+                                    switch (exchangeItems[index].workOffType) {
+                                        case 2:
+                                            subVM.exchangeForm.specificUser_exchange_observed += parseFloat(exchangeItems[index].exchangeHour);
+                                            break;
+                                        case 3:
+                                            subVM.exchangeForm.specificUser_exchange_special += parseFloat(exchangeItems[index].exchangeHour);
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                    })
+            }
+
+            /**
+             * 顯示兌現單，目的找補休、特休兌換數
+             * @param user
+             */
+            function fetchExchangeData_lastyear(userDID, showType, year, subVM) {
+                var formData = {
+                    creatorDID: userDID,
+                    year: year,
+                }
+                console.log(" === 顯示兌現單，目的找補休、特休兌換數 (去年) [request] === ");
+                console.log(formData);
+                WorkOffExchangeFormUtil.fetchExchangeItemsByYear(formData)
+                    .success(function (res) {
+                        console.log(" === 顯示兌現單，目的找補休、特休兌換數 (去年) [resp] === ");
+                        console.log(res);
+                        res.payload = res.payload.sort(function (a, b) {
+                            return a._id > b._id ? 1 : -1;
+                        });
+
+                        var exchangeItems = res.payload;
+
+                        switch (showType) {
+                            // login User
+                            case 1:
+                                $scope.loginUser_exchange_special_lastyear = 0.0;
+                                $scope.loginUser_exchange_observed_lastyear = 0.0;
+                                for (var index = 0; index < exchangeItems.length; index ++) {
+                                    if (exchangeItems[index].isConfirmed) {
+                                        switch (exchangeItems[index].workOffType) {
+                                            case 2:
+                                                $scope.loginUser_exchange_observed_lastyear += parseFloat(exchangeItems[index].exchangeHour);
+                                                break;
+                                            case 3:
+                                                $scope.loginUser_exchange_special_lastyear += parseFloat(exchangeItems[index].exchangeHour);
+                                                break;
+                                        }
+                                    }
+                                }
+                                break;
+                            // specific user
+                            case 2:
+                                $scope.specificUser_exchange_special_lastyear = 0.0;
+                                $scope.specificUser_exchange_observed_lastyear = 0.0;
+                                for (var index = 0; index < exchangeItems.length; index ++) {
+                                    if (exchangeItems[index].isConfirmed) {
+                                        switch (exchangeItems[index].workOffType) {
+                                            case 2:
+                                                $scope.specificUser_exchange_observed_lastyear += parseFloat(exchangeItems[index].exchangeHour);
+                                                break;
+                                            case 3:
+                                                $scope.specificUser_exchange_special_lastyear += parseFloat(exchangeItems[index].exchangeHour);
+                                                break;
+                                        }
+                                    }
+                                }
+                                break;
+                        }
+
+                        if (subVM) {
+                            subVM.exchangeForm.specificUser_exchange_special_lastyear = 0.0;
+                            subVM.exchangeForm.specificUser_exchange_observed_lastyear = 0.0;
+                            for (var index = 0; index < exchangeItems.length; index ++) {
+                                if (exchangeItems[index].isConfirmed) {
+                                    switch (exchangeItems[index].workOffType) {
+                                        case 2:
+                                            subVM.exchangeForm.specificUser_exchange_observed_lastyear += parseFloat(exchangeItems[index].exchangeHour);
+                                            break;
+                                        case 3:
+                                            subVM.exchangeForm.specificUser_exchange_special_lastyear += parseFloat(exchangeItems[index].exchangeHour);
+                                            break;
+                                    }
+                                }
+                            }
                         }
                     })
             }

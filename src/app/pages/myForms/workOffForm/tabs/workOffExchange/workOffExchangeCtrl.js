@@ -77,6 +77,41 @@
             $scope.specificUserMonthSalary;
             $scope.workOffExchangeTablesItems = [];
 
+            $scope.$watchCollection('exchangeForm',function(exchangeFormCallback, oldValue) {
+                console.log(exchangeFormCallback);
+                if (exchangeFormCallback != undefined) {
+
+                    $scope.specialRest = (parseFloat(exchangeFormCallback.rest_special)  // 剩餘特休
+                        - parseFloat(exchangeFormCallback.calculate_special)) * 8; // 已請特休
+
+                    $scope.observedRest = parseFloat(exchangeFormCallback.person_residual_rest_hour) // 補休預設
+                        + parseFloat(exchangeFormCallback.rest_observed) // 剩餘補休;
+                        - parseFloat(exchangeFormCallback.calculate_observed) // 已請補休 (今年 + 去年);
+                        + parseFloat(exchangeFormCallback.rest_observed_lastYear) // 去年獲得補休;
+                        - parseFloat(exchangeFormCallback.specificUser_exchange_observed_lastyear) // 去年請的換休;
+                }
+            });
+
+            $scope.$watch('workOffExchangeTablesItems',function(exchangeItems, oldValue) {
+                console.log(exchangeItems);
+                $scope.observedRest_exchange = 0.0;
+                $scope.specialRest_exchange = 0.0;
+                if (exchangeItems != undefined) {
+                    for (var index = 0; index < exchangeItems.length; index ++) {
+                        if (exchangeItems[index].isConfirmed) {
+                            switch (exchangeItems[index].workOffType) {
+                                case 2:
+                                    $scope.observedRest_exchange += parseFloat(exchangeItems[index].exchangeHour);
+                                    break;
+                                case 3:
+                                    $scope.specialRest_exchange += parseFloat(exchangeItems[index].exchangeHour);
+                                    break;
+                            }
+                        }
+                    }
+                }
+            });
+
             $scope.fetchWorkOffExchange_form = function (userID, year) {
                 // console.log($scope);
                 bsLoadingOverlayService.start({
@@ -117,37 +152,7 @@
                     }
                 });
 
-                this.$watch('exchangeForm',function(exchangeFormCallback, oldValue) {
-                    console.log(exchangeFormCallback);
-                    if (exchangeFormCallback != undefined) {
 
-                        $scope.specialRest = (parseFloat(exchangeFormCallback.rest_special)  // 剩餘特休
-                            - parseFloat(exchangeFormCallback.calculate_special)) * 8; // 已請特休
-                        $scope.observedRest = parseFloat(exchangeFormCallback.person_residual_rest_hour) // 補休預設
-                            + parseFloat(exchangeFormCallback.rest_observed) // 剩餘補休;
-                            - parseFloat(exchangeFormCallback.calculate_observed) // 已請補休;
-                    }
-                });
-
-                this.$watch('workOffExchangeTablesItems',function(exchangeItems, oldValue) {
-                    console.log(exchangeItems);
-                    $scope.observedRest_exchange = 0.0;
-                    $scope.specialRest_exchange = 0.0;
-                    if (exchangeItems != undefined) {
-                        for (var index = 0; index < exchangeItems.length; index ++) {
-                            if (exchangeItems[index].isConfirmed) {
-                                switch (exchangeItems[index].workOffType) {
-                                    case 2:
-                                        $scope.observedRest_exchange += parseFloat(exchangeItems[index].exchangeHour);
-                                        break;
-                                    case 3:
-                                        $scope.specialRest_exchange += parseFloat(exchangeItems[index].exchangeHour);
-                                        break;
-                                }
-                            }
-                        }
-                    }
-                });
 
                 var formData = {
                     creatorDID: vm.workAdd.selected._id,
