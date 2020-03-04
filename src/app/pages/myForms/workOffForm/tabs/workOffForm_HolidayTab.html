@@ -196,25 +196,25 @@
             showWorkOffCount_lastYear(3)}}
         </td>
         <td class="form-group " style="vertical-align: inherit;">
-            {{showWorkOffCount(4)}}
+            {{showWorkOffCount(4) + showWorkOffCount_lastYear(4)}}
         </td>
         <td class="form-group " style="vertical-align: inherit;">
-            {{showWorkOffCount(5)}}
+            {{showWorkOffCount(5) + showWorkOffCount_lastYear(5)}}
         </td>
         <td class="form-group " style="vertical-align: inherit;">
-            {{showWorkOffCount(6)}}
+            {{showWorkOffCount(6) + showWorkOffCount_lastYear(6)}}
         </td>
         <td class="form-group " style="vertical-align: inherit;">
-            {{showWorkOffCount(7)}}
+            {{showWorkOffCount(7) + showWorkOffCount_lastYear(7)}}
         </td>
         <td class="form-group " style="vertical-align: inherit;">
-            {{showWorkOffCount(8)}}
+            {{showWorkOffCount(8) + showWorkOffCount_lastYear(8)}}
         </td>
         <td class="form-group " style="vertical-align: inherit;">
-            {{showWorkOffCount(9)}}
+            {{showWorkOffCount(9) + showWorkOffCount_lastYear(9)}}
         </td>
         <td class="form-group " style="vertical-align: inherit;">
-            {{showWorkOffCount(1001)}}
+            {{showWorkOffCount(1001) + showWorkOffCount_lastYear(1001)}}
         </td>
     </tr>
 
@@ -257,31 +257,38 @@
         </td>
         <td class="form-group " style="vertical-align: inherit;">
             {{workOffFormCtrlVm.holidayForm.rest_married-
-            workOffFormCtrlVm.holidayForm.calculate_married}}
+            workOffFormCtrlVm.holidayForm.calculate_married-
+            showWorkOffCount_lastYear(4)}}
         </td>
         <td class="form-group " style="vertical-align: inherit;">
             {{workOffFormCtrlVm.holidayForm.rest_mourning-
-            workOffFormCtrlVm.holidayForm.calculate_mourning}}
+            workOffFormCtrlVm.holidayForm.calculate_mourning -
+            showWorkOffCount_lastYear(5)}}
         </td>
         <td class="form-group " style="vertical-align: inherit;">
             {{workOffFormCtrlVm.holidayForm.rest_official-
-            workOffFormCtrlVm.holidayForm.calculate_official}}
+            workOffFormCtrlVm.holidayForm.calculate_official -
+            showWorkOffCount_lastYear(6)}}
         </td>
         <td class="form-group " style="vertical-align: inherit;">
             {{workOffFormCtrlVm.holidayForm.rest_workinjury-
-            workOffFormCtrlVm.holidayForm.calculate_workinjury}}
+            workOffFormCtrlVm.holidayForm.calculate_workinjury -
+            showWorkOffCount_lastYear(7)}}
         </td>
         <td class="form-group " style="vertical-align: inherit;">
             {{workOffFormCtrlVm.holidayForm.rest_maternity-
-            workOffFormCtrlVm.holidayForm.calculate_maternity}}
+            workOffFormCtrlVm.holidayForm.calculate_maternity -
+            showWorkOffCount_lastYear(8)}}
         </td>
         <td class="form-group " style="vertical-align: inherit;">
             {{workOffFormCtrlVm.holidayForm.rest_paternity-
-            workOffFormCtrlVm.holidayForm.calculate_paternity}}
+            workOffFormCtrlVm.holidayForm.calculate_paternity -
+            showWorkOffCount_lastYear(9)}}
         </td>
         <td class="form-group " style="vertical-align: inherit;">
             {{workOffFormCtrlVm.holidayForm.rest_others-
-            workOffFormCtrlVm.holidayForm.calculate_others}}
+            workOffFormCtrlVm.holidayForm.calculate_others -
+            showWorkOffCount_lastYear(1001)}}
         </td>
     </tr>
 
