@@ -349,6 +349,9 @@
                                 // userHourSalary: res.payload[index].userHourSalary,
 
                                 agentID: res.payload[index].agentID,
+                                isAgentCheck: res.payload[index].isAgentCheck,
+                                isAgentReject: res.payload[index].isAgentReject,
+                                agentReject_memo: res.payload[index].agentReject_memo,
                             };
                             $scope.specificUserTablesItems_lastYear.push(detail);
                         }
@@ -1029,6 +1032,11 @@
                                 isExecutiveCheck: res.payload[index].isExecutiveCheck,
                                 // userHourSalary: res.payload[index].userHourSalary,
                                 userMonthSalary: res.payload[index].userMonthSalary,
+
+                                agentID: res.payload[index].agentID,
+                                isAgentCheck: res.payload[index].isAgentCheck,
+                                isAgentReject: res.payload[index].isAgentReject,
+                                agentReject_memo: res.payload[index].agentReject_memo,
                             };
                             $scope.bossCheckTablesItems.push(detail);
                         }
@@ -1075,6 +1083,11 @@
                                 isExecutiveCheck: res.payload[index].isExecutiveCheck,
                                 // userHourSalary: res.payload[index].userHourSalary,
                                 userMonthSalary: res.payload[index].userMonthSalary,
+
+                                agentID: res.payload[index].agentID,
+                                isAgentCheck: res.payload[index].isAgentCheck,
+                                isAgentReject: res.payload[index].isAgentReject,
+                                agentReject_memo: res.payload[index].agentReject_memo,
                             };
                             $scope.executiveCheckTablesItems.push(detail);
                         }
@@ -1614,7 +1627,7 @@
                                 "ba-panel-class= " +
                                 "'with-scroll'" + ">" +
                                 "<div " +
-                                "ng-include=\"'app/pages/myForms/workOffForm/tabs/workOffForm_AllHistory.html'\">" +
+                                "ng-include=\"'app/pages/myForms/workOffForm/tabs/table/workOffForm_AllHistory.html'\">" +
                                 "</div>" +
                                 "</div>"
                             )($scope));
@@ -1682,7 +1695,7 @@
                                 "ba-panel-class= " +
                                 "'with-scroll'" + ">" +
                                 "<div " +
-                                "ng-include=\"'app/pages/myForms/workOffForm/tabs/workOffForm_AllHistory.html'\">" +
+                                "ng-include=\"'app/pages/myForms/workOffForm/tabs/table/workOffForm_AllHistory.html'\">" +
                                 "</div>" +
                                 "</div>"
                             )($scope));
@@ -1734,7 +1747,7 @@
                                 "ba-panel-class= " +
                                 "'with-scroll'" + ">" +
                                 "<div " +
-                                "ng-include=\"'app/pages/myForms/workOffForm/tabs/workOffForm_AllHistory.html'\">" +
+                                "ng-include=\"'app/pages/myForms/workOffForm/tabs/table/workOffForm_AllHistory.html'\">" +
                                 "</div>" +
                                 "</div>"
                             )($scope));
@@ -1828,7 +1841,7 @@
                                         "ba-panel-class= " +
                                         "'with-scroll'" + ">" +
                                         "<div " +
-                                        "ng-include=\"'app/pages/myForms/workOffForm/tabs/workOffForm_AllHistory.html'\">" +
+                                        "ng-include=\"'app/pages/myForms/workOffForm/tabs/table/workOffForm_AllHistory.html'\">" +
                                         "</div>" +
                                         "</div>"
                                     )($scope));
@@ -1857,11 +1870,14 @@
             }
 
             $scope.showAgentName = function (item) {
+                console.log(item);
                 var selected = [];
                 if (item.agentID) {
+                    console.log(item.agentID)
                     selected = $filter('filter')($scope.usersBosses, {
                         value: item.agentID
                     });
+                    console.log(selected)
                 }
                 return selected.length ? selected[0].name : '沒有代理人';
             }
