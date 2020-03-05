@@ -93,6 +93,28 @@
                         })
                 })
 
+            $scope.fetchAllAgentItems = function () {
+                console.log(" fetchAllAgentItems ");
+                WorkOffFormUtil.fetchAllAgentItem(formData)
+                    .success(function (resp) {
+                        console.log(resp);
+                        for (var index = 0; index < resp.payload.length; index ++) {
+                            var selected = [];
+                            selected = $filter('filter')($scope.allUsers, {
+                                value: resp.payload[index]._id
+                            });
+                            if (selected.length) {
+                                var user = {
+                                    _id: selected[0].value,
+                                    name: selected[0].name,
+                                    count: resp.payload[index].count
+                                }
+                                $scope.agentUsers.push(user);
+                            }
+                        }
+                    })
+            }
+
 
             // *** Biz Logic ***
 

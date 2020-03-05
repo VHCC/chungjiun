@@ -132,7 +132,7 @@
                                         }
                                     }
                                     if (vm.user !== undefined) {
-                                        $scope.getWorkOffTable(vm.user.selected._id);
+                                        $scope.getWorkOffTable(vm.user.selected._id, thisYear);
                                     }
                                 })
                         }
@@ -141,7 +141,7 @@
 
             // 主要顯示
             $scope.specificUserTablesItems = [];
-            $scope.specificUserTablesItems_lastYear = [];
+            $scope.specificUserTablesItems_history = [];
 
             var vm = this;
             var thisYear = new Date().getFullYear() - 1911;
@@ -164,9 +164,9 @@
 
             // ***********************  個人填寫 ************************
 
-            $scope.getUserHolidayForm = function () {
+            $scope.getLoginUserHolidayForm = function () {
                 var formData = {
-                    year: specificYear, // 年度
+                    // year: specificYear, // 年度
                     creatorDID: $scope.userDID,
                 };
                 HolidayDataForms.findFormByUserDID(formData)
@@ -176,14 +176,15 @@
                             vm.loginUserHolidayForm.calculate_sick = $scope.showWorkOffCount(1);
                             vm.loginUserHolidayForm.calculate_private = $scope.showWorkOffCount(0);
                             vm.loginUserHolidayForm.calculate_observed = $scope.showWorkOffCount(2);
-                            vm.loginUserHolidayForm.calculate_special = $scope.showWorkOffCount(3);
-                            vm.loginUserHolidayForm.calculate_married = $scope.showWorkOffCount(4);
-                            vm.loginUserHolidayForm.calculate_mourning = $scope.showWorkOffCount(5);
-                            vm.loginUserHolidayForm.calculate_official = $scope.showWorkOffCount(6);
-                            vm.loginUserHolidayForm.calculate_workinjury = $scope.showWorkOffCount(7);
-                            vm.loginUserHolidayForm.calculate_maternity = $scope.showWorkOffCount(8);
-                            vm.loginUserHolidayForm.calculate_paternity = $scope.showWorkOffCount(9);
-                            vm.loginUserHolidayForm.calculate_others = $scope.showWorkOffCount(1001);
+
+                            // vm.loginUserHolidayForm.calculate_special = $scope.showWorkOffCount(3);
+                            // vm.loginUserHolidayForm.calculate_married = $scope.showWorkOffCount(4);
+                            // vm.loginUserHolidayForm.calculate_mourning = $scope.showWorkOffCount(5);
+                            // vm.loginUserHolidayForm.calculate_official = $scope.showWorkOffCount(6);
+                            // vm.loginUserHolidayForm.calculate_workinjury = $scope.showWorkOffCount(7);
+                            // vm.loginUserHolidayForm.calculate_maternity = $scope.showWorkOffCount(8);
+                            // vm.loginUserHolidayForm.calculate_paternity = $scope.showWorkOffCount(9);
+                            // vm.loginUserHolidayForm.calculate_others = $scope.showWorkOffCount(1001);
                             vm.loginUserHolidayForm.person_residual_rest_hour = parseFloat($scope.residualRestHour);
 
                         } else {
@@ -192,20 +193,23 @@
                                     vm.loginUserHolidayForm = res.payload;
                                 })
                         }
-                        fetchWorkOffTableData($scope.userDID, 1);
-                        fetchWorkOffTableData_lastYear($scope.userDID, 1);
+                        fetchWorkAddTableData($scope.userDID, 1);
+                        fetchWorkAddTableData_history($scope.userDID, 1);
                         fetchExchangeData($scope.userDID, 1, specificYear);
-                        fetchExchangeData_lastyear($scope.userDID, 1, specificYear - 1);
+                        fetchExchangeData_history($scope.userDID, 1, null);
                     })
             }
 
-            //取得使用者個人休假表，userDID
+            // 取得 休假列表
+            // 歷史所有 20200305
             $scope.getWorkOffTable = function (userDID, year, month, subVM) {
-                $scope.specificUserTablesItems = [];
+                $scope.specificUserTablesItems = []; // 今年
                 var getData = {
                     creatorDID: (userDID === undefined || userDID == null)? $scope.userDID : userDID,
-                    year: year === undefined ? specificYear : year,
-                    month: month === undefined ? null : month,
+                    year: year === undefined ? $scope.year : year,
+                    // month: month === undefined ? null : month,
+                    // year: null,
+                    month: null,
                     isSendReview: null,
                     isBossCheck: null,
                     isExecutiveCheck: null
@@ -218,9 +222,9 @@
                 WorkOffFormUtil.findWorkOffTableFormByUserDID(getData)
                     .success(function (res) {
                         // 填入表單資訊
-                        var workOffTableIDArray = [];
+                        // var workOffTableIDArray = [];
                         for (var index = 0; index < res.payload.length; index++) {
-                            workOffTableIDArray[index] = res.payload[index]._id;
+                            // workOffTableIDArray[index] = res.payload[index]._id;
                             var detail = {
                                 tableID: res.payload[index]._id,
 
@@ -261,12 +265,12 @@
                         if (userDID !== undefined && userDID !== null) {
                             $scope.findHolidayFormByUserDID(userDID === undefined ? $scope.userDID : userDID, subVM);
                         } else {
-                            $scope.getUserHolidayForm();
+                            $scope.getLoginUserHolidayForm();
                         }
 
-                        formDataTable = {
-                            tableIDArray: workOffTableIDArray,
-                        };
+                        // formDataTable = {
+                        //     tableIDArray: workOffTableIDArray,
+                        // };
 
                         $('.workOffFormDateInput').mask('20Y0/M0/D0', {
                             translation: {
@@ -306,11 +310,13 @@
                         toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
                     })
 
-                $scope.specificUserTablesItems_lastYear = [];
+                $scope.specificUserTablesItems_history = []; // 歷史所有，含今年
                 var getData = {
                     creatorDID: (userDID === undefined || userDID == null)? $scope.userDID : userDID,
-                    year: year === undefined ? thisYear -1 : year -1,
-                    month: month === undefined ? null : month,
+                    // year: year === undefined ? thisYear -1 : year -1,
+                    // month: month === undefined ? null : month,
+                    year: null,
+                    month: null,
                     isSendReview: null,
                     isBossCheck: null,
                     isExecutiveCheck: null
@@ -319,9 +325,7 @@
                 WorkOffFormUtil.findWorkOffTableFormByUserDID(getData)
                     .success(function (res) {
                         // 填入表單資訊
-                        var workOffTableIDArray_lastYear = [];
                         for (var index = 0; index < res.payload.length; index++) {
-                            workOffTableIDArray_lastYear[index] = res.payload[index]._id;
                             var detail = {
                                 tableID: res.payload[index]._id,
 
@@ -354,9 +358,9 @@
                                 isAgentReject: res.payload[index].isAgentReject,
                                 agentReject_memo: res.payload[index].agentReject_memo,
                             };
-                            $scope.specificUserTablesItems_lastYear.push(detail);
+                            $scope.specificUserTablesItems_history.push(detail);
                         }
-                        console.log($scope.specificUserTablesItems_lastYear);
+                        console.log($scope.specificUserTablesItems_history);
                     })
             }
 
@@ -409,13 +413,89 @@
                 }
             }
 
-            $scope.showWorkOffCount_lastYear = function(workOffType) {
-                var index = 0;
+            $scope.showWorkOffCount_history = function(workOffType, holidayForm) {
+
                 var result = 0;
-                for (index = 0; index < $scope.specificUserTablesItems_lastYear.length; index ++) {
-                    if ($scope.specificUserTablesItems_lastYear[index].workOffType === workOffType && $scope.specificUserTablesItems_lastYear[index].isExecutiveCheck) {
-                        result += $scope.getHourDiffByTime($scope.specificUserTablesItems_lastYear[index].start_time
-                            , $scope.specificUserTablesItems_lastYear[index].end_time, $scope.specificUserTablesItems_lastYear[index].workOffType);
+                for (var index = 0; index < $scope.specificUserTablesItems_history.length; index ++) {
+                    var operateItem = $scope.specificUserTablesItems_history[index];
+                    if (operateItem.workOffType === workOffType &&
+                        operateItem.isExecutiveCheck) {
+
+                        if (workOffType == 3 ||
+                            workOffType == 4 ||
+                            workOffType == 5 ||
+                            workOffType == 6 ||
+                            workOffType == 7 ||
+                            workOffType == 8 ||
+                            workOffType == 9 ||
+                            workOffType == 1001) {
+
+                            var filterBegin;
+                            var filterEnd;
+
+                            switch (workOffType) {
+                                // 特
+                                case 3: {
+                                    filterBegin = holidayForm.start_special;
+                                    filterEnd = holidayForm.end_special;
+                                    break;
+                                }
+                                // 婚
+                                case 4:
+                                    filterBegin = holidayForm.start_married;
+                                    filterEnd = holidayForm.end_married;
+                                    break;
+                                // 喪
+                                case 5:
+                                    filterBegin = holidayForm.start_mourning;
+                                    filterEnd = holidayForm.end_mourning;
+                                    break;
+                                // 公
+                                case 6:
+                                    filterBegin = holidayForm.start_official;
+                                    filterEnd = holidayForm.end_official;
+                                    break;
+                                // 公傷
+                                case 7:
+                                    filterBegin = holidayForm.start_workinjury;
+                                    filterEnd = holidayForm.end_workinjury;
+                                    break;
+                                // 產
+                                case 8:
+                                    filterBegin = holidayForm.start_maternity;
+                                    filterEnd = holidayForm.end_maternity;
+                                    break;
+                                // 陪產(檢)
+                                case 9:
+                                    filterBegin = holidayForm.start_paternity;
+                                    filterEnd = holidayForm.end_paternity;
+                                    break;
+                                case 1001:
+                                    filterBegin = holidayForm.start_others;
+                                    filterEnd = holidayForm.end_others;
+                                    break;
+                            }
+
+                            var historyDate = moment(operateItem.create_formDate).add(operateItem.day - 1, 'days').format("YYYY/MM/DD");
+
+                            var isBetween = moment(historyDate).isBetween(filterBegin, filterEnd, null ,"[]");
+
+                            if (filterBegin == "" || filterEnd == "") {
+                                isBetween = false;
+                            }
+
+                            // console.log(historyDate + ", isBetween= " + isBetween);
+
+                            if (isBetween) {
+                                result += $scope.getHourDiffByTime(operateItem.start_time
+                                    , operateItem.end_time, operateItem.workOffType);
+                            }
+
+                        } else {
+                            result += $scope.getHourDiffByTime(operateItem.start_time
+                                , operateItem.end_time, operateItem.workOffType);
+                        }
+
                     }
                 }
                 switch (workOffType) {
@@ -737,7 +817,6 @@
                             || this.table.workOffType == 7 || this.table.workOffType == 8 || this.table.workOffType == 9) {
                             resultFinal = resultFinal <= 4 ? 4 : 8;
                         }
-                        // console.log("workOffType= " + this.table.workOffType + ", resultFinal= " + resultFinal);
                         return resultFinal;
                     } else {
                         // 總攬
@@ -824,12 +903,10 @@
                 var msgDetailList = [2001];
                 var memoList = [$scope.showDate(checkingTable)];
 
-                console.log(formData);
-
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
                         // $scope.specificUserTablesItems[checkingIndex].isSendReview = true;
-                        $scope.getWorkOffTable();
+                        $scope.getWorkOffTable(null, thisYear);
                     })
             }
 
@@ -861,11 +938,9 @@
                 var msgDetailList = [2005];
                 var memoList = [$scope.showDate(checkingTable)];
 
-                // WorkOffFormUtil.updateExecutiveAgree(formData)
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
                         $scope.executiveCheckTablesItems.splice(index, 1);
-
                     })
             }
 
@@ -907,7 +982,6 @@
                 var msgDetailList = [2004];
                 var memoList = [$scope.showDate(checkingTable)];
 
-                // WorkOffFormUtil.updateDisAgree(formData)
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
                         $scope.executiveCheckTablesItems.splice(index, 1);
@@ -942,7 +1016,6 @@
                 var msgDetailList = [2002];
                 var memoList = [$scope.showDate(checkingTable)];
 
-                // WorkOffFormUtil.updateBossAgree(formData)
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
                         $scope.bossCheckTablesItems.splice(index, 1);
@@ -951,7 +1024,6 @@
 
             //主管退回
             $scope.disagreeItem_boss = function (table, index) {
-                console.log(table);
                 $scope.checkText = '確定 退回：' + vm.boss.selected.name + " " +
                     DateUtil.getShiftDatefromFirstDate(
                         DateUtil.getFirstDayofThisWeek(moment(table.create_formDate)),
@@ -988,23 +1060,15 @@
                 var msgDetailList = [2003];
                 var memoList = [$scope.showDate(checkingTable)];
 
-                // WorkOffFormUtil.updateDisAgree(formData)
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
                         $scope.bossCheckTablesItems.splice(index, 1);
                     })
             }
 
-            //主要工作Data
-            var formDataTable = {};
-
             // ***********************  主管審核 ************************
 
             $scope.findWorkOffItemByUserDID_boss = function () {
-                // var formData = {
-                //     year: thisYear,
-                //     creatorDID: vm.boss.selected._id
-                // };
 
                 var formData = {
                     creatorDID: vm.boss.selected._id,
@@ -1050,10 +1114,6 @@
             // ***********************  行政確認 ************************
 
             $scope.findWorkOffItemByUserDID_executive = function () {
-                // var formData = {
-                //     // year: thisYear,
-                //     creatorDID: vm.executive.selected._id
-                // };
 
                 var formData = {
                     creatorDID: vm.executive.selected._id,
@@ -1103,7 +1163,10 @@
                 var formData = vm.holidayForm;
                 HolidayDataForms.updateFormByFormDID(formData)
                     .success(function (res) {
-                        toastr['success']('成功', '更新成功');
+                        $scope.getWorkOffTable(vm.user.selected._id, thisYear);
+                        // $scope.getWorkOffTable();
+                        // toastr['success']('成功', '更新成功');
+
                     })
             }
 
@@ -1118,7 +1181,7 @@
                         $scope.preciseResidualRestHour = user.residualRestHour;
 
                         var formData = {
-                            year: specificYear,
+                            // year: specificYear,
                             creatorDID: userDID,
                         };
                         HolidayDataForms.findFormByUserDID(formData)
@@ -1129,14 +1192,15 @@
                                     vm.holidayForm.calculate_sick = $scope.showWorkOffCount(1);
                                     vm.holidayForm.calculate_private = $scope.showWorkOffCount(0);
                                     vm.holidayForm.calculate_observed = $scope.showWorkOffCount(2);
-                                    vm.holidayForm.calculate_special = $scope.showWorkOffCount(3);
-                                    vm.holidayForm.calculate_married = $scope.showWorkOffCount(4);
-                                    vm.holidayForm.calculate_mourning = $scope.showWorkOffCount(5);
-                                    vm.holidayForm.calculate_official = $scope.showWorkOffCount(6);
-                                    vm.holidayForm.calculate_workinjury = $scope.showWorkOffCount(7);
-                                    vm.holidayForm.calculate_maternity = $scope.showWorkOffCount(8);
-                                    vm.holidayForm.calculate_paternity = $scope.showWorkOffCount(9);
-                                    vm.holidayForm.calculate_others = $scope.showWorkOffCount(1001);
+
+                                    // vm.holidayForm.calculate_special = $scope.showWorkOffCount(3);
+                                    // vm.holidayForm.calculate_married = $scope.showWorkOffCount(4);
+                                    // vm.holidayForm.calculate_mourning = $scope.showWorkOffCount(5);
+                                    // vm.holidayForm.calculate_official = $scope.showWorkOffCount(6);
+                                    // vm.holidayForm.calculate_workinjury = $scope.showWorkOffCount(7);
+                                    // vm.holidayForm.calculate_maternity = $scope.showWorkOffCount(8);
+                                    // vm.holidayForm.calculate_paternity = $scope.showWorkOffCount(9);
+                                    // vm.holidayForm.calculate_others = $scope.showWorkOffCount(1001);
                                     vm.holidayForm.person_residual_rest_hour = parseFloat($scope.preciseResidualRestHour);
                                     console.log(vm.holidayForm);
                                 } else {
@@ -1150,25 +1214,26 @@
                                     subVM.exchangeForm.calculate_sick = $scope.showWorkOffCount(1);
                                     subVM.exchangeForm.calculate_private = $scope.showWorkOffCount(0);
                                     subVM.exchangeForm.calculate_observed = $scope.showWorkOffCount(2);
-                                    subVM.exchangeForm.calculate_special = $scope.showWorkOffCount(3);
-                                    subVM.exchangeForm.calculate_married = $scope.showWorkOffCount(4);
-                                    subVM.exchangeForm.calculate_mourning = $scope.showWorkOffCount(5);
-                                    subVM.exchangeForm.calculate_official = $scope.showWorkOffCount(6);
-                                    subVM.exchangeForm.calculate_workinjury = $scope.showWorkOffCount(7);
-                                    subVM.exchangeForm.calculate_maternity = $scope.showWorkOffCount(8);
-                                    subVM.exchangeForm.calculate_paternity = $scope.showWorkOffCount(9);
-                                    subVM.exchangeForm.calculate_others = $scope.showWorkOffCount(1001);
+
+                                    subVM.exchangeForm.calculate_special = $scope.showWorkOffCount_history(3, subVM.exchangeForm);
+                                    // subVM.exchangeForm.calculate_married = $scope.showWorkOffCount_history(4, subVM.exchangeForm);
+                                    // subVM.exchangeForm.calculate_mourning = $scope.showWorkOffCount_history(5, subVM.exchangeForm);
+                                    // subVM.exchangeForm.calculate_official = $scope.showWorkOffCount_history(6, subVM.exchangeForm);
+                                    // subVM.exchangeForm.calculate_workinjury = $scope.showWorkOffCount_history(7, subVM.exchangeForm);
+                                    // subVM.exchangeForm.calculate_maternity = $scope.showWorkOffCount_history(8, subVM.exchangeForm);
+                                    // subVM.exchangeForm.calculate_paternity = $scope.showWorkOffCount_history(9, subVM.exchangeForm);
+                                    // subVM.exchangeForm.calculate_others = $scope.showWorkOffCount_history(1001, subVM.exchangeForm);
                                     subVM.exchangeForm.person_residual_rest_hour = parseFloat($scope.preciseResidualRestHour);
-                                    fetchWorkOffTableData(userDID, null, subVM);
-                                    fetchWorkOffTableData_lastYear(userDID, null, subVM);
+                                    fetchWorkAddTableData(userDID, null, subVM);
+                                    fetchWorkAddTableData_history(userDID, null, subVM);
                                     fetchExchangeData(userDID, null, specificYear, subVM);
-                                    fetchExchangeData_lastyear(userDID, null, specificYear - 1, subVM);
+                                    fetchExchangeData_history(userDID, null, null, subVM);
 
                                 } else {
-                                    fetchWorkOffTableData(userDID, 2);
-                                    fetchWorkOffTableData_lastYear(userDID, 2);
+                                    fetchWorkAddTableData(userDID, 2);
+                                    fetchWorkAddTableData_history(userDID, 2);
                                     fetchExchangeData(userDID, 2, specificYear);
-                                    fetchExchangeData_lastyear(userDID, 2, specificYear - 1);
+                                    fetchExchangeData_history(userDID, 2, null);
                                 }
                             })
                     })
@@ -1277,7 +1342,8 @@
                         $scope.year = specificYear = newValue - 1911;
                         $scope.fetchNationHolidays_workOff(specificYear);
                         $scope.fetchOverTimeDays(specificYear);
-                        $scope.getWorkOffTable(null, specificYear, null)
+                        // $scope.getWorkOffTable(null, specificYear, null);
+                        $scope.getWorkOffTable(null, specificYear);
                     }
                 });
             }
@@ -1287,12 +1353,12 @@
              * @param user
              */
             // subVM = 兌換單
-            function fetchWorkOffTableData(userDID, showType, subVM) {
+            function fetchWorkAddTableData(userDID, showType, subVM) {
                 var formData = {
                     creatorDID: userDID,
                     workAddType: 2,
                     // month: thisMonth,
-                    year: specificYear
+                    // year: specificYear
                 }
                 WorkHourAddItemUtil.getWorkHourAddItems(formData)
                     .success(function (res) {
@@ -1332,16 +1398,16 @@
              * @param user
              */
             // subVM = 兌換單
-            function fetchWorkOffTableData_lastYear(userDID, showType, subVM) {
+            function fetchWorkAddTableData_history(userDID, showType, subVM) {
                 var formData = {
                     creatorDID: userDID,
                     workAddType: 2,
                     // month: thisMonth,
-                    year: specificYear - 1
+                    // year: specificYear - 1
                 }
                 WorkHourAddItemUtil.getWorkHourAddItems(formData)
                     .success(function (res) {
-                        console.log(" === 顯示加班單，目的找補休 (去年) [resp] === ");
+                        console.log(" === 顯示加班單，目的找補休 (歷史) [resp] === ");
                         console.log(res);
 
                         var tables = res.payload;
@@ -1353,18 +1419,18 @@
                         switch (showType) {
                             // login User
                             case 1:
-                                vm.loginUserHolidayForm.rest_observed_lastYear = 0;
-                                vm.loginUserHolidayForm.rest_observed_lastYear = $scope.showTotalAddHour(tables, 2);
+                                vm.loginUserHolidayForm.rest_observed_history = 0;
+                                vm.loginUserHolidayForm.rest_observed_history = $scope.showTotalAddHour(tables, 2);
                                 break;
                             // specific user
                             case 2:
-                                vm.holidayForm.rest_observed_lastYear = 0;
-                                vm.holidayForm.rest_observed_lastYear = $scope.showTotalAddHour(tables, 2);
+                                vm.holidayForm.rest_observed_history = 0;
+                                vm.holidayForm.rest_observed_history = $scope.showTotalAddHour(tables, 2);
                                 break;
                         }
                         if (subVM) {
-                            subVM.exchangeForm.rest_observed_lastYear = 0;
-                            subVM.exchangeForm.rest_observed_lastYear = $scope.showTotalAddHour(tables, 2);
+                            subVM.exchangeForm.rest_observed_history = 0;
+                            subVM.exchangeForm.rest_observed_history = $scope.showTotalAddHour(tables, 2);
                         }
                     })
                     .error(function () {
@@ -1405,6 +1471,7 @@
                                                 $scope.loginUser_exchange_observed += parseFloat(exchangeItems[index].exchangeHour);
                                                 break;
                                             case 3:
+                                                // console.log(exchangeItems[index]);
                                                 $scope.loginUser_exchange_special += parseFloat(exchangeItems[index].exchangeHour);
                                                 break;
                                         }
@@ -1453,16 +1520,16 @@
              * 顯示兌現單，目的找補休、特休兌換數
              * @param user
              */
-            function fetchExchangeData_lastyear(userDID, showType, year, subVM) {
+            function fetchExchangeData_history(userDID, showType, year, subVM) {
                 var formData = {
                     creatorDID: userDID,
-                    year: year,
+                    // year: year,
                 }
-                console.log(" === 顯示兌現單，目的找補休、特休兌換數 (去年) [request] === ");
+                console.log(" === 顯示兌現單，目的找補休、特休兌換數 (歷史) [request] === ");
                 console.log(formData);
                 WorkOffExchangeFormUtil.fetchExchangeItemsByYear(formData)
                     .success(function (res) {
-                        console.log(" === 顯示兌現單，目的找補休、特休兌換數 (去年) [resp] === ");
+                        console.log(" === 顯示兌現單，目的找補休、特休兌換數 (歷史) [resp] === ");
                         console.log(res);
                         res.payload = res.payload.sort(function (a, b) {
                             return a._id > b._id ? 1 : -1;
@@ -1473,16 +1540,23 @@
                         switch (showType) {
                             // login User
                             case 1:
-                                $scope.loginUser_exchange_special_lastyear = 0.0;
-                                $scope.loginUser_exchange_observed_lastyear = 0.0;
+                                $scope.loginUser_exchange_special_history = 0.0;
+                                $scope.loginUser_exchange_observed_history = 0.0;
                                 for (var index = 0; index < exchangeItems.length; index ++) {
                                     if (exchangeItems[index].isConfirmed) {
                                         switch (exchangeItems[index].workOffType) {
                                             case 2:
-                                                $scope.loginUser_exchange_observed_lastyear += parseFloat(exchangeItems[index].exchangeHour);
+                                                $scope.loginUser_exchange_observed_history += parseFloat(exchangeItems[index].exchangeHour);
                                                 break;
                                             case 3:
-                                                $scope.loginUser_exchange_special_lastyear += parseFloat(exchangeItems[index].exchangeHour);
+
+                                                var dateString = (exchangeItems[index].year + 1911) + "/" + exchangeItems[index].month;
+                                                var itemDate = moment(dateString).format("YYYY/MM/DD");
+                                                var isBetween = moment(itemDate).isBetween(vm.loginUserHolidayForm.start_special, vm.loginUserHolidayForm.end_special, null, "()");
+                                                console.log(itemDate + ", isBetween= " + isBetween);
+                                                if (isBetween) {
+                                                    $scope.loginUser_exchange_special_history += parseFloat(exchangeItems[index].exchangeHour);
+                                                }
                                                 break;
                                         }
                                     }
@@ -1490,16 +1564,23 @@
                                 break;
                             // specific user
                             case 2:
-                                $scope.specificUser_exchange_special_lastyear = 0.0;
-                                $scope.specificUser_exchange_observed_lastyear = 0.0;
+                                $scope.specificUser_exchange_special_history = 0.0;
+                                $scope.specificUser_exchange_observed_history = 0.0;
                                 for (var index = 0; index < exchangeItems.length; index ++) {
                                     if (exchangeItems[index].isConfirmed) {
                                         switch (exchangeItems[index].workOffType) {
                                             case 2:
-                                                $scope.specificUser_exchange_observed_lastyear += parseFloat(exchangeItems[index].exchangeHour);
+                                                $scope.specificUser_exchange_observed_history += parseFloat(exchangeItems[index].exchangeHour);
                                                 break;
                                             case 3:
-                                                $scope.specificUser_exchange_special_lastyear += parseFloat(exchangeItems[index].exchangeHour);
+
+                                                var dateString = (exchangeItems[index].year + 1911) + "/" + exchangeItems[index].month;
+                                                var itemDate = moment(dateString).format("YYYY/MM/DD");
+                                                var isBetween = moment(itemDate).isBetween(vm.holidayForm.start_special, vm.holidayForm.end_special, null, "()");
+                                                console.log(itemDate + ", isBetween= " + isBetween);
+                                                if (isBetween) {
+                                                    $scope.specificUser_exchange_special_history += parseFloat(exchangeItems[index].exchangeHour);
+                                                }
                                                 break;
                                         }
                                     }
@@ -1508,16 +1589,23 @@
                         }
 
                         if (subVM) {
-                            subVM.exchangeForm.specificUser_exchange_special_lastyear = 0.0;
-                            subVM.exchangeForm.specificUser_exchange_observed_lastyear = 0.0;
+                            subVM.exchangeForm.specificUser_exchange_special_history = 0.0;
+                            subVM.exchangeForm.specificUser_exchange_observed_history = 0.0;
                             for (var index = 0; index < exchangeItems.length; index ++) {
                                 if (exchangeItems[index].isConfirmed) {
                                     switch (exchangeItems[index].workOffType) {
                                         case 2:
-                                            subVM.exchangeForm.specificUser_exchange_observed_lastyear += parseFloat(exchangeItems[index].exchangeHour);
+                                            subVM.exchangeForm.specificUser_exchange_observed_history += parseFloat(exchangeItems[index].exchangeHour);
                                             break;
                                         case 3:
-                                            subVM.exchangeForm.specificUser_exchange_special_lastyear += parseFloat(exchangeItems[index].exchangeHour);
+
+                                            var dateString = (exchangeItems[index].year + 1911) + "/" + exchangeItems[index].month;
+                                            var itemDate = moment(dateString).format("YYYY/MM/DD");
+                                            var isBetween = moment(itemDate).isBetween(subVM.exchangeForm.start_special, subVM.exchangeForm.end_special, null, "()");
+                                            console.log(itemDate + ", isBetween= " + isBetween);
+                                            if (isBetween) {
+                                                subVM.exchangeForm.specificUser_exchange_special_history += parseFloat(exchangeItems[index].exchangeHour);
+                                            }
                                             break;
                                     }
                                 }
@@ -1971,14 +2059,11 @@
             }
 
             $scope.showAgentName = function (item) {
-                console.log(item);
                 var selected = [];
                 if (item.agentID) {
-                    console.log(item.agentID)
                     selected = $filter('filter')($scope.usersBosses, {
                         value: item.agentID
                     });
-                    console.log(selected)
                 }
                 return selected.length ? selected[0].name : '沒有代理人';
             }
