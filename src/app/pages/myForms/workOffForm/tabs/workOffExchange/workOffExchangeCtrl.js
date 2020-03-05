@@ -81,14 +81,14 @@
                 console.log(exchangeFormCallback);
                 if (exchangeFormCallback != undefined) {
 
-                    $scope.specialRest = (parseFloat(exchangeFormCallback.rest_special)  // 剩餘特休
-                        - parseFloat(exchangeFormCallback.calculate_special)) * 8; // 已請特休
+                    $scope.specialRest = (parseFloat(exchangeFormCallback.rest_special) * 8)  // 剩餘特休
+                        - (parseFloat(exchangeFormCallback.calculate_special) * 8) // 所有區間內已請特休
+                        - (parseFloat(exchangeFormCallback.specificUser_exchange_special_history)); // 所有區間內已請特休
 
                     $scope.observedRest = parseFloat(exchangeFormCallback.person_residual_rest_hour) // 補休預設
-                        + parseFloat(exchangeFormCallback.rest_observed) // 剩餘補休;
+                        + parseFloat(exchangeFormCallback.rest_observed) // 所有補休;
                         - parseFloat(exchangeFormCallback.calculate_observed) // 已請補休 (今年 + 去年);
-                        + parseFloat(exchangeFormCallback.rest_observed_lastYear) // 去年獲得補休;
-                        - parseFloat(exchangeFormCallback.specificUser_exchange_observed_lastyear) // 去年請的換休;
+                        - parseFloat(exchangeFormCallback.specificUser_exchange_observed_history) // 去年請的換休;
                 }
             });
 
