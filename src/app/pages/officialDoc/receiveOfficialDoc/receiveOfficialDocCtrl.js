@@ -458,8 +458,8 @@
 
                 if(newValue != oldValue){
 
-                    $scope._lastDate = moment(newValue).add(3, 'days').format('YYYY/MM/DD');
-                    $('#_lastDate_dom').find('#myDT')[0].value = $scope._lastDate;
+                    // $scope._lastDate = moment(newValue).add(3, 'days').format('YYYY/MM/DD');
+                    // $('#_lastDate_dom').find('#myDT')[0].value = $scope._lastDate;
 
                     // $scope._dueDate = moment(newValue).add(6, 'days').format('YYYY/MM/DD');
                     // $('#_dueDate_dom').find('#myDT')[0].value = $scope._dueDate;
@@ -510,6 +510,9 @@
             $scope.$watch('_officialPublicDate',function(newValue, oldValue) {
 
                 if(newValue != oldValue){
+
+                    $scope._lastDate = moment(newValue).add(3, 'days').format('YYYY/MM/DD');
+                    $('#_lastDate_dom').find('#myDT')[0].value = $scope._lastDate;
 
                     $scope._dueDate = moment(newValue).add(6, 'days').format('YYYY/MM/DD');
                     $('#_dueDate_dom').find('#myDT')[0].value = $scope._dueDate;
