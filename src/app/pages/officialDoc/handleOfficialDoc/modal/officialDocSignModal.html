@@ -227,6 +227,21 @@
 
                 </div>
 
+                <div
+                        ba-panel
+                        ba-panel-title="公文存查"
+                        ba-panel-class="with-scroll"
+                        ng-show="!docData.isDocClose">
+
+                    <button type="submit"
+                            style="float: right; margin-right: 10px"
+                            ng-click="sendArchive(this, docData)"
+                            class="btn btn-danger">
+                        送歸檔
+                    </button>
+
+                </div>
+
 
             </div>
 
