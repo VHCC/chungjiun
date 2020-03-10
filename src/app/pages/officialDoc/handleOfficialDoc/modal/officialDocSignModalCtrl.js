@@ -461,6 +461,41 @@
             // });
 
         });
+
+        // 提交歸檔
+        $scope.sendArchive = function (dom, docData) {
+            $scope.checkText = "是否歸檔：" + docData.archiveNumber;
+            $scope.docData = docData;
+            ngDialog.open({
+                template: 'app/pages/officialDoc/handleOfficialDoc/dialog/closeOfficialDocReviewSend_Modal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+
+        $scope.updateOfficialDocToServer_Archive = function(docData) {
+            var handleInfo = docData.stageInfo;
+
+            var stageInfoHandle = {
+                timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
+                stage: "歸檔",
+                handleName: $scope.username,
+            }
+
+            handleInfo.push(stageInfoHandle);
+
+            var formData = {
+                _id: docData._id,
+                stageInfo: handleInfo,
+                isDocClose: true
+            }
+            OfficialDocUtil.updateOfficialDocItem(formData)
+                .success(function (res) {
+                    console.log(res);
+                    $uibModalInstance.close();
+                })
+        }
     }
 
 })();
