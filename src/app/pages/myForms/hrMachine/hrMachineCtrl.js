@@ -789,7 +789,7 @@
                     var workOffHour = parseInt(workOff1.substr(0,2));
                     var workOffMin = parseInt(workOff1.substr(2,4));
 
-                    if ($scope.isLate(tableItem, 0) && workOffHour >= 18) { //若是遲到
+                    if ($scope.isLate(tableItem, 0) && workOffHour >= 18 && !$scope.isTravelNotLate(tableItem)) { //若是遲到
                         workOffHour = 17;
                         workOffMin = 30;
                     } else if (workOffHour >= 18) {
@@ -888,7 +888,7 @@
                     // console.log("下班");
                     var workOffHour = parseInt(workOff2.substr(0,2));
                     var workOffMin = parseInt(workOff2.substr(2,4));
-                    if ($scope.isLate(tableItem, 1) && workOffHour >= 18) { //若是遲到
+                    if ($scope.isLate(tableItem, 1) && workOffHour >= 18 && !$scope.isTravelNotLate(tableItem)) { //若是遲到
                         workOffHour = 17;
                         workOffMin = 30;
                     } else if (workOffHour >= 18) {
