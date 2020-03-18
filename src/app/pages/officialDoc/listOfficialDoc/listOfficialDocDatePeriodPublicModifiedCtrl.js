@@ -69,6 +69,14 @@
                     $scope.officialDocItems = resp.payload;
                     $scope.officialDocItems.slice(0, resp.payload.length);
 
+                    for (var index = 0; index < resp.payload.length; index ++) {
+                        if ($scope.officialDocItems[index].archiveNumber.length != 11) {
+                            $scope.officialDocItems[index].archiveNumber =
+                                $scope.officialDocItems[index].archiveNumber +
+                                OfficialDocUtil.getDivision($scope.officialDocItems[index].docDivision);
+                        }
+                    }
+
                     document.getElementById('includeHead_public_modified').innerText = "";
                     angular.element(
                         document.getElementById('includeHead_public_modified'))
