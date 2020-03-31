@@ -166,6 +166,12 @@ module.exports = function (app) {
 
         if (!fs.existsSync(cacheDir)){
 
+            var archiveDir = fileStorageDir + '/' + req.body._archiveNumber
+
+            if (!fs.existsSync(archiveDir)){
+                fs.mkdirSync(archiveDir);
+            }
+
             res.status(200).send({
                 code: 200,
                 error: global.status._200,
