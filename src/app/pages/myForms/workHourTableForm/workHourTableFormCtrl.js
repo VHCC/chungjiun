@@ -2378,9 +2378,10 @@
         }
 
         //行政總管一鍵確認 -1
-        $scope.reviewWHExecutiveAll = function (user, form, index) {
-            // console.log(form);
-            // console.log(user);
+        $scope.reviewWHExecutiveAll = function (user, form, clickIndex) {
+            console.log(form);
+            console.log(clickIndex);
+            console.log(user);
             // console.log(workAddTableIDArray);
             for (var formIndex = 0; formIndex < form.length; formIndex ++) {
                 for (var index = 0; index < $scope.fetchFormDataFromScope(form[formIndex]).length; index++) {
@@ -2394,7 +2395,7 @@
             $scope.checkText = "確定 同意： 全部 ？";
             $scope.checkingForm = user;
             $scope.checkingTable = form;
-            $scope.mIndex = index;
+            $scope.mIndex = clickIndex;
             ngDialog.open({
                 template: 'app/pages/myModalTemplate/myWorkHourTableFormAgree_ExecutiveAllModal.html',
                 className: 'ngdialog-theme-default',
@@ -2403,8 +2404,10 @@
             });
         }
         //行政總管一鍵確認 -2
-        $scope.sendWHExecutiveAllAgree = function (user, form, index) {
-            // console.log(form);
+        $scope.sendWHExecutiveAllAgree = function (user, form, clickIndex) {
+            console.log(user);
+            console.log(form);
+            console.log(clickIndex);
             var updateTables = [];
             for (var formIndex = 0; formIndex < form.length; formIndex ++) {
                 for (var index = 0; index < $scope.fetchFormDataFromScope(form[formIndex]).length; index++) {
@@ -2432,40 +2435,49 @@
                     var msgDetailList = [1005];
                     var memoList = [$scope.firstFullDate_executive];
 
-                    WorkHourAddItemUtil.updateRelatedAddItemByProject(formData)
-                        .success(function (res) {
-
-                            // var formData = {
-                            //     creatorDID: cookies.get('userDID'),
-                            //     msgTargetArray: targetList,
-                            //     msgMemoArray: memoList,
-                            //     msgTopicArray: msgTopicList,
-                            //     msgDetailArray: msgDetailList,
-                            // }
-                            // NotificationMsgUtil.createMsgItem(formData)
-                            //     .success(function (req) {
-                            //
-                            //     })
-                            $scope.showTableOfItem(user, null, null, null, null, null, 2);
-                        })
-                        .error(function () {
-                        })
-
-
+                    $scope.showTableOfItem(user, null, null, null, null, null, 2);
                 })
-            var formData = {
-                formTables: workAddTableIDArray,
-            }
-            // console.log(formData);
-            if (workAddTableIDArray.length != 0) {
-                WorkHourAddItemUtil.executiveConfirm(formData)
-                    .success(function () {
-                        toastr.success('確認成功', 'Success');
-                    })
-                    .error(function () {
 
-                    })
+            formData = {
+                month: form[clickIndex].month,
+                create_formDate: form[clickIndex].create_formDate,
+                creatorDID: user.DID,
             }
+
+            console.log(formData)
+
+
+            WorkHourAddItemUtil.updateRelatedAddItemByProject(formData)
+                .success(function (res) {
+                    console.log(res);
+                    // var formData = {
+                    //     creatorDID: cookies.get('userDID'),
+                    //     msgTargetArray: targetList,
+                    //     msgMemoArray: memoList,
+                    //     msgTopicArray: msgTopicList,
+                    //     msgDetailArray: msgDetailList,
+                    // }
+                    // NotificationMsgUtil.createMsgItem(formData)
+                    //     .success(function (req) {
+                    //
+                    //     })
+                })
+                .error(function () {
+                })
+
+            // var formData = {
+            //     formTables: workAddTableIDArray,
+            // }
+            // // console.log(formData);
+            // if (workAddTableIDArray.length != 0) {
+            //     WorkHourAddItemUtil.executiveConfirm(formData)
+            //         .success(function () {
+            //             toastr.success('確認成功', 'Success');
+            //         })
+            //         .error(function () {
+            //
+            //         })
+            // }
 
         }
 
