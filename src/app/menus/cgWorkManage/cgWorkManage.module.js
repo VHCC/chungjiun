@@ -50,7 +50,7 @@
                     templateUrl: 'app/pages/myForms/travelApplication/travelApplicationHomePage.html',
                     controller: 'travelApplicationHomeCtrl',
                     controllerAs: 'travelApplicationHomeCtrlVm',
-                    title: '出差公出[測試]',
+                    title: '出差公出',
                     sidebarMeta: {
                         order: global.pages.cgWorkManage_travelApplication,
                     },

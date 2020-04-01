@@ -16,7 +16,7 @@
                     url: '/cgOfficialDoc',
                     template: '<ui-view autoscroll="true" autoscroll-body-top></ui-view>',
                     abstract: true,
-                    title: '公文管理 [測試]',
+                    title: '公文管理',
                     sidebarMeta: {
                         icon: 'ion-compose',
                         order: global.pages.cgOfficialDoc,
@@ -27,7 +27,7 @@
                     url: '/officialDocList',
                     templateUrl: 'app/pages/officialDoc/listOfficialDoc/listOfficialDocHomePage.html',
                     // controller: 'listOfficialDocCtrl',
-                    title: '公文列表 [測試]',
+                    title: '公文列表',
                     // accessLevel: [9999],
                     sidebarMeta: {
                         order: global.pages.cgOfficialDoc_list,
@@ -39,7 +39,7 @@
                     templateUrl: 'app/pages/officialDoc/receiveOfficialDoc/receiveOfficialDocHomePage.html',
                     controller: 'receiveOfficialDocCtrl',
                     controllerAs: 'receiveOfficialDocCtrlVm',
-                    title: '收文作業 [測試]',
+                    title: '收文作業',
                     // accessLevel: [9999],
                     accessFeature: ['feature_official_doc'],
                     sidebarMeta: {
@@ -51,7 +51,7 @@
                     url: '/officialDocHandle',
                     templateUrl: 'app/pages/officialDoc/handleOfficialDoc/handleOfficialDocHomePage.html',
                     controller: 'handleOfficialDocHomeCtrl',
-                    title: '公文辦理 [測試]',
+                    title: '公文辦理',
                     // accessLevel: [9999],
                     sidebarMeta: {
                         order: global.pages.cgOfficialDoc_handle,
@@ -61,7 +61,7 @@
                 {
                     url: '/officialDocPublic',
                     templateUrl: 'app/pages/officialDoc/publicOfficialDoc/publicOfficialDocHomePage.html',
-                    title: '發文作業 [測試]',
+                    title: '發文作業',
                     controller: 'publicOfficialDocCtrl',
                     controllerAs: 'publicOfficialDocCtrlVm',
                     // accessLevel: [9999],
