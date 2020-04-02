@@ -39,7 +39,7 @@
         // Main Data
         $scope.parent = $scope.$resolve.parent;
         $scope.docData = $scope.$resolve.docData;
-        $scope.canDelete = $scope.$resolve.canDelete;
+        $scope.canDeleteAttachments = $scope.$resolve.canDeleteAttachments;
 
         // initial
         $scope.username = $cookies.get('username');

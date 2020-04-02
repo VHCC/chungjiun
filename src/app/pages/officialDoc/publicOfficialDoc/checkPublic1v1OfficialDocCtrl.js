@@ -187,6 +187,15 @@
                     parent: function () {
                         return $scope;
                     },
+                    canDeleteAttachments: function () {
+                        return true;
+                    },
+                    isCharger: function () {
+                        return false;
+                    },
+                    canApproveDoc: function () {
+                        return true;
+                    }
                 }
             }).result.then(function () {
                 $scope.reloadDocData_check_1v1();
