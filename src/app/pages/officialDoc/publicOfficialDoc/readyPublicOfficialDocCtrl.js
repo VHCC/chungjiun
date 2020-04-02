@@ -204,7 +204,7 @@
                     parent: function () {
                         return $scope;
                     },
-                    canDelete: function () {
+                    canDeleteAttachments: function () {
                         return true;
                     },
                 }

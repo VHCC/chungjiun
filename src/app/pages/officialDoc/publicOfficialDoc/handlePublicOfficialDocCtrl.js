@@ -2,9 +2,10 @@
     'user strict';
 
     angular.module('BlurAdmin.pages.cgOfficialDoc')
-        .service('intiOfficialCheckPublicService', function ($http, $cookies) {
+        .service('intiOfficialHandlePublicService', function ($http, $cookies) {
 
             var formData = {
+                chargerDID: $cookies.get("userDID"),
                 type: 1, // receive = 0, public = 1
                 isDocCanPublic: false,
             }
@@ -15,7 +16,7 @@
                 });
             return promise;
         })
-        .controller('checkPublicOfficialDocCtrl',
+        .controller('handlePublicOfficialDocCtrl',
             [
                 '$scope',
                 '$filter',
@@ -26,14 +27,14 @@
                 'OfficialDocUtil',
                 'OfficialDocVendorUtil',
                 '$compile',
-                'intiOfficialCheckPublicService',
-                 CheckPublicOfficialDocCtrl
+                'intiOfficialHandlePublicService',
+                 HandlePublicOfficialDocCtrl
             ])
 
     /**
      * @ngInject
      */
-    function CheckPublicOfficialDocCtrl($scope,
+    function HandlePublicOfficialDocCtrl($scope,
                                  $filter,
                                  $cookies,
                                  $uibModal,
@@ -42,9 +43,9 @@
                                  OfficialDocUtil,
                                  OfficialDocVendorUtil,
                                  $compile,
-                                 intiOfficialCheckPublicService) {
+                                 intiOfficialHandlePublicService) {
 
-        intiOfficialCheckPublicService.then(function (resp) {
+        intiOfficialHandlePublicService.then(function (resp) {
             $scope.officialDocItems = resp.data.payload;
             $scope.officialDocItems.slice(0, resp.data.payload.length);
 
@@ -59,7 +60,7 @@
             }
 
             angular.element(
-                document.getElementById('includeHead'))
+                document.getElementById('includeHead_handle'))
                 .append($compile(
                     "<div ba-panel ba-panel-title=" +
                     "'待確認發文列表 - " + resp.data.payload.length + "'" +
@@ -194,10 +195,10 @@
                         return true;
                     },
                     isCharger: function () {
-                        return false;
+                        return true;
                     },
                     canApproveDoc: function () {
-                        return true;
+                        return false;
                     }
                 }
             }).result.then(function () {
@@ -222,6 +223,7 @@
 
         $scope.reloadDocData_check = function () {
             var formData = {
+                chargerDID: $cookies.get("userDID"),
                 type: 1, // receive = 0, public = 1
                 isDocCanPublic: false,
             }
@@ -232,10 +234,10 @@
                     $scope.officialDocItems = resp.payload;
                     $scope.officialDocItems.slice(0, resp.payload.length);
 
-                    document.getElementById('includeHead').innerText = "";
+                    document.getElementById('includeHead_handle').innerText = "";
 
                     angular.element(
-                        document.getElementById('includeHead'))
+                        document.getElementById('includeHead_handle'))
                         .append($compile(
                             "<div ba-panel ba-panel-title=" +
                             "'待確認發文列表 - " + resp.payload.length + "'" +

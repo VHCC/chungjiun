@@ -162,7 +162,7 @@
                                 <div class="pdf-filename"><span data-pdf-name="">{{pdfItem.name}}</span></div>
                             </div>
                             <div class="pdf-delete-buttons"
-                                 ng-show="canDelete">
+                                 ng-show="canDeleteAttachments">
                                 <button class="btn btn-danger" ng-click="deletePublicDocFile(docData, pdfItem, 0)">刪除</button>
                             </div>
                         </div>
@@ -177,7 +177,7 @@
                                 <div class="pdf-filename"><span data-pdf-name="">{{pdfItem.name}}</span></div>
                             </div>
                             <div class="pdf-delete-buttons"
-                                 ng-show="canDelete">
+                                 ng-show="canDeleteAttachments">
                                 <button class="btn btn-danger" ng-click="deletePublicDocFile(docData, pdfItem, 0)">刪除</button>
                             </div>
                         </div>
@@ -208,7 +208,7 @@
                                 <div class="pdf-filename"><span data-pdf-name="">{{pdfItem.name}}</span></div>
                             </div>
                             <div class="pdf-delete-buttons pdf-item"
-                                 ng-show="canDelete">
+                                 ng-show="canDeleteAttachments">
                                 <button class="btn btn-danger" ng-click="deletePublicDocFile(docData, pdfItem, 1)">刪除</button>
                             </div>
 
@@ -226,7 +226,7 @@
                             </div>
                             <div class="pdf-delete-buttons"
                                  ng-if="pdfItem.name.indexOf('.pdf') < 0"
-                                 ng-show="canDelete">
+                                 ng-show="canDeleteAttachments">
                                 <button class="btn btn-danger" ng-click="deletePublicDocFile(docData, pdfItem, 1)">刪除</button>
                             </div>
                         </div>
