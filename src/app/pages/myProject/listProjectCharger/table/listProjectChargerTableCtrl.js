@@ -1,24 +1,27 @@
 /**
  * @author Ichen.chu
- * created on 07.11.2018
+ * created on 03.04.2020
  */
 (function () {
     'use strict';
 
     angular.module('BlurAdmin.pages.myProject')
-        .service('intiProjectsAllService', function ($http, $cookies) {
+        .service('intiListProjectChargerService', function ($http, $cookies) {
 
-            // console.log($cookies.get('userDID'));
-            // var formData = {
-            //     relatedID: $cookies.get('userDID'),
-            // }
-            var promise = $http.get('/api/projectFindAllEnable')
+            console.log($cookies.get('userDID'));
+            var formData = {
+                relatedID: $cookies.get('userDID'),
+            }
+
+            var promise = $http.post('/api/post_project_all_related_to_major_with_disabled', formData)
                 .success(function (allProjects) {
                     return allProjects;
                 });
             return promise;
+
+
         })
-        .controller('listProjectAllTableCtrl',
+        .controller('listProjectChargerTableCtrl',
             [
                 '$scope',
                 '$filter',
@@ -29,24 +32,25 @@
                 'editableThemes',
                 'Project',
                 'ProjectUtil',
-                'intiProjectsAllService',
-                ListProjectAllPageCtrl]);
+                'intiListProjectChargerService',
+                ListProjectChargerTableCtrl
+            ]);
 
     /** @ngInject */
-    function ListProjectAllPageCtrl($scope,
-                                    $filter,
-                                    $cookies,
-                                    User,
-                                    $compile,
-                                    editableOptions,
-                                    editableThemes,
-                                    Project,
-                                    ProjectUtil,
-                                    intiProjectsAllService) {
+    function ListProjectChargerTableCtrl($scope,
+                                         $filter,
+                                         $cookies,
+                                         User,
+                                         $compile,
+                                         editableOptions,
+                                         editableThemes,
+                                         Project,
+                                         ProjectUtil,
+                                         intiListProjectChargerService) {
         $scope.loading = true;
 
-        intiProjectsAllService.then(function (resp) {
-            console.log(resp.data);
+        intiListProjectChargerService.then(function (resp) {
+            // console.log(resp.data);
             $scope.projects = resp.data;
             $scope.projects.slice(0, resp.data.length);
 
@@ -54,18 +58,18 @@
                 document.getElementById('includeHead'))
                 .append($compile(
                     "<div ba-panel ba-panel-title=" +
-                    "'所有專案列表 - " + resp.data.length + "'" +
+                    "'專案列表 - " + resp.data.length + "'" +
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
-                    "ng-include=\"'app/pages/myProject/listProjectAll/table/listProjectAllTable.html'\">" +
+                    "ng-include=\"'app/pages/myProject/listProjectCharger/table/listProjectChargerTable.html'\">" +
                     "</div>" +
                     "</div>"
                 )($scope));
 
+
             User.getAllUsers()
                 .success(function (allUsers) {
-
                     // 協辦人員
                     $scope.allWorkers = [];
                     $scope.allWorkersID = [];
@@ -84,13 +88,13 @@
                         name: "None"
                     };
                     for (var i = 0; i < allUsers.length; i++) {
-                        $scope.projectManagers[i] = {
+                        $scope.projectManagers[i + 1] = {
                             value: allUsers[i]._id,
                             name: allUsers[i].name
                         };
                     }
 
-                    //顯示
+                    // 顯示
                     for (var index = 0; index < $scope.projects.length; index++) {
                         var selected = [];
                         for (var subIndex = 0; subIndex < $scope.projects[index].workers.length; subIndex++) {
@@ -99,9 +103,11 @@
                             });
 
                             selected.length == 1 ? $scope.projects[index].workers[subIndex] = selected[0] : $scope.projects[index].workers[subIndex];
+
                         }
                     }
                 })
+
         })
 
         //技師
@@ -129,6 +135,11 @@
 
         $scope.isFitPrjManager = function (managerDID) {
             return managerDID === $cookies.get('userDID');
+        }
+
+        // 對應行政總管
+        $scope.isFitExecutive = function () {
+            return ($cookies.get('roletype') == "100")
         }
 
         $scope.showMajor = function (project) {
@@ -165,6 +176,8 @@
         editableThemes['bs3'].cancelTpl = '<button type="button" ng-click="$form.$cancel()" class="btn btn-default btn-with-icon"><i class="ion-close-round"></i></button>';
 
         $scope.updateMajor = function (form, table) {
+            // console.log(form.$data);
+            // console.log(table.$parent.prj._id);
             var formData = {
                 prjID: table.$parent.prj._id,
                 majorID: form.$data.majorID,
@@ -179,16 +192,81 @@
                 })
         }
 
+        // 更新總案名稱
+        $scope.changeMainName = function (form, table) {
+            try {
+                var formData = {
+                    prjID: table.prj._id,
+                    mainName: form.$data.mainName,
+                }
+                Project.updateMainName(formData)
+                    .success(function (res) {
+                        console.log(res.code);
+                    })
+                    .error(function () {
+
+                    })
+            } catch (err) {
+                toastr['warning']('變更總案名 !', '更新失敗');
+                return;
+            }
+        }
+
+        // 更新專案名稱
+        $scope.changePrjName = function (form, table) {
+            try {
+                var formData = {
+                    prjID: table.prj._id,
+                    prjName: form.$data.prjName,
+                }
+                Project.updatePrjName(formData)
+                    .success(function (res) {
+                        console.log(res.code);
+                    })
+                    .error(function () {
+
+                    })
+            } catch (err) {
+                toastr['warning']('變更專案名 !', '更新失敗');
+                return;
+            }
+        }
+
+        // 更新子案名稱
+        $scope.changePrjSubName = function (form, table) {
+            try {
+                var formData = {
+                    prjID: table.prj._id,
+                    prjSubName: form.$data.prjSubName,
+                }
+                Project.updatePrjSubName(formData)
+                    .success(function (res) {
+                        console.log(res.code);
+                    })
+                    .error(function () {
+
+                    })
+            } catch (err) {
+                toastr['warning']('變更子案名 !', '更新失敗');
+                return;
+            }
+        }
+
         $scope.updateWorkers = function (form, table) {
             try {
                 var workers = [];
                 for (var index = 0; index < form.$data.workers.length; index++) {
-                    workers[index] = form.$data.workers[index].value;
+                    // console.log(form.$data.workers[index]);
+                    if (form.$data.workers[index] == null) {
+                        continue;
+                    }
+                    workers.push(form.$data.workers[index].value);
                 }
                 var formData = {
                     prjID: table.prj._id,
                     workers: workers,
                 }
+                // console.log(formData);
                 Project.updateWorkers(formData)
                     .success(function (res) {
                         console.log(res.code);
@@ -212,6 +290,19 @@
                 resault += workers[index].name + ", ";
             }
             return resault;
+        }
+
+        $scope.changePrjStatus = function (table) {
+            var formData = {
+                prjID: table.prj._id,
+                enable: table.prj.enable,
+            }
+            Project.updateStatus(formData)
+                .success(function (res) {
+                    console.log(res.code);
+                })
+                .error(function () {
+                })
         }
     }
 

@@ -60,6 +60,17 @@
                     order: global.pages.myProject_listProject,
                 },
             })
+            .state('cgProject.listProjectCharger',
+                {
+                    url: '/listProjectCharger',
+                    templateUrl: 'app/pages/myProject/listProjectCharger/listProjectCharger.html',
+                    controller: 'listProjectChargerCtrl',
+                    title: '主辦的執行專案[*****名稱待確認*****]',
+                    accessLevel: [1,2,3,6,100],
+                    sidebarMeta: {
+                        order: global.pages.myProject_listProject_charger,
+                    },
+                })
             .state('cgProject.listProjectAll',
                 {
                     url: '/listProjectAll',

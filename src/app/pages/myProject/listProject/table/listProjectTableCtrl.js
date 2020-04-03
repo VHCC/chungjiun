@@ -352,7 +352,7 @@
             var resault = "";
             // console.log(workers);
             for (var index = 0; index < workers.length; index++) {
-                if (workers[index].name == undefined) {
+                if (workers[index] == null || workers[index].name == undefined) {
                     continue;
                 }
                 resault += workers[index].name + ", ";

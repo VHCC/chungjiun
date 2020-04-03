@@ -1,18 +1,19 @@
+// 20200403
 (function () {
     'user strict';
 
     angular.module('BlurAdmin.pages.myProject')
-        .controller('listProjectAllCtrl', [
+        .controller('listProjectChargerCtrl', [
             '$scope',
             '$cookies',
-            ListProjectAll
+             ListProjectCharger
         ])
 
     /**
      * @ngInject
      */
-    function ListProjectAll(scope, cookies) {
-        console.log('listProjectAll');
+    function ListProjectCharger(scope, cookies) {
+        console.log('ListProjectCharger');
     }
 
 })();
