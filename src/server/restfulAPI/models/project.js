@@ -65,7 +65,7 @@ module.exports = mongoose.model('Project', {
         type: String,
         required: true
     },
-    // 承辦人員，經理級
+    // 承辦人員
     majorID: {
         type: String,
     },
