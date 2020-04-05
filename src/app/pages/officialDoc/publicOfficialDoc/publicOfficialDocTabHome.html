@@ -42,7 +42,7 @@
     <uib-tab heading="發文建檔" >
         <div ng-include="'app/pages/officialDoc/publicOfficialDoc/publicOfficialDoc_main.html'"></div>
     </uib-tab>
-    <uib-tab heading="承辦待辦發文[*****名稱待確認*****]">
+    <uib-tab heading="待發文">
         <div class="row"
              ng-controller="handlePublicOfficialDocCtrl">
             <div class="col-md-12"
@@ -50,16 +50,7 @@
             </div>
         </div>
     </uib-tab>
-    <uib-tab heading="待經理/主任/行政總管確認"
-             ng-if="roleType === '2' || roleType === '100' || roleType === '6'">
-        <div class="row"
-             ng-controller="checkPublicOfficialDocCtrl">
-            <div class="col-md-12"
-                 id="includeHead">
-            </div>
-        </div>
-    </uib-tab>
-    <uib-tab heading="待確認[*****名稱待確認*****]"
+    <uib-tab heading="待審公文"
              ng-if="roleType === '2' || roleType === '100' || roleType === '6'">
         <div class="row"
              ng-controller="checkPublic1v1OfficialDocCtrl">
@@ -68,7 +59,18 @@
             </div>
         </div>
     </uib-tab>
-    <uib-tab heading="待發文"
+
+    <uib-tab heading="代理審核"
+             ng-if="roleType === '2' || roleType === '100' || roleType === '6'">
+        <div class="row"
+             ng-controller="checkPublicOfficialDocCtrl">
+            <div class="col-md-12"
+                 id="includeHead">
+            </div>
+        </div>
+    </uib-tab>
+
+    <uib-tab heading="行政發文"
              ng-if="officialDocRight">
         <div class="row"
              ng-controller="readyPublicOfficialDocCtrl">
