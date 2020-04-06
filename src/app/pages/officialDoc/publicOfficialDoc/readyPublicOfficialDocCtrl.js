@@ -195,6 +195,7 @@
             $uibModal.open({
                 animation: true,
                 controller: 'officialDocReadyPublicModalCtrl',
+                controllerAs: 'officialDocReadyPublicModalCtrlVm',
                 templateUrl: 'app/pages/officialDoc/publicOfficialDoc/modal/officialDocReadyPublicModal.html',
                 size: 'lg',
                 resolve: {

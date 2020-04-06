@@ -2,7 +2,7 @@
 
     <div class="modal-header bg-info">
         <i class="ion-android-warning modal-icon"></i>
-        <strong style="color: red;">崇峻文號：{{docData.archiveNumber}}</strong>
+        <strong style="color: red;">暫存文號：{{docData.archiveNumber}}</strong>
     </div>
     <hr>
 
@@ -25,33 +25,102 @@
                                <!--ng-disabled="true">-->
                     <!--</div>-->
 
-                    <!--<div style="padding: 5px">-->
-                        <!--<label >發文日期</label>-->
+                    <div >
+                        <label>分部</label>
+                        <ui-select ng-model="officialDocReadyPublicModalCtrlVm.docDivision.selected"
+                                   class="btn-group bootstrap-select form-control"
+                                   append-to-body="false"
+                                   search-enabled="true">
+                            <ui-select-match placeholder="請選擇分部">
+                                {{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    repeat="division in officialDocReadyPublicModalCtrlVm.docDivisions">
+                                <span ng-bind-html="division.name"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+
+                    <div style="padding: 5px">
+                        <label >發文日期</label>
                         <!--<input type="text" class="form-control"-->
                                <!--value="{{docData.publicDate}}"-->
-                               <!--ng-disabled="true">-->
-                    <!--</div>-->
+                               <!--ng-disabled="false">-->
+                        <my-date-picker formatted="yyyy/MM/dd"
+                                        id="_officialPublicDate_dom"
+                                        ng-click="setDateModel('_officialPublicDate', this)">
 
-                    <!--<div style="padding: 5px">-->
-                        <!--<label >正本受文機關</label>-->
+                        </my-date-picker>
+                    </div>
+
+                    <div style="padding: 5px">
+                        <label >正本受文機關</label>
                         <!--<input type="text" class="form-control"-->
                                <!--value="{{showVendorNameList()}}"-->
-                               <!--ng-disabled="true">-->
-                    <!--</div>-->
+                               <!--ng-disabled="false">-->
+                        <ui-select multiple
+                                   ng-model="officialDocReadyPublicModalCtrlVm.targetOrigin.selected"
+                                   class="form-control"
+                                   ng-disabled="false"
+                                   search-enabled="true"
+                                   append-to-body="false">
+                            <ui-select-match placeholder="正本受文機關">
+                                {{$item.vendorName}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    ng-model="vendorName"
+                                    repeat="vendorItem in officialDocReadyPublicModalCtrlVm.officialDocVendors |
+                                            groupSelectpickerOptions: {
+                                                        vendorName: $select.search
+                                                    }">
+                                <span ng-bind-html="vendorItem.vendorName | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
 
-                    <!--<div style="padding: 5px">-->
-                        <!--<label >副本受文機關</label>-->
+                    <div style="padding: 5px">
+                        <label >副本受文機關</label>
                         <!--<input type="text" class="form-control"-->
                                <!--value="{{showVendorCopyNameList()}}"-->
-                               <!--ng-disabled="true">-->
-                    <!--</div>-->
+                               <!--ng-disabled="false">-->
+                        <ui-select multiple
+                                   ng-model="officialDocReadyPublicModalCtrlVm.targetCopy.selected"
+                                   class="form-control"
+                                   ng-disabled="false"
+                                   search-enabled="true"
+                                   append-to-body="false">
+                            <ui-select-match placeholder="副本受文機關">
+                                {{$item.vendorName}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    ng-model="vendorName"
+                                    repeat="vendorItem in officialDocReadyPublicModalCtrlVm.officialDocVendors_copy |
+                                            groupSelectpickerOptions: {
+                                                        vendorName: $select.search
+                                                    }">
+                                <span ng-bind-html="vendorItem.vendorName | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
 
-                    <!--<div style="padding: 5px">-->
-                        <!--<label >文別</label>-->
+                    <div style="padding: 5px">
+                        <label >文別</label>
                         <!--<input type="text" class="form-control"-->
                                <!--value="{{showDocType(docData.docType)}}"-->
-                               <!--ng-disabled="true">-->
-                    <!--</div>-->
+                               <!--ng-disabled="false">-->
+                        <ui-select ng-model="officialDocReadyPublicModalCtrlVm.docOption.selected"
+                                   class="btn-group bootstrap-select form-control"
+                                   append-to-body="false"
+                                   search-enabled="true">
+                            <ui-select-match placeholder="請選擇文別">
+                                {{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    repeat="option in officialDocReadyPublicModalCtrlVm.docOptions">
+                                <span ng-bind-html="option.name"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
 
                     <div style="padding: 5px">
                         <label >主旨</label>
@@ -60,12 +129,24 @@
                                   ng-disabled="true">{{docData.subject}}</textarea>
                     </div>
 
-                    <!--<div style="padding: 5px">-->
-                        <!--<label >類型</label>-->
+                    <div style="padding: 5px">
+                        <label >發文類型</label>
                         <!--<input type="text" class="form-control"-->
                                <!--value="{{showDocPublicType(docData.docType)}}"-->
-                               <!--ng-disabled="true">-->
-                    <!--</div>-->
+                               <!--ng-disabled="false">-->
+                        <ui-select ng-model="officialDocReadyPublicModalCtrlVm.publicType.selected"
+                                   class="btn-group bootstrap-select form-control"
+                                   append-to-body="false"
+                                   search-enabled="true">
+                            <ui-select-match placeholder="請選擇發文類型">
+                                {{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    repeat="type in officialDocReadyPublicModalCtrlVm.publicTypes">
+                                <span ng-bind-html="type.name"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
 
                     <div style="padding: 5px">
                         <label >專案代碼</label>
@@ -131,7 +212,7 @@
                         ng-show="docData.isDocCanPublic && !docData.isDocPublic">
                     <button type="submit"
                             style="float: right; margin-right: 10px"
-                            ng-click="sendArchive(this, docData)"
+                            ng-click="checkDocDetail(docData)"
                             class="btn btn-danger">
                         送歸檔
                     </button>

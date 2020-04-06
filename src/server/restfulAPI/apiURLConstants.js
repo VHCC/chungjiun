@@ -175,6 +175,7 @@ global.apiUrl = {
     post_official_doc_fetch_file : '/api/post_official_doc_fetch_file',
     post_official_doc_download_file : '/api/post_official_doc_download_file',
     post_official_doc_rename_and_folder : '/api/post_official_doc_rename_and_folder',
+    post_official_doc_rename_and_folder_public : '/api/post_official_doc_rename_and_folder_public',
 
     // public
     post_official_doc_upload_file_public : '/api/post_official_doc_upload_file_public',
@@ -191,6 +192,7 @@ global.apiUrl = {
     post_official_doc_download_file_public : '/api/post_official_doc_download_file_public',
     post_official_doc_fetch_item_period_public : '/api/post_official_doc_fetch_item_period_public',
     post_official_doc_create_item_archive_number_public : '/api/post_official_doc_create_item_archive_number_public',
+    post_official_doc_get_archive_number_public : '/api/post_official_doc_get_archive_number_public',
 
     // Official Doc item
     post_official_doc_create_item : '/api/post_official_doc_create_item',
@@ -198,6 +200,7 @@ global.apiUrl = {
     post_official_doc_fetch_item_period : '/api/post_official_doc_fetch_item_period',
     post_official_doc_search_item : '/api/post_official_doc_search_item',
     post_official_doc_search_item_by_managerID : '/api/post_official_doc_search_item_by_managerID',
+    post_official_doc_search_item_by_signerDID : '/api/post_official_doc_search_item_by_signerDID', // 20200406
     post_official_doc_update_item : '/api/post_official_doc_update_item',
     post_official_doc_delete_item : '/api/post_official_doc_delete_item',
     post_official_doc_create_item_archive_number : '/api/post_official_doc_create_item_archive_number',

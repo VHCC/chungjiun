@@ -191,6 +191,10 @@
                   return http.post('/api/post_official_doc_rename_and_folder', formData);
                 },
 
+                renamePublicFolder: function (formData) {
+                    return http.post('/api/post_official_doc_rename_and_folder_public', formData);
+                },
+
                 generateReceiveNumber : function(formData) {
                     return http.post('/api/post_official_doc_create_item_archive_number', formData);
                 },
@@ -263,7 +267,6 @@
                 generatePublicNumber_public : function(formData) {
                     return http.post('/api/post_official_doc_create_item_archive_number_public', formData);
                 },
-
 
                 // ----- Doc Item ----
                 createOfficialDocItem : function (formData) {

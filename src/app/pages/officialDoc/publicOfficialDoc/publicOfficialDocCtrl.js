@@ -650,6 +650,10 @@
             dom.$$childHead.$$nextSibling.reloadDocData_check();
         }
 
+        $scope.trigger_sub_reloadDocData_ready = function (dom) {
+            dom.$$childHead.$$nextSibling.reloadDocData_ready_public();
+        }
+
     }
 
 })();
