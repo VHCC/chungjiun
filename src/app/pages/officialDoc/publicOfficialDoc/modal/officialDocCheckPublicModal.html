@@ -25,35 +25,33 @@
                                <!--ng-disabled="true">-->
                     <!--</div>-->
 
-                    <div style="padding: 5px">
-                        <label >發文日期</label>
-                        <input type="text" class="form-control"
-                               value="{{docData.publicDate}}"
-                               ng-disabled="true">
-                    </div>
+                    <!--<div style="padding: 5px">-->
+                        <!--<label >發文日期</label>-->
+                        <!--<input type="text" class="form-control"-->
+                               <!--value="{{docData.publicDate}}"-->
+                               <!--ng-disabled="true">-->
+                    <!--</div>-->
 
-                    <div style="padding: 5px">
-                        <label >正本受文機關</label>
-                        <input type="text" class="form-control"
-                               value="{{showVendorNameList()}}"
-                               ng-disabled="true">
+                    <!--<div style="padding: 5px">-->
+                        <!--<label >正本受文機關</label>-->
+                        <!--<input type="text" class="form-control"-->
+                               <!--value="{{showVendorNameList()}}"-->
+                               <!--ng-disabled="true">-->
+                    <!--</div>-->
 
-                    </div>
+                    <!--<div style="padding: 5px">-->
+                        <!--<label >副本受文機關</label>-->
+                        <!--<input type="text" class="form-control"-->
+                               <!--value="{{showVendorCopyNameList()}}"-->
+                               <!--ng-disabled="true">-->
+                    <!--</div>-->
 
-                    <div style="padding: 5px">
-                        <label >副本受文機關</label>
-                        <input type="text" class="form-control"
-                               value="{{showVendorCopyNameList()}}"
-                               ng-disabled="true">
-
-                    </div>
-
-                    <div style="padding: 5px">
-                        <label >文別</label>
-                        <input type="text" class="form-control"
-                               value="{{showDocType(docData.docType)}}"
-                               ng-disabled="true">
-                    </div>
+                    <!--<div style="padding: 5px">-->
+                        <!--<label >文別</label>-->
+                        <!--<input type="text" class="form-control"-->
+                               <!--value="{{showDocType(docData.docType)}}"-->
+                               <!--ng-disabled="true">-->
+                    <!--</div>-->
 
                     <div style="padding: 5px">
                         <label >主旨</label>
@@ -62,12 +60,12 @@
                                ng-disabled="true">{{docData.subject}}</textarea>
                     </div>
 
-                    <div style="padding: 5px">
-                        <label >類型</label>
-                        <input type="text" class="form-control"
-                               value="{{showDocPublicType(docData.docType)}}"
-                               ng-disabled="true">
-                    </div>
+                    <!--<div style="padding: 5px">-->
+                        <!--<label >類型</label>-->
+                        <!--<input type="text" class="form-control"-->
+                               <!--value="{{showDocPublicType(docData.docType)}}"-->
+                               <!--ng-disabled="true">-->
+                    <!--</div>-->
 
                     <div style="padding: 5px">
                         <label >專案代碼</label>
@@ -157,7 +155,7 @@
                             ng-if="canApproveDoc"
                             style="float: right; margin-right: 10px"
                             ng-click="sendPublic(this, docData)"
-                            class="btn btn-warning">
+                            class="btn btn-primary">
                         同意發文
                     </button>
 
@@ -269,7 +267,7 @@
                 ba-panel-class="with-scroll">
             <div class="attachedzone_none col-md-12">
 
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <label >正本</label>
                     <my ng-if="pdfList != undefined"
                         ng-repeat="pdfItem in pdfList">
@@ -315,54 +313,54 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
-                    <label >副本</label>
-                    <my ng-if="pdfListCopy != undefined"
-                        ng-repeat="pdfItem in pdfListCopy">
-                        <div class="pdf-item"
-                             ng-if="pdfItem.name.indexOf('.pdf') > 0"
-                             ng-click="showPDFCopy(this, docData)">
-                            <div class="pdf-img">
-                                <img src="assets/img/pdf-svgrepo-com.svg"/>
-                            </div>
-                            <div class="pdf-detail">
-                                <div class="pdf-size"><span data-pdf-size="">{{pdfItem.size}}</span></div>
-                                <div class="pdf-filename"><span data-pdf-name="">{{pdfItem.name}}</span></div>
-                            </div>
-                            <div class="pdf-delete-buttons pdf-item"
-                                 ng-show="canDeleteAttachments">
-                                <button class="btn btn-danger" ng-click="deletePublicDocFile(docData, pdfItem, 1)">刪除</button>
-                            </div>
+                <!--<div class="col-md-6">-->
+                    <!--<label >副本</label>-->
+                    <!--<my ng-if="pdfListCopy != undefined"-->
+                        <!--ng-repeat="pdfItem in pdfListCopy">-->
+                        <!--<div class="pdf-item"-->
+                             <!--ng-if="pdfItem.name.indexOf('.pdf') > 0"-->
+                             <!--ng-click="showPDFCopy(this, docData)">-->
+                            <!--<div class="pdf-img">-->
+                                <!--<img src="assets/img/pdf-svgrepo-com.svg"/>-->
+                            <!--</div>-->
+                            <!--<div class="pdf-detail">-->
+                                <!--<div class="pdf-size"><span data-pdf-size="">{{pdfItem.size}}</span></div>-->
+                                <!--<div class="pdf-filename"><span data-pdf-name="">{{pdfItem.name}}</span></div>-->
+                            <!--</div>-->
+                            <!--<div class="pdf-delete-buttons pdf-item"-->
+                                 <!--ng-show="canDeleteAttachments">-->
+                                <!--<button class="btn btn-danger" ng-click="deletePublicDocFile(docData, pdfItem, 1)">刪除</button>-->
+                            <!--</div>-->
 
-                        </div>
+                        <!--</div>-->
 
-                        <div class="pdf-item"
-                             ng-if="pdfItem.name.indexOf('.pdf') < 0"
-                             ng-click="downloadCJFile(this, true)">
-                            <div class="pdf-img">
-                                <img src="assets/img/cloud-download-2.svg" width="120px" height="120px"/>
-                            </div>
-                            <div class="pdf-detail">
-                                <div class="pdf-size"><span data-pdf-size="">{{pdfItem.size}}</span></div>
-                                <div class="pdf-filename"><span data-pdf-name="">{{pdfItem.name}}</span></div>
-                            </div>
-                            <div class="pdf-delete-buttons"
-                                 ng-if="pdfItem.name.indexOf('.pdf') < 0"
-                                 ng-show="canDeleteAttachments">
-                                <button class="btn btn-danger" ng-click="deletePublicDocFile(docData, pdfItem, 1)">刪除</button>
-                            </div>
-                        </div>
-                    </my>
-                    <div id="dropzone_copy">
-                        <form class="dropzone needsclick"
-                              id="demo-upload_copy">
-                            <div class="dz-message needsclick">
-                                副本發文檔案(拖拉或點擊上傳)
-                                <BR>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                        <!--<div class="pdf-item"-->
+                             <!--ng-if="pdfItem.name.indexOf('.pdf') < 0"-->
+                             <!--ng-click="downloadCJFile(this, true)">-->
+                            <!--<div class="pdf-img">-->
+                                <!--<img src="assets/img/cloud-download-2.svg" width="120px" height="120px"/>-->
+                            <!--</div>-->
+                            <!--<div class="pdf-detail">-->
+                                <!--<div class="pdf-size"><span data-pdf-size="">{{pdfItem.size}}</span></div>-->
+                                <!--<div class="pdf-filename"><span data-pdf-name="">{{pdfItem.name}}</span></div>-->
+                            <!--</div>-->
+                            <!--<div class="pdf-delete-buttons"-->
+                                 <!--ng-if="pdfItem.name.indexOf('.pdf') < 0"-->
+                                 <!--ng-show="canDeleteAttachments">-->
+                                <!--<button class="btn btn-danger" ng-click="deletePublicDocFile(docData, pdfItem, 1)">刪除</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</my>-->
+                    <!--<div id="dropzone_copy">-->
+                        <!--<form class="dropzone needsclick"-->
+                              <!--id="demo-upload_copy">-->
+                            <!--<div class="dz-message needsclick">-->
+                                <!--副本發文檔案(拖拉或點擊上傳)-->
+                                <!--<BR>-->
+                            <!--</div>-->
+                        <!--</form>-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
         </div>
 

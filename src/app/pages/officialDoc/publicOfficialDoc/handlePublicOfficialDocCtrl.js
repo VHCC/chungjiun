@@ -213,7 +213,7 @@
                     }
                 }
             }).result.then(function () {
-                $scope.reloadDocData_check();
+                $scope.reloadDocData_handle();
                 // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
             });
 
@@ -232,7 +232,7 @@
                 })
         }
 
-        $scope.reloadDocData_check = function () {
+        $scope.reloadDocData_handle = function () {
             var formData = {
                 chargerDID: $cookies.get("userDID"),
                 type: 1, // receive = 0, public = 1

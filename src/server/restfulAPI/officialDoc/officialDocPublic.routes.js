@@ -71,9 +71,9 @@ module.exports = function (app) {
             //     fs.mkdirSync(dirTemp + '/' + req.body.userDID);
             // }
 
-            // if (!fs.existsSync(dirTemp + '/' + req.body.userDID + "/" + subTarget)){
-            //     fs.mkdirSync(dirTemp + '/' + req.body.userDID + "/" + subTarget);
-            // }
+            if (!fs.existsSync(fileStorageDir + "/" + req.body.folder + "/" + subTarget)){
+                fs.mkdirSync(fileStorageDir + "/" + req.body.folder + "/" + subTarget);
+            }
 
             cb(null, fileStorageDir + "/" + req.body.folder + "/" + subTarget);
         },

@@ -4,16 +4,23 @@
     angular.module('BlurAdmin.pages.cgOfficialDoc')
         .service('intiOfficialCheckPublic1v1Service', function ($http, $cookies) {
             var formData = {
-                managerID: $cookies.get('userDID'),
+                signerDID: $cookies.get('userDID'),
                 type: 1, // receive = 0, public = 1
                 isDocCanPublic: false,
             }
 
-            var promise = $http.post('/api/post_official_doc_search_item_by_managerID', formData)
+            // var promise = $http.post('/api/post_official_doc_search_item_by_managerID', formData)
+            //     .success(function (officialDocItems) {
+            //         console.log(officialDocItems);
+            //         return officialDocItems;
+            //     })
+
+            var promise = $http.post('/api/post_official_doc_search_item', formData)
                 .success(function (officialDocItems) {
                     console.log(officialDocItems);
                     return officialDocItems;
-                });
+                })
+
             return promise;
         })
         .controller('checkPublic1v1OfficialDocCtrl',
@@ -63,7 +70,7 @@
                 document.getElementById('includeHead_1v1'))
                 .append($compile(
                     "<div ba-panel ba-panel-title=" +
-                    "'待確認發文列表 - " + resp.data.payload.length + "'" +
+                    "'待審發文列表 - " + resp.data.payload.length + "'" +
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
@@ -163,6 +170,17 @@
             return selected_manager.length ? selected_manager[0].name : 'Not Set';
         }
 
+        $scope.showSigner = function (officialItem) {
+            var selected = [];
+            if ($scope.allUsers === undefined) return;
+            if (officialItem.signerDID) {
+                selected = $filter('filter')($scope.allUsers, {
+                    value: officialItem.signerDID
+                });
+            }
+            return selected.length ? selected[0].name : 'Not Set';
+        }
+
         $scope.showVendorName = function (officialItem) {
             var selected = [];
             if ($scope.allVendors === undefined) return;
@@ -219,12 +237,12 @@
 
         $scope.reloadDocData_check_1v1 = function () {
             var formData = {
-                managerID: $cookies.get('userDID'),
+                signerDID: $cookies.get('userDID'),
                 type: 1, // receive = 0, public = 1
                 isDocCanPublic: false,
             }
 
-            OfficialDocUtil.searchOfficialDocItemByManagerID(formData)
+            OfficialDocUtil.searchOfficialDocItem(formData)
                 .success(function (resp) {
 
                     $scope.officialDocItems = resp.payload;
@@ -236,7 +254,7 @@
                         document.getElementById('includeHead_1v1'))
                         .append($compile(
                             "<div ba-panel ba-panel-title=" +
-                            "'待確認發文列表 - " + resp.payload.length + "'" +
+                            "'待審發文列表 - " + resp.payload.length + "'" +
                             "ba-panel-class= " +
                             "'with-scroll'" + ">" +
                             "<div " +
@@ -245,6 +263,10 @@
                             "</div>"
                         )($scope));
                 });
+        }
+
+        $scope.qqqq = function (dom) {
+            console.log(dom)
         }
 
     }
