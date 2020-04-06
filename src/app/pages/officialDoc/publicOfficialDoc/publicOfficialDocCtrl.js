@@ -638,6 +638,18 @@
             return selected.length ? selected[0].name : 'Not Set';
         }
 
+        $scope.trigger_sub_reloadDocData_handle = function (dom) {
+            dom.$$childHead.$$nextSibling.$$nextSibling.reloadDocData_handle();
+        }
+
+        $scope.trigger_sub_reloadDocData_check_1v1 = function (dom) {
+            dom.$$childHead.$$nextSibling.reloadDocData_check_1v1();
+        }
+
+        $scope.trigger_sub_reloadDocData_check = function (dom) {
+            dom.$$childHead.$$nextSibling.reloadDocData_check();
+        }
+
     }
 
 })();

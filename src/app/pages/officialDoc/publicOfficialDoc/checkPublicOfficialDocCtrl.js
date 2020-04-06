@@ -62,7 +62,7 @@
                 document.getElementById('includeHead'))
                 .append($compile(
                     "<div ba-panel ba-panel-title=" +
-                    "'待確認發文列表 - " + resp.data.payload.length + "'" +
+                    "'代理審核列表 - " + resp.data.payload.length + "'" +
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
@@ -164,6 +164,17 @@
             return selected_manager.length ? selected_manager[0].name : 'Not Set';
         }
 
+        $scope.showSigner = function (officialItem) {
+            var selected = [];
+            if ($scope.allUsers === undefined) return;
+            if (officialItem.signerDID) {
+                selected = $filter('filter')($scope.allUsers, {
+                    value: officialItem.signerDID
+                });
+            }
+            return selected.length ? selected[0].name : 'Not Set';
+        }
+
         $scope.showVendorName = function (officialItem) {
             // console.log(officialItem);
             // console.log($scope.allVendors);
@@ -238,7 +249,7 @@
                         document.getElementById('includeHead'))
                         .append($compile(
                             "<div ba-panel ba-panel-title=" +
-                            "'待確認發文列表 - " + resp.payload.length + "'" +
+                            "'代理審核列表 - " + resp.payload.length + "'" +
                             "ba-panel-class= " +
                             "'with-scroll'" + ">" +
                             "<div " +

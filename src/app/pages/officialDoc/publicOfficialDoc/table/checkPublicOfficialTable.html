@@ -8,31 +8,33 @@
         </tr>
         <tr class="sortable">
             <th class="table-id"
-                st-sort="archiveNumber" st-sort-default="true" style="width: 7%">崇峻文號</th>
+                ng-show="false"
+                st-sort="archiveNumber" st-sort-default="true" style="width: 7%">暫存文號</th>
             <th st-sort="subject" style="width: 20%">主旨</th>
 
             <!--<th st-sort="receiveType" style="width: 7%">文號字</th>-->
             <!--<th st-sort="receiveNumber" style="width: 7%">文號編號</th>-->
 
-            <th st-sort="docType" style="width: 4%">文別</th>
+            <!--<th st-sort="docType" style="width: 4%">文別</th>-->
             <!--<th st-sort="chargerDID" style="width: 5%">承辦人</th>-->
-            <th style="width: 5%">經理</th>
+            <th style="width: 5%">審核人</th>
 
             <th st-sort="prjCode" style="width: 10%">專案編號</th>
             <!--<th st-sort="vendorDID" style="width: 5%">來文機關</th>-->
 
-            <th st-sort="publicDate" style="width: 7%">發文日期</th>
+            <!--<th st-sort="publicDate" style="width: 7%">發文日期</th>-->
+            <th st-sort="stageInfo.timestamp" style="width: 7%">建檔時間</th>
             <!--<th st-sort="dueDate" style="width: 7%">處理期限</th>-->
 
             <!--<th st-sort="isDocCanPublic" style="width: 5%">已發文</th>-->
         </tr>
         <tr>
-            <th>
-                <input st-search="archiveNumber"
-                       placeholder="尋找崇峻文號"
-                       class="input-sm form-control search-input"
-                       type="search"/>
-            </th>
+            <!--<th>-->
+                <!--<input st-search="archiveNumber"-->
+                       <!--placeholder="尋找崇峻文號"-->
+                       <!--class="input-sm form-control search-input"-->
+                       <!--type="search"/>-->
+            <!--</th>-->
             <th>
                 <input st-search="subject"
                        placeholder="輸入主旨"
@@ -53,7 +55,7 @@
                        <!--type="search"/>-->
             <!--</th>-->
 
-            <th/>
+            <!--<th/>-->
             <th/>
 
             <th>
@@ -81,7 +83,7 @@
             ;fetchPDFFilesPublic()">
 
             <!--崇峻文號-->
-            <td class="table-id" style="width: 8%">{{item.archiveNumber}}</td>
+            <!--<td class="table-id" style="width: 8%">{{item.archiveNumber}}</td>-->
             <!--主旨-->
             <td style="width: 20%">{{item.subject}}</td>
 
@@ -91,11 +93,15 @@
             <!--<td style="width: 8%">{{item.receiveNumber}}</td>-->
 
             <!--文別-->
-            <td style="width: 4%">{{ showDocType(item.docType) }}</td>
+            <!--<td style="width: 4%">{{ showDocType(item.docType) }}</td>-->
+
             <!--承辦人-->
             <!--<td style="width: 5%">{{ showCharger(item) }}</td>-->
             <!--經理-->
-            <td style="width: 5%">{{ showManager(item) }}</td>
+            <!--<td style="width: 5%">{{ showManager(item) }}</td>-->
+
+            <!--簽核人-->
+            <td style="width: 5%">{{ showSigner(item) }}</td>
 
             <!--專案編號-->
             <td style="width: 8%">{{ item.prjCode }}</td>
@@ -103,7 +109,11 @@
             <!--<td style="width: 5%">{{ showVendorName(item) }}</td>-->
 
             <!--發文日期-->
-            <td style="width: 7%">{{ item.publicDate }}</td>
+            <!--<td style="width: 7%">{{ item.publicDate }}</td>-->
+
+            <!--建檔時間-->
+            <td style="width: 7%">{{ item.stageInfo[0].timestamp }}</td>
+
             <!--處理期限-->
             <!--<td style="width: 7%">{{ item.dueDate }}</td>-->
 
