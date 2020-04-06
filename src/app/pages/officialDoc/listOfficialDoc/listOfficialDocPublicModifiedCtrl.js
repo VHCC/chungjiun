@@ -215,6 +215,10 @@
             });
         }
 
+        $scope.showDocPublicType = function (type) {
+            return OfficialDocUtil.getDocPublicType(type);
+        }
+
     }
 
 })();

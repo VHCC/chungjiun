@@ -173,6 +173,10 @@
             return selected_major.length ? selected_major[0].name : 'Not Set';
         }
 
+        $scope.showDocPublicType = function (type) {
+            return OfficialDocUtil.getDocPublicType(type);
+        }
+
         $scope.showSigner = function (officialItem) {
             if (officialItem.stageInfo.length == 2) {
                 return officialItem.stageInfo[officialItem.stageInfo.length - 1].handleName;
