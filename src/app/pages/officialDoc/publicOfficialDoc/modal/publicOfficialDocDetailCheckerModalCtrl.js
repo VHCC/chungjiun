@@ -36,53 +36,81 @@
         $scope.userDID = $cookies.get('userDID');
         $scope.roleType = $cookies.get('roletype');
 
-        // $scope.docData._receiveDate = moment($scope.docData._receiveDate).format('YYYY/MM/DD');
-        // $scope.docData._lastDate = moment($scope.docData._lastDate).format('YYYY/MM/DD');
-        // $scope.docData._dueDate = moment($scope.docData._dueDate).format('YYYY/MM/DD');
-        $scope.docData._publicDate = moment($scope.docData._publicDate).format('YYYY/MM/DD');
+        // $scope.docData._publicDate = moment($scope.docData._publicDate).format('YYYY/MM/DD');
 
         $scope.docData.creatorDID = $scope.userDID; // 收文人
 
         $scope.confirmCreateDocPublic = function () {
 
+            // var formData = {
+            //     // docDivision: $scope.docData.docDivision.option,
+            //     docDivision: 0,
+            //     publicDate: moment(),
+            //     type: 1
+            // }
+            //
+            // OfficialDocUtil.generatePublicNumber_public(formData)
+            //     .success(function (res) {
+            //         // console.log(res);
+            //
+            //         var publicNumber = res.payload;
+            //
+            //         // toastr.error('暫時發文文號', publicNumber + $scope.docData.docDivision.name);
+            //
+            //         var formData = {
+            //             // _archiveNumber: publicNumber + $scope.docData.docDivision.name,
+            //             _archiveNumber: moment().format('YYYYMMDDhhmmss');
+            //             userDID: $scope.folderDir,
+            //         }
+            //
+            //         $scope.docData._archiveNumber = publicNumber;
+            //
+            //         OfficialDocUtil.createPDFFolder(formData)
+            //             .success(function (req) {
+            //                 var formData = $scope.docData;
+            //
+            //                 // console.log($scope.docData);
+            //
+            //                 OfficialDocUtil.createOfficialDocItem_public(formData)
+            //                     .success(function (res) {
+            //                         console.log(res);
+            //                         $uibModalInstance.close();
+            //                     })
+            //                     .error(function (res) {
+            //                         console.log(res);
+            //                         $uibModalInstance.close();
+            //                     })
+            //             });
+            //     })
+
+            var archiveNumber = moment().format('YYYYMMDDhhmmss')
+
             var formData = {
-                docDivision: $scope.docData.docDivision.option,
-                publicDate: $scope.docData._publicDate,
-                type: 1
+                // _archiveNumber: publicNumber + $scope.docData.docDivision.name,
+                _archiveNumber: archiveNumber,
+                userDID: $scope.folderDir,
             }
 
-            OfficialDocUtil.generatePublicNumber_public(formData)
-                .success(function (res) {
-                    // console.log(res);
+            // $scope.docData._archiveNumber = publicNumber;
 
-                    var publicNumber = res.payload;
+            OfficialDocUtil.createPDFFolder(formData)
+                .success(function (req) {
+                    var formData = $scope.docData;
 
-                    toastr.error('發文文號', publicNumber + $scope.docData.docDivision.name);
+                    formData._archiveNumber = archiveNumber;
 
-                    var formData = {
-                        _archiveNumber: publicNumber + $scope.docData.docDivision.name,
-                        userDID: $scope.folderDir,
-                    }
+                    // console.log($scope.docData);
 
-                    $scope.docData._archiveNumber = publicNumber;
-
-                    OfficialDocUtil.createPDFFolder(formData)
-                        .success(function (req) {
-                            var formData = $scope.docData;
-
-                            // console.log($scope.docData);
-
-                            OfficialDocUtil.createOfficialDocItem_public(formData)
-                                .success(function (res) {
-                                    console.log(res);
-                                    $uibModalInstance.close();
-                                })
-                                .error(function (res) {
-                                    console.log(res);
-                                    $uibModalInstance.close();
-                                })
-                        });
-                })
+                    OfficialDocUtil.createOfficialDocItem_public_temp(formData)
+                        .success(function (res) {
+                            console.log(res);
+                            $uibModalInstance.close();
+                        })
+                        .error(function (res) {
+                            console.log(res);
+                            $uibModalInstance.close();
+                        })
+                });
         }
 
         $scope.showVendorNameList = function () {

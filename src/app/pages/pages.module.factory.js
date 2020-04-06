@@ -236,6 +236,10 @@
                     return http.post('/api/post_official_doc_delete_item_public', formData);
                 },
 
+                createOfficialDocItem_public_temp : function (formData) {
+                    return http.post('/api/post_official_doc_create_item_public_temp', formData);
+                },
+
                 createOfficialDocItem_public : function (formData) {
                     return http.post('/api/post_official_doc_create_item_public', formData);
                 },

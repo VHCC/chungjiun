@@ -63,11 +63,11 @@
                 document.getElementById('includeHead_handle'))
                 .append($compile(
                     "<div ba-panel ba-panel-title=" +
-                    "'待確認發文列表 - " + resp.data.payload.length + "'" +
+                    "'待發文列表 - " + resp.data.payload.length + "'" +
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
-                    "ng-include=\"'app/pages/officialDoc/publicOfficialDoc/table/checkPublicOfficialTable.html'\">" +
+                    "ng-include=\"'app/pages/officialDoc/publicOfficialDoc/table/handlePublicOfficialTable.html'\">" +
                     "</div>" +
                     "</div>"
                 )($scope));
@@ -165,6 +165,17 @@
             return selected_manager.length ? selected_manager[0].name : 'Not Set';
         }
 
+        $scope.showSigner = function (officialItem) {
+            var selected = [];
+            if ($scope.allUsers === undefined) return;
+            if (officialItem.signerDID) {
+                selected = $filter('filter')($scope.allUsers, {
+                    value: officialItem.signerDID
+                });
+            }
+            return selected.length ? selected[0].name : 'Not Set';
+        }
+
         $scope.showVendorName = function (officialItem) {
             // console.log(officialItem);
             // console.log($scope.allVendors);
@@ -181,8 +192,8 @@
         $scope.showOfficialDocHandleInfo = function (item) {
             $uibModal.open({
                 animation: true,
-                controller: 'officialDocCheckPublicModalCtrl',
-                templateUrl: 'app/pages/officialDoc/publicOfficialDoc/modal/officialDocCheckPublicModal.html',
+                controller: 'officialDocHandlePublicModalCtrl',
+                templateUrl: 'app/pages/officialDoc/publicOfficialDoc/modal/officialDocHandlePublicModal.html',
                 size: 'lg',
                 resolve: {
                     docData: function () {
@@ -240,11 +251,11 @@
                         document.getElementById('includeHead_handle'))
                         .append($compile(
                             "<div ba-panel ba-panel-title=" +
-                            "'待確認發文列表 - " + resp.payload.length + "'" +
+                            "'待發文列表 - " + resp.payload.length + "'" +
                             "ba-panel-class= " +
                             "'with-scroll'" + ">" +
                             "<div " +
-                            "ng-include=\"'app/pages/officialDoc/publicOfficialDoc/table/checkPublicOfficialTable.html'\">" +
+                            "ng-include=\"'app/pages/officialDoc/publicOfficialDoc/table/handlePublicOfficialTable.html'\">" +
                             "</div>" +
                             "</div>"
                         )($scope));
