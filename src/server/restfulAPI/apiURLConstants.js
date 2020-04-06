@@ -184,6 +184,8 @@ global.apiUrl = {
     post_official_doc_delete_item_public : '/api/post_official_doc_delete_item_public',
     post_official_doc_delete_file_public_from_fs : '/api/post_official_doc_delete_file_public_from_fs',
     post_official_doc_create_item_public : '/api/post_official_doc_create_item_public',
+    post_official_doc_create_item_public_temp : '/api/post_official_doc_create_item_public_temp',
+
     post_official_doc_fetch_file_public : '/api/post_official_doc_fetch_file_public',
     post_official_doc_get_file_public : '/api/post_official_doc_get_file_public',
     post_official_doc_download_file_public : '/api/post_official_doc_download_file_public',

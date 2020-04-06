@@ -78,88 +78,89 @@
 <div>
     <div class="row">
 
+        <!--<div class="col-md-12">-->
+            <!--<div-->
+                <!--id="_publicDate_panel"-->
+                <!--ba-panel-->
+                <!--ba-panel-title="發文日期"-->
+                <!--ba-panel-class="with-scroll">-->
+
+                <!--<div class="form-group col-md-12">-->
+                    <!--<my-date-picker formatted="yyyy/MM/dd"-->
+                                    <!--id="_publicDate_dom"-->
+                                    <!--ng-init="setDateModel('_publicDate', this)"-->
+                                    <!--ng-click="setDateModel('_publicDate', this); listenDatePicker_official(this)">-->
+
+                    <!--</my-date-picker>-->
+                <!--</div>-->
+
+                <!--<div class="form-group">-->
+                    <!--<p>-->
+                        <!--說明：公文的發文日期。-->
+                    <!--</p>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+
+
         <div class="col-md-12">
-            <div
-                id="_publicDate_panel"
-                ba-panel
-                ba-panel-title="發文日期"
-                ba-panel-class="with-scroll">
-
-                <div class="form-group col-md-12">
-                    <my-date-picker formatted="yyyy/MM/dd"
-                                    id="_publicDate_dom"
-                                    ng-init="setDateModel('_publicDate', this)"
-                                    ng-click="setDateModel('_publicDate', this); listenDatePicker_official(this)">
-
-                    </my-date-picker>
-                </div>
-
-                <div class="form-group">
-                    <p>
-                        說明：公文的發文日期。
-                    </p>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="col-md-6">
             <div
                 ba-panel
                 ba-panel-title="發文資訊設定"
                 ba-panel-class="with-scroll">
 
-                <div class="form-group">
+                <!-- 20200405 comments -->
+                <!--<div class="form-group">-->
 
-                    <div class="row">
-                        <div class="col-md-9">
-                            <label class="col-md-12 control-label">崇峻發文號</label>
-                            <input type="text"
-                                   class="form-control"
-                                   placeholder="(建檔後生成)"
-                                   style="color: #000000;"
-                                   ng-disabled="true"
-                                   ng-model="_publicNumber">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="col-md-12 control-label">分部</label>
-                            <ui-select ng-model="publicOfficialDocCtrlVm.docDivision.selected"
-                                       class="btn-group bootstrap-select form-control"
-                                       append-to-body="true"
-                                       search-enabled="true">
-                                <ui-select-match placeholder="請選擇分部">
-                                    {{$select.selected.name}}
-                                </ui-select-match>
-                                <ui-select-choices
-                                        repeat="division in publicOfficialDocCtrlVm.docDivisions">
-                                    <span ng-bind-html="division.name"></span>
-                                </ui-select-choices>
-                            </ui-select>
-                        </div>
-                    </div>
+                    <!--<div class="row">-->
+                        <!--<div class="col-md-9">-->
+                            <!--<label class="col-md-12 control-label">崇峻發文號</label>-->
+                            <!--<input type="text"-->
+                                   <!--class="form-control"-->
+                                   <!--placeholder="(建檔後生成)"-->
+                                   <!--style="color: #000000;"-->
+                                   <!--ng-disabled="true"-->
+                                   <!--ng-model="_publicNumber">-->
+                        <!--</div>-->
+                        <!--<div class="col-md-3">-->
+                            <!--<label class="col-md-12 control-label">分部</label>-->
+                            <!--<ui-select ng-model="publicOfficialDocCtrlVm.docDivision.selected"-->
+                                       <!--class="btn-group bootstrap-select form-control"-->
+                                       <!--append-to-body="true"-->
+                                       <!--search-enabled="true">-->
+                                <!--<ui-select-match placeholder="請選擇分部">-->
+                                    <!--{{$select.selected.name}}-->
+                                <!--</ui-select-match>-->
+                                <!--<ui-select-choices-->
+                                        <!--repeat="division in publicOfficialDocCtrlVm.docDivisions">-->
+                                    <!--<span ng-bind-html="division.name"></span>-->
+                                <!--</ui-select-choices>-->
+                            <!--</ui-select>-->
+                        <!--</div>-->
+                    <!--</div>-->
 
-                </div>
+                <!--</div>-->
 
-                <div class="form-group">
+                <!--<div class="form-group">-->
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label class="col-md-3 control-label">文別</label>
-                            <ui-select ng-model="publicOfficialDocCtrlVm.docOption.selected"
-                                       class="btn-group bootstrap-select form-control"
-                                       append-to-body="true"
-                                       search-enabled="true">
-                                <ui-select-match placeholder="請選擇文別">
-                                    {{$select.selected.name}}
-                                </ui-select-match>
-                                <ui-select-choices
-                                        repeat="option in publicOfficialDocCtrlVm.docOptions">
-                                    <span ng-bind-html="option.name"></span>
-                                </ui-select-choices>
-                            </ui-select>
-                        </div>
-                    </div>
-                </div>
+                    <!--<div class="row">-->
+                        <!--<div class="col-md-12">-->
+                            <!--<label class="col-md-3 control-label">文別</label>-->
+                            <!--<ui-select ng-model="publicOfficialDocCtrlVm.docOption.selected"-->
+                                       <!--class="btn-group bootstrap-select form-control"-->
+                                       <!--append-to-body="true"-->
+                                       <!--search-enabled="true">-->
+                                <!--<ui-select-match placeholder="請選擇文別">-->
+                                    <!--{{$select.selected.name}}-->
+                                <!--</ui-select-match>-->
+                                <!--<ui-select-choices-->
+                                        <!--repeat="option in publicOfficialDocCtrlVm.docOptions">-->
+                                    <!--<span ng-bind-html="option.name"></span>-->
+                                <!--</ui-select-choices>-->
+                            <!--</ui-select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
 
                 <div class="form-group">
                     <label class="col-md-3 control-label">主旨</label>
@@ -170,83 +171,82 @@
                            ng-model="_subject">
                 </div>
 
-                <div class="form-group">
+                <!--<div class="form-group">-->
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label class="col-md-3 control-label">類型</label>
-                            <ui-select ng-model="publicOfficialDocCtrlVm.docType.selected"
-                                       class="btn-group bootstrap-select form-control"
-                                       append-to-body="true"
-                                       search-enabled="true">
-                                <ui-select-match placeholder="請選擇類型">
-                                    {{$select.selected.name}}
-                                </ui-select-match>
-                                <ui-select-choices
-                                        repeat="docType in publicOfficialDocCtrlVm.docTypes">
-                                    <span ng-bind-html="docType.name"></span>
-                                </ui-select-choices>
-                            </ui-select>
-                        </div>
-                    </div>
-                </div>
+                    <!--<div class="row">-->
+                        <!--<div class="col-md-12">-->
+                            <!--<label class="col-md-3 control-label">類型</label>-->
+                            <!--<ui-select ng-model="publicOfficialDocCtrlVm.docType.selected"-->
+                                       <!--class="btn-group bootstrap-select form-control"-->
+                                       <!--append-to-body="true"-->
+                                       <!--search-enabled="true">-->
+                                <!--<ui-select-match placeholder="請選擇類型">-->
+                                    <!--{{$select.selected.name}}-->
+                                <!--</ui-select-match>-->
+                                <!--<ui-select-choices-->
+                                        <!--repeat="docType in publicOfficialDocCtrlVm.docTypes">-->
+                                    <!--<span ng-bind-html="docType.name"></span>-->
+                                <!--</ui-select-choices>-->
+                            <!--</ui-select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
 
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label class="col-md-12 control-label">正本受文機關</label>
-                        </div>
-                        <div class="col-md-12">
-                            <ui-select multiple
-                                       ng-model="publicOfficialDocCtrlVm.vendorItem.selected"
-                                       class="form-control"
-                                       ng-disabled="false"
-                                       search-enabled="true"
-                                       append-to-body="true">
-                                <ui-select-match placeholder="正本受文機關">
-                                    {{$item.vendorName}}
-                                </ui-select-match>
-                                <ui-select-choices
-                                        ng-model="vendorName"
-                                        repeat="vendorItem in publicOfficialDocCtrlVm.officialDocVendors |
-                                        groupSelectpickerOptions: {
-                                                    vendorName: $select.search
-                                                }">
-                                    <span ng-bind-html="vendorItem.vendorName | highlight: $select.search"></span>
-                                </ui-select-choices>
-                            </ui-select>
-                        </div>
-                    </div>
-                </div>
+                <!--<div class="form-group">-->
+                    <!--<div class="row">-->
+                        <!--<div class="col-md-12">-->
+                            <!--<label class="col-md-12 control-label">正本受文機關</label>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-12">-->
+                            <!--<ui-select multiple-->
+                                       <!--ng-model="publicOfficialDocCtrlVm.vendorItem.selected"-->
+                                       <!--class="form-control"-->
+                                       <!--ng-disabled="false"-->
+                                       <!--search-enabled="true"-->
+                                       <!--append-to-body="true">-->
+                                <!--<ui-select-match placeholder="正本受文機關">-->
+                                    <!--{{$item.vendorName}}-->
+                                <!--</ui-select-match>-->
+                                <!--<ui-select-choices-->
+                                        <!--ng-model="vendorName"-->
+                                        <!--repeat="vendorItem in publicOfficialDocCtrlVm.officialDocVendors |-->
+                                        <!--groupSelectpickerOptions: {-->
+                                                    <!--vendorName: $select.search-->
+                                                <!--}">-->
+                                    <!--<span ng-bind-html="vendorItem.vendorName | highlight: $select.search"></span>-->
+                                <!--</ui-select-choices>-->
+                            <!--</ui-select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
 
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label class="col-md-12 control-label">副本受文機關</label>
-                        </div>
-                        <div class="col-md-12">
-                            <ui-select multiple
-                                       ng-model="publicOfficialDocCtrlVm.vendorItemCopy.selected"
-                                       class="form-control"
-                                       ng-disabled="false"
-                                       search-enabled="true"
-                                       append-to-body="true">
-                                <ui-select-match placeholder="副本受文機關">
-                                    {{$item.vendorName}}
-                                </ui-select-match>
-                                <ui-select-choices
-                                        ng-model="vendorName"
-                                        repeat="vendorItem in publicOfficialDocCtrlVm.officialDocVendors_copy |
-                                        groupSelectpickerOptions: {
-                                                    vendorName: $select.search
-                                                }">
-                                    <span ng-bind-html="vendorItem.vendorName | highlight: $select.search"></span>
-                                </ui-select-choices>
-                            </ui-select>
-                        </div>
-                    </div>
-                </div>
-
+                <!--<div class="form-group">-->
+                    <!--<div class="row">-->
+                        <!--<div class="col-md-12">-->
+                            <!--<label class="col-md-12 control-label">副本受文機關</label>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-12">-->
+                            <!--<ui-select multiple-->
+                                       <!--ng-model="publicOfficialDocCtrlVm.vendorItemCopy.selected"-->
+                                       <!--class="form-control"-->
+                                       <!--ng-disabled="false"-->
+                                       <!--search-enabled="true"-->
+                                       <!--append-to-body="true">-->
+                                <!--<ui-select-match placeholder="副本受文機關">-->
+                                    <!--{{$item.vendorName}}-->
+                                <!--</ui-select-match>-->
+                                <!--<ui-select-choices-->
+                                        <!--ng-model="vendorName"-->
+                                        <!--repeat="vendorItem in publicOfficialDocCtrlVm.officialDocVendors_copy |-->
+                                        <!--groupSelectpickerOptions: {-->
+                                                    <!--vendorName: $select.search-->
+                                                <!--}">-->
+                                    <!--<span ng-bind-html="vendorItem.vendorName | highlight: $select.search"></span>-->
+                                <!--</ui-select-choices>-->
+                            <!--</ui-select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <section class="col-md-12" >
                     <button ng-click="checkDocDetail(this)"
                             style="float: right; padding: 0 60px; line-height: 4"
@@ -259,7 +259,7 @@
             </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div
                 ba-panel
                 ba-panel-title="專案設定"
@@ -271,6 +271,7 @@
                                class="btn-group bootstrap-select form-control"
                                id="projectName"
                                ng-disabled="false"
+                               ng-change="docProjectSelected($select.selected);"
                                append-to-body="true"
                                search-enabled="true">
                         <ui-select-match placeholder="選擇">
@@ -298,10 +299,27 @@
                     </ui-select>
                 </div>
 
+                <div class="form-group">
+                    <label class="col-md-12 control-label">簽核人(預設只有經理、主任、行政總管)</label>
+                    <ui-select ng-model="publicOfficialDocCtrlVm.signer.selected"
+                               class="btn-group bootstrap-select form-control"
+                               ng-disabled="false"
+                               append-to-body="true"
+                               search-enabled="true">
+                        <ui-select-match placeholder="選簽核人">
+                            {{$select.selected.name}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                repeat="signer in publicOfficialDocCtrlVm.signers | groupSelectpickerOptions: {name: $select.search}">
+                            <span ng-bind-html="signer.name| highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+
             </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div
                     ba-panel
                     ba-panel-title="正本公文及附件內容"
@@ -322,6 +340,7 @@
             </div>
 
             <div
+                    ng-if="false"
                     ba-panel
                     ba-panel-title="副本公文及附件內容"
                     ba-panel-class="with-scroll">

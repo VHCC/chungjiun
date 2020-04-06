@@ -245,6 +245,70 @@ module.exports = function (app) {
         });
     })
 
+    // 20200406
+    // 發文暫存檔
+    app.post(global.apiUrl.post_official_doc_create_item_public_temp, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_create_item_public_temp");
+        console.log(req.body);
+
+        var _year = moment().format('YYYY') - 1911;
+
+        var _month = moment().format('MM');
+
+        OfficialDocItem.create(
+            {
+                creatorDID: req.body.creatorDID,
+
+                year: _year,
+                month: _month,
+
+                // vendorDID: req.body.vendorItem._id,
+                prjDID: req.body.prjItem._id,
+                prjCode: req.body.prjItem.prjCode,
+
+                // receiveDate: req.body._receiveDate,
+                // lastDate: req.body._lastDate,
+                // dueDate: req.body._dueDate,
+                // publicDate: req.body._publicDate, // 20200406 行政階段決定
+
+                signerDID: req.body.signer._id,
+                handlerDID: req.body.creatorDID,
+                // handlerDID: req.body.chargeUser._id,
+                chargerDID: req.body.creatorDID,
+                subject: req.body._subject,
+                archiveNumber: req.body._archiveNumber,
+                // receiveType: req.body._receiveType,
+                // receiveNumber: req.body._receiveNumber,
+                // docType: req.body.docOption.option, // 20200406 行政階段決定
+                // docDivision: req.body.docDivision.option, // 20200406 行政階段決定
+                // publicType: req.body.docType.option, // 20200406 行政階段決定
+
+                timestamp: req.body.timestamp,
+
+                stageInfo: req.body.stageInfo,
+
+                // targetOrigin: req.body.vendorItem, // 20200406 行政階段決定
+                // targetCopy: req.body.vendorItemCopy, // 20200406 行政階段決定
+
+                isAttached: req.body.isAttached,
+
+                type: 1,
+            }, function (err) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_official_doc_create_item_public_temp");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                    });
+                }
+            })
+    })
+
     app.post(global.apiUrl.post_official_doc_create_item_public, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_official_doc_create_item_public");
         console.log(req.body);
