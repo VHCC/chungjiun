@@ -243,8 +243,94 @@ module.exports = function (app) {
                 error: global.status._200,
             });
         }
+    })
 
+    // rename folder and files
+    // from temppublic to Formal Public
+    app.post(global.apiUrl.post_official_doc_rename_and_folder_public, function (req, res) {
+        console.log(req.body);
 
+        var tempDir = fileStorageDir + '/' + req.body.tempFolderName;
+
+        if (!fs.existsSync(tempDir)){
+
+            var archiveDir = fileStorageDir + '/' + req.body._archiveNumber
+
+            if (!fs.existsSync(archiveDir)){
+                fs.mkdirSync(archiveDir);
+            }
+
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+
+        } else {
+            var archiveDir = fileStorageDir + '/' + req.body._archiveNumber
+
+            if (!fs.existsSync(archiveDir)){
+                fs.mkdirSync(archiveDir);
+            }
+
+            fs.readdir(tempDir, function (err, files) {
+                files.forEach(function(fileName) {
+                    console.log("file= " + fileName);
+                    console.log("extname= " + path.extname(fileName));
+
+                    if (path.extname(fileName).indexOf(".") > -1 ) {
+                        var oldPath = tempDir + '/' + fileName;
+                        var newPath = archiveDir + '/' + fileName;
+
+                        fs.rename(oldPath, newPath, function (err) {
+                            if (err) throw err
+                            console.log('Successfully renamed - AKA moved!')
+                        })
+                    }
+
+                    if (fileName == 'origin') {
+
+                        fs.readdir(tempDir + "/" + fileName, function (err, subFiles) {
+                            subFiles.forEach(function(subFileName) {
+                                var oldPath = tempDir + "/" + fileName + '/' + subFileName;
+                                var newPath = archiveDir + "/" + fileName + '/' + subFileName;
+
+                                if (!fs.existsSync(archiveDir + "/" + fileName)){
+                                    fs.mkdirSync(archiveDir + "/" + fileName);
+                                }
+
+                                fs.rename(oldPath, newPath, function (err) {
+                                    if (err) throw err
+                                    console.log('Successfully renamed - AKA moved!')
+                                })
+                            });
+                        });
+                    }
+
+                    if (fileName == 'copy') {
+                        fs.readdir(tempDir + "/" + fileName, function (err, subFiles) {
+                            subFiles.forEach(function(subFileName) {
+                                var oldPath = tempDir + "/" + fileName + '/' + subFileName;
+                                var newPath = archiveDir + "/" + fileName + '/' + subFileName;
+
+                                if (!fs.existsSync(archiveDir + "/" + fileName)){
+                                    fs.mkdirSync(archiveDir + "/" + fileName);
+                                }
+
+                                fs.rename(oldPath, newPath, function (err) {
+                                    if (err) throw err
+                                    console.log('Successfully renamed - AKA moved!')
+                                })
+                            });
+                        });
+                    }
+
+                });
+            });
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        }
     })
 
     // get file

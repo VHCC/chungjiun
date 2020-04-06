@@ -14,6 +14,7 @@
                 '$uibModal',
                 'ngDialog',
                 'User',
+                'toastr',
                 'Project',
                 'OfficialDocUtil',
                 'OfficialDocVendorUtil',
@@ -30,6 +31,7 @@
                                                $uibModal,
                                                ngDialog,
                                                User,
+                                               toastr,
                                                Project,
                                                OfficialDocUtil,
                                                OfficialDocVendorUtil,
@@ -42,6 +44,7 @@
         $scope.canDeleteAttachments = $scope.$resolve.canDeleteAttachments;
 
         // initial
+        var vm = this;
         $scope.username = $cookies.get('username');
         $scope.userDID = $cookies.get('userDID');
         $scope.roleType = $cookies.get('roletype');
@@ -336,9 +339,11 @@
         // }
 
         // 提交歸檔
-        $scope.sendArchive = function (dom, docData) {
-            $scope.checkText = "是否歸檔：" + docData.archiveNumber;
+        $scope.sendArchive = function (docData, publicNumber) {
+            console.log(docData);
+            $scope.checkText = "請確認 歸檔文號為：" + publicNumber + docData.docDivision.name;
             $scope.docData = docData;
+            $scope.docData.archiveNumber = publicNumber;
             ngDialog.open({
                 template: 'app/pages/officialDoc/handleOfficialDoc/dialog/closeOfficialDocReviewSend_Modal.html',
                 className: 'ngdialog-theme-default',
@@ -360,8 +365,15 @@
             handleInfo.push(stageInfoHandle);
 
             var formData = {
+                archiveNumber: docData.archiveNumber,
                 _id: docData._id,
+                publicDate: moment(docData.publicDate).format("YYYY/MM/DD"),
                 stageInfo: handleInfo,
+                targetOrigin: docData.targetOrigin,
+                targetCopy: docData.targetCopy,
+                docType: docData.docOption.option,
+                docDivision: docData.docDivision.option,
+                publicType: docData.publicType.option,
                 isDocClose: true,
                 isDocPublic: true,
             }
@@ -369,6 +381,19 @@
                 .success(function (res) {
                     $uibModalInstance.close();
 
+                })
+
+            formData.tempFolderName = docData.tempFolderName;
+            formData._archiveNumber = docData.archiveNumber + docData.docDivision.name
+
+            OfficialDocUtil.renamePublicFolder(formData)
+                .success(function (res) {
+                    console.log(res);
+                    $uibModalInstance.close();
+                })
+                .error(function (res) {
+                    console.log(res);
+                    $uibModalInstance.close();
                 })
         }
 
@@ -635,6 +660,201 @@
             // }
         }
 
+        // 0 : 函
+        // 1 : 會勘
+        // 2 : 開會
+        // 3 : 書函
+        // 4 : 紀錄
+        var options_regular = [
+            {
+                name: "函",
+                option: 0
+            },
+            {
+                name: "會勘",
+                option: 1
+            },
+            {
+                name: "開會",
+                option: 2
+            },
+            {
+                name: "書函",
+                option: 3
+            },
+            {
+                name: "紀錄",
+                option: 4
+            },
+        ];
+
+        vm.docOptions = options_regular;
+
+        // 0 : F
+        // 1 : N
+        // 2 : G
+        // 3 : D
+        // 4 : P
+        var division_regular = [
+            {
+                name: "F",
+                option: 0
+            },
+            {
+                name: "N",
+                option: 1
+            },
+            {
+                name: "G",
+                option: 2
+            },
+            {
+                name: "D",
+                option: 3
+            },
+            {
+                name: "P",
+                option: 4
+            },
+        ];
+
+        vm.docDivisions = division_regular;
+
+        // 0 : 電子
+        // 1 : 紙本
+        // 發文屬性
+        var publicType_regular = [
+            {
+                name: "電子",
+                option: 0
+            },
+            {
+                name: "紙本",
+                option: 1
+            },
+        ];
+
+        vm.publicTypes = publicType_regular;
+
+        $scope.fetchVendor = function () {
+            OfficialDocVendorUtil.fetchOfficialDocVendor()
+                .success(function (res) {
+                    vm.officialDocVendors = res.payload;
+                    vm.officialDocVendors_copy = res.payload;
+                })
+                .error(function (res) {
+                    console.log(res);
+                })
+        }
+
+        $scope.fetchVendor();
+
+
+        // check doc detail
+        $scope.checkDocDetail = function (docData) {
+            console.log(docData);
+            console.log(vm);
+
+            if (!vm._officialPublicDate || vm._officialPublicDate=="Invalid Date") {
+                toastr.error('注意', '請選擇發文日期');
+                return
+            }
+
+            if (!vm.docDivision) {
+                toastr.error('注意', '請選擇分部');
+                return
+            }
+
+            if (!vm.docOption) {
+                toastr.error('注意', '請選擇文別');
+                return
+            }
+
+            if (!vm.publicType) {
+                toastr.error('注意', '請選擇發文類型');
+                return
+            }
+
+            if (!vm.targetOrigin) {
+                toastr.error('注意', '請選擇正本受文機關');
+                return
+            }
+
+            // if (!vm.vendorItem) {
+            //     toastr.error('注意', '請選擇發文機關');
+            //     return
+            // }
+
+            // if (!vm.prjItems) {
+            //     toastr.error('注意', '請選擇專案代碼');
+            //     return
+            // }
+
+            // if (!vm.chargeUser) {
+            //     toastr.error('注意', '請選擇專案承辦人');
+            //     return
+            // }
+
+            // var stageInfo = {
+            //     timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
+            //     stage: "收文建檔",
+            //     handleName: $scope.username
+            // }
+
+            // var isAttached = $scope.fileList.length > 0 ? true : false;
+
+
+            var docData_form = {
+                _id: $scope.docData._id,
+                // _archiveNumber: docData._archiveNumber,
+                // _receiveType: docData._receiveType,
+                // _receiveNumber: docData._receiveNumber,
+                // _subject: docData._subject,
+                // _receiveDate: $scope._receiveDate,
+                // _lastDate: $scope._lastDate,
+                // _dueDate: $scope._dueDate,
+                publicDate: vm._officialPublicDate,
+                // vendorItem: vm.vendorItem.selected,
+                // prjItem: vm.prjItems.selected,
+                // chargeUser: vm.chargeUser.selected,
+                // signer: vm.signer.selected,
+                docOption: vm.docOption.selected,
+                docDivision: vm.docDivision.selected,
+                publicType: vm.publicType.selected,
+                targetOrigin: vm.targetOrigin.selected,
+                targetCopy: vm.targetCopy ? vm.targetCopy.selected : "",
+                // docAttachedType: vm.docAttachedType.selected,
+                // timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
+                // isDocSignStage: $scope.docData.isDocSignStage,
+                stageInfo: docData.stageInfo,
+                // isAttached: isAttached,
+                // publicMemo: vm.publicMemo,
+                tempFolderName: $scope.docData.archiveNumber
+            }
+
+            console.log(docData_form);
+
+            var formData = {
+                docDivision: vm.docDivision.selected.option,
+                publicDate: vm._officialPublicDate,
+                type: 1
+            }
+
+            OfficialDocUtil.generatePublicNumber_public(formData)
+                .success(function (res) {
+                    console.log(res);
+
+                    var publicNumber = res.payload;
+
+                    $scope.sendArchive(docData_form, publicNumber);
+
+                })
+        };
+
+        $scope.setDateModel = function (modelName, dom) {
+            var evalString = 'vm.' + modelName + "= dom.myDT";
+            eval(evalString);
+        }
     }
 
 })();

@@ -75,6 +75,7 @@
     </uib-tab>
 
     <uib-tab heading="行政發文"
+             ng-click="trigger_sub_reloadDocData_ready(this)"
              ng-if="officialDocRight">
         <div class="row"
              ng-controller="readyPublicOfficialDocCtrl">
