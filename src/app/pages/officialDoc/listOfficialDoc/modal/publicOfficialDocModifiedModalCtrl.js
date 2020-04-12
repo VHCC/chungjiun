@@ -455,7 +455,7 @@
             console.log(" ====== document ready ====== ");
             setTimeout(function(){
                 $scope.initDocData();
-            },1000);
+            },50);
         });
 
         $scope.initDocData = function () {

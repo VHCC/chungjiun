@@ -43,6 +43,8 @@
         $scope.docData = $scope.$resolve.docData;
         $scope.canDeleteAttachments = $scope.$resolve.canDeleteAttachments;
 
+        console.log($scope.docData);
+
         // initial
         var vm = this;
         $scope.username = $cookies.get('username');
@@ -338,10 +340,68 @@
         //         })
         // }
 
+        // 提交生成
+        $scope.sendGenerate = function (docData, publicNumber) {
+            $scope.checkText = "請確認 生成文號為：" + publicNumber + docData.docDivision.name;
+            $scope.docData = docData;
+            $scope.docData.archiveNumber = publicNumber;
+            ngDialog.open({
+                template: 'app/pages/officialDoc/handleOfficialDoc/dialog/closeOfficialDocGenerateSend_Modal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+
+        $scope.updateOfficialDocToServer_Generate = function(docData) {
+
+            // var handleInfo = docData.stageInfo;
+            //
+            // var stageInfoHandle = {
+            //     timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
+            //     stage: "發文歸檔",
+            //     handleName: $scope.username,
+            // }
+            //
+            // handleInfo.push(stageInfoHandle);
+
+            var formData = {
+                archiveNumber: docData.archiveNumber,
+                _id: docData._id,
+                publicDate: moment(docData.publicDate).format("YYYY/MM/DD"),
+                stageInfo: docData.stageInfo,
+                targetOrigin: docData.targetOrigin,
+                targetCopy: docData.targetCopy,
+                docType: docData.docOption.option,
+                docDivision: docData.docDivision.option,
+                publicType: docData.publicType.option,
+                // isDocClose: true,
+                // isDocPublic: true,
+            }
+            OfficialDocUtil.updateOfficialDocItem(formData)
+                .success(function (res) {
+                    // $uibModalInstance.close();
+                })
+
+            formData.tempFolderName = docData.tempFolderName;
+            formData._archiveNumber = docData.archiveNumber + docData.docDivision.name
+
+            OfficialDocUtil.renamePublicFolder(formData)
+                .success(function (res) {
+                    console.log(res);
+                    // $uibModalInstance.close();
+                })
+                .error(function (res) {
+                    console.log(res);
+                    // $uibModalInstance.close();
+                })
+        }
+
         // 提交歸檔
         $scope.sendArchive = function (docData, publicNumber) {
             console.log(docData);
-            $scope.checkText = "請確認 歸檔文號為：" + publicNumber + docData.docDivision.name;
+            // $scope.checkText = "請確認 歸檔文號為：" + publicNumber + docData.docDivision.name;
+            $scope.checkText = "請確認 歸檔文號為：" + publicNumber + OfficialDocUtil.getDivision(docData.docDivision);
             $scope.docData = docData;
             $scope.docData.archiveNumber = publicNumber;
             ngDialog.open({
@@ -365,15 +425,15 @@
             handleInfo.push(stageInfoHandle);
 
             var formData = {
-                archiveNumber: docData.archiveNumber,
+                // archiveNumber: docData.archiveNumber,
                 _id: docData._id,
-                publicDate: moment(docData.publicDate).format("YYYY/MM/DD"),
+                // publicDate: moment(docData.publicDate).format("YYYY/MM/DD"),
                 stageInfo: handleInfo,
-                targetOrigin: docData.targetOrigin,
-                targetCopy: docData.targetCopy,
-                docType: docData.docOption.option,
-                docDivision: docData.docDivision.option,
-                publicType: docData.publicType.option,
+                // targetOrigin: docData.targetOrigin,
+                // targetCopy: docData.targetCopy,
+                // docType: docData.docOption.option,
+                // docDivision: docData.docDivision.option,
+                // publicType: docData.publicType.option,
                 isDocClose: true,
                 isDocPublic: true,
             }
@@ -383,18 +443,18 @@
 
                 })
 
-            formData.tempFolderName = docData.tempFolderName;
-            formData._archiveNumber = docData.archiveNumber + docData.docDivision.name
-
-            OfficialDocUtil.renamePublicFolder(formData)
-                .success(function (res) {
-                    console.log(res);
-                    $uibModalInstance.close();
-                })
-                .error(function (res) {
-                    console.log(res);
-                    $uibModalInstance.close();
-                })
+            // formData.tempFolderName = docData.tempFolderName;
+            // formData._archiveNumber = docData.archiveNumber + docData.docDivision.name
+            //
+            // OfficialDocUtil.renamePublicFolder(formData)
+            //     .success(function (res) {
+            //         console.log(res);
+            //         $uibModalInstance.close();
+            //     })
+            //     .error(function (res) {
+            //         console.log(res);
+            //         $uibModalInstance.close();
+            //     })
         }
 
         $scope.deletePublicDocFile = function (docData, pdfItem, type) {
@@ -749,11 +809,10 @@
 
         $scope.fetchVendor();
 
-
         // check doc detail
-        $scope.checkDocDetail = function (docData) {
-            console.log(docData);
-            console.log(vm);
+        $scope.checkDocDetailAndGenerate = function (docData) {
+            // console.log(docData);
+            // console.log(vm);
 
             if (!vm._officialPublicDate || vm._officialPublicDate=="Invalid Date") {
                 toastr.error('注意', '請選擇發文日期');
@@ -779,30 +838,6 @@
                 toastr.error('注意', '請選擇正本受文機關');
                 return
             }
-
-            // if (!vm.vendorItem) {
-            //     toastr.error('注意', '請選擇發文機關');
-            //     return
-            // }
-
-            // if (!vm.prjItems) {
-            //     toastr.error('注意', '請選擇專案代碼');
-            //     return
-            // }
-
-            // if (!vm.chargeUser) {
-            //     toastr.error('注意', '請選擇專案承辦人');
-            //     return
-            // }
-
-            // var stageInfo = {
-            //     timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
-            //     stage: "收文建檔",
-            //     handleName: $scope.username
-            // }
-
-            // var isAttached = $scope.fileList.length > 0 ? true : false;
-
 
             var docData_form = {
                 _id: $scope.docData._id,
@@ -846,14 +881,78 @@
 
                     var publicNumber = res.payload;
 
-                    $scope.sendArchive(docData_form, publicNumber);
-
+                    $scope.sendGenerate(docData_form, publicNumber);
                 })
+        };
+
+        // check doc detail
+        $scope.checkDocDetail = function (docData) {
+            $scope.sendArchive(docData, docData.archiveNumber);
         };
 
         $scope.setDateModel = function (modelName, dom) {
             var evalString = 'vm.' + modelName + "= dom.myDT";
             eval(evalString);
+        }
+
+        $(document).ready(function () {
+            console.log(" ====== document ready ====== ");
+            setTimeout(function(){
+                $scope.initDocData();
+            },50);
+        });
+
+        $scope.initDocData = function () {
+
+            console.log($scope.docData);
+
+            $scope._officialPublicDate = $scope.docData.publicDate;
+            $('#_officialPublicDate_dom').find('#myDT')[0].value = $scope.docData.publicDate;
+
+
+            var selectedTemp = [];
+
+            // 分部
+            selectedTemp = $filter('filter')(vm.docDivisions, {
+                option: $scope.docData.docDivision,
+            });
+            vm.docDivision = [];
+            vm.docDivision.selected = selectedTemp[0];
+
+            // 文別
+            selectedTemp = $filter('filter')(vm.docOptions, {
+                option: $scope.docData.docType,
+            });
+            vm.docOption = [];
+            vm.docOption.selected = selectedTemp[0];
+
+            // 發文機關
+            selectedTemp = $filter('filter')(vm.officialDocVendors, {
+                _id: $scope.docData.vendorDID,
+            });
+            vm.vendorItem = [];
+            vm.vendorItem.selected = selectedTemp[0];
+
+            // 附件類型
+            // selectedTemp = $filter('filter')(vm.docAttachedTypes, {
+            //     option: $scope.docData.docAttachedType,
+            // });
+            // vm.docAttachedType = [];
+            // vm.docAttachedType.selected = selectedTemp[0];
+
+            // 發文屬性
+            selectedTemp = $filter('filter')(vm.publicTypes, {
+                option: $scope.docData.publicType,
+            });
+            vm.publicType = [];
+            vm.publicType.selected = selectedTemp[0];
+
+            vm.targetOrigin = [];
+            vm.targetOrigin.selected = $scope.docData.targetOrigin;
+
+            vm.targetCopy = [];
+            vm.targetCopy.selected = $scope.docData.targetCopy;
+
         }
     }
 

@@ -2,7 +2,8 @@
 
     <div class="modal-header bg-info">
         <i class="ion-android-warning modal-icon"></i>
-        <strong style="color: red;">暫存文號：{{docData.archiveNumber}}</strong>
+        <strong
+                style="color: red;">暫存文號：{{docData.archiveNumber}}</strong>
     </div>
     <hr>
 
@@ -208,13 +209,21 @@
                 <div
                         ba-panel
                         ba-panel-title="公文存查"
-                        ba-panel-class="with-scroll"
-                        ng-show="docData.isDocCanPublic && !docData.isDocPublic">
+                        ba-panel-class="with-scroll">
                     <button type="submit"
                             style="float: right; margin-right: 10px"
                             ng-click="checkDocDetail(docData)"
                             class="btn btn-danger">
                         送歸檔
+                    </button>
+
+                    <button type="submit"
+                            ng-if="docData.docDivision == undefined"
+                            style="float: right; margin-right: 10px"
+                            ng-click="checkDocDetailAndGenerate(docData)"
+                            class="btn btn-primary">
+                        {{docData.docDivision}}
+                        生成文號
                     </button>
 
                 </div>
