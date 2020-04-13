@@ -194,9 +194,15 @@
         // pdf 檔案列表
         $scope.fetchPDFFilesPublic = function (type) {
 
+            var archiveNumber = $scope.docData.archiveNumber
+
+            if ($scope.docData.docDivision != undefined) {
+                archiveNumber = $scope.docData.archiveNumber + OfficialDocUtil.getDivision($scope.docData.docDivision)
+            }
+
             var formData = {
                 userDID: $cookies.get('userDID'),
-                archiveNumber: $scope.docData.archiveNumber,
+                archiveNumber: archiveNumber,
                 type: type,
             }
 
@@ -343,8 +349,8 @@
         // 提交生成
         $scope.sendGenerate = function (docData, publicNumber) {
             $scope.checkText = "請確認 生成文號為：" + publicNumber + docData.docDivision.name;
-            $scope.docData = docData;
-            $scope.docData.archiveNumber = publicNumber;
+            $scope._docData = docData;
+            $scope._docData.archiveNumber = publicNumber;
             ngDialog.open({
                 template: 'app/pages/officialDoc/handleOfficialDoc/dialog/closeOfficialDocGenerateSend_Modal.html',
                 className: 'ngdialog-theme-default',
@@ -389,10 +395,12 @@
             OfficialDocUtil.renamePublicFolder(formData)
                 .success(function (res) {
                     console.log(res);
+                    window.location.reload();
                     // $uibModalInstance.close();
                 })
                 .error(function (res) {
                     console.log(res);
+                    window.location.reload();
                     // $uibModalInstance.close();
                 })
         }
@@ -400,10 +408,9 @@
         // 提交歸檔
         $scope.sendArchive = function (docData, publicNumber) {
             console.log(docData);
-            // $scope.checkText = "請確認 歸檔文號為：" + publicNumber + docData.docDivision.name;
-            $scope.checkText = "請確認 歸檔文號為：" + publicNumber + OfficialDocUtil.getDivision(docData.docDivision);
-            $scope.docData = docData;
-            $scope.docData.archiveNumber = publicNumber;
+            $scope.checkText = "請確認 歸檔文號為：" + publicNumber + OfficialDocUtil.getDivision($scope.docData.docDivision);
+            $scope._docData = docData;
+            $scope._docData.archiveNumber = publicNumber;
             ngDialog.open({
                 template: 'app/pages/officialDoc/handleOfficialDoc/dialog/closeOfficialDocReviewSend_Modal.html',
                 className: 'ngdialog-theme-default',
@@ -439,8 +446,7 @@
             }
             OfficialDocUtil.updateOfficialDocItem(formData)
                 .success(function (res) {
-                    $uibModalInstance.close();
-
+                    window.location.reload();
                 })
 
             // formData.tempFolderName = docData.tempFolderName;
