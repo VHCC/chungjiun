@@ -170,6 +170,8 @@ module.exports = mongoose.model('officialDocItem', {
 
     // 0 : 電子
     // 1 : 紙本
+    // 2 : 無
+    // 3 : 親自
     // 發文屬性
     publicType: {
         type: Number,

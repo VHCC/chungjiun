@@ -782,6 +782,8 @@
 
         // 0 : 電子
         // 1 : 紙本
+        // 2 : 無
+        // 3 : 親自
         // 發文屬性
         var publicType_regular = [
             {
@@ -791,6 +793,14 @@
             {
                 name: "紙本",
                 option: 1
+            },
+            {
+                name: "無",
+                option: 2
+            },
+            {
+                name: "親自",
+                option: 3
             },
         ];
 
@@ -830,7 +840,7 @@
             }
 
             if (!vm.publicType) {
-                toastr.error('注意', '請選擇發文類型');
+                toastr.error('注意', '請選擇附件類型');
                 return
             }
 
@@ -887,7 +897,40 @@
 
         // check doc detail
         $scope.checkDocDetail = function (docData) {
-            $scope.sendArchive(docData, docData.archiveNumber);
+
+            if (!vm.targetOrigin) {
+                toastr.error('注意', '請選擇正本受文機關');
+                return
+            }
+
+            var docData_form = {
+                _id: $scope.docData._id,
+                // _archiveNumber: docData._archiveNumber,
+                // _receiveType: docData._receiveType,
+                // _receiveNumber: docData._receiveNumber,
+                // _subject: docData._subject,
+                // _receiveDate: $scope._receiveDate,
+                // _lastDate: $scope._lastDate,
+                // _dueDate: $scope._dueDate,
+                // publicDate: vm._officialPublicDate,
+                // vendorItem: vm.vendorItem.selected,
+                // prjItem: vm.prjItems.selected,
+                // chargeUser: vm.chargeUser.selected,
+                // signer: vm.signer.selected,
+                docOption: vm.docOption.selected, // 文別
+                docDivision: vm.docDivision.selected, // 分部
+                publicType: vm.publicType.selected, // 發文類型 崇峻定義為 “附件類型”
+                targetOrigin: vm.targetOrigin.selected,
+                targetCopy: vm.targetCopy ? vm.targetCopy.selected : "",
+                // docAttachedType: vm.docAttachedType.selected,
+                // timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
+                // isDocSignStage: $scope.docData.isDocSignStage,
+                stageInfo: docData.stageInfo,
+                // isAttached: isAttached,
+                // publicMemo: vm.publicMemo,
+                // tempFolderName: $scope.docData.archiveNumber
+            }
+            $scope.sendArchive(docData_form, docData.archiveNumber);
         };
 
         $scope.setDateModel = function (modelName, dom) {
@@ -927,11 +970,11 @@
             vm.docOption.selected = selectedTemp[0];
 
             // 發文機關
-            selectedTemp = $filter('filter')(vm.officialDocVendors, {
-                _id: $scope.docData.vendorDID,
-            });
-            vm.vendorItem = [];
-            vm.vendorItem.selected = selectedTemp[0];
+            // selectedTemp = $filter('filter')(vm.officialDocVendors, {
+            //     _id: $scope.docData.vendorDID,
+            // });
+            // vm.vendorItem = [];
+            // vm.vendorItem.selected = selectedTemp[0];
 
             // 附件類型
             // selectedTemp = $filter('filter')(vm.docAttachedTypes, {

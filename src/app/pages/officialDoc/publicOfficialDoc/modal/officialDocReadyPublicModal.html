@@ -131,7 +131,8 @@
                     </div>
 
                     <div style="padding: 5px">
-                        <label >發文類型</label>
+                        <!-- 對應Official Doc item物件為 發文類型 20200413-->
+                        <label >附件類型</label>
                         <!--<input type="text" class="form-control"-->
                                <!--value="{{showDocPublicType(docData.docType)}}"-->
                                <!--ng-disabled="false">-->
@@ -139,7 +140,7 @@
                                    class="btn-group bootstrap-select form-control"
                                    append-to-body="false"
                                    search-enabled="true">
-                            <ui-select-match placeholder="請選擇發文類型">
+                            <ui-select-match placeholder="請選擇附件類型">
                                 {{$select.selected.name}}
                             </ui-select-match>
                             <ui-select-choices
