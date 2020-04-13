@@ -417,7 +417,7 @@
 
         // 0 : 無
         // 1 : 電子
-        // 2 : 開會
+        // 2 : 紙本
         var attached_regular = [
             {
                 name: "無",
@@ -437,6 +437,8 @@
 
         // 0 : 電子
         // 1 : 紙本
+        // 2 : 無
+        // 3 : 親自
         // 發文屬性
         var publicType_regular = [
             {
@@ -446,6 +448,14 @@
             {
                 name: "紙本",
                 option: 1
+            },
+            {
+                name: "無",
+                option: 2
+            },
+            {
+                name: "親自",
+                option: 3
             },
         ];
 

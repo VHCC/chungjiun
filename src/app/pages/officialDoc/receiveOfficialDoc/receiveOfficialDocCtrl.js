@@ -416,7 +416,7 @@
 
         // 0 : 無
         // 1 : 電子
-        // 2 : 開會
+        // 2 : 紙本
         var attached_regular = [
             {
                 name: "無",
