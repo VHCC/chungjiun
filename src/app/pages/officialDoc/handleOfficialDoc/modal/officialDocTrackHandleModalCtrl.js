@@ -353,7 +353,7 @@
         $scope.sendArchive = function (dom, docData) {
 
             $scope.checkText = "是否歸檔：" + docData.archiveNumber;
-            $scope.docData = docData;
+            $scope._docData = docData;
             ngDialog.open({
                 template: 'app/pages/officialDoc/handleOfficialDoc/dialog/closeOfficialDocReviewSend_Modal.html',
                 className: 'ngdialog-theme-default',
