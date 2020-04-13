@@ -331,6 +331,10 @@
                             return "電子";
                         case 1:
                             return "紙本";
+                        case 2:
+                            return "紙本";
+                        case 3:
+                            return "親自";
                     }
                 },
 
