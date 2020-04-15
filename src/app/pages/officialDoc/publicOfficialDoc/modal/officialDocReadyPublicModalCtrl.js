@@ -270,8 +270,15 @@
         };
 
         $scope.downloadCJFile = function (dom, isCopy) {
+
+            var archiveNumber = $scope.docData.archiveNumber
+
+            if ($scope.docData.docDivision != undefined) {
+                archiveNumber = $scope.docData.archiveNumber + OfficialDocUtil.getDivision($scope.docData.docDivision)
+            }
+
             var formData = {
-                archiveNumber: $scope.docData.archiveNumber,
+                archiveNumber: archiveNumber,
                 fileName: dom.$parent.$parent.pdfItem.name,
                 isCopy: isCopy
             }
@@ -465,8 +472,14 @@
 
         $scope.deletePublicDocFile = function (docData, pdfItem, type) {
 
+            var _archiveNumber = $scope.docData.archiveNumber
+
+            if ($scope.docData.docDivision != undefined) {
+                _archiveNumber = $scope.docData.archiveNumber + OfficialDocUtil.getDivision($scope.docData.docDivision)
+            }
+
             var formData = {
-                archiveNumber: docData.archiveNumber,
+                archiveNumber: _archiveNumber,
                 fileName: pdfItem.name,
                 type: type,
             }
@@ -510,10 +523,16 @@
                         if (file.previewElement != null && file.previewElement.parentNode != null) {
                             file.previewElement.parentNode.removeChild(file.previewElement);
 
+                            var _archiveNumber = $scope.docData.archiveNumber
+
+                            if ($scope.docData.docDivision != undefined) {
+                                _archiveNumber = $scope.docData.archiveNumber + OfficialDocUtil.getDivision($scope.docData.docDivision)
+                            }
+
                             var formData = {
                                 fileName: file.name,
                                 type: 0,
-                                archiveNumber: $scope.docData.archiveNumber,
+                                archiveNumber: _archiveNumber,
                             }
 
                             OfficialDocUtil.deleteOfficialDocFile_public_fs(formData);
@@ -524,7 +543,12 @@
                         // console.log(file);
                         var uploadData = new FormData();
                         // uploadData.append('userDID', $cookies.get('userDID') + fileUnique);
-                        uploadData.append('folder', $scope.docData.archiveNumber);
+                        var _archiveNumber = $scope.docData.archiveNumber
+
+                        if ($scope.docData.docDivision != undefined) {
+                            _archiveNumber = $scope.docData.archiveNumber + OfficialDocUtil.getDivision($scope.docData.docDivision)
+                        }
+                        uploadData.append('folder', _archiveNumber);
                         uploadData.append('type', 0);
                         uploadData.append('fileName', file.name);
                         uploadData.append('file', file);
