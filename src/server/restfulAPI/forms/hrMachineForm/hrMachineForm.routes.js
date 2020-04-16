@@ -244,7 +244,7 @@ module.exports = function (app) {
 
 
     function loadGPSData(fileDate) {
-        var fReadName_gps = '../HR/GPS/' + fileDate + '.txt';
+        var fReadName_gps = '../../HR/GPS/' + fileDate + '.txt';
 
         var fRead_gps = fs.createReadStream(fReadName_gps);
 
