@@ -1,4 +1,3 @@
-
 <div class="row">
 
     <hr/>
@@ -49,14 +48,18 @@
             <td style="vertical-align: inherit; text-align: center">請假時數</td>
 
             <!--上班分鐘數-->
-            <!--<td style="vertical-align: inherit; text-align: center">上班分鐘數</td>-->
+            <td ng-if="isHrDebug"
+                style="vertical-align: inherit; text-align: center">上班分鐘數
+            </td>
 
             <!--加班時數-->
             <!--20200206-->
             <td style="vertical-align: inherit; text-align: center">加班時數</td>
 
             <!--加班總時數-->
-            <!--<td style="vertical-align: inherit; text-align: center">加班總分鐘數</td>-->
+            <td ng-if="isHrDebug"
+                style="vertical-align: inherit; text-align: center">加班總分鐘數
+            </td>
 
             <!--是否遲到-->
             <td style="vertical-align: inherit; text-align: center">遲到</td>
@@ -83,22 +86,22 @@
             </td>
             <!--上班 1-->
             <td ng-class="(isGPS(tableItem, 11)) ? 'gps' : 'sunNormal'"
-                    class="form-group" style="vertical-align: inherit;">
+                class="form-group" style="vertical-align: inherit;">
                 {{showHrMachineTime(tableItem, 11)}}
             </td>
             <!--下班 1-->
             <td ng-class="(isGPS(tableItem, 21)) ? 'gps' : 'sunNormal'"
-                    class="form-group" style="vertical-align: inherit;">
+                class="form-group" style="vertical-align: inherit;">
                 {{showHrMachineTime(tableItem, 21)}}
             </td>
             <!--上班 2-->
             <td ng-class="(isGPS(tableItem, 12)) ? 'gps' : 'sunNormal'"
-                    class="form-group" style="vertical-align: inherit;">
+                class="form-group" style="vertical-align: inherit;">
                 {{showHrMachineTime(tableItem, 12)}}
             </td>
             <!--下班 2-->
             <td ng-class="(isGPS(tableItem, 22)) ? 'gps' : 'sunNormal'"
-                    class="form-group" style="vertical-align: inherit;">
+                class="form-group" style="vertical-align: inherit;">
                 {{showHrMachineTime(tableItem, 22)}}
             </td>
 
@@ -187,13 +190,14 @@
             </td>
 
             <!--上班分鐘-->
-            <!--<td class="form-group" style="vertical-align: inherit;">-->
-                <!--{{showWorkHour(tableItem,-->
-                <!--showHrMachineTime(tableItem, 11),-->
-                <!--showHrMachineTime(tableItem, 21),-->
-                <!--showHrMachineTime(tableItem, 12),-->
-                <!--showHrMachineTime(tableItem, 22))}}-->
-            <!--</td>-->
+            <td ng-if="isHrDebug"
+                class="form-group" style="vertical-align: inherit;">
+                {{showWorkHour(tableItem,
+                showHrMachineTime(tableItem, 11),
+                showHrMachineTime(tableItem, 21),
+                showHrMachineTime(tableItem, 12),
+                showHrMachineTime(tableItem, 22))}}
+            </td>
 
             <!--加班時數-->
             <td class="form-group" style="vertical-align: inherit;">
@@ -211,18 +215,19 @@
             </td>
 
             <!--加班分鐘數-->
-            <!--<td class="form-group" style="vertical-align: inherit;">-->
-            <!--&lt;!&ndash;{{showHrMachineTime(tableItem, 51) +&ndash;&gt;-->
-            <!--&lt;!&ndash;showHrMachineTime(tableItem, 52) +&ndash;&gt;-->
-            <!--&lt;!&ndash;showHrMachineTime(tableItem, 53)}}&ndash;&gt;-->
+            <td ng-if="isHrDebug"
+                class="form-group" style="vertical-align: inherit;">
+                <!--{{showHrMachineTime(tableItem, 51) +-->
+                <!--showHrMachineTime(tableItem, 52) +-->
+                <!--showHrMachineTime(tableItem, 53)}}-->
 
-            <!--{{showWorkOverMin(showHrMachineTime(tableItem, 31),-->
-            <!--showHrMachineTime(tableItem, 41)) +-->
-            <!--showWorkOverMin(showHrMachineTime(tableItem, 32),-->
-            <!--showHrMachineTime(tableItem, 42)) +-->
-            <!--showWorkOverMin(showHrMachineTime(tableItem, 33),-->
-            <!--showHrMachineTime(tableItem, 43))}}-->
-            <!--</td>-->
+                {{showWorkOverMin(showHrMachineTime(tableItem, 31),
+                showHrMachineTime(tableItem, 41)) +
+                showWorkOverMin(showHrMachineTime(tableItem, 32),
+                showHrMachineTime(tableItem, 42)) +
+                showWorkOverMin(showHrMachineTime(tableItem, 33),
+                showHrMachineTime(tableItem, 43))}}
+            </td>
 
             <!--遲到-->
             <td ng-class="(isLate(tableItem, 0) || isLate(tableItem, 1))? 'sumWarning' : 'sunNormal'"
