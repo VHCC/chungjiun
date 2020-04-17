@@ -1,0 +1,147 @@
+<div class="horizontal-scroll">
+    <table class="table table-hover" st-table="officialDocNotifyItems">
+        <thead>
+        <tr>
+            <td>
+                <button type="button" class="btn btn-info"
+                        ng-click="reloadDocData_notify()">
+                    重整通知列表
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="10" class="text-center">
+                <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
+            </td>
+        </tr>
+        <tr class="sortable">
+            <th class="table-id"
+                st-sort="archiveNumber" st-sort-default="true" style="width: 7%">崇峻文號</th>
+
+
+            <th st-sort="notifyMsg" style="width: 7%">通知訊息</th>
+            <th st-sort="creatorDID" style="width: 7%">通知人</th>
+            <th st-sort="timestamp" style="width: 7%">通知日期</th>
+
+            <!--<th st-sort="dueDate" style="width: 3%">已讀</th>-->
+        </tr>
+        <!--<tr>-->
+            <!--<th>-->
+                <!--<input st-search="archiveNumber"-->
+                       <!--placeholder="尋找崇峻文號"-->
+                       <!--class="input-sm form-control search-input"-->
+                       <!--type="search"/>-->
+            <!--</th>-->
+            <!--<th>-->
+                <!--<input st-search="subject"-->
+                       <!--placeholder="輸入主旨"-->
+                       <!--class="input-sm form-control search-input"-->
+                       <!--type="search"/>-->
+            <!--</th>-->
+
+            <!--<th>-->
+                <!--<input st-search="receiveType"-->
+                       <!--placeholder="輸入文號字"-->
+                       <!--class="input-sm form-control search-input"-->
+                       <!--type="search"/>-->
+            <!--</th>-->
+            <!--<th>-->
+                <!--<input st-search="receiveNumber"-->
+                       <!--placeholder="輸入文號編號"-->
+                       <!--class="input-sm form-control search-input"-->
+                       <!--type="search"/>-->
+            <!--</th>-->
+
+            <!--<th/>-->
+            <!--<th/>-->
+
+            <!--<th>-->
+                <!--<input st-search="prjCode"-->
+                       <!--placeholder="輸入專案編號"-->
+                       <!--class="input-sm form-control search-input"-->
+                       <!--type="search"/>-->
+            <!--</th>-->
+            <!--<th/>-->
+
+            <!--<th/>-->
+            <!--<th/>-->
+            <!--&lt;!&ndash;<th/>&ndash;&gt;-->
+
+        <!--</tr>-->
+
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="item in officialDocNotifyItems" class="editable-tr-wrap"
+            ng-class="{officialDocItem: hover}"
+            ng-mouseover="hover = true"
+            ng-mouseleave="hover = false"
+            ng-click="fetchOfficialDocInstance(item)">
+            <!--ng-click="showOfficialDocHandleInfo(item)-->
+            <!--;fetchPDFFiles()">-->
+
+
+            <!--崇峻文號-->
+            <td class="table-id" style="width: 8%">{{item._archiveNumber}}</td>
+
+            <!--通知訊息-->
+            <td class="table-id" style="width: 8%">{{item.notifyMsg}}</td>
+
+            <!--通知人-->
+            <td style="width: 5%">{{ showNotifier(item) }}</td>
+
+            <!--通知時間-->
+            <td style="width: 5%">{{ item.timestamp }}</td>
+
+            <!--主旨-->
+            <!--<td style="width: 20%">{{item.subject}}</td>-->
+
+            <!--文號字-->
+            <!--<td style="width: 7%">{{item.receiveType}}</td>-->
+            <!--文號編號-->
+            <!--<td style="width: 8%">{{item.receiveNumber}}</td>-->
+
+            <!--文別-->
+            <!--<td style="width: 4%">{{ showDocType(item.docType) }}</td>-->
+            <!--承辦人-->
+            <!--<td style="width: 5%">{{ showCharger(item) }}</td>-->
+            <!--經理-->
+            <!--<td style="width: 5%" ng-if="!item.signerDID">{{ showManager(item) }}</td>-->
+            <!--簽核人-->
+            <!--<td style="width: 5%" ng-if="item.signerDID">{{ showSigner(item) }}</td>-->
+
+            <!--專案編號-->
+            <!--<td style="width: 8%">{{ item.prjCode }}</td>-->
+            <!--來文機關-->
+            <!--<td style="width: 5%">{{ showVendorName(item) }}</td>-->
+
+            <!--來文日期-->
+            <!--<td style="width: 7%">{{ item.receiveDate }}</td>-->
+            <!--處理期限-->
+            <!--<td style="width: 7%">{{ item.dueDate }}</td>-->
+
+            <!--已讀-->
+            <!--<td style="width: 7%">-->
+                <!--<div ng-show="!item.isDocOpened">-->
+                    <!--<button class="btn btn-danger btn-xs">-->
+                        <!--未讀-->
+                    <!--</button>-->
+                <!--</div>-->
+                <!--<div ng-show="item.isDocOpened">-->
+                    <!--<button class="btn btn-primary btn-xs">-->
+                        <!--已讀-->
+                    <!--</button>-->
+                <!--</div>-->
+            <!--</td>-->
+
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="10" class="text-center">
+                <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>

@@ -185,8 +185,7 @@
                 <div
                         ba-panel
                         ba-panel-title="公文會簽"
-                        ba-panel-class="with-scroll"
-                        ng-show="!docData.isDocSignStage && !docData.isDocClose && canModified">
+                        ba-panel-class="with-scroll">
 
                     <div class="form-group">
                         <textarea placeholder="請輸入會簽辦理情形"
@@ -204,9 +203,13 @@
                                    append-to-body="false"
                                    class="form-control ">
                             <ui-select-match placeholder="請選擇會簽人員">
-                                {{$select.selected[$index].name}}
+                                <!--{{$select.selected[$index].name}}-->
+                                {{$item.name}}
                             </ui-select-match>
-                            <ui-select-choices repeat="user in officialDocHandleModalCtrlVm.counterSignUsers | filter: $select.search">
+                            <ui-select-choices
+                                    ng-model="userName"
+                                    repeat="user in officialDocHandleModalCtrlVm.counterSignUsers |
+                                    filter: $select.search">
                                 <span ng-bind-html="user.name | highlight: $select.search"></span>
                             </ui-select-choices>
                         </ui-select>
@@ -217,6 +220,47 @@
                             ng-click="sendProcessCounterSign(this, docData, officialDocHandleModalCtrlVm.counterSignUsers.selected)"
                             class="btn btn-warning">
                         開始會簽（給設定人員）
+                    </button>
+
+                </div>
+
+                <div
+                        ba-panel
+                        ba-panel-title="公文通知"
+                        ba-panel-class="with-scroll">
+
+                    <div class="form-group">
+                        <textarea placeholder="請輸入通知辦理情形"
+                                  ng-model="notifyRecord"
+                                  class="form-control"></textarea>
+                    </div>
+
+                    <hr>
+
+                    <div class="form-group">
+                        <ui-select multiple
+                                   ng-model="officialDocHandleModalCtrlVm.notifyUsers.selected"
+                                   ng-disabled="false"
+                                   search-enabled="true"
+                                   append-to-body="false"
+                                   class="form-control ">
+                            <ui-select-match placeholder="請選擇通知人員">
+                                <!--{{$select.selected[$index].name}}-->
+                                {{$item.name}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    ng-model="userName"
+                                    repeat="user in officialDocHandleModalCtrlVm.notifyUsers | filter: $select.search">
+                                <span ng-bind-html="user.name | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+
+                    <button type="submit"
+                            style="float: right; margin-right: 10px"
+                            ng-click="sendProcessNotify(this, docData, officialDocHandleModalCtrlVm.notifyUsers.selected)"
+                            class="btn btn-primary">
+                        開始通知（給設定人員）
                     </button>
 
                 </div>
