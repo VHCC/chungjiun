@@ -2,22 +2,21 @@
     'user strict';
 
     angular.module('BlurAdmin.pages.cgOfficialDoc')
-        .service('intiOfficialWaitSignService', function ($http, $cookies) {
-
+        .service('intiOfficialWaitNotifyService', function ($http, $cookies) {
             var formData = {
-                handlerDID: $cookies.get("userDID"),
-                isDocClose: false,
-                isDocSignStage: true,
+                userDID: $cookies.get("userDID"),
+                isDocOpened: false,
                 type: 0,
             }
 
-            var promise = $http.post('/api/post_official_doc_search_item', formData)
-                .success(function (officialDocItems) {
-                    return officialDocItems;
+            console.log(formData)
+            var promise = $http.post('/api/fetch_official_doc_notify', formData)
+                .success(function (officialDocNotifyItems) {
+                    return officialDocNotifyItems;
                 });
             return promise;
         })
-        .controller('signOfficialDocCtrl',
+        .controller('notifyOfficialDocCtrl',
             [
                 '$scope',
                 '$filter',
@@ -27,15 +26,16 @@
                 'Project',
                 'OfficialDocUtil',
                 'OfficialDocVendorUtil',
+                'OfficialDocNotifyUtil',
                 '$compile',
-                'intiOfficialWaitSignService',
-                SignOfficialDocCtrl
-            ])
+                'intiOfficialWaitNotifyService',
+                NotifyOfficialDocCtrl
+            ]);
 
     /**
      * @ngInject
      */
-    function SignOfficialDocCtrl($scope,
+    function NotifyOfficialDocCtrl($scope,
                                  $filter,
                                  $cookies,
                                  $uibModal,
@@ -43,30 +43,31 @@
                                  Project,
                                  OfficialDocUtil,
                                  OfficialDocVendorUtil,
+                                 OfficialDocNotifyUtil,
                                  $compile,
-                                 intiOfficialWaitSignService) {
+                                 intiOfficialWaitNotifyService) {
 
-        intiOfficialWaitSignService.then(function (resp) {
-            $scope.officialDocItems = resp.data.payload;
-            $scope.officialDocItems.slice(0, resp.data.payload.length);
+        intiOfficialWaitNotifyService.then(function (resp) {
+            $scope.officialDocNotifyItems = resp.data.payload;
+            $scope.officialDocNotifyItems.slice(0, resp.data.payload.length);
 
-            for (var index = 0; index < $scope.officialDocItems.length; index++) {
-                if ($scope.officialDocItems[index].archiveNumber.length != 11) {
-                    $scope.officialDocItems[index].archiveNumber =
-                        OfficialDocUtil.getDivision($scope.officialDocItems[index].docDivision) +
-                        $scope.officialDocItems[index].archiveNumber;
+            for (var index = 0; index < $scope.officialDocNotifyItems.length; index ++) {
+                if ($scope.officialDocNotifyItems[index].archiveNumber.length != 11) {
+                    $scope.officialDocNotifyItems[index]._archiveNumber =
+                        OfficialDocUtil.getDivision($scope.officialDocNotifyItems[index].docDivision) +
+                        $scope.officialDocNotifyItems[index].archiveNumber;
                 }
             }
 
             angular.element(
-                document.getElementById('includeHead_sign'))
+                document.getElementById('includeHead_notify'))
                 .append($compile(
                     "<div ba-panel ba-panel-title=" +
-                    "'待簽公文列表 - " + resp.data.payload.length + "'" +
+                    "'被通知公文列表 - " + resp.data.payload.length + "'" +
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
-                    "ng-include=\"'app/pages/officialDoc/handleOfficialDoc/table/signOfficialTable.html'\">" +
+                    "ng-include=\"'app/pages/officialDoc/handleOfficialDoc/table/notifyOfficialTable.html'\">" +
                     "</div>" +
                     "</div>"
                 )($scope));
@@ -85,6 +86,7 @@
 
             User.getAllUsers()
                 .success(function (allUsers) {
+                    // console.log(allUsers);
                     // 經理、主承辦
                     $scope.allUsers = [];
                     $scope.allUsers[0] = {
@@ -99,20 +101,6 @@
                     }
                 })
 
-            OfficialDocVendorUtil.fetchOfficialDocVendor()
-                .success(function (response) {
-                    $scope.allVendors = [];
-                    $scope.allVendors[0] = {
-                        value: "",
-                        name: "None"
-                    };
-                    for (var i = 0; i < response.payload.length; i++) {
-                        $scope.allVendors[i] = {
-                            value: response.payload[i]._id,
-                            name: response.payload[i].vendorName
-                        };
-                    }
-                })
         })
 
         // *** Biz Logic ***
@@ -137,6 +125,17 @@
             if (officialItem.chargerDID) {
                 selected = $filter('filter')($scope.allUsers, {
                     value: officialItem.chargerDID
+                });
+            }
+            return selected.length ? selected[0].name : 'Not Set';
+        }
+
+        $scope.showNotifier = function (officialItem) {
+            var selected = [];
+            if ($scope.allUsers === undefined) return;
+            if (officialItem.creatorDID) {
+                selected = $filter('filter')($scope.allUsers, {
+                    value: officialItem.creatorDID
                 });
             }
             return selected.length ? selected[0].name : 'Not Set';
@@ -167,7 +166,6 @@
                     value: selected[0].managerID
                 });
             }
-
             return selected_manager.length ? selected_manager[0].name : 'Not Set';
         }
 
@@ -182,58 +180,81 @@
             return selected.length ? selected[0].name : 'Not Set';
         }
 
-        $scope.showOfficialDocHandleInfo = function (item) {
+        $scope.fetchOfficialDocInstance = function(notifyItem) {
+
+            console.log(notifyItem)
+
+            var formData = {
+                archiveNumber: notifyItem.archiveNumber,
+                docDivision: notifyItem.docDivision,
+                type: 0,
+            }
+
+            console.log(formData)
+            OfficialDocUtil.searchOfficialDocItem(formData)
+                .success(function (resp) {
+                    console.log(resp)
+                    $scope.showOfficialDocHandleInfo(resp.payload[0], notifyItem);
+                })
+        }
+
+        $scope.showOfficialDocHandleInfo = function (docData, notifyItem) {
             $uibModal.open({
                 animation: true,
-                controller: 'officialDocSignModalCtrl',
-                controllerAs: 'officialDocSignModalCtrlVm',
-                templateUrl: 'app/pages/officialDoc/handleOfficialDoc/modal/officialDocSignModal.html',
+                controller: 'officialDocNotifyModalCtrl',
+                templateUrl: 'app/pages/officialDoc/handleOfficialDoc/modal/officialDocNotifyModal.html',
                 size: 'lg',
                 resolve: {
                     docData: function () {
-                        return item;
+                        return docData;
                     },
                     parent: function () {
                         return $scope;
                     },
+                    notifyItem: function () {
+                        return notifyItem;
+                    }
                 }
             }).result.then(function () {
-                $scope.reloadDocData_sign();
+                $scope.reloadDocData_notify();
                 // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
             });
         }
 
-        $scope.reloadDocData_sign = function () {
+        $scope.reloadDocData_notify = function () {
             var formData = {
-                handlerDID: $cookies.get("userDID"),
-                isDocClose: false,
-                isDocSignStage: true,
+                userDID: $cookies.get("userDID"),
+                isDocOpened: false,
                 type: 0,
             }
 
-            OfficialDocUtil.searchOfficialDocItem(formData)
+            OfficialDocNotifyUtil.fetchOfficialDocNotify(formData)
                 .success(function (resp) {
-                    $scope.officialDocItems = resp.payload;
-                    $scope.officialDocItems.slice(0, resp.payload.length);
 
-                    for (var index = 0; index < $scope.officialDocItems.length; index++) {
-                        if ($scope.officialDocItems[index].archiveNumber.length != 11) {
-                            $scope.officialDocItems[index].archiveNumber =
-                                OfficialDocUtil.getDivision($scope.officialDocItems[index].docDivision) +
-                                $scope.officialDocItems[index].archiveNumber;
+                    console.log(resp)
+
+                    $scope.officialDocNotifyItems = resp.payload;
+                    $scope.officialDocNotifyItems.slice(0, resp.payload.length);
+
+                    for (var index = 0; index < $scope.officialDocNotifyItems.length; index ++) {
+                        if ($scope.officialDocNotifyItems[index].archiveNumber.length != 11) {
+                            $scope.officialDocNotifyItems[index]._archiveNumber =
+                                OfficialDocUtil.getDivision($scope.officialDocNotifyItems[index].docDivision) +
+                                $scope.officialDocNotifyItems[index].archiveNumber;
                         }
                     }
 
-                    document.getElementById('includeHead_sign').innerText = "";
+                    document.getElementById('includeHead_notify').innerText = "";
+
                     angular.element(
-                        document.getElementById('includeHead_sign'))
+                        document.getElementById('includeHead_notify'))
                         .append($compile(
                             "<div ba-panel ba-panel-title=" +
-                            "'待簽公文列表 - " + resp.payload.length + "'" +
+                            "'被通知公文列表 - " + resp.payload.length + "'" +
                             "ba-panel-class= " +
                             "'with-scroll'" + ">" +
                             "<div " +
-                            "ng-include=\"'app/pages/officialDoc/handleOfficialDoc/table/signOfficialTable.html'\">" +
+                            "ng-include=\"'app/pages/officialDoc/handleOfficialDoc/table/notifyOfficialTable.html'\">" +
                             "</div>" +
                             "</div>"
                         )($scope));

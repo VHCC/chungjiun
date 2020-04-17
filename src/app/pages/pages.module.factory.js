@@ -371,6 +371,22 @@
                 }
             }
         }])
+        .factory('OfficialDocNotifyUtil', ['$http', function (http) {
+            return {
+                fetchOfficialDocNotify: function (formData) {
+                    return http.post('/api/fetch_official_doc_notify', formData);
+                },
+
+                createOfficialDocNotify: function (formData) {
+                    return http.post('/api/post_insert_official_doc_notify', formData);
+                },
+
+                updateOfficialDocNotify: function (formData) {
+                    return http.post('/api/post_update_official_doc_notify', formData);
+                },
+
+            }
+        }])
         .factory('OfficialDocVendorUtil', ['$http', function (http) {
             return {
                 fetchOfficialDocVendor: function () {

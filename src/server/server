@@ -23,6 +23,7 @@ require('./restfulAPI/myNewPage/todo.routes')(app);
 require('./restfulAPI/officialDoc/officialDoc.routes')(app);
 require('./restfulAPI/officialDoc/officialDocPublic.routes')(app);
 require('./restfulAPI/officialDoc/officialDocVendor.routes')(app);
+require('./restfulAPI/officialDoc/officialDocNotify.routes')(app);
 
 require('./restfulAPI/forms/paymentForm/paymentForm.routes')(app);
 require('./restfulAPI/forms/wageManageForm/wageManageForm.routes')(app);

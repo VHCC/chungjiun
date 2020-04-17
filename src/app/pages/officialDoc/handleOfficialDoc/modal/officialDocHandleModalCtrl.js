@@ -17,6 +17,7 @@
                 'Project',
                 'OfficialDocUtil',
                 'OfficialDocVendorUtil',
+                'OfficialDocNotifyUtil',
                 '$uibModalInstance',
                 'toastr',
                 'TimeUtil',
@@ -34,6 +35,7 @@
                                                Project,
                                                OfficialDocUtil,
                                                OfficialDocVendorUtil,
+                                               OfficialDocNotifyUtil,
                                                $uibModalInstance,
                                                toastr,
                                                TimeUtil,
@@ -58,12 +60,10 @@
                         managerID: relatedProjects[i].managerID
                     };
                 }
-                // console.log($scope);
             });
 
         User.getAllUsers()
             .success(function (allUsers) {
-                // console.log(allUsers);
                 // 經理、主承辦
                 $scope.allUsers = [];
                 $scope.allUsers[0] = {
@@ -76,13 +76,12 @@
                         name: allUsers[i].name
                     };
                 }
-
-                vm.counterSignUsers = allUsers;
+                vm.counterSignUsers = allUsers.slice()
+                vm.notifyUsers = allUsers.slice()
             })
 
         OfficialDocVendorUtil.fetchOfficialDocVendor()
             .success(function (response) {
-                // console.log(response);
                 $scope.allVendors = [];
                 $scope.allVendors[0] = {
                     value: "",
@@ -255,10 +254,10 @@
         }
 
         function base64ToArrayBuffer(base64) {
-            var binaryString =  window.atob(base64);
+            var binaryString = window.atob(base64);
             var binaryLen = binaryString.length;
             var bytes = new Uint8Array(binaryLen);
-            for (var i = 0; i < binaryLen; i++)        {
+            for (var i = 0; i < binaryLen; i++) {
                 var ascii = binaryString.charCodeAt(i);
                 bytes[i] = ascii;
             }
@@ -273,7 +272,7 @@
             if (signSelected.length > 0) {
                 signUsers = "";
             }
-            for (var index = 0; index < signSelected.length; index ++) {
+            for (var index = 0; index < signSelected.length; index++) {
                 signUsers += signSelected[index].name + ", ";
             }
 
@@ -290,12 +289,12 @@
             });
         }
 
-        $scope.updateOfficialDocToServerCounterSign = function(docData, handleRecord, handleResult, signSelected) {
+        $scope.updateOfficialDocToServerCounterSign = function (docData, handleRecord, handleResult, signSelected) {
 
             var handleInfo = docData.stageInfo;
             var counterSignList = [];
 
-            for (var index = 0; index < signSelected.length; index ++) {
+            for (var index = 0; index < signSelected.length; index++) {
                 var counterSign = {
                     _id: signSelected[index]._id,
                 }
@@ -315,7 +314,7 @@
             var formData = {
                 _id: docData._id,
                 stageInfo: handleInfo,
-                handlerDID: (docData.signerDID == undefined || docData.signerDID == null ) ?
+                handlerDID: (docData.signerDID == undefined || docData.signerDID == null) ?
                     $scope.showManagerID(docData) : docData.signerDID,
                 isDocSignStage: false,
                 isCounterSign: true,
@@ -324,6 +323,83 @@
             OfficialDocUtil.updateOfficialDocItem(formData)
                 .success(function (res) {
                     $uibModalInstance.close();
+                })
+        }
+
+        // main
+        // 提交通知
+        $scope.sendProcessNotify = function (dom, docData, notifySelected) {
+
+            var notifyUsers = "empty";
+            if (notifySelected.length > 0) {
+                notifyUsers = "";
+            }
+            for (var index = 0; index < notifySelected.length; index++) {
+                notifyUsers += notifySelected[index].name + ", ";
+            }
+
+            $scope.checkText = "通知人員：" + notifyUsers;
+            $scope.notifyRecord = dom.notifyRecord;
+            $scope.handleResult = "通知給 " + notifyUsers;
+            $scope.notifySelected = notifySelected;
+            $scope.docData = docData;
+            ngDialog.open({
+                template: 'app/pages/officialDoc/handleOfficialDoc/dialog/handleOfficialDocReviewNotify_Modal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+
+        $scope.createOfficialDocToServerNotify = function (docData,
+                                                           handleRecord,
+                                                           handleResult,
+                                                           notifySelected) {
+
+            var handleInfo = docData.stageInfo;
+            var notifyUsersList = [];
+
+            for (var index = 0; index < notifySelected.length; index++) {
+                var counterSign = {
+                    _id: notifySelected[index]._id,
+                }
+                notifyUsersList.push(counterSign);
+            }
+
+            var stageInfoHandle = {
+                timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
+                stage: "發出通知",
+                handleName: $scope.username,
+                handleRecord: handleRecord,
+                handleResult: handleResult,
+            }
+
+            handleInfo.push(stageInfoHandle);
+
+            var formData = {
+                _id: docData._id,
+                stageInfo: handleInfo,
+                // handlerDID: (docData.signerDID == undefined || docData.signerDID == null ) ?
+                //     $scope.showManagerID(docData) : docData.signerDID,
+                isDocSignStage: false,
+                // isCounterSign: true,
+                // counterSignList: notifyUsersList
+            }
+            OfficialDocUtil.updateOfficialDocItem(formData)
+                .success(function (res) {
+                    var formData = {
+                        creatorDID: $scope.userDID,
+                        archiveNumber: docData.archiveNumber.substring(1, docData.archiveNumber.length),
+                        docDivision: docData.docDivision,
+                        notifyMsg: handleRecord,
+                        type: 0,
+                        notifyUsersList: notifyUsersList,
+                    }
+                    OfficialDocNotifyUtil.createOfficialDocNotify(formData)
+                        .success(function (resp) {
+                            console.log(resp);
+                            $uibModalInstance.close();
+                        })
                 })
         }
 
@@ -341,7 +417,7 @@
             });
         }
 
-        $scope.updateOfficialDocToServer = function(docData, handleRecord) {
+        $scope.updateOfficialDocToServer = function (docData, handleRecord) {
             var handleInfo = docData.stageInfo;
 
             var stageInfoHandle = {
@@ -357,7 +433,7 @@
                 _id: docData._id,
                 stageInfo: handleInfo,
                 // handlerDID: $scope.showManagerID(docData),
-                handlerDID: (docData.signerDID == undefined || docData.signerDID == null ) ?
+                handlerDID: (docData.signerDID == undefined || docData.signerDID == null) ?
                     $scope.showManagerID(docData) : docData.signerDID,
                 isDocSignStage: true
             }
@@ -382,7 +458,7 @@
             });
         }
 
-        $scope.updateOfficialDocToServer_Archive = function(docData) {
+        $scope.updateOfficialDocToServer_Archive = function (docData) {
             var handleInfo = docData.stageInfo;
 
             var stageInfoHandle = {
@@ -474,7 +550,7 @@
                 });
         }
 
-        $scope.addDocLinkOfficialDocToServer = function(docData, linkData) {
+        $scope.addDocLinkOfficialDocToServer = function (docData, linkData) {
             // var handleInfo = docData.stageInfo;
 
             // var stageInfoHandle = {
@@ -504,7 +580,7 @@
 
         $scope.fetchDocLinkData = function () {
 
-            for (var index = 0 ;index < $scope.docData.docLink.length; index ++) {
+            for (var index = 0; index < $scope.docData.docLink.length; index++) {
                 var formData = {
                     _id: $scope.docData.docLink[index]
                 }

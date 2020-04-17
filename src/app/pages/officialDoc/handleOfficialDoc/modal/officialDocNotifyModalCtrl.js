@@ -1,12 +1,12 @@
 /**
  * @author IChen.Chu
- * created on 13.04.2018
+ * created on 13.04.2020
  */
 (function () {
     'use strict';
 
     angular.module('BlurAdmin.pages.myForms')
-        .controller('officialDocSignModalCtrl',
+        .controller('officialDocNotifyModalCtrl',
             [
                 '$scope',
                 '$filter',
@@ -19,28 +19,32 @@
                 'OfficialDocVendorUtil',
                 'OfficialDocNotifyUtil',
                 '$uibModalInstance',
+                'toastr',
                 'TimeUtil',
                 'DateUtil',
-                OfficialDocDetailCheckerModalCtrl
+                OfficialDocDetailCheckerNotifyModalCtrl
             ]);
 
     /** @ngInject */
-    function OfficialDocDetailCheckerModalCtrl($scope,
-                                               $filter,
-                                               $cookies,
-                                               $uibModal,
-                                               ngDialog,
-                                               User,
-                                               Project,
-                                               OfficialDocUtil,
-                                               OfficialDocVendorUtil,
-                                               OfficialDocNotifyUtil,
-                                               $uibModalInstance,
-                                               TimeUtil,
-                                               DateUtil) {
+    function OfficialDocDetailCheckerNotifyModalCtrl($scope,
+                                                     $filter,
+                                                     $cookies,
+                                                     $uibModal,
+                                                     ngDialog,
+                                                     User,
+                                                     Project,
+                                                     OfficialDocUtil,
+                                                     OfficialDocVendorUtil,
+                                                     OfficialDocNotifyUtil,
+                                                     $uibModalInstance,
+                                                     toastr,
+                                                     TimeUtil,
+                                                     DateUtil) {
         // Main Data
         $scope.parent = $scope.$resolve.parent;
         $scope.docData = $scope.$resolve.docData;
+        $scope.notifyItem = $scope.$resolve.notifyItem;
+        $scope.docData._archiveNumber = OfficialDocUtil.getDivision($scope.docData.docDivision) + $scope.docData.archiveNumber
 
         // initial
         $scope.username = $cookies.get('username');
@@ -74,6 +78,8 @@
                         name: allUsers[i].name
                     };
                 }
+
+                vm.counterSignUsers = allUsers.slice()
                 vm.notifyUsers = allUsers.slice()
             })
 
@@ -91,6 +97,7 @@
                     };
                 }
             })
+
 
         // *** Biz Logic ***
         $scope.showDocType = function (type) {
@@ -174,6 +181,7 @@
             return selected.length ? selected[0].managerID : 'Not Set';
         }
 
+
         $scope.pdfList = undefined;
 
         // pdf 檔案列表
@@ -181,19 +189,19 @@
 
             var formData = {
                 userDID: $cookies.get('userDID'),
-                archiveNumber: $scope.docData.archiveNumber,
+                archiveNumber: $scope.docData._archiveNumber,
             }
 
             OfficialDocUtil.fetchOfficialDocFiles(formData)
                 .success(function (res) {
-                    console.log(res);
                     $scope.pdfList = res.payload;
                 })
         }
 
         // show pdf View
         $scope.showPDF = function (dom, docData) {
-            console.log($scope);
+            var pdfDocData = docData;
+            pdfDocData.archiveNumber = docData._archiveNumber;
             $uibModal.open({
                 animation: true,
                 controller: 'officialDocPDFViewerModalCtrl',
@@ -206,7 +214,7 @@
                         return dom;
                     },
                     docData: function () {
-                        return docData;
+                        return pdfDocData;
                     },
                 }
             }).result.then(function (data) {
@@ -216,7 +224,7 @@
 
         $scope.downloadCJFile = function (dom) {
             var formData = {
-                archiveNumber: $scope.docData.archiveNumber,
+                archiveNumber: $scope.docData._archiveNumber,
                 fileName: dom.$parent.$parent.pdfItem.name
             }
 
@@ -238,44 +246,66 @@
                     }());
 
                     var downloadDataBuffer = base64ToArrayBuffer(res);
+
                     saveByteArray([downloadDataBuffer], moment().format('YYYYMMDD_HHmmss') + "_" + dom.$parent.$parent.pdfItem.name);
+
                 })
         }
 
         function base64ToArrayBuffer(base64) {
-            var binaryString =  window.atob(base64);
+            var binaryString = window.atob(base64);
             var binaryLen = binaryString.length;
             var bytes = new Uint8Array(binaryLen);
-            for (var i = 0; i < binaryLen; i++)        {
+            for (var i = 0; i < binaryLen; i++) {
                 var ascii = binaryString.charCodeAt(i);
                 bytes[i] = ascii;
             }
             return bytes;
         }
 
-        // 提交修改
-        $scope.sendModified = function (dom, docData) {
+        // main
+        // 提交會簽
+        $scope.sendProcessCounterSign = function (dom, docData, signSelected) {
 
-            $scope.checkText = "修改 內部處理期限：" + docData.lastDate + ", 最後期限：" +docData.dueDate ;
-            $scope.modifiedMsg = "修改 內部處理期限：" + docData.lastDate + ", 最後期限：" +docData.dueDate;
+            var signUsers = "empty";
+            if (signSelected.length > 0) {
+                signUsers = "";
+            }
+            for (var index = 0; index < signSelected.length; index++) {
+                signUsers += signSelected[index].name + ", ";
+            }
+
+            $scope.checkText = "會簽人員：" + signUsers;
+            $scope.signRecord = dom.signRecord;
+            $scope.handleResult = "會簽給 " + signUsers;
+            $scope.signSelected = signSelected;
             $scope.docData = docData;
             ngDialog.open({
-                template: 'app/pages/officialDoc/handleOfficialDoc/dialog/signOfficialDocModifiedReviewSend_Modal.html',
+                template: 'app/pages/officialDoc/handleOfficialDoc/dialog/handleOfficialDocReviewCounterSign_Modal.html',
                 className: 'ngdialog-theme-default',
                 scope: $scope,
                 showClose: false,
             });
         }
 
-        $scope.updateOfficialDocToServer_sign = function(docData, handleRecord) {
+        $scope.updateOfficialDocToServerCounterSign = function (docData, handleRecord, handleResult, signSelected) {
 
             var handleInfo = docData.stageInfo;
+            var counterSignList = [];
+
+            for (var index = 0; index < signSelected.length; index++) {
+                var counterSign = {
+                    _id: signSelected[index]._id,
+                }
+                counterSignList.push(counterSign);
+            }
 
             var stageInfoHandle = {
                 timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
-                stage: "修改",
-                handleName: $scope.username,
+                stage: "開始會簽",
+                handleName: "",
                 handleRecord: handleRecord,
+                handleResult: handleResult,
             }
 
             handleInfo.push(stageInfoHandle);
@@ -283,12 +313,14 @@
             var formData = {
                 _id: docData._id,
                 stageInfo: handleInfo,
-                lastDate: docData.lastDate,
-                dueDate: docData.dueDate,
+                handlerDID: (docData.signerDID == undefined || docData.signerDID == null) ?
+                    $scope.showManagerID(docData) : docData.signerDID,
+                isDocSignStage: false,
+                isCounterSign: true,
+                counterSignList: counterSignList
             }
             OfficialDocUtil.updateOfficialDocItem(formData)
                 .success(function (res) {
-                    console.log(res);
                     $uibModalInstance.close();
                 })
         }
@@ -336,7 +368,7 @@
             var stageInfoHandle = {
                 timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
                 stage: "發出通知",
-                handleName: $scope.username,
+                handleName: "",
                 handleRecord: handleRecord,
                 handleResult: handleResult,
             }
@@ -363,41 +395,36 @@
                         type: 0,
                         notifyUsersList: notifyUsersList,
                     }
-                    // console.log(formData);
                     OfficialDocNotifyUtil.createOfficialDocNotify(formData)
                         .success(function (resp) {
-                            console.log(resp);
                             $uibModalInstance.close();
                         })
                 })
+
         }
 
         // main
-        // 提交審查
-        $scope.sendSign = function (dom, docData) {
-
-            $scope.checkText = "審核情形：" + dom.handleResult;
-            $scope.handleResult = dom.handleResult;
+        // 提交
+        $scope.sendProcess = function (dom, docData) {
+            $scope.checkText = "辦理情形：" + dom.handleRecord;
+            $scope.handleRecord = dom.handleRecord;
             $scope.docData = docData;
             ngDialog.open({
-                template: 'app/pages/officialDoc/handleOfficialDoc/dialog/signOfficialDocReviewSend_Modal.html',
+                template: 'app/pages/officialDoc/handleOfficialDoc/dialog/handleOfficialDocReviewSend_Modal.html',
                 className: 'ngdialog-theme-default',
                 scope: $scope,
                 showClose: false,
             });
         }
 
-        $scope.updateOfficialDocToServer = function(docData,handleRecord, handleResult) {
-            console.log(handleResult);
-            console.log(docData);
-
+        $scope.updateOfficialDocToServer = function (docData, handleRecord) {
             var handleInfo = docData.stageInfo;
 
             var stageInfoHandle = {
                 timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
-                stage: "審核",
+                stage: "辦理",
                 handleName: $scope.username,
-                handleResult: handleResult,
+                handleRecord: handleRecord
             }
 
             handleInfo.push(stageInfoHandle);
@@ -405,45 +432,153 @@
             var formData = {
                 _id: docData._id,
                 stageInfo: handleInfo,
-                handlerDID: docData.chargerDID,
-                isDocSignStage: false,
-                isApproveDocClose: docData.isApproveDocClose
+                // handlerDID: $scope.showManagerID(docData),
+                handlerDID: (docData.signerDID == undefined || docData.signerDID == null) ?
+                    $scope.showManagerID(docData) : docData.signerDID,
+                isDocSignStage: true
             }
             OfficialDocUtil.updateOfficialDocItem(formData)
                 .success(function (res) {
-                    console.log(res);
-                    // docData.isDocSignStage = false;
-
                     $uibModalInstance.close();
-
                 })
         }
 
+        // 提交歸檔
+        $scope.sendArchive = function (dom, docData) {
+            $scope.checkText = "是否歸檔：" + docData.archiveNumber;
+            $scope._docData = docData;
+            ngDialog.open({
+                template: 'app/pages/officialDoc/handleOfficialDoc/dialog/closeOfficialDocReviewSend_Modal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+
+        $scope.updateOfficialDocToServer_Archive = function (docData) {
+            var handleInfo = docData.stageInfo;
+
+            var stageInfoHandle = {
+                timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
+                stage: "歸檔",
+                handleName: $scope.username,
+            }
+
+            handleInfo.push(stageInfoHandle);
+
+            var formData = {
+                _id: docData._id,
+                stageInfo: handleInfo,
+                isDocClose: true
+            }
+            OfficialDocUtil.updateOfficialDocItem(formData)
+                .success(function (res) {
+                    $uibModalInstance.close();
+                })
+        }
+
+        // 通知提交歸檔
+        $scope.sendArchiveNotify = function (dom, docData) {
+            $scope.checkText = "是否歸檔這則通知"
+            $scope.notifyItem = $scope.notifyItem;
+            ngDialog.open({
+                template: 'app/pages/officialDoc/handleOfficialDoc/dialog/closeOfficialDocNotifyReviewSend_Modal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+
+        $scope.updateOfficialDocToServer_ArchiveNotify = function (notifyItem) {
+
+            OfficialDocNotifyUtil.updateOfficialDocNotify(notifyItem)
+                .success(function (resp) {
+                    console.log(resp)
+                    $uibModalInstance.close();
+                })
+        }
+
+
         var formData = {
-            archiveNumber: $scope.docData.archiveNumber.substring(1, $scope.docData.archiveNumber.length),
+            archiveNumber: $scope.docData.archiveNumber,
             docDivision: $scope.docData.docDivision,
             type: 0,
         }
 
-        $scope.canModified = true;
-
-        console.log(formData);
+        $scope.canModified = false;
 
         OfficialDocUtil.searchOfficialDocItem(formData)
             .success(function (resp) {
-                console.log(resp);
-                $scope.canModified = true;
-                if (resp.payload[0].handlerDID != $scope.userDID) {
-                    $scope.canModified = false;
-                }
-
             });
+
+        $scope.addDocLink = function (dom, docData) {
+
+            var docDivisionWord = dom.docLinkNumber.substring(0, 1);
+            var docArchiveNumber = dom.docLinkNumber.substring(1, dom.docLinkNumber.length);
+            var docType = 0;
+
+            if (OfficialDocUtil.getDivisionNumber(docDivisionWord) < 0) {
+                docDivisionWord = dom.docLinkNumber.substring(dom.docLinkNumber.length - 1, dom.docLinkNumber.length);
+                docArchiveNumber = dom.docLinkNumber.substring(0, dom.docLinkNumber.length - 1);
+                docType = 1;
+            }
+
+            var formData = {
+                archiveNumber: docArchiveNumber,
+                docDivision: OfficialDocUtil.getDivisionNumber(docDivisionWord),
+                type: docType,
+            }
+
+            OfficialDocUtil.searchOfficialDocItem(formData)
+                .success(function (resp) {
+                    if (resp.payload.length == 0) {
+                        toastr.error('注意', dom.docLinkNumber + '公文不存在！');
+                    } else {
+
+                        if (resp.payload[0]._id == docData._id) {
+                            toastr.error('注意', '不可連結此公文');
+                            return;
+                        }
+
+                        if (docData.docLink.includes(resp.payload[0]._id)) {
+                            toastr.error('注意', '已經有此公文 ' + dom.docLinkNumber);
+                            return;
+                        }
+
+
+                        $scope.checkText = "是否新增連結：" + dom.docLinkNumber;
+                        $scope.docData = docData;
+                        $scope.linkData = resp.payload[0];
+                        ngDialog.open({
+                            template: 'app/pages/officialDoc/handleOfficialDoc/dialog/handleOfficialDocAddDocLinkSend_Modal.html',
+                            className: 'ngdialog-theme-default',
+                            scope: $scope,
+                            showClose: false,
+                        });
+                    }
+                });
+        }
+
+        $scope.addDocLinkOfficialDocToServer = function (docData, linkData) {
+
+            var docLink = docData.docLink;
+            docLink.push(linkData._id)
+
+            var formData = {
+                _id: docData._id,
+                docLink: docLink
+            }
+            OfficialDocUtil.updateOfficialDocItem(formData)
+                .success(function (res) {
+                    $uibModalInstance.close();
+                })
+        }
 
         $scope.docLinkArray = [];
 
         $scope.fetchDocLinkData = function () {
 
-            for (var index = 0 ;index < $scope.docData.docLink.length; index ++) {
+            for (var index = 0; index < $scope.docData.docLink.length; index++) {
                 var formData = {
                     _id: $scope.docData.docLink[index]
                 }
@@ -476,7 +611,6 @@
             }
             OfficialDocUtil.searchOfficialDocItem(formData)
                 .success(function (resp) {
-                    console.log(resp);
 
                     if (resp.payload[0].type == 0) {
                         $uibModal.open({
@@ -518,65 +652,14 @@
                                     return $scope;
                                 },
                                 canRemoveLink: function () {
-                                    return false;
+                                    return true;
                                 }
                             }
                         }).result.then(function () {
                             // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
                         });
                     }
-
                 });
-        }
-
-        $(document).ready(function () {
-
-            // $('.datePicker').mask('M0/D0', {
-            //     translation: {
-            //         'M': {
-            //             pattern: /[01]/,
-            //         },
-            //         'D': {
-            //             pattern: /[0123]/,
-            //         }
-            //     }
-            // });
-
-        });
-
-        // 提交歸檔
-        $scope.sendArchive = function (dom, docData) {
-            $scope.checkText = "是否歸檔：" + docData.archiveNumber;
-            $scope._docData = docData;
-            ngDialog.open({
-                template: 'app/pages/officialDoc/handleOfficialDoc/dialog/closeOfficialDocReviewSend_Modal.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope,
-                showClose: false,
-            });
-        }
-
-        $scope.updateOfficialDocToServer_Archive = function(docData) {
-            var handleInfo = docData.stageInfo;
-
-            var stageInfoHandle = {
-                timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
-                stage: "歸檔",
-                handleName: $scope.username,
-            }
-
-            handleInfo.push(stageInfoHandle);
-
-            var formData = {
-                _id: docData._id,
-                stageInfo: handleInfo,
-                isDocClose: true
-            }
-            OfficialDocUtil.updateOfficialDocItem(formData)
-                .success(function (res) {
-                    console.log(res);
-                    $uibModalInstance.close();
-                })
         }
     }
 

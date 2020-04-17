@@ -211,6 +211,12 @@ global.apiUrl = {
     post_update_official_doc_vendor : '/api/post_update_official_doc_vendor',
     post_remove_official_doc_vendor : '/api/post_remove_official_doc_vendor',
 
+    // OfficialDocNotifyUtil
+    fetch_official_doc_notify : '/api/fetch_official_doc_notify',
+    post_insert_official_doc_notify : '/api/post_insert_official_doc_notify',
+    post_update_official_doc_notify : '/api/post_update_official_doc_notify',
+
+
     //userEdit
     post_upload_user_avatar : '/api/uploadUserAvatar',
     post_user_find_by_userdid : '/api/userFindByuserDID',
