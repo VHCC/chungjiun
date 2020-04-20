@@ -170,7 +170,7 @@
                     value: selected[0].majorID
                 });
             }
-            return selected_major.length ? selected_major[0].name : 'Not Set';
+            return selected_major.length > 0 ? selected_major[0].name : 'Not Set';
         }
 
         $scope.showSigner = function (officialItem) {
