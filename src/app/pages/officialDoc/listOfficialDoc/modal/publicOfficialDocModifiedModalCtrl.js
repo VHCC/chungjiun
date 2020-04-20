@@ -43,6 +43,7 @@
         Project.findAll()
             .success(function (allProjects) {
                 vm.allProjectData = allProjects;
+                $scope.initDocData();
             })
             .error(function () {
                 console.log("Error, Project.findAll")
@@ -464,7 +465,7 @@
         $(document).ready(function () {
             console.log(" ====== document ready ====== ");
             setTimeout(function(){
-                $scope.initDocData();
+                // $scope.initDocData();
             },50);
         });
 
@@ -526,11 +527,11 @@
             vm.docOption.selected = selectedTemp[0];
 
             // 發文機關
-            selectedTemp = $filter('filter')(vm.officialDocVendors, {
-                _id: $scope.docData.vendorDID,
-            });
-            vm.vendorItem = [];
-            vm.vendorItem.selected = selectedTemp[0];
+            // selectedTemp = $filter('filter')(vm.officialDocVendors, {
+            //     _id: $scope.docData.vendorDID,
+            // });
+            // vm.vendorItem = [];
+            // vm.vendorItem.selected = selectedTemp[0];
 
             // 附件類型
             selectedTemp = $filter('filter')(vm.docAttachedTypes, {
@@ -662,6 +663,7 @@
         // }
 
         $scope.docProjectSelected = function (projectInfo) {
+            console.log(projectInfo)
             if (projectInfo.majorID != "" &&
                 projectInfo.majorID != null &&
                 projectInfo.majorID != undefined) {
