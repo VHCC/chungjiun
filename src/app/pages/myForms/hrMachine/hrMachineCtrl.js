@@ -854,8 +854,10 @@
                     isBeforeNoon = false;
                 }
                 if (workOn2 && workOff2) {
-                    // console.log("workOn2: " + workOn2);
-                    // console.log("上班");
+                    if ($scope.isHrDebug) {
+                        console.log("workOn2: " + workOn2);
+                        console.log("上班");
+                    }
                     var workOnHour = parseInt(workOn2.substr(0,2));
                     var workOnMin = parseInt(workOn2.substr(2,4));
 
@@ -900,8 +902,10 @@
                     }
 
                     // =======================
-                    // console.log("workOff2: " + workOff2);
-                    // console.log("下班");
+                    if ($scope.isHrDebug) {
+                        console.log("workOff2: " + workOff2);
+                        console.log("下班");
+                    }
                     var workOffHour = parseInt(workOff2.substr(0,2));
                     var workOffMin = parseInt(workOff2.substr(2,4));
                     if ($scope.isLate(tableItem, 1) && workOffHour >= 18 && !$scope.isTravelNotLate(tableItem)) { //若是遲到
@@ -927,22 +931,34 @@
 
                     if (isAfterNoon && isBeforeNoon) {
                         var culc = (workOffHour - workOnHour - 1) * 60 + (workOffMin - workOnMin);
-                        // console.log(culc);
+                        if ($scope.isHrDebug) {
+
+                            console.log(workOffHour - workOnHour);
+                            console.log((workOffHour - workOnHour) * 60);
+                            console.log(workOffMin - workOnMin);
+                            console.log(culc);
+                        }
                         if (culc > 0) {
                             result +=  parseInt( Math.abs((workOffHour - workOnHour - 1)) * 60 + (workOffMin - workOnMin));
                         } else {
-                            result = 0;
+                            result += 0;
                         }
                         if ($scope.isHrDebug) {
                             console.log("C result:" + result);
                         }
                     } else {
                         var culc = (workOffHour - workOnHour) * 60 + (workOffMin - workOnMin);
-                        // console.log(culc);
+                        if ($scope.isHrDebug) {
+
+                            console.log(workOffHour - workOnHour);
+                            console.log((workOffHour - workOnHour) * 60);
+                            console.log(workOffMin - workOnMin);
+                            console.log(culc);
+                        }
                         if (culc > 0) {
                             result +=  parseInt( Math.abs((workOffHour - workOnHour)) * 60 + (workOffMin - workOnMin));
                         } else {
-                            result = 0;
+                            result += 0;
                         }
                         if ($scope.isHrDebug) {
                             console.log("D result:" + result);
