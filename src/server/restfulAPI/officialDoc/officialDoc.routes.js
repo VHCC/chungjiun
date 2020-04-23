@@ -842,8 +842,8 @@ module.exports = function (app) {
                         // var archiveNumber = items[items.length - 1].archiveNumber.substring(7, 10);
                         var numberString = (parseInt(items.length) + 1).toString();
 
-                        console.log(archiveNumber);
-                        console.log(numberString);
+                        // console.log(archiveNumber);
+                        // console.log(numberString);
                         if (numberString.length == 1) {
                             numberString = "00" + numberString;
                         } else if (numberString.length == 2) {
