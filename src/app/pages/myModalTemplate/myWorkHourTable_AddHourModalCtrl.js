@@ -80,7 +80,7 @@
                 day: $scope.day,
                 start_time: "08:30",
                 end_time: "17:30",
-                reason: "請填寫",
+                reason: "",
                 userMonthSalary: $scope.userMonthSalary,
                 // userHourSalary: $scope.userHourSalary,
             };
