@@ -30,7 +30,7 @@
                  ng-click="fetchData(undefined, undefined, 0)">
             <div ng-include="'app/pages/myForms/hrMachine/hrMachineForm_mainTab.html'"></div>
         </uib-tab>
-        <uib-tab heading="打卡機檢視" ng-if="roleType === '2' || roleType === '100'"
+        <uib-tab heading="打卡機檢視" ng-if="roleType === '2' || roleType === '6' || roleType === '100'"
                  style="color: blue">
             <div ng-include="'app/pages/myForms/hrMachine/hrMachineForm_UserDataFind.html'"></div>
         </uib-tab>
