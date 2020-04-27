@@ -86,6 +86,9 @@
                 <!--上班時數-->
                 <td style="vertical-align: inherit; text-align: center">上班時數</td>
 
+                <!--出差時數-->
+                <td style="vertical-align: inherit; text-align: center">出差時數</td>
+
                 <!--請假時數-->
                 <td style="vertical-align: inherit; text-align: center">請假時數</td>
 
@@ -206,6 +209,13 @@
 
                     </div>
 
+                </td>
+
+                <!--出差時數-->
+                <!--20200206-->
+                <td ng-class="workTravelApplyHour(tableItem) != '' ? 'sumSpecial' : 'sunNormal'"
+                    style="vertical-align: inherit;">
+                    {{workTravelApplyHour(tableItem)}}
                 </td>
 
                 <!--請假時數-->
