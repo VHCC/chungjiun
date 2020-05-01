@@ -1873,14 +1873,31 @@
                 }
             }
             console.log("reviewWorkDay (工作日) counts= " + reviewWorkDay + ", hours= " + $scope.showCalculateHour(tableIndex, $scope.firstFullDate, $scope.tables[tableIndex].tablesItems, 1001, 1));
+            console.log(((reviewWorkDay + NHCount_after_cross - OTCount_after_cross) * 8));
 
-            if ($scope.showCalculateHour(tableIndex, $scope.firstFullDate, $scope.tables[tableIndex].tablesItems, 1001, 1) !== ((reviewWorkDay + NHCount_after_cross - OTCount_after_cross) * 8)) {
-                $scope.titleClass = 'bg-danger';
-                $scope.checkText = '該周工時表時數非 ' + ((reviewWorkDay)  * 8) + '，確定提交 審查？';
-            } else {
-                $scope.titleClass = 'bg-warning';
-                $scope.checkText = '工作時數確認正確 ' + ((reviewWorkDay)  * 8) +' ，確定提交 審查？';
+            switch(tableIndex) {
+                case 0:
+                    if ($scope.showCalculateHour(tableIndex, $scope.firstFullDate, $scope.tables[tableIndex].tablesItems, 1001, 1) !==
+                        ((reviewWorkDay + NHCount_befor_cross - OTCount_befor_cross) * 8)) {
+                        $scope.titleClass = 'bg-danger';
+                        $scope.checkText = '該周工時表時數非 ' + ((reviewWorkDay)  * 8) + '，確定提交 審查？';
+                    } else {
+                        $scope.titleClass = 'bg-warning';
+                        $scope.checkText = '工作時數確認正確 ' + ((reviewWorkDay)  * 8) +' ，確定提交 審查？';
+                    }
+                    break;
+                case 1:
+                    if ($scope.showCalculateHour(tableIndex, $scope.firstFullDate, $scope.tables[tableIndex].tablesItems, 1001, 1) !==
+                        ((reviewWorkDay + NHCount_after_cross - OTCount_after_cross) * 8)) {
+                        $scope.titleClass = 'bg-danger';
+                        $scope.checkText = '該周工時表時數非 ' + ((reviewWorkDay)  * 8) + '，確定提交 審查？';
+                    } else {
+                        $scope.titleClass = 'bg-warning';
+                        $scope.checkText = '工作時數確認正確 ' + ((reviewWorkDay)  * 8) +' ，確定提交 審查？';
+                    }
+                    break;
             }
+
             $scope.reviewTableIndex = tableIndex;
 
             ngDialog.open({
