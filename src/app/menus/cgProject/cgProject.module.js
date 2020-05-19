@@ -45,6 +45,7 @@
                     controllerAs: 'createNewProjectCtrlVm',
                     title: '建立專案',
                     accessLevel: [100],
+                    <!--20200518 check right-->
                     sidebarMeta: {
                         order: global.pages.myProject_createProject,
                     },
@@ -56,6 +57,7 @@
                 controller: 'listProjectCtrl',
                 title: '執行專案',
                 accessLevel: [2,6, 100],
+                <!--20200518 check right-->
                 sidebarMeta: {
                     order: global.pages.myProject_listProject,
                 },
@@ -65,8 +67,9 @@
                     url: '/listProjectCharger',
                     templateUrl: 'app/pages/myProject/listProjectCharger/listProjectCharger.html',
                     controller: 'listProjectChargerCtrl',
-                    title: '主辦的執行專案[*****名稱待確認*****]',
-                    accessLevel: [1,2,3,6,100],
+                    title: '主辦專案',
+                    accessLevel: [1,2,3,4,6,7,100],
+                    <!--20200518 check right-->
                     sidebarMeta: {
                         order: global.pages.myProject_listProject_charger,
                     },
@@ -77,7 +80,8 @@
                     templateUrl: 'app/pages/myProject/listProjectAll/listProjectAll.html',
                     controller: 'listProjectAllCtrl',
                     title: '專案總表',
-                    accessLevel: [1,2,3,6,100],
+                    <!--20200518 check right-->
+                    // accessLevel: [1,2,3,6,100],
                     sidebarMeta: {
                         order: global.pages.myProject_listProjectAll,
                     },
