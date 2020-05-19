@@ -39,6 +39,7 @@
 </style>
 
 <uib-tabset active="$tabSetStatus.activeTab" >
+    <!--20200518 check right-->
     <uib-tab heading="待辦公文" >
         <div class="row"
              ng-controller="handleOfficialDocCtrl">
@@ -47,6 +48,7 @@
             </div>
         </div>
     </uib-tab>
+    <!--20200518 check right-->
     <uib-tab heading="待簽公文" ng-if="roleType === '2' || roleType === '100' || roleType === '6'">
         <div class="row"
              ng-controller="signOfficialDocCtrl">
@@ -54,6 +56,7 @@
             </div>
         </div>
     </uib-tab>
+    <!--20200518 check right-->
     <uib-tab heading="待會簽公文" >
         <div class="row"
              ng-controller="counterOfficialDocCtrl">
@@ -61,6 +64,7 @@
             </div>
         </div>
     </uib-tab>
+    <!--20200518 check right-->
     <uib-tab heading="被通知公文" >
         <div class="row"
              ng-controller="notifyOfficialDocCtrl">
@@ -68,6 +72,7 @@
             </div>
         </div>
     </uib-tab>
+    <!--20200518 check right-->
     <uib-tab heading="承辦公文追蹤" >
         <div class="row"
              ng-controller="trackHandleOfficialDocCtrl">
@@ -75,6 +80,7 @@
             </div>
         </div>
     </uib-tab>
+    <!--20200518 check right-->
     <uib-tab heading="經理公文追蹤" ng-if="roleType === '2' || roleType === '100' || roleType === '6'">
         <div class="row"
              ng-controller="trackManagerOfficialDocCtrl">

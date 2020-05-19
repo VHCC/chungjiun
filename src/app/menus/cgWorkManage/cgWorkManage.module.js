@@ -51,6 +51,7 @@
                     controller: 'travelApplicationHomeCtrl',
                     controllerAs: 'travelApplicationHomeCtrlVm',
                     title: '出差公出[測試]',
+                    accessLevel: [1,2,3,4,6,7,100],
                     sidebarMeta: {
                         order: global.pages.cgWorkManage_travelApplication,
                     },
@@ -62,6 +63,7 @@
                     controller: 'workOffFormCtrl',
                     controllerAs: 'workOffFormCtrlVm',
                     title: '人員請假',
+                    accessLevel: [1,2,3,4,6,7,100],
                     sidebarMeta: {
                         order: global.pages.cgWorkManage_workOff,
                     },

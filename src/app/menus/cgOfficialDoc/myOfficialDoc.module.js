@@ -29,6 +29,8 @@
                     // controller: 'listOfficialDocCtrl',
                     title: '公文列表',
                     // accessLevel: [9999],
+                    accessLevel: [1,2,3,4,6,7,100],
+                    <!--20200518 check right-->
                     sidebarMeta: {
                         order: global.pages.cgOfficialDoc_list,
                     },
@@ -42,6 +44,7 @@
                     title: '收文作業',
                     // accessLevel: [9999],
                     accessFeature: ['feature_official_doc'],
+                    <!--20200518 check right-->
                     sidebarMeta: {
                         order: global.pages.cgOfficialDoc_receive,
                     },
@@ -53,6 +56,8 @@
                     controller: 'handleOfficialDocHomeCtrl',
                     title: '公文辦理',
                     // accessLevel: [9999],
+                    accessLevel: [1,2,3,4,6,7,100],
+                    <!--20200518 check right-->
                     sidebarMeta: {
                         order: global.pages.cgOfficialDoc_handle,
                     },
@@ -62,6 +67,8 @@
                     url: '/officialDocPublic',
                     templateUrl: 'app/pages/officialDoc/publicOfficialDoc/publicOfficialDocHomePage.html',
                     title: '發文作業',
+                    accessLevel: [1,2,3,4,6,7,100],
+                    <!--20200518 check right-->
                     controller: 'publicOfficialDocCtrl',
                     controllerAs: 'publicOfficialDocCtrlVm',
                     // accessLevel: [9999],
