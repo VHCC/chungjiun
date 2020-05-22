@@ -1238,6 +1238,8 @@
                         }
                     }
 
+                    console.log(type3_data)
+
                     if (rawTables[memberCount]._add_tables != undefined) {
 
                         for (var table_add_index = 0 ;table_add_index < rawTables[memberCount]._add_tables.length; table_add_index ++) {
@@ -1273,7 +1275,9 @@
 
                                 var item = "_" + DateUtil.getShiftDatefromFirstDate_typeB(moment(rawTables[memberCount]._add_tables[table_add_index].create_formDate),
                                     rawTables[memberCount]._add_tables[table_add_index].day - 1) + "_" +
-                                    rawTables[memberCount]._id.prjCode + "_" + rawTables[memberCount]._add_tables[table_add_index].workAddType;
+                                    rawTables[memberCount]._id.prjCode + "_" +
+                                    rawTables[memberCount]._user_info._id + "_" +
+                                    rawTables[memberCount]._add_tables[table_add_index].workAddType;
 
                                 var tableData_add = {
                                     type_3_create_formDate: rawTables[memberCount]._add_tables[table_add_index].create_formDate,
