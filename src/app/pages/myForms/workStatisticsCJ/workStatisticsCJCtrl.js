@@ -27,19 +27,19 @@
 
         /** @ngInject */
         function WorkStatisticsCJCtrl($scope,
-                               $filter,
-                               cookies,
-                               $timeout,
-                               $compile,
-                               ngDialog,
-                               User,
-                               DateUtil,
-                               TimeUtil,
-                               Project,
-                               ProjectUtil,
-                               WorkHourUtil,
-                               bsLoadingOverlayService,
-                               toastr) {
+                                       $filter,
+                                       cookies,
+                                       $timeout,
+                                       $compile,
+                                       ngDialog,
+                                       User,
+                                       DateUtil,
+                                       TimeUtil,
+                                       Project,
+                                       ProjectUtil,
+                                       WorkHourUtil,
+                                       bsLoadingOverlayService,
+                                       toastr) {
 
             var vm = this;
             var thisYear = new Date().getFullYear() - 1911;
@@ -329,12 +329,12 @@
                 for (var index = 0; index < item.tables.length; index ++) {
                     // TOTAL
                     hourTotal += parseFloat(item.tables[index].mon_hour) +
-                    parseFloat(item.tables[index].tue_hour) +
-                    parseFloat(item.tables[index].wes_hour) +
-                    parseFloat(item.tables[index].thu_hour) +
-                    parseFloat(item.tables[index].fri_hour) +
-                    parseFloat(item.tables[index].sat_hour) +
-                    parseFloat(item.tables[index].sun_hour);
+                        parseFloat(item.tables[index].tue_hour) +
+                        parseFloat(item.tables[index].wes_hour) +
+                        parseFloat(item.tables[index].thu_hour) +
+                        parseFloat(item.tables[index].fri_hour) +
+                        parseFloat(item.tables[index].sat_hour) +
+                        parseFloat(item.tables[index].sun_hour);
                 }
                 return hourTotal;
             }
@@ -942,7 +942,7 @@
             }
 
             $scope.calculateHours_type2 = function (item) {
-                // console.log(item.tables);
+                console.log(item.tables);
                 var hourTotal = 0;
                 for (var index = 0; index < item.tables.length; index ++) {
 
@@ -1000,7 +1000,12 @@
             }
 
             $scope.calculateHours_type2_add = function (item, type) {
-                // console.log(item._add_tables);
+                // console.log("===calculateHours_type2_add===");
+                // console.log(item);
+                var type2_add_data = [];
+
+                var mins = 0
+
                 var hourTotal = 0;
 
                 if (item._add_tables == undefined) {
@@ -1013,19 +1018,65 @@
                         moment( DateUtil.getShiftDatefromFirstDate(moment(item._add_tables[index].create_formDate), item._add_tables[index].day - 1) )
                             .diff( moment( $scope.endDay )) <= 0 &&
                         item._add_tables[index].workAddType == type) {
-                        hourTotal += parseInt(TimeUtil.getCalculateHourDiffByTime(item._add_tables[index].start_time, item._add_tables[index].end_time));
+
+                        var date_id = DateUtil.getShiftDatefromFirstDate_typeB(moment(item._add_tables[index].create_formDate), item._add_tables[index].day - 1) + "_"
+                            + item._id.prjCode + "_"
+                            + item._user_info._id;
+                        // console.log(date_id)
+                        // var date = DateUtil.getShiftDatefromFirstDate_typeB(moment(item._add_tables[index].create_formDate), item._add_tables[index].day - 1)
+
+                        var min = parseInt(TimeUtil.getCalculateHourDiffByTime(item._add_tables[index].start_time, item._add_tables[index].end_time))
+
+                        // console.log(min);
+
+                        // mins += min;
+
+                        // console.log(type2_add_data)
+
+                        if (type2_add_data[date_id] != undefined) {
+                            // console.log("Q")
+
+                            var data = type2_add_data[date_id];
+                            data.min = min + type2_add_data[date_id].min;
+
+                            type2_add_data[date_id] = (min + type2_add_data[date_id])
+                        } else {
+                            // console.log("Qqqq")
+
+                            var data = {
+                                _date: DateUtil.getShiftDatefromFirstDate(moment(item._add_tables[index].create_formDate), item._add_tables[index].day - 1),
+                                min: min
+                            }
+
+                            type2_add_data.push(data);
+
+                            // type2_add_data.push(min)
+                            eval('type2_add_data[date_id] = data')
+                        }
+
+                        // hourTotal += parseInt(TimeUtil.getCalculateHourDiffByTime(item._add_tables[index].start_time, item._add_tables[index].end_time));
                     }
                 }
 
-                hourTotal = hourTotal % 60 < 30 ? Math.round(hourTotal / 60) : Math.round(hourTotal / 60) - 0.5;
-                if (hourTotal < 1) {
-                    return 0;
+
+                var hour = 0
+                for (var i = 0 ; i < type2_add_data.length; i ++) {
+                    hour = type2_add_data[i].min % 60 < 30 ? Math.round(type2_add_data[i].min / 60) : Math.round(type2_add_data[i].min / 60) - 0.5;
+                    // console.log(hour)
+                    if (hour < 1) {
+                        hourTotal += 0;
+                    } else {
+                        hourTotal += hour;
+                    }
                 }
 
+                // console.log(hourTotal)
+
                 return hourTotal;
+                // return 10;
             }
 
-             // type 3, 一天加一專案加一人名 為一筆
+            // type 3, 一天加一專案加一人名 為一筆
 
             $scope.filter_type3_data = function(rawTables) {
                 console.log(rawTables);
@@ -1395,7 +1446,7 @@
                             }
                         }
                     }
-                    break;
+                        break;
                     case 2: {
                         for (var index = 0; index < item.add_tables.length; index ++) {
                             if(!months.includes(item.add_tables[index].month)){
@@ -1403,7 +1454,7 @@
                             }
                         }
                     }
-                    break;
+                        break;
                 }
                 return months;
             }
@@ -1451,7 +1502,7 @@
                 for (var index = 0; index < data.length; index ++) {
                     // console.log(data[index]);
                     if (moment( DateUtil.getShiftDatefromFirstDate(moment(data[index].create_formDate), 6) )
-                        .diff( moment( $scope.startDay )) >= 0 &&
+                            .diff( moment( $scope.startDay )) >= 0 &&
                         moment( DateUtil.getShiftDatefromFirstDate(moment(data[index].create_formDate), 0) )
                             .diff( moment( $scope.endDay )) <= 0) {
                         results.push(data[index]);
