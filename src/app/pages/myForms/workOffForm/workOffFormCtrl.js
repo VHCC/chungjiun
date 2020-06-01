@@ -669,7 +669,12 @@
 
             // 休假規則，未滿一小算一小
             $scope.getHourDiff = function (dom) {
+                console.log(dom)
                 if (dom.tableTimeStart && dom.tableTimeEnd) {
+
+                    console.log(dom.tableTimeStart)
+                    console.log(dom.tableTimeEnd)
+
                     dom.table.start_time = dom.tableTimeStart;
                     dom.table.end_time = dom.tableTimeEnd;
                     if (TimeUtil.getHour(dom.tableTimeEnd) == 12) {
@@ -855,12 +860,22 @@
             // Send WorkOffTable to Review
             $scope.reviewWorkOffItem = function (table, button, index) {
                 $timeout(function () {
+
+                    console.log(table.myHourDiff);
+                    var hour = "";
+
+                    if (table.myHourDiff == "-") {
+                        hour = "（時間輸入格式錯誤，可能有輸入到中文、注音、英文字母、請重新整理後再次輸入） "
+                    } else {
+                        hour = table.myHourDiff + " "
+                    }
+
                     var workOffString = $scope.showWorkOffTypeString($scope.specificUserTablesItems[index].workOffType);
                     $scope.checkText = '確定提交 ' + workOffString + '：' +
                         DateUtil.getShiftDatefromFirstDate(
                             DateUtil.getFirstDayofThisWeek(moment($scope.specificUserTablesItems[index].create_formDate)),
                             $scope.specificUserTablesItems[index].day === 0 ? 6 : $scope.specificUserTablesItems[index].day - 1) +
-                        "  審查？";
+                        "  審查？ 時數：" + hour;
 
                     $scope.checkText += "\n" + "代理人：" + table.agent.name;
                     $scope.checkingTable = $scope.specificUserTablesItems[index];
