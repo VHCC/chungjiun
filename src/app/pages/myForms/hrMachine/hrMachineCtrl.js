@@ -221,6 +221,16 @@
                                     $scope.getUsersTravelApplicationData(selectedUser._id, thisYear, 1);
                                     break;
                                 case 2:
+                                    var targetMonth = moment(specificDate).month();
+                                    // console.log(hrMachineTableSorted)
+                                    for (var key in hrMachineTableSorted) {
+                                        // console.log("key " + key + " has value " + hrMachineTableSorted[key]);
+                                        var targetDate = moment(parseInt(key.substring(0,3)) + 1911 + key.substring(3,7))
+                                        // console.log(targetDate)
+                                        if (targetMonth != targetDate.month()) {
+                                            delete hrMachineTableSorted[key];
+                                        }
+                                    }
                                     $scope.hrMachineTable_month_reports = hrMachineTableSorted;
                                     $scope.getUsersTravelApplicationData(selectedUser._id, thisYear, 2);
                                     break;
@@ -1070,6 +1080,17 @@
                 TravelApplicationUtil.getTravelApplicationItem(formData)
                     .success(function (resp) {
                         $scope.lookUpUserTablesItems = [];
+                        // console.log(operateTable);
+                        var dateList = [];
+                        for (var key in operateTable) {
+                            // console.log("key " + key + " has value " + operateTable[key]);
+                            dateList.push(key);
+                        }
+                        // console.log(dateList);
+                        // console.log(moment(parseInt(dateList[0].substring(0,3))+ 1911 + dateList[0].substring(3,7)));
+                        var startDate = moment(parseInt(dateList[0].substring(0,3))+ 1911 + dateList[0].substring(3,7))
+                        // console.log(moment(parseInt(dateList[dateList.length - 1].substring(0,3))+ 1911 + dateList[dateList.length - 1].substring(3,7)));
+                        var endDate = moment(parseInt(dateList[dateList.length - 1].substring(0,3))+ 1911 + dateList[dateList.length - 1].substring(3,7))
                         for (var index = 0; index < resp.payload.length; index ++) {
                             $scope.travelApplicationItems.push(resp.payload[index]);
 
@@ -1088,28 +1109,34 @@
                                 // workType: ""
                             }
 
-                            if (operateTable[dateTemp] === undefined) {
-                                var hrMachineCollection = [];
+                            var targetDate = moment(parseInt(dateTemp.substring(0,3))+ 1911 + dateTemp.substring(3,7))
 
-                                hrMachineTravelItem.date = dateTemp;
-                                hrMachineTravelItem.location = resp.payload[index].location;
-                                // hrMachineItem.printType = arrayResult[0][index].printType;
-                                hrMachineTravelItem.time = resp.payload[index].start_time.replace(":", "");
-                                // hrMachineTravelItem.workType = "1";
-                                hrMachineTravelItem.applyHour = resp.payload[index].applyHour;;
+                            if (targetDate.isBetween(startDate, endDate)) {
 
-                                hrMachineCollection.push(hrMachineTravelItem);
+                                if (operateTable[dateTemp] === undefined) {
+                                    var hrMachineCollection = [];
 
-                                operateTable[dateTemp] = hrMachineCollection;
-                            } else {
-                                hrMachineTravelItem.date = dateTemp;
-                                hrMachineTravelItem.location = resp.payload[index].location;
-                                // hrMachineItem.printType = arrayResult[0][index].printType;
-                                hrMachineTravelItem.time = resp.payload[index].start_time.replace(":", "");
-                                // hrMachineTravelItem.workType = "1";
-                                hrMachineTravelItem.applyHour = resp.payload[index].applyHour;;
+                                    hrMachineTravelItem.date = dateTemp;
+                                    hrMachineTravelItem.location = resp.payload[index].location;
+                                    // hrMachineItem.printType = arrayResult[0][index].printType;
+                                    hrMachineTravelItem.time = resp.payload[index].start_time.replace(":", "");
+                                    // hrMachineTravelItem.workType = "1";
+                                    hrMachineTravelItem.applyHour = resp.payload[index].applyHour;;
 
-                                operateTable[dateTemp].push(hrMachineTravelItem);
+                                    hrMachineCollection.push(hrMachineTravelItem);
+
+                                    operateTable[dateTemp] = hrMachineCollection;
+                                } else {
+                                    hrMachineTravelItem.date = dateTemp;
+                                    hrMachineTravelItem.location = resp.payload[index].location;
+                                    // hrMachineItem.printType = arrayResult[0][index].printType;
+                                    hrMachineTravelItem.time = resp.payload[index].start_time.replace(":", "");
+                                    // hrMachineTravelItem.workType = "1";
+                                    hrMachineTravelItem.applyHour = resp.payload[index].applyHour;;
+
+                                    operateTable[dateTemp].push(hrMachineTravelItem);
+                                }
+
                             }
                         }
 
