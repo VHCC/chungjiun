@@ -9,6 +9,7 @@ module.exports = function (app) {
 
     // ------------------------ Statistics ---------------------
     app.post(global.apiUrl.query_statistics_form, function (req, res) {
+        console.log("query_statistics_form");
         console.log(req.body);
 
         var prjInfo = {};
@@ -297,6 +298,7 @@ module.exports = function (app) {
 
     // ------------------------ Statistics CJ ---------------------
     app.post(global.apiUrl.query_statistics_form_CJ, function (req, res) {
+        console.log("query_statistics_form_CJ");
         console.log(req.body);
 
         var results = [];
@@ -606,6 +608,7 @@ module.exports = function (app) {
     })
 
     app.post(global.apiUrl.query_statistics_form_CJ_type2, function (req, res) {
+        console.log("query_statistics_form_CJ_type2");
         console.log(req.body);
 
         var results = [];
@@ -613,6 +616,7 @@ module.exports = function (app) {
 
         var normal = false;
         var overTime = false;
+        var isRespSended = false;
 
 
         var prjInfo = {};
@@ -793,7 +797,8 @@ module.exports = function (app) {
                     res.send(err);
                 } else {
                     results = results.concat(tables);
-                    if (normal && overTime) {
+                    if (normal && overTime && !isRespSended) {
+                        isRespSended = true;
                         res.status(200).send({
                             code: 200,
                             error: global.status._200,
@@ -916,7 +921,8 @@ module.exports = function (app) {
                 } else {
                     results_add = results_add.concat(tables);
 
-                    if (normal && overTime) {
+                    if (normal && overTime && !isRespSended) {
+                        isRespSended = true;
                         res.status(200).send({
                             code: 200,
                             error: global.status._200,
