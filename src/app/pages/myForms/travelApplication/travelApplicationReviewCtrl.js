@@ -89,7 +89,6 @@
 
             $http.post('/api/post_travel_application_search_item_2', formData)
                 .success(function (response) {
-                    console.log(response);
 
                     $scope.travelApplicationReviewItems = response.payload;
                     $scope.travelApplicationReviewItems.slice(0, response.payload.length);
@@ -173,7 +172,6 @@
 
                     $http.post('/api/post_travel_application_search_item_2', formData)
                         .success(function (response) {
-                            console.log(response);
 
                             $scope.travelApplicationReviewItems = response.payload;
                             $scope.travelApplicationReviewItems.slice(0, response.payload.length);
@@ -266,7 +264,6 @@
 
             TravelApplicationUtil.updateTravelApplicationItem(formData)
                 .success(function (resp) {
-                    console.log(resp);
                     $scope.getReviewData();
                 })
         }
@@ -301,11 +298,9 @@
 
             TravelApplicationUtil.updateTravelApplicationItem(formData)
                 .success(function (resp) {
-                    console.log(resp);
                     $scope.getReviewData();
                 })
         }
-
 
     }
 

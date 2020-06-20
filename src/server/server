@@ -42,5 +42,6 @@ require('./restfulAPI/lineNotify/auth/auth.route')(app);
 require('./restfulAPI/notificationMsg/notificationMsg.route')(app);
 require('./restfulAPI/globalConfig/globalConfig.routes')(app);
 require('./restfulAPI/forms/travelApplicationItem/travelApplicationItem.routes')(app);
+require('./restfulAPI/forms/hrRemedyItem/hrRemedyItem.routes')(app);
 
 

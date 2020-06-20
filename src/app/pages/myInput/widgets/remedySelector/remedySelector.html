@@ -1,0 +1,14 @@
+<div>
+    <ui-select ng-model="remedyType"
+               append-to-body="true"
+               on-select="changeRemedyType(this)"
+               search-enabled="true">
+        <ui-select-match placeholder="選擇補登別">
+            {{$select.selected.name}}
+        </ui-select-match>
+        <ui-select-choices
+                repeat="option in remedyTypeOptions | filter: $select.search">
+            <span ng-bind-html="option.name"></span>
+        </ui-select-choices>
+    </ui-select>
+</div>

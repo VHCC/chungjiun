@@ -19,6 +19,10 @@
         font-weight: bold;
     }
 
+    .remedyItem {
+        cursor: pointer;
+    }
+
 </style>
 
 <div bs-loading-overlay
@@ -34,14 +38,6 @@
                  style="color: blue">
             <div ng-include="'app/pages/myForms/hrMachine/hrMachineForm_UserDataFind.html'"></div>
         </uib-tab>
-        <uib-tab heading="打卡機補登" ng-if=false
-                 style="color: blue">
-            <div ng-include="'app/pages/myForms/hrMachine/hrMachineForm_LoadTab.html'"></div>
-        </uib-tab>
-        <uib-tab heading="打卡機補登審核" ng-if=false
-                 style="color: blue">
-            <div ng-include="'app/pages/myForms/hrMachine/hrMachineForm_LoadTab.html'"></div>
-        </uib-tab>
         <uib-tab heading="打卡機檔案讀取" ng-if="roleType === '100'"
                  style="color: blue">
             <div ng-include="'app/pages/myForms/hrMachine/hrMachineForm_LoadTab.html'"></div>
@@ -49,6 +45,28 @@
         <uib-tab heading="打卡機月報表" ng-if="roleType === '100'"
                  style="color: blue">
             <div ng-include="'app/pages/myForms/hrMachine/hrMachineForm_monthReportsTab.html'"></div>
+        </uib-tab>
+        <uib-tab heading="打卡機補登"
+                 style="color: blue">
+            <hr-machine-form-remedy></hr-machine-form-remedy>
+        </uib-tab>
+        <uib-tab heading="打卡機補登主管審核" ng-if="roleType === '2' || roleType === '6' || roleType === '100'"
+                 style="color: blue">
+                <div class="row"
+                     ng-controller="hrMachineFormRemedyReviewCtrl">
+                    <div class="col-md-12" id="includeHead_review">
+                    </div>
+                </div>
+        </uib-tab>
+        <!-- 不用給行政總管 -->
+        <uib-tab heading="打卡機補登行政審核" ng-if="false"
+                 style="color: blue">
+            <div class="row"
+                 ng-controller="hrMachineFormRemedyConfirmCtrl">
+                <div class="col-md-12" id="includeHead_confirm">
+                </div>
+            </div>
+            <!--<hr-machine-form-remedy-confirm></hr-machine-form-remedy-confirm>-->
         </uib-tab>
     </uib-tabset>
 

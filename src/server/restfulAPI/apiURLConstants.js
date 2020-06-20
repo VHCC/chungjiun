@@ -216,6 +216,9 @@ global.apiUrl = {
     post_insert_official_doc_notify : '/api/post_insert_official_doc_notify',
     post_update_official_doc_notify : '/api/post_update_official_doc_notify',
 
+    // task check list
+    fetch_task_check_list_work_hour_table_manager: '/api/fetch_task_check_list_work_hour_table_manager',
+    fetch_task_check_list_work_hour_table_executive: '/api/fetch_task_check_list_work_hour_table_executive',
 
     //userEdit
     post_upload_user_avatar : '/api/uploadUserAvatar',
@@ -251,4 +254,12 @@ global.apiUrl = {
     post_travel_application_update_item : '/api/post_travel_application_update_item', // 20200120
     post_travel_application_search_item : '/api/post_travel_application_search_item', // 20200120
     post_travel_application_search_item_2 : '/api/post_travel_application_search_item_2', // 20200205
+
+    // remedy
+    post_hr_remedy_insert_item : '/api/post_hr_remedy_insert_item', // 20200618
+    post_hr_remedy_fetch_items_by_creatorDID : '/api/post_hr_remedy_fetch_items_by_creatorDID', // 20200618
+    post_hr_remedy_delete_item : '/api/post_hr_remedy_delete_item', // 20200618
+    post_hr_remedy_update_item : '/api/post_hr_remedy_update_item', // 20200618
+    post_hr_remedy_search_item_review : '/api/post_hr_remedy_search_item_review', // 20200619
+    post_hr_remedy_search_item_confirm : '/api/post_hr_remedy_search_item_confirm', // 20200620
 };
