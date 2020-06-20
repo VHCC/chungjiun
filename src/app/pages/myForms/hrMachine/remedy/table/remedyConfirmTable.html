@@ -1,0 +1,110 @@
+<div class="horizontal-scroll">
+    <table class="table table-hover" st-table="remedyConfirmItems">
+        <thead>
+        <tr>
+            <td colspan="10" class="text-center">
+                <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
+            </td>
+        </tr>
+        <tr class="sortable">
+            <td style="vertical-align: inherit; text-align: center; width: 5%" ></td>
+
+            <td style="vertical-align: inherit; text-align: center; width: 5%" >申請人</td>
+
+            <td style="vertical-align: inherit; text-align: center; width: 5%" >日期</td>
+            <td style="vertical-align: inherit; text-align: center; width: 5%" >補登時間</td>
+
+            <td style="vertical-align: inherit; text-align: center">補打卡別</td>
+
+            <td style="vertical-align: inherit; text-align: center; width: 15%" >事由/地點</td>
+
+            <td style="vertical-align: inherit; text-align: center; width: 5%" >審核</td>
+        </tr>
+
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="item in remedyConfirmItems"
+            class="editable-tr-wrap"
+            ng-mouseover="hover = true"
+            ng-mouseleave="hover = false">
+
+            <!--序號-->
+            <td style="vertical-align: inherit; text-align: center; width: 5%">
+                <span id="prjCode">{{$index + 1}}</span>
+            </td>
+
+            <!--申請人-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center; width: 5%">
+                <span>{{showApplier(item.creatorDID)}}</span>
+            </td>
+
+            <!--日期-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center; width: 5%">
+                <my ng-show="rowform1.$waiting || item.isSendReview">
+                    {{item.taStartDate}}
+                    {{showRemedyDate(item)}}
+                </my>
+            </td>
+
+            <!--補登時間-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center; width: 5%">
+                <my ng-show="rowform1.$waiting || item.isSendReview">
+                    {{item.start_time}}
+                </my>
+            </td>
+
+            <!-- 補打卡別 -->
+            <td class="form-group" style="vertical-align: inherit; text-align: center; width: 5%">
+                <my ng-show="rowform1.$waiting || item.isSendReview">
+                    {{showWRemedyTypeString(item.remedyType)}}
+                </my>
+            </td>
+
+            <!--地點-->
+            <td class="form-group has-success" style="vertical-align: inherit; text-align: center; width: 15%">
+                <div ng-show="rowform1.$waiting || item.isSendReview">
+                    {{item.reason}}
+                </div>
+            </td>
+
+
+            <!--審核-->
+            <td class="form-group has-success" style="vertical-align: inherit; text-align: center; width: 5%">
+                <div ng-show="rowform1.$waiting || item.isSendReview">
+                    <div >
+                        <button class="btn btn-info editable-table-button btn-xs"
+                                ng-click="confirmRemedyItem(item)"
+                                style="color: black">
+                                同意
+                        </button>
+                    </div>
+                    <div >
+                        <button class="btn btn-danger editable-table-button btn-xs"
+                                ng-click="denyRemedyItem(item)"
+                                style="color: black">
+                            退回
+                        </button>
+                    </div>
+                    <!--<div ng-show="item.isManagerCheck">-->
+                        <!--<button class="btn btn-info editable-table-button btn-xs"-->
+                                <!--style="color: black">-->
+                            <!--{{ showProjectManager(item.prjDID)}}-->
+                            <!--<br>-->
+                            <!--確認完成-->
+                        <!--</button>-->
+                    <!--</div>-->
+                </div>
+            </td>
+
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="10" class="text-center">
+                <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
