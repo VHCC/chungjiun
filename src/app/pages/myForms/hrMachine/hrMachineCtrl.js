@@ -730,11 +730,11 @@
             // 出差時數
             $scope.workTravelApplyHour = function (tableItem) {
                 // console.log(tableItem);
-                var result = 0;
+                var result = 0.0;
                 for (var index = 0; index < tableItem.length; index ++) {
                     if (tableItem[index].applyHour != undefined && tableItem[index].applyHour != "") {
                         // console.log(tableItem[index]);
-                        result += parseInt(tableItem[index].applyHour);
+                        result += parseFloat(tableItem[index].applyHour);
                     }
                 }
                 return result > 0.0 ? result : "";
