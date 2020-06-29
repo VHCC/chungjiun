@@ -1091,7 +1091,10 @@
                         // console.log(moment(parseInt(dateList[0].substring(0,3))+ 1911 + dateList[0].substring(3,7)));
                         var startDate = moment(parseInt(dateList[0].substring(0,3))+ 1911 + dateList[0].substring(3,7))
                         // console.log(moment(parseInt(dateList[dateList.length - 1].substring(0,3))+ 1911 + dateList[dateList.length - 1].substring(3,7)));
-                        var endDate = moment(parseInt(dateList[dateList.length - 1].substring(0,3))+ 1911 + dateList[dateList.length - 1].substring(3,7))
+                        var endDate = moment(parseInt(dateList[dateList.length - 1].substring(0,3))+ 1911 + dateList[dateList.length - 1].substring(3,7));
+
+                        // console.log(startDate)
+                        // console.log(endDate)
                         for (var index = 0; index < resp.payload.length; index ++) {
                             $scope.travelApplicationItems.push(resp.payload[index]);
 
@@ -1111,8 +1114,9 @@
                             }
 
                             var targetDate = moment(parseInt(dateTemp.substring(0,3))+ 1911 + dateTemp.substring(3,7))
+                            // console.log(targetDate)
 
-                            if (targetDate.isBetween(startDate, endDate)) {
+                            if (targetDate.isAfter(startDate)) {
 
                                 if (operateTable[dateTemp] === undefined) {
                                     var hrMachineCollection = [];
