@@ -538,6 +538,7 @@
                                         } else {
                                             $scope.tables[1].tablesItems.push(detail);
                                         }
+                                        console.log($scope.tables);
                                     }
                                     $timeout(function () {
                                         bsLoadingOverlayService.stop({
@@ -2100,6 +2101,8 @@
 
             $scope.reviewTableIndex = tableIndex;
 
+            console.log($scope.tables)
+
             ngDialog.open({
                 template: 'app/pages/myModalTemplate/myWorkHourTableFormReviewModalTotal.html',
                 className: 'ngdialog-theme-default',
@@ -2110,51 +2113,53 @@
 
         // 使用者確認提交
         $scope.reviewForm = function(tableIndex) {
-            $timeout(function () {
-                var tableList = [];
-                var targetList = [];
-                var msgTopicList = [];
-                var msgDetailList = [];
-                var memoList = [];
-                for (var index = 0; index < $scope.tables[tableIndex].tablesItems.length; index ++) {
-                    // console.log($scope.tables[tableIndex].tablesItems[index]);
-                    tableList[index] = $scope.tables[tableIndex].tablesItems[index].tableID;
-                    // console.log($scope.tables[tableIndex].tablesItems[index].isSendReview);
-                    if (!$scope.tables[tableIndex].tablesItems[index].isSendReview) { // 未被審查的項目 才需要通知；已經遞交審查的不通知
-                        if (!targetList.includes($scope.showProjectManagerDID($scope.tables[tableIndex].tablesItems[index].prjDID))) { // 一張表格多個項目有相同的經理的話，只通知一次
-                            targetList[index] = $scope.showProjectManagerDID($scope.tables[tableIndex].tablesItems[index].prjDID);
-                            memoList[index] = $scope.tables[tableIndex].tablesItems[index].create_formDate;
-                            msgTopicList[index] = 1000;
-                            msgDetailList[index] = 1001;
-                        }
+            console.log(tableIndex)
+            console.log($scope.tables);
+            var tableList = [];
+            var targetList = [];
+            var msgTopicList = [];
+            var msgDetailList = [];
+            var memoList = [];
+            for (var index = 0; index < $scope.tables[tableIndex].tablesItems.length; index ++) {
+                console.log(tableIndex);
+                console.log($scope.tables[tableIndex].tablesItems[index].tableID);
+                tableList[index] = $scope.tables[tableIndex].tablesItems[index].tableID;
+                // console.log($scope.tables[tableIndex].tablesItems[index].isSendReview);
+                if (!$scope.tables[tableIndex].tablesItems[index].isSendReview) { // 未被審查的項目 才需要通知；已經遞交審查的不通知
+                    if (!targetList.includes($scope.showProjectManagerDID($scope.tables[tableIndex].tablesItems[index].prjDID))) { // 一張表格多個項目有相同的經理的話，只通知一次
+                        targetList[index] = $scope.showProjectManagerDID($scope.tables[tableIndex].tablesItems[index].prjDID);
+                        memoList[index] = $scope.tables[tableIndex].tablesItems[index].create_formDate;
+                        msgTopicList[index] = 1000;
+                        msgDetailList[index] = 1001;
                     }
                 }
+            }
 
-                // 更改 table status
-                var formData = {
-                    creatorDID: $cookies.get('userDID'),
-                    tableArray: tableList,
-                }
-                console.log(formData);
-                WorkHourUtil.updateTotalTableSendReview(formData)
-                    .success(function (res) {
-                        // console.log(res.code);
-                        // var formData = {
-                        //     creatorDID: cookies.get('userDID'),
-                        //     // msgTargetID: cookies.get('bossID'),
-                        //     // tableArray: tableList,
-                        //     msgTargetArray: targetList,
-                        //     msgMemoArray: memoList,
-                        //     msgTopicArray: msgTopicList,
-                        //     msgDetailArray: msgDetailList,
-                        // }
-                        // NotificationMsgUtil.createMsgItem(formData)
-                        //     .success(function (req) {
-                        //
-                        //     })
-                        $scope.getWorkHourTables();
-                    })
-            }, 1000);
+            // 更改 table status
+            var formData = {
+                creatorDID: $cookies.get('userDID'),
+                tableArray: tableList,
+            }
+            console.log(" ===== updateTotalTableSendReview ===== ");
+            console.log(formData);
+            WorkHourUtil.updateTotalTableSendReview(formData)
+                .success(function (res) {
+                    // console.log(res.code);
+                    // var formData = {
+                    //     creatorDID: cookies.get('userDID'),
+                    //     // msgTargetID: cookies.get('bossID'),
+                    //     // tableArray: tableList,
+                    //     msgTargetArray: targetList,
+                    //     msgMemoArray: memoList,
+                    //     msgTopicArray: msgTopicList,
+                    //     msgDetailArray: msgDetailList,
+                    // }
+                    // NotificationMsgUtil.createMsgItem(formData)
+                    //     .success(function (req) {
+                    //
+                    //     })
+                    $scope.getWorkHourTables();
+                })
         }
 
         // ********************** 專案經理確認 *****************************
