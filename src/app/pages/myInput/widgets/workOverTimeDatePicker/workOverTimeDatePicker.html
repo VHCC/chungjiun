@@ -1,0 +1,22 @@
+<div>
+    <div class="input-group">
+        <input type="text"
+               class="form-control workOverTimeDatePickerCtrl"
+               uib-datepicker-popup="{{format}}"
+               datepicker-options=myOptions
+               ng-model="myDT"
+               is-open="opened"
+               id="myDT"
+               ng-change="changeWorkOverTimeItemDay(this)"
+               ng-required="true"
+               close-text="Close"
+               alt-input-formats="altInputFormats"
+               show-button-bar="false"/>
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-default"
+                    ng-click="openDatePicker()">
+                <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+        </span>
+    </div>
+</div>

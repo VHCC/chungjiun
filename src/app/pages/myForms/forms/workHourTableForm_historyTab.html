@@ -47,7 +47,7 @@
             <td rowspan="3" style="vertical-align: inherit; text-align: center" width="50px">代碼</td>
             <td rowspan="3" style="vertical-align: inherit; text-align: center" width="300px">名稱</td>
             <td rowspan="3" style="vertical-align: inherit; text-align: center" width="80px">經理/主任</td>
-            <td rowspan="3" style="vertical-align: inherit; text-align: center" width="80px">類型</td>
+            <td rowspan="3" style="vertical-align: inherit; text-align: center" width="100px">類型</td>
 
             <td colspan="2" style="vertical-align: inherit; text-align: center">{{monDate_history}}</td>
             <td colspan="2" style="vertical-align: inherit; text-align: center">{{tueDate_history}}</td>
@@ -664,6 +664,22 @@
                         <span>
                             小計
                         </span>
+                        <br>
+                        <span>
+                            Ａ 本週申請加班
+                        </span>
+                        <br>
+                        <span>
+                            Ｂ 本月申請加班(未核定)
+                        </span>
+                        <br>
+                        <span>
+                            Ｃ 本月核定加班
+                        </span>
+                        <br>
+                        <span>
+                            Ｄ 累積加班時數
+                        </span>
             </td>
             <!--MON-->
             <td colspan="2" style="text-align: center">
@@ -733,9 +749,24 @@
                     <span ng-class="showCalculateHour($parent.$index, firstFullDate_history, fetchTableItems_history($parent.$index), 1001, 4) !== 40 ? 'sumWarning' : 'sunNormal'">
                         {{showCalculateHour($parent.$index, firstFullDate_history, fetchTableItems_history($parent.$index), 1001, 4)}}
                     </span>
-                <br>
-                <span>
+                    <br>
+                    <span>
                         {{showCalculateHour($parent.$index, firstFullDate_history, fetchTableItems_history($parent.$index), 2001, 4)}}
+                    </span>
+                    <br>
+                    <span>
+                        <!--Ｂ 本月申請加班（未核定）-->
+                        {{showWOTTotal($parent.$index, false, 4)}}
+                    </span>
+                    <br>
+                    <span>
+                        <!--Ｃ 本月核定加班-->
+                        {{showWOTTotal($parent.$index, true, 4)}}
+                    </span>
+                    <br>
+                    <span>
+                        <!--Ｄ 累積加班時數-->
+                        {{showWOTTotal($parent.$index, true, 4) + showWOTTotal($parent.$index, false, 4)}}
                     </span>
             </td>
         </tr>

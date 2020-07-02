@@ -37,6 +37,7 @@ module.exports = function (app) {
                         }
                         findData.push(target);
                     };
+                    console.log("==== remove workhourtableforms table id ====");
                     console.log(findData);
                     // 刪除既有 工時表格
                     WorkHourTable.remove(
@@ -76,111 +77,121 @@ module.exports = function (app) {
         var resIndex = 0;
 
         console.log("req.body.formTables= " + req.body.formTables.length);
-        for (var index = 0; index < req.body.formTables.length; index++) {
-            try {
-                WorkHourTable.create({
-                    creatorDID: req.body.formTables[index].creatorDID,
-                    prjDID: req.body.formTables[index].prjDID,
-                    create_formDate: req.body.create_formDate,
-                    //MON
-                    mon_hour: req.body.formTables[index].mon_hour,
-                    mon_memo: req.body.formTables[index].mon_memo,
-                    mon_hour_add: req.body.formTables[index].mon_hour_add,
-                    mon_memo_add: req.body.formTables[index].mon_memo_add,
-                    //TUE
-                    tue_hour: req.body.formTables[index].tue_hour,
-                    tue_memo: req.body.formTables[index].tue_memo,
-                    tue_hour_add: req.body.formTables[index].tue_hour_add,
-                    tue_memo_add: req.body.formTables[index].tue_memo_add,
-                    //WES
-                    wes_hour: req.body.formTables[index].wes_hour,
-                    wes_memo: req.body.formTables[index].wes_memo,
-                    wes_hour_add: req.body.formTables[index].wes_hour_add,
-                    wes_memo_add: req.body.formTables[index].wes_memo_add,
-                    //THU
-                    thu_hour: req.body.formTables[index].thu_hour,
-                    thu_memo: req.body.formTables[index].thu_memo,
-                    thu_hour_add: req.body.formTables[index].thu_hour_add,
-                    thu_memo_add: req.body.formTables[index].thu_memo_add,
-                    //FRI
-                    fri_hour: req.body.formTables[index].fri_hour,
-                    fri_memo: req.body.formTables[index].fri_memo,
-                    fri_hour_add: req.body.formTables[index].fri_hour_add,
-                    fri_memo_add: req.body.formTables[index].fri_memo_add,
-                    //SAT
-                    sat_hour: req.body.formTables[index].sat_hour,
-                    sat_memo: req.body.formTables[index].sat_memo,
-                    sat_hour_add: req.body.formTables[index].sat_hour_add,
-                    sat_memo_add: req.body.formTables[index].sat_memo_add,
-                    //SUN
-                    sun_hour: req.body.formTables[index].sun_hour,
-                    sun_memo: req.body.formTables[index].sun_memo,
-                    sun_hour_add: req.body.formTables[index].sun_hour_add,
-                    sun_memo_add: req.body.formTables[index].sun_memo_add,
-                    //RIGHT
-                    isSendReview: req.body.formTables[index].isSendReview,
-                    isManagerCheck: req.body.formTables[index].isManagerCheck,
-                    isExecutiveCheck: req.body.formTables[index].isExecutiveCheck,
 
-                    // Reject
-                    isManagerReject: req.body.formTables[index].isManagerReject,
-                    managerReject_memo: req.body.formTables[index].managerReject_memo,
+        if (req.body.formTables.length == 0) {
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+                payload: [],
+            });
+        } else {
+            for (var index = 0; index < req.body.formTables.length; index++) {
+                try {
+                    WorkHourTable.create({
+                        creatorDID: req.body.formTables[index].creatorDID,
+                        prjDID: req.body.formTables[index].prjDID,
+                        create_formDate: req.body.create_formDate,
+                        //MON
+                        mon_hour: req.body.formTables[index].mon_hour,
+                        mon_memo: req.body.formTables[index].mon_memo,
+                        mon_hour_add: req.body.formTables[index].mon_hour_add,
+                        mon_memo_add: req.body.formTables[index].mon_memo_add,
+                        //TUE
+                        tue_hour: req.body.formTables[index].tue_hour,
+                        tue_memo: req.body.formTables[index].tue_memo,
+                        tue_hour_add: req.body.formTables[index].tue_hour_add,
+                        tue_memo_add: req.body.formTables[index].tue_memo_add,
+                        //WES
+                        wes_hour: req.body.formTables[index].wes_hour,
+                        wes_memo: req.body.formTables[index].wes_memo,
+                        wes_hour_add: req.body.formTables[index].wes_hour_add,
+                        wes_memo_add: req.body.formTables[index].wes_memo_add,
+                        //THU
+                        thu_hour: req.body.formTables[index].thu_hour,
+                        thu_memo: req.body.formTables[index].thu_memo,
+                        thu_hour_add: req.body.formTables[index].thu_hour_add,
+                        thu_memo_add: req.body.formTables[index].thu_memo_add,
+                        //FRI
+                        fri_hour: req.body.formTables[index].fri_hour,
+                        fri_memo: req.body.formTables[index].fri_memo,
+                        fri_hour_add: req.body.formTables[index].fri_hour_add,
+                        fri_memo_add: req.body.formTables[index].fri_memo_add,
+                        //SAT
+                        sat_hour: req.body.formTables[index].sat_hour,
+                        sat_memo: req.body.formTables[index].sat_memo,
+                        sat_hour_add: req.body.formTables[index].sat_hour_add,
+                        sat_memo_add: req.body.formTables[index].sat_memo_add,
+                        //SUN
+                        sun_hour: req.body.formTables[index].sun_hour,
+                        sun_memo: req.body.formTables[index].sun_memo,
+                        sun_hour_add: req.body.formTables[index].sun_hour_add,
+                        sun_memo_add: req.body.formTables[index].sun_memo_add,
+                        //RIGHT
+                        isSendReview: req.body.formTables[index].isSendReview,
+                        isManagerCheck: req.body.formTables[index].isManagerCheck,
+                        isExecutiveCheck: req.body.formTables[index].isExecutiveCheck,
 
-                    isExecutiveReject: req.body.formTables[index].isExecutiveReject,
-                    executiveReject_memo: req.body.formTables[index].executiveReject_memo,
+                        // Reject
+                        isManagerReject: req.body.formTables[index].isManagerReject,
+                        managerReject_memo: req.body.formTables[index].managerReject_memo,
 
-                    userMonthSalary: req.body.formTables[index].userMonthSalary,
+                        isExecutiveReject: req.body.formTables[index].isExecutiveReject,
+                        executiveReject_memo: req.body.formTables[index].executiveReject_memo,
 
-                    timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
+                        userMonthSalary: req.body.formTables[index].userMonthSalary,
 
-                }, function (err, workTable) {
-                    resIndex++;
-                    // workHourForm formTables 的參數
+                        timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
 
-                    if (workTable) {
-                        var tableItem = {
-                            tableID: workTable._id,
-                            prjDID: workTable.prjDID,
-                        }
-                        formTable.push(tableItem);
-                    }
+                    }, function (err, workTable) {
+                        resIndex++;
+                        // workHourForm formTables 的參數
 
-                    if (resIndex === req.body.formTables.length) {
-                        console.log(formTable);
-                        WorkHourForm.create({
-                            year: req.body.year,
-                            month: req.body.month,
-                            creatorDID: req.body.creatorDID,
-                            create_formDate: req.body.create_formDate,
-                            formTables: formTable,
-                            timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
-                        }, function (err) {
-                            if (err) {
-                                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_create_table");
-                                console.log(req.body);
-                                console.log(" ***** ERROR ***** ");
-                                console.log(err);
-                                res.send(err);
-                            } else {
-                                res.status(200).send({
-                                    code: 200,
-                                    error: global.status._200,
-                                    payload: formTable,
-                                });
+                        if (workTable) {
+                            var tableItem = {
+                                tableID: workTable._id,
+                                prjDID: workTable.prjDID,
                             }
-                        });
+                            formTable.push(tableItem);
+                        }
+
+                        if (resIndex === req.body.formTables.length) {
+                            console.log(formTable);
+                            WorkHourForm.create({
+                                year: req.body.year,
+                                month: req.body.month,
+                                creatorDID: req.body.creatorDID,
+                                create_formDate: req.body.create_formDate,
+                                formTables: formTable,
+                                timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
+                            }, function (err) {
+                                if (err) {
+                                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_create_table");
+                                    console.log(req.body);
+                                    console.log(" ***** ERROR ***** ");
+                                    console.log(err);
+                                    res.send(err);
+                                } else {
+                                    res.status(200).send({
+                                        code: 200,
+                                        error: global.status._200,
+                                        payload: formTable,
+                                    });
+                                }
+                            });
+                        }
+                    });
+                } catch (err) {
+                    if (err) {
+                        console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_create_table");
+                        console.log(req.body);
+                        console.log(" ***** ERROR ***** ");
+                        console.log(err);
+                        res.send(err);
                     }
-                });
-            } catch (err) {
-                if (err) {
-                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_create_table");
-                    console.log(req.body);
-                    console.log(" ***** ERROR ***** ");
-                    console.log(err);
-                    res.send(err);
                 }
             }
         }
+
 
     });
 
