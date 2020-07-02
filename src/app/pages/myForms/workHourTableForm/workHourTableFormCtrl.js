@@ -204,13 +204,15 @@
 
         // 暫存表單，＊＊＊使用者互動 主要儲存功能＊＊＊
         $scope.saveTemp = function () {
-            $scope.createSubmit(100, false);
+            $scope.createSubmit(10, false);
         }
 
         // Remove Work Hour Check
-        $scope.deleteCheck = function (item, itemIndex) {
+        $scope.deleteCheck = function (item, tableIndex, itemIndex) {
+            console.log(itemIndex)
             $scope.checkText = '確定移除 ' + $scope.showPrjName(item.prjDID) + "  ？";
             $scope.checkingItem = item;
+            $scope.tableIndex = tableIndex;
             $scope.itemIndex = itemIndex;
             ngDialog.open({
                 template: 'app/pages/myModalTemplate/myWorkHourTableFormDeleteModal.html',
@@ -221,10 +223,12 @@
         }
 
         // 使用者確定移除工時表項目
-        $scope.removeWorkItem = function (item, itemIndex) {
-            for (var index = 0; index< $scope.tables.length; index ++) {
-                $scope.tables[index].tablesItems.splice(itemIndex, 1);
-            }
+        $scope.removeWorkItem = function (item, tableIndex, itemIndex) {
+            // for (var index = 0; index< $scope.tables.length; index ++) {
+            //     $scope.tables[index].tablesItems.splice(itemIndex, 1);
+            // }
+
+            $scope.tables[tableIndex].tablesItems.splice(itemIndex, 1);
 
             var formData = {
                 creatorDID: $cookies.get('userDID'),
@@ -235,7 +239,7 @@
             // 移除加班項目
             WorkHourAddItemUtil.removeRelatedAddItemByProject(formData)
                 .success(function (res) {
-                    $scope.createSubmit(100, true);
+                    $scope.createSubmit(10, true);
                 })
                 .error(function () {
                     console.log("ERROR WorkHourAddItemUtil.removeRelatedAddItemByProject");
@@ -1751,7 +1755,7 @@
                             table.fri_hour_add +
                             table.sat_hour_add +
                             table.sun_hour_add;
-                        $scope.createSubmit(100, false);
+                        $scope.createSubmit(10, false);
                     })
                     .error(function () {
                         console.log('ERROR WorkHourAddItemUtil.createWorkHourAddItem')
@@ -1909,7 +1913,7 @@
                             userMonthSalary: $scope.tables[majorIndex].tablesItems[itemIndex].userMonthSalary,
                         }
                         workHourTableData.push(tableItem);
-                        console.log(tableItem);
+                        // console.log(tableItem);
                     }
 
                     var sendMonth = moment($scope.firstFullDate).month() + 1;
@@ -1982,7 +1986,7 @@
                                     needRemoveOldTable = {
                                         tableIDArray: needUpdateWorkTableIDArray,
                                     }
-                                    sleep(500);
+                                    // sleep(500);
                                     if (isRefreshProjectSelector && tableIndex === $scope.tables.length) {
                                         $scope.getWorkHourTables();
                                     }
@@ -2101,7 +2105,7 @@
 
             $scope.reviewTableIndex = tableIndex;
 
-            console.log($scope.tables)
+            console.log($scope.tables[0].tablesItems.length);
 
             ngDialog.open({
                 template: 'app/pages/myModalTemplate/myWorkHourTableFormReviewModalTotal.html',
@@ -2122,6 +2126,7 @@
             var memoList = [];
             for (var index = 0; index < $scope.tables[tableIndex].tablesItems.length; index ++) {
                 console.log(tableIndex);
+                console.log(index);
                 console.log($scope.tables[tableIndex].tablesItems[index].tableID);
                 tableList[index] = $scope.tables[tableIndex].tablesItems[index].tableID;
                 // console.log($scope.tables[tableIndex].tablesItems[index].isSendReview);
