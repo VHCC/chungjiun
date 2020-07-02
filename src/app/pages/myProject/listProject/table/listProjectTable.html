@@ -191,14 +191,33 @@
                 </form>
             </td>
             <!--類型-->
-            <td style="width: 4%">{{prjTypeToName(prj.type)}}</td>
+            <td style="width: 4%">
+                {{prjTypeToName(prj.type)}}
+            </td>
             <!--經理-->
-            <td style="width: 4%">{{ showManager(prj) }}</td>
+            <td style="width: 4%">
+                <!--{{ showManager(prj) }}-->
+                <span editable-select="prj.managerID"
+                      e-name="managerID"
+                      e-form="managerID"
+                      e-selectpicker
+                      e-ng-options="user.value as user.name for user in projectManagers">
+                {{ showManager(prj) }}
+                </span>
+                <br>
+                <button type="button"
+                        ng-disabled="rowform.$visible"
+                        ng-click="clickChangeManager();managerID.$show()"
+                        ng-show="isFitExecutive()"
+                        class="btn btn-primary editable-table-button btn-xs">
+                    變更經理
+                </button>
+            </td>
             <!--主承辦-->
             <td class="select-td" style="width: 5%">
                 <span editable-select="prj.majorID"
                       e-name="majorID"
-                      e-form="rowform"
+                      e-form="majorID"
                       e-selectpicker
                       e-ng-options="user.value as user.name for user in projectManagers">
                 {{ showMajor(prj) }}
@@ -206,7 +225,7 @@
                 <br>
                 <button type="button"
                         ng-disabled="rowform.$visible"
-                        ng-click="rowform.$show()"
+                        ng-click="clickChangeMajor();majorID.$show()"
                         ng-show="isFitPrjManager(prj.managerID) || isFitExecutive()"
                         class="btn btn-primary editable-table-button btn-xs">
                     指派主承辦

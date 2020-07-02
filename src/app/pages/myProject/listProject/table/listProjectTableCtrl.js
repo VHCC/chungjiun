@@ -207,7 +207,7 @@
 
         // 對應行政總管
         $scope.isFitExecutive = function () {
-            return ($cookies.get('roletype') == "100")
+            return ($cookies.get('roletype') == "100" || $cookies.get('userDID') == "5d197f16a6b04756c893a162")
         }
 
         $scope.showMajor = function (project) {
@@ -222,6 +222,48 @@
         };
 
         editableOptions.theme = 'bs3';
+
+        $scope.clickChangeManager = function() {
+            editableThemes['bs3'].submitTpl = '<button type="submit" ng-click="updateManager($form, $parent)" class="btn btn-primary btn-with-icon"><i class="ion-checkmark-round"></i></button>';
+        }
+
+        $scope.updateManager = function (form, table) {
+            console.log(form.$data);
+            // console.log(table.$parent.prj._id);
+            var formData = {
+                prjID: table.$parent.prj._id,
+                managerID: form.$data.managerID,
+            }
+
+            Project.updateManager(formData)
+                .success(function (res) {
+                    console.log(res.code);
+                })
+                .error(function () {
+
+                })
+        }
+
+        $scope.clickChangeMajor = function() {
+            editableThemes['bs3'].submitTpl = '<button type="submit" ng-click="updateMajor($form, $parent)" class="btn btn-primary btn-with-icon"><i class="ion-checkmark-round"></i></button>';
+        }
+
+        $scope.updateMajor = function (form, table) {
+            console.log(form.$data);
+            // console.log(table.$parent.prj._id);
+            var formData = {
+                prjID: table.$parent.prj._id,
+                majorID: form.$data.majorID,
+            }
+
+            Project.updateMajorID(formData)
+                .success(function (res) {
+                    console.log(res.code);
+                })
+                .error(function () {
+
+                })
+        }
 
         $scope.prjTypeToName = function (type) {
             return ProjectUtil.getTypeText(type);
@@ -240,25 +282,7 @@
             return resault;
         }
 
-        editableThemes['bs3'].submitTpl = '<button type="submit" ng-click="updateMajor($form, $parent)" class="btn btn-primary btn-with-icon"><i class="ion-checkmark-round"></i></button>';
         editableThemes['bs3'].cancelTpl = '<button type="button" ng-click="$form.$cancel()" class="btn btn-default btn-with-icon"><i class="ion-close-round"></i></button>';
-
-        $scope.updateMajor = function (form, table) {
-            // console.log(form.$data);
-            // console.log(table.$parent.prj._id);
-            var formData = {
-                prjID: table.$parent.prj._id,
-                majorID: form.$data.majorID,
-            }
-
-            Project.updateMajorID(formData)
-                .success(function (res) {
-                    console.log(res.code);
-                })
-                .error(function () {
-
-                })
-        }
 
         // 更新總案名稱
         $scope.changeMainName = function (form, table) {
