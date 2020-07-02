@@ -662,6 +662,71 @@
                 },
             }
         }])
+        .factory('RemedyUtil', ['$http', function (http) {
+            return {
+                insertRemedyItemToDB: function (formData) {
+                    return http.post('/api/post_hr_remedy_insert_item', formData);
+                },
+
+                fetchRemedyItemFromDB: function (formData) {
+                    return http.post('/api/post_hr_remedy_fetch_items_by_creatorDID', formData);
+                },
+
+                fetchRemedyHistoryItemFromDB: function (formData) {
+                    return http.post('/api/post_hr_remedy_fetch_history_items_by_creatorDID', formData);
+                },
+
+                removeRemedyItemFromDB: function (formData) {
+                    return http.post('/api/post_hr_remedy_delete_item', formData);
+                },
+
+                updateRemedyItemFromDB: function (formData) {
+                    return http.post('/api/post_hr_remedy_update_item', formData);
+                },
+            }
+        }])
+        .factory('SuperVisionNotifyUtil', ['$http', function (http) {
+            return {
+                insertSVNItemToDB: function (formData) {
+                    return http.post('/api/post_supervision_notify_insert_item', formData);
+                },
+
+                fetchSVNItemFromDB: function (formData) {
+                    return http.post('/api/post_supervision_notify_fetch_by_creatorDID', formData);
+                },
+
+                removeSVNItemFromDB: function (formData) {
+                    return http.post('/api/post_supervision_notify_delete_item', formData);
+                },
+
+                updateSVNItemFromDB: function (formData) {
+                    return http.post('/api/post_supervision_notify_update_item', formData);
+                },
+            }
+        }])
+        .factory('WorkOverTimeUtil', ['$http', function (http) {
+            return {
+                insertWOTItemToDB: function (formData) {
+                    return http.post('/api/post_work_over_time_insert_item', formData);
+                },
+
+                fetchWOTItemFromDB: function (formData) {
+                    return http.post('/api/post_work_over_time_fetch_by_creatorDID', formData);
+                },
+
+                fetchWOTItemFromDBByCreateFormDate: function (formData) {
+                    return http.post('/api/post_work_over_time_fetch_by_creatorDID_create_formdate', formData);
+                },
+
+                removeWOTItemFromDB: function (formData) {
+                    return http.post('/api/post_work_over_time_delete_item', formData);
+                },
+
+                updateWOTItemFromDB: function (formData) {
+                    return http.post('/api/post_work_over_time_update_item', formData);
+                },
+            }
+        }])
         .factory('TravelApplicationUtil', ['$http', function (http) {
             return {
                 insertTravelApplicationItem: function (formData) {

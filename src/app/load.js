@@ -24,7 +24,7 @@ fs.readFile(fReadName, function (err, data) {
     if (err) {
         throw err;
     }
-    console.log("Readline start !!!, " + fileDate);
+    console.log("Readline start !!!, fileDate= " + fileDate);
 
     hrMAchineModel.remove({
     }, function (err) {

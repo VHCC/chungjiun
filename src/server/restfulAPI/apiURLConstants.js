@@ -258,8 +258,23 @@ global.apiUrl = {
     // remedy
     post_hr_remedy_insert_item : '/api/post_hr_remedy_insert_item', // 20200618
     post_hr_remedy_fetch_items_by_creatorDID : '/api/post_hr_remedy_fetch_items_by_creatorDID', // 20200618
+    post_hr_remedy_fetch_history_items_by_creatorDID : '/api/post_hr_remedy_fetch_history_items_by_creatorDID', // 20200701
     post_hr_remedy_delete_item : '/api/post_hr_remedy_delete_item', // 20200618
     post_hr_remedy_update_item : '/api/post_hr_remedy_update_item', // 20200618
     post_hr_remedy_search_item_review : '/api/post_hr_remedy_search_item_review', // 20200619
     post_hr_remedy_search_item_confirm : '/api/post_hr_remedy_search_item_confirm', // 20200620
+
+    // SupervisionNotify
+    post_supervision_notify_insert_item : '/api/post_supervision_notify_insert_item', // 20200629
+    post_supervision_notify_fetch_by_creatorDID : '/api/post_supervision_notify_fetch_by_creatorDID', // 20200629
+    post_supervision_notify_delete_item : '/api/post_supervision_notify_delete_item', // 20200629
+    post_supervision_notify_update_item : '/api/post_supervision_notify_update_item', // 20200629
+
+    // workOverTimeItem
+    post_work_over_time_insert_item : '/api/post_work_over_time_insert_item', // 20200701
+    post_work_over_time_fetch_by_creatorDID : '/api/post_work_over_time_fetch_by_creatorDID', // 20200701
+    post_work_over_time_fetch_by_creatorDID_create_formdate : '/api/post_work_over_time_fetch_by_creatorDID_create_formdate', // 20200701
+    post_work_over_time_delete_item : '/api/post_work_over_time_delete_item', // 20200701
+    post_work_over_time_update_item : '/api/post_work_over_time_update_item', // 20200701
+
 };

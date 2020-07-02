@@ -565,7 +565,7 @@
                               id="mon_hour_add{{$parent.$parent.$parent.$index}}"
                               e-required>{{ item.mon_hour_add || 0}}</span>
             <button type="button" ng-disabled="rowform1.$waiting"
-                    ng-if="$parent.$index === 0"
+                    ng-if="$parent.$index === 0 && isWOTApplied(1)"
                     ng-show="rowform1.$visible"
                     ng-click="showWorkAddModal(item, 1, true)"
                     class="btn btn-primary editable-table-button btn-xs">
@@ -573,24 +573,6 @@
             </button>
         </td>
         <td style="vertical-align: inherit; text-align: center">
-            <!--<my ng-show="item.mon_memo_add !== undefined && item.mon_memo_add !== '' && !rowform1.$visible"-->
-            <!--ng-if="$parent.$index === 0"-->
-            <!--ng-class="{workAdd: hover}"-->
-            <!--class="mytooltip"-->
-            <!--ng-mouseover="hover = true"-->
-            <!--ng-mouseleave="hover = false"-->
-            <!--ng-click="editMemo(item, 11, false)">-->
-            <!--<i class="fa fa-pencil"></i>-->
-            <!--<span class="tooltiptext">{{item.mon_memo_add}}</span>-->
-            <!--</my>-->
-            <!--<my ng-show="rowform1.$visible"-->
-            <!--ng-if="$parent.$index === 0"-->
-            <!--ng-class="{workAdd: hover}"-->
-            <!--ng-mouseover="hover = true"-->
-            <!--ng-mouseleave="hover = false"-->
-            <!--ng-click="editMemo(item, 11, true)">-->
-            <!--<i class="fa fa-pencil"></i>-->
-            <!--</my>-->
             <span editable-textarea="item.mon_memo_add"
                   ng-if="$parent.$index === 0"
                   e-form="rowform1"
@@ -620,35 +602,13 @@
                     ng-if="checkIsCrossMonth(firstFullDate) < 0
                               || (table.crossDay > 2 && $parent.$index === 0)
                               || (table.crossDay <= 2 && $parent.$index === 1)"
-                    ng-show="rowform1.$visible"
+                    ng-show="rowform1.$visible && isWOTApplied(2)"
                     ng-click="showWorkAddModal(item, 2, true)"
                     class="btn btn-primary editable-table-button btn-xs">
                 {{ item.tue_hour_add || 0}}
             </button>
         </td>
         <td style="vertical-align: inherit;">
-            <!--<my ng-show="item.tue_memo_add !== undefined && item.tue_memo_add !== '' && !rowform1.$visible"-->
-            <!--ng-if="checkIsCrossMonth(firstFullDate) < 0-->
-            <!--|| (table.crossDay > 2 && $parent.$index === 0)-->
-            <!--|| (table.crossDay <= 2 && $parent.$index === 1)"-->
-            <!--ng-class="{workAdd: hover}"-->
-            <!--class="mytooltip"-->
-            <!--ng-mouseover="hover = true"-->
-            <!--ng-mouseleave="hover = false"-->
-            <!--ng-click="editMemo(item, 12, false)">-->
-            <!--<i class="fa fa-pencil"></i>-->
-            <!--<span class="tooltiptext">{{item.tue_memo_add}}</span>-->
-            <!--</my>-->
-            <!--<my ng-show="rowform1.$visible"-->
-            <!--ng-if="checkIsCrossMonth(firstFullDate) < 0-->
-            <!--|| (table.crossDay > 2 && $parent.$index === 0)-->
-            <!--|| (table.crossDay <= 2 && $parent.$index === 1)"-->
-            <!--ng-class="{workAdd: hover}"-->
-            <!--ng-mouseover="hover = true"-->
-            <!--ng-mouseleave="hover = false"-->
-            <!--ng-click="editMemo(item, 12, true)">-->
-            <!--<i class="fa fa-pencil"></i>-->
-            <!--</my>-->
             <span editable-textarea="item.tue_memo_add"
                   ng-if="checkIsCrossMonth(firstFullDate) < 0
                               || (table.crossDay > 2 && $parent.$index === 0)
@@ -680,7 +640,7 @@
                     ng-if="checkIsCrossMonth(firstFullDate) < 0
                               || (table.crossDay > 3 && $parent.$index === 0)
                               || (table.crossDay <= 3 && $parent.$index === 1)"
-                    ng-show="rowform1.$visible"
+                    ng-show="rowform1.$visible && isWOTApplied(3)"
                     ng-click="showWorkAddModal(item, 3, true)"
                     class="btn btn-primary editable-table-button btn-xs">
                 {{ item.wes_hour_add || 0}}
@@ -740,7 +700,7 @@
                     ng-if="checkIsCrossMonth(firstFullDate) < 0
                               || (table.crossDay > 4 && $parent.$index === 0)
                               || (table.crossDay <= 4 && $parent.$index === 1)"
-                    ng-show="rowform1.$visible"
+                    ng-show="rowform1.$visible && isWOTApplied(4)"
                     ng-click="showWorkAddModal(item, 4, true)"
                     class="btn btn-primary editable-table-button btn-xs">
                 {{ item.thu_hour_add || 0}}
@@ -800,7 +760,7 @@
                     ng-if="checkIsCrossMonth(firstFullDate) < 0
                               || (table.crossDay > 5 && $parent.$index === 0)
                               || (table.crossDay <= 5 && $parent.$index === 1)"
-                    ng-show="rowform1.$visible"
+                    ng-show="rowform1.$visible && isWOTApplied(5)"
                     ng-click="showWorkAddModal(item, 5, true)"
                     class="btn btn-primary editable-table-button btn-xs">
                 {{ item.fri_hour_add || 0}}
@@ -860,7 +820,7 @@
                     ng-if="checkIsCrossMonth(firstFullDate) < 0
                               || (table.crossDay > 6 && $parent.$index === 0)
                               || (table.crossDay <= 6 && $parent.$index === 1)"
-                    ng-show="rowform1.$visible"
+                    ng-show="rowform1.$visible && isWOTApplied(6)"
                     ng-click="showWorkAddModal(item, 6, true)"
                     class="btn btn-primary editable-table-button btn-xs">
                 {{ item.sat_hour_add || 0}}
@@ -920,7 +880,7 @@
                     ng-if="checkIsCrossMonth(firstFullDate) < 0
                               || (table.crossDay > 7 && $parent.$index === 0)
                               || (table.crossDay <= 7 && $parent.$index === 1)"
-                    ng-show="rowform1.$visible"
+                    ng-show="rowform1.$visible && isWOTApplied(7)"
                     ng-click="showWorkAddModal(item, 7, true)"
                     class="btn btn-primary editable-table-button btn-xs">
                 {{ item.sun_hour_add || 0}}
@@ -1107,6 +1067,22 @@
                         <span>
                             小計
                         </span>
+                        <br>
+                        <span>
+                            Ａ 本週申請加班
+                        </span>
+                        <br>
+                        <span>
+                            Ｂ 本月申請加班(未核定)
+                        </span>
+                        <br>
+                        <span>
+                            Ｃ 本月核定加班
+                        </span>
+                        <br>
+                        <span>
+                            Ｄ 累積加班時數
+                        </span>
         </td>
         <!--MON-->
         <td colspan="2" style="text-align: center">
@@ -1176,9 +1152,25 @@
                         <span ng-class="showCalculateHour($parent.$index, firstFullDate, fetchTableItems($parent.$index), 1001, 1) !== 40 ? 'sumWarning' : 'sunNormal'">
                             {{showCalculateHour($parent.$index, firstFullDate, fetchTableItems($parent.$index), 1001, 1)}}
                         </span>
-            <br>
-            <span>
+                        <br>
+                        <span>
+                            <!--Ａ 本週申請加班-->
                             {{showCalculateHour($parent.$index, firstFullDate, fetchTableItems($parent.$index), 2001, 1)}}
+                        </span>
+                        <br>
+                        <span>
+                            <!--Ｂ 本月申請加班（未核定）-->
+                            {{showWOTTotal($parent.$index, false, 1)}}
+                        </span>
+                        <br>
+                        <span>
+                            <!--Ｃ 本月核定加班-->
+                            {{showWOTTotal($parent.$index, true, 1)}}
+                        </span>
+                        <br>
+                        <span>
+                            <!--Ｄ 累積加班時數-->
+                            {{showWOTTotal($parent.$index, true, 1) + showWOTTotal($parent.$index, false, 1)}}
                         </span>
         </td>
     </tr>
