@@ -168,6 +168,30 @@ module.exports = function (app) {
         })
     })
 
+    // 更新經理
+    app.post(global.apiUrl.post_project_update_manager_id, function (req, res) {
+        Project.update({
+            _id: req.body.prjID,
+        }, {
+            $set: {
+                managerID: req.body.managerID,
+            }
+        }, function (err) {
+            if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_update_manager_id");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
+            }
+        })
+    })
+
     // 更新承辦人員
     app.post(global.apiUrl.post_project_update_major_id, function (req, res) {
         Project.update({

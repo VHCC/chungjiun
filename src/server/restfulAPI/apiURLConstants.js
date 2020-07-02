@@ -49,6 +49,7 @@ global.apiUrl = {
     post_project_all_related_to_major_with_disabled : '/api/post_project_all_related_to_major_with_disabled', // only charger related
 
     // Update
+    post_project_update_manager_id: '/api/post_project_update_manager_id',
     post_project_update_major_id: '/api/post_project_update_major_id',
     post_project_update_workers: '/api/post_project_update_workers',
     post_project_update_status: '/api/post_project_update_status',
