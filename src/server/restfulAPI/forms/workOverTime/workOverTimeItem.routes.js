@@ -66,6 +66,7 @@ module.exports = function (app) {
             WorkOverTimeItem.find({
                 creatorDID: req.body.creatorDID,
                 create_formDate: req.body.create_formDate,
+                isManagerCheck: true,
             }, function (err, items) {
                 res.status(200).send({
                     code: 200,
@@ -139,5 +140,51 @@ module.exports = function (app) {
             }
         }
     });
+
+
+    // get manager review tables
+    // 多組creator, create_formDate
+    app.post(global.apiUrl.post_work_over_time_multiple_get, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_over_time_multiple_get");
+        console.log(JSON.stringify(req.body));
+
+        var findData = []
+        for (var index = 0; index < req.body.relatedProjects.length; index++) {
+            var target = {
+                prjDID: req.body.relatedProjects[index],
+                year: req.body.year,
+                month: req.body.month,
+            }
+            findData.push(target);
+        }
+
+        var query = {
+            $or: findData,
+        }
+
+        if (req.body.isFindSendReview !== null) {
+            query.isSendReview = req.body.isFindSendReview;
+        }
+
+        if (req.body.isFindManagerCheck !== null) {
+            query.isManagerCheck = req.body.isFindManagerCheck;
+        }
+
+        WorkOverTimeItem.find(query)
+            .sort({
+            })
+            .exec(function (err, results) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: results,
+                    });
+                }
+            });
+    })
+
 
 }

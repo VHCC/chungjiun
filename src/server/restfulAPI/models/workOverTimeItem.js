@@ -9,6 +9,10 @@ module.exports = mongoose.model('workOverTimeItem', {
         type: String,
     },
 
+    prjDID: {
+        type: String,
+    },
+
     create_formDate: {
         type: String,
     },
@@ -26,10 +30,31 @@ module.exports = mongoose.model('workOverTimeItem', {
         type: Number,
     },
 
+    contents: {
+        type: String,
+    },
+
     //狀態：已提交、尚未提交
     isSendReview: {
         type: Boolean,
         default: false,
+    },
+
+    // 經理審核
+    isManagerCheck: {
+        type: Boolean,
+        default: false,
+    },
+
+    // 經理是否退回
+    isManagerReject: {
+        type: Boolean,
+        default: false,
+    },
+
+    // 經理退回事由
+    managerReject_memo: {
+        type: String,
     },
 
     // 月薪

@@ -728,6 +728,11 @@
                 updateWOTItemFromDB: function (formData) {
                     return http.post('/api/post_work_over_time_update_item', formData);
                 },
+
+                // 多組
+                getWOTMultiple: function(formData) {
+                    return http.post('/api/post_work_over_time_multiple_get', formData);
+                },
             }
         }])
         .factory('TravelApplicationUtil', ['$http', function (http) {

@@ -565,7 +565,7 @@
                               id="mon_hour_add{{$parent.$parent.$parent.$index}}"
                               e-required>{{ item.mon_hour_add || 0}}</span>
             <button type="button" ng-disabled="rowform1.$waiting"
-                    ng-if="$parent.$index === 0"
+                    ng-if="$parent.$index === 0 && isWOTApplied(1, item)"
                     ng-show="rowform1.$visible"
                     ng-click="showWorkAddModal(item, 1, true)"
                     class="btn btn-primary editable-table-button btn-xs">
@@ -602,7 +602,7 @@
                     ng-if="checkIsCrossMonth(firstFullDate) < 0
                               || (table.crossDay > 2 && $parent.$index === 0)
                               || (table.crossDay <= 2 && $parent.$index === 1)"
-                    ng-show="rowform1.$visible"
+                    ng-show="rowform1.$visible && isWOTApplied(2, item)"
                     ng-click="showWorkAddModal(item, 2, true)"
                     class="btn btn-primary editable-table-button btn-xs">
                 {{ item.tue_hour_add || 0}}
@@ -640,7 +640,7 @@
                     ng-if="checkIsCrossMonth(firstFullDate) < 0
                               || (table.crossDay > 3 && $parent.$index === 0)
                               || (table.crossDay <= 3 && $parent.$index === 1)"
-                    ng-show="rowform1.$visible"
+                    ng-show="rowform1.$visible && isWOTApplied(3, item)"
                     ng-click="showWorkAddModal(item, 3, true)"
                     class="btn btn-primary editable-table-button btn-xs">
                 {{ item.wes_hour_add || 0}}
@@ -700,7 +700,7 @@
                     ng-if="checkIsCrossMonth(firstFullDate) < 0
                               || (table.crossDay > 4 && $parent.$index === 0)
                               || (table.crossDay <= 4 && $parent.$index === 1)"
-                    ng-show="rowform1.$visible"
+                    ng-show="rowform1.$visible && isWOTApplied(4, item)"
                     ng-click="showWorkAddModal(item, 4, true)"
                     class="btn btn-primary editable-table-button btn-xs">
                 {{ item.thu_hour_add || 0}}
@@ -760,7 +760,7 @@
                     ng-if="checkIsCrossMonth(firstFullDate) < 0
                               || (table.crossDay > 5 && $parent.$index === 0)
                               || (table.crossDay <= 5 && $parent.$index === 1)"
-                    ng-show="rowform1.$visible"
+                    ng-show="rowform1.$visible && isWOTApplied(5, item)"
                     ng-click="showWorkAddModal(item, 5, true)"
                     class="btn btn-primary editable-table-button btn-xs">
                 {{ item.fri_hour_add || 0}}
@@ -820,7 +820,7 @@
                     ng-if="checkIsCrossMonth(firstFullDate) < 0
                               || (table.crossDay > 6 && $parent.$index === 0)
                               || (table.crossDay <= 6 && $parent.$index === 1)"
-                    ng-show="rowform1.$visible "
+                    ng-show="rowform1.$visible && isWOTApplied(6, item)"
                     ng-click="showWorkAddModal(item, 6, true)"
                     class="btn btn-primary editable-table-button btn-xs">
                 {{ item.sat_hour_add || 0}}
@@ -880,7 +880,7 @@
                     ng-if="checkIsCrossMonth(firstFullDate) < 0
                               || (table.crossDay > 7 && $parent.$index === 0)
                               || (table.crossDay <= 7 && $parent.$index === 1)"
-                    ng-show="rowform1.$visible "
+                    ng-show="rowform1.$visible && isWOTApplied(7, item)"
                     ng-click="showWorkAddModal(item, 7, true)"
                     class="btn btn-primary editable-table-button btn-xs">
                 {{ item.sun_hour_add || 0}}
