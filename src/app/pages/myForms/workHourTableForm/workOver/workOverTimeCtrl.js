@@ -66,6 +66,37 @@
                 });
         }
 
+        //所有專案，資料比對用
+        Project.findAll()
+            .success(function (allProjects) {
+                $scope.allProjectData = [];
+                var prjCount = allProjects.length;
+                for (var index = 0; index < prjCount; index++) {
+
+                    // 專案名稱顯示規則 2019/07 定義
+                    var nameResult = "";
+                    if (allProjects[index].prjSubName != undefined && allProjects[index].prjSubName.trim() != "") {
+                        nameResult = allProjects[index].prjSubName + " - " + ProjectUtil.getTypeText(allProjects[index].type);
+                    } else if (allProjects[index].prjName != undefined && allProjects[index].prjName.trim() != "") {
+                        nameResult = allProjects[index].prjName + " - " + ProjectUtil.getTypeText(allProjects[index].type);
+                    } else {
+                        nameResult = allProjects[index].mainName + " - " + ProjectUtil.getTypeText(allProjects[index].type);
+                    }
+
+                    $scope.allProjectData[index] = {
+                        prjDID: allProjects[index]._id,
+                        prjCode: allProjects[index].prjCode,
+                        mainName: allProjects[index].mainName + " - "
+                        + allProjects[index].prjName + " - "
+                        + allProjects[index].prjSubName + " - "
+                        + ProjectUtil.getTypeText(allProjects[index].type),
+                        majorID: allProjects[index].majorID,
+                        managerID: allProjects[index].managerID,
+                        ezName: nameResult,
+                    };
+                }
+            })
+
         $scope.initProject();
 
         $scope.listenOTMonth = function(dom){
@@ -132,8 +163,23 @@
 
         }
 
-        // main tab, type = 0
-        // executive_Add, type = 2
+        $scope.insertWOTItemViaPrj = function (prjDID) {
+            var formData = {
+                prjDID: prjDID,
+                creatorDID: $scope.userDID,
+                create_formDate: DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0),
+                year: specificYear,
+                month: specificMonth,
+                day: thisDay,
+                timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
+            }
+            console.log(formData)
+            WorkOverTimeUtil.insertWOTItemToDB(formData)
+                .success(function (res) {
+                    $scope.fetchWorkOverTimeData();
+                })
+        }
+
         $scope.insertWOTItem = function () {
             var formData = {
                 creatorDID: $scope.userDID,
@@ -198,15 +244,14 @@
         }
         //跟後臺溝通
         $scope.sendWorkOverTimeApply = function (checkingTable, checkingButton, checkingIndex) {
-            checkingButton.rowform1.$waiting = true;
+            // checkingButton.rowform1.$waiting = true;
             var formData = {
                 _id: checkingTable._id,
-
                 create_formDate: checkingTable.create_formDate,
                 year: checkingTable.year,
+                contents: checkingTable.contents,
                 // month: checkingTable.month,
                 day: checkingTable.day,
-
                 isSendReview: true,
             }
 
@@ -226,6 +271,18 @@
                     $scope.fetchWorkOverTimeData();
                 })
         }
+
+        // -----------------------  Show methods --------------------------
+        $scope.showPrjCode = function (prjDID) {
+            var selected = [];
+            if (prjDID) {
+                selected = $filter('filter')($scope.allProjectData, {
+                    prjDID: prjDID,
+                });
+            }
+            if (!selected) return 'Not Set'
+            return selected.length > 0 ? selected[0].prjCode : 'Not Set';
+        };
 
     }
 })();

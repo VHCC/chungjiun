@@ -119,10 +119,14 @@
             <!--20200518 check right-->
             <div ng-include="'app/pages/myForms/forms/workHourTableForm_historyTab.html'"></div>
         </uib-tab>
-        <uib-tab heading="加班申請"
-            ng-if="false">
+        <uib-tab heading="加班申請">
             <!--20200518 check right-->
             <work-hour-over-time></work-hour-over-time>
+        </uib-tab>
+        <uib-tab heading="加班審核" ng-click="reloadWOTReviewPage(this)"
+                 ng-if="roleType === '2' || roleType === '100' || roleType === '6'">
+            <!--20200518 check right-->
+            <work-hour-over-time-review ></work-hour-over-time-review>
         </uib-tab>
         <uib-tab heading="個人加班單">
             <!--20200518 check right-->
@@ -141,6 +145,10 @@
                  ng-if="roleType === '2' || roleType === '100' || roleType === '6' || roleType === '7'">
             <!--20200518 check right-->
            <work-statistics-c-j></work-statistics-c-j>
+        </uib-tab>
+        <uib-tab heading="員工工時統計"
+                 ng-if="roleType === '2' || roleType === '100' || roleType === '6'">
+            <employee-statistics></employee-statistics>
         </uib-tab>
     </uib-tabset>
 

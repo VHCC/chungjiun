@@ -1,6 +1,5 @@
 <div>
     <div class="row"
-         ng-if="false"
          id="rowHead">
         <div class="col-md-12"
              id="colHead">
@@ -9,7 +8,7 @@
                 <ui-select ng-model="workHourOverTimeCtrlVm.prjItems.selected"
                            class="btn-group bootstrap-select form-control"
                            id="projectName"
-                           ng-change="insertWOTItem($select.selected._id)"
+                           ng-change="insertWOTItemViaPrj($select.selected._id)"
                            append-to-body="true"
                            search-enabled="true">
                     <ui-select-match placeholder="選擇(新增)">
@@ -60,8 +59,10 @@
             <thead>
             <tr style="white-space:nowrap">
                 <td style="vertical-align: inherit; text-align: center" width="80px"></td>
-                <td style="vertical-align: inherit; text-align: center" width="170px">日期</td>
-                <td style="vertical-align: inherit; text-align: center">星期</td>
+                <td style="vertical-align: inherit; text-align: center" width="100px">專案代碼</td>
+                <td style="vertical-align: inherit; text-align: center" width="170px">申請日期</td>
+                <td style="vertical-align: inherit; text-align: center">申請說明</td>
+                <!--<td style="vertical-align: inherit; text-align: center">星期</td>-->
                 <td style="vertical-align: inherit; text-align: center">狀態</td>
             </tr>
             </thead>
@@ -76,6 +77,10 @@
                             ng-click="removeWOTItem($index);">移除
                     </button>
                 </td>
+                <!--專案代碼-->
+                <td class="form-group" style="vertical-align: inherit; text-align: center">
+                    <span>{{showPrjCode(table.prjDID)}}</span>
+                </td>
                 <!--日期-->
                 <td class="form-group" style="vertical-align: inherit; text-align: center">
                     <my ng-show="!rowform1.$waiting && !table.isSendReview">
@@ -86,43 +91,62 @@
                     </my>
                     <!--{{table.month}} / {{table.day}}-->
                 </td>
-                <!--星期-->
-                <td style="vertical-align: inherit; text-align: center">
-                    {{showWOTDay(table.day)}}
+                <!--內容說明-->
+                <td class="form-group" style="vertical-align: inherit; text-align: center">
+                    <span ng-if="table.isSendReview">{{table.contents}}</span>
+                    <input type="text"
+                           ng-if="!table.isSendReview"
+                           ng-model="table.contents"
+                           value="{{table.contents}}"
+                           class="form-control input-sm">
                 </td>
+                <!--星期-->
+                <!--<td style="vertical-align: inherit; text-align: center">-->
+                    <!--{{showWOTDay(table.day)}}-->
+                <!--</td>-->
 
                 <!--狀態-->
                 <td style="vertical-align: inherit;" rowspan="2">
-                    <form editable-form name="rowform1" ng-show="rowform1.$visible"
-                          class="form-buttons form-inline">
-                    </form>
                     <!--審查中-->
-                    <div ng-show="rowform1.$waiting || (table.isSendReview && (!table.isBossCheck))">
-                        <button class="btn btn-warning editable-table-button btn-xs">
-                            已申請
+                    <div ng-if="(table.isSendReview && !table.isManagerCheck)">
+                        <button class="btn btn-warning editable-table-button btn-xs"
+                                style="color: black">
+                            {{ showProjectManager(table.prjDID)}}
+                            <br>
+                            確認作業中
                         </button>
                     </div>
                     <!--審查完成-->
-                    <div ng-show="(table.isBossCheck)">
-                        <button class="btn btn-success editable-table-button btn-xs">
-                            審查完成
+                    <div ng-show="(table.isManagerCheck)">
+                        <button class="btn btn-info editable-table-button btn-xs"
+                                style="color: black">
+                            {{ showProjectManager(table.prjDID)}}
+                            <br>
+                            確認完成
                         </button>
                     </div>
                     <!--提交-->
-                    <div ng-show="!rowform1.$waiting && !table.isSendReview">
+                    <div ng-show="!table.isSendReview">
                         <div class="buttons" ng-show="!rowform1.$visible">
                             <button class="btn btn-danger editable-table-button btn-xs"
                                     ng-click="applyWOTItem(table, this, $index) ">申請
                             </button>
                         </div>
                     </div>
+                    <my ng-if="!table.isSendReview && table.isManagerReject"
+                        ng-class="{workAdd: hover}"
+                        class="mytooltip"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false">
+                        原因：<i class="ion-clipboard"></i>
+                        <span class="tooltiptext">{{table.managerReject_memo}}</span>
+                    </my>
                 </td>
-
             </tr>
             </tbody>
         </table>
         <hr>
-        <div class="row">
+        <div class="row" ng-if="false">
             <button type="button"
                     ng-click="insertWOTItem()"
                     class="btn btn-info btn-icon">

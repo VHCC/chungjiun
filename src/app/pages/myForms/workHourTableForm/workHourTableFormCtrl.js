@@ -697,6 +697,7 @@
                     prjDID: prjDID
                 });
             }
+            if (majorSelected == undefined) return 'Not Set'
             var managerDID = majorSelected[0].managerID;
             var selected = [];
             if (managerDID) {
@@ -4160,13 +4161,17 @@
         }
 
         // 只有工時表填單用得到
-        $scope.isWOTApplied = function(day) {
+        $scope.isWOTApplied = function(day, item) {
             for (var index = 0; index < $scope.workOverTimeAppliedTables.length; index ++) {
-                if($scope.workOverTimeAppliedTables[index].day == day) {
+                if($scope.workOverTimeAppliedTables[index].day == day && $scope.workOverTimeAppliedTables[index].prjDID == item.prjDID) {
                     return true
                 }
             }
             return false
+        }
+
+        $scope.reloadWOTReviewPage = function (dom) {
+            dom.getWOTReviewData_manager();
         }
 
     } // function End line

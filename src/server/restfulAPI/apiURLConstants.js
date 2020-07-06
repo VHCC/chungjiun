@@ -277,5 +277,6 @@ global.apiUrl = {
     post_work_over_time_fetch_by_creatorDID_create_formdate : '/api/post_work_over_time_fetch_by_creatorDID_create_formdate', // 20200701
     post_work_over_time_delete_item : '/api/post_work_over_time_delete_item', // 20200701
     post_work_over_time_update_item : '/api/post_work_over_time_update_item', // 20200701
+    post_work_over_time_multiple_get : '/api/post_work_over_time_multiple_get', // 20200706
 
 };
