@@ -103,6 +103,9 @@
                 getProjectRelated: function(formData) {
                     return http.post('/api/post_project_all_related_to_user', formData);
                 },
+                updateMAnagerID: function(formData) {
+                    return http.post('/api/post_project_update_major_id', formData);
+                },
                 updateMajorID: function(formData) {
                     return http.post('/api/post_project_update_major_id', formData);
                 },
