@@ -108,6 +108,9 @@ global.apiUrl = {
     query_statistics_form_CJ_type3 : '/api/query_statistics_form_CJ_type3',
     query_statistics_tables : '/api/query_statistics_tables',
 
+    // employeeStatistics
+    query_employee_statistics : '/api/query_employee_statistics',
+
 
     //workHourTable Form Work Add
     post_work_hour_work_add_create_item : '/api/post_work_hour_work_add_create_item',

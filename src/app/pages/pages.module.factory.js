@@ -543,10 +543,12 @@
                 },
 
                 // statistics CJ
+                // Deprecated
                 queryStatisticsFormsCJ: function (formData) {
                     return http.post('/api/query_statistics_form_CJ', formData);
                 },
 
+                // Deprecated
                 queryStatisticsFormsCJ_type1: function (formData) {
                     return http.post('/api/query_statistics_form_CJ_type1', formData);
                 },
@@ -555,12 +557,19 @@
                     return http.post('/api/query_statistics_form_CJ_type2', formData);
                 },
 
+                // Deprecated
                 queryStatisticsFormsCJ_type3: function (formData) {
                     return http.post('/api/query_statistics_form_CJ_type3', formData);
                 },
 
+                // Deprecated
                 queryStatisticsTables: function (formData) {
                     return http.post('/api/query_statistics_tables', formData);
+                },
+
+                // 20200703
+                queryEmployeeStatistics: function (formData) {
+                    return http.post('/api/query_employee_statistics', formData);
                 }
             }
         }])
