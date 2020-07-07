@@ -1,0 +1,139 @@
+<div>
+
+    <div class="row" >
+        <div class="col-md-6" >
+            <div
+                    ba-panel
+                    ba-panel-title="時間選擇"
+                    ba-panel-class="with-scroll">
+
+                <div class="form-group">
+                    <label for="inputStartDay_employee" class="col-md-3 control-label">起始日</label>
+                    <input type="text"
+                           class="form-control statisticsDate"
+                           id="inputStartDay_employee"
+                           placeholder="YYYY/MM/DD"
+                           style="color: #000000;"
+                           ng-model="startDay"
+                           value="{{startDay}}">
+                </div>
+
+                <div class="form-group">
+                    <label for="inputEndDay_employee" class="col-md-3 control-label">結束日</label>
+                    <input type="text"
+                           class="form-control statisticsDate"
+                           id="inputEndDay_employee"
+                           placeholder="YYYY/MM/DD"
+                           style="color: #000000;"
+                           ng-model="endDay"
+                           value="{{endDay}}">
+                </div>
+
+                <div class="input-demo radio-demo row">
+                    <div class="col-md-3" ng-show="false">
+                        <label class="radio-inline custom-radio nowrap">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio1_employee" value="option1">
+                            <span>Type 1</span>
+                        </label>
+                    </div>
+                    <div class="col-md-3" ng-show="false">>
+                        <label class="radio-inline custom-radio nowrap">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio2_employee" value="option2">
+                            <span>Type 2</span>
+                        </label>
+                    </div>
+                    <div class="col-md-3" ng-show="false">>
+                        <label class="radio-inline custom-radio nowrap">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio3_employee" value="option3">
+                            <span>Type 3</span>
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="radio-inline custom-radio nowrap">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio4_employee" value="option4">
+                            <span>員工加班</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button ng-click="startEmployeeStatistics()"
+                        style="float: right; padding: 0 60px; line-height: 4"
+                        id="btnReview"
+                        pb-style="shrink"
+                        class="btn btn-primary">
+                    搜尋
+                </button>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div
+                    ba-panel
+                    ba-panel-title="人員選擇"
+                    ba-panel-class="with-scroll">
+                <div class="row"
+                    ng-if="false">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>選擇員工</label>
+                            <ui-select ng-model="employeeStatisticsCtrlVm.user.selected"
+                                       class="btn-group bootstrap-select form-control"
+                                       ng-disabled="false"
+                                       append-to-body="true"
+                                       search-enabled="true">
+                                <ui-select-match placeholder="人員空白則為全部人員">
+                                    {{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="user in employeeStatisticsCtrlVm.users | groupSelectpickerOptions: {name: $select.search}">
+                                    <span ng-bind-html="user.name| highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>選擇員工</label>
+                            <ui-select multiple
+                                       ng-model="employeeStatisticsCtrlVm.users.selected"
+                                       ng-disabled="false"
+                                       ng-change="selectedUsers()"
+                                       search-enabled="true"
+                                       append-to-body="true"
+                                       class="form-control "
+                                       array-required>
+                                <ui-select-match placeholder="人員空白則為全部人員">
+                                    {{$item.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="user in employeeStatisticsCtrlVm.users | filter: $select.search">
+                                    <span ng-bind-html="user.name| highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div bs-loading-overlay
+         bs-loading-overlay-reference-id="mainPage_employee_statistics">
+
+        <div class="row" >
+            <div class="col-md-12" id="includeHead_employee">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
