@@ -285,7 +285,7 @@
                                 }
                             }
                         });
-                        $('.workOffFormNumberInput').mask('000', {
+                        $('.workOffFormNumberInput').mask('000.Z', {
                             translation: {
                                 'Z': {
                                     pattern: /[05]/,
