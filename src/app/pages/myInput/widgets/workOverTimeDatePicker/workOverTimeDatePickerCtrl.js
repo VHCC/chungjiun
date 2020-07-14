@@ -18,7 +18,7 @@
         $scope.myOptions = {
             showWeeks: false,
             startingDay: 0,
-            minDate: moment().add(-2, 'days').format("YYYY/MM/DD"),
+            minDate: moment().add(-3, 'days').format("YYYY/MM/DD"),
         };
         $('.workOverTimeDatePickerCtrl').mask('M0/D0', {
             translation: {
