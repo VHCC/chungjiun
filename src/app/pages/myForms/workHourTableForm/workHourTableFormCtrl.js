@@ -697,7 +697,8 @@
                     prjDID: prjDID
                 });
             }
-            if (majorSelected == undefined) return 'Not Set'
+            if (majorSelected == undefined || majorSelected.length == 0) return 'Not Set'
+
             var managerDID = majorSelected[0].managerID;
             var selected = [];
             if (managerDID) {
@@ -2617,7 +2618,7 @@
                 for (var index = 0; index < $scope.fetchFormDataFromScope(form[formIndex]).length; index++) {
                     // 行政總管跟所有專案有關
                     if ($scope.fetchFormDataFromScope(form[formIndex])[index].isManagerCheck) { // 經理審查過的的才更新
-                        // updateTables.push(form[0].formTables[index].tableID);
+                        // updateTables.push(form[formIndex].formTables[index].tableID);
                         // console.log($scope.fetchFormDataFromScope(form[0])[index].tableID);
                     }
                 }
@@ -2639,12 +2640,21 @@
             console.log(form);
             console.log(clickIndex);
             var updateTables = [];
-            for (var formIndex = 0; formIndex < form.length; formIndex ++) {
-                for (var index = 0; index < $scope.fetchFormDataFromScope(form[formIndex]).length; index++) {
-                    // 行政總管跟所有專案有關
-                    if ($scope.fetchFormDataFromScope(form[formIndex])[index].isManagerCheck) { // 經理審查過的的才更新
-                        updateTables.push($scope.fetchFormDataFromScope(form[formIndex])[index].tableID);
-                    }
+            var updatePrjDID = [];
+            // for (var formIndex = 0; formIndex < form.length; formIndex ++) {
+            //     for (var index = 0; index < $scope.fetchFormDataFromScope(form[formIndex]).length; index++) {
+            //         // 行政總管跟所有專案有關
+            //         if ($scope.fetchFormDataFromScope(form[formIndex])[index].isManagerCheck) { // 經理審查過的的才更新
+            //             updateTables.push($scope.fetchFormDataFromScope(form[formIndex])[index].tableID);
+            //             updatePrjDID.push($scope.fetchFormDataFromScope(form[formIndex])[index].prjDID);
+            //         }
+            //     }
+            // }
+            for (var index = 0; index < $scope.fetchFormDataFromScope(form[clickIndex]).length; index++) {
+                // 行政總管跟所有專案有關
+                if ($scope.fetchFormDataFromScope(form[clickIndex])[index].isManagerCheck) { // 經理審查過的的才更新
+                    updateTables.push($scope.fetchFormDataFromScope(form[clickIndex])[index].tableID);
+                    updatePrjDID.push($scope.fetchFormDataFromScope(form[clickIndex])[index].prjDID);
                 }
             }
             // console.log(form[index]);
@@ -2667,15 +2677,12 @@
 
                     $scope.showTableOfItem(user, null, null, null, null, null, 2);
                 })
-
             formData = {
                 month: form[clickIndex].month,
+                prjDIDs: updatePrjDID,
                 create_formDate: form[clickIndex].create_formDate,
                 creatorDID: user.DID,
             }
-
-            console.log(formData)
-
 
             WorkHourAddItemUtil.updateRelatedAddItemByProject(formData)
                 .success(function (res) {
@@ -2708,7 +2715,6 @@
             //
             //         })
             // }
-
         }
 
         // ************* 行政核定後退回 ****************
