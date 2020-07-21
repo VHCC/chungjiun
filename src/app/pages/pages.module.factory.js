@@ -697,6 +697,54 @@
                 },
             }
         }])
+        .factory('ExecutiveExpenditureUtil', ['$http', function (http) {
+            return {
+                insertExecutiveExpenditureItem: function (formData) {
+                    return http.post('/api/post_executive_expenditure_insert_item', formData);
+                },
+
+                removeExecutiveExpenditureItem: function (formData) {
+                    return http.post('/api/post_executive_expenditure_remove_item', formData);
+                },
+
+                fetchExecutiveExpenditureItems: function (formData) {
+                    return http.post('/api/post_executive_expenditure_fetch_items', formData);
+                },
+
+                updateExecutiveExpenditureOne: function (formData) {
+                    return http.post('/api/post_executive_expenditure_items_update_one', formData);
+                },
+
+                updateExecutiveExpenditureItems: function (formData) {
+                    return http.post('/api/post_executive_expenditure_items_update_many', formData);
+                },
+
+            }
+        }])
+        .factory('ExpenditureTargetUtil', ['$http', function (http) {
+            return {
+                fetchExpenditureTarget: function (formData) {
+                    return http.post('/api/post_fetch_expenditure_target', formData);
+                },
+
+                fetchAllExpenditureTarget: function (formData) {
+                    return http.post('/api/post_fetch_all_expenditure_target', formData);
+                },
+
+                createExpenditureTarget: function (formData) {
+                    return http.post('/api/post_insert_expenditure_target', formData);
+                },
+
+                updateExpenditureTarget: function (formData) {
+                    return http.post('/api/post_update_expenditure_target', formData);
+                },
+
+                removeExpenditureTarget: function (formData) {
+                    return http.post('/api/post_remove_expenditure_target', formData);
+                },
+
+            }
+        }])
         .factory('SuperVisionNotifyUtil', ['$http', function (http) {
             return {
                 insertSVNItemToDB: function (formData) {
@@ -858,7 +906,6 @@
                 updateWorkAddItemsMonthSalaryAll: function (formData) {
                     return http.post('/api/post_work_hour_work_add_month_salary_update_all', formData);
                 }
-
 
             }
         }])
