@@ -1,0 +1,158 @@
+<div class="row"
+     id="rowHead">
+    <div class="col-md-12"
+         id="colHead">
+        <div class="form-group">
+            <label for="projectName">總案名稱 - 專案名稱 - 子案名稱 - 類型 - 代碼</label>
+            <ui-select ng-model="executiveExpenditureCtrlVm.prjItems.selected"
+                       class="btn-group bootstrap-select form-control"
+                       id="projectName"
+                       ng-change="insertExecutiveExpenditureItem($select.selected._id)"
+                       append-to-body="true"
+                       search-enabled="true">
+                <ui-select-match placeholder="選擇(新增)">
+                    {{$select.selected.mainName}} -
+                    {{$select.selected.prjName}} -
+                    {{$select.selected.prjSubName}} -
+                    {{prjTypeToName($select.selected.type)}} -
+                    {{$select.selected.prjCode}}
+                </ui-select-match>
+                <ui-select-choices
+                        ng-model="prjName"
+                        repeat="prjItems in executiveExpenditureCtrlVm.projects |
+                            groupSelectpickerOptions: {
+                            mainName: $select.search,
+                            prjName: $select.search,
+                            prjSubName: $select.search,
+                            prjCode: $select.search
+                            }"
+                        group-by="'mainName'">
+                    <span ng-bind-html="prjItems.prjName + ' - ' + prjItems.prjSubName + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<div class="row col-md-12" ng-init="fetchExecutiveExpenditureData()">
+
+    <my-month-picker ng-click="listenMonth(this)"
+                     formatted="YYYY/MM">
+    </my-month-picker>
+    <br>
+    <button type="button" class="btn btn-default btn-icon"
+            ng-click="changeExecutiveExpenditureMonth(-1, this)">
+        <i class="ion-chevron-left"></i>
+    </button>
+    {{myMonth}}
+    <button type="button" class="btn btn-default btn-icon"
+            ng-click="changeExecutiveExpenditureMonth(1, this)">
+        <i class="ion-chevron-right"></i>
+    </button>
+
+    <hr>
+
+    <table class="table table-bordered table-hover table-condensed" id="form_main_pdf">
+        <thead>
+        <tr style="white-space:nowrap">
+            <td style="vertical-align: inherit; text-align: center" width="80px"></td>
+            <td style="vertical-align: inherit; text-align: center" width="100px">專案代碼</td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">日期</td>
+            <td style="vertical-align: inherit; text-align: center" width="200px">項目</td>
+            <!--<td style="vertical-align: inherit; text-align: center" width="150px">發票號碼</td>-->
+            <td style="vertical-align: inherit; text-align: center">內容說明</td>
+            <td style="vertical-align: inherit; text-align: center" width="100px">金額</td>
+            <!--<td style="vertical-align: inherit; text-align: center">經理簽章</td>-->
+        </tr>
+        </thead>
+        <tbody ng-repeat="item in displayEEItems">
+        <tr style="vertical-align: inherit; text-align: center">
+            <!--序號-->
+            <td style="vertical-align: inherit; text-align: center">
+                <span id="prjCode">{{$index + 1}}</span>
+                <button class="btn btn-primary editable-table-button btn-xs"
+                        ng-if="!item.isSendReview"
+                        ng-click="setExecutiveExpenditureItem(item);">設定
+                </button>
+                <button class="btn btn-danger editable-table-button btn-xs"
+                        ng-if="item.isSendReview"
+                        ng-click="removeExecutiveExpenditureItem(item);">移除
+                </button>
+            </td>
+            <!--專案代碼-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{showPrjCode(item.prjDID)}}</span>
+            </td>
+            <!--日期-->
+            <td style="vertical-align: inherit; text-align: center">
+                <span ng-if="item.isSendReview">{{item.payDate}}</span>
+                <input type="text"
+                       ng-if="!item.isSendReview"
+                       ng-model="item.payDate"
+                       value="{{item.payDate}}"
+                       class="form-control expenditureTargetDateInput input-sm">
+            </td>
+            <!--項目-->
+            <td style="vertical-align: inherit; text-align: center">
+                <my ng-show="!item.isSendReview">
+                    <target-selector itemName="{{item.targetDID}}"></target-selector>
+                </my>
+                <my ng-show="item.isSendReview">
+                    {{showTargetName(item.targetDID)}}
+                </my>
+            </td>
+            <!--發票號碼-->
+            <!--<td class="form-group" style="vertical-align: inherit; text-align: center">-->
+                <!--&lt;!&ndash;<span ng-if="item.isSendReview">{{item.receiptCode}}</span>&ndash;&gt;-->
+                <!--<input type="text"-->
+                       <!--ng-if="!item.isSendReview"-->
+                       <!--ng-model="item.receiptCode"-->
+                       <!--value="{{item.receiptCode}}"-->
+                       <!--class="form-control input-sm">-->
+            <!--</td>-->
+            <!--內容說明-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span ng-if="item.isSendReview">{{item.contents}}</span>
+                <input type="text"
+                       ng-if="!item.isSendReview"
+                       ng-model="item.contents"
+                       value="{{item.contents}}"
+                       class="form-control input-sm">
+            </td>
+            <!--金額-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span ng-if="item.isSendReview">{{item.amount}}</span>
+                <input type="text"
+                       ng-if="!item.isSendReview"
+                       ng-model="item.amount"
+                       value="{{item.amount}}"
+                       class="form-control input-sm">
+            </td>
+        </tr>
+        </tbody>
+        <tfoot>
+            <tr style="vertical-align: inherit; text-align: center">
+                <td colspan="5" style="vertical-align: inherit;">
+                    小計
+                </td>
+                <td style="vertical-align: inherit;">
+                    {{calculateSum()}}
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <hr>
+
+    <button type="submit"
+            style="float: left; margin-right: 10px"
+            ng-click="saveEEItems()"
+            class="btn btn-primary">
+        表單暫存
+    </button>
+</div>
+
+
+

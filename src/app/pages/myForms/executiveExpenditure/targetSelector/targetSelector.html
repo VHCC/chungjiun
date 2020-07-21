@@ -1,0 +1,14 @@
+<div>
+    <ui-select ng-model="expenditureTarget"
+               append-to-body="true"
+               on-select="changeExpenditureTarget(this)"
+               search-enabled="true">
+        <ui-select-match placeholder="選擇項目">
+            {{$select.selected.targetName}}
+        </ui-select-match>
+        <ui-select-choices
+                repeat="option in expenditureTargetOptions | filter: $select.search">
+            <span ng-bind-html="option.targetName"></span>
+        </ui-select-choices>
+    </ui-select>
+</div>

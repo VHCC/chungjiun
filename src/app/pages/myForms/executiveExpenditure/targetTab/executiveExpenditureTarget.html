@@ -1,0 +1,58 @@
+<div>
+    <h3 class="with-line">支出項目選單</h3>
+
+    <div class="row" ng-init="fetchAllTargets()">
+        <table class="table table-bordered table-hover table-condensed">
+            <thead>
+            <tr style="white-space:nowrap">
+                <td style="vertical-align: inherit; text-align: center" width="80px"></td>
+                <td style="vertical-align: inherit; text-align: center">選項</td>
+            </tr>
+            </thead>
+            <tbody ng-repeat="target in executiveExpenditureTargets">
+            <tr style="vertical-align: inherit; text-align: center">
+                <!--序號-->
+                <td style="vertical-align: inherit; text-align: center">
+                    <span id="prjCode">{{$index + 1}}</span>
+                    <button class="btn btn-danger editable-table-button btn-xs"
+                            ng-show="target.isEnable"
+                            ng-click="removeTargetItemCheck(target);">
+                        移除
+                    </button>
+                    <!--設定-->
+                    <div ng-if="!target.isEnable">
+                        <div class="buttons">
+                            <button class="btn btn-info editable-table-button btn-xs"
+                                    ng-click="setTargetName(target, this) ">
+                                設定
+                            </button>
+                        </div>
+                    </div>
+                </td>
+                <!--名稱-->
+                <td style="vertical-align: inherit; text-align: center">
+
+                    <my ng-show="!target.isEnable">
+                        <input type="text"
+                               class="form-control"
+                               placeholder="{{target.targetName}}"
+                               ng-model="targetSetName"
+                               style="color: #000000;">
+                    </my>
+                    <my ng-show="target.isEnable">
+                        {{target.targetName}}
+                    </my>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <button type="button"
+                ng-click="addTargetItem()"
+                class="btn btn-info btn-icon">
+            <i class="ion-plus-round"/>
+        </button>
+    </div>
+</div>

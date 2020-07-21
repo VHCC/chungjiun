@@ -66,6 +66,13 @@
                 });
         }
 
+        $scope.resetProjectData = function() {
+            if (vm.prjItems) {
+                vm.prjItems.selected = null;
+            }
+            vm.projects = $scope.allProject_raw.slice();
+        }
+
         //所有專案，資料比對用
         Project.findAll()
             .success(function (allProjects) {
@@ -177,6 +184,7 @@
             WorkOverTimeUtil.insertWOTItemToDB(formData)
                 .success(function (res) {
                     $scope.fetchWorkOverTimeData();
+                    $scope.resetProjectData();
                 })
         }
 

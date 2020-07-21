@@ -1,0 +1,15 @@
+<div bs-loading-overlay
+     bs-loading-overlay-reference-id="mainPage_executiveExpenditure">
+
+    <uib-tabset active="$tabSetStatus.activeTab">
+        <uib-tab heading="其他支出"
+                 ng-click="reloadEEPageCross()">
+            <div ng-controller="executiveExpenditureCtrl as executiveExpenditureCtrlVm"
+                    ng-include="'app/pages/myForms/executiveExpenditure/tabs/executiveExpenditure_mainTab.html'"></div>
+        </uib-tab>
+        <uib-tab heading="支出項目選單" >
+            <executive-expenditure-target></executive-expenditure-target>
+        </uib-tab>
+    </uib-tabset>
+</div>
+
