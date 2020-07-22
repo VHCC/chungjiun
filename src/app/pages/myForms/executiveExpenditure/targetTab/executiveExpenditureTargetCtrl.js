@@ -91,7 +91,7 @@
             $scope.checkText = '確定移除 ' + item.targetName + "  ？";
             $scope.checkingItem = item;
             ngDialog.open({
-                template: 'app/pages/myForms/executiveExpenditure/vendorTab/modal/expenditureTargetDeleteModal.html',
+                template: 'app/pages/myForms/executiveExpenditure/targetTab/modal/expenditureTargetDeleteModal.html',
                 className: 'ngdialog-theme-default',
                 scope: $scope,
                 showClose: false,
