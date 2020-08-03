@@ -1936,7 +1936,8 @@
                     }
 
                     var qqq = []
-                    if ($scope.getWorkHourForms != undefined) {
+                    if ($scope.getWorkHourForms != undefined && $scope.getWorkHourForms[majorIndex] != undefined) {
+                        console.log($scope.getWorkHourForms[majorIndex])
                         for (var i = 0; i < $scope.getWorkHourForms[majorIndex].formTables.length; i ++) {
                             qqq.push($scope.getWorkHourForms[majorIndex].formTables[i].tableID)
                         }
