@@ -597,11 +597,47 @@ module.exports = function (app) {
                         result += numberString;
                     }
 
-                    res.status(200).send({
-                        code: 200,
-                        error: global.status._200,
-                        payload: result,
-                    });
+                    // console.log(result)
+                    var itemsLength = items.length
+                    // console.log(items)
+
+                    var isNeedToCheck = true;
+
+                    while (isNeedToCheck) {
+                        if (!isOfficialDocArchiveNumberExist(items, result)) {
+                            isNeedToCheck = false;
+
+                            res.status(200).send({
+                                code: 200,
+                                error: global.status._200,
+                                payload: result,
+                            });
+                        } else {
+                            // console.log("itemsLength= " + itemsLength)
+                            // console.log("result= " + result)
+                            itemsLength += 1
+                            result = "" + year + month + day + "";
+                            var numberString = (parseInt(itemsLength) + 1).toString();
+
+                            // console.log(archiveNumber);
+                            // console.log(numberString);
+                            if (numberString.length == 1) {
+                                numberString = "00" + numberString;
+                            } else if (numberString.length == 2) {
+                                numberString = "0" + numberString;
+                            }
+                            result += numberString;
+                        }
+                    }
+
+                    function isOfficialDocArchiveNumberExist(items, archiveNumber) {
+                        for (var index = 0; index < items.length; index++) {
+                            if (archiveNumber == items[index].archiveNumber) {
+                                return true
+                            }
+                        }
+                        return false
+                    };
                 }
             })
     })
