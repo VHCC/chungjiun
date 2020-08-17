@@ -235,7 +235,7 @@
                 managerID: form.$data.managerID,
             }
 
-            Project.updateManager(formData)
+            Project.updateManagerID(formData)
                 .success(function (res) {
                     console.log(res.code);
                 })
