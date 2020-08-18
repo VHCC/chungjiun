@@ -73,10 +73,10 @@
                     <span ng-show="item.work_hour_forms.length < 2" style="color:#ff0000">未填寫</span>
                 </td>
                 <td style="vertical-align: inherit; text-align: center" ng-show="checkIsCrossMonth(firstFullDate_management)>0">
-                    <span ng-show="item.work_hour_forms.length != 0" id="bb_{{$index}}">{{checkManagementStatus(item, 2, this, 2)}}</span>
+                    <span ng-show="item.work_hour_forms.length > 1" id="bb_{{$index}}">{{checkManagementStatus(item, 2, this, 2)}}</span>
                 </td>
                 <td style="vertical-align: inherit; text-align: center" ng-show="checkIsCrossMonth(firstFullDate_management)>0">
-                    <span ng-show="item.work_hour_forms.length != 0" id="cc_{{$index}}">{{checkManagementStatus(item, 3, this, 2)}}</span>
+                    <span ng-show="item.work_hour_forms.length > 1" id="cc_{{$index}}">{{checkManagementStatus(item, 3, this, 2)}}</span>
                 </td>
             </tr>
             </tbody>
