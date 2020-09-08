@@ -297,4 +297,31 @@ global.apiUrl = {
     post_update_expenditure_target : '/api/post_update_expenditure_target',
     post_remove_expenditure_target : '/api/post_remove_expenditure_target',
 
+    // sub Contractor Apply
+    post_sub_contractor_apply_insert_item : '/api/post_sub_contractor_apply_insert_item',
+    post_sub_contractor_apply_remove_item : '/api/post_sub_contractor_apply_remove_item',
+    post_sub_contractor_apply_fetch_items : '/api/post_sub_contractor_apply_fetch_items',
+    post_sub_contractor_apply_items_update_one : '/api/post_sub_contractor_apply_items_update_one',
+    post_sub_contractor_apply_items_update_many : '/api/post_sub_contractor_apply_items_update_many',
+
+    // subContractorVendor
+    post_fetch_sub_contractor_vendor_enabled : '/api/post_fetch_sub_contractor_vendor_enabled',
+    post_fetch_all_sub_contractor_vendor : '/api/post_fetch_all_sub_contractor_vendor',
+    post_insert_sub_contractor_vendor : '/api/post_insert_sub_contractor_vendor',
+    post_update_sub_contractor_vendor : '/api/post_update_sub_contractor_vendor',
+    post_remove_sub_contractor_vendor : '/api/post_remove_sub_contractor_vendor',
+
+    // subContractorItem
+    post_fetch_sub_contractor_item_enabled : '/api/post_fetch_sub_contractor_item_enabled',
+    post_fetch_all_sub_contractor_item : '/api/post_fetch_all_sub_contractor_item',
+    post_insert_sub_contractor_item : '/api/post_insert_sub_contractor_item',
+    post_update_sub_contractor_item : '/api/post_update_sub_contractor_item',
+    post_remove_sub_contractor_item : '/api/post_remove_sub_contractor_item',
+
+    // subContractorPayItem
+    post_fetch_sub_contractor_pay_item : '/api/post_fetch_sub_contractor_pay_item',
+    post_insert_sub_contractor_pay_item : '/api/post_insert_sub_contractor_pay_item',
+    post_update_sub_contractor_pay_item : '/api/post_update_sub_contractor_pay_item',
+    post_remove_sub_contractor_pay_item : '/api/post_remove_sub_contractor_pay_item',
+
 };

@@ -1,0 +1,14 @@
+<div>
+    <ui-select ng-model="subContractorVendor"
+               append-to-body="true"
+               on-select="changeSubContractorVendor(this)"
+               search-enabled="true">
+        <ui-select-match placeholder="選擇委外廠商">
+            {{$select.selected.subContractorVendorName}}
+        </ui-select-match>
+        <ui-select-choices
+                repeat="option in subContractorVendorOptions | filter: $select.search">
+            <span ng-bind-html="option.subContractorVendorName"></span>
+        </ui-select-choices>
+    </ui-select>
+</div>

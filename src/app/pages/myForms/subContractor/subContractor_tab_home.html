@@ -1,0 +1,28 @@
+<div bs-loading-overlay
+     bs-loading-overlay-reference-id="mainPage_subContractor">
+
+    <uib-tabset active="$tabSetStatus.activeTab">
+        <uib-tab heading="委外廠商選單" ng-if="roleType === '100'" >
+            <div ng-controller="subContractorVendorCtrl"
+                    ng-include="'app/pages/myForms/subContractor/tabs/subContractorVendorTab.html'"></div>
+        </uib-tab>
+
+        <uib-tab heading="委外項目選單" ng-if="roleType === '100'" >
+            <div ng-controller="subContractorItemCtrl"
+                 ng-include="'app/pages/myForms/subContractor/tabs/subContractorItemTab.html'"></div>
+        </uib-tab>
+
+        <uib-tab heading="訂約請示單" >
+            <div ng-click="reloadSCApplyPage()"
+                 ng-controller="subContractorApplyCtrl as subContractorApplyCtrlVm"
+                 ng-include="'app/pages/myForms/subContractor/tabs/subContractor_applyTab.html'"></div>
+        </uib-tab>
+
+        <uib-tab heading="訂約單審核" ng-if="roleType === '2' || roleType === '6' || roleType === '100'" >
+            <div ng-controller="subContractorReviewCtrl as subContractorReviewCtrlVm"
+                 ng-include="'app/pages/myForms/subContractor/tabs/subContractor_reviewTab.html'"></div>
+        </uib-tab>
+
+    </uib-tabset>
+</div>
+
