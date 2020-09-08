@@ -1,0 +1,106 @@
+<div class="row col-md-12">
+
+    <my-year-picker ng-click="listenYear(this)"></my-year-picker>
+
+    <h3 class="with-line">{{year}} 年</h3>
+
+    <hr>
+
+    <table class="table table-bordered table-hover table-condensed" id="form_main_pdf">
+        <thead>
+        <tr style="white-space:nowrap">
+            <td style="vertical-align: inherit; text-align: center" width="80px"></td>
+            <td style="vertical-align: inherit; text-align: center" width="100px">專案代碼</td>
+            <td style="vertical-align: inherit; text-align: center" width="250px">委外廠商</td>
+            <td style="vertical-align: inherit; text-align: center" width="250px">委外項目</td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">訂約時間</td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">訂約金額</td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">申請人</td>
+        </tr>
+        </thead>
+        <tbody ng-repeat="applyItem in displaySubContractorReviewItems">
+        <tr style="vertical-align: inherit; text-align: center">
+            <!--序號-->
+            <td style="vertical-align: inherit; text-align: center">
+                <span id="prjCode">{{$index + 1}}</span>
+                <br>
+                <button class="btn btn-primary editable-table-button btn-xs"
+                        ng-if="applyItem.isSendReview"
+                        ng-click="agreeSCApplyItem(applyItem);">同意
+                </button>
+                <button class="btn btn-danger editable-table-button btn-xs"
+                        ng-if="applyItem.isSendReview"
+                        ng-click="rejectSCApplyItemOne(applyItem);">退回
+                </button>
+            </td>
+            <!--專案代碼-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{showPrjCode(applyItem.prjDID)}}</span>
+            </td>
+            <!--日期-->
+            <!--<td style="vertical-align: inherit; text-align: center">-->
+            <!--<span ng-if="item.isSendReview">{{item.payDate}}</span>-->
+            <!--<input type="text"-->
+            <!--ng-if="!item.isSendReview"-->
+            <!--ng-model="item.payDate"-->
+            <!--value="{{item.payDate}}"-->
+            <!--class="form-control expenditureTargetDateInput input-sm">-->
+            <!--</td>-->
+            <!--委外廠商-->
+            <td style="vertical-align: inherit; text-align: center">
+                <my ng-show="!applyItem.isSendReview">
+                    <sub-contractor-vendor-selector itemName="{{applyItem.vendorDID}}"></sub-contractor-vendor-selector>
+                </my>
+                <my ng-show="applyItem.isSendReview">
+                    {{showSCVendorName(applyItem.vendorDID)}}
+                </my>
+            </td>
+            <!--委外項目-->
+            <td style="vertical-align: inherit; text-align: center">
+                <my ng-show="!applyItem.isSendReview">
+                    <!--<target-selector itemName="{{applyItem.targetDID}}"></target-selector>-->
+                    <sub-contractor-item-selector itemName="{{applyItem.itemDID}}"></sub-contractor-item-selector>
+                </my>
+                <my ng-show="applyItem.isSendReview">
+                    <!--{{showTargetName(item.targetDID)}}-->
+                    {{showSCItemName(applyItem.itemDID)}}
+                </my>
+            </td>
+            <!--訂約時間-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span ng-if="applyItem.isSendReview">{{applyItem.contractDate}}</span>
+                <input type="text"
+                       ng-if="!applyItem.isSendReview"
+                       ng-model="applyItem.contractDate"
+                       value="{{applyItem.contractDate}}"
+                       class="form-control subContractDateInput input-sm">
+            </td>
+            <!--訂約金額-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span ng-if="applyItem.isSendReview">{{applyItem.contractAmount}}</span>
+                <input type="text"
+                       ng-if="!applyItem.isSendReview"
+                       ng-model="applyItem.contractAmount"
+                       value="{{applyItem.contractAmount}}"
+                       class="form-control input-sm">
+            </td>
+
+            <!-- 申請人 -->
+            <td style="vertical-align: inherit;">
+
+                <div ng-if="(applyItem.isSendReview && !applyItem.isManagerCheck)">
+                    <button class="btn btn-warning editable-table-button btn-xs"
+                            style="color: black">
+                        {{ showUser(applyItem.creatorDID)}}
+                        <br>
+                        申請
+                    </button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <hr>
+
+</div>

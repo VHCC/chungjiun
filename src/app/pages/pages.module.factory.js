@@ -814,6 +814,25 @@
                 },
             }
         }])
+        .factory('SubContractorPayItemUtil', ['$http', function (http) {
+            return {
+                fetchSCPayItems: function (formData) {
+                    return http.post('/api/post_fetch_sub_contractor_pay_item', formData);
+                },
+
+                createSCPayItem: function (formData) {
+                    return http.post('/api/post_insert_sub_contractor_pay_item', formData);
+                },
+
+                updateSCPayItem: function (formData) {
+                    return http.post('/api/post_update_sub_contractor_pay_item', formData);
+                },
+
+                removeSCPayItem: function (formData) {
+                    return http.post('/api/post_remove_sub_contractor_pay_item', formData);
+                },
+            }
+        }])
         .factory('SuperVisionNotifyUtil', ['$http', function (http) {
             return {
                 insertSVNItemToDB: function (formData) {
