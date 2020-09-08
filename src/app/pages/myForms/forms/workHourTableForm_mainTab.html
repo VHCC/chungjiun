@@ -880,7 +880,7 @@
                     ng-if="checkIsCrossMonth(firstFullDate) < 0
                               || (table.crossDay > 7 && $parent.$index === 0)
                               || (table.crossDay <= 7 && $parent.$index === 1)"
-                    ng-show="rowform1.$visible && isWOTApplied(7, item)"
+                    ng-show="rowform1.$visible && isWOTApplied(0, item)"
                     ng-click="showWorkAddModal(item, 7, true)"
                     class="btn btn-primary editable-table-button btn-xs">
                 {{ item.sun_hour_add || 0}}

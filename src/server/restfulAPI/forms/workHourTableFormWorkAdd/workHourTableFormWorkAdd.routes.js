@@ -111,25 +111,33 @@ module.exports = function (app) {
     // 更新 加班/補休 單
     app.post(global.apiUrl.post_work_hour_work_update_related_work_add_items, function (req, res) {
         console.log(req.body)
-        WorkHourTableFormWorkAdd.updateMany({
-            creatorDID: req.body.creatorDID,
-            // prjDID: req.body.prjDID,
-            create_formDate: req.body.create_formDate,
-            month: req.body.month,
-        }, {
-            $set: {
-                isExecutiveConfirm: true,
-            }
-        }, function (err) {
-            if (err) {
-                res.send(err);
-            } else {
-                res.status(200).send({
-                    code: 200,
-                    error: global.status._200,
-                });
-            }
-        })
+        var resultCount = 0;
+        for (var prjIndex = 0; prjIndex < req.body.prjDIDs.length; prjIndex ++) {
+            WorkHourTableFormWorkAdd.updateMany({
+                creatorDID: req.body.creatorDID,
+                prjDID: req.body.prjDIDs[prjIndex],
+                create_formDate: req.body.create_formDate,
+                month: req.body.month,
+            }, {
+                $set: {
+                    isExecutiveConfirm: true,
+                }
+            }, function (err, results) {
+                resultCount++
+                if (err) {
+                    res.send(err);
+                } else {
+                    if (resultCount === req.body.prjDIDs.length) {
+                        res.status(200).send({
+                            code: 200,
+                            error: global.status._200,
+                            payloads: results
+                        });
+                    }
+                }
+            })
+        }
+
     })
 
     // executive confirm

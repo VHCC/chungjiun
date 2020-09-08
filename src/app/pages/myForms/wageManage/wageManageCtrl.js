@@ -465,14 +465,14 @@
                             return resultFinal;
                         } else if (this.table != undefined) {
                             // 主管審核、行政審核
-                            if (this.table.workOffType == 3 || this.table.workOffType == 4 || this.table.workOffType == 5
+                            if (this.table.workOffType == 4 || this.table.workOffType == 5
                                 || this.table.workOffType == 7 || this.table.workOffType == 8 || this.table.workOffType == 9) {
                                 resultFinal = resultFinal <= 4 ? 4 : 8;
                             }
                             return resultFinal;
                         } else {
                             // 總攬
-                            if (type == 3 || type == 4 || type == 5
+                            if (type == 4 || type == 5
                                 || type == 7 || type == 8 || type == 9) {
                                 resultFinal = resultFinal <= 4 ? 4 : 8;
                             }

@@ -285,7 +285,7 @@
                                 }
                             }
                         });
-                        $('.workOffFormNumberInput').mask('00.Z', {
+                        $('.workOffFormNumberInput').mask('000.Z', {
                             translation: {
                                 'Z': {
                                     pattern: /[05]/,
@@ -513,7 +513,7 @@
                     }
                     // 特
                     case 3: {
-                        return result / 8;
+                        return result;
                     }
                     // 婚
                     case 4:
@@ -715,7 +715,7 @@
                     }
 
                     dom.table.myHourDiff = resultFinal;
-                    if (dom.table.workOffType == 3 || dom.table.workOffType == 4 || dom.table.workOffType == 5
+                    if (dom.table.workOffType == 4 || dom.table.workOffType == 5
                         || dom.table.workOffType == 7 ||dom.table.workOffType == 8 || dom.table.workOffType == 9) {
                         dom.table.myHourDiff = resultFinal <= 4 ? 4 : 8;
                     }
@@ -809,7 +809,7 @@
 
                     if (this.workOffType !== undefined) {
                         // 請假單
-                        if (this.workOffType.type == 3 || this.workOffType.type == 4 || this.workOffType.type == 5
+                        if (this.workOffType.type == 4 || this.workOffType.type == 5
                             || this.workOffType.type == 7 || this.workOffType.type == 8 || this.workOffType.type == 9) {
 
                             resultFinal = resultFinal <= 4 ? 4 : 8;
@@ -818,14 +818,14 @@
                         return resultFinal;
                     } else if (this.table != undefined) {
                         // 主管審核、行政審核
-                        if (this.table.workOffType == 3 || this.table.workOffType == 4 || this.table.workOffType == 5
+                        if (this.table.workOffType == 4 || this.table.workOffType == 5
                             || this.table.workOffType == 7 || this.table.workOffType == 8 || this.table.workOffType == 9) {
                             resultFinal = resultFinal <= 4 ? 4 : 8;
                         }
                         return resultFinal;
                     } else {
                         // 總攬
-                        if (type == 3 || type == 4 || type == 5
+                        if (type == 4 || type == 5
                             || type == 7 || type == 8 || type == 9) {
                             resultFinal = resultFinal <= 4 ? 4 : 8;
                         }

@@ -54,14 +54,14 @@
                         order: 200,
                     },
                 })
-            .state('cgAccountingManage.300',
+            .state('cgAccountingManage.executiveExpenditure',
                 {
-                    url: '/empty',
-                    templateUrl: 'app/pages/myNewPage/empty.html',
-                    title: '總行政支出',
-                    accessLevel: [9999],
+                    url: '/executiveExpenditure',
+                    templateUrl: 'app/pages/myForms/executiveExpenditure/executiveExpenditureHomePage.html',
+                    title: '其他支出',
+                    accessLevel: [100],
                     sidebarMeta: {
-                        order: 300,
+                        order: global.pages.cgAccountingManage_executiveExpenditure,
                     },
                 })
     }

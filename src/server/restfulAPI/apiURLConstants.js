@@ -282,4 +282,18 @@ global.apiUrl = {
     post_work_over_time_update_item : '/api/post_work_over_time_update_item', // 20200701
     post_work_over_time_multiple_get : '/api/post_work_over_time_multiple_get', // 20200706
 
+    // executive expenditure
+    post_executive_expenditure_insert_item : '/api/post_executive_expenditure_insert_item',
+    post_executive_expenditure_remove_item : '/api/post_executive_expenditure_remove_item',
+    post_executive_expenditure_fetch_items : '/api/post_executive_expenditure_fetch_items',
+    post_executive_expenditure_items_update_one : '/api/post_executive_expenditure_items_update_one',
+    post_executive_expenditure_items_update_many : '/api/post_executive_expenditure_items_update_many',
+
+    // expenditure target
+    post_fetch_expenditure_target : '/api/post_fetch_expenditure_target',
+    post_fetch_all_expenditure_target : '/api/post_fetch_all_expenditure_target',
+    post_insert_expenditure_target : '/api/post_insert_expenditure_target',
+    post_update_expenditure_target : '/api/post_update_expenditure_target',
+    post_remove_expenditure_target : '/api/post_remove_expenditure_target',
+
 };

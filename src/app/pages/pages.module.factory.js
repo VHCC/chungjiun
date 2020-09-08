@@ -103,8 +103,8 @@
                 getProjectRelated: function(formData) {
                     return http.post('/api/post_project_all_related_to_user', formData);
                 },
-                updateMAnagerID: function(formData) {
-                    return http.post('/api/post_project_update_major_id', formData);
+                updateManagerID: function(formData) {
+                    return http.post('/api/post_project_update_manager_id', formData);
                 },
                 updateMajorID: function(formData) {
                     return http.post('/api/post_project_update_major_id', formData);
@@ -697,6 +697,123 @@
                 },
             }
         }])
+        .factory('ExecutiveExpenditureUtil', ['$http', function (http) {
+            return {
+                insertExecutiveExpenditureItem: function (formData) {
+                    return http.post('/api/post_executive_expenditure_insert_item', formData);
+                },
+
+                removeExecutiveExpenditureItem: function (formData) {
+                    return http.post('/api/post_executive_expenditure_remove_item', formData);
+                },
+
+                fetchExecutiveExpenditureItems: function (formData) {
+                    return http.post('/api/post_executive_expenditure_fetch_items', formData);
+                },
+
+                updateExecutiveExpenditureOne: function (formData) {
+                    return http.post('/api/post_executive_expenditure_items_update_one', formData);
+                },
+
+                updateExecutiveExpenditureItems: function (formData) {
+                    return http.post('/api/post_executive_expenditure_items_update_many', formData);
+                },
+
+            }
+        }])
+        .factory('ExpenditureTargetUtil', ['$http', function (http) {
+            return {
+                fetchExpenditureTarget: function (formData) {
+                    return http.post('/api/post_fetch_expenditure_target', formData);
+                },
+
+                fetchAllExpenditureTarget: function (formData) {
+                    return http.post('/api/post_fetch_all_expenditure_target', formData);
+                },
+
+                createExpenditureTarget: function (formData) {
+                    return http.post('/api/post_insert_expenditure_target', formData);
+                },
+
+                updateExpenditureTarget: function (formData) {
+                    return http.post('/api/post_update_expenditure_target', formData);
+                },
+
+                removeExpenditureTarget: function (formData) {
+                    return http.post('/api/post_remove_expenditure_target', formData);
+                },
+            }
+        }])
+        .factory('SubContractorApplyUtil', ['$http', function (http) {
+            return {
+                insertSCApplyItem: function (formData) {
+                    return http.post('/api/post_sub_contractor_apply_insert_item', formData);
+                },
+
+                removeSCApplyItem: function (formData) {
+                    return http.post('/api/post_sub_contractor_apply_remove_item', formData);
+                },
+
+                fetchSCApplyItems: function (formData) {
+                    return http.post('/api/post_sub_contractor_apply_fetch_items', formData);
+                },
+
+                updateSCApplyOne: function (formData) {
+                    return http.post('/api/post_sub_contractor_apply_items_update_one', formData);
+                },
+
+                updateSCApplyItems: function (formData) {
+                    return http.post('/api/post_sub_contractor_apply_items_update_many', formData);
+                },
+
+            }
+        }])
+        .factory('SubContractorVendorUtil', ['$http', function (http) {
+            return {
+                fetchSCVendorEnabled: function (formData) {
+                    return http.post('/api/post_fetch_sub_contractor_vendor_enabled', formData);
+                },
+
+                fetchAllSCVendor: function (formData) {
+                    return http.post('/api/post_fetch_all_sub_contractor_vendor', formData);
+                },
+
+                createSCVendor: function (formData) {
+                    return http.post('/api/post_insert_sub_contractor_vendor', formData);
+                },
+
+                updateSCVendor: function (formData) {
+                    return http.post('/api/post_update_sub_contractor_vendor', formData);
+                },
+
+                removeSCVendor: function (formData) {
+                    return http.post('/api/post_remove_sub_contractor_vendor', formData);
+                },
+            }
+        }])
+        .factory('SubContractorItemUtil', ['$http', function (http) {
+            return {
+                fetchSCItemEnabled: function (formData) {
+                    return http.post('/api/post_fetch_sub_contractor_item_enabled', formData);
+                },
+
+                fetchAllSCItem: function (formData) {
+                    return http.post('/api/post_fetch_all_sub_contractor_item', formData);
+                },
+
+                createSCItem: function (formData) {
+                    return http.post('/api/post_insert_sub_contractor_item', formData);
+                },
+
+                updateSCItem: function (formData) {
+                    return http.post('/api/post_update_sub_contractor_item', formData);
+                },
+
+                removeSCItem: function (formData) {
+                    return http.post('/api/post_remove_sub_contractor_item', formData);
+                },
+            }
+        }])
         .factory('SuperVisionNotifyUtil', ['$http', function (http) {
             return {
                 insertSVNItemToDB: function (formData) {
@@ -858,7 +975,6 @@
                 updateWorkAddItemsMonthSalaryAll: function (formData) {
                     return http.post('/api/post_work_hour_work_add_month_salary_update_all', formData);
                 }
-
 
             }
         }])

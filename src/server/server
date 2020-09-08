@@ -26,6 +26,10 @@ require('./restfulAPI/officialDoc/officialDocPublic.routes')(app);
 require('./restfulAPI/officialDoc/officialDocVendor.routes')(app);
 require('./restfulAPI/officialDoc/officialDocNotify.routes')(app);
 
+require('./restfulAPI/forms/executiveExpenditure/executiveExpenditure.routes')(app);
+require('./restfulAPI/forms/executiveExpenditure/expenditureTarget.routes')(app);
+
+
 require('./restfulAPI/forms/paymentForm/paymentForm.routes')(app);
 require('./restfulAPI/forms/wageManageForm/wageManageForm.routes')(app);
 require('./restfulAPI/forms/workHourTableForm/workHourTableForm.routes')(app);
