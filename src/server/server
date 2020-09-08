@@ -29,6 +29,10 @@ require('./restfulAPI/officialDoc/officialDocNotify.routes')(app);
 require('./restfulAPI/forms/executiveExpenditure/executiveExpenditure.routes')(app);
 require('./restfulAPI/forms/executiveExpenditure/expenditureTarget.routes')(app);
 
+require('./restfulAPI/forms/subContractorApply/subContractorApply.routes')(app);
+require('./restfulAPI/forms/subContractorVendor/subContractorVendor.routes')(app);
+require('./restfulAPI/forms/subContractorItem/subContractorItem.routes')(app);
+require('./restfulAPI/forms/subContractorPayItem/subContractorPayItem.routes')(app);
 
 require('./restfulAPI/forms/paymentForm/paymentForm.routes')(app);
 require('./restfulAPI/forms/wageManageForm/wageManageForm.routes')(app);

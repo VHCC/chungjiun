@@ -1,0 +1,14 @@
+<div>
+    <ui-select ng-model="subContractorPayItem"
+               append-to-body="true"
+               on-select="changeSubContractorPayItem(this)"
+               search-enabled="true">
+        <ui-select-match placeholder="選擇委外廠商+委外項目">
+            {{showSCVendorName($select.selected.vendorDID)}} - {{showSCItemName($select.selected.itemDID)}}
+        </ui-select-match>
+        <ui-select-choices
+                repeat="option in subContractorPayItemOptions | filter: $select.search">
+            <span ng-bind-html="showSCVendorName(option.vendorDID) + ' - ' +  showSCItemName(option.itemDID)"></span>
+        </ui-select-choices>
+    </ui-select>
+</div>

@@ -1,0 +1,58 @@
+<div>
+    <h3 class="with-line">委外項目選單</h3>
+
+    <div class="row" ng-init="fetchAllSubContractorItems()">
+        <table class="table table-bordered table-hover table-condensed">
+            <thead>
+            <tr style="white-space:nowrap">
+                <td style="vertical-align: inherit; text-align: center" width="80px"></td>
+                <td style="vertical-align: inherit; text-align: center">選項</td>
+            </tr>
+            </thead>
+            <tbody ng-repeat="scItem in subContractorItems">
+            <tr style="vertical-align: inherit; text-align: center">
+                <!--序號-->
+                <td style="vertical-align: inherit; text-align: center">
+                    <span id="prjCode">{{$index + 1}}</span>
+                    <button class="btn btn-danger editable-table-button btn-xs"
+                            ng-show="scItem.isEnable"
+                            ng-click="removeSCItemCheck(target);">
+                        移除
+                    </button>
+                    <!--設定-->
+                    <div ng-if="!scItem.isEnable">
+                        <div class="buttons">
+                            <button class="btn btn-info editable-table-button btn-xs"
+                                    ng-click="setSCItemName(scItem, this) ">
+                                設定
+                            </button>
+                        </div>
+                    </div>
+                </td>
+                <!--名稱-->
+                <td style="vertical-align: inherit; text-align: center">
+
+                    <my ng-show="!scItem.isEnable">
+                        <input type="text"
+                               class="form-control"
+                               placeholder="請輸入委外項目名稱"
+                               ng-model="scItemSetName"
+                               style="color: #000000;">
+                    </my>
+                    <my ng-show="scItem.isEnable">
+                        {{scItem.subContractorItemName}}
+                    </my>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <button type="button"
+                ng-click="addSCItem()"
+                class="btn btn-info btn-icon">
+            <i class="ion-plus-round"/>
+        </button>
+    </div>
+</div>
