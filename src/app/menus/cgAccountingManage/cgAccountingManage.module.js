@@ -44,14 +44,26 @@
                         order: global.pages.cgAccountingManage_wageManage,
                     },
                 })
-            .state('cgAccountingManage.200',
+            .state('cgAccountingManage.subContractor',
                 {
-                    url: '/empty',
-                    templateUrl: 'app/pages/myNewPage/empty.html',
+                    url: '/subContractor',
+                    templateUrl: 'app/pages/myForms/subContractor/subContractorHomePage.html',
                     title: '申請單',
-                    accessLevel: [9999],
+                    controller: 'subContractorHomeCtrl',
+                    controllerAs: 'subContractorHomeCtrlVm',
                     sidebarMeta: {
-                        order: 200,
+                        order: global.pages.cgAccountingManage_subContractor,
+                    },
+                })
+            .state('cgAccountingManage.subContractorPay',
+                {
+                    url: '/subContractorPay',
+                    templateUrl: 'app/pages/myForms/subContractorPay/subContractorPayHomePage.html',
+                    title: '廠商請款',
+                    controller: 'subContractorPayHomeCtrl',
+                    controllerAs: 'subContractorPayHomeCtrlVm',
+                    sidebarMeta: {
+                        order: global.pages.cgAccountingManage_subContractor_pay,
                     },
                 })
             .state('cgAccountingManage.executiveExpenditure',
