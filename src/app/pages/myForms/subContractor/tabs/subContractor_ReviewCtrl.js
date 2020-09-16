@@ -142,7 +142,7 @@
                 .success(function (allProjects) {
                     $scope.allProject_raw = allProjects;
                     vm.projects = allProjects.slice();
-                    $scope.fetchSCApplyData_Review();
+                    // $scope.fetchSCApplyData_Review();
                 });
         }
 
@@ -274,6 +274,7 @@
                     prjDID: prjDID
                 });
             }
+            if (majorSelected == undefined) return 'Not Set';
             var managerDID = majorSelected[0].managerID;
             var selected = [];
             if (managerDID) {
@@ -303,6 +304,7 @@
                     prjDID: prjDID
                 });
             }
+            if (majorSelected == undefined) return 'Not Set';
             var managerDID = majorSelected[0].managerID;
             return managerDID === $scope.userDID ? true : false;
         };

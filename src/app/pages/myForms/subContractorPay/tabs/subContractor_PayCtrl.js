@@ -154,22 +154,12 @@
                 $scope.fetchSCApplyData();
             });
 
-        // $scope.initProject = function() {
-        //     Project.findAllEnable()
-        //         .success(function (allProjects) {
-        //             $scope.allProject_raw = allProjects;
-        //             vm.projects = allProjects.slice();
-        //         });
-        // }
-
         $scope.resetProjectData = function() {
             if (vm.prjItems) {
                 vm.prjItems.selected = null;
             }
             vm.canManipulateProjects = canManipulateProjects;
         }
-
-        // $scope.initProject();
 
         $scope.listenYear = function (dom) {
             dom.$watch('myYear',function(newValue, oldValue) {
@@ -214,6 +204,11 @@
                         });
                     }, 500)
                 })
+        }
+
+        $scope.calculateNonTaxValue = function(payItem) {
+            return payItem.payApply -
+                parseInt(payItem.payTax) - parseInt(payItem.payOthers);
         }
 
         var canManipulateProjects_temp = [];
@@ -299,6 +294,7 @@
                     prjDID: prjDID
                 });
             }
+            if (majorSelected == undefined) return 'Not Set';
             var managerDID = majorSelected[0].managerID;
             var selected = [];
             if (managerDID) {
@@ -356,6 +352,26 @@
             SubContractorPayItemUtil.fetchSCPayItems(formData)
                 .success(function (res) {
                     $scope.subContractorPayItems = res.payload;
+                    $timeout(function () {
+                        bsLoadingOverlayService.stop({
+                            referenceId: 'mainPage_subContractor'
+                        });
+
+                        $('.subContractDateInput').mask('20Y0/M0', {
+                            translation: {
+                                'Y': {
+                                    pattern: /[0123]/,
+                                },
+                                'M': {
+                                    pattern: /[01]/,
+                                },
+                                'D': {
+                                    pattern: /[0123]/,
+                                }
+                            }
+                        });
+                    }, 500)
+
                 })
         }
 
@@ -383,13 +399,67 @@
                 .success(function (res) {
                     $scope.fetchSCPayItemData($scope.scPayItemPrjDID);
                 })
-            
+        }
+
+        $scope.repentSCPayItem = function(payItem) {
+            $scope.checkText = '確定 退回：' +
+                $scope.showSCVendorName($scope.showSCApplyItem(payItem.subContractDID).vendorDID) + ' - ' +
+                $scope.showSCItemName($scope.showSCApplyItem(payItem.subContractDID).itemDID) +
+                "  ？";
+            $scope.checkingTable = payItem;
+            ngDialog.open({
+                template: 'app/pages/myModalTemplate/subContractorPayItem_repentModal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+
+        //跟後臺溝通
+        $scope.sendRepent_SCPayItem = function (checkingTable) {
+            var formData = {
+                _id: checkingTable._id,
+                isExecutiveCheck: false,
+            }
+            SubContractorPayItemUtil.updateSCPayItem(formData)
+                .success(function (res) {
+                    $scope.fetchSCPayItemData($scope.scPayItemPrjDID);
+                })
         }
 
         $scope.changeSubContractorPayItem = function (dom) {
             if (dom.$parent.$parent.payItem != undefined) {
                 dom.$parent.$parent.payItem.subContractDID = dom.subContractorPayItem._id
             }
+        }
+
+        $scope.calcActuallyPay = function (applyItem) {
+            var result = 0.0;
+            if ($scope.subContractorPayItems == undefined) return result;
+            for (var index = 0; index < $scope.subContractorPayItems.length; index ++) {
+                if (applyItem._id == $scope.subContractorPayItems[index].subContractDID &&
+                    $scope.subContractorPayItems[index].isExecutiveCheck == true) {
+                    result += parseInt($scope.subContractorPayItems[index].payApply);
+                }
+            }
+            return result
+        }
+
+        $scope.checkResidual = function (applyItem) {
+            var result = applyItem.contractAmount;
+            return result - $scope.calcActuallyPay(applyItem)
+        }
+
+        $scope.checkIsClosed = function (applyItem) {
+            var result = false;
+            if ($scope.subContractorPayItems == undefined) return result;
+            for (var index = 0; index < $scope.subContractorPayItems.length; index ++) {
+                if (applyItem._id == $scope.subContractorPayItems[index].subContractDID &&
+                    $scope.subContractorPayItems[index].isClosed == true) {
+                    result = true;
+                }
+            }
+            return result;
         }
 
     }

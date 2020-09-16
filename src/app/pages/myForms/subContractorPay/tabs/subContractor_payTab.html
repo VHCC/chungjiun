@@ -67,6 +67,7 @@
             <!--序號-->
             <td style="vertical-align: inherit; text-align: center">
                 <span id="prjCode">{{$index + 1}}</span>
+
             </td>
             <!--專案代碼-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
@@ -150,8 +151,20 @@
             <!--</td>-->
 
             <!-- 實際撥款累計金額 -->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span ng-if="applyItem.isSendReview">{{calcActuallyPay(applyItem)}}</span>
+            </td>
+
             <!-- 剩餘款 -->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span ng-if="applyItem.isSendReview">{{checkResidual(applyItem)}}</span>
+            </td>
+
             <!-- 結清 -->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span ng-if="checkIsClosed(applyItem)" style="color:blue">結清</span>
+                <span ng-if="!checkIsClosed(applyItem)" style="color:red">未結清</span>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -175,7 +188,7 @@
             <td style="vertical-align: inherit; text-align: center" width="150px">雜支</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">未稅金額</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">行政確認</td>
-            <td style="vertical-align: inherit; text-align: center" width="150px">結清</td>
+            <!--<td style="vertical-align: inherit; text-align: center" width="150px">結清</td>-->
         </tr>
         </thead>
         <tbody ng-repeat="payItem in subContractorPayItems">
@@ -190,6 +203,10 @@
                 <button class="btn btn-danger editable-table-button btn-xs"
                         ng-if="!payItem.isSendReview"
                         ng-click="removeSCPayItemOne(payItem);">移除
+                </button>
+                <button class="btn btn-danger editable-table-button btn-xs"
+                        ng-if="payItem.isExecutiveCheck"
+                        ng-click="repentSCPayItem(payItem);">退回
                 </button>
             </td>
             <!--委外廠商-->
@@ -228,7 +245,7 @@
                        ng-if="!payItem.isSendReview"
                        ng-model="payItem.payDate"
                        value="{{payItem.payDate}}"
-                       class="form-control input-sm">
+                       class="form-control subContractDateInput input-sm">
             </td>
             <!--發票號碼-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
@@ -279,39 +296,24 @@
             <!-- ===== Executive ====== -->
             <!--撥款日期-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="payItem.isManagerCheck">{{payItem.payConfirmDate}}</span>
-                <input type="text"
-                       ng-if="roleType == '100' && payItem.isManagerCheck"
-                       ng-model="payItem.payConfirmDate"
-                       value="{{payItem.payConfirmDate}}"
-                       class="form-control input-sm">
+                <span ng-if="payItem.isExecutiveCheck">{{payItem.payConfirmDate}}</span>
             </td>
             <!--稅金-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="payItem.isManagerCheck">{{payItem.payTax}}</span>
-                <input type="text"
-                       ng-if="roleType == '100' && payItem.isManagerCheck"
-                       ng-model="payItem.payTax"
-                       value="{{payItem.payTax}}"
-                       class="form-control input-sm">
+                <span ng-if="payItem.isExecutiveCheck">{{payItem.payTax}}</span>
             </td>
             <!--雜支-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="payItem.isManagerCheck">{{payItem.payOthers}}</span>
-                <input type="text"
-                       ng-if="!roleType == '100' && payItem.isManagerCheck"
-                       ng-model="payItem.payOthers"
-                       value="{{payItem.payOthers}}"
-                       class="form-control input-sm">
+                <span ng-if="payItem.isExecutiveCheck">{{payItem.payOthers}}</span>
             </td>
             <!--未稅金額-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="payItem.isManagerCheck">{{payItem.payOthers}}</span>
+                <span ng-if="payItem.isExecutiveCheck">{{calculateNonTaxValue(payItem)}}</span>
             </td>
             <!--行政確認-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
 
-                <div ng-if="(payItem.isSendReview && payItem.isManagerCheck)">
+                <div ng-if="(payItem.isSendReview && payItem.isManagerCheck && !payItem.isExecutiveCheck)">
                     <button class="btn btn-warning editable-table-button btn-xs"
                             style="color: black">
                         行政
@@ -348,22 +350,22 @@
             </td>
 
             <!--結清-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <ba-switcher
-                        ng-if="roleType == '100' && payItem.isManagerCheck"
-                        ng-click="changeSCPrjStatus(this)"
-                        ng-model="payItem.isClosed"
-                        switcher-style="primary"
-                        switcher-value="payItem.isClosed"/>
-                <div ng-show="roleType !== '100'">
-                    <span ng-if="payItem.isClosed">
-                        結清
-                    </span>
-                    <span ng-if="!payItem.isClosed">
-                        未結清
-                    </span>
-                </div>
-            </td>
+            <!--<td class="form-group" style="vertical-align: inherit; text-align: center">-->
+                <!--<ba-switcher-->
+                        <!--ng-if="roleType == '100' && payItem.isExecutiveCheck"-->
+                        <!--ng-click="changeSCPrjStatus(this)"-->
+                        <!--ng-model="payItem.isClosed"-->
+                        <!--switcher-style="primary"-->
+                        <!--switcher-value="payItem.isClosed"/>-->
+                <!--<div ng-show="roleType !== '100'">-->
+                    <!--<span ng-if="payItem.isClosed">-->
+                        <!--結清-->
+                    <!--</span>-->
+                    <!--<span ng-if="!payItem.isClosed">-->
+                        <!--未結清-->
+                    <!--</span>-->
+                <!--</div>-->
+            <!--</td>-->
         </tr>
         </tbody>
 

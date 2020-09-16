@@ -212,45 +212,20 @@
                         </button>
                     </div>
                 </div>
-                <div ng-if="!payItem.isSendReview && payItem.isManagerReject">
-                    <button class="btn btn-warning editable-table-button btn-xs"
-                            style="color: black">
-                        {{ showProjectManager(payItem.prjDID)}}
-                        <br>
-                        退回
-                    </button>
-                </div>
-                <my ng-if="!payItem.isSendReview && payItem.isManagerReject"
-                    ng-class="{workAdd: hover}"
-                    class="mytooltip"
-                    ng-mouseover="hover = true"
-                    ng-mouseleave="hover = false">
-                    原因：<i class="ion-clipboard"></i>
-                    <span class="tooltiptext">{{payItem.managerReject_memo}}</span>
-                </my>
-
-                <button class="btn btn-primary editable-table-button btn-xs"
-                        ng-if="payItem.isSendReview"
-                        ng-click="agreeSCPayItem(payItem);">同意
-                </button>
-                <button class="btn btn-danger editable-table-button btn-xs"
-                        ng-if="payItem.isSendReview"
-                        ng-click="disagreeSCPayItem(payItem);">退回
-                </button>
             </td>
             <!-- ===== Executive ====== -->
             <!--撥款日期-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="payItem.isManagerCheck">{{payItem.payConfirmDate}}</span>
+                <!--<span ng-if="payItem.isManagerCheck">{{payItem.payConfirmDate}}</span>-->
                 <input type="text"
                        ng-if="roleType == '100' && payItem.isManagerCheck"
                        ng-model="payItem.payConfirmDate"
                        value="{{payItem.payConfirmDate}}"
-                       class="form-control input-sm">
+                       class="form-control subContractDateInput input-sm">
             </td>
             <!--稅金-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="payItem.isManagerCheck">{{payItem.payTax}}</span>
+                <!--<span ng-if="payItem.isManagerCheck">{{payItem.payTax}}</span>-->
                 <input type="text"
                        ng-if="roleType == '100' && payItem.isManagerCheck"
                        ng-model="payItem.payTax"
@@ -259,62 +234,38 @@
             </td>
             <!--雜支-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="payItem.isManagerCheck">{{payItem.payOthers}}</span>
+                <!--<span ng-if="payItem.isManagerCheck">{{payItem.payOthers}}</span>-->
                 <input type="text"
-                       ng-if="!roleType == '100' && payItem.isManagerCheck"
+                       ng-if="roleType == '100' && payItem.isManagerCheck"
                        ng-model="payItem.payOthers"
                        value="{{payItem.payOthers}}"
                        class="form-control input-sm">
             </td>
             <!--未稅金額-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="payItem.isManagerCheck">{{payItem.payOthers}}</span>
+                <span >{{calculateNonTaxValue(payItem)}}</span>
             </td>
             <!--行政確認-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
 
-                <div ng-if="(payItem.isSendReview && payItem.isManagerCheck)">
-                    <button class="btn btn-warning editable-table-button btn-xs"
-                            style="color: black">
-                        行政
-                        <br>
-                        確認作業中
-                    </button>
-                </div>
-                <div ng-if="payItem.isExecutiveCheck">
-                    <div >
-                        <button class="btn btn-info editable-table-button btn-xs"
-                                style="color: black">
-                            行政
-                            <br>
-                            確認完成
-                        </button>
-                    </div>
-                </div>
-                <div ng-if="!payItem.isSendReview && payItem.isExecutiveReject">
-                    <button class="btn btn-warning editable-table-button btn-xs"
-                            style="color: black">
-                        行政
-                        <br>
-                        退回
-                    </button>
-                </div>
-                <my ng-if="!payItem.isSendReview && payItem.isExecutiveReject"
-                    ng-class="{workAdd: hover}"
-                    class="mytooltip"
-                    ng-mouseover="hover = true"
-                    ng-mouseleave="hover = false">
-                    原因：<i class="ion-clipboard"></i>
-                    <span class="tooltiptext">{{payItem.executiveReject_memo}}</span>
-                </my>
+                <button class="btn btn-primary editable-table-button btn-xs"
+                        ng-if="payItem.isSendReview"
+                        ng-click="agreeSCPayItem_Executive(payItem);">同意
+                </button>
+                <button class="btn btn-danger editable-table-button btn-xs"
+                        ng-if="payItem.isSendReview"
+                        ng-click="disagreeSCPayItem_Executive(payItem);">退回
+                </button>
             </td>
 
             <!--結清-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <ba-switcher
+                <cj-switcher
                         ng-if="roleType == '100' && payItem.isManagerCheck"
-                        ng-click="changeSCPrjStatus(this)"
+                        ng-click="changeSCItemStatus(this, payItem)"
                         ng-model="payItem.isClosed"
+                        switcher-on="結清"
+                        switcher-off="未結清"
                         switcher-style="primary"
                         switcher-value="payItem.isClosed"/>
                 <div ng-show="roleType !== '100'">

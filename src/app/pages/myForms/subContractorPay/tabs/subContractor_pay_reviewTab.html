@@ -194,24 +194,24 @@
             </td>
             <!-- 經理簽章 -->
             <td style="vertical-align: inherit;">
-                <div ng-if="(payItem.isSendReview && !payItem.isManagerCheck)">
-                    <button class="btn btn-warning editable-table-button btn-xs"
-                            style="color: black">
-                        {{ showProjectManager(payItem.prjDID)}}
-                        <br>
-                        確認作業中
-                    </button>
-                </div>
-                <div ng-if="payItem.isManagerCheck">
-                    <div >
-                        <button class="btn btn-info editable-table-button btn-xs"
-                                style="color: black">
-                            {{ showProjectManager(payItem.prjDID)}}
-                            <br>
-                            確認完成
-                        </button>
-                    </div>
-                </div>
+                <!--<div ng-if="(payItem.isSendReview && !payItem.isManagerCheck)">-->
+                    <!--<button class="btn btn-warning editable-table-button btn-xs"-->
+                            <!--style="color: black">-->
+                        <!--{{ showProjectManager(payItem.prjDID)}}-->
+                        <!--<br>-->
+                        <!--確認作業中-->
+                    <!--</button>-->
+                <!--</div>-->
+                <!--<div ng-if="payItem.isManagerCheck">-->
+                    <!--<div >-->
+                        <!--<button class="btn btn-info editable-table-button btn-xs"-->
+                                <!--style="color: black">-->
+                            <!--{{ showProjectManager(payItem.prjDID)}}-->
+                            <!--<br>-->
+                            <!--確認完成-->
+                        <!--</button>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div ng-if="!payItem.isSendReview && payItem.isManagerReject">
                     <button class="btn btn-warning editable-table-button btn-xs"
                             style="color: black">
