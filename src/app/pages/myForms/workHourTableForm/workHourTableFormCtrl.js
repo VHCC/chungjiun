@@ -717,6 +717,7 @@
                     prjDID: prjDID
                 });
             }
+            if (majorSelected == undefined) return 'Not Set';
             var managerDID = majorSelected[0].managerID;
             var selected = [];
             if (managerDID) {
@@ -736,6 +737,7 @@
                     prjDID: prjDID
                 });
             }
+            if (majorSelected == undefined) return 'Not Set';
             var managerDID = majorSelected[0].managerID;
             return managerDID === $cookies.get('userDID');
         }
@@ -3106,15 +3108,15 @@
                         existDIDArray = [];
                         // push items
                         for (var formIndex = 0; formIndex < res.payload.length; formIndex ++) {
-                            var isProjectIncluded = false;
-                            inter:
-                            for (var tablesIndex = 0; tablesIndex < res.payload[formIndex].formTables.length; tablesIndex ++) {
-                                if (managersRelatedProjects.includes(res.payload[formIndex].formTables[tablesIndex].prjDID) || type == typeExecutive) { // 行政總管跟每個人都有關, 經理只跟專案掛鉤
-                                    isProjectIncluded = true;
-                                    break inter;
-                                }
-                            }
-                            if (isProjectIncluded) {
+                            // var isProjectIncluded = false;
+                            // inter:
+                            // for (var tablesIndex = 0; tablesIndex < res.payload[formIndex].formTables.length; tablesIndex ++) {
+                            //     if (managersRelatedProjects.includes(res.payload[formIndex].formTables[tablesIndex].prjDID) || type == typeExecutive) { // 行政總管跟每個人都有關, 經理只跟專案掛鉤
+                            //         isProjectIncluded = true;
+                            //         break inter;
+                            //     }
+                            // }
+                            if (true) {
                                 for(var userIndex = 0; userIndex < relatedUsersAndTables.length; userIndex ++) {
                                     if (res.payload[formIndex].creatorDID === relatedUsersAndTables[userIndex].DID) {
                                         var manipulateObject = undefined;

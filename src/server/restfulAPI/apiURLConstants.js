@@ -75,6 +75,7 @@ global.apiUrl = {
     post_payment_items_update : '/api/post_payment_items_update',
     post_payment_items_update_by_id : '/api/post_payment_items_update_by_id',
     post_payment_multiple_get : '/api/post_payment_multiple_get',
+    post_payment_fetch_items_by_prjdid : '/api/post_payment_fetch_items_by_prjdid',
 
     // global configs
     fetch_global_configs: '/api/fetch_global_configs',
