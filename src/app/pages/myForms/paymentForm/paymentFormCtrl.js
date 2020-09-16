@@ -138,18 +138,19 @@
 
             GlobalConfigUtil.getConfig(formData)
                 .success(function (resp) {
-                    console.log(resp);
+                    // console.log(resp);
                     if (resp.payload.length > 0 ) {
                         vm.paymentsflag = resp.payload[0].paymentsSwitch;
                     } else {
-                        console.log(formData);
+                        // console.log(formData);
                         GlobalConfigUtil.insertConfig(formData)
                             .success(function (resp) {
-                                console.log(resp);
+                                // console.log(resp);
                                 $scope.getGlobalConfig();
                             })
                     }
                 })
+
         }
 
 
@@ -536,6 +537,7 @@
                     prjDID: prjDID
                 });
             }
+            if (majorSelected == undefined || majorSelected.length == 0) return 'Not Set';
             var managerDID = majorSelected[0].managerID;
             var selected = [];
             if (managerDID) {
@@ -789,6 +791,7 @@
                     prjDID: prjDID
                 });
             }
+            if (majorSelected == undefined) return 'Not Set';
             var managerDID = majorSelected[0].managerID;
             return managerDID === $cookies.get('userDID');
         }
@@ -1154,6 +1157,7 @@
         // main tab, type = 0
         // history tab, type = 1
         // executive_Add, type = 2
+        // search, type = 4
         $scope.calculateSum = function (type) {
             var operationTarget;
             var result = 0;
@@ -1214,8 +1218,102 @@
                     }
                     return result;
                     break;
+                case 4:
+                    operationTarget = $scope.searchPaymentsItems;
+                    if (operationTarget == undefined || operationTarget == null) {
+                        return;
+                    }
+                    for (var index = 0; index < operationTarget.length; index ++) {
+                        if (!operationTarget[index].isExecutiveCheck) {
+                            continue;
+                        }
+                        if (operationTarget[index].amount != null || operationTarget[index].amount != undefined) {
+                            result += parseInt(operationTarget[index].amount);
+                        }
+                    }
+                    return result;
+                    break;
 
             }
+        }
+
+        $scope.listenMonth_search = function(dom){
+            dom.$watch('myMonth',function(newValue, oldValue) {
+                if (dom.isShiftMonthSelect) {
+                    dom.isShiftMonthSelect = false;
+                    $scope.changePaymentMonth_search(0, dom.monthPickerDom);
+                }
+            });
+        }
+
+        // 行政修訂
+        $scope.changePaymentMonth_search = function(changeCount, dom) {
+
+            $scope.monthPicker = dom;
+
+            dom.myMonth = moment(dom.myDT).add(changeCount, 'M').format('YYYY/MM');
+            dom.myDT = moment(dom.myDT).add(changeCount, 'M');
+
+            var year = parseInt(dom.myDT.year()) - 1911;
+            var month = parseInt(dom.myDT.month()) + 1;
+
+            specificYear = year;
+            specificMonth = month;
+
+            $scope.searchPaymentItem($scope.searchPrjDID, specificYear, specificMonth);
+        }
+
+        $scope.isSearchFlag = false;
+        $scope.searchPrjDID = false;
+
+        $scope.searchPaymentItem = function (prjDID, specificYear, specificMonth) {
+
+            $scope.searchPrjDID = prjDID;
+            $scope.isSearchFlag = true;
+
+            var formData = {
+                // year: specificYear,
+                // month: specificMonth,
+                prjDID: prjDID,
+            }
+
+            if (specificYear == null) {
+                formData = {
+                    prjDID: prjDID,
+                }
+            } else {
+                formData = {
+                    year: specificYear,
+                    month: specificMonth,
+                    prjDID: prjDID,
+                }
+            }
+
+            bsLoadingOverlayService.start({
+                referenceId: 'payment_main'
+            });
+
+            console.log("QQQ")
+
+            PaymentFormsUtil.fetchPaymentsItemByPrjDID(formData)
+                .success(function (res) {
+                    console.log("AAA")
+                    $timeout(function () {
+                        console.log("BBB")
+                        bsLoadingOverlayService.stop({
+                            referenceId: 'payment_main'
+                        });
+                    }, 100)
+                    $scope.searchPaymentsItems = res.payload;
+                })
+                .error(function (resp) {
+                    $timeout(function () {
+                        console.log("CCC")
+                        bsLoadingOverlayService.stop({
+                            referenceId: 'payment_main'
+                        });
+                    }, 100)
+                })
         }
 
     }
