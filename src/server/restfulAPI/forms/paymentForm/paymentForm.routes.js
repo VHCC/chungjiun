@@ -251,4 +251,44 @@ module.exports = function (app) {
             });
     })
 
+    app.post(global.apiUrl.post_payment_fetch_items_by_prjdid, function (req, res) {
+        console.log(req.body);
+
+        if (req.body.year) {
+            PaymentFormItem.find({
+                prjDID: req.body.prjDID,
+                isExecutiveCheck: true,
+                year: req.body.year,
+                month: req.body.month,
+            }, function (err, paymentItems) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: paymentItems,
+                    });
+                }
+            });
+        } else {
+            PaymentFormItem.find({
+                prjDID: req.body.prjDID,
+                isExecutiveCheck: true,
+            }, function (err, paymentItems) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: paymentItems,
+                    });
+                }
+            });
+        }
+
+
+    })
+
 }

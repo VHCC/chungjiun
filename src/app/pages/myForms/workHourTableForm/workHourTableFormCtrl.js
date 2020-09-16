@@ -717,6 +717,7 @@
                     prjDID: prjDID
                 });
             }
+            if (majorSelected == undefined) return 'Not Set';
             var managerDID = majorSelected[0].managerID;
             var selected = [];
             if (managerDID) {
@@ -736,6 +737,7 @@
                     prjDID: prjDID
                 });
             }
+            if (majorSelected == undefined) return 'Not Set';
             var managerDID = majorSelected[0].managerID;
             return managerDID === $cookies.get('userDID');
         }

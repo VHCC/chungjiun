@@ -457,6 +457,10 @@
                 getPaymentsMultiple: function(formData) {
                     return http.post('/api/post_payment_multiple_get', formData);
                 },
+
+                fetchPaymentsItemByPrjDID: function (formData) {
+                    return http.post('/api/post_payment_fetch_items_by_prjdid', formData);
+                }
             }
         }])
         .factory('GlobalConfigUtil', ['$http', function (http) {
