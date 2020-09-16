@@ -202,7 +202,7 @@
 
         // main, type = 0
         $scope.fetchSCApplyData = function () {
-            console.log(" === fetchSCApplyData === ")
+            console.log(" === fetchSCApplyData Executive === ")
             canManipulateProjects_temp = [];
             canManipulateProjects_prjDIDs = [];
             bsLoadingOverlayService.start({
@@ -279,6 +279,7 @@
                     prjDID: prjDID
                 });
             }
+            if (majorSelected == undefined) return 'Not Set';
             var managerDID = majorSelected[0].managerID;
             var selected = [];
             if (managerDID) {
@@ -310,11 +311,35 @@
             SubContractorPayItemUtil.fetchSCPayItems(formData)
                 .success(function (res) {
                     $scope.subContractorPayReviewItems = res.payload;
+                    $timeout(function () {
+                        bsLoadingOverlayService.stop({
+                            referenceId: 'mainPage_subContractor'
+                        });
+
+                        $('.subContractDateInput').mask('20Y0/M0', {
+                            translation: {
+                                'Y': {
+                                    pattern: /[0123]/,
+                                },
+                                'M': {
+                                    pattern: /[01]/,
+                                },
+                                'D': {
+                                    pattern: /[0123]/,
+                                }
+                            }
+                        });
+                    }, 500)
                 })
         }
 
+        $scope.calculateNonTaxValue = function(payItem) {
+            return payItem.payApply -
+                parseInt(payItem.payTax) - parseInt(payItem.payOthers);
+        }
+
         // $scope.fetchSCPayReviewItemData();
-        $scope.fetchSCPayItemProject();
+        // $scope.fetchSCPayItemProject();
 
         $scope.setSCPayItem = function (payItem) {
             var formData = {
@@ -331,19 +356,38 @@
                     $scope.fetchSCPayExecutiveItemData();
                 })
         }
-        
-        $scope.agreeSCPayItem = function (payItem) {
+
+        $scope.agreeSCPayItem_Executive = function (payItem) {
+            var isClosedText = payItem.isClosed ? "結清" : "未結清";
+            $scope.checkText = '確定 同意：' +
+                $scope.showSCVendorName($scope.showSCApplyItem(payItem.subContractDID).vendorDID) + ' - ' +
+                $scope.showSCItemName($scope.showSCApplyItem(payItem.subContractDID).itemDID) + " " +
+                isClosedText + "  ？";
+            $scope.checkingTable = payItem;
+            ngDialog.open({
+                template: 'app/pages/myModalTemplate/subContractorPayItemExecutive_agreeModal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+
+        $scope.sendAgreeSCPayItem_Executive = function (payItem) {
             var formData = {
                 "_id": payItem._id,
                 "isExecutiveCheck": true,
+                "payConfirmDate": payItem.payConfirmDate,
+                "payTax": payItem.payTax,
+                "payOthers": payItem.payOthers,
+                "isClosed": payItem.isClosed,
             }
             SubContractorPayItemUtil.updateSCPayItem(formData)
                 .success(function (res) {
-                    $scope.fetchSCPayExecutiveItemData();
+                    $scope.fetchSCPayItemProject();
                 })
         }
 
-        $scope.disagreeSCPayItem = function (payItem) {
+        $scope.disagreeSCPayItem_Executive = function (payItem) {
             $scope.checkText = '確定 退回：' +
                 $scope.showSCVendorName($scope.showSCApplyItem(payItem.subContractDID).vendorDID) + ' - ' +
                 $scope.showSCItemName($scope.showSCApplyItem(payItem.subContractDID).itemDID) +
@@ -361,7 +405,7 @@
         $scope.sendDisagree_SCPayItemExecutive = function (checkingTable, rejectMsg) {
             var formData = {
                 _id: checkingTable._id,
-                managerReject_memo: rejectMsg,
+                executiveReject_memo: rejectMsg,
                 isSendReview: false,
                 isManagerCheck: false,
                 isExecutiveReject: true,
@@ -370,6 +414,11 @@
                 .success(function (res) {
                     $scope.fetchSCPayExecutiveItemData();
                 })
+        }
+        
+        $scope.changeSCItemStatus = function (dom, payItem) {
+            console.log(dom)
+            console.log(payItem)
         }
 
     }

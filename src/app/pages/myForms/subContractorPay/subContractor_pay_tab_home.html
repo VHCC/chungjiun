@@ -9,13 +9,13 @@
                  ng-include="'app/pages/myForms/subContractorPay/tabs/subContractor_payTab.html'"></div>
         </uib-tab>
 
-        <uib-tab heading="請款審核" >
+        <uib-tab heading="請款審核" ng-click="fetchReviewData(this)">
             <div
                     ng-controller="subContractorPayReviewCtrl as subContractorPayReviewCtrlVm"
                     ng-include="'app/pages/myForms/subContractorPay/tabs/subContractor_pay_reviewTab.html'"></div>
         </uib-tab>
 
-        <uib-tab heading="行政撥款" >
+        <uib-tab heading="行政撥款" ng-click="fetchExecutiveData(this)">
             <div
                     ng-controller="subContractorPayExecutiveCtrl as subContractorPayExecutiveCtrlVm"
                     ng-include="'app/pages/myForms/subContractorPay/tabs/subContractor_pay_executiveTab.html'"></div>

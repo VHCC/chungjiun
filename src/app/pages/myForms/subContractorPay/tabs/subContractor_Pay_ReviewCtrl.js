@@ -202,7 +202,7 @@
 
         // main, type = 0
         $scope.fetchSCApplyData = function () {
-            console.log(" === fetchSCApplyData === ")
+            console.log(" === fetchSCApplyData Review === ")
             canManipulateProjects_temp = [];
             canManipulateProjects_prjDIDs = [];
             bsLoadingOverlayService.start({
@@ -279,6 +279,7 @@
                     prjDID: prjDID
                 });
             }
+            if (majorSelected == undefined) return 'Not Set';
             var managerDID = majorSelected[0].managerID;
             var selected = [];
             if (managerDID) {
@@ -313,7 +314,7 @@
         }
 
         // $scope.fetchSCPayReviewItemData();
-        $scope.fetchSCPayItemProject();
+        // $scope.fetchSCPayItemProject();
 
         $scope.setSCPayItem = function (payItem) {
             var formData = {

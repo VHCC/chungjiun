@@ -12,13 +12,14 @@
                  ng-include="'app/pages/myForms/subContractor/tabs/subContractorItemTab.html'"></div>
         </uib-tab>
 
-        <uib-tab heading="訂約請示單" >
-            <div ng-click="reloadSCApplyPage()"
+        <uib-tab heading="訂約請示單" ng-click="reloadSCApplyData(this)">
+            <div
                  ng-controller="subContractorApplyCtrl as subContractorApplyCtrlVm"
                  ng-include="'app/pages/myForms/subContractor/tabs/subContractor_applyTab.html'"></div>
         </uib-tab>
 
-        <uib-tab heading="訂約單審核" ng-if="roleType === '2' || roleType === '6' || roleType === '100'" >
+        <uib-tab heading="訂約單審核" ng-if="roleType === '2' || roleType === '6' || roleType === '100'"
+            ng-click="checkExecutiveData(this)">
             <div ng-controller="subContractorReviewCtrl as subContractorReviewCtrlVm"
                  ng-include="'app/pages/myForms/subContractor/tabs/subContractor_reviewTab.html'"></div>
         </uib-tab>
