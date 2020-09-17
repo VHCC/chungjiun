@@ -32,7 +32,11 @@
             var thisMonth = new Date().getMonth() + 1; //January is 0!;
 
             $scope.fetchReviewData = function (dom) {
-                dom.$$childTail.$$prevSibling.$$prevSibling.fetchSCPayItemProject();
+                if ($scope.roleType != 100) {
+                    dom.$$childTail.$$prevSibling.fetchSCPayItemProject();
+                } else {
+                    dom.$$childTail.$$prevSibling.$$prevSibling.fetchSCPayItemProject();
+                }
             }
 
             $scope.fetchExecutiveData = function (dom) {
