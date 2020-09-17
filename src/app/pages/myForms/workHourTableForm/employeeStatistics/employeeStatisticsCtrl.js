@@ -1023,15 +1023,11 @@
                         var min = parseInt(TimeUtil.getCalculateHourDiffByTime(item._add_tables[index].start_time, item._add_tables[index].end_time))
 
                         if (type2_add_data[date_id] != undefined) {
-                            // console.log("Q")
-
                             var data = type2_add_data[date_id];
                             data.min = min + type2_add_data[date_id].min;
 
-                            type2_add_data[date_id] = (min + type2_add_data[date_id])
+                            // type2_add_data[date_id] = (min + type2_add_data[date_id])
                         } else {
-                            // console.log("Qqqq")
-
                             var data = {
                                 _date: DateUtil.getShiftDatefromFirstDate(moment(item._add_tables[index].create_formDate), item._add_tables[index].day - 1),
                                 min: min
