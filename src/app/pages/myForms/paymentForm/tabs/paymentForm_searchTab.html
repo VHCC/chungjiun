@@ -4,10 +4,9 @@
          id="colHead">
         <div class="form-group">
             <label for="projectName">總案名稱 - 專案名稱 - 子案名稱 - 類型 - 代碼</label>
-            <ui-select ng-model="paymentFormCtrlVm.prjItems.selected"
+            <ui-select ng-model="paymentFormSearchCtrlVm.prjItems.selected"
                        class="btn-group bootstrap-select form-control"
                        id="projectName"
-                       ng-disabled="!paymentFormCtrlVm.paymentsflag"
                        ng-change="searchPaymentItem($select.selected._id, null, null)"
                        append-to-body="true"
                        search-enabled="true">
@@ -20,7 +19,7 @@
                 </ui-select-match>
                 <ui-select-choices
                         ng-model="prjName"
-                        repeat="prjItems in paymentFormCtrlVm.projects |
+                        repeat="prjItems in paymentFormSearchCtrlVm.projects |
                             groupSelectpickerOptions: {
                             mainName: $select.search,
                             prjName: $select.search,
