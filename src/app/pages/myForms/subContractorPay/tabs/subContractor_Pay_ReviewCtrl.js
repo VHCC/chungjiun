@@ -50,6 +50,7 @@
         $scope.username = $cookies.get('username');
 
         var vm = this;
+        console.log($scope)
 
         var thisYear = new Date().getFullYear() - 1911;
         var thisMonth = new Date().getMonth() + 1; //January is 0!;
@@ -303,15 +304,35 @@
         };
 
         $scope.fetchSCPayReviewItemData = function () {
+
+            $scope.subContractorPayReviewItems = [];
+
             var formData = {
                 isSendReview: true,
                 isManagerCheck: false,
             }
             SubContractorPayItemUtil.fetchSCPayItems(formData)
                 .success(function (res) {
-                    $scope.subContractorPayReviewItems = res.payload;
+
+                    for (var index = 0; index < res.payload.length; index++) {
+                        if ($scope.isFitManager(res.payload[index].prjDID)) {
+                            $scope.subContractorPayReviewItems.push(res.payload[index]);
+                        }
+                    }
                 })
         }
+
+        $scope.isFitManager = function (prjDID) {
+            var majorSelected = [];
+            if (prjDID) {
+                majorSelected = $filter('filter')($scope.allProjectCache, {
+                    prjDID: prjDID
+                });
+            }
+            if (majorSelected == undefined) return false;
+            var managerDID = majorSelected[0].managerID;
+            return managerDID === $scope.userDID ? true : false;
+        };
 
         // $scope.fetchSCPayReviewItemData();
         // $scope.fetchSCPayItemProject();

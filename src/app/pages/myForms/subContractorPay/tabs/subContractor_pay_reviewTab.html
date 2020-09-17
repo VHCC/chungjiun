@@ -313,25 +313,25 @@
 
             <!--行政備註-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="payItem.isManagerCheck">{{payItem.executive_memo}}</span>
+                <!--<span ng-if="payItem.isManagerCheck">{{payItem.executive_memo}}</span>-->
             </td>
 
             <!--結清-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <ba-switcher
-                        ng-if="roleType == '100' && payItem.isManagerCheck"
-                        ng-click="changeSCPrjStatus(this)"
-                        ng-model="payItem.isClosed"
-                        switcher-style="primary"
-                        switcher-value="payItem.isClosed"/>
-                <div ng-show="roleType !== '100'">
-                    <span ng-if="payItem.isClosed">
-                        結清
-                    </span>
-                    <span ng-if="!payItem.isClosed">
-                        未結清
-                    </span>
-                </div>
+                <!--<ba-switcher-->
+                        <!--ng-if="roleType == '100' && payItem.isManagerCheck"-->
+                        <!--ng-click="changeSCPrjStatus(this)"-->
+                        <!--ng-model="payItem.isClosed"-->
+                        <!--switcher-style="primary"-->
+                        <!--switcher-value="payItem.isClosed"/>-->
+                <!--<div ng-show="roleType !== '100'">-->
+                    <!--<span ng-if="payItem.isClosed">-->
+                        <!--結清-->
+                    <!--</span>-->
+                    <!--<span ng-if="!payItem.isClosed">-->
+                        <!--未結清-->
+                    <!--</span>-->
+                <!--</div>-->
             </td>
         </tr>
         </tbody>

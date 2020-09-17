@@ -279,14 +279,12 @@
         }
 
         $scope.changeSubContractorVendor = function (dom) {
-            console.log(dom)
             if (dom.$parent.applyItem != undefined) {
                 dom.$parent.applyItem.vendorDID = dom.subContractorVendor._id;
             }
         }
 
         $scope.changeSubContractorItem = function (dom) {
-            console.log(dom)
             if (dom.$parent.applyItem != undefined) {
                 dom.$parent.applyItem.itemDID = dom.subContractorItem._id;
             }

@@ -166,7 +166,6 @@
         }
 
         $scope.agreeSCApplyItem = function(applyItem) {
-            console.log(applyItem)
             var formData = {
                 _id: applyItem._id,
                 isManagerCheck: true,
