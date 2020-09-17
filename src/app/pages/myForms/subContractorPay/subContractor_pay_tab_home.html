@@ -15,10 +15,16 @@
                     ng-include="'app/pages/myForms/subContractorPay/tabs/subContractor_pay_reviewTab.html'"></div>
         </uib-tab>
 
-        <uib-tab heading="行政撥款" ng-click="fetchExecutiveData(this)">
+        <uib-tab heading="行政撥款" ng-click="fetchExecutiveData(this)" ng-if="roleType === '100'">
             <div
                     ng-controller="subContractorPayExecutiveCtrl as subContractorPayExecutiveCtrlVm"
                     ng-include="'app/pages/myForms/subContractorPay/tabs/subContractor_pay_executiveTab.html'"></div>
+        </uib-tab>
+
+        <uib-tab heading="廠商請款查詢" >
+            <div
+                    ng-controller="subContractorPaySearchCtrl as subContractorPaySearchCtrlVm"
+                    ng-include="'app/pages/myForms/subContractorPay/tabs/subContractor_pay_searchTab.html'"></div>
         </uib-tab>
 
     </uib-tabset>
