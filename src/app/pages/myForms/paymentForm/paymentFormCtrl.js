@@ -1272,8 +1272,6 @@
             $scope.isSearchFlag = true;
 
             var formData = {
-                // year: specificYear,
-                // month: specificMonth,
                 prjDID: prjDID,
             }
 
