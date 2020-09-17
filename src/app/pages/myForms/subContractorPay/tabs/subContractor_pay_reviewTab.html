@@ -13,6 +13,7 @@
             <!--<td style="vertical-align: inherit; text-align: center" width="150px">經理確認</td>-->
             <td style="vertical-align: inherit; text-align: center" width="150px">實際撥款累計金額</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">剩餘款</td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">行政備註</td>
             <td style="vertical-align: inherit; text-align: center" width="100px">結清</td>
         </tr>
         </thead>
@@ -128,6 +129,7 @@
             <td style="vertical-align: inherit; text-align: center" width="150px">雜支</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">未稅金額</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">行政確認</td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">行政備註</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">結清</td>
         </tr>
         </thead>
@@ -194,24 +196,24 @@
             </td>
             <!-- 經理簽章 -->
             <td style="vertical-align: inherit;">
-                <div ng-if="(payItem.isSendReview && !payItem.isManagerCheck)">
-                    <button class="btn btn-warning editable-table-button btn-xs"
-                            style="color: black">
-                        {{ showProjectManager(payItem.prjDID)}}
-                        <br>
-                        確認作業中
-                    </button>
-                </div>
-                <div ng-if="payItem.isManagerCheck">
-                    <div >
-                        <button class="btn btn-info editable-table-button btn-xs"
-                                style="color: black">
-                            {{ showProjectManager(payItem.prjDID)}}
-                            <br>
-                            確認完成
-                        </button>
-                    </div>
-                </div>
+                <!--<div ng-if="(payItem.isSendReview && !payItem.isManagerCheck)">-->
+                    <!--<button class="btn btn-warning editable-table-button btn-xs"-->
+                            <!--style="color: black">-->
+                        <!--{{ showProjectManager(payItem.prjDID)}}-->
+                        <!--<br>-->
+                        <!--確認作業中-->
+                    <!--</button>-->
+                <!--</div>-->
+                <!--<div ng-if="payItem.isManagerCheck">-->
+                    <!--<div >-->
+                        <!--<button class="btn btn-info editable-table-button btn-xs"-->
+                                <!--style="color: black">-->
+                            <!--{{ showProjectManager(payItem.prjDID)}}-->
+                            <!--<br>-->
+                            <!--確認完成-->
+                        <!--</button>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div ng-if="!payItem.isSendReview && payItem.isManagerReject">
                     <button class="btn btn-warning editable-table-button btn-xs"
                             style="color: black">
@@ -307,6 +309,11 @@
                     原因：<i class="ion-clipboard"></i>
                     <span class="tooltiptext">{{payItem.executiveReject_memo}}</span>
                 </my>
+            </td>
+
+            <!--行政備註-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span ng-if="payItem.isManagerCheck">{{payItem.executive_memo}}</span>
             </td>
 
             <!--結清-->

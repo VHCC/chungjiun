@@ -31,6 +31,14 @@
             var thisYear = new Date().getFullYear() - 1911;
             var thisMonth = new Date().getMonth() + 1; //January is 0!;
 
+            $scope.checkExecutiveData = function (dom) {
+                dom.$$childTail.fetchSCApplyData_Review();
+            }
+
+            $scope.reloadSCApplyData = function (dom) {
+                dom.$$childTail.$$prevSibling.$$prevSibling.$$prevSibling.fetchSCApplyData();
+            }
+
         } // End of function
     }
 
