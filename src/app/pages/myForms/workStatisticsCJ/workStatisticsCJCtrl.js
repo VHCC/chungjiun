@@ -1039,7 +1039,7 @@
                             var data = type2_add_data[date_id];
                             data.min = min + type2_add_data[date_id].min;
 
-                            type2_add_data[date_id] = (min + type2_add_data[date_id])
+                            // type2_add_data[date_id] = (min + type2_add_data[date_id])
                         } else {
                             // console.log("Qqqq")
 
