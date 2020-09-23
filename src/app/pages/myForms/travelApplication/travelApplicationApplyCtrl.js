@@ -68,7 +68,7 @@
             });
         }
 
-        Project.findAllEnable()
+        Project.findAll()
             .success(function (allProjects) {
                 console.log(" ======== related login user Projects ======== ");
                 vm.projects = allProjects.slice();
