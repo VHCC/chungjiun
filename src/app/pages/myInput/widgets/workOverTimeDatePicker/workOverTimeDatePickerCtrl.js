@@ -6,10 +6,17 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.myInput')
-        .controller('WorkOverTimeDatePickerCtrl', workOverTimeDatePickerCtrl);
+        .controller('WorkOverTimeDatePickerCtrl', [
+            '$scope',
+            '$cookies',
+            workOverTimeDatePickerCtrl
+        ]);
 
     /** @ngInject */
-    function workOverTimeDatePickerCtrl($scope) {
+    function workOverTimeDatePickerCtrl($scope,
+                                        $cookies) {
+        $scope.userDID = $cookies.get('userDID');
+        console.log($scope);
         $scope.openDatePicker = openDatePicker;
         $scope.myDT = new Date();
         $scope.opened = false;
@@ -20,6 +27,13 @@
             startingDay: 0,
             minDate: moment().add(-3, 'days').format("YYYY/MM/DD"),
         };
+
+        if ( $scope.userDID == "5ba4af019bdd2a0ef86dc5ec") {
+            $scope.myOptions = {
+                showWeeks: false,
+                startingDay: 0,
+            };
+        }
         $('.workOverTimeDatePickerCtrl').mask('M0/D0', {
             translation: {
                 'M': {
