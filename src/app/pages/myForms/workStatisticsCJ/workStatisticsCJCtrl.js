@@ -90,12 +90,6 @@
                 });
             });
 
-            // $scope.startDay = new Date().getFullYear() + "/" + "06/10";
-            // $scope.endDay = new Date().getFullYear() + "/" + "06/13";
-
-            // $scope.startDay = this.startDay;
-            // $scope.endDay = this.endDay;
-
             vm.isAllMonth = false;
 
             // 主要顯示
@@ -108,14 +102,8 @@
             // 總案代碼、專案代碼、子案代碼、類型代碼
             // 工時類型、相關人員
             $scope.CJTest = function () {
-
-                // $scope.startDay = this.startDay;
                 $scope.startDay = $('#inputStartDay')[0].value;
-                // $scope.endDay = this.endDay;
                 $scope.endDay = $('#inputEndDay')[0].value;
-
-                // console.log($scope.startDay);
-                // console.log($scope.endDay);
 
                 bsLoadingOverlayService.start({
                     referenceId: 'mainPage_statistics'
@@ -139,7 +127,6 @@
 
                 if ($('#inlineRadio1')[0].checked) {
                     // 第 1 類型
-
                     WorkHourUtil.queryStatisticsFormsCJ_type2(getData)
                         .success(function (res) {
                             console.log(res);
@@ -178,6 +165,7 @@
                                     bsLoadingOverlayService.stop({
                                         referenceId: 'mainPage_statistics'
                                     });
+
                                 }, 500)
                             } catch (e) {
                                 toastr['warning'](e.toString(), '搜尋異常');
@@ -187,8 +175,6 @@
                                     });
                                 }, 500)
                             }
-
-
                         })
                         .error(function () {
                             $timeout(function () {
@@ -202,8 +188,6 @@
                     // 第 2 類型
                     WorkHourUtil.queryStatisticsFormsCJ_type2(getData)
                         .success(function (res) {
-                            // console.log(res);
-
                             res.payload = res.payload.sort(function (a, b) {
                                 return a._id.userDID > b._id.userDID ? 1 : -1;
                             });
@@ -249,11 +233,8 @@
 
                 } else if ($('#inlineRadio3')[0].checked) {
                     // 第 3 類型
-
                     WorkHourUtil.queryStatisticsFormsCJ_type2(getData)
                         .success(function (res) {
-                            // console.log(res);
-
                             res.payload = res.payload.sort(function (a, b) {
                                 return a._id.userDID > b._id.userDID ? 1 : -1;
                             });
@@ -269,8 +250,6 @@
                             }
 
                             try {
-                                // console.log(res.payload);
-
                                 $scope.statisticsResults = $scope.filter_type3_data(res.payload);
 
                                 angular.element(
@@ -299,8 +278,6 @@
                                     });
                                 }, 500)
                             }
-
-
                         })
                         .error(function () {
                             $timeout(function () {
@@ -309,7 +286,6 @@
                                 });
                             }, 500)
                         })
-
                 } else {
                     $timeout(function () {
                         bsLoadingOverlayService.stop({
@@ -318,9 +294,7 @@
                         toastr['warning']('請選擇搜尋類型 !', '搜尋異常');
                     }, 500)
                 }
-
             }
-
 
             // -------------- Original --------------
             $scope.calculateHours = function (item) {
@@ -341,7 +315,6 @@
 
             $scope.calculateAddHours = function (item) {
                 var hourTotal = 0;
-
                 // 累積所有項目
                 var hourTotal = 0;
                 for (var index = 0; index < item.add_tables.length; index++) {
@@ -361,18 +334,13 @@
             // type 1, 一天加一專案 為一筆
 
             $scope.filter_type1_data = function(rawTables) {
-                console.log(rawTables);
-
                 var itemList = [];
 
                 var type1_data = [];
 
                 for (var memberCount = 0; memberCount < rawTables.length; memberCount++) {
-
                     if (rawTables[memberCount].tables != undefined) {
-
                         for (var table_index = 0 ;table_index < rawTables[memberCount].tables.length; table_index ++) {
-
                             // mon
                             if (moment( DateUtil.getShiftDatefromFirstDate(moment(rawTables[memberCount].tables[table_index].create_formDate), 0) )
                                     .diff( moment( $scope.startDay )) >= 0 &&
@@ -429,7 +397,6 @@
                                         table_add: [],
                                     }
                                 }
-
                                 eval('type1_data[item] = data')
                             }
 
@@ -489,7 +456,6 @@
                                         table_add: [],
                                     }
                                 }
-
                                 eval('type1_data[item] = data')
                             }
 
@@ -549,7 +515,6 @@
                                         table_add: [],
                                     }
                                 }
-
                                 eval('type1_data[item] = data')
                             }
 
@@ -609,7 +574,6 @@
                                         table_add: [],
                                     }
                                 }
-
                                 eval('type1_data[item] = data')
                             }
 
@@ -669,7 +633,6 @@
                                         table_add: [],
                                     }
                                 }
-
                                 eval('type1_data[item] = data')
                             }
 
@@ -729,7 +692,6 @@
                                         table_add: [],
                                     }
                                 }
-
                                 eval('type1_data[item] = data')
                             }
 
@@ -789,7 +751,6 @@
                                         table_add: [],
                                     }
                                 }
-
                                 eval('type1_data[item] = data')
                             }
 
@@ -856,19 +817,12 @@
                                         table_add: tables_add,
                                     }
                                 }
-
                                 eval('type1_data[item] = data')
                             }
                         }
                     }
                 }
-
-                // type1_data = type1_data.sort(function (a, b) {
-                //     return a._date > b._date ? 1 : -1;
-                // });
-
                 console.log(itemList);
-
                 console.log(type1_data);
 
                 var result = [];
@@ -885,50 +839,41 @@
                     return a._date > b._date ? 1 : -1;
 
                 });
-
                 console.log(result);
-
                 return result;
             }
 
             $scope.calculateHours_type1 = function (item) {
                 var hourTotal = 0;
-
                 if (item.tables != undefined && item.tables.length > 0) {
                     for (var index = 0; index < item.tables.length; index ++) {
                         hourTotal += parseFloat(item.tables[index].type_1_hour);
                     }
                 }
-
                 var addHourTotal = 0;
 
                 if (item.table_add != undefined && item.table_add.length > 0) {
                     for (var index = 0; index < item.table_add.length; index ++) {
                         addHourTotal += $scope.calculateHours_type1_add(item.table_add[index]);
                     }
-
                     addHourTotal = addHourTotal % 60 < 30 ? Math.round(addHourTotal / 60) : Math.round(addHourTotal / 60) - 0.5;
                     if (addHourTotal < 1) {
                         addHourTotal = 0;
                     }
                 }
-
                 return hourTotal + addHourTotal;
             }
 
             $scope.calculateHours_type1_add = function (item) {
                 var hourTotal = 0;
-
                 hourTotal += parseInt(TimeUtil.getCalculateHourDiffByTime(item.type_1_start_time, item.type_1_end_time));
-
                 return hourTotal;
             }
 
             // type 2, 一專案加一人名 為一筆
-
             $scope.filter_type2_data = function(rawTables) {
-                console.log(rawTables);
-
+                // console.log("filter_type2_data");
+                // console.log(rawTables);
                 var type2_result = [];
 
                 for (var index = 0 ;index < rawTables.length; index ++) {
@@ -936,71 +881,83 @@
                         type2_result.push(rawTables[index]);
                     }
                 }
-
-
                 return type2_result;
             }
 
             $scope.calculateHours_type2 = function (item) {
-                console.log(item.tables);
+                // console.log("calculateHours_type2, item.iscalculate_A= " + item.iscalculate_A + ", item.iscalculate_B= " + item.iscalculate_B);
+                // console.log(item.tables);
+                if (item.iscalculate_A && item.iscalculate_B) return item.hourTotal;
+                // console.log(item);
                 var hourTotal = 0;
                 for (var index = 0; index < item.tables.length; index ++) {
+                    var operatedFormDate = item.tables[index].create_formDate;
 
-                    if (moment( DateUtil.getShiftDatefromFirstDate(moment(item.tables[index].create_formDate), 0) )
+                    if (moment( DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), 0) )
                             .diff( moment( $scope.startDay )) >= 0 &&
-                        moment( DateUtil.getShiftDatefromFirstDate(moment(item.tables[index].create_formDate), 0) )
+                        moment( DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), 0) )
                             .diff( moment( $scope.endDay )) <= 0) {
                         hourTotal += parseFloat(item.tables[index].mon_hour)
                     }
 
-                    if (moment( DateUtil.getShiftDatefromFirstDate(moment(item.tables[index].create_formDate), 1) )
+                    if (moment( DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), 1) )
                             .diff( moment( $scope.startDay )) >= 0 &&
-                        moment( DateUtil.getShiftDatefromFirstDate(moment(item.tables[index].create_formDate), 1) )
+                        moment( DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), 1) )
                             .diff( moment( $scope.endDay )) <= 0) {
 
                         hourTotal += parseFloat(item.tables[index].tue_hour)
                     }
 
-                    if (moment( DateUtil.getShiftDatefromFirstDate(moment(item.tables[index].create_formDate), 2) )
+                    if (moment( DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), 2) )
                             .diff( moment( $scope.startDay )) >= 0 &&
-                        moment( DateUtil.getShiftDatefromFirstDate(moment(item.tables[index].create_formDate), 2) )
+                        moment( DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), 2) )
                             .diff( moment( $scope.endDay )) <= 0) {
                         hourTotal += parseFloat(item.tables[index].wes_hour)
                     }
 
-                    if (moment( DateUtil.getShiftDatefromFirstDate(moment(item.tables[index].create_formDate), 3) )
+                    if (moment( DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), 3) )
                             .diff( moment( $scope.startDay )) >= 0 &&
-                        moment( DateUtil.getShiftDatefromFirstDate(moment(item.tables[index].create_formDate), 3) )
+                        moment( DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), 3) )
                             .diff( moment( $scope.endDay )) <= 0) {
                         hourTotal += parseFloat(item.tables[index].thu_hour)
                     }
 
-                    if (moment( DateUtil.getShiftDatefromFirstDate(moment(item.tables[index].create_formDate), 4) )
+                    if (moment( DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), 4) )
                             .diff( moment( $scope.startDay )) >= 0 &&
-                        moment( DateUtil.getShiftDatefromFirstDate(moment(item.tables[index].create_formDate), 4) )
+                        moment( DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), 4) )
                             .diff( moment( $scope.endDay )) <= 0) {
                         hourTotal += parseFloat(item.tables[index].fri_hour)
                     }
 
-                    if (moment( DateUtil.getShiftDatefromFirstDate(moment(item.tables[index].create_formDate), 5) )
+                    if (moment( DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), 5) )
                             .diff( moment( $scope.startDay )) >= 0 &&
-                        moment( DateUtil.getShiftDatefromFirstDate(moment(item.tables[index].create_formDate), 5) )
+                        moment( DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), 5) )
                             .diff( moment( $scope.endDay )) <= 0) {
                         hourTotal += parseFloat(item.tables[index].sat_hour)
                     }
 
-                    if (moment( DateUtil.getShiftDatefromFirstDate(moment(item.tables[index].create_formDate), 6) )
+                    if (moment( DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), 6) )
                             .diff( moment( $scope.startDay )) >= 0 &&
-                        moment( DateUtil.getShiftDatefromFirstDate(moment(item.tables[index].create_formDate), 6) )
+                        moment( DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), 6) )
                             .diff( moment( $scope.endDay )) <= 0) {
                         hourTotal += parseFloat(item.tables[index].sun_hour)
                     }
                 }
+                item.hourTotal = hourTotal;
                 return hourTotal;
             }
 
             $scope.calculateHours_type2_add = function (item, type) {
-                // console.log("===calculateHours_type2_add===");
+                // console.log("===calculateHours_type2_add===, item.iscalculate= " + item.iscalculate_A +
+                //     ", item.iscalculate_B= " + item.iscalculate_B + ", type= " + type);
+                switch (type) {
+                    case 1:
+                         if (item.iscalculate_A) return item.hourTotal_add_A;
+                        break;
+                    case 2:
+                        if (item.iscalculate_B) return item.hourTotal_add_B;
+                        break;
+                }
                 // console.log(item);
                 var type2_add_data = [];
 
@@ -1009,60 +966,53 @@
                 var hourTotal = 0;
 
                 if (item._add_tables == undefined) {
+                    switch (type) {
+                        case 1:
+                            item.iscalculate_A = true;
+                            item.hourTotal_add_A = hourTotal;
+                            break;
+                        case 2:
+                            item.iscalculate_B = true;
+                            item.hourTotal_add_B = hourTotal;
+                            break;
+                    }
                     return hourTotal;
                 }
 
                 for (var index = 0; index < item._add_tables.length; index ++) {
-                    if (moment( DateUtil.getShiftDatefromFirstDate(moment(item._add_tables[index].create_formDate), item._add_tables[index].day - 1) )
+                    var operatedFormDate = item._add_tables[index].create_formDate;
+                    if (moment( DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), item._add_tables[index].day - 1) )
                             .diff( moment( $scope.startDay )) >= 0 &&
-                        moment( DateUtil.getShiftDatefromFirstDate(moment(item._add_tables[index].create_formDate), item._add_tables[index].day - 1) )
+                        moment( DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), item._add_tables[index].day - 1) )
                             .diff( moment( $scope.endDay )) <= 0 &&
                         item._add_tables[index].workAddType == type) {
 
-                        var date_id = DateUtil.getShiftDatefromFirstDate_typeB(moment(item._add_tables[index].create_formDate), item._add_tables[index].day - 1) + "_"
+                        var date_id = DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1) + "_"
                             + item._id.prjCode + "_"
                             + item._user_info._id;
-                        // console.log(date_id)
-                        // var date = DateUtil.getShiftDatefromFirstDate_typeB(moment(item._add_tables[index].create_formDate), item._add_tables[index].day - 1)
 
                         var min = parseInt(TimeUtil.getCalculateHourDiffByTime(item._add_tables[index].start_time, item._add_tables[index].end_time))
-
-                        // console.log(min);
-
                         // mins += min;
-
-                        // console.log(type2_add_data)
-
                         if (type2_add_data[date_id] != undefined) {
-                            // console.log("Q")
-
                             var data = type2_add_data[date_id];
                             data.min = min + type2_add_data[date_id].min;
-
                             // type2_add_data[date_id] = (min + type2_add_data[date_id])
                         } else {
-                            // console.log("Qqqq")
-
                             var data = {
-                                _date: DateUtil.getShiftDatefromFirstDate(moment(item._add_tables[index].create_formDate), item._add_tables[index].day - 1),
+                                _date: DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), item._add_tables[index].day - 1),
                                 min: min
                             }
-
                             type2_add_data.push(data);
-
-                            // type2_add_data.push(min)
                             eval('type2_add_data[date_id] = data')
                         }
-
-                        // hourTotal += parseInt(TimeUtil.getCalculateHourDiffByTime(item._add_tables[index].start_time, item._add_tables[index].end_time));
                     }
                 }
 
+                console.log(type2_add_data);
 
                 var hour = 0
                 for (var i = 0 ; i < type2_add_data.length; i ++) {
                     hour = type2_add_data[i].min % 60 < 30 ? Math.round(type2_add_data[i].min / 60) : Math.round(type2_add_data[i].min / 60) - 0.5;
-                    // console.log(hour)
                     if (hour < 1) {
                         hourTotal += 0;
                     } else {
@@ -1070,17 +1020,21 @@
                     }
                 }
 
-                // console.log(hourTotal)
-
+                switch (type) {
+                    case 1:
+                        item.iscalculate_A = true;
+                        item.hourTotal_add_A = hourTotal;
+                        break;
+                    case 2:
+                        item.iscalculate_B = true;
+                        item.hourTotal_add_B = hourTotal;
+                        break;
+                }
                 return hourTotal;
-                // return 10;
             }
 
             // type 3, 一天加一專案加一人名 為一筆
-
             $scope.filter_type3_data = function(rawTables) {
-                console.log(rawTables);
-
                 var itemList = [];
 
                 var type3_data = [];
@@ -1090,7 +1044,6 @@
                     if (rawTables[memberCount].tables != undefined) {
 
                         for (var table_index = 0 ;table_index < rawTables[memberCount].tables.length; table_index ++) {
-
                             // mon
                             if (moment( DateUtil.getShiftDatefromFirstDate(moment(rawTables[memberCount].tables[table_index].create_formDate), 0) )
                                     .diff( moment( $scope.startDay )) >= 0 &&
@@ -1321,9 +1274,6 @@
                                 // }
                                 // type3_data.push(data);
 
-
-
-
                                 var item = "_" + DateUtil.getShiftDatefromFirstDate_typeB(moment(rawTables[memberCount]._add_tables[table_add_index].create_formDate),
                                     rawTables[memberCount]._add_tables[table_add_index].day - 1) + "_" +
                                     rawTables[memberCount]._id.prjCode + "_" +
@@ -1369,21 +1319,16 @@
                                     }
 
                                     type3_data.push(data);
-
                                     eval('type3_data[item] = data')
                                 }
-
                             }
                         }
                     }
-
-
                 }
 
                 type3_data = type3_data.sort(function (a, b) {
                     return a._date > b._date ? 1 : -1;
                 });
-
                 console.log(type3_data);
                 return type3_data;
             }
@@ -1416,13 +1361,10 @@
                 for (var index = 0; index < addTables.length; index ++) {
                     reasonString += addTables[index].type_3_reason + ", ";
                 }
-
                 return reasonString;
             }
 
-
             // normalize
-
             $scope.projectSelected = function (projectInfo) {
                 // console.log(projectInfo);
                 this._branch = $scope._branch = $('#prjBranch')[0].value = projectInfo.branch;
@@ -1431,7 +1373,6 @@
                 this._number = $scope._number = $('#prjNumber')[0].value = projectInfo.prjNumber;
                 this._subNumber = $scope._subNumber = $('#prjSubNumber')[0].value = projectInfo.prjSubNumber;
                 this._type = $scope._type = $('#prjType')[0].value = projectInfo.type;
-                // console.log(this);
             }
 
             // Deprecated
@@ -1483,8 +1424,6 @@
                 var startMonth = new Date(start).getMonth();
                 var endMonth = new Date(end).getMonth();
 
-
-
                 var result = [];
 
                 for (var index = 0; index <= endMonth - (startMonth - 1); index ++) {
@@ -1495,8 +1434,6 @@
             }
 
             $scope.checkIllegalDate = function (data) {
-                // console.log(data);
-
                 var results = [];
 
                 for (var index = 0; index < data.length; index ++) {
@@ -1508,8 +1445,6 @@
                         results.push(data[index]);
                     }
                 }
-                // console.log(data);
-                // console.log(results);
                 return results;
             }
 
