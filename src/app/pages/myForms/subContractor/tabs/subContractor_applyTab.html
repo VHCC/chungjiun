@@ -72,6 +72,10 @@
                         ng-if="!applyItem.isSendReview"
                         ng-click="removeSCApplyItemOne(applyItem);">移除
                 </button>
+                <button class="btn btn-danger editable-table-button btn-xs"
+                        ng-if="applyItem.isManagerCheck"
+                        ng-click="recoverSCApplyItemOne(applyItem);">退回
+                </button>
             </td>
             <!--專案代碼-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
