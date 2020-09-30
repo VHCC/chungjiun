@@ -211,6 +211,7 @@
         $scope.changeWorkOverTimeItemDay = function (dom) {
             dom.table.create_formDate = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment(dom.myDT)), 0);
             dom.table.year = dom.myDT.getFullYear() - 1911;
+            // dom.table.year = specificYear;
             dom.table.month = dom.myDT.getMonth() + 1;
             dom.table.day = dom.myDT.getDay();
         }
@@ -256,7 +257,7 @@
             var formData = {
                 _id: checkingTable._id,
                 create_formDate: checkingTable.create_formDate,
-                year: checkingTable.year,
+                // year: checkingTable.year,
                 contents: checkingTable.contents,
                 // month: checkingTable.month,
                 day: checkingTable.day,

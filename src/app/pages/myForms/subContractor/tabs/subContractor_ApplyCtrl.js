@@ -237,6 +237,7 @@
                 itemDID: applyItem.itemDID,
                 contractDate: applyItem.contractDate,
                 contractAmount: applyItem.contractAmount,
+                contents: applyItem.contents,
                 itemIndex: applyItem.itemIndex,
                 timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
                 isSendReview: true,

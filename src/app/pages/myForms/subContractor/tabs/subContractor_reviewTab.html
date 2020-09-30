@@ -14,6 +14,7 @@
             <td style="vertical-align: inherit; text-align: center" width="250px">委外廠商</td>
             <td style="vertical-align: inherit; text-align: center" width="250px">委外項目</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">訂約時間</td>
+            <td style="vertical-align: inherit; text-align: center" width="250px">說明</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">訂約金額</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">申請人</td>
         </tr>
@@ -75,6 +76,17 @@
                        value="{{applyItem.contractDate}}"
                        class="form-control subContractDateInput input-sm">
             </td>
+
+            <!--備註-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span ng-if="applyItem.isSendReview">{{applyItem.contents}}</span>
+                <input type="text"
+                       ng-if="!applyItem.isSendReview"
+                       ng-model="applyItem.contents"
+                       value="{{applyItem.contents}}"
+                       class="form-control input-sm">
+            </td>
+
             <!--訂約金額-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
                 <span ng-if="applyItem.isSendReview">{{applyItem.contractAmount}}</span>

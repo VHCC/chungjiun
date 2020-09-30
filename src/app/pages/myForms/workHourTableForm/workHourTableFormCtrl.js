@@ -3305,7 +3305,7 @@
                 var tablesLength = user[user.DID].length;
 
                 if (tablesLength > 0) {
-                    console.log("tablesLength= " + tablesLength);
+                    // console.log("tablesLength= " + tablesLength);
                     userTotalLength += tablesLength;
                 }
 
