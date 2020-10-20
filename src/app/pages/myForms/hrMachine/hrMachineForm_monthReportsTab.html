@@ -14,7 +14,8 @@
                         repeat="user in hrMachineCtrlVm.users_month_report |
                         groupSelectpickerOptions:
                         {
-                            name: $select.search
+                            name: $select.search,
+                            machineDID: $select.search
                         }">
                     <span ng-bind-html="user.name + ' [' + user.machineDID + ']'| highlight: $select.search"></span>
                 </ui-select-choices>
