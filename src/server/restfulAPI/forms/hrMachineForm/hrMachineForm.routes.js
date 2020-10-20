@@ -63,7 +63,7 @@ module.exports = function (app) {
     // fetch one Day
     app.post(global.apiUrl.post_fetch_hrmachine_data_one_day_by_machine_did, function (req, res) {
         var resultArry = [];
-        // console.log(req.body);
+        console.log(req.body);
         var date = req.body.date;
 
         console.log("today= " + date);
@@ -111,12 +111,35 @@ module.exports = function (app) {
         fs.stat(fReadName, function(err, stat) {
             if(err == null) {
                 console.log('File exist, fileDate= ' + fileDate);
-                loadData(fileDate, fReadName, req, res);
+
+                var fReadName_gps = '../HR/GPS/' + fileDate + '.txt';
+
+                fs.stat(fReadName_gps, function(err, stat) {
+                    if(err == null) {
+                        console.log('GPS File exist, fileDate= ' + fileDate);
+                        loadData(fileDate, fReadName, req, res);
+                    } else if(err.code == 'ENOENT') {
+                        // file does not exist
+                        console.log('GPS File not exist, fileDate= ' + fileDate);
+                        res.status(400).send({
+                            code: 400,
+                            fileDate: fileDate + " GPS",
+                            error: global.status._400,
+                        });
+                    } else {
+                        console.log(global.timeFormat(new Date()) + global.log.e + "API, post_load_hrmachine_data_by_date");
+                        console.log(req.body);
+                        console.log(" ***** ERROR ***** ");
+                        console.log(err);
+                        console.log('Some other error: ', err.code);
+                    }
+                });
+                // loadData(fileDate, fReadName, req, res);
             } else if(err.code == 'ENOENT') {
                 // file does not exist
                 console.log('File not exist, fileDate= ' + fileDate);
                 res.status(400).send({
-                    code: 200,
+                    code: 400,
                     fileDate: fileDate,
                     error: global.status._400,
                 });
@@ -141,6 +164,7 @@ module.exports = function (app) {
             // Here you get the error when the file was not found,
             // but you also get any other error
             // 無檔案處理
+            console.log("File error !!!, file name= " + fReadName);
             console['log'](err && err['stack'] ? err['stack'] : err);
             return;
         }
@@ -257,6 +281,7 @@ module.exports = function (app) {
             // Here you get the error when the file was not found,
             // but you also get any other error
             // 無檔案處理
+            console.log("File error !!!, file name= " + fReadName_gps);
             console['log'](err && err['stack'] ? err['stack'] : err);
             return;
         }

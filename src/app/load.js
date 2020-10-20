@@ -13,6 +13,7 @@ var hrMAchineModel = require('../server/restfulAPI/models/hrMachine')(fileDate);
 
 try {
     var fileContents = fs.readFileSync(fReadName);
+    var fileContents_gps = fs.readFileSync(fReadName_gps);
 } catch (err) {
     // Here you get the error when the file was not found,
     // but you also get any other error

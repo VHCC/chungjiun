@@ -63,6 +63,10 @@
                     .success(function (allUsers) {
                         vm.users = allUsers;
                         vm.users_month_report = allUsers;
+
+                        vm.users_month_report = vm.users_month_report.sort(function (a, b) {
+                            return a.machineDID > b.machineDID ? 1 : -1;
+                        });
                     });
             }
 
@@ -288,11 +292,13 @@
                 }
                 HrMachineUtil.loadHrMachineDataByDate(formData)
                     .success(function (res) {
-                        console.log("normal")
-                        $scope.fetchData(vm.users_month_report.selected, res.fileDate, 2);
+                        $timeout(function () {
+                            console.log("normal")
+                            $scope.fetchData(vm.users_month_report.selected, res.fileDate, 2);
+                        }, 500)
                     })
                     .error(function (res) {
-                        console.log(res)
+                        console.log(res);
                         $timeout(function () {
                             bsLoadingOverlayService.stop({
                                 referenceId: 'overlay_hrMachine'
