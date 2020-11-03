@@ -1096,6 +1096,7 @@
                         // console.log(dateList);
                         // console.log(moment(parseInt(dateList[0].substring(0,3))+ 1911 + dateList[0].substring(3,7)));
                         var startDate = moment(parseInt(dateList[0].substring(0,3))+ 1911 + dateList[0].substring(3,7))
+                        startDate = startDate - 86400 * 1000 * 15
                         // console.log(moment(parseInt(dateList[dateList.length - 1].substring(0,3))+ 1911 + dateList[dateList.length - 1].substring(3,7)));
                         var endDate = moment(parseInt(dateList[dateList.length - 1].substring(0,3))+ 1911 + dateList[dateList.length - 1].substring(3,7));
 
@@ -1108,6 +1109,7 @@
                             var monthDayTemp = moment(resp.payload[index].taStartDate).format("MMDD");
 
                             var dateTemp = yearTemp + monthDayTemp;
+                            // console.log(dateTemp)
 
                             var hrMachineTravelItem = {
                                 date: "",
@@ -1120,7 +1122,9 @@
                             }
 
                             var targetDate = moment(parseInt(dateTemp.substring(0,3))+ 1911 + dateTemp.substring(3,7))
-                            // console.log(targetDate)
+                            // console.log("startDate :> " + startDate)
+                            // console.log("targetDate :> " + targetDate)
+                            // console.log("targetDate.isAfter(startDate) :> " + targetDate.isAfter(startDate))
 
                             if (targetDate.isAfter(startDate)) {
 
@@ -1143,7 +1147,7 @@
                                     // hrMachineItem.printType = arrayResult[0][index].printType;
                                     hrMachineTravelItem.time = resp.payload[index].start_time.replace(":", "");
                                     // hrMachineTravelItem.workType = "1";
-                                    hrMachineTravelItem.applyHour = resp.payload[index].applyHour;;
+                                    hrMachineTravelItem.applyHour = resp.payload[index].applyHour;
 
                                     operateTable[dateTemp].push(hrMachineTravelItem);
                                 }
