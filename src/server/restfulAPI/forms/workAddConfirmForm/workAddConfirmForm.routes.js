@@ -1,4 +1,5 @@
 var WorkAddConfirmForm = require('../../models/workAddConfirmForm');
+var moment = require('moment');
 
 module.exports = function (app) {
     'use strict';
@@ -18,7 +19,8 @@ module.exports = function (app) {
                     creatorDID: req.body.creatorDID,
                     year: req.body.year,
                     month: req.body.month,
-                    formTables: JSON.stringify(req.body.formTables)
+                    formTables: JSON.stringify(req.body.formTables),
+                    timestamp: moment(new Date()).format("YYYYMMDD_HHmmss")
                 }, function (err) {
                     if (err) {
                         res.send(err);
@@ -35,7 +37,8 @@ module.exports = function (app) {
                 creatorDID: req.body.creatorDID,
                 year: req.body.year,
                 month: req.body.month,
-                formTables: JSON.stringify(req.body.formTables)
+                formTables: JSON.stringify(req.body.formTables),
+                timestamp: moment(new Date()).format("YYYYMMDD_HHmmss")
             }, function (err) {
                 if (err) {
                     res.send(err);

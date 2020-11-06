@@ -1,4 +1,5 @@
 var WorkHourTableFormWorkAdd = require('../../models/workHourTableFormWorkAdd');
+var moment = require('moment');
 
 module.exports = function (app) {
     'use strict';
@@ -7,31 +8,9 @@ module.exports = function (app) {
 
     // create Form
     app.post(global.apiUrl.post_work_hour_work_add_create_item, function (req, res) {
-        // 刪除既有加班表
-        if (req.body.hasOwnProperty('oldTables')) {
-            var findData = []
-            for (var index = 0; index < req.body.oldTables.length; index++) {
-                var target = {
-                    _id: req.body.oldTables[index],
-                }
-                findData.push(target);
-            }
+        try {
 
-            if (req.body.oldTables.length > 0) {
-
-                WorkHourTableFormWorkAdd.remove(
-                    {
-                        $or: findData,
-                    }, function (err) {
-                        if (err) {
-                            console.log(err);
-                        }
-                    })
-            }
-        }
-
-        if (req.body.hasOwnProperty('formTables')) {
-            try {
+            if (req.body.hasOwnProperty('formTables')) {
                 for (var index = 0; index < req.body.formTables.length; index++) {
                     WorkHourTableFormWorkAdd.create({
                         creatorDID: req.body.formTables[index].creatorDID,
@@ -46,15 +25,42 @@ module.exports = function (app) {
                         // userHourSalary: req.body.formTables[index].userHourSalary,
                         userMonthSalary: req.body.formTables[index].userMonthSalary,
                         reason: req.body.formTables[index].reason,
+                        timestamp: moment(new Date()).format("YYYYMMDD_HHmmss")
                     })
                 }
-            } finally {
-                res.status(200).send({
-                    code: 200,
-                    error: global.status._200,
-                });
             }
+
+            // 刪除既有加班表
+            if (req.body.hasOwnProperty('oldTables')) {
+                var findData = []
+                for (var index = 0; index < req.body.oldTables.length; index++) {
+                    var target = {
+                        _id: req.body.oldTables[index],
+                    }
+                    findData.push(target);
+                }
+
+                if (req.body.oldTables.length > 0) {
+
+                    WorkHourTableFormWorkAdd.remove(
+                        {
+                            $or: findData,
+                        }, function (err) {
+                            if (err) {
+                                console.log(err);
+                            }
+                        })
+                }
+            }
+
+        } finally {
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
         }
+
+
     });
 
     app.post(global.apiUrl.post_work_hour_work_add_get_items, function (req, res) {
