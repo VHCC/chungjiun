@@ -120,6 +120,11 @@ module.exports = mongoose.model('SubContractorPayItem', {
         type: String,
     },
 
+    // 行政備註
+    executive_memo:{
+        type: String,
+    },
+
     isClosed: {
         type: Boolean,
         default: false
