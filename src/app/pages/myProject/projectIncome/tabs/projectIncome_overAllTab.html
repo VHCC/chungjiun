@@ -1,0 +1,44 @@
+<div class="row"
+     id="rowHead">
+    <div class="col-md-12"
+         id="colHead">
+        <div class="form-group">
+            <label for="projectName">總案名稱 - 專案名稱 - 子案名稱 - 類型 - 代碼</label>
+            <ui-select ng-model="projectIncomeOverAllCtrlVm.prjItems.selected"
+                       class="btn-group bootstrap-select form-control"
+                       id="projectName"
+                       ng-change="insertSCApplyItem($select.selected._id)"
+                       append-to-body="true"
+                       search-enabled="true">
+                <ui-select-match placeholder="選擇(查詢)">
+                    {{$select.selected.mainName}} -
+                    {{$select.selected.prjName}} -
+                    {{$select.selected.prjSubName}} -
+                    {{prjTypeToName($select.selected.type)}} -
+                    {{$select.selected.prjCode}}
+                </ui-select-match>
+                <ui-select-choices
+                        ng-model="prjName"
+                        repeat="prjItems in projectIncomeOverAllCtrlVm.projects |
+                            groupSelectpickerOptions: {
+                            mainName: $select.search,
+                            prjName: $select.search,
+                            prjSubName: $select.search,
+                            prjCode: $select.search
+                            }"
+                        group-by="'mainName'">
+                    <span ng-bind-html="prjItems.prjName + ' - ' + prjItems.prjSubName + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+
+    <div bs-loading-overlay
+         bs-loading-overlay-reference-id="mainPage_project_income">
+
+        <div class="row" >
+            <div class="col-md-12" id="includeHead">
+            </div>
+        </div>
+    </div>
+</div>
