@@ -1,0 +1,135 @@
+<div class="row col-md-12" ng-init="getFinancialRate()">
+
+    <my-year-picker ng-click="listenYear(this)"></my-year-picker>
+
+    <h3 class="with-line">{{year}} 年 費率預設</h3>
+
+    <!--<h3 class="with-line">{{username}} 訂約申請</h3>-->
+
+    <div class="form-group">
+        <label for="projectName">總案名稱 - 專案名稱 - 子案名稱 - 類型 - 代碼</label>
+        <ui-select ng-model="projectFinancialResultCtrlVm.prjItems.selected"
+                   class="btn-group bootstrap-select form-control"
+                   id="projectName"
+                   ng-change="fetchProjectFinancialResult($select.selected)"
+                   append-to-body="true"
+                   search-enabled="true">
+            <ui-select-match placeholder="選擇(查詢)">
+                {{$select.selected.mainName}} -
+                {{$select.selected.prjName}} -
+                {{$select.selected.prjSubName}} -
+                {{prjTypeToName($select.selected.type)}} -
+                {{$select.selected.prjCode}}
+            </ui-select-match>
+            <ui-select-choices
+                    ng-model="prjName"
+                    repeat="prjItems in projectFinancialResultCtrlVm.projects |
+                            groupSelectpickerOptions: {
+                            mainName: $select.search,
+                            prjName: $select.search,
+                            prjSubName: $select.search,
+                            prjCode: $select.search
+                            }"
+                    group-by="'mainName'">
+                <span ng-bind-html="prjItems.prjName + ' - ' + prjItems.prjSubName + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+
+
+    <hr>
+
+    <table class="table table-bordered table-hover table-condensed" id="form_main_pdf">
+        <thead>
+        <tr style="white-space:nowrap">
+            <td style="vertical-align: inherit; text-align: center" width="80px">項目</td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">技師費</td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">行政費</td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">利潤</td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">風險</td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">調整費</td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">小計</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr style="vertical-align: inherit; text-align: center">
+            <!--序號-->
+            <td style="vertical-align: inherit; text-align: center">
+                <span id="prjCode">比例</span>
+            </td>
+            <!--技師費-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{yearRate.rate_item_1}}％</span>
+                <input type="text"
+                       style="text-align: center; display: none"
+                       ng-model="yearRate.rate_item_1"
+                       value="{{yearRate.rate_item_1}}"
+                       class="form-control input-sm">
+            </td>
+            <!--行政費-->
+            <td style="vertical-align: inherit; text-align: center">
+                <span>{{yearRate.rate_item_2}}％</span>
+                <input type="text"
+                       style="text-align: center; display: none"
+                       ng-model="yearRate.rate_item_2"
+                       value="{{yearRate.rate_item_2}}"
+                       class="form-control input-sm">
+            </td>
+            <!--利潤-->
+            <td style="vertical-align: inherit; text-align: center">
+                <span>{{yearRate.rate_item_3}}％</span>
+                <input type="text"
+                       style="text-align: center; display: none"
+                       ng-model="yearRate.rate_item_3"
+                       value="{{yearRate.rate_item_3}}"
+                       class="form-control input-sm">
+            </td>
+            <!--風險-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{yearRate.rate_item_4}}％</span>
+                <input type="text"
+                       style="text-align: center; display: none"
+                       ng-model="yearRate.rate_item_4"
+                       value="{{yearRate.rate_item_4}}"
+                       class="form-control subContractDateInput input-sm">
+            </td>
+            <!--調整費-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{yearRate.rate_item_5}}％</span>
+                <input type="text"
+                       style="text-align: center; display: none"
+                       ng-model="yearRate.rate_item_5"
+                       value="{{yearRate.rate_item_5}}"
+                       class="form-control input-sm">
+            </td>
+            <!--小計-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{calcRates(yearRate)}}％</span>
+            </td>
+
+        </tr>
+        </tbody>
+        <!--<tfoot>-->
+        <!--<tr style="vertical-align: inherit; text-align: center">-->
+        <!--<td colspan="5" style="vertical-align: inherit;">-->
+        <!--小計-->
+        <!--</td>-->
+        <!--<td style="vertical-align: inherit;">-->
+        <!--{{calculateSum()}}-->
+        <!--</td>-->
+        <!--</tr>-->
+        <!--</tfoot>-->
+    </table>
+
+    <hr>
+
+    <div bs-loading-overlay
+         bs-loading-overlay-reference-id="mainPage_project_financial_result">
+        <div class="row" >
+            <div class="col-md-12" id="includeHead_financial_result">
+            </div>
+        </div>
+    </div>
+
+
+</div>

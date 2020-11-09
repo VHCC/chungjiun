@@ -215,6 +215,21 @@
                 })
         }
 
+        $scope.recoverSCApplyItemOne = function (item) {
+            var formData = {
+                _id: item._id,
+            }
+            var formData = {
+                _id: item._id,
+                isSendReview: false,
+                isManagerCheck: false,
+            }
+            SubContractorApplyUtil.updateSCApplyOne(formData)
+                .success(function (res) {
+                    $scope.fetchSCApplyData();
+                })
+        }
+
         $scope.setSCApplyItem = function(applyItem) {
             var formData = {
                 _id: applyItem._id,
@@ -222,6 +237,7 @@
                 itemDID: applyItem.itemDID,
                 contractDate: applyItem.contractDate,
                 contractAmount: applyItem.contractAmount,
+                contents: applyItem.contents,
                 itemIndex: applyItem.itemIndex,
                 timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
                 isSendReview: true,

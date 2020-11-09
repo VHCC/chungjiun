@@ -59,6 +59,24 @@ module.exports = function (app) {
         });
     });
 
+    // fetch items by prjDID
+    app.post(global.apiUrl.post_executive_expenditure_fetch_items_by_prj_did, function (req, res) {
+        console.log(req.body);
+        ExecutiveExpenditureItem.find({
+            prjDID: req.body.prjDID
+        }, function (err, items) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: items,
+                });
+            }
+        });
+    });
+
     // update table by parameters
     app.post(global.apiUrl.post_executive_expenditure_items_update_one, function (req, res) {
         console.log(JSON.stringify(req.body));

@@ -295,7 +295,7 @@
 
         // main
         // 提交通知
-        $scope.sendProcessNotify = function (dom, docData, notifySelected) {
+        $scope.sendProcessNotify_Sign = function (dom, docData, notifySelected) {
 
             var notifyUsers = "empty";
             if (notifySelected.length > 0) {
@@ -348,7 +348,7 @@
                 stageInfo: handleInfo,
                 // handlerDID: (docData.signerDID == undefined || docData.signerDID == null ) ?
                 //     $scope.showManagerID(docData) : docData.signerDID,
-                isDocSignStage: false,
+                isDocSignStage: true,
                 // isCounterSign: true,
                 // counterSignList: notifyUsersList
             }

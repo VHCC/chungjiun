@@ -477,8 +477,19 @@
                 updateConfig : function (formData) {
                     return http.post('/api/post_global_configs_update', formData)
                 },
-
-
+            }
+        }])
+        .factory('ProjectFinancialRateUtil', ['$http', function (http) {
+            return {
+                insertFinancialRate: function(formData) {
+                    return http.post('/api/post_project_financial_rate_insert', formData)
+                },
+                getFinancialRate: function (formData) {
+                    return http.post('/api/post_project_financial_rate_get', formData)
+                },
+                updateFinancialRate : function (formData) {
+                    return http.post('/api/post_project_financial_rate_update', formData)
+                },
             }
         }])
         .factory('HolidayDataForms', ['$http', function (http) {
@@ -492,6 +503,36 @@
                 updateFormByFormDID: function (formData) {
                     return http.post('/api/updateHolidayDataFormByFormDID', formData)
                 }
+            }
+        }])
+        .factory('ProjectIncomeUtil', ['$http', function (http) {
+            return {
+                createIncome: function (formData) {
+                    return http.post('/api/post_project_income_create', formData)
+                },
+                findIncome: function (formData) {
+                    return http.post('/api/post_project_income_find', formData)
+                },
+                updateIncome: function (formData) {
+                    return http.post('/api/post_project_income_update', formData)
+                },
+                removeIncome: function (formData) {
+                    return http.post('/api/post_project_income_remove', formData)
+                }
+            }
+        }])
+        .factory('ProjectFinancialResultUtil', ['$http', function (http) {
+            return {
+
+                createFR: function (formData) {
+                    return http.post('/api/post_project_financial_result_create', formData)
+                },
+                findFR: function (formData) {
+                    return http.post('/api/post_project_financial_result_find', formData)
+                },
+                updateFR: function (formData) {
+                    return http.post('/api/post_project_financial_result_update', formData)
+                },
             }
         }])
         .factory('WorkHourUtil', ['$http', function (http) {
@@ -574,7 +615,12 @@
                 // 20200703
                 queryEmployeeStatistics: function (formData) {
                     return http.post('/api/query_employee_statistics', formData);
-                }
+                },
+
+                // project Income Cost
+                queryStatisticsForms_projectIncome_Cost: function (formData) {
+                    return http.post('/api/queryStatisticsForms_projectIncome_Cost', formData);
+                },
             }
         }])
         .factory('WorkOffFormUtil', ['$http', function (http) {
@@ -713,6 +759,10 @@
 
                 fetchExecutiveExpenditureItems: function (formData) {
                     return http.post('/api/post_executive_expenditure_fetch_items', formData);
+                },
+
+                fetchExecutiveExpenditureItemsByPrjDID: function (formData) {
+                    return http.post('/api/post_executive_expenditure_fetch_items_by_prj_did', formData);
                 },
 
                 updateExecutiveExpenditureOne: function (formData) {
