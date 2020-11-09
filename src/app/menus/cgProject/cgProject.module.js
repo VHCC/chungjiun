@@ -100,9 +100,11 @@
             .state('cgProject.projectIncome',
                 {
                     url: '/projectIncome',
-                    templateUrl: 'app/pages/myNewPage/empty.html',
+                    templateUrl: 'app/pages/myProject/projectIncome/projectIncomeHomePage.html',
                     title: '專案收支',
-                    accessLevel: [9999],
+                    controller: 'projectIncomeHomeCtrl',
+                    controllerAs: 'projectIncomeHomeCtrlVm',
+                    accessLevel: [1,2,3,4,6,7,100],
                     sidebarMeta: {
                         order: global.pages.myProject_projectIncome,
                     },
@@ -110,9 +112,11 @@
             .state('cgProject.projectFinancial',
                 {
                     url: '/projectFinancial',
-                    templateUrl: 'app/pages/myNewPage/empty.html',
+                    templateUrl: 'app/pages/myProject/projectFinancial/projectFinancialHomePage.html',
                     title: '專案結算',
-                    accessLevel: [9999],
+                    controller: 'projectFinancialHomeCtrl',
+                    controllerAs: 'projectFinancialHomeCtrlVm',
+                    accessLevel: [1,100],
                     sidebarMeta: {
                         order: global.pages.myProject_projectFinancial,
                     },

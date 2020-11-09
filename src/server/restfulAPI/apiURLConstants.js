@@ -57,8 +57,6 @@ global.apiUrl = {
     post_project_update_prj_name: '/api/post_project_update_prj_name',
     post_project_update_prj_sub_name: '/api/post_project_update_prj_sub_name',
 
-
-
     // todolist
     post_todo_create : '/api/createTodo',
     post_todo_findMyAll : '/api/findMyAllTodos',
@@ -81,6 +79,11 @@ global.apiUrl = {
     fetch_global_configs: '/api/fetch_global_configs',
     post_global_configs_update: '/api/post_global_configs_update',
     post_global_configs_insert: '/api/post_global_configs_insert',
+
+    // FinancialRate
+    post_project_financial_rate_get: '/api/post_project_financial_rate_get',
+    post_project_financial_rate_insert: '/api/post_project_financial_rate_insert',
+    post_project_financial_rate_update: '/api/post_project_financial_rate_update',
 
     // wageManage
     post_wage_manage_fetch_item : '/api/post_wage_manage_fetch_item',
@@ -108,6 +111,7 @@ global.apiUrl = {
     query_statistics_form_CJ_type2 : '/api/query_statistics_form_CJ_type2',
     query_statistics_form_CJ_type3 : '/api/query_statistics_form_CJ_type3',
     query_statistics_tables : '/api/query_statistics_tables',
+    queryStatisticsForms_projectIncome_Cost : '/api/queryStatisticsForms_projectIncome_Cost',
 
     // employeeStatistics
     query_employee_statistics : '/api/query_employee_statistics',
@@ -157,6 +161,17 @@ global.apiUrl = {
     post_holiday_data_form_create : '/api/createHolidayDataForm',
     post_holiday_data_form_find_by_user_did : '/api/findHolidayDataFormByUserDID',
     post_holiday_data_form_update_by_form_id : '/api/updateHolidayDataFormByFormDID',
+
+    // projectIncome
+    post_project_income_create : '/api/post_project_income_create',
+    post_project_income_find : '/api/post_project_income_find',
+    post_project_income_update : '/api/post_project_income_update',
+    post_project_income_remove : '/api/post_project_income_remove',
+
+    // projectFinancialResult
+    post_project_financial_result_find : '/api/post_project_financial_result_find',
+    post_project_financial_result_create : '/api/post_project_financial_result_create',
+    post_project_financial_result_update : '/api/post_project_financial_result_update',
 
     // nationalHolidayForm
     post_national_holiday_data_form_create : '/api/post_national_holiday_data_form_create',
@@ -287,6 +302,7 @@ global.apiUrl = {
     post_executive_expenditure_insert_item : '/api/post_executive_expenditure_insert_item',
     post_executive_expenditure_remove_item : '/api/post_executive_expenditure_remove_item',
     post_executive_expenditure_fetch_items : '/api/post_executive_expenditure_fetch_items',
+    post_executive_expenditure_fetch_items_by_prj_did : '/api/post_executive_expenditure_fetch_items_by_prj_did',
     post_executive_expenditure_items_update_one : '/api/post_executive_expenditure_items_update_one',
     post_executive_expenditure_items_update_many : '/api/post_executive_expenditure_items_update_many',
 

@@ -1,0 +1,116 @@
+<div class="horizontal-scroll">
+    <table class="table table-bordered table-hover table-condensed" st-table="projectIncomeTable">
+        <thead>
+        <tr style="white-space:nowrap" class="sortable">
+            <th class="table-id"
+                style="vertical-align: inherit; text-align: center" width="20px">序號</th>
+            <th style="vertical-align: inherit; text-align: center" width="100px">發票日期</th>
+            <th style="vertical-align: inherit; text-align: center" width="100px">發票金額</th>
+            <th style="vertical-align: inherit; text-align: center" width="250px">請款內容</th>
+            <th style="vertical-align: inherit; text-align: center" width="100px">入帳日期</th>
+            <th style="vertical-align: inherit; text-align: center" width="100px">入帳金額</th>
+            <th style="vertical-align: inherit; text-align: center" width="100px">匯費</th>
+            <th style="vertical-align: inherit; text-align: center" width="100px">罰款</th>
+            <th style="vertical-align: inherit; text-align: center" width="200px">備註</th>
+
+        </tr>
+        </thead>
+        <tbody ng-repeat="item in projectIncomeTable">
+        <tr style="vertical-align: inherit; text-align: center">
+            <!--序號-->
+            <td style="vertical-align: inherit; text-align: center">
+                <span>{{$index + 1}}</span><br>
+                <button class="btn btn-danger editable-table-button btn-xs"
+                        ng-click="removeProjectIncomeItem(item);">移除
+                </button>
+                <button class="btn btn-primary editable-table-button btn-xs"
+                        ng-if="!item.isEnable"
+                        ng-click="updateProjectIncome(item)">
+                    設定
+                </button>
+            </td>
+            <!--發票日期-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span ng-if="item.isEnable">{{item.payDate}}</span>
+                <input type="text"
+                       ng-if="!item.isEnable"
+                       ng-model="item.payDate"
+                       value="{{item.payDate}}"
+                       class="form-control input-sm">
+            </td>
+            <!--發票金額-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span ng-if="item.isEnable">{{item.expectAmount}}</span>
+                <input type="text"
+                       ng-if="!item.isEnable"
+                       ng-model="item.expectAmount"
+                       value="{{item.expectAmount}}"
+                       class="form-control input-sm">
+            </td>
+            <!--請款內容-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span ng-if="item.isEnable">{{item.payContents}}</span>
+                <input type="text"
+                       ng-if="!item.isEnable"
+                       ng-model="item.payContents"
+                       value="{{item.payContents}}"
+                       class="form-control input-sm">
+            </td>
+            <!--入帳日期-->
+            <td class="form-group" style="vertical-align: inherit;">
+                <span ng-if="item.isEnable">{{item.realDate}}</span>
+                <input type="text"
+                       ng-if="!item.isEnable"
+                       ng-model="item.realDate"
+                       value="{{item.realDate}}"
+                       class="form-control input-sm">
+            </td>
+            <!--入帳金額-->
+            <td class="form-group " style="vertical-align: inherit;">
+                <span ng-if="item.isEnable">{{item.realAmount}}</span>
+                <input type="text"
+                       ng-if="!item.isEnable"
+                       ng-model="item.realAmount"
+                       value="{{item.realAmount}}"
+                       class="form-control input-sm">
+            </td>
+            <!--匯費-->
+            <td class="form-group" style="vertical-align: inherit;">
+                <span ng-if="item.isEnable">{{item.fee}}</span>
+                <input type="text"
+                       ng-if="!item.isEnable"
+                       ng-model="item.fee"
+                       value="{{item.fee}}"
+                       class="form-control input-sm">
+            </td>
+            <!--罰款-->
+            <td class="form-group" style="vertical-align: inherit;">
+                <span ng-if="item.isEnable">{{item.fines}}</span>
+                <input type="text"
+                       ng-if="!item.isEnable"
+                       ng-model="item.fines"
+                       value="{{item.fines}}"
+                       class="form-control input-sm">
+            </td>
+            <!--備註-->
+            <td class="form-group" style="vertical-align: inherit;">
+                <span ng-if="item.isEnable">{{item.memo}}</span>
+                <input type="text"
+                       ng-if="!item.isEnable"
+                       ng-model="item.memo"
+                       value="{{item.memo}}"
+                       class="form-control input-sm">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+<hr>
+<div class="row">
+    <button type="button"
+            ng-click="projectIncomeCreate()"
+            class="btn btn-info btn-icon">
+        <i class="ion-plus-round"/>
+    </button>
+</div>
