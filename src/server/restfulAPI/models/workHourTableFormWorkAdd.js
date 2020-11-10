@@ -86,7 +86,6 @@ module.exports = mongoose.model('workHourTableFormWorkAdd', {
 
     timestamp: {
         type : String,
-        default: moment(new Date()).format("YYYYMMDD_HHmmss")
     }
 
 
