@@ -46,6 +46,9 @@ module.exports = mongoose.model('officialDocNotifyItem', {
         type : String,
     },
 
+    archiveTimestamp: {
+        type : String,
+    },
 
     // 資料類
     // 0 : 收文
