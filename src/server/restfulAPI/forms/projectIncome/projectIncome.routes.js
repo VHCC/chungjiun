@@ -32,9 +32,21 @@ module.exports = function (app) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_project_income_find");
 
         console.log(JSON.stringify(req.body));
-        ProjectIncome.find({
-            prjDID: req.body.prjDID,
-        }, function (err, tables) {
+
+        var keyArray = Object.keys(req.body);
+        var findTarget = {};
+        for (var index = 0; index < keyArray.length; index++) {
+            var evalString = "findTarget.";
+            evalString += keyArray[index];
+
+            var evalFooter = "req.body.";
+            evalFooter += keyArray[index];
+            eval(evalString + " = " + evalFooter);
+        }
+
+        console.log(findTarget)
+
+        ProjectIncome.find(findTarget, function (err, tables) {
             if (err) {
                 res.send(err);
             }

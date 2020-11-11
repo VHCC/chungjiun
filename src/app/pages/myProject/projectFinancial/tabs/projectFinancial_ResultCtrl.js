@@ -27,6 +27,7 @@
                 'PaymentFormsUtil',
                 'ExecutiveExpenditureUtil',
                 'SubContractorPayItemUtil',
+                'ProjectIncomeUtil',
                 'bsLoadingOverlayService',
                 projectFinancialResultCtrl
             ])
@@ -51,6 +52,7 @@
                              PaymentFormsUtil,
                              ExecutiveExpenditureUtil,
                              SubContractorPayItemUtil,
+                             ProjectIncomeUtil,
                              bsLoadingOverlayService) {
 
         $scope.userDID = $cookies.get('userDID');
@@ -257,6 +259,17 @@
 
                     $scope.projectFinancialResultTable = res.payload;
 
+                    var incomeFormData = {
+                        isEnable: true,
+                        prjDID: prjInfo._id
+                    }
+
+                    // 收入
+                    ProjectIncomeUtil.findIncome(incomeFormData)
+                        .success(function (res) {
+                            console.log(res);
+                            $scope.projectIncomeTable = res.payload;
+                        })
 
                     // 墊付款
                     PaymentFormsUtil.fetchPaymentsItemByPrjDID(formData)
@@ -522,6 +535,7 @@
                 rate_item_3: item.rate_item_3,
                 rate_item_4: item.rate_item_4,
                 rate_item_5: item.rate_item_5,
+                memo: item.memo,
             }
 
             ProjectFinancialResultUtil.updateFR(formData)
@@ -529,6 +543,15 @@
                     console.log(res)
                     toastr.success('設定成功', 'Success');
                 })
+        }
+
+        $scope.calIncome = function () {
+            var incomeA = 0.0;
+            for (var i = 0; i < $scope.projectIncomeTable.length; i ++) {
+                incomeA += parseInt($scope.projectIncomeTable[i].realAmount)
+            }
+            console.log("incomeA:> " + incomeA)
+            return incomeA
         }
 
         $scope.calcAllCost = function () {
@@ -539,19 +562,19 @@
                 resultA += $scope.calculateHours_type2_add($scope.statisticsResults[i], 1, 2);
                 resultA += $scope.calculateHours_type2_add($scope.statisticsResults[i], 2, 2);
             }
-            console.log("resultA:> " + resultA)
+            // console.log("resultA:> " + resultA)
 
             var resultB = 0.0;
             for (var i = 0; i < $scope.searchPaymentsItems.length; i ++) {
                 resultB += parseInt($scope.searchPaymentsItems[i].amount)
             }
-            console.log("resultB:> " + resultB)
+            // console.log("resultB:> " + resultB)
 
             var resultC = 0.0;
             for (var i = 0; i < $scope.displayEEItems.length; i ++) {
                 resultC += parseInt($scope.displayEEItems[i].amount)
             }
-            console.log("resultC:> " + resultC)
+            // console.log("resultC:> " + resultC)
 
             var resultD = 0.0;
             for (var i = 0; i < $scope.subContractorPayItems.length; i ++) {
@@ -560,7 +583,7 @@
                     parseInt($scope.subContractorPayItems[i].payOthers)
                 )
             }
-            console.log("resultD:> " + resultD)
+            // console.log("resultD:> " + resultD)
 
             return resultA + resultB + resultC + resultD;
         }
