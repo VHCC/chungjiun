@@ -210,7 +210,7 @@
             });
 
             var formData = {
-                year: specificYear,
+                // year: specificYear,
                 isSendReview: true,
                 isManagerCheck: false
             }
