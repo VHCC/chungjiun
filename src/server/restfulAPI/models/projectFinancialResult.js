@@ -35,6 +35,10 @@ module.exports = mongoose.model('ProjectFinancialResult', {
     // 調整
     rate_item_5: {type: Number, default: 0},
 
+    memo: {
+        type: String,
+    },
+
     timestamp: {
         type: String,
     },

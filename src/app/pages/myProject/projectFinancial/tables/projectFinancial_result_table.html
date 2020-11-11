@@ -12,7 +12,8 @@
             <th style="vertical-align: inherit; text-align: center" width="100px">調整費</th>
             <th style="vertical-align: inherit; text-align: center" width="100px">支出</th>
             <th style="vertical-align: inherit; text-align: center" width="100px">其他</th>
-            <th style="vertical-align: inherit; text-align: center" width="200px">可分配績效</th>
+            <th style="vertical-align: inherit; text-align: center" width="100px">說明</th>
+            <th style="vertical-align: inherit; text-align: center" width="150px">可分配績效</th>
 
         </tr>
         </thead>
@@ -114,11 +115,12 @@
             </td>
             <!--收入-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <input type="text"
-                       style="text-align: center"
-                       ng-model="item.income"
-                       value="{{item.income}}"
-                       class="form-control input-sm">
+                <span>{{calIncome()}}</span>
+                <!--<input type="text"-->
+                       <!--style="text-align: center"-->
+                       <!--ng-model="item.income"-->
+                       <!--value="{{item.income}}"-->
+                       <!--class="form-control input-sm">-->
             </td>
             <!--技師費-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
@@ -154,9 +156,18 @@
                        class="form-control input-sm">
             </td>
 
+            <!--說明-->
+            <td class="form-group" style="vertical-align: inherit;">
+                <input type="text"
+                       style="text-align: center"
+                       ng-model="item.memo"
+                       value="{{item.memo}}"
+                       class="form-control input-sm">
+            </td>
+
             <!--可分配績效-->
             <td class="form-group" style="vertical-align: inherit;">
-                <span >{{item.income
+                <span >{{calIncome()
                     - (item.rate_item_1 * item.income / 100)
                     - (item.rate_item_2 * item.income / 100)
                     - (item.rate_item_3 * item.income / 100)
