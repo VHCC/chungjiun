@@ -357,7 +357,7 @@
                             referenceId: 'mainPage_subContractor'
                         });
 
-                        $('.subContractDateInput').mask('20Y0/M0', {
+                        $('.subContractDateInput').mask('20Y0/M0/D0', {
                             translation: {
                                 'Y': {
                                     pattern: /[0123]/,
@@ -376,6 +376,12 @@
         }
 
         $scope.setSCPayItem = function (payItem) {
+            var data = moment(payItem.payDate)
+            if (payItem.payDate !== data.format('YYYY/MM/DD')) {
+                toastr.error('日期格式錯誤', '請輸入 YYYY/MM/DD');
+                return
+            }
+
             var formData = {
                 "_id": payItem._id,
                 "payApply": payItem.payApply,

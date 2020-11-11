@@ -317,7 +317,7 @@
                             referenceId: 'mainPage_subContractor'
                         });
 
-                        $('.subContractDateInput').mask('20Y0/M0', {
+                        $('.subContractDateInput').mask('20Y0/M0/D0', {
                             translation: {
                                 'Y': {
                                     pattern: /[0123]/,
@@ -377,6 +377,12 @@
         $scope.sendAgreeSCPayItem_Executive = function (payItem) {
 
             var dateTemp = moment(payItem.payConfirmDate);
+
+            var data = moment(payItem.payConfirmDate)
+            if (payItem.payConfirmDate !== data.format('YYYY/MM/DD')) {
+                toastr.error('日期格式錯誤', '請輸入 YYYY/MM/DD');
+                return
+            }
 
             var year = parseInt(dateTemp.year()) - 1911;
             var month = parseInt(dateTemp.month()) + 1;

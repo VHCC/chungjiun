@@ -1,86 +1,107 @@
-<div class="row"
-     id="rowHead">
-    <div class="col-md-12"
-         id="colHead">
-        <div class="form-group">
-            <label for="projectName">總案名稱 - 專案名稱 - 子案名稱 - 類型 - 代碼</label>
-            <ui-select ng-model="subContractorApplyCtrlVm.prjItems.selected"
-                       class="btn-group bootstrap-select form-control"
-                       id="projectName"
-                       ng-change="insertSCApplyItem($select.selected._id)"
-                       append-to-body="true"
-                       search-enabled="true">
-                <ui-select-match placeholder="選擇(新增)">
-                    {{$select.selected.mainName}} -
-                    {{$select.selected.prjName}} -
-                    {{$select.selected.prjSubName}} -
-                    {{prjTypeToName($select.selected.type)}} -
-                    {{$select.selected.prjCode}}
-                </ui-select-match>
-                <ui-select-choices
-                        ng-model="prjName"
-                        repeat="prjItems in subContractorApplyCtrlVm.projects |
-                            groupSelectpickerOptions: {
-                            mainName: $select.search,
-                            prjName: $select.search,
-                            prjSubName: $select.search,
-                            prjCode: $select.search
-                            }"
-                        group-by="'mainName'">
-                    <span ng-bind-html="prjItems.prjName + ' - ' + prjItems.prjSubName + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
-                </ui-select-choices>
-            </ui-select>
-        </div>
-    </div>
-</div>
+<div class="row col-md-12" >
 
-<br>
-
-<div class="row col-md-12" ng-init="fetchSCApplyData()">
-
-    <!--<my-year-picker ng-click="listenYear(this)"></my-year-picker>-->
-
-    <!--<h3 class="with-line">{{year}} 年</h3>-->
-
-    <h3 class="with-line">{{username}} 訂約申請</h3>
-
-    <hr>
-
-    <table class="table table-bordered table-hover table-condensed" id="form_main_pdf">
+    <table class="table table-hover"
+           st-table="subContractorApplyPeriods"
+           id="form_main_pdf">
         <thead>
-        <tr style="white-space:nowrap">
-            <td style="vertical-align: inherit; text-align: center" width="80px"></td>
-            <td style="vertical-align: inherit; text-align: center" width="100px">專案代碼</td>
+        <tr style="white-space:nowrap" class="sortable">
+            <td  style="vertical-align: inherit; text-align: center" width="80px"></td>
+            <td class="table-id"
+                st-sort="prjCode" style="vertical-align: inherit; text-align: center" width="100px">專案代碼</td>
+            <td st-sort="mainName"
+                style="vertical-align: inherit; text-align: center" width="250px">專案名稱</td>
             <td style="vertical-align: inherit; text-align: center" width="250px">委外廠商</td>
             <td style="vertical-align: inherit; text-align: center" width="250px">委外項目</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">訂約時間</td>
             <td style="vertical-align: inherit; text-align: center" width="250px">說明</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">訂約金額</td>
-            <td style="vertical-align: inherit; text-align: center" width="150px">經理確認</td>
+            <td st-sort="applierName"
+                style="vertical-align: inherit; text-align: center" width="150px">訂約人</td>
+            <td st-sort="managerName"
+                style="vertical-align: inherit; text-align: center" width="150px">經理確認</td>
+        </tr>
+        <tr>
+            <th/>
+            <th>
+                <input st-search="prjCode"
+                       placeholder="專案代碼"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+
+            <th>
+                <input st-search="mainName"
+                       placeholder="專案名稱"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+
+            <th>
+                <!--<input st-search="receiveType"-->
+                       <!--placeholder="輸入文號字"-->
+                       <!--class="input-sm form-control search-input"-->
+                       <!--type="search"/>-->
+            </th>
+            <th>
+                <!--<input st-search="receiveNumber"-->
+                       <!--placeholder="輸入文號編號"-->
+                       <!--class="input-sm form-control search-input"-->
+                       <!--type="search"/>-->
+            </th>
+
+            <th/>
+            <th>
+                <!--<input st-search="chargerName"-->
+                       <!--placeholder="輸入承辦人"-->
+                       <!--class="input-sm form-control search-input"-->
+                       <!--type="search"/>-->
+            </th>
+            <th>
+                <!--<input st-search="handlerName"-->
+                       <!--placeholder="輸入待辦人"-->
+                       <!--class="input-sm form-control search-input"-->
+                       <!--type="search"/>-->
+            </th>
+
+            <th>
+                <input st-search="applierName"
+                       placeholder="訂約人"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+
+            <th>
+                <input st-search="managerName"
+                       placeholder="經理"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+
         </tr>
         </thead>
-        <tbody ng-repeat="applyItem in displaySubContractorApplyItems">
+        <tbody ng-repeat="applyItem in subContractorApplyPeriods">
         <tr style="vertical-align: inherit; text-align: center">
             <!--序號-->
             <td style="vertical-align: inherit; text-align: center">
                 <span id="prjCode">{{$index + 1}}</span>
                 <br>
-                <button class="btn btn-primary editable-table-button btn-xs"
-                        ng-if="!applyItem.isSendReview"
-                        ng-click="setSCApplyItem(applyItem);">提交
-                </button>
                 <button class="btn btn-danger editable-table-button btn-xs"
-                        ng-if="!applyItem.isSendReview"
-                        ng-click="removeSCApplyItemOne(applyItem);">移除
+                    ng-if="applyItem.isManagerCheck && roleType == 100"
+                    ng-click="recoverSCApplyItemOne(applyItem);">退回
                 </button>
                 <!--<button class="btn btn-danger editable-table-button btn-xs"-->
-                        <!--ng-if="applyItem.isManagerCheck"-->
-                        <!--ng-click="recoverSCApplyItemOne(applyItem);">退回-->
+                        <!--ng-if="!applyItem.isSendReview"-->
+                        <!--ng-click="removeSCApplyItemOne(applyItem);">移除-->
                 <!--</button>-->
+
             </td>
             <!--專案代碼-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span>{{showPrjCode(applyItem.prjDID)}}</span>
+                <span>{{applyItem.prjCode}}</span>
+            </td>
+            <!--專案名稱-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{applyItem.mainName}}</span>
             </td>
             <!--日期-->
             <!--<td style="vertical-align: inherit; text-align: center">-->
@@ -141,13 +162,18 @@
                        class="form-control input-sm">
             </td>
 
+            <!--訂約人-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span ng-if="applyItem.isSendReview">{{applyItem.applierName}}</span>
+            </td>
+
             <!-- 經理簽章 -->
             <td style="vertical-align: inherit;">
 
                 <div ng-if="(applyItem.isSendReview && !applyItem.isManagerCheck)">
                     <button class="btn btn-warning editable-table-button btn-xs"
                             style="color: black">
-                        {{ showProjectManager(applyItem.prjDID)}}
+                        {{ applyItem.managerName}}
                         <br>
                         確認作業中
                     </button>
@@ -156,7 +182,7 @@
                     <div >
                         <button class="btn btn-info editable-table-button btn-xs"
                                 style="color: black">
-                            {{ showProjectManager(applyItem.prjDID)}}
+                            {{ applyItem.managerName}}
                             <br>
                             確認完成
                         </button>
@@ -165,7 +191,7 @@
                 <div ng-if="!applyItem.isSendReview && applyItem.isManagerReject">
                     <button class="btn btn-warning editable-table-button btn-xs"
                             style="color: black">
-                        {{ showProjectManager(applyItem.prjDID)}}
+                        {{ applyItem.managerName}}
                         <br>
                         退回
                     </button>
