@@ -251,7 +251,23 @@
             }
             if (!selected) return 'Not Set'
             return selected.length > 0 ? selected[0].name : 'Not Set';
+        }
 
+        $scope.printPDF = function () {
+            $("#form_main_pdf").print({
+                globalStyles: true,
+                mediaPrint: false,
+                stylesheet: null,
+                noPrintSelector: ".no-print",
+                iframe: true,
+                append: null,
+                prepend: null,
+                manuallyCopyFormValues: true,
+                deferred: $.Deferred(),
+                timeout: 750,
+                title: "訂約紀錄查詢",
+                doctype: '<!doctype html>'
+            });
         }
 
     }

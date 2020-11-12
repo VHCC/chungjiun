@@ -365,8 +365,8 @@
         }
 
         var cons_1 = 2.0;
-        var cons_2 = 2.0;
-        var cons_3 = 1.67;
+        var cons_2 = 2.0; // 換休
+        var cons_3 = 1.67; // 加班
 
         $scope.calculateHours_type2 = function (item, type) {
             if (item.iscalculate_A && item.iscalculate_B) {
@@ -523,6 +523,29 @@
         }
 
         $scope.saveProjectFR = function (item) {
+            console.log(item)
+
+            var formData = {
+
+                _id: item._id,
+                income: item.income,
+                otherCost: item.otherCost,
+                rate_item_1: item.rate_item_1,
+                rate_item_2: item.rate_item_2,
+                rate_item_3: item.rate_item_3,
+                rate_item_4: item.rate_item_4,
+                rate_item_5: item.rate_item_5,
+                memo: item.memo,
+            }
+
+            ProjectFinancialResultUtil.updateFR(formData)
+                .success(function (res) {
+                    console.log(res)
+                    toastr.success('設定成功', 'Success');
+                })
+        }
+
+        $scope.closeProjectFR = function (item) {
             console.log(item)
 
             var formData = {
