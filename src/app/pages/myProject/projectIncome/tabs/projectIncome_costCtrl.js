@@ -170,8 +170,8 @@
         };
 
         var cons_1 = 2.0;
-        var cons_2 = 2.0;
-        var cons_3 = 1.67;
+        var cons_2 = 2.0; // 換休
+        var cons_3 = 1.67; // 加班
 
         $scope.calculateHours_type2 = function (item, type) {
             if (item.iscalculate_A && item.iscalculate_B) {
@@ -221,7 +221,6 @@
                     return parseInt(totalCost);
                     break;
             }
-
         }
 
         $scope.calculateHours_type2_add = function (item, type, showType) {
@@ -237,7 +236,6 @@
                                 return parseInt(item.hourTotal_add_cost_A);
                                 break;
                         }
-
                     }
                     break;
                 case 2:
@@ -320,7 +318,7 @@
                     break;
                 case 2:
                     item.iscalculate_B = true;
-                    item.hourTotal_add_B = hourTotal * cons_2;
+                    item.hourTotal_add_B = hourTotal;
                     item.hourTotal_add_cost_B = parseInt(totalCost * cons_2);
                     break;
             }

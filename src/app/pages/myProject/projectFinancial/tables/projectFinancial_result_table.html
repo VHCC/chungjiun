@@ -85,10 +85,19 @@
             <td class="form-group" style="vertical-align: inherit;">
                 <!--<span ng-if="item.isEnable">{{item.memo}}</span>-->
                 <!--<input type="text"-->
-                       <!--ng-if="!item.isEnable"-->
-                       <!--ng-model="item.memo"-->
-                       <!--value="{{item.memo}}"-->
-                       <!--class="form-control input-sm">-->
+                <!--ng-if="!item.isEnable"-->
+                <!--ng-model="item.memo"-->
+                <!--value="{{item.memo}}"-->
+                <!--class="form-control input-sm">-->
+            </td>
+            <!--說明-->
+            <td class="form-group" style="vertical-align: inherit;">
+                <!--<span ng-if="item.isEnable">{{item.memo}}</span>-->
+                <!--<input type="text"-->
+                <!--ng-if="!item.isEnable"-->
+                <!--ng-model="item.memo"-->
+                <!--value="{{item.memo}}"-->
+                <!--class="form-control input-sm">-->
             </td>
             <!--可分配績效-->
             <td class="form-group" style="vertical-align: inherit;">
@@ -110,7 +119,14 @@
                         style="margin: 5px"
                         ng-click="saveProjectFR(item)"
                         class="btn btn-primary">
-                    確認
+                    暫存
+                </button>
+
+                <button type="submit"
+                        style="margin: 5px"
+                        ng-click="saveProjectFR(item)"
+                        class="btn btn-danger">
+                    結算
                 </button>
             </td>
             <!--收入-->
@@ -124,23 +140,23 @@
             </td>
             <!--技師費-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span >{{item.rate_item_1 * item.income / 100}}</span>
+                <span >{{item.rate_item_1 * calIncome() / 100}}</span>
             </td>
             <!--行政-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span>{{item.rate_item_2 * item.income / 100}}</span>
+                <span>{{item.rate_item_2 * calIncome() / 100}}</span>
             </td>
             <!--利潤-->
             <td class="form-group" style="vertical-align: inherit;">
-                <span >{{item.rate_item_3 * item.income / 100}}</span>
+                <span >{{item.rate_item_3 * calIncome() / 100}}</span>
             </td>
             <!--風險-->
             <td class="form-group " style="vertical-align: inherit;">
-                <span >{{item.rate_item_4 * item.income / 100}}</span>
+                <span >{{item.rate_item_4 * calIncome() / 100}}</span>
             </td>
             <!--調整-->
             <td class="form-group" style="vertical-align: inherit;">
-                <span >{{item.rate_item_5 * item.income / 100}}</span>
+                <span >{{item.rate_item_5 * calIncome() / 100}}</span>
             </td>
 
             <!--支出-->
@@ -168,11 +184,11 @@
             <!--可分配績效-->
             <td class="form-group" style="vertical-align: inherit;">
                 <span >{{calIncome()
-                    - (item.rate_item_1 * item.income / 100)
-                    - (item.rate_item_2 * item.income / 100)
-                    - (item.rate_item_3 * item.income / 100)
-                    - (item.rate_item_4 * item.income / 100)
-                    - (item.rate_item_5 * item.income / 100)
+                    - (item.rate_item_1 * calIncome() / 100)
+                    - (item.rate_item_2 * calIncome() / 100)
+                    - (item.rate_item_3 * calIncome() / 100)
+                    - (item.rate_item_4 * calIncome() / 100)
+                    - (item.rate_item_5 * calIncome() / 100)
                     - calcAllCost()
                     - item.otherCost}}</span>
             </td>
