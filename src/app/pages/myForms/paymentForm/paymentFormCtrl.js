@@ -605,10 +605,10 @@
                     //     return
                     // }
 
-                    if (!$scope.checkIsNumber($scope.displayPaymentItems[index].amount)) {
-                        toastr.error('金額格式錯誤', '請輸入 整數');
-                        return
-                    }
+                    // if ($scope.checkIsNumber($scope.displayPaymentItems[index].amount)) {
+                    //     toastr.error('金額格式錯誤', '請輸入 整數');
+                    //     return
+                    // }
                     //
                     // console.log($scope.displayPaymentItems[index].amount)
                     // console.log($scope.checkRate($scope.displayPaymentItems[index].amount))
@@ -634,8 +634,10 @@
         $scope.checkIsNumber = function(input) {
             var re = /^[0-9] .?[0-9]*/;//判斷字串是否為數字//判斷正整數/[1−9] [0−9]∗]∗/
             if (!re.test(input)) {
+                console.log("QQQQ")
                 return false
             }
+            console.log("AAAA")
             return true
         }
 
