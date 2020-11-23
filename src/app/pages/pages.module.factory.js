@@ -820,6 +820,10 @@
                     return http.post('/api/post_sub_contractor_apply_items_update_many', formData);
                 },
 
+                fetchSCApplyPeriods: function (formData) {
+                    return http.post('/api/post_sub_contractor_apply_items_fetch_period', formData);
+                },
+
             }
         }])
         .factory('SubContractorVendorUtil', ['$http', function (http) {
@@ -1143,6 +1147,15 @@
                 getShiftDatefromFirstDate_typeB: function (firstDate, offset) {
                     var firstDay = moment(firstDate).add(offset, 'days');
                     return firstDay.format('YYYY_MM_DD');
+                },
+
+                getShiftDatefromFirstDate_month: function (firstDate, offset) {
+                    var firstDay = moment(firstDate).add(offset, 'days');
+                    return firstDay.format('YYYY_MM');
+                },
+                getShiftDatefromFirstDate_month_slash: function (firstDate, offset) {
+                    var firstDay = moment(firstDate).add(offset, 'days');
+                    return firstDay.format('YYYY/MM');
                 },
 
                 getShiftDatefromFirstDateCalendar: function (firstDate, offset) {

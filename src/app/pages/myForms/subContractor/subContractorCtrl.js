@@ -36,7 +36,7 @@
             }
 
             $scope.reloadSCApplyData = function (dom) {
-                dom.$$childTail.$$prevSibling.$$prevSibling.$$prevSibling.fetchSCApplyData();
+                dom.$$childTail.$$prevSibling.$$prevSibling.$$prevSibling.$$prevSibling.fetchSCApplyData();
             }
 
         } // End of function

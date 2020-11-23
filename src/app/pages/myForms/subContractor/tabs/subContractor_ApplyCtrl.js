@@ -193,7 +193,7 @@
 
             var formData = {
                 creatorDID: $scope.userDID,
-                year: specificYear,
+                // year: specificYear,
                 // month: specificMonth,
                 prjDID: prjDID,
             }
@@ -231,8 +231,20 @@
         }
 
         $scope.setSCApplyItem = function(applyItem) {
+
+            var dateTemp = moment(applyItem.contractDate)
+            if (applyItem.contractDate !== dateTemp.format('YYYY/MM/DD')) {
+                toastr.error('日期格式錯誤', '請輸入 YYYY/MM/DD');
+                return
+            }
+
+            var year = parseInt(dateTemp.year()) - 1911;
+            var month = parseInt(dateTemp.month()) + 1;
+
             var formData = {
                 _id: applyItem._id,
+                year: year,
+                month: month,
                 vendorDID: applyItem.vendorDID,
                 itemDID: applyItem.itemDID,
                 contractDate: applyItem.contractDate,
@@ -257,7 +269,7 @@
 
             var formData = {
                 creatorDID: $scope.userDID,
-                year: specificYear,
+                // year: specificYear,
                 // month: specificMonth,
             }
 

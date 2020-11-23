@@ -319,6 +319,7 @@ global.apiUrl = {
     post_sub_contractor_apply_fetch_items : '/api/post_sub_contractor_apply_fetch_items',
     post_sub_contractor_apply_items_update_one : '/api/post_sub_contractor_apply_items_update_one',
     post_sub_contractor_apply_items_update_many : '/api/post_sub_contractor_apply_items_update_many',
+    post_sub_contractor_apply_items_fetch_period : '/api/post_sub_contractor_apply_items_fetch_period',
 
     // subContractorVendor
     post_fetch_sub_contractor_vendor_enabled : '/api/post_fetch_sub_contractor_vendor_enabled',

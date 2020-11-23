@@ -72,7 +72,8 @@ module.exports = function (app) {
 
             }, {
                 $set: {
-                    isDocOpened: true
+                    isDocOpened: true,
+                    archiveTimestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
                 }
             }, function (err, result) {
                 if (err) {

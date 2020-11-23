@@ -82,7 +82,15 @@ module.exports = mongoose.model('Project', {
     // 專案關閉 Flag
     enable : {
         type: Boolean,
+        default: true,
     },
+
+    // 專案結算
+    isPrjClose: {
+        type: Boolean,
+        default: false
+    },
+
     // 到期日
     // endDate : {
     //     type: Date

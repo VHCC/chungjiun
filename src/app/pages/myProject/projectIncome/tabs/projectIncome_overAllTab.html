@@ -7,7 +7,7 @@
             <ui-select ng-model="projectIncomeOverAllCtrlVm.prjItems.selected"
                        class="btn-group bootstrap-select form-control"
                        id="projectName"
-                       ng-change="insertSCApplyItem($select.selected._id)"
+                       ng-change="fetchPrjIncomeOverAll($select.selected)"
                        append-to-body="true"
                        search-enabled="true">
                 <ui-select-match placeholder="選擇(查詢)">
@@ -34,10 +34,10 @@
     </div>
 
     <div bs-loading-overlay
-         bs-loading-overlay-reference-id="mainPage_project_income">
+         bs-loading-overlay-reference-id="mainPage_project_income_overall">
 
         <div class="row" >
-            <div class="col-md-12" id="includeHead">
+            <div class="col-md-12" id="includeHead_over_all">
             </div>
         </div>
     </div>

@@ -1,28 +1,55 @@
+<style type="text/css">
+    .AutoNewline
+    {
+        word-break: break-all;/*必須*/
+    }
+</style>
 <div class="horizontal-scroll">
-    <table class="table table-bordered table-hover table-condensed" st-table="projectIncomeTable">
+    <table class="table table-bordered table-hover table-condensed"
+           style="width:120%; table-layout: auto">
         <thead>
-        <tr style="white-space:nowrap" class="sortable">
+        <!--<colgroup>-->
+            <!--<col span="1" style="width: 10%;">-->
+            <!--<col span="1" style="width: 5%;">-->
+            <!--<col span="1" style="width: 5%;">-->
+            <!--<col span="1" style="width: 5%;">-->
+            <!--<col span="1" style="width: 5%;">-->
+            <!--<col span="1" style="width: 5%;">-->
+            <!--<col span="1" style="width: 5%;">-->
+            <!--<col span="1" style="width: 5%;">-->
+            <!--<col span="1" style="width: 5%;">-->
+            <!--<col span="1" style="width: 5%;">-->
+            <!--<col span="1" style="width: 5%;">-->
+            <!--<col span="1" style="width: 15%;">-->
+            <!--<col span="1" style="width: 15%;">-->
+            <!--<col span="1" style="width: 10%;">-->
+        <!--</colgroup>-->
+        <tr >
             <th class="table-id"
-                style="vertical-align: inherit; text-align: center" width="30px">項目</th>
-            <th style="vertical-align: inherit; text-align: center" width="100px">收入</th>
-            <th style="vertical-align: inherit; text-align: center" width="100px">技師費</th>
-            <th style="vertical-align: inherit; text-align: center" width="100px">行政費</th>
-            <th style="vertical-align: inherit; text-align: center" width="100px">利潤</th>
-            <th style="vertical-align: inherit; text-align: center" width="100px">風險</th>
-            <th style="vertical-align: inherit; text-align: center" width="100px">調整費</th>
-            <th style="vertical-align: inherit; text-align: center" width="100px">支出</th>
-            <th style="vertical-align: inherit; text-align: center" width="100px">其他</th>
-            <th style="vertical-align: inherit; text-align: center" width="200px">可分配績效</th>
+                style="vertical-align: inherit; text-align: center" >項目</th>
+            <th style="vertical-align: inherit; text-align: center" >含稅收入(發票金額)A</th>
+            <th style="vertical-align: inherit; text-align: center" >不含稅收入B=A/1.05</th>
+            <th style="vertical-align: inherit; text-align: center" class="AutoNewline">公司調整(規劃、設計、監造廷整)C=B*調整值</th>
+            <th style="vertical-align: inherit; text-align: center" >廠商請款(未稅金額)D</th>
+            <th style="vertical-align: inherit; text-align: center" >實際收入E=C-D</th>
+            <th style="vertical-align: inherit; text-align: center" >行政費E*N</th>
+            <th style="vertical-align: inherit; text-align: center" >技師費E*N</th>
+            <th style="vertical-align: inherit; text-align: center" >風險E*N</th>
+            <th style="vertical-align: inherit; text-align: center" >利潤E*N</th>
+            <th style="vertical-align: inherit; text-align: center" >專案成本(人時支出、墊付款、其他支出)</th>
+            <th style="vertical-align: inherit; text-align: center" >其他</th>
+            <th style="vertical-align: inherit; text-align: center" >說明</th>
+            <th style="vertical-align: inherit; text-align: center" >可分配績效</th>
 
         </tr>
         </thead>
         <tbody ng-repeat="item in projectFinancialResultTable">
         <tr style="vertical-align: inherit; text-align: center">
             <!--項目-->
-            <td style="vertical-align: inherit; text-align: center">
+            <td style="vertical-align: inherit; text-align: center" width="30px">
                 費率
             </td>
-            <!--收入-->
+            <!-- 收入 -->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
                 <!--<span >{{item.payDate}}</span>-->
                 <!--<input type="text"-->
@@ -31,47 +58,72 @@
                        <!--value="{{item.payDate}}"-->
                        <!--class="form-control input-sm">-->
             </td>
-            <!--技師費-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <input type="text"
-                       style="text-align: center"
-                       ng-model="item.rate_item_1"
-                       value="{{item.rate_item_1}}"
-                       class="form-control input-sm">%
-            </td>
-            <!--行政費-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <input type="text"
-                       style="text-align: center"
-                       ng-model="item.rate_item_2"
-                       value="{{item.rate_item_2}}"
-                       class="form-control input-sm">%
-            </td>
-            <!--利潤-->
+            <!-- 不含稅收入B=A/1.05 -->
+            <td class="form-group" style="vertical-align: inherit; text-align: center"></td>
+
+            <!-- 公司調整(規劃、設計、監造廷整)C=B*調整值 -->
             <td class="form-group" style="vertical-align: inherit;">
+                <span ng-if="item.isPrjClose">{{item.rate_item_5}}</span>
                 <input type="text"
                        style="text-align: center"
-                       ng-model="item.rate_item_3"
-                       value="{{item.rate_item_3}}"
-                       class="form-control input-sm">%
-            </td>
-            <!--風險-->
-            <td class="form-group " style="vertical-align: inherit;">
-                <input type="text"
-                       style="text-align: center"
-                       ng-model="item.rate_item_4"
-                       value="{{item.rate_item_4}}"
-                       class="form-control input-sm">%
-            </td>
-            <!--調整費-->
-            <td class="form-group" style="vertical-align: inherit;">
-                <input type="text"
-                       style="text-align: center"
+                       ng-if="!item.isPrjClose"
                        ng-model="item.rate_item_5"
                        value="{{item.rate_item_5}}"
                        class="form-control input-sm">%
             </td>
-            <!--支出-->
+
+            <!-- 廠商請款(未稅金額) -->
+            <td class="form-group" style="vertical-align: inherit; text-align: center"></td>
+
+            <!-- 實際收入E=C-D -->
+            <td class="form-group" style="vertical-align: inherit; text-align: center"></td>
+
+            <!--行政費-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span ng-if="item.isPrjClose">{{item.rate_item_2}}</span>
+                <input type="text"
+                       style="text-align: center"
+                       ng-if="!item.isPrjClose"
+                       ng-model="item.rate_item_2"
+                       value="{{item.rate_item_2}}"
+                       class="form-control input-sm">%
+            </td>
+
+            <!--技師費-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span ng-if="item.isPrjClose">{{item.rate_item_1}}</span>
+                <input type="text"
+                       style="text-align: center"
+                       ng-if="!item.isPrjClose"
+                       ng-model="item.rate_item_1"
+                       value="{{item.rate_item_1}}"
+                       class="form-control input-sm">%
+            </td>
+
+            <!--風險-->
+            <td class="form-group " style="vertical-align: inherit;">
+                <span ng-if="item.isPrjClose">{{item.rate_item_4}}</span>
+                <input type="text"
+                       style="text-align: center"
+                       ng-if="!item.isPrjClose"
+                       ng-model="item.rate_item_4"
+                       value="{{item.rate_item_4}}"
+                       class="form-control input-sm">%
+            </td>
+
+            <!--利潤-->
+            <td class="form-group" style="vertical-align: inherit;">
+                <span ng-if="item.isPrjClose">{{item.rate_item_3}}</span>
+                <input type="text"
+                       style="text-align: center"
+                       ng-if="!item.isPrjClose"
+                       ng-model="item.rate_item_3"
+                       value="{{item.rate_item_3}}"
+                       class="form-control input-sm">%
+            </td>
+
+
+            <!-- 專案成本(人時支出、墊付款、其他支出) -->
             <td class="form-group" style="vertical-align: inherit;">
                 <!--<span ng-if="item.isEnable">{{item.fines}}</span>-->
                 <!--<input type="text"-->
@@ -84,10 +136,19 @@
             <td class="form-group" style="vertical-align: inherit;">
                 <!--<span ng-if="item.isEnable">{{item.memo}}</span>-->
                 <!--<input type="text"-->
-                       <!--ng-if="!item.isEnable"-->
-                       <!--ng-model="item.memo"-->
-                       <!--value="{{item.memo}}"-->
-                       <!--class="form-control input-sm">-->
+                <!--ng-if="!item.isEnable"-->
+                <!--ng-model="item.memo"-->
+                <!--value="{{item.memo}}"-->
+                <!--class="form-control input-sm">-->
+            </td>
+            <!--說明-->
+            <td class="form-group" style="vertical-align: inherit;">
+                <!--<span ng-if="item.isEnable">{{item.memo}}</span>-->
+                <!--<input type="text"-->
+                <!--ng-if="!item.isEnable"-->
+                <!--ng-model="item.memo"-->
+                <!--value="{{item.memo}}"-->
+                <!--class="form-control input-sm">-->
             </td>
             <!--可分配績效-->
             <td class="form-group" style="vertical-align: inherit;">
@@ -101,69 +162,130 @@
         </tr>
 
         <tr style="vertical-align: inherit; text-align: center">
-            <!--序號-->
+            <!--金額-->
             <td style="vertical-align: inherit; text-align: center">
                 金額
+                <br>
+                <span ng-if="item.isPrjClose" style="color: red;" width="30px">[已結算]</span>
                 <br>
                 <button type="submit"
                         style="margin: 5px"
                         ng-click="saveProjectFR(item)"
                         class="btn btn-primary">
-                    確認
+                    暫存
+                </button>
+
+                <button type="submit"
+                        style="margin: 5px"
+                        ng-if="!item.isPrjClose"
+                        ng-click="closeProjectFR(item)"
+                        class="btn btn-danger">
+                    結算
+                </button>
+                <button type="submit"
+                        style="margin: 5px"
+                        ng-if="item.isPrjClose"
+                        ng-click="openProjectFR(item)"
+                        class="btn btn-danger">
+                    開啟專案
                 </button>
             </td>
-            <!--收入-->
+            <!-- 收入 -->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <input type="text"
-                       style="text-align: center"
-                       ng-model="item.income"
-                       value="{{item.income}}"
-                       class="form-control input-sm">
+                <span>{{calIncome(1)}}</span>
+                <!--<input type="text"-->
+                       <!--style="text-align: center"-->
+                       <!--ng-model="item.income"-->
+                       <!--value="{{item.income}}"-->
+                       <!--class="form-control input-sm">-->
             </td>
-            <!--技師費-->
+            <!-- 不含稅收入B=A/1.05 -->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span >{{item.rate_item_1 * item.income / 100}}</span>
-            </td>
-            <!--行政-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span>{{item.rate_item_2 * item.income / 100}}</span>
-            </td>
-            <!--利潤-->
-            <td class="form-group" style="vertical-align: inherit;">
-                <span >{{item.rate_item_3 * item.income / 100}}</span>
-            </td>
-            <!--風險-->
-            <td class="form-group " style="vertical-align: inherit;">
-                <span >{{item.rate_item_4 * item.income / 100}}</span>
-            </td>
-            <!--調整-->
-            <td class="form-group" style="vertical-align: inherit;">
-                <span >{{item.rate_item_5 * item.income / 100}}</span>
+                <span>{{calIncome(2)}}</span>
+                <!--<input type="text"-->
+                <!--style="text-align: center"-->
+                <!--ng-model="item.income"-->
+                <!--value="{{item.income}}"-->
+                <!--class="form-control input-sm">-->
             </td>
 
-            <!--支出-->
+            <!-- 公司調整(規劃、設計、監造廷整)C=B*調整值 -->
+            <td class="form-group" style="vertical-align: inherit;">
+                <!--<span >{{item.rate_item_5 * calIncome(2) / 100}}</span>-->
+                <span >{{calResult(3, item)}}</span>
+            </td>
+
+            <!-- 廠商請款(未稅金額) D -->
+            <td class="form-group" style="vertical-align: inherit;">
+                <span >{{calSubContractorPay()}}</span>
+            </td>
+
+            <!-- 實際收入E=C-D -->
+            <td class="form-group" style="vertical-align: inherit;">
+                <!--<span >{{ ((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()}}</span>-->
+                <span >{{calResult(4, item)}}</span>
+            </td>
+
+            <!-- 行政費 -->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <!--<span>{{item.rate_item_2 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>-->
+                <span>{{calResult(5, item)}}</span>
+            </td>
+
+            <!--技師費-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <!--<span >{{item.rate_item_1 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>-->
+                <span>{{calResult(6, item)}}</span>
+            </td>
+
+            <!--風險-->
+            <td class="form-group " style="vertical-align: inherit;">
+                <!--<span >{{item.rate_item_4 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>-->
+                <span>{{calResult(7, item)}}</span>
+            </td>
+
+            <!--利潤-->
+            <td class="form-group" style="vertical-align: inherit;">
+                <!--<span >{{item.rate_item_3 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>-->
+                <span>{{calResult(8, item)}}</span>
+            </td>
+
+            <!-- 專案成本(人時支出、墊付款、其他支出) -->
             <td class="form-group" style="vertical-align: inherit;">
                 <span >{{calcAllCost()}}</span>
             </td>
             <!--其他-->
             <td class="form-group" style="vertical-align: inherit;">
+                <span ng-if="item.isPrjClose">{{item.otherCost}}</span>
                 <input type="text"
                        style="text-align: center"
+                       ng-if="!item.isPrjClose"
                        ng-model="item.otherCost"
                        value="{{item.otherCost}}"
                        class="form-control input-sm">
             </td>
 
+            <!--說明-->
+            <td class="form-group" style="vertical-align: inherit;">
+                <span ng-if="item.isPrjClose">{{item.memo}}</span>
+                <textarea type="text"
+                       style="text-align: center"
+                       ng-if="!item.isPrjClose"
+                       ng-model="item.memo"
+                       value="{{item.memo}}"
+                       class="form-control input-sm"/>
+            </td>
+
             <!--可分配績效-->
             <td class="form-group" style="vertical-align: inherit;">
-                <span >{{item.income
-                    - (item.rate_item_1 * item.income / 100)
-                    - (item.rate_item_2 * item.income / 100)
-                    - (item.rate_item_3 * item.income / 100)
-                    - (item.rate_item_4 * item.income / 100)
-                    - (item.rate_item_5 * item.income / 100)
-                    - calcAllCost()
-                    - item.otherCost}}</span>
+                <!--<span >{{(((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay())-->
+                    <!-- - (item.rate_item_1 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100)-->
+                    <!-- - (item.rate_item_2 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100)-->
+                    <!-- - (item.rate_item_3 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100)-->
+                    <!-- - (item.rate_item_4 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100)-->
+                    <!-- - calcAllCost()-->
+                    <!-- - item.otherCost}}</span>-->
+                <span>{{calResult(9, item)}}</span>
             </td>
         </tr>
         </tbody>

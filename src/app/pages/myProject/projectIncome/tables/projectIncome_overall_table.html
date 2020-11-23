@@ -1,0 +1,182 @@
+<div class="horizontal-scroll">
+    <table class="table table-bordered table-hover table-condensed"
+           style="width:100%">
+        <thead >
+
+            <tr style="vertical-align: inherit; text-align: center; white-space:nowrap">
+                <!--項目-->
+                <th style="vertical-align: inherit; text-align: center" rowspan="3">
+                    年月
+                    <br>
+                    <span ng-if="financialResult.isPrjClose" style="color: red;">[已結算]</span>
+                    <span ng-if="!financialResult.isPrjClose" style="color: blue;">[尚未結算]</span>
+                    <br>
+                    <button type="submit"
+                            style="margin: 5px"
+                            ng-click="saveOverAll(financialResult)"
+                            class="btn btn-primary">
+                        設定
+                    </button>
+                </th>
+                <!-- 收入 -->
+                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                    預計收入
+                </th>
+                <!-- 預計收入 -->
+                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                    <span ng-if="financialResult.isPrjClose">{{financialResult.preIncome}}</span>
+                    <input type="text"
+                           style="text-align: center"
+                           ng-if="!financialResult.isPrjClose"
+                           ng-model="financialResult.preIncome"
+                           value="{{financialResult.preIncome}}"
+                           class="form-control input-sm">
+                </th>
+                <!-- 固定支出 -->
+                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                    固定支出
+                    <span style="color:red">{{calcRates()}}</span> %
+                    <br>
+                    (技師、行政、風險)
+                </th>
+
+                <!-- 預計收入 * 技師、行政、風險 -->
+                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                    {{calcRates() * financialResult.preIncome / 100}}
+                </th>
+
+                <!-- 預計支出 -->
+                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                    預計支出
+                </th>
+
+                <!-- 預計支出 -->
+                <!-- 專案經理輸入 -->
+                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                    <span ng-if="financialResult.isPrjClose">{{financialResult.preCost}}</span>
+                    <input type="text"
+                           style="text-align: center"
+                           ng-if="!financialResult.isPrjClose"
+                           ng-model="financialResult.preCost"
+                           value="{{financialResult.preCost}}"
+                           class="form-control input-sm">
+                </th>
+
+                <!-- 備註 -->
+                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                    備註
+                </th>
+            </tr>
+
+            <tr style="vertical-align: inherit; text-align: center; white-space:nowrap">
+                <th style="vertical-align: inherit; text-align: center" rowspan="2">
+                    收入
+                </th>
+
+                <!--支出-->
+                <th class="form-group" style="vertical-align: inherit; text-align: center" colspan="5">
+                    支出
+                </th>
+
+                <!-- 備註 -->
+                <th class="form-group" style="vertical-align: inherit; text-align: center" rowspan="2">
+                    <span ng-if="financialResult.isPrjClose">{{financialResult.overAllMemo}}</span>
+                    <textarea type="text"
+                           style="text-align: center"
+                           ng-if="!financialResult.isPrjClose"
+                           ng-model="financialResult.overAllMemo"
+                           value="{{financialResult.overAllMemo}}"
+                           class="form-control input-sm"/>
+                </th>
+            </tr>
+
+            <tr style="vertical-align: inherit; text-align: center; white-space:nowrap">
+                <th style="vertical-align: inherit; text-align: center">
+                    人時支出
+                </th>
+
+                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                    墊付款
+                </th>
+                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                    廠商請款
+                </th>
+                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                    其他支出
+                </th>
+                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                    罰款
+                </th>
+            </tr>
+
+            <!-- main -->
+            <tr style="vertical-align: inherit; text-align: center; white-space:nowrap">
+                <th style="vertical-align: inherit; text-align: center">
+                    合計
+                </th>
+
+                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                    {{calIncome(1)}}
+                </th>
+                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                    {{calcCost(1)}}
+                </th>
+                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                    {{calcCost(2)}}
+                </th>
+                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                    {{calSubContractorPay()}}
+                </th>
+                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                    {{calcCost(3)}}
+                </th>
+                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                    {{calFines()}}
+                </th>
+                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                </th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="item in overall_data">
+        <tr style="vertical-align: inherit; text-align: center; white-space:nowrap">
+            <th style="vertical-align: inherit; text-align: center">
+                {{item._date}}
+            </th>
+
+            <!-- 收入 -->
+            <th class="form-group" style="vertical-align: inherit; text-align: center">
+                {{calcItem(item, 4)}}
+            </th>
+
+            <!-- 人時 -->
+            <th class="form-group" style="vertical-align: inherit; text-align: center">
+                {{calcItem(item, 7)}}
+            </th>
+
+            <!-- 墊付款 -->
+            <th class="form-group" style="vertical-align: inherit; text-align: center">
+                {{calcItem(item, 2)}}
+            </th>
+
+            <!-- 廠商請款 -->
+            <th class="form-group" style="vertical-align: inherit; text-align: center">
+                {{calcItem(item, 5)}}
+            </th>
+
+            <!--  其他 -->
+            <th class="form-group" style="vertical-align: inherit; text-align: center">
+                {{calcItem(item, 3)}}
+            </th>
+
+            <!-- 罰款 -->
+            <th class="form-group" style="vertical-align: inherit; text-align: center">
+                {{calcItem(item, 6)}}
+            </th>
+
+
+            <th class="form-group" style="vertical-align: inherit; text-align: center">
+            </th>
+        </tr>
+        </tbody>
+    </table>
+</div>

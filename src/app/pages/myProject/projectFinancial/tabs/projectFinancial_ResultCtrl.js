@@ -27,6 +27,7 @@
                 'PaymentFormsUtil',
                 'ExecutiveExpenditureUtil',
                 'SubContractorPayItemUtil',
+                'ProjectIncomeUtil',
                 'bsLoadingOverlayService',
                 projectFinancialResultCtrl
             ])
@@ -51,6 +52,7 @@
                              PaymentFormsUtil,
                              ExecutiveExpenditureUtil,
                              SubContractorPayItemUtil,
+                             ProjectIncomeUtil,
                              bsLoadingOverlayService) {
 
         $scope.userDID = $cookies.get('userDID');
@@ -65,9 +67,6 @@
 
         var specificYear = thisYear;
         var specificMonth = thisMonth;
-
-        // ***** SubContractorApply main Tab 主要顯示 *****
-        $scope.displaySubContractorApplyItems;
 
         // 所有人，對照資料
         User.getAllUsers()
@@ -112,7 +111,7 @@
             });
 
         $scope.initProject = function() {
-            Project.findAllEnable()
+            Project.findAll()
                 .success(function (allProjects) {
                     $scope.allProject_raw = allProjects;
                     vm.projects = allProjects.slice();
@@ -228,11 +227,11 @@
                 + parseFloat(rateItem.rate_item_2)
                 + parseFloat(rateItem.rate_item_3)
                 + parseFloat(rateItem.rate_item_4)
-                + parseFloat(rateItem.rate_item_5)
+                // + parseFloat(rateItem.rate_item_5)
         }
 
         $scope.fetchProjectFinancialResult = function (prjInfo) {
-            $scope.selectPrjDID = prjInfo._id;
+            $scope.selectPrjInfo = prjInfo;
 
             $timeout(function () {
                 bsLoadingOverlayService.start({
@@ -251,12 +250,23 @@
                     if (res.payload.length == 0) {
                         ProjectFinancialResultUtil.createFR(formData)
                             .success(function (res) {
-                                $scope.fetchProjectFinancialResult($scope.selectPrjDID);
+                                $scope.fetchProjectFinancialResult($scope.selectPrjInfo);
                             })
                     }
 
                     $scope.projectFinancialResultTable = res.payload;
 
+                    var incomeFormData = {
+                        isEnable: true,
+                        prjDID: prjInfo._id
+                    }
+
+                    // 收入
+                    ProjectIncomeUtil.findIncome(incomeFormData)
+                        .success(function (res) {
+                            console.log(res);
+                            $scope.projectIncomeTable = res.payload;
+                        })
 
                     // 墊付款
                     PaymentFormsUtil.fetchPaymentsItemByPrjDID(formData)
@@ -352,8 +362,8 @@
         }
 
         var cons_1 = 2.0;
-        var cons_2 = 2.0;
-        var cons_3 = 1.67;
+        var cons_2 = 2.0; // 換休
+        var cons_3 = 1.67; // 加班
 
         $scope.calculateHours_type2 = function (item, type) {
             if (item.iscalculate_A && item.iscalculate_B) {
@@ -515,13 +525,14 @@
             var formData = {
 
                 _id: item._id,
-                income: item.income,
+                // income: item.income,
                 otherCost: item.otherCost,
                 rate_item_1: item.rate_item_1,
                 rate_item_2: item.rate_item_2,
                 rate_item_3: item.rate_item_3,
                 rate_item_4: item.rate_item_4,
                 rate_item_5: item.rate_item_5,
+                memo: item.memo,
             }
 
             ProjectFinancialResultUtil.updateFR(formData)
@@ -531,28 +542,61 @@
                 })
         }
 
-        $scope.calcAllCost = function () {
-            var result = 0.0;
-            var resultA = 0.0;
-            for (var i = 0; i < $scope.statisticsResults.length; i ++) {
-                resultA += $scope.calculateHours_type2($scope.statisticsResults[i], 2);
-                resultA += $scope.calculateHours_type2_add($scope.statisticsResults[i], 1, 2);
-                resultA += $scope.calculateHours_type2_add($scope.statisticsResults[i], 2, 2);
-            }
-            console.log("resultA:> " + resultA)
+        $scope.closeProjectFR = function (item) {
+            // console.log(item)
 
-            var resultB = 0.0;
-            for (var i = 0; i < $scope.searchPaymentsItems.length; i ++) {
-                resultB += parseInt($scope.searchPaymentsItems[i].amount)
-            }
-            console.log("resultB:> " + resultB)
+            var formData = {
 
-            var resultC = 0.0;
-            for (var i = 0; i < $scope.displayEEItems.length; i ++) {
-                resultC += parseInt($scope.displayEEItems[i].amount)
+                _id: item._id,
+                // income: item.income,
+                otherCost: item.otherCost,
+                rate_item_1: item.rate_item_1,
+                rate_item_2: item.rate_item_2,
+                rate_item_3: item.rate_item_3,
+                rate_item_4: item.rate_item_4,
+                rate_item_5: item.rate_item_5,
+                memo: item.memo,
+                isPrjClose: true
             }
-            console.log("resultC:> " + resultC)
 
+            ProjectFinancialResultUtil.updateFR(formData)
+                .success(function (res) {
+                    console.log(res)
+                    $scope.fetchProjectFinancialResult($scope.selectPrjInfo);
+                    toastr.success('結算成功', 'Success');
+                })
+        }
+
+        $scope.openProjectFR = function(item) {
+            var formData = {
+                _id: item._id,
+                isPrjClose: false
+            }
+
+            ProjectFinancialResultUtil.updateFR(formData)
+                .success(function (res) {
+                    console.log(res);
+                    $scope.fetchProjectFinancialResult($scope.selectPrjInfo);
+                    toastr.success('開啟專案成功', 'Success');
+                })
+        }
+
+        $scope.calIncome = function (type) {
+            var incomeA = 0.0;
+            for (var i = 0; i < $scope.projectIncomeTable.length; i ++) {
+                incomeA += parseInt($scope.projectIncomeTable[i].realAmount)
+            }
+            console.log("incomeA:> " + incomeA)
+            switch (type) {
+                case 1:
+                    return incomeA;
+                case 2:
+                    return Math.round(incomeA/1.05)
+            }
+        }
+
+        $scope.calSubContractorPay = function() {
+            // 廠商請款
             var resultD = 0.0;
             for (var i = 0; i < $scope.subContractorPayItems.length; i ++) {
                 resultD += (parseInt($scope.subContractorPayItems[i].payApply) -
@@ -560,9 +604,68 @@
                     parseInt($scope.subContractorPayItems[i].payOthers)
                 )
             }
-            console.log("resultD:> " + resultD)
+            // console.log("resultD:> " + resultD)
+            return resultD;
+        }
 
-            return resultA + resultB + resultC + resultD;
+        $scope.calcAllCost = function () {
+            var result = 0.0;
+
+            // 人時
+            var resultA = 0.0;
+            for (var i = 0; i < $scope.statisticsResults.length; i ++) {
+                resultA += $scope.calculateHours_type2($scope.statisticsResults[i], 2);
+                resultA += $scope.calculateHours_type2_add($scope.statisticsResults[i], 1, 2);
+                resultA += $scope.calculateHours_type2_add($scope.statisticsResults[i], 2, 2);
+            }
+            // console.log("resultA:> " + resultA)
+
+            // 墊付款
+            var resultB = 0.0;
+            for (var i = 0; i < $scope.searchPaymentsItems.length; i ++) {
+                resultB += parseInt($scope.searchPaymentsItems[i].amount)
+            }
+            // console.log("resultB:> " + resultB)
+
+            // 其他
+            var resultC = 0.0;
+            for (var i = 0; i < $scope.displayEEItems.length; i ++) {
+                resultC += parseInt($scope.displayEEItems[i].amount)
+            }
+            // console.log("resultC:> " + resultC)
+            return Math.round(resultA + resultB + resultC);
+        }
+
+        $scope.calResult = function (type, item) {
+            switch (type) {
+                // 公司調整(規劃、設計、監造廷整)C=B*調整值
+                case 3:
+                    return Math.round(item.rate_item_5 * $scope.calIncome(2) / 100);
+                // 實際收入E=C-D
+                case 4:
+                    return Math.round(item.rate_item_5 * $scope.calIncome(2) / 100 - $scope.calSubContractorPay());
+                // 行政費 E*N
+                case 5:
+                    return Math.round(item.rate_item_2 * ($scope.calResult(4, item)) / 100);
+                // 技師費 E*N
+                case 6:
+                    return Math.round(item.rate_item_1 * ($scope.calResult(4, item)) / 100);
+                // 風險 E*N
+                case 7:
+                    return Math.round(item.rate_item_4 * ($scope.calResult(4, item)) / 100);
+                // 利潤 E*N
+                case 8:
+                    return Math.round(item.rate_item_3 * ($scope.calResult(4, item)) / 100);
+                // 可分配績效
+                case 9:
+                    return Math.round(($scope.calResult(4, item))
+                    - ($scope.calResult(5, item))
+                    - ($scope.calResult(6, item))
+                    - ($scope.calResult(7, item))
+                    - ($scope.calResult(8, item))
+                    - $scope.calcAllCost()
+                    - item.otherCost)
+            }
         }
 
     }

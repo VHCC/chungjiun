@@ -591,15 +591,35 @@
         // 提交審查
         $scope.sendReview = function (dom) {
 
-            $scope.saveItems(0);
-
             var unSendReviewCount = 0;
 
             for (var index = 0; index < $scope.displayPaymentItems.length; index ++) {
+
                 if (!$scope.displayPaymentItems[index].isSendReview) {
+
+                    // var dateTemp = moment($scope.displayPaymentItems[index].payDate);
+                    // console.log($scope.displayPaymentItems[index].payDate)
+                    // console.log(dateTemp.format('YYYY/MM/DD'))
+                    // if ($scope.displayPaymentItems[index].payDate !== dateTemp.format('YYYY/MM/DD')) {
+                    //     toastr.error('日期格式錯誤', '請輸入 YYYY/MM/DD');
+                    //     return
+                    // }
+
+                    // if ($scope.checkIsNumber($scope.displayPaymentItems[index].amount)) {
+                    //     toastr.error('金額格式錯誤', '請輸入 整數');
+                    //     return
+                    // }
+                    //
+                    // console.log($scope.displayPaymentItems[index].amount)
+                    // console.log($scope.checkRate($scope.displayPaymentItems[index].amount))
+                    // console.log(isNaN($scope.displayPaymentItems[index].amount))
+                    // console.log(parseInt($scope.displayPaymentItems[index].amount))
+
                     unSendReviewCount++
                 }
             }
+
+            $scope.saveItems(0);
 
             $scope.checkText = "確定 提交：" + unSendReviewCount + "筆 墊付款 ?";
             $scope.checkingUserDID = $scope.userDID;
@@ -609,7 +629,16 @@
                 scope: $scope,
                 showClose: false,
             });
+        }
 
+        $scope.checkIsNumber = function(input) {
+            var re = /^[0-9] .?[0-9]*/;//判斷字串是否為數字//判斷正整數/[1−9] [0−9]∗]∗/
+            if (!re.test(input)) {
+                console.log("QQQQ")
+                return false
+            }
+            console.log("AAAA")
+            return true
         }
 
         $scope.checkToSendReview = function(userDID) {

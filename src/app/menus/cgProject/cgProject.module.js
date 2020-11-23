@@ -116,7 +116,7 @@
                     title: '專案結算',
                     controller: 'projectFinancialHomeCtrl',
                     controllerAs: 'projectFinancialHomeCtrlVm',
-                    accessLevel: [1,100],
+                    accessLevel: [1,2,6,100],
                     sidebarMeta: {
                         order: global.pages.myProject_projectFinancial,
                     },
