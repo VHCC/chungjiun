@@ -61,7 +61,7 @@ module.exports = function (app) {
             eval(evalString + " = " + evalFooter);
         }
 
-        console.log(updateTarget)
+        console.log(updateTarget);
 
         ProjectFinancialResult.updateOne({
             _id: req.body._id,

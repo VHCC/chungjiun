@@ -13,11 +13,13 @@ module.exports = mongoose.model('ProjectFinancialResult', {
         type: String,
     },
 
-    income: {
-        type: Number,
-        default: 0
-    },
 
+    // income: {
+    //     type: Number,
+    //     default: 0
+    // },
+
+    // 11 輸入
     otherCost: {
         type: Number,
         default: 0
@@ -39,8 +41,31 @@ module.exports = mongoose.model('ProjectFinancialResult', {
         type: String,
     },
 
+    isPrjClose: {
+        type: Boolean,
+        default: false
+    },
+
     timestamp: {
         type: String,
     },
+
+    // 預計收入
+    preIncome: {
+        type: Number,
+        default: 0
+    },
+
+    // 預計支出
+    preCost: {
+        type: Number,
+        default: 0
+    },
+
+    // memo
+    overAllMemo: {
+        type: String
+    }
+
 
 });
