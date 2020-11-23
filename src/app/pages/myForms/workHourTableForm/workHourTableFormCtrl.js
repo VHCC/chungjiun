@@ -3,8 +3,6 @@
  * created on 19.03.2018
  */
 (function () {
-    'use strict';
-
     angular.module('BlurAdmin.pages.myForms')
         .controller('workHourTableCtrl',
             [

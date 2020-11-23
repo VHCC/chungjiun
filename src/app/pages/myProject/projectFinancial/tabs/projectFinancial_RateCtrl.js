@@ -214,7 +214,7 @@
                 + parseFloat(rateItem.rate_item_2)
                 + parseFloat(rateItem.rate_item_3)
                 + parseFloat(rateItem.rate_item_4)
-                + parseFloat(rateItem.rate_item_5)
+                // + parseFloat(rateItem.rate_item_5)
 
         }
 
