@@ -605,14 +605,14 @@
             var incomeA = 0.0;
             if ($scope.projectIncomeTable == undefined) return incomeA;
             for (var i = 0; i < $scope.projectIncomeTable.length; i ++) {
-                incomeA += parseInt($scope.projectIncomeTable[i].realAmount)
+                incomeA += parseInt($scope.projectIncomeTable[i].expectAmount)
             }
             // console.log("incomeA:> " + incomeA)
             switch (type) {
                 case 1:
                     return incomeA;
                 case 2:
-                    return Math.round(incomeA/1.05)
+                    return Math.round(incomeA/1.05 * (1- ($scope.calcRates() / 100)))
             }
         }
 
@@ -624,6 +624,28 @@
             }
             // console.log("incomeA:> " + incomeA)
             return incomeA;
+        }
+
+        $scope.calFee = function () {
+            var incomeA = 0.0;
+            if ($scope.projectIncomeTable == undefined) return incomeA;
+            for (var i = 0; i < $scope.projectIncomeTable.length; i ++) {
+                incomeA += parseInt($scope.projectIncomeTable[i].fee)
+            }
+            // console.log("incomeA:> " + incomeA)
+            return incomeA;
+        }
+
+        $scope.calProfit = function() {
+            return (
+                $scope.calIncome(2) -
+                $scope.calcCost(1) -
+                $scope.calcCost(2) -
+                $scope.calSubContractorPay() -
+                $scope.calcCost(3) -
+                $scope.calFines() -
+                $scope.calFee()
+            );
         }
 
         $scope.calSubContractorPay = function() {
@@ -726,10 +748,11 @@
                     var resultD = 0.0;
                     for (var i = 0; i < item._income.length; i ++) {
                         // console.log(item._income[i])
-                        resultD += parseInt(item._income[i].realAmount)
+                        resultD += parseInt(item._income[i].expectAmount)
                     }
                     // console.log("resultC:> " + resultC)
-                    return Math.round(resultD)
+                    // return Math.round(resultD)
+                    return Math.round(resultD/1.05 * (1- ($scope.calcRates() / 100)))
                 case 5:
                     // 廠商請款
                     var resultE = 0.0;
@@ -756,6 +779,16 @@
                     resultG += parseInt(item._overall)
                     // console.log("resultG:> " + resultG)
                     return Math.round(parseInt(item._overall))
+
+                case 8:
+                    // 匯費
+                    var resultF = 0.0;
+                    for (var i = 0; i < item._income.length; i ++) {
+                        // console.log(item._income[i])
+                        resultF += parseInt(item._income[i].fee)
+                    }
+                    // console.log("resultC:> " + resultC)
+                    return Math.round(resultF)
             }
         }
 
@@ -790,58 +823,67 @@
                 if (rawTables[memberCount].tables != undefined) {
                     for (var table_index = 0 ;table_index < rawTables[memberCount].tables.length; table_index ++) {
 
-                        var item = "_" + DateUtil.getShiftDatefromFirstDate_month(moment(rawTables[memberCount].tables[table_index].create_formDate)
-                            , 0) + "_" +
-                            rawTables[memberCount]._id.prjCode;
+                        if (rawTables[memberCount].tables[table_index].mon_hour > 0 ||
+                            rawTables[memberCount].tables[table_index].tue_hour > 0 ||
+                            rawTables[memberCount].tables[table_index].wes_hour > 0 ||
+                            rawTables[memberCount].tables[table_index].thu_hour > 0 ||
+                            rawTables[memberCount].tables[table_index].fri_hour > 0 ||
+                            rawTables[memberCount].tables[table_index].sat_hour > 0 ||
+                            rawTables[memberCount].tables[table_index].sun_hour > 0
+                        ) {
+                            var item = "_" + DateUtil.getShiftDatefromFirstDate_month(moment(rawTables[memberCount].tables[table_index].create_formDate)
+                                , 0) + "_" +
+                                rawTables[memberCount]._id.prjCode;
 
-                        // var tableData = {
-                        //     type_1_create_formDate: rawTables[memberCount].tables[table_index].create_formDate,
-                        //     type_1_day: 0,
-                        //     type_1_hour: rawTables[memberCount].tables[table_index].mon_hour,
-                        //     type_1_hour_memo: rawTables[memberCount].tables[table_index].mon_memo
-                        // }
+                            // var tableData = {
+                            //     type_1_create_formDate: rawTables[memberCount].tables[table_index].create_formDate,
+                            //     type_1_day: 0,
+                            //     type_1_hour: rawTables[memberCount].tables[table_index].mon_hour,
+                            //     type_1_hour_memo: rawTables[memberCount].tables[table_index].mon_memo
+                            // }
 
-                        var tableData = rawTables[memberCount].tables[table_index];
+                            var tableData = rawTables[memberCount].tables[table_index];
 
-                        if (type1_data[item] != undefined) {
-                            var data = type1_data[item];
-                            data.tables.push(tableData);
-                            if (!data.users.includes(rawTables[memberCount]._id.userDID)) {
-                                data.users.push(rawTables[memberCount]._id.userDID);
-                                data.users_info.push(rawTables[memberCount]._user_info);
+                            if (type1_data[item] != undefined) {
+                                var data = type1_data[item];
+                                data.tables.push(tableData);
+                                if (!data.users.includes(rawTables[memberCount]._id.userDID)) {
+                                    data.users.push(rawTables[memberCount]._id.userDID);
+                                    data.users_info.push(rawTables[memberCount]._user_info);
+                                }
+                            } else {
+
+                                itemList.push(item);
+
+                                var tables = [];
+
+                                tables.push(tableData);
+
+                                var users = [];
+
+                                users.push(rawTables[memberCount]._id.userDID);
+
+                                var users_info = [];
+
+                                users_info.push(rawTables[memberCount]._user_info);
+
+                                var data = {
+                                    _date: DateUtil.getShiftDatefromFirstDate_month_slash(moment(rawTables[memberCount].tables[table_index].create_formDate), 0),
+                                    _date_short: DateUtil.formatDate(
+                                        DateUtil.getShiftDatefromFirstDate(
+                                            moment(rawTables[memberCount].tables[table_index].create_formDate), 0)),
+                                    _day: 1,
+                                    _day_tw: DateUtil.getDay(1),
+                                    _prjCode: rawTables[memberCount]._id.prjCode,
+                                    _project_info: rawTables[memberCount]._project_info,
+                                    users: users,
+                                    users_info: users_info,
+                                    tables: tables,
+                                    _add_tables: [],
+                                }
                             }
-                        } else {
-
-                            itemList.push(item);
-
-                            var tables = [];
-
-                            tables.push(tableData);
-
-                            var users = [];
-
-                            users.push(rawTables[memberCount]._id.userDID);
-
-                            var users_info = [];
-
-                            users_info.push(rawTables[memberCount]._user_info);
-
-                            var data = {
-                                _date: DateUtil.getShiftDatefromFirstDate_month_slash(moment(rawTables[memberCount].tables[table_index].create_formDate), 0),
-                                _date_short: DateUtil.formatDate(
-                                    DateUtil.getShiftDatefromFirstDate(
-                                        moment(rawTables[memberCount].tables[table_index].create_formDate), 0)),
-                                _day: 1,
-                                _day_tw: DateUtil.getDay(1),
-                                _prjCode: rawTables[memberCount]._id.prjCode,
-                                _project_info: rawTables[memberCount]._project_info,
-                                users: users,
-                                users_info: users_info,
-                                tables: tables,
-                                _add_tables: [],
-                            }
+                            eval('type1_data[item] = data')
                         }
-                        eval('type1_data[item] = data')
                     }
                 }
 
