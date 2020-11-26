@@ -43,6 +43,7 @@ module.exports = mongoose.model('projectIncome', {
     },
 
     // 入帳金額
+    // 移除，20201124 業主決議
     realAmount : {
         type: String,
     },

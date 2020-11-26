@@ -67,4 +67,9 @@ module.exports = mongoose.model('workOverTimeItem', {
         type : String,
     },
 
+    isExecutiveSet: {
+        type: Boolean,
+        default: false,
+    }
+
 });

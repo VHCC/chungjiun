@@ -37,13 +37,23 @@ module.exports = function (app) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_over_time_fetch_by_creatorDID");
         console.log(JSON.stringify(req.body));
 
+        var keyArray = Object.keys(req.body);
+        var findRequest = {};
+        for (var index = 0; index < keyArray.length; index++) {
+            var evalString = "findRequest.";
+            evalString += keyArray[index];
+
+            var evalFooter = "req.body.";
+            evalFooter += keyArray[index];
+            eval(evalString + " = " + evalFooter);
+        }
+
+        console.log("--- findRequest ---");
+        console.log(findRequest);
+
         // New Items
         try {
-            WorkOverTimeItem.find({
-                creatorDID: req.body.creatorDID,
-                year: req.body.year,
-                month: req.body.month,
-            }, function (err, items) {
+            WorkOverTimeItem.find(findRequest, function (err, items) {
                 res.status(200).send({
                     code: 200,
                     error: global.status._200,
@@ -169,6 +179,11 @@ module.exports = function (app) {
         if (req.body.isFindManagerCheck !== null) {
             query.isManagerCheck = req.body.isFindManagerCheck;
         }
+
+        if (req.body.isFindExecutiveSet !== null) {
+            query.isExecutiveSet = req.body.isFindExecutiveSet;
+        }
+
 
         WorkOverTimeItem.find(query)
             .sort({
