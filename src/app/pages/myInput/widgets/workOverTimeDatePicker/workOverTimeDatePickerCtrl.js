@@ -22,13 +22,14 @@
         $scope.opened = false;
         // $scope.formats = ['dd-MMMM-yyyy', 'MM/dd', 'dd.MM.yyyy', 'shortDate'];
         // $scope.format = $scope.formats[1];
+        console.log($scope.isExecutive);
         $scope.myOptions = {
             showWeeks: false,
             startingDay: 0,
             minDate: moment().add(-3, 'days').format("YYYY/MM/DD"),
         };
 
-        if ( $scope.userDID == "5ba4af019bdd2a0ef86dc5ec") {
+        if ( $scope.userDID == "5ba4af019bdd2a0ef86dc5ec" || $scope.isExecutive) {
             $scope.myOptions = {
                 showWeeks: false,
                 startingDay: 0,
@@ -47,6 +48,12 @@
         function openDatePicker() {
             console.log($scope.format);
             $scope.opened = true;
+            if ( $scope.userDID == "5ba4af019bdd2a0ef86dc5ec" || $scope.isExecutive) {
+                $scope.myOptions = {
+                    showWeeks: false,
+                    startingDay: 0,
+                };
+            }
             // console.log(this);
         }
     }
