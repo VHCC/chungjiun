@@ -66,8 +66,15 @@
             var formData = {
                 relatedID: $cookies.get('userDID'),
             }
-            Project.getProjectRelated(formData)
+            // Project.getProjectRelated(formData)
+            //     .success(function (relatedProjects) {
+            //         console.log(relatedProjects)
+            //         // vm.projects = relatedProjects;
+            //     });
+
+            Project.getProjectRelatedToManager(formData)
                 .success(function (relatedProjects) {
+                    console.log(relatedProjects);
                     vm.projects = relatedProjects;
                 });
         }
