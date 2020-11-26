@@ -2,14 +2,14 @@
      bs-loading-overlay-reference-id="mainPage_project_financial">
 
     <uib-tabset active="$tabSetStatus.activeTab">
-        <!--<uib-tab heading="費率預設" ng-if="userDID === '5eec6f1902a94a4eebf2af7d' ">-->
-        <uib-tab heading="費率預設" >
+        <uib-tab heading="費率預設" ng-if="userDID === '5eec6f1902a94a4eebf2af7d' ">
+        <!--<uib-tab heading="費率預設" >-->
             <div ng-controller="projectFinancialRateCtrl as projectFinancialRateCtrlVm"
                  ng-include="'app/pages/myProject/projectFinancial/tabs/projectFinancial_rateTab.html'"></div>
         </uib-tab>
 
-        <!--<uib-tab heading="專案結算" ng-if="userDID === '5eec6f1902a94a4eebf2af7d' ">-->
-        <uib-tab heading="專案結算" >
+        <uib-tab heading="專案結算" ng-if="userDID === '5eec6f1902a94a4eebf2af7d' ">
+        <!--<uib-tab heading="專案結算" >-->
             <div ng-controller="projectFinancialResultCtrl as projectFinancialResultCtrlVm"
                  ng-include="'app/pages/myProject/projectFinancial/tabs/projectFinancial_resultTab.html'"></div>
         </uib-tab>
