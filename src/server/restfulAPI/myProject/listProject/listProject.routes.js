@@ -79,9 +79,12 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_project_all_related_to_manager, function (req, res) {
         var findData = [];
         findData.push({managerID: req.body.relatedID});
+        var findDataAnd = [];
+        findDataAnd.push({enable: true});
         Project.find({
             // workers: req.body.relatedID,
             $or: findData,
+            $and: findDataAnd,
         }, function (err, projects) {
             if (err) {
                 console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_all_related_to_manager");
