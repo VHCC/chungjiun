@@ -584,7 +584,7 @@
         $scope.calIncome = function (type) {
             var incomeA = 0.0;
             for (var i = 0; i < $scope.projectIncomeTable.length; i ++) {
-                incomeA += parseInt($scope.projectIncomeTable[i].realAmount)
+                incomeA += parseInt($scope.projectIncomeTable[i].expectAmount)
             }
             console.log("incomeA:> " + incomeA)
             switch (type) {
@@ -593,6 +593,25 @@
                 case 2:
                     return Math.round(incomeA/1.05)
             }
+        }
+
+        // 技師、行政、風險
+        $scope.calcRates = function () {
+            if ($scope.financialResult == undefined) return 0;
+            // console.log($scope.financialResult[0]);
+            var rates = parseFloat($scope.financialResult.rate_item_1)
+                + parseFloat($scope.financialResult.rate_item_2)
+                + parseFloat($scope.financialResult.rate_item_4);
+
+            if (rates == 0.0) {
+                return 0.0;
+            } else {
+                return parseFloat($scope.financialResult.rate_item_1)
+                    + parseFloat($scope.financialResult.rate_item_2)
+                    + parseFloat($scope.financialResult.rate_item_4)
+            }
+
+            // + parseFloat(rateItem.rate_item_5)
         }
 
         $scope.calSubContractorPay = function() {
@@ -633,7 +652,14 @@
                 resultC += parseInt($scope.displayEEItems[i].amount)
             }
             // console.log("resultC:> " + resultC)
-            return Math.round(resultA + resultB + resultC);
+
+            var resultD = 0.0;
+            for (var i = 0; i < $scope.projectIncomeTable.length; i ++) {
+                resultD += parseInt($scope.projectIncomeTable[i].fines)
+                resultD += parseInt($scope.projectIncomeTable[i].fee)
+            }
+
+            return Math.round(resultA + resultB + resultC + resultD);
         }
 
         $scope.calResult = function (type, item) {
