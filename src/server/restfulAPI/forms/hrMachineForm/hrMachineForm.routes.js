@@ -112,7 +112,7 @@ module.exports = function (app) {
             if(err == null) {
                 console.log('File exist, fileDate= ' + fileDate);
 
-                var fReadName_gps = '../HR/GPS/' + fileDate + '.txt';
+                var fReadName_gps = '../../HR/GPS/' + fileDate + '.txt';
 
                 fs.stat(fReadName_gps, function(err, stat) {
                     if(err == null) {
