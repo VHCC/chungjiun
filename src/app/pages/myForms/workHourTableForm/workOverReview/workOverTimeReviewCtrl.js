@@ -218,6 +218,7 @@
 
         // ***** 經理審查 *****
         $scope.getWOTReviewData_manager = function () {
+            console.log("getWOTReviewData_manager")
             bsLoadingOverlayService.start({
                 referenceId: 'mainPage_workHour'
             });
@@ -235,6 +236,7 @@
                 month: specificMonth,
                 isFindSendReview: true,
                 isFindManagerCheck: false,
+                isFindExecutiveSet: false,
             }
 
 

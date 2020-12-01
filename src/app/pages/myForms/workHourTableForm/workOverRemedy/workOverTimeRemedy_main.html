@@ -1,11 +1,35 @@
 <div>
+
+    <div class="row" >
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>選擇員工</label>
+                <ui-select ng-model="workHourOverTimeRemedyCtrlVm.workAdd.selected"
+                           class="btn-group bootstrap-select form-control"
+                           ng-disabled="false"
+                           ng-change="fetchWorkOverTimeData($select.selected)"
+                           append-to-body="true"
+                           search-enabled="true">
+                    <ui-select-match placeholder="選擇員工">
+                        {{$select.selected.name}}
+                    </ui-select-match>
+                    <ui-select-choices
+                            repeat="user in workHourOverTimeRemedyCtrlVm.executiveUsers | groupSelectpickerOptions: {name: $select.search}">
+                        <span ng-bind-html="user.name| highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+
     <div class="row"
+         ng-if="workHourOverTimeRemedyCtrlVm.workAdd.selected"
          id="rowHead">
         <div class="col-md-12"
              id="colHead">
             <div class="form-group">
                 <label for="projectName">總案名稱 - 專案名稱 - 子案名稱 - 類型 - 代碼</label>
-                <ui-select ng-model="workHourOverTimeCtrlVm.prjItems.selected"
+                <ui-select ng-model="workHourOverTimeRemedyCtrlVm.prjItems.selected"
                            class="btn-group bootstrap-select form-control"
                            id="projectName"
                            ng-change="insertWOTItemViaPrj($select.selected._id)"
@@ -20,7 +44,7 @@
                     </ui-select-match>
                     <ui-select-choices
                             ng-model="prjName"
-                            repeat="prjItems in workHourOverTimeCtrlVm.projects |
+                            repeat="prjItems in workHourOverTimeRemedyCtrlVm.projects |
                             groupSelectpickerOptions: {
                             mainName: $select.search,
                             prjName: $select.search,
@@ -37,7 +61,8 @@
 
     <br>
 
-    <div class="row col-md-12" ng-init="fetchWorkOverTimeData()">
+    <div class="row col-md-12"
+         ng-if="workHourOverTimeRemedyCtrlVm.workAdd.selected">
 
         <my-month-picker ng-click="listenOTMonth(this)"
                          formatted="YYYY/MM">
@@ -84,7 +109,10 @@
                 <!--日期-->
                 <td class="form-group" style="vertical-align: inherit; text-align: center">
                     <my ng-show="!rowform1.$waiting && !table.isSendReview">
-                        <work-over-time-date-picker formatted="yyyy/MM/dd" default="{{showDate(table)}}"></work-over-time-date-picker>
+                        <work-over-time-date-picker
+                                isexecutive="true"
+                                formatted="yyyy/MM/dd"
+                                default="{{showDate(table)}}"></work-over-time-date-picker>
                     </my>
                     <my ng-show="rowform1.$waiting ||table.isSendReview">
                         {{showDate(table)}}
@@ -137,7 +165,7 @@
                         <div class="buttons" ng-show="!rowform1.$visible">
                             <button class="btn btn-danger editable-table-button btn-xs"
                                     ng-click="applyWOTItem(table, this, $index) ">
-                                申請
+                                行政補登
                             </button>
                         </div>
                     </div>

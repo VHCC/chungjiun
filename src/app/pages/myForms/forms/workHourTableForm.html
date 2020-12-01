@@ -123,6 +123,12 @@
             <!--20200518 check right-->
             <work-hour-over-time></work-hour-over-time>
         </uib-tab>
+
+        <uib-tab heading="加班申請補登"
+                 ng-if="roleType === '2' || roleType === '100' || roleType === '6'">
+            <!--20201125 check right-->
+            <work-hour-over-time-remedy></work-hour-over-time-remedy>
+        </uib-tab>
         <uib-tab heading="加班審核" ng-click="reloadWOTReviewPage(this)"
                  ng-if="roleType === '2' || roleType === '100' || roleType === '6'">
             <!--20200518 check right-->

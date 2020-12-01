@@ -8,7 +8,7 @@
             <th style="vertical-align: inherit; text-align: center" width="100px">發票金額</th>
             <th style="vertical-align: inherit; text-align: center" width="250px">請款內容</th>
             <th style="vertical-align: inherit; text-align: center" width="100px">入帳日期</th>
-            <th style="vertical-align: inherit; text-align: center" width="100px">入帳金額</th>
+            <!--<th style="vertical-align: inherit; text-align: center" width="100px">入帳金額</th>-->
             <th style="vertical-align: inherit; text-align: center" width="100px">匯費</th>
             <th style="vertical-align: inherit; text-align: center" width="100px">罰款</th>
             <th style="vertical-align: inherit; text-align: center" width="200px">備註</th>
@@ -66,14 +66,15 @@
                        class="form-control input-sm">
             </td>
             <!--入帳金額-->
-            <td class="form-group " style="vertical-align: inherit;">
-                <span ng-if="item.isEnable">{{item.realAmount}}</span>
-                <input type="text"
-                       ng-if="!item.isEnable"
-                       ng-model="item.realAmount"
-                       value="{{item.realAmount}}"
-                       class="form-control input-sm">
-            </td>
+            <!-- 20201124決議，移除。-->
+            <!--<td class="form-group " style="vertical-align: inherit;">-->
+                <!--<span ng-if="item.isEnable">{{item.realAmount}}</span>-->
+                <!--<input type="text"-->
+                       <!--ng-if="!item.isEnable"-->
+                       <!--ng-model="item.realAmount"-->
+                       <!--value="{{item.realAmount}}"-->
+                       <!--class="form-control input-sm">-->
+            <!--</td>-->
             <!--匯費-->
             <td class="form-group" style="vertical-align: inherit;">
                 <span ng-if="item.isEnable">{{item.fee}}</span>

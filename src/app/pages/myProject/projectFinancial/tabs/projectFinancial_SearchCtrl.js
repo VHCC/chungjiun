@@ -512,7 +512,7 @@
         $scope.calIncome = function (type) {
             var incomeA = 0.0;
             for (var i = 0; i < $scope.projectIncomeTable.length; i ++) {
-                incomeA += parseInt($scope.projectIncomeTable[i].realAmount)
+                incomeA += parseInt($scope.projectIncomeTable[i].expectAmount)
             }
             console.log("incomeA:> " + incomeA)
             switch (type) {
@@ -560,7 +560,14 @@
                 resultC += parseInt($scope.displayEEItems[i].amount)
             }
             // console.log("resultC:> " + resultC)
-            return Math.round(resultA + resultB + resultC);
+
+            var resultD = 0.0;
+            for (var i = 0; i < $scope.projectIncomeTable.length; i ++) {
+                resultD += parseInt($scope.projectIncomeTable[i].fines)
+                resultD += parseInt($scope.projectIncomeTable[i].fee)
+            }
+
+            return Math.round(resultA + resultB + resultC + resultD);
         }
 
         $scope.calResult = function (type, item) {

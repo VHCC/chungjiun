@@ -27,16 +27,58 @@
         <tr >
             <th class="table-id"
                 style="vertical-align: inherit; text-align: center" >項目</th>
-            <th style="vertical-align: inherit; text-align: center" >含稅收入(發票金額)A</th>
-            <th style="vertical-align: inherit; text-align: center" >不含稅收入B=A/1.05</th>
-            <th style="vertical-align: inherit; text-align: center" class="AutoNewline">公司調整(規劃、設計、監造廷整)C=B*調整值</th>
-            <th style="vertical-align: inherit; text-align: center" >廠商請款(未稅金額)D</th>
-            <th style="vertical-align: inherit; text-align: center" >實際收入E=C-D</th>
-            <th style="vertical-align: inherit; text-align: center" >行政費E*N</th>
-            <th style="vertical-align: inherit; text-align: center" >技師費E*N</th>
-            <th style="vertical-align: inherit; text-align: center" >風險E*N</th>
-            <th style="vertical-align: inherit; text-align: center" >利潤E*N</th>
-            <th style="vertical-align: inherit; text-align: center" >專案成本(人時支出、墊付款、其他支出)</th>
+            <th style="vertical-align: inherit; text-align: center" >
+                含稅收入(發票金額)
+                <br>
+                <span style="color:blue">A</span>
+            </th>
+            <th style="vertical-align: inherit; text-align: center" >
+                不含稅收入
+                <br>
+                <span style="color:blue">B=A/1.05</span>
+            </th>
+            <th style="vertical-align: inherit; text-align: center" class="AutoNewline">
+                公司調整(規劃、設計、監造廷整)
+                <br>
+                <span style="color:blue">C=B*調整值</span>
+            </th>
+            <th style="vertical-align: inherit; text-align: center" >
+                廠商請款(未稅金額)
+                <br>
+                <span style="color:blue">D</span>
+            </th>
+            <th style="vertical-align: inherit; text-align: center" >
+                實際收入
+                <br>
+                <span style="color:blue">E=C-D</span>
+            </th>
+            <th style="vertical-align: inherit; text-align: center" >
+                行政費
+                <br>
+                <span style="color:blue">E*N</span>
+            </th>
+            <th style="vertical-align: inherit; text-align: center" >
+                技師費
+                <br>
+                <span style="color:blue">E*N</span>
+            </th>
+            <th style="vertical-align: inherit; text-align: center" >
+                風險
+                <br>
+                <span style="color:blue">E*N</span>
+            </th>
+            <th style="vertical-align: inherit; text-align: center" >
+                利潤
+                <br>
+                <span style="color:blue">E*N</span>
+            </th>
+            <th style="vertical-align: inherit; text-align: center" >
+                專案成本
+                <br>
+                <span style="color:blue">(人時支出、墊付款、其他支出)</span>
+                <br>
+                <span style="color:blue">(匯費、罰款)</span>
+            </th>
             <th style="vertical-align: inherit; text-align: center" >其他</th>
             <th style="vertical-align: inherit; text-align: center" >說明</th>
             <th style="vertical-align: inherit; text-align: center" >可分配績效</th>
@@ -93,7 +135,7 @@
             <td class="form-group" style="vertical-align: inherit; text-align: center">
                 <span ng-if="item.isPrjClose">{{item.rate_item_1}}</span>
                 <input type="text"
-                       style="text-align: center"
+                       style="text-align: center;margin: 5px;"
                        ng-if="!item.isPrjClose"
                        ng-model="item.rate_item_1"
                        value="{{item.rate_item_1}}"
@@ -170,6 +212,7 @@
                 <br>
                 <button type="submit"
                         style="margin: 5px"
+                        ng-if="!item.isPrjClose"
                         ng-click="saveProjectFR(item)"
                         class="btn btn-primary">
                     暫存
