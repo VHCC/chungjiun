@@ -99,7 +99,7 @@ module.exports = function (app) {
         }, {
             $set: {
                 residualRestHour: req.body.residualRestHour,
-                isSetResidualRestHour: req.body.isSetResidualRestHour,
+                isSetResidualRestHour: false,
             }
         }, function (err) {
             if (err) {
