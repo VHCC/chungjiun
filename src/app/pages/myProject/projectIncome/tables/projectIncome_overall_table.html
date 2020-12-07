@@ -112,7 +112,6 @@
                 <th style="vertical-align: inherit; text-align: center">
                     人時支出
                 </th>
-
                 <th class="form-group" style="vertical-align: inherit; text-align: center">
                     墊付款
                 </th>
@@ -135,29 +134,37 @@
                 <th style="vertical-align: inherit; text-align: center">
                     合計
                 </th>
-
                 <th class="form-group" style="vertical-align: inherit; text-align: center">
                     {{calIncome(2)}}
                 </th>
+                <!--人時支出-->
                 <th class="form-group" style="vertical-align: inherit; text-align: center">
-                    {{calcCost(1)}}
+                    <!--{{calcCost(1)}}-->
+                    {{calcCost_special20201207(1)}}
                 </th>
+                <!--墊付款-->
                 <th class="form-group" style="vertical-align: inherit; text-align: center">
-                    {{calcCost(2)}}
+                    <!--{{calcCost(2)}}-->
+                    {{calcCost_special20201207(2)}}
                 </th>
+                <!--廠商請款-->
                 <th class="form-group" style="vertical-align: inherit; text-align: center">
                     {{calSubContractorPay()}}
                 </th>
+                <!--其他支出-->
                 <th class="form-group" style="vertical-align: inherit; text-align: center">
-                    {{calcCost(3)}}
+                    <!--{{calcCost(3)}}-->
+                    {{calcCost_special20201207(3)}}
                 </th>
+                <!--罰款-->
                 <th class="form-group" style="vertical-align: inherit; text-align: center">
                     {{calFines()}}
                 </th>
+                <!--匯費-->
                 <th class="form-group" style="vertical-align: inherit; text-align: center">
                     {{calFee()}}
                 </th>
-
+                <!--實際盈餘-->
                 <th class="form-group" style="vertical-align: inherit; text-align: center">
                     {{calProfit()}}
                 </th>

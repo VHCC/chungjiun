@@ -246,6 +246,8 @@
 
                     $scope.projectFinancialResultTable = res.payload;
 
+                    $scope.overall_data = [];
+
                     var incomeFormData = {
                         isEnable: true,
                         prjDID: prjInfo._id
@@ -256,6 +258,27 @@
                         .success(function (res) {
                             console.log(res);
                             $scope.projectIncomeTable = res.payload;
+                            for (var i = 0; i < res.payload.length; i ++) {
+                                var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
+                                if (moment(tempDate) >= moment("2020/01")) {
+                                    if ($scope.overall_data[tempDate] != undefined) {
+                                        var data = $scope.overall_data[tempDate];
+                                        data._payments.push(res.payload[i]);
+                                    } else {
+                                        var data = {
+                                            _date: tempDate,
+                                            _income: [],
+                                            _payments: [res.payload[i]],
+                                            _otherCost: [],
+                                            _subContractorPay: [],
+                                            _overall: 0,
+                                        }
+                                        $scope.overall_data.push(data);
+                                        eval('$scope.overall_data[tempDate] = data')
+                                    }
+                                }
+                            }
+                            console.log($scope.overall_data);
                         })
 
                     // 墊付款
@@ -263,6 +286,26 @@
                         .success(function (res) {
                             console.log(res)
                             $scope.searchPaymentsItems = res.payload;
+                            for (var i = 0; i < res.payload.length; i ++) {
+                                var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
+                                if (moment(tempDate) >= moment("2020/01")) {
+                                    if ($scope.overall_data[tempDate] != undefined) {
+                                        var data = $scope.overall_data[tempDate];
+                                        data._payments.push(res.payload[i]);
+                                    } else {
+                                        var data = {
+                                            _date: tempDate,
+                                            _income: [],
+                                            _payments: [res.payload[i]],
+                                            _otherCost: [],
+                                            _subContractorPay: [],
+                                            _overall: 0,
+                                        }
+                                        $scope.overall_data.push(data);
+                                        eval('$scope.overall_data[tempDate] = data')
+                                    }
+                                }
+                            }
                         })
                         .error(function (resp) {
                         })
@@ -272,6 +315,30 @@
                         .success(function (res) {
                             console.log(res)
                             $scope.displayEEItems = res.payload;
+                            $scope.displayEEItems = res.payload;
+                            for (var i = 0; i < res.payload.length; i ++) {
+                                var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
+                                // console.log(tempDate)
+
+                                if (moment(tempDate) >= moment("2020/01")) {
+
+                                    if ($scope.overall_data[tempDate] != undefined) {
+                                        var data = $scope.overall_data[tempDate];
+                                        data._otherCost.push(res.payload[i]);
+                                    } else {
+                                        var data = {
+                                            _date: tempDate,
+                                            _income: [],
+                                            _payments: [],
+                                            _subContractorPay: [],
+                                            _otherCost: [res.payload[i]],
+                                            _overall: 0,
+                                        }
+                                        $scope.overall_data.push(data);
+                                        eval('$scope.overall_data[tempDate] = data')
+                                    }
+                                }
+                            }
                         })
                         .error(function (res) {
                         })
@@ -286,6 +353,27 @@
                         .success(function (res) {
                             console.log(res)
                             $scope.subContractorPayItems = res.payload;
+                            $scope.subContractorPayItems = res.payload;
+                            for (var i = 0; i < res.payload.length; i ++) {
+                                var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
+                                if (moment(tempDate) >= moment("2020/01")) {
+                                    if ($scope.overall_data[tempDate] != undefined) {
+                                        var data = $scope.overall_data[tempDate];
+                                        data._subContractorPay.push(res.payload[i]);
+                                    } else {
+                                        var data = {
+                                            _date: tempDate,
+                                            _income: [],
+                                            _payments: [],
+                                            _otherCost: [],
+                                            _subContractorPay: [res.payload[i]],
+                                            _overall: 0,
+                                        }
+                                        $scope.overall_data.push(data);
+                                        eval('$scope.overall_data[tempDate] = data')
+                                    }
+                                }
+                            }
                         })
 
                     // 人時支出
@@ -316,7 +404,34 @@
                             }
                             // console.log(res.payload)
                             $scope.statisticsResults = $scope.filter_type2_data(res.payload);
-                            console.log($scope.statisticsResults);
+                            $scope.statisticsResults_type1 = $scope.filter_type1_data(res.payload);
+                            $scope.statisticsResults_type1 = $scope.filter_type2_data_item($scope.statisticsResults_type1);
+
+                            for (var i = 0; i < $scope.statisticsResults_type1.length; i ++) {
+                                var tempDate = $scope.statisticsResults_type1[i]._date;
+
+                                if (moment(tempDate) >= moment("2020/01")) {
+                                    if ($scope.overall_data[tempDate] != undefined) {
+                                        var data = $scope.overall_data[tempDate];
+                                        data._overall = $scope.statisticsResults_type1[i].totalCost +
+                                            $scope.statisticsResults_type1[i].hourTotal_add_cost_A +
+                                            $scope.statisticsResults_type1[i].hourTotal_add_cost_B;
+                                    } else {
+                                        var data = {
+                                            _date: tempDate,
+                                            _income: [],
+                                            _payments: [],
+                                            _otherCost: [],
+                                            _subContractorPay: [],
+                                            _overall: $scope.statisticsResults_type1[i].totalCost +
+                                            $scope.statisticsResults_type1[i].hourTotal_add_cost_A +
+                                            $scope.statisticsResults_type1[i].hourTotal_add_cost_B,
+                                        }
+                                        $scope.overall_data.push(data);
+                                        eval('$scope.overall_data[tempDate] = data')
+                                    }
+                                }
+                            }
                         })
 
                     angular.element(
@@ -407,6 +522,7 @@
         }
 
         $scope.calculateHours_type2_add = function (item, type, showType) {
+            // console.log(item)
             switch (type) {
                 case 1:
                     if (item.iscalculate_A) {
@@ -419,7 +535,6 @@
                                 return parseInt(item.hourTotal_add_cost_A);
                                 break;
                         }
-
                     }
                     break;
                 case 2:
@@ -436,7 +551,6 @@
                     }
                     break;
             }
-            var type2_add_data = [];
 
             var mins = 0
 
@@ -459,19 +573,25 @@
                 return hourTotal;
             }
 
+            var type2_add_data = [];
+
             for (var index = 0; index < item._add_tables.length; index ++) {
                 var operatedFormDate = item._add_tables[index].create_formDate;
                 if (item._add_tables[index].workAddType == type) {
 
-                    var date_id = DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1) + "_"
-                        + item._id.prjCode + "_"
-                        + item._user_info._id;
+                    // var date_id = DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1) + "_"
+                    //     + item._id.prjCode + "_"
+                    //     + item._user_info._id;
+
+                    var date_id = DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1)
                     var min = parseInt(TimeUtil.getCalculateHourDiffByTime(item._add_tables[index].start_time, item._add_tables[index].end_time))
                     // mins += min;
+                    // console.log(item)
+                    // console.log(type2_add_data);
+                    // console.log(date_id);
                     if (type2_add_data[date_id] != undefined) {
                         var data = type2_add_data[date_id];
                         data.min = min + type2_add_data[date_id].min;
-                        // type2_add_data[date_id] = (min + type2_add_data[date_id])
                     } else {
                         var data = {
                             _date: DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), item._add_tables[index].day - 1),
@@ -512,9 +632,11 @@
         $scope.calIncome = function (type) {
             var incomeA = 0.0;
             for (var i = 0; i < $scope.projectIncomeTable.length; i ++) {
-                incomeA += parseInt($scope.projectIncomeTable[i].expectAmount)
+                if (moment($scope.projectIncomeTable[i].realDate) >= moment("2020/01")) {
+                    incomeA += parseInt($scope.projectIncomeTable[i].expectAmount)
+                }
             }
-            console.log("incomeA:> " + incomeA)
+            // console.log("incomeA:> " + incomeA)
             switch (type) {
                 case 1:
                     return incomeA;
@@ -522,14 +644,44 @@
                     return Math.round(incomeA/1.05)
             }
         }
+
+        $scope.calFines = function () {
+            var incomeA = 0.0;
+            if ($scope.projectIncomeTable == undefined) return incomeA;
+            for (var i = 0; i < $scope.projectIncomeTable.length; i ++) {
+                if (moment($scope.projectIncomeTable[i].realDate) >= moment("2020/01")) {
+                    incomeA += parseInt($scope.projectIncomeTable[i].fines)
+                }
+            }
+            // console.log("calFines:> " + incomeA)
+            return incomeA;
+        }
+
+        $scope.calFee = function () {
+            var incomeA = 0.0;
+            if ($scope.projectIncomeTable == undefined) return incomeA;
+            for (var i = 0; i < $scope.projectIncomeTable.length; i ++) {
+                if (moment($scope.projectIncomeTable[i].realDate) >= moment("2020/01")) {
+                    incomeA += parseInt($scope.projectIncomeTable[i].fee)
+                }
+            }
+            // console.log("calFee:> " + incomeA)
+            return incomeA;
+        }
+
         $scope.calSubContractorPay = function() {
             // 廠商請款
             var resultD = 0.0;
+            if ($scope.subContractorPayItems == undefined) return resultD;
             for (var i = 0; i < $scope.subContractorPayItems.length; i ++) {
-                resultD += (parseInt($scope.subContractorPayItems[i].payApply) -
-                    parseInt($scope.subContractorPayItems[i].payTax) -
-                    parseInt($scope.subContractorPayItems[i].payOthers)
-                )
+                var tempDate = moment($scope.subContractorPayItems[i].year+1911 + "/" +
+                    $scope.subContractorPayItems[i].month).format("YYYY/MM");
+                if (moment(tempDate) >= moment("2020/01")) {
+                    resultD += (parseInt($scope.subContractorPayItems[i].payApply) -
+                        parseInt($scope.subContractorPayItems[i].payTax) -
+                        parseInt($scope.subContractorPayItems[i].payOthers)
+                    )
+                }
             }
             // console.log("resultD:> " + resultD)
             return resultD;
@@ -566,8 +718,38 @@
                 resultD += parseInt($scope.projectIncomeTable[i].fines)
                 resultD += parseInt($scope.projectIncomeTable[i].fee)
             }
-
             return Math.round(resultA + resultB + resultC + resultD);
+        }
+
+        $scope.calcAllCost_special20201207 = function() {
+            // 人時
+            var resultG = 0.0;
+            for (var i = 0; i < $scope.overall_data.length; i ++) {
+                // console.log($scope.overall_data[i])
+                resultG += parseInt($scope.overall_data[i]._overall)
+                // console.log(resultG)
+            }
+            // console.log("resultG:> " + resultG)
+
+            // 墊付款
+            var resultB = 0.0;
+            for (var i = 0; i < $scope.overall_data.length; i ++) {
+                // console.log($scope.overall_data[i])
+                for (var j = 0; j < $scope.overall_data[i]._payments.length; j ++) {
+                    resultB += parseInt($scope.overall_data[i]._payments[j].amount)
+                }
+            }
+            // console.log("resultB:> " + resultB)
+
+            // 其他
+            var resultC = 0.0;
+            for (var i = 0; i < $scope.overall_data.length; i ++) {
+                for (var j = 0; j < $scope.overall_data[i]._otherCost.length; j ++) {
+                    resultC += parseInt($scope.overall_data[i]._otherCost[j].amount)
+                }
+            }
+            // console.log("resultC:> " + resultC)
+            return Math.round(resultG+resultB+resultC+$scope.calFines() + $scope.calFee())
         }
 
         $scope.calResult = function (type, item) {
@@ -597,8 +779,557 @@
                         - ($scope.calResult(6, item))
                         - ($scope.calResult(7, item))
                         - ($scope.calResult(8, item))
-                        - $scope.calcAllCost()
+                        // - $scope.calcAllCost()
+                        - $scope.calcAllCost_special20201207()
                         - item.otherCost)
+            }
+        }
+
+        $scope.filter_type1_data = function(rawTables) {
+            // console.log(rawTables)
+            var itemList = [];
+
+            var type1_data = [];
+
+            for (var memberCount = 0; memberCount < rawTables.length; memberCount++) {
+                // console.log(rawTables[memberCount].tables);
+                if (rawTables[memberCount].tables != undefined) {
+                    for (var table_index = 0 ;table_index < rawTables[memberCount].tables.length; table_index ++) {
+
+                        if (rawTables[memberCount].tables[table_index].mon_hour > 0) {
+                            var item = "_" + DateUtil.getShiftDatefromFirstDate_month(moment(rawTables[memberCount].tables[table_index].create_formDate)
+                                , 0) + "_" +
+                                rawTables[memberCount]._id.prjCode;
+
+                            // rawTables[memberCount].tables[table_index]._day = 1;
+                            // var tableData = rawTables[memberCount].tables[table_index];
+
+                            var tableData = {};
+                            Object.assign(tableData, rawTables[memberCount].tables[table_index]);
+                            tableData._day = 1;
+
+                            if (type1_data[item] != undefined) {
+                                var data = type1_data[item];
+                                data.tables.push(tableData);
+                                if (!data.users.includes(rawTables[memberCount]._id.userDID)) {
+                                    data.users.push(rawTables[memberCount]._id.userDID);
+                                    data.users_info.push(rawTables[memberCount]._user_info);
+                                }
+                            } else {
+
+                                itemList.push(item);
+
+                                var tables = [];
+
+                                tables.push(tableData);
+
+                                var users = [];
+
+                                users.push(rawTables[memberCount]._id.userDID);
+
+                                var users_info = [];
+
+                                users_info.push(rawTables[memberCount]._user_info);
+
+                                var data = {
+                                    _date: DateUtil.getShiftDatefromFirstDate_month_slash(moment(rawTables[memberCount].tables[table_index].create_formDate), 0),
+                                    _date_short: DateUtil.formatDate(
+                                        DateUtil.getShiftDatefromFirstDate(
+                                            moment(rawTables[memberCount].tables[table_index].create_formDate), 0)),
+                                    // _day: 1,
+                                    // _day_tw: DateUtil.getDay(1),
+                                    _prjCode: rawTables[memberCount]._id.prjCode,
+                                    _project_info: rawTables[memberCount]._project_info,
+                                    users: users,
+                                    users_info: users_info,
+                                    tables: tables,
+                                    _add_tables: [],
+                                }
+                                eval('type1_data[item] = data')
+                            }
+                        }
+
+                        if (rawTables[memberCount].tables[table_index].tue_hour > 0) {
+                            var item = "_" + DateUtil.getShiftDatefromFirstDate_month(moment(rawTables[memberCount].tables[table_index].create_formDate)
+                                , 1) + "_" +
+                                rawTables[memberCount]._id.prjCode;
+
+                            // rawTables[memberCount].tables[table_index]._day = 2;
+                            // var tableData = rawTables[memberCount].tables[table_index];
+                            var tableData = {};
+                            Object.assign(tableData, rawTables[memberCount].tables[table_index]);
+                            tableData._day = 2;
+
+                            if (type1_data[item] != undefined) {
+                                var data = type1_data[item];
+                                data.tables.push(tableData);
+                                if (!data.users.includes(rawTables[memberCount]._id.userDID)) {
+                                    data.users.push(rawTables[memberCount]._id.userDID);
+                                    data.users_info.push(rawTables[memberCount]._user_info);
+                                }
+                            } else {
+
+                                itemList.push(item);
+
+                                var tables = [];
+
+                                tables.push(tableData);
+
+                                var users = [];
+
+                                users.push(rawTables[memberCount]._id.userDID);
+
+                                var users_info = [];
+
+                                users_info.push(rawTables[memberCount]._user_info);
+
+                                var data = {
+                                    _date: DateUtil.getShiftDatefromFirstDate_month_slash(moment(rawTables[memberCount].tables[table_index].create_formDate), 1),
+                                    _date_short: DateUtil.formatDate(
+                                        DateUtil.getShiftDatefromFirstDate(
+                                            moment(rawTables[memberCount].tables[table_index].create_formDate), 0)),
+                                    // _day: 1,
+                                    // _day_tw: DateUtil.getDay(1),
+                                    _prjCode: rawTables[memberCount]._id.prjCode,
+                                    _project_info: rawTables[memberCount]._project_info,
+                                    users: users,
+                                    users_info: users_info,
+                                    tables: tables,
+                                    _add_tables: [],
+                                }
+                                eval('type1_data[item] = data')
+                            }
+                        }
+
+
+                        if (rawTables[memberCount].tables[table_index].wes_hour > 0) {
+                            var item = "_" + DateUtil.getShiftDatefromFirstDate_month(moment(rawTables[memberCount].tables[table_index].create_formDate)
+                                , 2) + "_" +
+                                rawTables[memberCount]._id.prjCode;
+
+                            // rawTables[memberCount].tables[table_index]._day = 3;
+                            // var tableData = rawTables[memberCount].tables[table_index];
+                            var tableData = {};
+                            Object.assign(tableData, rawTables[memberCount].tables[table_index]);
+                            tableData._day = 3;
+
+                            if (type1_data[item] != undefined) {
+                                var data = type1_data[item];
+                                data.tables.push(tableData);
+                                if (!data.users.includes(rawTables[memberCount]._id.userDID)) {
+                                    data.users.push(rawTables[memberCount]._id.userDID);
+                                    data.users_info.push(rawTables[memberCount]._user_info);
+                                }
+                            } else {
+
+                                itemList.push(item);
+
+                                var tables = [];
+
+                                tables.push(tableData);
+
+                                var users = [];
+
+                                users.push(rawTables[memberCount]._id.userDID);
+
+                                var users_info = [];
+
+                                users_info.push(rawTables[memberCount]._user_info);
+
+                                var data = {
+                                    _date: DateUtil.getShiftDatefromFirstDate_month_slash(moment(rawTables[memberCount].tables[table_index].create_formDate), 2),
+                                    _date_short: DateUtil.formatDate(
+                                        DateUtil.getShiftDatefromFirstDate(
+                                            moment(rawTables[memberCount].tables[table_index].create_formDate), 0)),
+                                    // _day: 1,
+                                    // _day_tw: DateUtil.getDay(1),
+                                    _prjCode: rawTables[memberCount]._id.prjCode,
+                                    _project_info: rawTables[memberCount]._project_info,
+                                    users: users,
+                                    users_info: users_info,
+                                    tables: tables,
+                                    _add_tables: [],
+                                }
+                                eval('type1_data[item] = data')
+                            }
+                        }
+
+                        if (rawTables[memberCount].tables[table_index].thu_hour > 0) {
+                            var item = "_" + DateUtil.getShiftDatefromFirstDate_month(moment(rawTables[memberCount].tables[table_index].create_formDate)
+                                , 3) + "_" +
+                                rawTables[memberCount]._id.prjCode;
+
+                            // rawTables[memberCount].tables[table_index]._day = 4;
+                            // var tableData = rawTables[memberCount].tables[table_index];
+                            var tableData = {};
+                            Object.assign(tableData, rawTables[memberCount].tables[table_index]);
+                            tableData._day = 4;
+
+                            if (type1_data[item] != undefined) {
+                                var data = type1_data[item];
+                                data.tables.push(tableData);
+                                if (!data.users.includes(rawTables[memberCount]._id.userDID)) {
+                                    data.users.push(rawTables[memberCount]._id.userDID);
+                                    data.users_info.push(rawTables[memberCount]._user_info);
+                                }
+                            } else {
+
+                                itemList.push(item);
+
+                                var tables = [];
+
+                                tables.push(tableData);
+
+                                var users = [];
+
+                                users.push(rawTables[memberCount]._id.userDID);
+
+                                var users_info = [];
+
+                                users_info.push(rawTables[memberCount]._user_info);
+
+                                var data = {
+                                    _date: DateUtil.getShiftDatefromFirstDate_month_slash(moment(rawTables[memberCount].tables[table_index].create_formDate), 3),
+                                    _date_short: DateUtil.formatDate(
+                                        DateUtil.getShiftDatefromFirstDate(
+                                            moment(rawTables[memberCount].tables[table_index].create_formDate), 0)),
+                                    // _day: 1,
+                                    // _day_tw: DateUtil.getDay(1),
+                                    _prjCode: rawTables[memberCount]._id.prjCode,
+                                    _project_info: rawTables[memberCount]._project_info,
+                                    users: users,
+                                    users_info: users_info,
+                                    tables: tables,
+                                    _add_tables: [],
+                                }
+                                eval('type1_data[item] = data')
+                            }
+                        }
+
+                        if (rawTables[memberCount].tables[table_index].fri_hour > 0) {
+                            var item = "_" + DateUtil.getShiftDatefromFirstDate_month(moment(rawTables[memberCount].tables[table_index].create_formDate)
+                                , 4) + "_" +
+                                rawTables[memberCount]._id.prjCode;
+
+                            // rawTables[memberCount].tables[table_index]._day = 5;
+                            // var tableData = rawTables[memberCount].tables[table_index];
+                            var tableData = {};
+                            Object.assign(tableData, rawTables[memberCount].tables[table_index]);
+                            tableData._day = 5;
+
+                            if (type1_data[item] != undefined) {
+                                var data = type1_data[item];
+                                data.tables.push(tableData);
+                                if (!data.users.includes(rawTables[memberCount]._id.userDID)) {
+                                    data.users.push(rawTables[memberCount]._id.userDID);
+                                    data.users_info.push(rawTables[memberCount]._user_info);
+                                }
+                            } else {
+
+                                itemList.push(item);
+
+                                var tables = [];
+
+                                tables.push(tableData);
+
+                                var users = [];
+
+                                users.push(rawTables[memberCount]._id.userDID);
+
+                                var users_info = [];
+
+                                users_info.push(rawTables[memberCount]._user_info);
+
+                                var data = {
+                                    _date: DateUtil.getShiftDatefromFirstDate_month_slash(moment(rawTables[memberCount].tables[table_index].create_formDate), 4),
+                                    _date_short: DateUtil.formatDate(
+                                        DateUtil.getShiftDatefromFirstDate(
+                                            moment(rawTables[memberCount].tables[table_index].create_formDate), 0)),
+                                    // _day: 1,
+                                    // _day_tw: DateUtil.getDay(1),
+                                    _prjCode: rawTables[memberCount]._id.prjCode,
+                                    _project_info: rawTables[memberCount]._project_info,
+                                    users: users,
+                                    users_info: users_info,
+                                    tables: tables,
+                                    _add_tables: [],
+                                }
+                                eval('type1_data[item] = data')
+                            }
+                        }
+
+                        if (rawTables[memberCount].tables[table_index].sat_hour > 0) {
+                            var item = "_" + DateUtil.getShiftDatefromFirstDate_month(moment(rawTables[memberCount].tables[table_index].create_formDate)
+                                , 5) + "_" +
+                                rawTables[memberCount]._id.prjCode;
+
+                            // rawTables[memberCount].tables[table_index]._day = 6;
+                            // var tableData = rawTables[memberCount].tables[table_index];
+                            var tableData = {};
+                            Object.assign(tableData, rawTables[memberCount].tables[table_index]);
+                            tableData._day = 6;
+
+                            if (type1_data[item] != undefined) {
+                                var data = type1_data[item];
+                                data.tables.push(tableData);
+                                if (!data.users.includes(rawTables[memberCount]._id.userDID)) {
+                                    data.users.push(rawTables[memberCount]._id.userDID);
+                                    data.users_info.push(rawTables[memberCount]._user_info);
+                                }
+                            } else {
+
+                                itemList.push(item);
+
+                                var tables = [];
+
+                                tables.push(tableData);
+
+                                var users = [];
+
+                                users.push(rawTables[memberCount]._id.userDID);
+
+                                var users_info = [];
+
+                                users_info.push(rawTables[memberCount]._user_info);
+
+                                var data = {
+                                    _date: DateUtil.getShiftDatefromFirstDate_month_slash(moment(rawTables[memberCount].tables[table_index].create_formDate), 5),
+                                    _date_short: DateUtil.formatDate(
+                                        DateUtil.getShiftDatefromFirstDate(
+                                            moment(rawTables[memberCount].tables[table_index].create_formDate), 0)),
+                                    // _day: 1,
+                                    // _day_tw: DateUtil.getDay(1),
+                                    _prjCode: rawTables[memberCount]._id.prjCode,
+                                    _project_info: rawTables[memberCount]._project_info,
+                                    users: users,
+                                    users_info: users_info,
+                                    tables: tables,
+                                    _add_tables: [],
+                                }
+                                eval('type1_data[item] = data')
+                            }
+                        }
+
+                        if (rawTables[memberCount].tables[table_index].sun_hour > 0) {
+                            var item = "_" + DateUtil.getShiftDatefromFirstDate_month(moment(rawTables[memberCount].tables[table_index].create_formDate)
+                                , 6) + "_" +
+                                rawTables[memberCount]._id.prjCode;
+
+                            // rawTables[memberCount].tables[table_index]._day = 7;
+                            // var tableData = rawTables[memberCount].tables[table_index];
+                            var tableData = {};
+                            Object.assign(tableData, rawTables[memberCount].tables[table_index]);
+                            tableData._day = 7;
+
+                            if (type1_data[item] != undefined) {
+                                var data = type1_data[item];
+                                data.tables.push(tableData);
+                                if (!data.users.includes(rawTables[memberCount]._id.userDID)) {
+                                    data.users.push(rawTables[memberCount]._id.userDID);
+                                    data.users_info.push(rawTables[memberCount]._user_info);
+                                }
+                            } else {
+
+                                itemList.push(item);
+
+                                var tables = [];
+
+                                tables.push(tableData);
+
+                                var users = [];
+
+                                users.push(rawTables[memberCount]._id.userDID);
+
+                                var users_info = [];
+
+                                users_info.push(rawTables[memberCount]._user_info);
+
+                                var data = {
+                                    _date: DateUtil.getShiftDatefromFirstDate_month_slash(moment(rawTables[memberCount].tables[table_index].create_formDate), 6),
+                                    _date_short: DateUtil.formatDate(
+                                        DateUtil.getShiftDatefromFirstDate(
+                                            moment(rawTables[memberCount].tables[table_index].create_formDate), 0)),
+                                    // _day: 1,
+                                    // _day_tw: DateUtil.getDay(1),
+                                    _prjCode: rawTables[memberCount]._id.prjCode,
+                                    _project_info: rawTables[memberCount]._project_info,
+                                    users: users,
+                                    users_info: users_info,
+                                    tables: tables,
+                                    _add_tables: [],
+                                }
+                                eval('type1_data[item] = data')
+                            }
+                        }
+                    }
+
+
+                }
+
+                // work add
+
+                if (rawTables[memberCount]._add_tables != undefined) {
+                    for (var table_add_index = 0 ;table_add_index < rawTables[memberCount]._add_tables.length; table_add_index ++) {
+
+                        var item = "_" + DateUtil.getShiftDatefromFirstDate_month(moment(rawTables[memberCount]._add_tables[table_add_index].create_formDate),
+                            rawTables[memberCount]._add_tables[table_add_index].day - 1) + "_" +
+                            rawTables[memberCount]._id.prjCode;
+
+                        var tableData_add = {
+                            create_formDate: rawTables[memberCount]._add_tables[table_add_index].create_formDate,
+                            day: rawTables[memberCount]._add_tables[table_add_index].day,
+                            workAddType: rawTables[memberCount]._add_tables[table_add_index].workAddType,
+                            start_time: rawTables[memberCount]._add_tables[table_add_index].start_time,
+                            end_time: rawTables[memberCount]._add_tables[table_add_index].end_time,
+                            reason: rawTables[memberCount]._add_tables[table_add_index].reason,
+                            userMonthSalary: rawTables[memberCount]._add_tables[table_add_index].userMonthSalary,
+                        }
+
+                        if (type1_data[item] != undefined) {
+                            var data = type1_data[item];
+                            data._add_tables.push(tableData_add);
+                            if (!data.users.includes(rawTables[memberCount]._id.userDID)) {
+                                data.users.push(rawTables[memberCount]._id.userDID);
+                                data.users_info.push(rawTables[memberCount]._user_info);
+                            }
+                        } else {
+
+                            itemList.push(item);
+
+                            var tables_add = [];
+
+                            tables_add.push(tableData_add);
+
+                            var users = [];
+
+                            users.push(rawTables[memberCount]._id.userDID);
+
+                            var users_info = [];
+
+                            users_info.push(rawTables[memberCount]._user_info);
+
+                            var data = {
+                                _date: DateUtil.getShiftDatefromFirstDate_month_slash(moment(rawTables[memberCount]._add_tables[table_add_index].create_formDate), rawTables[memberCount]._add_tables[table_add_index].day - 1),
+                                _date_short: DateUtil.formatDate(
+                                    DateUtil.getShiftDatefromFirstDate(
+                                        moment(rawTables[memberCount]._add_tables[table_add_index].create_formDate), rawTables[memberCount]._add_tables[table_add_index].day - 1)),
+                                _day: rawTables[memberCount]._add_tables[table_add_index].day,
+                                _day_tw: DateUtil.getDay(rawTables[memberCount]._add_tables[table_add_index].day),
+                                _prjCode: rawTables[memberCount]._id.prjCode,
+                                _project_info: rawTables[memberCount]._project_info,
+                                users: users,
+                                users_info: users_info,
+                                tables: [],
+                                _add_tables: tables_add,
+                            }
+                            eval('type1_data[item] = data')
+                        }
+                    }
+                }
+            }
+            // console.log(itemList);
+            console.log(type1_data);
+
+            var result = [];
+            var result_sort = [];
+
+            for (var index = 0; index < itemList.length; index ++) {
+                result.push(type1_data[itemList[index]]);
+            }
+
+            console.log(result);
+            result_sort = result.sort(function (a, b) {
+
+                if (a._date == b._date) {
+                    return a._prjCode - b._prjCode;
+                }
+                return a._date > b._date ? 1 : -1;
+
+            });
+            console.log(result_sort);
+            return result_sort;
+        }
+
+        $scope.filter_type2_data_item = function(rawTables) {
+            // console.log("filter_type2_data_item");
+            // console.log(rawTables);
+            var type2_result = [];
+            for (var index = 0 ;index < rawTables.length; index ++) {
+                if ( ($scope.calculateHours_type2_item(rawTables[index]) + $scope.calculateHours_type2_add(rawTables[index], 1) + $scope.calculateHours_type2_add(rawTables[index], 2) != 0)) {
+                    type2_result.push(rawTables[index]);
+                }
+            }
+            return type2_result;
+        }
+
+        $scope.calculateHours_type2_item = function (item, type) {
+            // console.log(item)
+            if (item.iscalculate_A && item.iscalculate_B) {
+                switch (type) {
+                    case 1:
+                        return item.hourTotal;
+                        // return item.totalCost;
+                        break;
+                    case 2:
+                        return parseInt(item.totalCost);
+                        break;
+                }
+            }
+            // console.log(item);
+            var hourTotal = 0;
+            var totalCost = 0.0;
+            for (var index = 0; index < item.tables.length; index ++) {
+                if (item.tables[index]._day == 1) {
+                    hourTotal += parseFloat(item.tables[index].mon_hour)
+                    totalCost += parseFloat(item.tables[index].mon_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
+                }
+
+                if (item.tables[index]._day == 2) {
+
+                    hourTotal += parseFloat(item.tables[index].tue_hour)
+                    totalCost += parseFloat(item.tables[index].tue_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
+                }
+
+                if (item.tables[index]._day == 3) {
+
+                    hourTotal += parseFloat(item.tables[index].wes_hour)
+                    totalCost += parseFloat(item.tables[index].wes_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
+                }
+
+                if (item.tables[index]._day == 4) {
+
+                    hourTotal += parseFloat(item.tables[index].thu_hour)
+                    totalCost += parseFloat(item.tables[index].thu_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
+                }
+
+                if (item.tables[index]._day == 5) {
+
+                    hourTotal += parseFloat(item.tables[index].fri_hour)
+                    totalCost += parseFloat(item.tables[index].fri_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
+                }
+
+                if (item.tables[index]._day == 6) {
+
+                    hourTotal += parseFloat(item.tables[index].sat_hour)
+                    totalCost += parseFloat(item.tables[index].sat_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
+                }
+
+                if (item.tables[index]._day == 7) {
+
+                    hourTotal += parseFloat(item.tables[index].sun_hour)
+                    totalCost += parseFloat(item.tables[index].sun_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
+                }
+
+            }
+            item.hourTotal = hourTotal;
+            item.totalCost = totalCost;
+            switch (type) {
+                case 1:
+                    return hourTotal;
+                    break;
+                case 2:
+                    return parseInt(totalCost);
+                    break;
             }
         }
 

@@ -224,23 +224,24 @@
                             console.log(res);
                             $scope.projectIncomeTable = res.payload;
                             for (var i = 0; i < res.payload.length; i ++) {
+                                if (moment(res.payload[i].realDate) >= moment("2020/01")) {
+                                    if ($scope.overall_data[res.payload[i].realDate] != undefined) {
+                                        var data = $scope.overall_data[res.payload[i].realDate];
+                                        data._income.push(res.payload[i]);
+                                    } else {
 
-                                if ($scope.overall_data[res.payload[i].realDate] != undefined) {
-                                    var data = $scope.overall_data[res.payload[i].realDate];
-                                    data._income.push(res.payload[i]);
-                                } else {
+                                        var data = {
+                                            _date: res.payload[i].realDate,
+                                            _income: [res.payload[i]],
+                                            _payments: [],
+                                            _otherCost: [],
+                                            _subContractorPay: [],
+                                            _overall: 0,
+                                        }
 
-                                    var data = {
-                                        _date: res.payload[i].realDate,
-                                        _income: [res.payload[i]],
-                                        _payments: [],
-                                        _otherCost: [],
-                                        _subContractorPay: [],
-                                        _overall: 0,
+                                        $scope.overall_data.push(data);
+                                        eval('$scope.overall_data[res.payload[i].realDate] = data')
                                     }
-
-                                    $scope.overall_data.push(data);
-                                    eval('$scope.overall_data[res.payload[i].realDate] = data')
                                 }
                             }
                             console.log($scope.overall_data);
@@ -250,27 +251,26 @@
                     PaymentFormsUtil.fetchPaymentsItemByPrjDID(formData)
                         .success(function (res) {
                             console.log("墊付款")
-                            console.log(res)
+                            console.log(res);
                             $scope.searchPaymentsItems = res.payload;
                             for (var i = 0; i < res.payload.length; i ++) {
-
                                 var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
-                                // console.log(tempDate)
-                                if ($scope.overall_data[tempDate] != undefined) {
-                                    var data = $scope.overall_data[tempDate];
-                                    data._payments.push(res.payload[i]);
-                                } else {
-                                    var data = {
-                                        _date: tempDate,
-                                        _income: [],
-                                        _payments: [res.payload[i]],
-                                        _otherCost: [],
-                                        _subContractorPay: [],
-                                        _overall: 0,
+                                if (moment(tempDate) >= moment("2020/01")) {
+                                    if ($scope.overall_data[tempDate] != undefined) {
+                                        var data = $scope.overall_data[tempDate];
+                                        data._payments.push(res.payload[i]);
+                                    } else {
+                                        var data = {
+                                            _date: tempDate,
+                                            _income: [],
+                                            _payments: [res.payload[i]],
+                                            _otherCost: [],
+                                            _subContractorPay: [],
+                                            _overall: 0,
+                                        }
+                                        $scope.overall_data.push(data);
+                                        eval('$scope.overall_data[tempDate] = data')
                                     }
-
-                                    $scope.overall_data.push(data);
-                                    eval('$scope.overall_data[tempDate] = data')
                                 }
                             }
                             console.log($scope.overall_data);
@@ -287,21 +287,25 @@
                             for (var i = 0; i < res.payload.length; i ++) {
                                 var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
                                 // console.log(tempDate)
-                                if ($scope.overall_data[tempDate] != undefined) {
-                                    var data = $scope.overall_data[tempDate];
-                                    data._otherCost.push(res.payload[i]);
-                                } else {
-                                    var data = {
-                                        _date: tempDate,
-                                        _income: [],
-                                        _payments: [],
-                                        _subContractorPay: [],
-                                        _otherCost: [res.payload[i]],
-                                        _overall: 0,
-                                    }
 
-                                    $scope.overall_data.push(data);
-                                    eval('$scope.overall_data[tempDate] = data')
+                                if (moment(tempDate) >= moment("2020/01")) {
+
+                                    if ($scope.overall_data[tempDate] != undefined) {
+                                        var data = $scope.overall_data[tempDate];
+                                        data._otherCost.push(res.payload[i]);
+                                    } else {
+                                        var data = {
+                                            _date: tempDate,
+                                            _income: [],
+                                            _payments: [],
+                                            _subContractorPay: [],
+                                            _otherCost: [res.payload[i]],
+                                            _overall: 0,
+                                        }
+
+                                        $scope.overall_data.push(data);
+                                        eval('$scope.overall_data[tempDate] = data')
+                                    }
                                 }
                             }
                         })
@@ -321,23 +325,24 @@
                             $scope.subContractorPayItems = res.payload;
                             for (var i = 0; i < res.payload.length; i ++) {
                                 var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
-                                if ($scope.overall_data[tempDate] != undefined) {
-                                    var data = $scope.overall_data[tempDate];
-                                    data._subContractorPay.push(res.payload[i]);
-                                } else {
-                                    var data = {
-                                        _date: tempDate,
-                                        _income: [],
-                                        _payments: [],
-                                        _otherCost: [],
-                                        _subContractorPay: [res.payload[i]],
-                                        _overall: 0,
+                                if (moment(tempDate) >= moment("2020/01")) {
+                                    if ($scope.overall_data[tempDate] != undefined) {
+                                        var data = $scope.overall_data[tempDate];
+                                        data._subContractorPay.push(res.payload[i]);
+                                    } else {
+                                        var data = {
+                                            _date: tempDate,
+                                            _income: [],
+                                            _payments: [],
+                                            _otherCost: [],
+                                            _subContractorPay: [res.payload[i]],
+                                            _overall: 0,
+                                        }
+                                        $scope.overall_data.push(data);
+                                        eval('$scope.overall_data[tempDate] = data')
                                     }
-                                    $scope.overall_data.push(data);
-                                    eval('$scope.overall_data[tempDate] = data')
                                 }
                             }
-
                         })
 
                     // 人時支出
@@ -366,7 +371,6 @@
                                     }
                                 }
                             }
-                            // console.log(res.payload);
                             $scope.statisticsResults_type1 = $scope.filter_type1_data(res.payload);
                             $scope.statisticsResults = $scope.filter_type2_data(res.payload);
                             console.log($scope.statisticsResults);
@@ -376,24 +380,26 @@
                             for (var i = 0; i < $scope.statisticsResults_type1.length; i ++) {
                                 var tempDate = $scope.statisticsResults_type1[i]._date;
 
-                                if ($scope.overall_data[tempDate] != undefined) {
-                                    var data = $scope.overall_data[tempDate];
-                                    data._overall = $scope.statisticsResults_type1[i].totalCost +
-                                        $scope.statisticsResults_type1[i].hourTotal_add_cost_A +
-                                        $scope.statisticsResults_type1[i].hourTotal_add_cost_B;
-                                } else {
-                                    var data = {
-                                        _date: tempDate,
-                                        _income: [],
-                                        _payments: [],
-                                        _otherCost: [],
-                                        _subContractorPay: [],
-                                        _overall: $scope.statisticsResults_type1[i].totalCost +
-                                        $scope.statisticsResults_type1[i].hourTotal_add_cost_A +
-                                        $scope.statisticsResults_type1[i].hourTotal_add_cost_B,
+                                if (moment(tempDate) >= moment("2020/01")) {
+                                    if ($scope.overall_data[tempDate] != undefined) {
+                                        var data = $scope.overall_data[tempDate];
+                                        data._overall = $scope.statisticsResults_type1[i].totalCost +
+                                            $scope.statisticsResults_type1[i].hourTotal_add_cost_A +
+                                            $scope.statisticsResults_type1[i].hourTotal_add_cost_B;
+                                    } else {
+                                        var data = {
+                                            _date: tempDate,
+                                            _income: [],
+                                            _payments: [],
+                                            _otherCost: [],
+                                            _subContractorPay: [],
+                                            _overall: $scope.statisticsResults_type1[i].totalCost +
+                                            $scope.statisticsResults_type1[i].hourTotal_add_cost_A +
+                                            $scope.statisticsResults_type1[i].hourTotal_add_cost_B,
+                                        }
+                                        $scope.overall_data.push(data);
+                                        eval('$scope.overall_data[tempDate] = data')
                                     }
-                                    $scope.overall_data.push(data);
-                                    eval('$scope.overall_data[tempDate] = data')
                                 }
                             }
 
@@ -592,7 +598,6 @@
                                 return parseInt(item.hourTotal_add_cost_A);
                                 break;
                         }
-
                     }
                     break;
                 case 2:
@@ -609,7 +614,6 @@
                     }
                     break;
             }
-
 
             var mins = 0
 
@@ -692,7 +696,9 @@
             var incomeA = 0.0;
             if ($scope.projectIncomeTable == undefined) return incomeA;
             for (var i = 0; i < $scope.projectIncomeTable.length; i ++) {
-                incomeA += parseInt($scope.projectIncomeTable[i].expectAmount)
+                if (moment($scope.projectIncomeTable[i].realDate) >= moment("2020/01")) {
+                    incomeA += parseInt($scope.projectIncomeTable[i].expectAmount)
+                }
             }
             // console.log("incomeA:> " + incomeA)
             switch (type) {
@@ -707,7 +713,9 @@
             var incomeA = 0.0;
             if ($scope.projectIncomeTable == undefined) return incomeA;
             for (var i = 0; i < $scope.projectIncomeTable.length; i ++) {
-                incomeA += parseInt($scope.projectIncomeTable[i].fines)
+                if (moment($scope.projectIncomeTable[i].realDate) >= moment("2020/01")) {
+                    incomeA += parseInt($scope.projectIncomeTable[i].fines)
+                }
             }
             // console.log("incomeA:> " + incomeA)
             return incomeA;
@@ -717,7 +725,9 @@
             var incomeA = 0.0;
             if ($scope.projectIncomeTable == undefined) return incomeA;
             for (var i = 0; i < $scope.projectIncomeTable.length; i ++) {
-                incomeA += parseInt($scope.projectIncomeTable[i].fee)
+                if (moment($scope.projectIncomeTable[i].realDate) >= moment("2020/01")) {
+                    incomeA += parseInt($scope.projectIncomeTable[i].fee)
+                }
             }
             // console.log("incomeA:> " + incomeA)
             return incomeA;
@@ -726,10 +736,13 @@
         $scope.calProfit = function() {
             return (
                 $scope.calIncome(2) -
-                $scope.calcCost(1) -
-                $scope.calcCost(2) -
+                // $scope.calcCost(1) -
+                $scope.calcCost_special20201207(1) -
+                // $scope.calcCost(2) -
+                $scope.calcCost_special20201207(2) -
                 $scope.calSubContractorPay() -
-                $scope.calcCost(3) -
+                // $scope.calcCost(3) -
+                $scope.calcCost_special20201207(3) -
                 $scope.calFines() -
                 $scope.calFee()
             );
@@ -740,10 +753,14 @@
             var resultD = 0.0;
             if ($scope.subContractorPayItems == undefined) return resultD;
             for (var i = 0; i < $scope.subContractorPayItems.length; i ++) {
-                resultD += (parseInt($scope.subContractorPayItems[i].payApply) -
-                    parseInt($scope.subContractorPayItems[i].payTax) -
-                    parseInt($scope.subContractorPayItems[i].payOthers)
-                )
+                var tempDate = moment($scope.subContractorPayItems[i].year+1911 + "/" +
+                    $scope.subContractorPayItems[i].month).format("YYYY/MM");
+                if (moment(tempDate) >= moment("2020/01")) {
+                    resultD += (parseInt($scope.subContractorPayItems[i].payApply) -
+                        parseInt($scope.subContractorPayItems[i].payTax) -
+                        parseInt($scope.subContractorPayItems[i].payOthers)
+                    )
+                }
             }
             // console.log("resultD:> " + resultD)
             return resultD;
@@ -800,6 +817,45 @@
                     // console.log("resultC:> " + resultC)
                     return Math.round(resultC);
             }
+        }
+
+        $scope.calcCost_special20201207 = function(type) {
+
+            switch(type) {
+                case 1:
+                    // 人時
+                    var resultG = 0.0;
+                    for (var i = 0; i < $scope.overall_data.length; i ++) {
+                        // console.log($scope.overall_data[i])
+                        resultG += parseInt($scope.overall_data[i]._overall)
+                        // console.log(resultG)
+                    }
+                    // console.log("resultG:> " + resultG)
+                    return Math.round(resultG);
+                case 2:
+                    // 墊付款
+                    var resultB = 0.0;
+                    for (var i = 0; i < $scope.overall_data.length; i ++) {
+                        // console.log($scope.overall_data[i])
+                        for (var j = 0; j < $scope.overall_data[i]._payments.length; j ++) {
+                            resultB += parseInt($scope.overall_data[i]._payments[j].amount)
+                        }
+                    }
+                    // console.log("resultB:> " + resultB)
+                    return Math.round(resultB);
+                case 3:
+                    // 其他
+                    var resultC = 0.0;
+                    for (var i = 0; i < $scope.overall_data.length; i ++) {
+                        for (var j = 0; j < $scope.overall_data[i]._otherCost.length; j ++) {
+                            resultC += parseInt($scope.overall_data[i]._otherCost[j].amount)
+                        }
+                    }
+                    // console.log("resultC:> " + resultC)
+                    return Math.round(resultC)
+            }
+
+
         }
 
         $scope.calcItem = function (item, type) {
@@ -898,7 +954,6 @@
 
     //    ===================
         // type 1, 一天加一專案 為一筆
-
         $scope.filter_type1_data = function(rawTables) {
             console.log(rawTables)
             var itemList = [];
@@ -959,8 +1014,8 @@
                                     tables: tables,
                                     _add_tables: [],
                                 }
+                                eval('type1_data[item] = data')
                             }
-                            eval('type1_data[item] = data')
                         }
 
                         if (rawTables[memberCount].tables[table_index].tue_hour > 0) {
@@ -1011,8 +1066,8 @@
                                     tables: tables,
                                     _add_tables: [],
                                 }
+                                eval('type1_data[item] = data')
                             }
-                            eval('type1_data[item] = data')
                         }
 
 
@@ -1064,8 +1119,8 @@
                                     tables: tables,
                                     _add_tables: [],
                                 }
+                                eval('type1_data[item] = data')
                             }
-                            eval('type1_data[item] = data')
                         }
 
                         if (rawTables[memberCount].tables[table_index].thu_hour > 0) {
@@ -1116,8 +1171,8 @@
                                     tables: tables,
                                     _add_tables: [],
                                 }
+                                eval('type1_data[item] = data')
                             }
-                            eval('type1_data[item] = data')
                         }
 
                         if (rawTables[memberCount].tables[table_index].fri_hour > 0) {
@@ -1168,8 +1223,8 @@
                                     tables: tables,
                                     _add_tables: [],
                                 }
+                                eval('type1_data[item] = data')
                             }
-                            eval('type1_data[item] = data')
                         }
 
                         if (rawTables[memberCount].tables[table_index].sat_hour > 0) {
@@ -1220,8 +1275,8 @@
                                     tables: tables,
                                     _add_tables: [],
                                 }
+                                eval('type1_data[item] = data')
                             }
-                            eval('type1_data[item] = data')
                         }
 
                         if (rawTables[memberCount].tables[table_index].sun_hour > 0) {
@@ -1272,8 +1327,8 @@
                                     tables: tables,
                                     _add_tables: [],
                                 }
+                                eval('type1_data[item] = data')
                             }
-                            eval('type1_data[item] = data')
                         }
                     }
 
@@ -1336,8 +1391,8 @@
                                 tables: [],
                                 _add_tables: tables_add,
                             }
+                            eval('type1_data[item] = data')
                         }
-                        eval('type1_data[item] = data')
                     }
                 }
             }
