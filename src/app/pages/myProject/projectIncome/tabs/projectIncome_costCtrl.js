@@ -284,6 +284,11 @@
                         + item._user_info._id;
                     var min = parseInt(TimeUtil.getCalculateHourDiffByTime(item._add_tables[index].start_time, item._add_tables[index].end_time))
                     // mins += min;
+
+                    if (!item._add_tables[index].isExecutiveConfirm) {
+                        continue;
+                    }
+
                     if (type2_add_data[date_id] != undefined) {
                         var data = type2_add_data[date_id];
                         data.min = min + type2_add_data[date_id].min;

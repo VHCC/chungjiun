@@ -646,6 +646,10 @@
                     //     + item._id.prjCode + "_"
                     //     + item._user_info._id;
 
+                    if (!item._add_tables[index].isExecutiveConfirm) {
+                        continue;
+                    }
+
                     var date_id = DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1)
                     var min = parseInt(TimeUtil.getCalculateHourDiffByTime(item._add_tables[index].start_time, item._add_tables[index].end_time))
                     // mins += min;
@@ -1344,6 +1348,9 @@
                             rawTables[memberCount]._add_tables[table_add_index].day - 1) + "_" +
                             rawTables[memberCount]._id.prjCode;
 
+                        if (!rawTables[memberCount]._add_tables[table_add_index].isExecutiveConfirm) {
+                            continue;
+                        }
                         var tableData_add = {
                             create_formDate: rawTables[memberCount]._add_tables[table_add_index].create_formDate,
                             day: rawTables[memberCount]._add_tables[table_add_index].day,

@@ -1372,6 +1372,7 @@
                 var formData = {
                     creatorDID: userDID,
                     workAddType: 2,
+                    isExecutiveConfirm: true,
                     // month: thisMonth,
                     // year: specificYear
                 }
@@ -1418,6 +1419,7 @@
                 var formData = {
                     creatorDID: userDID,
                     workAddType: 2,
+                    isExecutiveConfirm: true,
                     // month: thisMonth,
                     // year: specificYear - 1
                 }
