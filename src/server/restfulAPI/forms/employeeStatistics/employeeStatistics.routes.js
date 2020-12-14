@@ -59,7 +59,8 @@ module.exports = function (app) {
         ];
 
         var $project_hour_add_table_Conds = [
-            {$eq: [ "$work_hour_add_tables.prjDID", "$_projectTargetString" ]}
+            {$eq: [ "$work_hour_add_tables.prjDID", "$_projectTargetString" ]},
+            {$eq: [ "$work_hour_add_tables.isExecutiveConfirm", true ]}
         ]
 
         if (req.body.form_yearArray != undefined) {
