@@ -1378,6 +1378,7 @@
                 WorkHourAddItemUtil.getWorkHourAddItems(formData)
                     .success(function (res) {
                         console.log(" === 顯示加班單，目的找補休 [resp] === ");
+                        // console.log("showType= " + showType);
                         console.log(res);
 
                         var tables = res.payload;
@@ -1641,6 +1642,10 @@
                         rawData[index].day + "_" +
                         rawData[index].prjDID;
 
+                    if (!rawData[index].isExecutiveConfirm) {
+                        continue
+                    }
+
                     var detail = {
                         item_start_time: rawData[index].start_time,
                         item_end_time: rawData[index].end_time,
@@ -1687,12 +1692,15 @@
                         if (tables[index].isExecutiveConfirm) {
                             if (type == tables[index].items[index_item].item_workAddType) {
                                 result += parseInt(TimeUtil.getCalculateHourDiffByTime(tables[index].items[index_item].item_start_time, tables[index].items[index_item].item_end_time));
+                                // console.log(tables[index].items[index_item].item_start_time + ", " + tables[index].items[index_item].item_end_time);
+                                // console.log(tables[index].create_formDate + ", " + tables[index].day);
+                                // console.log(result);
                             }
                         }
                     }
                     result = result % 60 < 30 ? Math.round(result / 60) : Math.round(result / 60) - 0.5;
+                    // console.log(result);
                     if (result < 1) {
-                        // $scope.table.totalHourTemp = 0;
                         result = 0;
                     }
                     final_result += result;

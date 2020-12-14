@@ -1388,6 +1388,10 @@
 
                                 var item = "_" + rawTables[memberCount]._user_info._id
 
+                                if (!rawTables[memberCount]._add_tables[table_add_index].isExecutiveConfirm) {
+                                    continue;
+                                }
+
                                 var tableData_add = {
                                     _prjDID: rawTables[memberCount]._id.prjCode,
                                     create_formDate: rawTables[memberCount]._add_tables[table_add_index].create_formDate,
