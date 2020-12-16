@@ -6,6 +6,7 @@
 global.apiUrl = {
     //login
     post_login_user_find : '/api/loginfind',
+    post_login_user_find_forget_password : '/api/forgetPassword',
     //register
     post_register_user : '/api/register',
     post_find_user_by_email : '/api/findUserByEmail',

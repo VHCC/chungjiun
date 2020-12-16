@@ -26,7 +26,12 @@
             return {
                 find : function(userData) {
                     return http.post('/api/loginfind', userData);
-                }
+                },
+
+                forgetPWD : function(userData) {
+                    return http.post('/api/forgetPassword', userData);
+                },
+
             }
         }]);
 
@@ -117,4 +122,44 @@
             cookies.put('feature_official_doc', null);
         };
 
+
+        scope.forgetPWD = function () {
+            // validate the formData to make sure that something is there
+            // if form is empty, nothing will happen
+            if (scope.formData.email != undefined) {
+                scope.loading = true;
+
+                // call the create function from our service (returns a promise object)
+                Login.forgetPWD(scope.formData)
+                // if successful creation, call our get function to get all the new todos
+                    .success(function(data) {
+                        scope.loading = false;
+                        console.log(data);
+
+                        if (data.responseCode == 550) {
+                            window.Error(data.response);
+                            return;
+                        }
+
+                        if (data.length == 0) {
+                            window.userNoFind();
+                            return;
+                        }
+
+                        if (data[0].roleType != 100 && data[0].workStatus == false) {
+                            window.userNoActivate();
+                            return;
+                        }
+
+                        window.sendMailToCJMail(data[0].cjMail)
+                    })
+                    .error(function (data) {
+                        scope.loading = false;
+                        console.log(data);
+                        if (data.code == 404) {
+                            window.userNoFind();
+                        }
+                    });
+            }
+        };
     }
