@@ -3,7 +3,7 @@ var nodemailer = require('nodemailer');
 
 var mailTransport = nodemailer.createTransport({
     host: 'mail.chongjun.tw',
-    secureConnecton: false,
+    secureConnection: false,
     port: 25,
     auth: {
         user: '0973138343',

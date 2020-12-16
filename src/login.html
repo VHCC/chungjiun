@@ -66,7 +66,7 @@
                     <!--<button type="button" class="btn btn-warning" data-toggle="modal" onclick="userNoFind()">-->
                     <!--Warning Message-->
                     <!--</button>-->
-
+                    <button type="submit" class="btn btn-default btn-auth" ng-click="forgetPWD()">忘記密碼</button>
                 </div>
             </div>
         </form>
@@ -88,12 +88,30 @@
         }).show();
     }
 
+    function Error(txt) {
+        new Noty({
+            text: txt,
+            layout: 'center',
+            theme: 'light',
+            type: 'error',
+        }).show();
+    }
+
     function userNoActivate() {
         new Noty({
             text: 'User Not Activate!, please contact your administrator.',
             layout: 'center',
             theme: 'light',
             type: 'error',
+        }).show();
+    }
+
+    function sendMailToCJMail(targetMail) {
+        new Noty({
+            text: 'ERM has send mail to [' + targetMail + '] !, please check the mail.',
+            layout: 'center',
+            theme: 'light',
+            type: 'success',
         }).show();
     }
 
