@@ -373,9 +373,10 @@
                     // receiptCode: item.receiptCode,
                     contents: item.contents,
                     amount: item.amount,
-                    itemIndex: item.itemIndex
+                    itemIndex: item.itemIndex,
+                    targetDID: item.targetDID,
                 }
-                ExecutiveExpenditureUtil.updateExecutiveExpenditureItems(formData)
+                ExecutiveExpenditureUtil.updateExecutiveExpenditureOne(formData)
                     .success(function (res) {
                         resultCount ++
                         if (resultCount == target.length) {

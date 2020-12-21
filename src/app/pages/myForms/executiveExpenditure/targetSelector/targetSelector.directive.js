@@ -15,7 +15,8 @@
             restrict: 'E',
             controller: 'TargetSelectorCtrl',
             link: function ($scope, elem, attrs) {
-                $scope.expenditureTargetChange(attrs.targetDID);
+                // $scope.expenditureTargetChange(attrs.targetDID);
+                $scope.expenditureTargetOptions = $scope.$parent.$parent.$parent.executiveExpenditureTargets;
             },
             templateUrl: 'app/pages/myForms/executiveExpenditure/targetSelector/targetSelector.html',
         };

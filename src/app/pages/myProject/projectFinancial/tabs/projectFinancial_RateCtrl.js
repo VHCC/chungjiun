@@ -98,7 +98,7 @@
             });
 
         $scope.initProject = function() {
-            Project.findAllEnable()
+            Project.findAll()
                 .success(function (allProjects) {
                     $scope.allProject_raw = allProjects;
                     vm.projects = allProjects.slice();
