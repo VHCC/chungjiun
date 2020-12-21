@@ -18,18 +18,17 @@
                     , ExpenditureTargetUtil
                     , $filter
     ) {
-        var formData = {
-            isEnable: true
-        }
-
-        ExpenditureTargetUtil.fetchExpenditureTarget(formData)
-            .success(function (res) {
-                $scope.expenditureTargetOptions = res.payload;
-            })
-
+        // var formData = {
+        //     isEnable: true
+        // }
+        //
+        // ExpenditureTargetUtil.fetchExpenditureTarget(formData)
+        //     .success(function (res) {
+        //         $scope.expenditureTargetOptions = res.payload;
+        //     })
         // dynamic function
         $scope.expenditureTargetChange = function (targetDID) {
-            console.log(targetDID)
+            // console.log(targetDID)
         }
 
     }

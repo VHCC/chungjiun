@@ -70,31 +70,22 @@
                 }
             });
 
-        var formData = {
-            isEnable: true
-        }
-
-        ExpenditureTargetUtil.fetchExpenditureTarget(formData)
-            .success(function (res) {
-                console.log($scope)
-                vm.executiveExpenditureTargets = res.payload;
-            })
-
-        $scope.showTargetName = function (targetDID) {
+        $scope.showTargetNameEE = function (item) {
             var selected = [];
-            if (vm.executiveExpenditureTargets === undefined) return;
-            if (targetDID) {
+            if (vm.executiveExpenditureTargets === undefined || item.targetDID == undefined) return;
+            if (item.targetDID) {
                 selected = $filter('filter')(vm.executiveExpenditureTargets, {
-                    _id: targetDID,
+                    _id: item.targetDID,
                 });
             }
+            // console.log(item.targetDID);
+            // item.targetName = selected[0].targetName;
             return selected.length ? selected[0].targetName : 'Not Set';
         }
 
         Project.findAll()
             .success(function (allProjects) {
-
-
+                console.log(allProjects)
                 $scope.allProjectCache = [];
                 var prjCount = allProjects.length;
                 for (var index = 0; index < prjCount; index++) {
@@ -129,6 +120,16 @@
                     $scope.allProject_raw = allProjects;
                     vm.projects = allProjects.slice();
                 });
+
+            var formData = {
+                isEnable: true
+            }
+
+            ExpenditureTargetUtil.fetchExpenditureTarget(formData)
+                .success(function (res) {
+                    vm.executiveExpenditureTargets = res.payload;
+                    $scope.executiveExpenditureTargets = res.payload;
+                })
         }
 
         $scope.resetProjectData = function() {
@@ -170,22 +171,26 @@
         }
 
         // main tab, type = 0
-        $scope.insertExecutiveExpenditureItem = function (prjDID) {
+        $scope.insertEEItem = function (prjDID) {
             bsLoadingOverlayService.start({
                 referenceId: 'mainPage_executiveExpenditure'
             });
-
             var formData = {
                 creatorDID: $scope.userDID,
                 year: specificYear,
                 month: specificMonth,
                 prjDID: prjDID,
             }
+
             ExecutiveExpenditureUtil.insertExecutiveExpenditureItem(formData)
                 .success(function (res) {
                     $scope.fetchExecutiveExpenditureData();
                     $scope.resetProjectData();
                 })
+                .error(function (err) {
+                    console.log(err)
+                })
+
         }
 
         // main tab, type = 0
@@ -200,7 +205,7 @@
         }
 
         $scope.setExecutiveExpenditureItem = function(item) {
-            console.log(item);
+            // console.log(item);
             var formData = {
                 _id: item._id,
                 payDate: item.payDate,
@@ -232,13 +237,13 @@
 
             ExecutiveExpenditureUtil.fetchExecutiveExpenditureItems(formData)
                 .success(function (res) {
+                    console.log(res);
                     $scope.displayEEItems = res.payload;
+                    bsLoadingOverlayService.stop({
+                        referenceId: 'mainPage_executiveExpenditure'
+                    });
 
                     $timeout(function () {
-                        bsLoadingOverlayService.stop({
-                            referenceId: 'mainPage_executiveExpenditure'
-                        });
-
                         $('.expenditureTargetDateInput').mask('20Y0/M0/D0', {
                             translation: {
                                 'Y': {
@@ -253,13 +258,12 @@
                             }
                         });
                     }, 500)
+
                 })
                 .error(function (res) {
-                    $timeout(function () {
-                        bsLoadingOverlayService.stop({
-                            referenceId: 'mainPage_executiveExpenditure'
-                        });
-                    }, 500)
+                    bsLoadingOverlayService.stop({
+                        referenceId: 'mainPage_executiveExpenditure'
+                    });
                 })
         }
 
@@ -269,14 +273,16 @@
             }
         }
 
-        $scope.showPrjCode = function (prjDID) {
+        $scope.showPrjCodeEE = function (item) {
+            if (item.prjCode) return item.prjCode;
             var selected = [];
-            if (prjDID) {
+            if (item.prjDID) {
                 selected = $filter('filter')($scope.allProjectCache, {
-                    prjDID: prjDID,
+                    prjDID: item.prjDID,
                 });
             }
             if (!selected) return 'Not Set'
+            item.prjCode =  selected[0].prjCode
             return selected.length > 0 ? selected[0].prjCode : 'Not Set';
         };
 
@@ -321,12 +327,13 @@
                 var formData = {
                     _id: item._id,
                     payDate: item.payDate,
+                    targetDID: item.targetDID,
                     // receiptCode: item.receiptCode,
                     contents: item.contents,
                     amount: item.amount,
-                    itemIndex: item.itemIndex
+                    itemIndex: item.itemIndex,
                 }
-                ExecutiveExpenditureUtil.updateExecutiveExpenditureItems(formData)
+                ExecutiveExpenditureUtil.updateExecutiveExpenditureOne(formData)
                     .success(function (res) {
                         resultCount ++
                         if (resultCount == target.length) {
@@ -343,7 +350,7 @@
         }
 
         // main tab, type = 0
-        $scope.calculateSum = function () {
+        $scope.calculateSumEE = function () {
             var operationTarget;
             var result = 0;
             operationTarget = $scope.displayEEItems;
@@ -360,7 +367,7 @@
         }
 
         $scope.reloadEEPage = function () {
-            console.log("reloadEEPage")
+            console.log(" ----- reloadEEPage ----- ")
             $scope.fetchExecutiveExpenditureData();
         }
 
