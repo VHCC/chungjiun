@@ -137,7 +137,8 @@
                         console.log(data);
 
                         if (data.responseCode == 550) {
-                            window.Error(data.response);
+                            // window.Error(data.response);
+                            console.log(data.response);
                             return;
                         }
 
