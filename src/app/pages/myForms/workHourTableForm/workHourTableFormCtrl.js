@@ -228,10 +228,23 @@
 
             $scope.tables[tableIndex].tablesItems.splice(itemIndex, 1);
 
+            var tempMonth;
+
+            switch (tableIndex) {
+                case 0:
+                    tempMonth = moment(item.create_formDate).month() + 1;
+                    break;
+                case 1:
+                    tempMonth = (moment(item.create_formDate).month()) === 11 ? 1
+                        : (moment(item.create_formDate).month() + 2);
+                    break;
+            }
+
             var formData = {
                 creatorDID: $cookies.get('userDID'),
                 prjDID: item.prjDID,
                 create_formDate: item.create_formDate,
+                month: tempMonth
             }
 
             // 移除加班項目

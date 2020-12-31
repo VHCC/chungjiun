@@ -102,6 +102,7 @@ module.exports = function (app) {
             creatorDID: req.body.creatorDID,
             prjDID: req.body.prjDID,
             create_formDate: req.body.create_formDate,
+            month: req.body.month,
         }, function (err) {
             if (err) {
                 res.send(err);
