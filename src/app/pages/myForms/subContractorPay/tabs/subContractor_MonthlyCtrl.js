@@ -1,12 +1,12 @@
 /**
  * @author IChen.chu
- * created on 16.09.2020
+ * created on 31.12.2020
  */
 (function () {
     'use strict';
 
     angular.module('BlurAdmin.pages.myForms')
-        .controller('subContractorPaySearchCtrl',
+        .controller('subContractorPayMonthlyCtrl',
             [
                 '$scope',
                 'toastr',
@@ -24,11 +24,11 @@
                 'SubContractorItemUtil',
                 'SubContractorPayItemUtil',
                 'bsLoadingOverlayService',
-                subContractorPaySearchCtrl
+                subContractorPayMonthlyCtrl
             ])
 
     /** @ngInject */
-    function subContractorPaySearchCtrl($scope,
+    function subContractorPayMonthlyCtrl($scope,
                              toastr,
                              $cookies,
                              $filter,
@@ -114,14 +114,13 @@
 
         $scope.showSCApplyItem = function(subContractDID) {
             var selected = [];
-            if ($scope.subContractorConfirmItems === undefined) return;
+            if ($scope.subContractorConfirmItemsMonthly === undefined) return;
             if (subContractDID) {
-                selected = $filter('filter')($scope.subContractorConfirmItems, {
+                selected = $filter('filter')($scope.subContractorConfirmItemsMonthly, {
                     _id: subContractDID,
                 });
             }
             return selected.length ? selected[0] : 'Not Set';
-
         }
 
         Project.findAll()
@@ -174,7 +173,7 @@
         // main tab, type = 0
         $scope.fetchSCPayItemProject = function (prjDID, specificYear, specificMonth) {
 
-            $scope.scPayItemPrjDID = prjDID;
+            // $scope.scPayItemPrjDID = prjDID;
 
             bsLoadingOverlayService.start({
                 referenceId: 'mainPage_subContractorPay'
@@ -184,13 +183,13 @@
                 // creatorDID: $scope.userDID,
                 // year: specificYear,
                 isManagerCheck: true,
-                prjDID: prjDID
+                // prjDID: prjDID
             }
 
             SubContractorApplyUtil.fetchSCApplyItems(formData, specificYear, specificMonth)
                 .success(function (res) {
-                    $scope.subContractorConfirmItems = res.payload;
-                    $scope.fetchSCPayItemData($scope.scPayItemPrjDID, specificYear, specificMonth);
+                    $scope.subContractorConfirmItemsMonthly = res.payload;
+                    $scope.fetchSCPayItemData(null, specificYear, specificMonth);
                     $timeout(function () {
                         bsLoadingOverlayService.stop({
                             referenceId: 'mainPage_subContractorPay'
@@ -238,7 +237,6 @@
                     }
 
                     vm.canManipulateProjects = canManipulateProjects_temp;
-                    console.log(canManipulateProjects_temp)
                     $timeout(function () {
                         bsLoadingOverlayService.stop({
                             referenceId: 'mainPage_subContractorPay'
@@ -349,12 +347,12 @@
         $scope.fetchSCPayItemData = function (prjDID, specificYear, specificMonth) {
 
             var formData = {
-                prjDID: prjDID,
+                // prjDID: prjDID,
             }
 
             if (specificYear == null) {
                 formData = {
-                    prjDID: prjDID,
+                    // prjDID: prjDID,
                     isSendReview: true,
                     isExecutiveCheck: true,
                 }
@@ -362,15 +360,15 @@
                 formData = {
                     year: specificYear,
                     month: specificMonth,
-                    prjDID: prjDID,
                     isSendReview: true,
                     isExecutiveCheck: true,
+                    // prjDID: prjDID,
                 }
             }
 
             SubContractorPayItemUtil.fetchSCPayItems(formData)
                 .success(function (res) {
-                    $scope.subContractorSearchItems = res.payload;
+                    $scope.subContractorSearchItemsMonthly = res.payload;
                     $timeout(function () {
                         bsLoadingOverlayService.stop({
                             referenceId: 'mainPage_subContractor'
@@ -454,11 +452,11 @@
 
         $scope.calcActuallyPay = function (applyItem) {
             var result = 0.0;
-            if ($scope.subContractorSearchItems == undefined) return result;
-            for (var index = 0; index < $scope.subContractorSearchItems.length; index ++) {
-                if (applyItem._id == $scope.subContractorSearchItems[index].subContractDID &&
-                    $scope.subContractorSearchItems[index].isExecutiveCheck == true) {
-                    result += parseInt($scope.subContractorSearchItems[index].payApply);
+            if ($scope.subContractorSearchItemsMonthly == undefined) return result;
+            for (var index = 0; index < $scope.subContractorSearchItemsMonthly.length; index ++) {
+                if (applyItem._id == $scope.subContractorSearchItemsMonthly[index].subContractDID &&
+                    $scope.subContractorSearchItemsMonthly[index].isExecutiveCheck == true) {
+                    result += parseInt($scope.subContractorSearchItemsMonthly[index].payApply);
                 }
             }
             return result
@@ -472,10 +470,10 @@
 
         $scope.checkIsClosed = function (applyItem) {
             var result = false;
-            if ($scope.subContractorSearchItems == undefined) return result;
-            for (var index = 0; index < $scope.subContractorSearchItems.length; index ++) {
-                if (applyItem._id == $scope.subContractorSearchItems[index].subContractDID &&
-                    $scope.subContractorSearchItems[index].isClosed == true) {
+            if ($scope.subContractorSearchItemsMonthly == undefined) return result;
+            for (var index = 0; index < $scope.subContractorSearchItemsMonthly.length; index ++) {
+                if (applyItem._id == $scope.subContractorSearchItemsMonthly[index].subContractDID &&
+                    $scope.subContractorSearchItemsMonthly[index].isClosed == true) {
                     result = true;
                 }
             }
@@ -486,13 +484,12 @@
             dom.$watch('myMonth',function(newValue, oldValue) {
                 if (dom.isShiftMonthSelect) {
                     dom.isShiftMonthSelect = false;
-                    $scope.changeSubContractorPayMonth(0, dom.monthPickerDom);
+                    $scope.changeSubContractorPayMonth_monthly(0, dom.monthPickerDom);
                 }
             });
         }
 
-        $scope.changeSubContractorPayMonth = function(changeCount, dom) {
-
+        $scope.changeSubContractorPayMonth_monthly = function(changeCount, dom) {
             $scope.monthPicker = dom;
 
             dom.myMonth = moment(dom.myDT).add(changeCount, 'M').format('YYYY/MM');
@@ -504,7 +501,7 @@
             specificYear = year;
             specificMonth = month;
 
-            $scope.fetchSCPayItemProject($scope.scPayItemPrjDID, specificYear, specificMonth);
+            $scope.fetchSCPayItemProject(null, specificYear, specificMonth);
         }
 
     }

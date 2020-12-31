@@ -330,6 +330,20 @@
                                 }
                             }
                         });
+
+                        $('.subContractDateInputSpecial').mask('20Y0/M0', {
+                            translation: {
+                                'Y': {
+                                    pattern: /[0123]/,
+                                },
+                                'M': {
+                                    pattern: /[01]/,
+                                },
+                                'D': {
+                                    pattern: /[0123]/,
+                                }
+                            }
+                        });
                     }, 500)
                 })
         }
@@ -376,11 +390,11 @@
 
         $scope.sendAgreeSCPayItem_Executive = function (payItem) {
 
-            var dateTemp = moment(payItem.payConfirmDate);
+            var dateTemp = moment(payItem.specialDate);
 
-            var data = moment(payItem.payConfirmDate)
-            if (payItem.payConfirmDate !== data.format('YYYY/MM/DD')) {
-                toastr.error('日期格式錯誤', '請輸入 YYYY/MM/DD');
+            var data = moment(payItem.specialDate)
+            if (payItem.specialDate !== data.format('YYYY/MM')) {
+                toastr.error('廠請年月 日期格式錯誤', '請輸入 YYYY/MM');
                 return
             }
 
@@ -396,6 +410,7 @@
                 "payTax": payItem.payTax,
                 "payOthers": payItem.payOthers,
                 "executive_memo": payItem.executive_memo,
+                "specialDate": payItem.specialDate,
                 "isClosed": payItem.isClosed,
             }
             SubContractorPayItemUtil.updateSCPayItem(formData)

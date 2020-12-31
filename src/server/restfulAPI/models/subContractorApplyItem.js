@@ -45,6 +45,7 @@ module.exports = mongoose.model('SubContractorApplyItem', {
     // 訂約金額
     contractAmount: {
         type: String,
+        default: 0,
     },
 
     //狀態：已提交、尚未提交

@@ -127,17 +127,18 @@
             <td style="vertical-align: inherit; text-align: center" width="80px"></td>
             <td style="vertical-align: inherit; text-align: center" width="100px">專案代碼</td>
             <td style="vertical-align: inherit; text-align: center" width="250px">委外廠商</td>
-            <td style="vertical-align: inherit; text-align: center" width="120px">本期請款</td>
+            <td style="vertical-align: inherit; text-align: center" width="120px">本期請款(含稅)</td>
             <td style="vertical-align: inherit; text-align: center" width="200px">說明</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">發票日期</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">發票號碼</td>
             <td style="vertical-align: inherit; text-align: center" width="100px">經理確認</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">撥款日期</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">稅金</td>
-            <td style="vertical-align: inherit; text-align: center" width="150px">雜支</td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">其他</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">未稅金額</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">行政確認</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">行政備註</td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">廠請年月</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">結清</td>
         </tr>
         </thead>
@@ -326,6 +327,11 @@
             <!--行政備註-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
                 <!--<span ng-if="payItem.isManagerCheck">{{payItem.executive_memo}}</span>-->
+            </td>
+
+            <!--廠請年月-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <!--<span ng-if="payItem.isExecutiveCheck">{{payItem.specialDate}}</span>-->
             </td>
 
             <!--結清-->

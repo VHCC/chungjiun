@@ -453,6 +453,7 @@
 
         $scope.checkResidual = function (applyItem) {
             var result = applyItem.contractAmount;
+            if (result == undefined) result = 0;
             return result - $scope.calcActuallyPay(applyItem)
         }
 

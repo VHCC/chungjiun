@@ -1,66 +1,31 @@
-<div class="row"
-     id="rowHead">
-    <div class="col-md-12"
-         id="colHead">
-        <div class="form-group">
-            <label for="projectName">總案名稱 - 專案名稱 - 子案名稱 - 類型 - 代碼</label>
-            <ui-select ng-model="subContractorPaySearchCtrlVm.prjItems.selected"
-                       class="btn-group bootstrap-select form-control"
-                       id="projectName"
-                       ng-change="fetchSCPayItemProject($select.selected.prjDID, null, null)"
-                       append-to-body="true"
-                       search-enabled="true">
-                <ui-select-match placeholder="選擇">
-                    {{$select.selected.mainName}} -
-                    {{$select.selected.prjName}} -
-                    {{$select.selected.prjSubName}} -
-                    {{prjTypeToName($select.selected.type)}} -
-                    {{$select.selected.prjCode}}
-                </ui-select-match>
-                <ui-select-choices
-                        ng-model="prjName"
-                        repeat="prjItems in subContractorPaySearchCtrlVm.canManipulateProjects |
-                            groupSelectpickerOptions: {
-                            mainName: $select.search,
-                            ezName: $select.search,
-                            prjCode: $select.search
-                            }"
-                        group-by="'mainName'">
-                    <span ng-bind-html="prjItems.ezName + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
-                </ui-select-choices>
-            </ui-select>
-        </div>
-    </div>
-</div>
-
-<br>
-
-<div class="row col-md-12">
+<div class="row col-md-12" ng-init="fetchSCPayItemProject()">
 
     <!--<my-year-picker ng-click="listenYear(this)"></my-year-picker>-->
 
     <!--<h3 class="with-line">{{year}} 年</h3>-->
 
-    <!--<my-month-picker ng-click="listenMonth(this)"-->
-                     <!--formatted="YYYY/MM">-->
-    <!--</my-month-picker>-->
-    <!--<br>-->
-    <!--<button type="button" class="btn btn-default btn-icon"-->
-            <!--ng-click="changeSubContractorPayMonth(-1, this)">-->
-        <!--<i class="ion-chevron-left"></i>-->
-    <!--</button>-->
-    <!--{{myMonth}}-->
-    <!--<button type="button" class="btn btn-default btn-icon"-->
-            <!--ng-click="changeSubContractorPayMonth(1, this)">-->
-        <!--<i class="ion-chevron-right"></i>-->
-    <!--</button>-->
+    <my-month-picker ng-click="listenMonth(this)"
+                     formatted="YYYY/MM">
+    </my-month-picker>
+    <br>
+    <button type="button" class="btn btn-default btn-icon"
+            ng-click="changeSubContractorPayMonth_monthly(-1, this)">
+        <i class="ion-chevron-left"></i>
+    </button>
+    {{myMonth}}
+    <button type="button" class="btn btn-default btn-icon"
+            ng-click="changeSubContractorPayMonth_monthly(1, this)">
+        <i class="ion-chevron-right"></i>
+    </button>
 
     <!--<h3 class="with-line">{{username}} 執行廠商請款</h3>-->
 
     <hr>
 
-    <table class="table table-bordered table-hover table-condensed" id="form_main_pdf"
-        ng-if="subContractorConfirmItems">
+    <table
+            class="table table-bordered table-hover table-condensed" id="form_main_pdf"
+            style="display: none"
+        ng-if="subContractorConfirmItemsMonthly">
         <thead>
         <tr style="white-space:nowrap">
             <td style="vertical-align: inherit; text-align: center" width="80px"></td>
@@ -76,7 +41,7 @@
             <td style="vertical-align: inherit; text-align: center" width="100px">結清</td>
         </tr>
         </thead>
-        <tbody ng-repeat="applyItem in subContractorConfirmItems">
+        <tbody ng-repeat="applyItem in subContractorConfirmItemsMonthly">
         <tr style="vertical-align: inherit; text-align: center">
             <!--序號-->
             <td style="vertical-align: inherit; text-align: center">
@@ -196,6 +161,7 @@
         <thead>
         <tr style="white-space:nowrap">
             <td style="vertical-align: inherit; text-align: center" width="80px"></td>
+            <td style="vertical-align: inherit; text-align: center" width="100px">專案代碼</td>
             <td style="vertical-align: inherit; text-align: center" width="250px">委外廠商</td>
             <td style="vertical-align: inherit; text-align: center" width="120px">本期請款(含稅)</td>
             <td style="vertical-align: inherit; text-align: center" width="200px">說明</td>
@@ -212,7 +178,7 @@
             <!--<td style="vertical-align: inherit; text-align: center" width="150px">結清</td>-->
         </tr>
         </thead>
-        <tbody ng-repeat="payItem in subContractorSearchItems">
+        <tbody ng-repeat="payItem in subContractorSearchItemsMonthly">
         <tr style="vertical-align: inherit; text-align: center">
             <!--序號-->
             <td style="vertical-align: inherit; text-align: center">
@@ -230,6 +196,10 @@
                         style="display: none;"
                         ng-click="repentSCPayItem(payItem);">退回
                 </button>
+            </td>
+            <!--專案代碼-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{showPrjCode(payItem.prjDID)}}</span>
             </td>
             <!--委外廠商-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
@@ -401,7 +371,7 @@
         </tr>
         </tbody>
 
-        <button ng-if="subContractorConfirmItems"
+        <button ng-if="subContractorConfirmItemsMonthly"
                 style="margin-bottom: 10px; display: none"
                 type="button"
                 ng-click="addSCPayItem()"
