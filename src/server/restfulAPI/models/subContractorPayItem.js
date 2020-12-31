@@ -128,8 +128,11 @@ module.exports = mongoose.model('SubContractorPayItem', {
     isClosed: {
         type: Boolean,
         default: false
-    }
+    },
 
+    specialDate: {
+        type: String,
+    }
 
 
 });
