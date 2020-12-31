@@ -27,7 +27,7 @@
                 ng-include="'app/pages/myForms/subContractorPay/tabs/subContractor_pay_searchTab.html'"></div>
         </uib-tab>
 
-        <uib-tab heading="行政撥款總表" >
+        <uib-tab heading="行政撥款總表" ng-if="roleType==100">
             <div
                     ng-controller="subContractorPayMonthlyCtrl as subContractorPayMonthlyCtrlVm"
                     ng-include="'app/pages/myForms/subContractorPay/tabs/subContractor_pay_monthlyTab.html'"></div>
