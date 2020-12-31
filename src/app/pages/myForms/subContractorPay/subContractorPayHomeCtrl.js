@@ -33,14 +33,14 @@
 
             $scope.fetchReviewData = function (dom) {
                 if ($scope.roleType != 100) {
-                    dom.$$childTail.$$prevSibling.fetchSCPayItemProject();
+                    dom.$$childTail.$$prevSibling.fetchSCPayItemProject_Review();
                 } else {
-                    dom.$$childTail.$$prevSibling.$$prevSibling.fetchSCPayItemProject();
+                    dom.$$childTail.$$prevSibling.$$prevSibling.$$prevSibling.fetchSCPayItemProject_Review();
                 }
             }
 
             $scope.fetchExecutiveData = function (dom) {
-                dom.$$childTail.fetchSCPayItemProject();
+                dom.$$childTail.fetchSCPayItemProject_Executive();
             }
 
         } // End of function

@@ -165,7 +165,7 @@
         }
 
         // main tab, type = 0
-        $scope.fetchSCPayItemProject = function () {
+        $scope.fetchSCPayItemProject_Executive = function () {
 
             // $scope.scPayItemPrjDID = prjDID;
 
