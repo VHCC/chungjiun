@@ -50,9 +50,6 @@
 
         Project.findAllEnable()
             .success(function (allProjects) {
-
-                console.log(allProjects);
-
                 $scope.allProject_raw = allProjects;
 
                 $scope.allProjectCache = [];

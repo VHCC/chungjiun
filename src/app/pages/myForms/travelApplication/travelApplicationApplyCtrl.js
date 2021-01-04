@@ -9,6 +9,7 @@
                 '$cookies',
                 '$timeout',
                 '$uibModal',
+                'toastr',
                 'ngDialog',
                 'User',
                 'Project',
@@ -29,6 +30,7 @@
                                     $cookies,
                                     $timeout,
                                     $uibModal,
+                                    toastr,
                                     ngDialog,
                                     User,
                                     Project,
@@ -95,6 +97,7 @@
                         majorID: allProjects[index].majorID,
                         managerID: allProjects[index].managerID,
                         ezName: nameResult,
+                        combinedID: allProjects[index].combinedID,
                     };
                 }
                 // console.log($scope);
@@ -127,7 +130,7 @@
             })
 
         // Filter
-        $scope.showPrjCode = function (prjDID) {
+        $scope.showPrjCodeWithCombine = function (prjDID) {
             var selected = [];
             if (prjDID) {
                 selected = $filter('filter')($scope.allProjectCache, {
@@ -135,6 +138,9 @@
                 });
             }
             if (!selected) return 'Not Set'
+            if (selected[0].combinedID != undefined) {
+                return $scope.showPrjCodeWithCombine(selected[0].combinedID);
+            }
             return selected.length > 0 ? selected[0].prjCode : 'Not Set';
         };
 
@@ -240,8 +246,6 @@
                 tableID: $scope.loginUserTablesItems[index]._id
             }
 
-            console.log(formData);
-
             TravelApplicationUtil.removeTravelApplicationItem(formData)
                 .success(function (res) {
                     $scope.getUsersTravelApplicationData($scope.userDID, thisYear);
@@ -258,7 +262,7 @@
             };
             TravelApplicationUtil.getTravelApplicationItem(formData)
                 .success(function (resp) {
-                    // console.log(resp);
+                    console.log(resp);
                     $scope.loginUserTablesItems = [];
                     for (var index = 0; index < resp.payload.length; index ++) {
                         $scope.loginUserTablesItems.push(resp.payload[index]);
@@ -309,6 +313,16 @@
                 $scope.loginUserTablesItems[index].taStartDate + " " +
                 $scope.loginUserTablesItems[index].end_time;
 
+            if (!moment($scope.loginUserTablesItems[index].start_time, "HH:mm", true).isValid()) {
+                toastr.error('起始時間 格式錯誤', '請輸入 HH:mm');
+                return
+            }
+
+            if (!moment($scope.loginUserTablesItems[index].end_time, "HH:mm", true).isValid()) {
+                toastr.error('結束時間 格式錯誤', '請輸入 HH:mm');
+                return
+            }
+
             $scope.checkText = '確定提交 ' + workOffString + '：' + "  審查？";
             $scope.checkingItem = $scope.loginUserTablesItems[index];
             ngDialog.open({
@@ -343,7 +357,6 @@
 
             TravelApplicationUtil.updateTravelApplicationItem(formData)
                 .success(function (resp) {
-                    console.log(resp);
                     $scope.getUsersTravelApplicationData($scope.userDID, thisYear);
                 })
         }
