@@ -3636,15 +3636,14 @@
                 case typeManager: {
                     fetchNationalHolidayData = {
                         create_formDate: $scope.firstFullDate_manager,
-                        year: thisYear,
+                        // year: thisYear,
                     }
                 } break;
                 case typeExecutive: {
                     fetchNationalHolidayData = {
                         create_formDate: $scope.firstFullDate_executive,
-                        year: thisYear,
+                        // year: thisYear,
                     }
-                    // console.log(fetchNationalHolidayData);
                 } break;
             }
             NationalHolidayUtil.fetchAllNationalHolidaysWithParameter(fetchNationalHolidayData)
@@ -3664,11 +3663,10 @@
                             };
                             formTables.push(detail);
                         }
-                        var evalString = "$scope.workNHTablesItems['" + userDID + "'] = formTables";
-                        eval(evalString);
                     } else {
-                        // res.payload.length == 0
                     }
+                    var evalString = "$scope.workNHTablesItems['" + userDID + "'] = formTables";
+                    eval(evalString);
                 })
                 .error(function () {
                     console.log('ERROR NationalHolidayUtil.fetchAllNationalHolidaysWithParameter');
