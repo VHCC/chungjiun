@@ -1,6 +1,8 @@
 var User = require('../../models/user');
 var Project = require('../../models/project');
 
+var moment = require('moment');
+
 module.exports = function (app) {
     'use strict';
 // application -------------------------------------------------------------
@@ -152,25 +154,6 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_project_transfer, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, transfer project");
         try {
-            Project.update({
-                _id: req.body.prjA,
-            }, {
-                $set: {
-                    combinedID: req.body.prjCode,
-                    enable: false,
-                }
-            }, function (err) {
-                if (err) {
-                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_transfer");
-                    console.log(req.body);
-                    console.log(" ***** ERROR ***** ");
-                    console.log(err);
-                    res.send(err);
-                } else {
-                    console.log("update A Done");
-                }
-            })
-
             Project.create(
                 {
                     branch: req.body.branch,
@@ -195,6 +178,26 @@ module.exports = function (app) {
                         console.log(err);
                         res.send(err);
                     } else {
+
+                        Project.update({
+                            _id: req.body.prjA,
+                        }, {
+                            $set: {
+                                combinedID: project._id,
+                                enable: false,
+                            }
+                        }, function (err) {
+                            if (err) {
+                                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_transfer");
+                                console.log(req.body);
+                                console.log(" ***** ERROR ***** ");
+                                console.log(err);
+                                res.send(err);
+                            } else {
+                                console.log("update A Done");
+                            }
+                        })
+
                         console.log(global.timeFormat(new Date()) + global.log.i + "API, transfer Project done: " +
                             JSON.stringify(req.body));
                         res.status(200).send({
@@ -221,44 +224,6 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_project_combine, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, combine project");
         try {
-            Project.update({
-                _id: req.body.prjA,
-            }, {
-                $set: {
-                    combinedID: req.body.prjCode,
-                    enable: false,
-                }
-            }, function (err) {
-                if (err) {
-                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_combine");
-                    console.log(req.body);
-                    console.log(" ***** ERROR ***** ");
-                    console.log(err);
-                    res.send(err);
-                } else {
-                    console.log("update A Done");
-                }
-            })
-
-            Project.update({
-                _id: req.body.prjB,
-            }, {
-                $set: {
-                    combinedID: req.body.prjCode,
-                    enable: false,
-                }
-            }, function (err) {
-                if (err) {
-                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_combine");
-                    console.log(req.body);
-                    console.log(" ***** ERROR ***** ");
-                    console.log(err);
-                    res.send(err);
-                } else {
-                    console.log("update B Done");
-                }
-            })
-
             Project.create(
                 {
                     branch: req.body.branch,
@@ -283,6 +248,46 @@ module.exports = function (app) {
                         console.log(err);
                         res.send(err);
                     } else {
+
+                        Project.update({
+                            _id: req.body.prjA,
+                        }, {
+                            $set: {
+                                combinedID: project._id,
+                                enable: false,
+                            }
+                        }, function (err) {
+                            if (err) {
+                                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_combine");
+                                console.log(req.body);
+                                console.log(" ***** ERROR ***** ");
+                                console.log(err);
+                                res.send(err);
+                            } else {
+                                console.log("update A Done");
+                            }
+                        })
+
+                        Project.update({
+                            _id: req.body.prjB,
+                        }, {
+                            $set: {
+                                combinedID: project._id,
+                                enable: false,
+                            }
+                        }, function (err) {
+                            if (err) {
+                                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_combine");
+                                console.log(req.body);
+                                console.log(" ***** ERROR ***** ");
+                                console.log(err);
+                                res.send(err);
+                            } else {
+                                console.log("update B Done");
+                            }
+                        })
+
+
                         console.log(global.timeFormat(new Date()) + global.log.i + "API, combine Project done: " +
                             JSON.stringify(req.body));
                         res.status(200).send({
@@ -402,10 +407,29 @@ module.exports = function (app) {
         })
     });
 
+    app.post(global.apiUrl.post_project_find_group_list, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_project_find_group_list");
+        Project.find({
+            year: req.body.year,
+            code: req.body.code,
+        }, function (err, oneProject) {
+            if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_find_group_list");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
+                res.send(err);
+            } else {
+                res.json(oneProject);
+            }
+        })
+    });
+
+
     app.get(global.apiUrl.get_project_find_by_code_distinct, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, get projects by name distinct.");
         Project.find({
-            year: date.getFullYear() - 1911
+            year: moment().format('YYYY') - 1911,
         }).distinct('code', function (err, projects) {
             if (err) {
                 console.log(global.timeFormat(new Date()) + global.log.e + "API, get_project_find_by_code_distinct");
@@ -414,7 +438,6 @@ module.exports = function (app) {
                 console.log(err);
                 res.send(err);
             } else {
-
                 res.json(projects);
             }
         })
