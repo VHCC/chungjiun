@@ -122,7 +122,8 @@
                 <div ng-include="'app/pages/myForms/paymentForm/tabs/paymentForm_executiveTab.html'"></div>
             </uib-tab>
             <uib-tab heading="墊付款查詢">
-                <div ng-include="'app/pages/myForms/paymentForm/tabs/paymentForm_searchTab.html'"></div>
+                <div ng-controller="paymentFormSearchCtrl as paymentFormSearchCtrlVm"
+                     ng-include="'app/pages/myForms/paymentForm/tabs/paymentForm_searchTab.html'"></div>
             </uib-tab>
         </uib-tabset>
     </div>
