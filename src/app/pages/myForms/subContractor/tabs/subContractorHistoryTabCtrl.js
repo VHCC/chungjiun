@@ -76,10 +76,10 @@
                     $scope.subContractorApplyPeriods = res.payload;
 
                     for (var index = 0; index < $scope.subContractorApplyPeriods.length; index ++) {
-                        $scope.subContractorApplyPeriods[index].prjCode = $scope.showPrjCode($scope.subContractorApplyPeriods[index].prjDID)
-                        $scope.subContractorApplyPeriods[index].mainName = $scope.showPrjMainName($scope.subContractorApplyPeriods[index].prjDID)
-                        $scope.subContractorApplyPeriods[index].managerName = $scope.showProjectManager($scope.subContractorApplyPeriods[index].prjDID)
-                        $scope.subContractorApplyPeriods[index].applierName = $scope.showApplier($scope.subContractorApplyPeriods[index].creatorDID)
+                        $scope.subContractorApplyPeriods[index].prjCode = $scope.showPrjCodeWithCombine($scope.subContractorApplyPeriods[index].prjDID)
+                        $scope.subContractorApplyPeriods[index].mainName = $scope.showPrjMainName($scope.showPrjDIDWithCombine($scope.subContractorApplyPeriods[index].prjDID))
+                        $scope.subContractorApplyPeriods[index].managerName = $scope.showProjectManager($scope.showPrjDIDWithCombine($scope.subContractorApplyPeriods[index].prjDID))
+                        $scope.subContractorApplyPeriods[index].applierName = $scope.showApplier($scope.showPrjDIDWithCombine($scope.subContractorApplyPeriods[index].creatorDID))
                     }
 
                     document.getElementById('includeHead_subContractor_history').innerText = "";
@@ -153,6 +153,7 @@
                         majorID: allProjects[index].majorID,
                         managerID: allProjects[index].managerID,
                         ezName: nameResult,
+                        combinedID: allProjects[index].combinedID,
                     };
                 }
             });
@@ -179,7 +180,8 @@
                 vm.subContractorItems = res.payload;
             })
 
-        $scope.showPrjCode = function (prjDID) {
+        // Filter
+        $scope.showPrjCodeWithCombine = function (prjDID) {
             var selected = [];
             if (prjDID) {
                 selected = $filter('filter')($scope.allProjectCache, {
@@ -187,7 +189,25 @@
                 });
             }
             if (!selected) return 'Not Set'
+            if (selected[0].combinedID != undefined) {
+                return $scope.showPrjCodeWithCombine(selected[0].combinedID);
+            }
             return selected.length > 0 ? selected[0].prjCode : 'Not Set';
+        };
+
+        // Filter
+        $scope.showPrjDIDWithCombine = function (prjDID) {
+            var selected = [];
+            if (prjDID) {
+                selected = $filter('filter')($scope.allProjectCache, {
+                    prjDID: prjDID,
+                });
+            }
+            if (!selected) return 'Not Set'
+            if (selected[0].combinedID != undefined) {
+                return $scope.showPrjDIDWithCombine(selected[0].combinedID);
+            }
+            return selected.length > 0 ? selected[0]._id : 'Not Set';
         };
 
         $scope.showPrjMainName = function (prjDID) {

@@ -76,7 +76,7 @@
         //所有專案，資料比對用
         Project.findAll()
             .success(function (allProjects) {
-                $scope.allProjectData = [];
+                $scope.allProjectCache = [];
                 var prjCount = allProjects.length;
                 for (var index = 0; index < prjCount; index++) {
 
@@ -90,7 +90,7 @@
                         nameResult = allProjects[index].mainName + " - " + ProjectUtil.getTypeText(allProjects[index].type);
                     }
 
-                    $scope.allProjectData[index] = {
+                    $scope.allProjectCache[index] = {
                         prjDID: allProjects[index]._id,
                         prjCode: allProjects[index].prjCode,
                         mainName: allProjects[index].mainName + " - "
@@ -282,14 +282,18 @@
         }
 
         // -----------------------  Show methods --------------------------
-        $scope.showPrjCode = function (prjDID) {
+        // Filter
+        $scope.showPrjCodeWithCombine = function (prjDID) {
             var selected = [];
             if (prjDID) {
-                selected = $filter('filter')($scope.allProjectData, {
+                selected = $filter('filter')($scope.allProjectCache, {
                     prjDID: prjDID,
                 });
             }
             if (!selected) return 'Not Set'
+            if (selected[0].combinedID != undefined) {
+                return $scope.showPrjCodeWithCombine(selected[0].combinedID);
+            }
             return selected.length > 0 ? selected[0].prjCode : 'Not Set';
         };
 

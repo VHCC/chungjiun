@@ -185,6 +185,7 @@ module.exports = function (app) {
                             $set: {
                                 combinedID: project._id,
                                 enable: false,
+                                isCombined: true,
                             }
                         }, function (err) {
                             if (err) {
@@ -255,6 +256,7 @@ module.exports = function (app) {
                             $set: {
                                 combinedID: project._id,
                                 enable: false,
+                                isCombined: true,
                             }
                         }, function (err) {
                             if (err) {
@@ -274,6 +276,7 @@ module.exports = function (app) {
                             $set: {
                                 combinedID: project._id,
                                 enable: false,
+                                isCombined: true,
                             }
                         }, function (err) {
                             if (err) {

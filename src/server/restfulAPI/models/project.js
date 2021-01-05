@@ -128,4 +128,8 @@ module.exports = mongoose.model('Project', {
         type : String,
         default: moment(new Date()).format("YYYYMMDD_HHmmss")
     },
+
+    isCombined: {
+        type: Boolean,
+    }
 });

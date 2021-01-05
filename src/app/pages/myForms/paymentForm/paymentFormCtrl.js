@@ -125,6 +125,7 @@
                         majorID: allProjects[index].majorID,
                         managerID: allProjects[index].managerID,
                         ezName: nameResult,
+                        combinedID: allProjects[index].combinedID,
                     };
                 }
             });
@@ -519,7 +520,8 @@
 
         }
 
-        $scope.showPrjCode = function (prjDID) {
+        // Filter
+        $scope.showPrjCodeWithCombine = function (prjDID) {
             var selected = [];
             if (prjDID) {
                 selected = $filter('filter')($scope.allProjectCache, {
@@ -527,6 +529,9 @@
                 });
             }
             if (!selected) return 'Not Set'
+            if (selected[0].combinedID != undefined) {
+                return $scope.showPrjCodeWithCombine(selected[0].combinedID);
+            }
             return selected.length > 0 ? selected[0].prjCode : 'Not Set';
         };
 
@@ -872,7 +877,7 @@
         $scope.disagreePaymentItem_manager = function (userDID, item) {
             $scope.checkText = '確定 退回：' +
                 $scope.showUser(userDID) + ", " +
-                $scope.showPrjCode(item.prjDID) +
+                $scope.showPrjCodeWithCombine(item.prjDID) +
                 " ？";
             $scope.checkingUserDID = userDID;
             $scope.checkingItem = item;
@@ -1003,7 +1008,7 @@
             console.log(item);
             $scope.checkText = '確定 核定：' +
                 $scope.showUser(userDID) + ", " +
-                $scope.showPrjCode(item.prjDID) + ", 金額：" +
+                $scope.showPrjCodeWithCombine(item.prjDID) + ", 金額：" +
                 item.amount + ", 核定編號：" +
                 item.itemIndex +
                 " ？";
@@ -1076,7 +1081,7 @@
             $scope.checkText = '退回 給：' +
                 // $scope.showProjectManager(item.prjDID) + ", " +
                 $scope.showUser(userDID) + ", " +
-                $scope.showPrjCode(item.prjDID) +
+                $scope.showPrjCodeWithCombine(item.prjDID) +
                 " ？";
             $scope.checkingUserDID = userDID;
             $scope.checkingItem = item;
@@ -1106,7 +1111,7 @@
         $scope.repentPayment_executive = function (userDID, item) {
             $scope.checkText = '回復成 [行政核定] 前狀態：' +
                 $scope.showUser(userDID) + ", " +
-                $scope.showPrjCode(item.prjDID) +
+                $scope.showPrjCodeWithCombine(item.prjDID) +
                 " ？";
             $scope.checkingUserDID = userDID;
             $scope.checkingItem = item;

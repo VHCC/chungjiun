@@ -269,6 +269,7 @@
                         ng-show="isFitPrjManager(prj.managerID) || isFitExecutive()"
                         ng-click="changePrjStatus(this)"
                         ng-model="prj.enable"
+                        ng-if="!prj.isCombined"
                         switcher-style="primary"
                         switcher-value="prj.enable"/>
                 <div ng-show="!isFitPrjManager(prj.managerID) && !isFitExecutive()">
@@ -279,9 +280,7 @@
                         關閉
                     </span>
                 </div>
-
-
-
+                <span ng-if="prj.isCombined">因已合併、轉換。專案關閉</span>
             </td>
 
         </tr>

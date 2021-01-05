@@ -49,7 +49,7 @@
             Project.findAll()
                 .success(function (allProjects) {
                     // console.log(allProjects);
-                    vm.allProjectData = allProjects;
+                    vm.allProjectCache = allProjects;
                 })
                 .error(function () {
                     console.log("Error, Project.findAll")
