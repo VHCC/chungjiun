@@ -105,7 +105,7 @@
         //所有專案，資料比對用
         Project.findAll()
             .success(function (allProjects) {
-                $scope.allProjectData = [];
+                $scope.allProjectCache = [];
                 var prjCount = allProjects.length;
                 for (var index = 0; index < prjCount; index++) {
 
@@ -119,7 +119,7 @@
                         nameResult = allProjects[index].mainName + " - " + ProjectUtil.getTypeText(allProjects[index].type);
                     }
 
-                    $scope.allProjectData[index] = {
+                    $scope.allProjectCache[index] = {
                         prjDID: allProjects[index]._id,
                         prjCode: allProjects[index].prjCode,
                         mainName: allProjects[index].mainName + " - "
@@ -664,7 +664,7 @@
         $scope.showPrjName = function (prjDID) {
             var selected = [];
             if (prjDID) {
-                selected = $filter('filter')($scope.allProjectData, {
+                selected = $filter('filter')($scope.allProjectCache, {
                     prjDID: prjDID,
                 });
             }
@@ -681,7 +681,7 @@
         $scope.showPrjNameEZ = function (prjDID) {
             var selected = [];
             if (prjDID) {
-                selected = $filter('filter')($scope.allProjectData, {
+                selected = $filter('filter')($scope.allProjectCache, {
                     prjDID: prjDID,
                 });
             }
@@ -693,7 +693,7 @@
         $scope.showPrjCode = function (prjDID) {
             var selected = [];
             if (prjDID) {
-                selected = $filter('filter')($scope.allProjectData, {
+                selected = $filter('filter')($scope.allProjectCache, {
                     prjDID: prjDID,
                 });
             }
@@ -704,7 +704,7 @@
         $scope.showProjectManager = function (prjDID) {
             var majorSelected = [];
             if (prjDID) {
-                majorSelected = $filter('filter')($scope.allProjectData, {
+                majorSelected = $filter('filter')($scope.allProjectCache, {
                     prjDID: prjDID
                 });
             }
@@ -724,7 +724,7 @@
         $scope.showProjectManagerDID = function (prjDID) {
             var majorSelected = [];
             if (prjDID) {
-                majorSelected = $filter('filter')($scope.allProjectData, {
+                majorSelected = $filter('filter')($scope.allProjectCache, {
                     prjDID: prjDID
                 });
             }
@@ -744,7 +744,7 @@
         $scope.isFitManager = function(prjDID) {
             var majorSelected = [];
             if (prjDID) {
-                majorSelected = $filter('filter')($scope.allProjectData, {
+                majorSelected = $filter('filter')($scope.allProjectCache, {
                     prjDID: prjDID
                 });
             }

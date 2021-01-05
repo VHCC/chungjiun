@@ -146,7 +146,8 @@
             $scope.getWOTReviewData_manager();
         }
 
-        $scope.showPrjCode = function (prjDID) {
+        // Filter
+        $scope.showPrjCodeWithCombine = function (prjDID) {
             var selected = [];
             if (prjDID) {
                 selected = $filter('filter')($scope.allProjectCache, {
@@ -154,6 +155,9 @@
                 });
             }
             if (!selected) return 'Not Set'
+            if (selected[0].combinedID != undefined) {
+                return $scope.showPrjCodeWithCombine(selected[0].combinedID);
+            }
             return selected.length > 0 ? selected[0].prjCode : 'Not Set';
         };
 
@@ -419,7 +423,7 @@
         $scope.disagreeWOTItem_manager = function (userDID, item) {
             $scope.checkText = '確定 退回：' +
                 $scope.showUser(userDID) + ", " +
-                $scope.showPrjCode(item.prjDID) +
+                $scope.showPrjCodeWithCombine(item.prjDID) +
                 " ？";
             $scope.checkingUserDID = userDID;
             $scope.checkingItem = item;

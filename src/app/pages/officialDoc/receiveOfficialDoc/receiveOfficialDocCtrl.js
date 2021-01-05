@@ -37,7 +37,7 @@
         // 所有專案
         Project.findAll()
             .success(function (allProjects) {
-                vm.allProjectData = allProjects;
+                vm.allProjectCache = allProjects;
             })
             .error(function () {
                 console.log("Error, Project.findAll")

@@ -7,7 +7,7 @@
             <ui-select ng-model="paymentFormSearchCtrlVm.prjItems.selected"
                        class="btn-group bootstrap-select form-control"
                        id="projectName"
-                       ng-change="searchPaymentItem($select.selected._id, null, null)"
+                       ng-change="searchPaymentItemSearch($select.selected._id, null, null)"
                        append-to-body="true"
                        search-enabled="true">
                 <ui-select-match placeholder="選擇(查詢)">
@@ -78,7 +78,7 @@
             </td>
             <!--專案代碼-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span>{{showPrjCode(item.prjDID)}}</span>
+                <span>{{showPrjCodeWithCombine(item.prjDID)}}</span>
             </td>
             <!--發票日期-->
             <td style="vertical-align: inherit; text-align: center">

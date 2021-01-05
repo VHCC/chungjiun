@@ -7,11 +7,6 @@
 
     angular.module('BlurAdmin.pages.myProject')
         .service('intiProjectsAllService', function ($http, $cookies) {
-
-            // console.log($cookies.get('userDID'));
-            // var formData = {
-            //     relatedID: $cookies.get('userDID'),
-            // }
             var promise = $http.get('/api/projectFindAllEnable')
                 .success(function (allProjects) {
                     return allProjects;
@@ -46,7 +41,6 @@
         $scope.loading = true;
 
         intiProjectsAllService.then(function (resp) {
-            console.log(resp.data);
             $scope.projects = resp.data;
             $scope.projects.slice(0, resp.data.length);
 
@@ -149,16 +143,16 @@
         }
 
         $scope.showTechs = function (techs) {
-            var resault = "";
+            var result = "";
             var selected = [];
             if ($scope.projectTechs === undefined) return;
             for (var index = 0; index < techs.length; index++) {
                 selected = $filter('filter')($scope.projectTechs, {
                     value: techs[index],
                 });
-                resault += selected.length ? selected[0].name + ", " : 'UnKnown, ';
+                result += selected.length ? selected[0].name + ", " : '未指定';
             }
-            return resault;
+            return result;
         }
 
         editableThemes['bs3'].submitTpl = '<button type="submit" ng-click="updateMajor($form, $parent)" class="btn btn-primary btn-with-icon"><i class="ion-checkmark-round"></i></button>';
@@ -204,7 +198,6 @@
 
         $scope.showWorkersName = function (workers) {
             var resault = "";
-            // console.log(workers);
             for (var index = 0; index < workers.length; index++) {
                 if (workers[index] == null || workers[index].name == undefined) {
                     continue;

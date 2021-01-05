@@ -148,6 +148,7 @@
                         majorID: allProjects[index].majorID,
                         managerID: allProjects[index].managerID,
                         ezName: nameResult,
+                        combinedID: allProjects[index].combinedID,
                     };
 
                 }
@@ -251,7 +252,8 @@
             }
         }
 
-        $scope.showPrjCode = function (prjDID) {
+        // Filter
+        $scope.showPrjCodeWithCombine = function (prjDID) {
             var selected = [];
             if (prjDID) {
                 selected = $filter('filter')($scope.allProjectCache, {
@@ -259,6 +261,9 @@
                 });
             }
             if (!selected) return 'Not Set'
+            if (selected[0].combinedID != undefined) {
+                return $scope.showPrjCodeWithCombine(selected[0].combinedID);
+            }
             return selected.length > 0 ? selected[0].prjCode : 'Not Set';
         };
 

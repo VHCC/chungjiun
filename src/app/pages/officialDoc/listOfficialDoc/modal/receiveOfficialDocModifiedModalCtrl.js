@@ -42,7 +42,7 @@
         // 所有專案
         Project.findAll()
             .success(function (allProjects) {
-                vm.allProjectData = allProjects;
+                vm.allProjectCache = allProjects;
             })
             .error(function () {
                 console.log("Error, Project.findAll")
@@ -535,7 +535,7 @@
             vm.docAttachedType.selected = selectedTemp[0];
 
             // 專案設定
-            selectedTemp = $filter('filter')(vm.allProjectData, {
+            selectedTemp = $filter('filter')(vm.allProjectCache, {
                 _id: $scope.docData.prjDID,
             });
             vm.prjItems = [];
