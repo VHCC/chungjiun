@@ -38,6 +38,11 @@
         }])
         .factory('Project', ['$http', function (http) {
             return {
+                fetchGroupList: function (projectData) {
+                    return http.post('/api/post_project_find_group_list', projectData);
+                },
+
+                // 找總案
                 findAllByGroup: function () {
                     return http.get('/api/projectFindAllByGroup');
                 },

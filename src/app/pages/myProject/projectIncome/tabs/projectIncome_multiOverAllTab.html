@@ -1,0 +1,43 @@
+<div class="row"
+     id="rowHead">
+    <div class="col-md-12"
+         id="colHead">
+        <div class="form-group">
+            <label for="projectName">總案名稱 - 專案名稱 - 子案名稱 - 類型 - 代碼</label>
+            <ui-select ng-model="projectIncomeMultiOverAllCtrlVm.prjItems.selected"
+                       class="btn-group bootstrap-select form-control"
+                       id="projectName"
+                       ng-change="fetchPrjGroup($select.selected)"
+                       append-to-body="true"
+                       search-enabled="true">
+                <ui-select-match placeholder="選擇總案">
+                    {{$select.selected.mainName}} -
+                    {{$select.selected.year}} -
+                    {{$select.selected.code}}
+                </ui-select-match>
+                <ui-select-choices
+                        repeat="prjItems in projectIncomeMultiOverAllCtrlVm.projects |
+                                groupSelectpickerOptions: {
+                                mainName: $select.search,
+                                code: $select.search,
+                                prjCode: $select.search
+                                }" >
+                            <span ng-bind-html="
+                                prjItems.mainName +
+                                ' : ' +
+                                ' - ' + prjItems.year +
+                                ' - ' + prjItems.code
+                                | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+
+    <div bs-loading-overlay
+         bs-loading-overlay-reference-id="mainPage_project_income_multi_overall">
+        <div class="row" >
+            <div class="col-md-12" id="includeHead_multi_over_all">
+            </div>
+        </div>
+    </div>
+</div>

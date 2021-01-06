@@ -27,19 +27,19 @@
 
     /** @ngInject */
     function paymentFormSearchCtrl($scope,
-                             toastr,
-                             $cookies,
-                             $filter,
-                             $compile,
-                             $timeout,
-                             window,
-                             ngDialog,
-                             User,
-                             Project,
-                             ProjectUtil,
-                             PaymentFormsUtil,
-                             GlobalConfigUtil,
-                             bsLoadingOverlayService) {
+                                   toastr,
+                                   $cookies,
+                                   $filter,
+                                   $compile,
+                                   $timeout,
+                                   window,
+                                   ngDialog,
+                                   User,
+                                   Project,
+                                   ProjectUtil,
+                                   PaymentFormsUtil,
+                                   GlobalConfigUtil,
+                                   bsLoadingOverlayService) {
 
         $scope.userDID = $cookies.get('userDID');
         $scope.roleType = $cookies.get('roletype');

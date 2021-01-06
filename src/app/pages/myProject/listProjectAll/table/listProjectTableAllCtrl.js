@@ -13,7 +13,7 @@
                 });
             return promise;
         })
-        .controller('listProjectAllTableCtrl',
+        .controller('listProjectAllEnableCtrl',
             [
                 '$scope',
                 '$filter',
@@ -25,10 +25,10 @@
                 'Project',
                 'ProjectUtil',
                 'intiProjectsAllService',
-                ListProjectAllPageCtrl]);
+                listProjectAllEnableCtrl]);
 
     /** @ngInject */
-    function ListProjectAllPageCtrl($scope,
+    function listProjectAllEnableCtrl($scope,
                                     $filter,
                                     $cookies,
                                     User,
@@ -48,11 +48,11 @@
                 document.getElementById('includeHead'))
                 .append($compile(
                     "<div ba-panel ba-panel-title=" +
-                    "'所有專案列表 - " + resp.data.length + "'" +
+                    "'所有『開啟中』專案列表 - " + resp.data.length + "'" +
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
-                    "ng-include=\"'app/pages/myProject/listProjectAll/table/listProjectAllTable.html'\">" +
+                    "ng-include=\"'app/pages/myProject/listProjectAll/table/listProjectAllEnableTable.html'\">" +
                     "</div>" +
                     "</div>"
                 )($scope));

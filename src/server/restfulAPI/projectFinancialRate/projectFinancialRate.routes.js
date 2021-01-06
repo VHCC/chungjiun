@@ -29,11 +29,25 @@ module.exports = function(app) {
         projectFinancialRateModel.findOne({
             year: req.body.year,
         }, function(err, financialRate) {
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-                payload: financialRate
-            });
+            if (financialRate == null) {
+                projectFinancialRateModel.create({
+                    year: req.body.year,
+                    timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
+                }, function(err, financialRate) {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: financialRate
+                    });
+                });
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: financialRate
+                });
+            }
+
         });
     });
 

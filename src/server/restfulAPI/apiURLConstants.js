@@ -21,6 +21,7 @@ global.apiUrl = {
     get_project_find_all_by_group : '/api/projectFindAllByGroup',
     post_project_find_by_name : '/api/projectFindByName',
     post_project_find_by_code : '/api/post_project_find_by_code',
+    post_project_find_group_list : '/api/post_project_find_group_list',
     // 尋找總數
     get_project_find_by_code_distinct : '/api/projectFindByCodeDistinct',
     post_project_number_find_by_prj_number_distinct : '/api/post_project_number_find_by_prj_number_distinct',

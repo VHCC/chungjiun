@@ -200,30 +200,249 @@
 
         $scope.getFinancialRate = function () {
             $timeout(function () {
-                bsLoadingOverlayService.start({
-                    referenceId: 'mainPage_project_financial'
-                });
-            }, 0)
-            var formData = {
-                year: $scope.year
-            }
+                var formData = {
+                    // year: $scope.year
+                    year: $scope.selectPrjInfo.year
+                }
 
-            ProjectFinancialRateUtil.getFinancialRate(formData)
-                .success(function (res) {
-                    if (res.payload == null || res.payload.length == 0) {
-                        ProjectFinancialRateUtil.insertFinancialRate(formData)
-                            .success(function (res) {
-                                $scope.yearRate = res.payload;
-                            })
-                    } else {
+                ProjectFinancialRateUtil.getFinancialRate(formData)
+                    .success(function (res) {
                         $scope.yearRate = res.payload;
-                    }
-                    $timeout(function () {
-                        bsLoadingOverlayService.stop({
-                            referenceId: 'mainPage_project_financial'
-                        });
-                    }, 500)
-                })
+
+                        var formData = {
+                            prjDID: $scope.selectPrjInfo._id,
+                        }
+
+                        ProjectFinancialResultUtil.findFR(formData)
+                            .success(function (res) {
+                                console.log(res);
+
+                                if (res.payload.length == 0) {
+                                    ProjectFinancialResultUtil.createFR(formData)
+                                        .success(function (res) {
+                                            $scope.fetchProjectFinancialResult($scope.selectPrjInfo);
+                                        })
+                                }
+
+                                $scope.projectFinancialResultTable = res.payload;
+
+                                if (!$scope.projectFinancialResultTable[0].is011Set) {
+                                    $scope.projectFinancialResultTable[0].rate_item_1 = $scope.yearRate.rate_item_1;
+                                    $scope.projectFinancialResultTable[0].rate_item_2 = $scope.yearRate.rate_item_2;
+                                    $scope.projectFinancialResultTable[0].rate_item_3 = $scope.yearRate.rate_item_3;
+                                    $scope.projectFinancialResultTable[0].rate_item_4 = $scope.yearRate.rate_item_4;
+                                    $scope.projectFinancialResultTable[0].rate_item_5 = $scope.yearRate.rate_item_5;
+                                }
+
+                                $scope.overall_data = [];
+
+                                var incomeFormData = {
+                                    isEnable: true,
+                                    prjDID: $scope.selectPrjInfo._id
+                                }
+
+                                // 收入
+                                ProjectIncomeUtil.findIncome(incomeFormData)
+                                    .success(function (res) {
+                                        console.log(res);
+                                        $scope.projectIncomeTable = res.payload;
+                                        for (var i = 0; i < res.payload.length; i ++) {
+                                            var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
+                                            if (moment(tempDate) >= moment("2020/01")) {
+                                                if ($scope.overall_data[tempDate] != undefined) {
+                                                    var data = $scope.overall_data[tempDate];
+                                                    data._payments.push(res.payload[i]);
+                                                } else {
+                                                    var data = {
+                                                        _date: tempDate,
+                                                        _income: [],
+                                                        _payments: [res.payload[i]],
+                                                        _otherCost: [],
+                                                        _subContractorPay: [],
+                                                        _overall: 0,
+                                                    }
+                                                    $scope.overall_data.push(data);
+                                                    eval('$scope.overall_data[tempDate] = data')
+                                                }
+                                            }
+                                        }
+                                        console.log($scope.overall_data);
+                                    })
+
+                                // 墊付款
+                                PaymentFormsUtil.fetchPaymentsItemByPrjDID(formData)
+                                    .success(function (res) {
+                                        console.log(res)
+                                        $scope.searchPaymentsItems = res.payload;
+                                        for (var i = 0; i < res.payload.length; i ++) {
+                                            var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
+                                            if (moment(tempDate) >= moment("2020/01")) {
+                                                if ($scope.overall_data[tempDate] != undefined) {
+                                                    var data = $scope.overall_data[tempDate];
+                                                    data._payments.push(res.payload[i]);
+                                                } else {
+                                                    var data = {
+                                                        _date: tempDate,
+                                                        _income: [],
+                                                        _payments: [res.payload[i]],
+                                                        _otherCost: [],
+                                                        _subContractorPay: [],
+                                                        _overall: 0,
+                                                    }
+                                                    $scope.overall_data.push(data);
+                                                    eval('$scope.overall_data[tempDate] = data')
+                                                }
+                                            }
+                                        }
+                                    })
+                                    .error(function (resp) {
+                                    })
+
+                                // 其他支出
+                                ExecutiveExpenditureUtil.fetchExecutiveExpenditureItemsByPrjDID(formData)
+                                    .success(function (res) {
+                                        // console.log(res)
+                                        $scope.displayEEItems = res.payload;
+                                        for (var i = 0; i < res.payload.length; i ++) {
+                                            var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
+                                            // console.log(tempDate)
+
+                                            if (moment(tempDate) >= moment("2020/01")) {
+
+                                                if ($scope.overall_data[tempDate] != undefined) {
+                                                    var data = $scope.overall_data[tempDate];
+                                                    data._otherCost.push(res.payload[i]);
+                                                } else {
+                                                    var data = {
+                                                        _date: tempDate,
+                                                        _income: [],
+                                                        _payments: [],
+                                                        _subContractorPay: [],
+                                                        _otherCost: [res.payload[i]],
+                                                        _overall: 0,
+                                                    }
+                                                    $scope.overall_data.push(data);
+                                                    eval('$scope.overall_data[tempDate] = data')
+                                                }
+                                            }
+                                        }
+                                    })
+                                    .error(function (res) {
+                                    })
+
+                                var fetchFormData = {
+                                    prjDID: $scope.selectPrjInfo._id,
+                                    isExecutiveCheck: true
+                                }
+
+                                // 廠商請款
+                                SubContractorPayItemUtil.fetchSCPayItems(fetchFormData)
+                                    .success(function (res) {
+                                        console.log(res);
+                                        $scope.subContractorPayItems = res.payload;
+                                        for (var i = 0; i < res.payload.length; i ++) {
+                                            var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
+                                            if (moment(tempDate) >= moment("2020/01")) {
+                                                if ($scope.overall_data[tempDate] != undefined) {
+                                                    var data = $scope.overall_data[tempDate];
+                                                    data._subContractorPay.push(res.payload[i]);
+                                                } else {
+                                                    var data = {
+                                                        _date: tempDate,
+                                                        _income: [],
+                                                        _payments: [],
+                                                        _otherCost: [],
+                                                        _subContractorPay: [res.payload[i]],
+                                                        _overall: 0,
+                                                    }
+                                                    $scope.overall_data.push(data);
+                                                    eval('$scope.overall_data[tempDate] = data')
+                                                }
+                                            }
+                                        }
+                                    })
+
+                                // 人時支出
+                                var getData = {};
+
+                                getData.branch = $scope.selectPrjInfo.branch;
+                                getData.year = $scope.selectPrjInfo.year;
+                                getData.code = $scope.selectPrjInfo.code;
+                                getData.prjNumber = $scope.selectPrjInfo.prjNumber;
+                                getData.prjSubNumber = $scope.selectPrjInfo.prjSubNumber;
+                                getData.type = $scope.selectPrjInfo.type;
+
+                                WorkHourUtil.queryStatisticsForms_projectIncome_Cost(getData)
+                                    .success(function (res) {
+                                        console.log(res)
+
+                                        res.payload = res.payload.sort(function (a, b) {
+                                            return a._id.userDID > b._id.userDID ? 1 : -1;
+                                        });
+
+                                        for (var index = 0; index < res.payload.length; index ++) {
+                                            for (var index_sub = 0; index_sub < res.payload_add.length; index_sub ++) {
+                                                if( res.payload_add[index_sub]._id.prjCode == res.payload[index]._id.prjCode &&
+                                                    res.payload_add[index_sub]._id.userDID == res.payload[index]._id.userDID) {
+                                                    res.payload[index]._add_tables = res.payload_add[index_sub].add_tables;
+                                                }
+                                            }
+                                        }
+                                        $scope.statisticsResults = $scope.filter_type2_data(res.payload);
+                                        $scope.statisticsResults_type1 = $scope.filter_type1_data(res.payload);
+                                        $scope.statisticsResults_type1 = $scope.filter_type2_data_item($scope.statisticsResults_type1);
+
+                                        for (var i = 0; i < $scope.statisticsResults_type1.length; i ++) {
+                                            var tempDate = $scope.statisticsResults_type1[i]._date;
+
+                                            if (moment(tempDate) >= moment("2020/01")) {
+                                                if ($scope.overall_data[tempDate] != undefined) {
+                                                    var data = $scope.overall_data[tempDate];
+                                                    data._overall = $scope.statisticsResults_type1[i].totalCost +
+                                                        $scope.statisticsResults_type1[i].hourTotal_add_cost_A +
+                                                        $scope.statisticsResults_type1[i].hourTotal_add_cost_B;
+                                                } else {
+                                                    var data = {
+                                                        _date: tempDate,
+                                                        _income: [],
+                                                        _payments: [],
+                                                        _otherCost: [],
+                                                        _subContractorPay: [],
+                                                        _overall: $scope.statisticsResults_type1[i].totalCost +
+                                                        $scope.statisticsResults_type1[i].hourTotal_add_cost_A +
+                                                        $scope.statisticsResults_type1[i].hourTotal_add_cost_B,
+                                                    }
+                                                    $scope.overall_data.push(data);
+                                                    eval('$scope.overall_data[tempDate] = data')
+                                                }
+                                            }
+                                        }
+
+                                    })
+
+                                angular.element(
+                                    document.getElementById('includeHead_financial_result'))
+                                    .html($compile(
+                                        "<div ba-panel ba-panel-title=" +
+                                        "'" + "" + "'" +
+                                        "ba-panel-class= " +
+                                        "'with-scroll'" + ">" +
+                                        "<div " +
+                                        "ng-include=\"'app/pages/myProject/projectFinancial/tables/projectFinancial_result_table.html'\">" +
+                                        "</div>" +
+                                        "</div>"
+                                    )($scope));
+
+                                $timeout(function () {
+                                    bsLoadingOverlayService.stop({
+                                        referenceId: 'mainPage_project_financial_result'
+                                    });
+                                }, 1000)
+                            })
+                    })
+
+            }, 100)
+
         }
 
         $scope.calcRates = function (rateItem) {
@@ -237,235 +456,13 @@
 
         $scope.fetchProjectFinancialResult = function (prjInfo) {
             $scope.selectPrjInfo = prjInfo;
+            $scope.getFinancialRate();
 
             $timeout(function () {
                 bsLoadingOverlayService.start({
                     referenceId: 'mainPage_project_financial_result'
                 });
             }, 100)
-
-            var formData = {
-                prjDID: prjInfo._id
-            }
-
-            ProjectFinancialResultUtil.findFR(formData)
-                .success(function (res) {
-                    console.log(res);
-
-                    if (res.payload.length == 0) {
-                        ProjectFinancialResultUtil.createFR(formData)
-                            .success(function (res) {
-                                $scope.fetchProjectFinancialResult($scope.selectPrjInfo);
-                            })
-                    }
-
-                    $scope.projectFinancialResultTable = res.payload;
-
-                    $scope.overall_data = [];
-
-                    var incomeFormData = {
-                        isEnable: true,
-                        prjDID: prjInfo._id
-                    }
-
-                    // 收入
-                    ProjectIncomeUtil.findIncome(incomeFormData)
-                        .success(function (res) {
-                            console.log(res);
-                            $scope.projectIncomeTable = res.payload;
-                            for (var i = 0; i < res.payload.length; i ++) {
-                                var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
-                                if (moment(tempDate) >= moment("2020/01")) {
-                                    if ($scope.overall_data[tempDate] != undefined) {
-                                        var data = $scope.overall_data[tempDate];
-                                        data._payments.push(res.payload[i]);
-                                    } else {
-                                        var data = {
-                                            _date: tempDate,
-                                            _income: [],
-                                            _payments: [res.payload[i]],
-                                            _otherCost: [],
-                                            _subContractorPay: [],
-                                            _overall: 0,
-                                        }
-                                        $scope.overall_data.push(data);
-                                        eval('$scope.overall_data[tempDate] = data')
-                                    }
-                                }
-                            }
-                            console.log($scope.overall_data);
-                        })
-
-                    // 墊付款
-                    PaymentFormsUtil.fetchPaymentsItemByPrjDID(formData)
-                        .success(function (res) {
-                            console.log(res)
-                            $scope.searchPaymentsItems = res.payload;
-                            for (var i = 0; i < res.payload.length; i ++) {
-                                var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
-                                if (moment(tempDate) >= moment("2020/01")) {
-                                    if ($scope.overall_data[tempDate] != undefined) {
-                                        var data = $scope.overall_data[tempDate];
-                                        data._payments.push(res.payload[i]);
-                                    } else {
-                                        var data = {
-                                            _date: tempDate,
-                                            _income: [],
-                                            _payments: [res.payload[i]],
-                                            _otherCost: [],
-                                            _subContractorPay: [],
-                                            _overall: 0,
-                                        }
-                                        $scope.overall_data.push(data);
-                                        eval('$scope.overall_data[tempDate] = data')
-                                    }
-                                }
-                            }
-                        })
-                        .error(function (resp) {
-                        })
-
-                    // 其他支出
-                    ExecutiveExpenditureUtil.fetchExecutiveExpenditureItemsByPrjDID(formData)
-                        .success(function (res) {
-                            // console.log(res)
-                            $scope.displayEEItems = res.payload;
-                            for (var i = 0; i < res.payload.length; i ++) {
-                                var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
-                                // console.log(tempDate)
-
-                                if (moment(tempDate) >= moment("2020/01")) {
-
-                                    if ($scope.overall_data[tempDate] != undefined) {
-                                        var data = $scope.overall_data[tempDate];
-                                        data._otherCost.push(res.payload[i]);
-                                    } else {
-                                        var data = {
-                                            _date: tempDate,
-                                            _income: [],
-                                            _payments: [],
-                                            _subContractorPay: [],
-                                            _otherCost: [res.payload[i]],
-                                            _overall: 0,
-                                        }
-                                        $scope.overall_data.push(data);
-                                        eval('$scope.overall_data[tempDate] = data')
-                                    }
-                                }
-                            }
-                        })
-                        .error(function (res) {
-                        })
-
-                    var fetchFormData = {
-                        prjDID: prjInfo._id,
-                        isExecutiveCheck: true
-                    }
-
-                    // 廠商請款
-                    SubContractorPayItemUtil.fetchSCPayItems(fetchFormData)
-                        .success(function (res) {
-                            console.log(res);
-                            $scope.subContractorPayItems = res.payload;
-                            for (var i = 0; i < res.payload.length; i ++) {
-                                var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
-                                if (moment(tempDate) >= moment("2020/01")) {
-                                    if ($scope.overall_data[tempDate] != undefined) {
-                                        var data = $scope.overall_data[tempDate];
-                                        data._subContractorPay.push(res.payload[i]);
-                                    } else {
-                                        var data = {
-                                            _date: tempDate,
-                                            _income: [],
-                                            _payments: [],
-                                            _otherCost: [],
-                                            _subContractorPay: [res.payload[i]],
-                                            _overall: 0,
-                                        }
-                                        $scope.overall_data.push(data);
-                                        eval('$scope.overall_data[tempDate] = data')
-                                    }
-                                }
-                            }
-                        })
-
-                    // 人時支出
-                    var getData = {};
-
-                    getData.branch = prjInfo.branch;
-                    getData.year = prjInfo.year;
-                    getData.code = prjInfo.code;
-                    getData.prjNumber = prjInfo.prjNumber;
-                    getData.prjSubNumber = prjInfo.prjSubNumber;
-                    getData.type = prjInfo.type;
-
-                    WorkHourUtil.queryStatisticsForms_projectIncome_Cost(getData)
-                        .success(function (res) {
-                            console.log(res)
-
-                            res.payload = res.payload.sort(function (a, b) {
-                                return a._id.userDID > b._id.userDID ? 1 : -1;
-                            });
-
-                            for (var index = 0; index < res.payload.length; index ++) {
-                                for (var index_sub = 0; index_sub < res.payload_add.length; index_sub ++) {
-                                    if( res.payload_add[index_sub]._id.prjCode == res.payload[index]._id.prjCode &&
-                                        res.payload_add[index_sub]._id.userDID == res.payload[index]._id.userDID) {
-                                        res.payload[index]._add_tables = res.payload_add[index_sub].add_tables;
-                                    }
-                                }
-                            }
-                            $scope.statisticsResults = $scope.filter_type2_data(res.payload);
-                            $scope.statisticsResults_type1 = $scope.filter_type1_data(res.payload);
-                            $scope.statisticsResults_type1 = $scope.filter_type2_data_item($scope.statisticsResults_type1);
-
-                            for (var i = 0; i < $scope.statisticsResults_type1.length; i ++) {
-                                var tempDate = $scope.statisticsResults_type1[i]._date;
-
-                                if (moment(tempDate) >= moment("2020/01")) {
-                                    if ($scope.overall_data[tempDate] != undefined) {
-                                        var data = $scope.overall_data[tempDate];
-                                        data._overall = $scope.statisticsResults_type1[i].totalCost +
-                                            $scope.statisticsResults_type1[i].hourTotal_add_cost_A +
-                                            $scope.statisticsResults_type1[i].hourTotal_add_cost_B;
-                                    } else {
-                                        var data = {
-                                            _date: tempDate,
-                                            _income: [],
-                                            _payments: [],
-                                            _otherCost: [],
-                                            _subContractorPay: [],
-                                            _overall: $scope.statisticsResults_type1[i].totalCost +
-                                            $scope.statisticsResults_type1[i].hourTotal_add_cost_A +
-                                            $scope.statisticsResults_type1[i].hourTotal_add_cost_B,
-                                        }
-                                        $scope.overall_data.push(data);
-                                        eval('$scope.overall_data[tempDate] = data')
-                                    }
-                                }
-                            }
-
-                        })
-
-                    angular.element(
-                        document.getElementById('includeHead_financial_result'))
-                        .html($compile(
-                            "<div ba-panel ba-panel-title=" +
-                            "'" + "" + "'" +
-                            "ba-panel-class= " +
-                            "'with-scroll'" + ">" +
-                            "<div " +
-                            "ng-include=\"'app/pages/myProject/projectFinancial/tables/projectFinancial_result_table.html'\">" +
-                            "</div>" +
-                            "</div>"
-                        )($scope));
-
-                    $timeout(function () {
-                        bsLoadingOverlayService.stop({
-                            referenceId: 'mainPage_project_financial_result'
-                        });
-                    }, 1000)
-                })
         }
 
         // type 2, 一專案加一人名 為一筆
@@ -531,7 +528,6 @@
                     return parseInt(totalCost);
                     break;
             }
-
         }
 
         $scope.calculateHours_type2_add = function (item, type, showType) {
@@ -602,9 +598,6 @@
                     var date_id = DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1)
                     var min = parseInt(TimeUtil.getCalculateHourDiffByTime(item._add_tables[index].start_time, item._add_tables[index].end_time))
                     // mins += min;
-                    // console.log(item)
-                    // console.log(type2_add_data);
-                    // console.log(date_id);
                     if (type2_add_data[date_id] != undefined) {
                         var data = type2_add_data[date_id];
                         data.min = min + type2_add_data[date_id].min;
@@ -646,7 +639,6 @@
         }
 
         $scope.saveProjectFR = function (item) {
-            console.log(item)
 
             var formData = {
 
@@ -659,12 +651,14 @@
                 rate_item_4: item.rate_item_4,
                 rate_item_5: item.rate_item_5,
                 memo: item.memo,
+                is011Set: true,
             }
 
             ProjectFinancialResultUtil.updateFR(formData)
                 .success(function (res) {
-                    console.log(res)
-                    toastr.success('設定成功', 'Success');
+                    // console.log(res)
+                    toastr.success('暫存成功', 'Success');
+                    $scope.fetchProjectFinancialResult($scope.selectPrjInfo);
                 })
         }
 
@@ -701,7 +695,6 @@
 
             ProjectFinancialResultUtil.updateFR(formData)
                 .success(function (res) {
-                    console.log(res);
                     $scope.fetchProjectFinancialResult($scope.selectPrjInfo);
                     toastr.success('開啟專案成功', 'Success');
                 })
@@ -747,24 +740,24 @@
             return incomeA;
         }
 
-        // 技師、行政、風險
-        $scope.calcRates = function () {
-            if ($scope.financialResult == undefined) return 0;
-            // console.log($scope.financialResult[0]);
-            var rates = parseFloat($scope.financialResult.rate_item_1)
-                + parseFloat($scope.financialResult.rate_item_2)
-                + parseFloat($scope.financialResult.rate_item_4);
-
-            if (rates == 0.0) {
-                return 0.0;
-            } else {
-                return parseFloat($scope.financialResult.rate_item_1)
-                    + parseFloat($scope.financialResult.rate_item_2)
-                    + parseFloat($scope.financialResult.rate_item_4)
-            }
+        // // 技師、行政、風險
+        // $scope.calcRates = function () {
+        //     if ($scope.financialResult == undefined) return 0;
+        //     // console.log($scope.financialResult[0]);
+        //     var rates = parseFloat($scope.financialResult.rate_item_1)
+        //         + parseFloat($scope.financialResult.rate_item_2)
+        //         + parseFloat($scope.financialResult.rate_item_4);
+        //
+        //     if (rates == 0.0) {
+        //         return 0.0;
+        //     } else {
+        //         return parseFloat($scope.financialResult.rate_item_1)
+        //             + parseFloat($scope.financialResult.rate_item_2)
+        //             + parseFloat($scope.financialResult.rate_item_4)
+        //     }
 
             // + parseFloat(rateItem.rate_item_5)
-        }
+        // }
 
         $scope.calSubContractorPay = function() {
             // 廠商請款

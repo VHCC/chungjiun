@@ -13,16 +13,24 @@ module.exports = function (app) {
         console.log(JSON.stringify(req.body));
         ProjectFinancialResult.create({
             prjDID: req.body.prjDID,
+            rate_item_1: req.body.rate_item_1,
+            rate_item_2: req.body.rate_item_2,
+            rate_item_3: req.body.rate_item_3,
+            rate_item_4: req.body.rate_item_4,
+            rate_item_5: req.body.rate_item_5,
             timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
         }, function (err, results) {
             if (err) {
                 res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: results,
+                });
             }
         });
-        res.status(200).send({
-            code: 200,
-            error: global.status._200,
-        });
+
     });
 
     // fetch data

@@ -17,6 +17,11 @@
                  ng-include="'app/pages/myProject/projectIncome/tabs/projectIncome_costTab.html'"></div>
         </uib-tab>
 
+        <uib-tab heading="總案收支總表" ng-click="checkExecutiveData(this)">
+            <div ng-controller="projectIncomeMultiOverAllCtrl as projectIncomeMultiOverAllCtrlVm"
+                 ng-include="'app/pages/myProject/projectIncome/tabs/projectIncome_multiOverAllTab.html'"></div>
+        </uib-tab>
+
     </uib-tabset>
 </div>
 

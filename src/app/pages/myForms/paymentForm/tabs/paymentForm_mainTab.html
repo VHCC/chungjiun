@@ -46,8 +46,10 @@
     <div class="col-md-10" ng-show="paymentFormCtrlVm.paymentsflag">
 
     </div>
-    <div class="col-md-10" ng-show="!paymentFormCtrlVm.paymentsflag">
+    <div class="col-md-10" style="color:red"
+         ng-show="!paymentFormCtrlVm.paymentsflag">
         墊付款新增功能關閉。
+        <hr>
     </div>
 </div>
 
@@ -207,7 +209,7 @@
     </button>
 
     <button type="submit"
-            style="float: left; margin-right: 10px"
+            style="float: left; margin-right: 10px; display: none"
             ng-click="saveItems(0)"
             class="btn btn-primary">
         表單暫存

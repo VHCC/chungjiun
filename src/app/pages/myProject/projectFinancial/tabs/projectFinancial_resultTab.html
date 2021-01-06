@@ -1,10 +1,8 @@
-<div class="row col-md-12" ng-init="getFinancialRate()">
+<div class="row col-md-12">
 
-    <my-year-picker ng-click="listenYear(this)"></my-year-picker>
+    <!--<my-year-picker ng-click="listenYear(this)"></my-year-picker>-->
 
-    <h3 class="with-line">{{year}} 年 費率預設</h3>
-
-    <!--<h3 class="with-line">{{username}} 訂約申請</h3>-->
+    <!--<h3 class="with-line">費率預設</h3>-->
 
     <div class="form-group">
         <label for="projectName">總案名稱 - 專案名稱 - 子案名稱 - 類型 - 代碼</label>
@@ -37,7 +35,8 @@
     </div>
     <hr>
 
-    <table class="table table-bordered table-hover table-condensed" id="form_main_pdf">
+    <table style="display: none"
+            class="table table-bordered table-hover table-condensed" id="form_main_pdf">
         <thead>
         <tr style="white-space:nowrap">
             <td style="vertical-align: inherit; text-align: center" width="80px">項目</td>

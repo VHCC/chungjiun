@@ -77,7 +77,7 @@
             .state('cgProject.listProjectAll',
                 {
                     url: '/listProjectAll',
-                    templateUrl: 'app/pages/myProject/listProjectAll/listProjectAll.html',
+                    templateUrl: 'app/pages/myProject/listProjectAll/listProjectAllEnableHome.html',
                     controller: 'listProjectAllCtrl',
                     title: '專案總表',
                     <!--20200518 check right-->

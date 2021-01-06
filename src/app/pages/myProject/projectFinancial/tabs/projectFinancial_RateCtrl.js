@@ -181,36 +181,24 @@
             }
             ProjectFinancialRateUtil.updateFinancialRate(formData)
                 .success(function (res) {
+                    toastr.success('設定完成', 'Success');
                     $scope.getFinancialRate()
                 })
         }
 
         $scope.getFinancialRate = function () {
             $timeout(function () {
-                bsLoadingOverlayService.start({
-                    referenceId: 'mainPage_project_financial'
-                });
-            }, 0)
-            var formData = {
-                year: $scope.year
-            }
+                var formData = {
+                    year: $scope.year
+                }
 
-            ProjectFinancialRateUtil.getFinancialRate(formData)
-                .success(function (res) {
-                    if (res.payload == null || res.payload.length == 0) {
-                        ProjectFinancialRateUtil.insertFinancialRate(formData)
-                            .success(function (res) {
-                                $scope.yearRate = res.payload;
-                            })
-                    } else {
+                ProjectFinancialRateUtil.getFinancialRate(formData)
+                    .success(function (res) {
                         $scope.yearRate = res.payload;
-                    }
-                    $timeout(function () {
-                        bsLoadingOverlayService.stop({
-                            referenceId: 'mainPage_project_financial'
-                        });
-                    }, 500)
-                })
+                    })
+
+            }, 0)
+
         }
 
         $scope.calcRates = function (rateItem) {

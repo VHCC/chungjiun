@@ -13,7 +13,6 @@ module.exports = mongoose.model('ProjectFinancialResult', {
         type: String,
     },
 
-
     // income: {
     //     type: Number,
     //     default: 0
@@ -27,15 +26,15 @@ module.exports = mongoose.model('ProjectFinancialResult', {
 
     // 費率
     // 技師費
-    rate_item_1: {type: Number, default: 0},
+    rate_item_1: {type: Number},
     // 行政
-    rate_item_2: {type: Number, default: 0},
+    rate_item_2: {type: Number},
     // 利潤
-    rate_item_3: {type: Number, default: 0},
+    rate_item_3: {type: Number},
     // 風險
-    rate_item_4: {type: Number, default: 0},
+    rate_item_4: {type: Number},
     // 調整
-    rate_item_5: {type: Number, default: 0},
+    rate_item_5: {type: Number},
 
     memo: {
         type: String,
@@ -65,6 +64,11 @@ module.exports = mongoose.model('ProjectFinancialResult', {
     // memo
     overAllMemo: {
         type: String
+    },
+
+    is011Set: {
+        type: Boolean,
+        default: false
     }
 
 
