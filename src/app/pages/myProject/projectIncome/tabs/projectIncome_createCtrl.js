@@ -205,12 +205,24 @@
                         bsLoadingOverlayService.stop({
                             referenceId: 'mainPage_project_income'
                         });
+                        $('.incomeInput').mask('20Y0/M0/D0', {
+                            translation: {
+                                'Y': {
+                                    pattern: /[0123]/,
+                                },
+                                'M': {
+                                    pattern: /[01]/,
+                                },
+                                'D': {
+                                    pattern: /[0123]/,
+                                }
+                            }
+                        });
                     }, 1000)
                 })
         }
 
         $scope.projectIncomeCreate = function () {
-            console.log("QQQQ")
             var formData = {
                 prjDID: $scope.selectPrjDID
             }
@@ -232,6 +244,16 @@
         }
 
         $scope.updateProjectIncome = function (item) {
+
+            var data = moment(item.realDate)
+            console.log(item)
+            console.log(item.realDate)
+            console.log(data.format('YYYY/MM/DD'))
+            if (item.realDate !== data.format('YYYY/MM/DD')) {
+                toastr.error('入帳日期格式錯誤', '請輸入 YYYY/MM/DD');
+                return
+            }
+
             var formData = {
                 itemID: item._id,
                 payDate: item.payDate,
