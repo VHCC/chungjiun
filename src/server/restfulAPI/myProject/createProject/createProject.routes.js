@@ -410,23 +410,23 @@ module.exports = function (app) {
         })
     });
 
-    // app.post(global.apiUrl.post_project_find_group_list, function (req, res) {
-    //     console.log(global.timeFormat(new Date()) + global.log.i + "API, post_project_find_group_list");
-    //     Project.find({
-    //         year: req.body.year,
-    //         code: req.body.code,
-    //     }, function (err, oneProject) {
-    //         if (err) {
-    //             console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_find_group_list");
-    //             console.log(req.body);
-    //             console.log(" ***** ERROR ***** ");
-    //             console.log(err);
-    //             res.send(err);
-    //         } else {
-    //             res.json(oneProject);
-    //         }
-    //     })
-    // });
+    app.post(global.apiUrl.post_project_find_group_list, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_project_find_group_list");
+        Project.find({
+            year: req.body.year,
+            code: req.body.code,
+        }, function (err, oneProject) {
+            if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_project_find_group_list");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
+                res.send(err);
+            } else {
+                res.json(oneProject);
+            }
+        })
+    });
 
 
     app.get(global.apiUrl.get_project_find_by_code_distinct, function (req, res) {

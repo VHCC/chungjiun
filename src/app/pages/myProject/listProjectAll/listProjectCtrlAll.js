@@ -5,13 +5,13 @@
         .controller('listProjectAllCtrl', [
             '$scope',
             '$cookies',
-            ListProjectAll
+            listProjectAll
         ])
 
     /**
      * @ngInject
      */
-    function ListProjectAll(scope, cookies) {
+    function listProjectAll(scope, cookies) {
         console.log('listProjectAll');
     }
 

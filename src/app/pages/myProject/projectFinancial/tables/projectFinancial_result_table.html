@@ -25,7 +25,7 @@
             <!--<col span="1" style="width: 10%;">-->
         <!--</colgroup>-->
         <tr >
-            <th class="table-id"
+            <th
                 style="vertical-align: inherit; text-align: center" >項目</th>
             <th style="vertical-align: inherit; text-align: center" >
                 含稅收入(發票金額)
@@ -88,8 +88,11 @@
         <tbody ng-repeat="item in projectFinancialResultTable">
         <tr style="vertical-align: inherit; text-align: center">
             <!--項目-->
-            <td style="vertical-align: inherit; text-align: center" width="30px">
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
                 費率
+                <br>
+                <span ng-if="item.is011Set" style="color:red">[個別設定過，不會隨著年度費率更動]</span>
+                <span ng-if="!item.is011Set" style="color:blue">[未設定過，會隨著年度費率更動]</span>
             </td>
             <!-- 收入 -->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
@@ -215,7 +218,7 @@
                         ng-if="!item.isPrjClose"
                         ng-click="saveProjectFR(item)"
                         class="btn btn-primary">
-                    暫存
+                    儲存
                 </button>
 
                 <button type="submit"
@@ -223,7 +226,7 @@
                         ng-if="!item.isPrjClose"
                         ng-click="closeProjectFR(item)"
                         class="btn btn-danger">
-                    結算
+                    結算專案
                 </button>
                 <button type="submit"
                         style="margin: 5px"

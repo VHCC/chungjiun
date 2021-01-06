@@ -232,7 +232,6 @@
         }
 
         $scope.updateProjectIncome = function (item) {
-            console.log(item)
             var formData = {
                 itemID: item._id,
                 payDate: item.payDate,
