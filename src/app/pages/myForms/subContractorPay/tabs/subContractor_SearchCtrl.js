@@ -225,7 +225,7 @@
             });
 
             var formData = {
-                year: specificYear,
+                // year: specificYear,
                 isManagerCheck: true,
             }
             SubContractorApplyUtil.fetchSCApplyItems(formData)

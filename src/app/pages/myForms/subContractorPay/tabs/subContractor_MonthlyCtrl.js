@@ -172,7 +172,7 @@
         }
 
         // main tab, type = 0
-        $scope.fetchSCPayItemProject = function (prjDID, specificYear, specificMonth) {
+        $scope.fetchSCPayItemProject_Monthly = function (prjDID, specificYear, specificMonth) {
 
             // $scope.scPayItemPrjDID = prjDID;
 
@@ -185,6 +185,13 @@
                 // year: specificYear,
                 isManagerCheck: true,
                 // prjDID: prjDID
+            }
+
+            if (specificYear == null) {
+                specificYear = thisYear;
+            }
+            if (specificMonth == null) {
+                specificMonth = thisMonth;
             }
 
             SubContractorApplyUtil.fetchSCApplyItems(formData, specificYear, specificMonth)
@@ -224,7 +231,7 @@
             });
 
             var formData = {
-                year: specificYear,
+                // year: specificYear,
                 isManagerCheck: true,
             }
             SubContractorApplyUtil.fetchSCApplyItems(formData)
@@ -506,7 +513,7 @@
             specificYear = year;
             specificMonth = month;
 
-            $scope.fetchSCPayItemProject(null, specificYear, specificMonth);
+            $scope.fetchSCPayItemProject_Monthly(null, specificYear, specificMonth);
         }
 
     }
