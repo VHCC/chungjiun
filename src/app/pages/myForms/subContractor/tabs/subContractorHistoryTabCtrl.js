@@ -79,7 +79,7 @@
                         $scope.subContractorApplyPeriods[index].prjCode = $scope.showPrjCodeWithCombine($scope.subContractorApplyPeriods[index].prjDID)
                         $scope.subContractorApplyPeriods[index].mainName = $scope.showPrjMainName($scope.showPrjDIDWithCombine($scope.subContractorApplyPeriods[index].prjDID))
                         $scope.subContractorApplyPeriods[index].managerName = $scope.showProjectManager($scope.showPrjDIDWithCombine($scope.subContractorApplyPeriods[index].prjDID))
-                        $scope.subContractorApplyPeriods[index].applierName = $scope.showApplier($scope.showPrjDIDWithCombine($scope.subContractorApplyPeriods[index].creatorDID))
+                        $scope.subContractorApplyPeriods[index].applierName = $scope.showApplier($scope.subContractorApplyPeriods[index].creatorDID)
                     }
 
                     document.getElementById('includeHead_subContractor_history').innerText = "";
@@ -207,7 +207,7 @@
             if (selected[0].combinedID != undefined) {
                 return $scope.showPrjDIDWithCombine(selected[0].combinedID);
             }
-            return selected.length > 0 ? selected[0]._id : 'Not Set';
+            return selected.length > 0 ? selected[0].prjDID : 'Not Set';
         };
 
         $scope.showPrjMainName = function (prjDID) {
