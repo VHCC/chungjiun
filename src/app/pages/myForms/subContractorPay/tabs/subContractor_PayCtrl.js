@@ -183,7 +183,7 @@
 
             var formData = {
                 // creatorDID: $scope.userDID,
-                year: specificYear,
+                // year: specificYear,
                 isManagerCheck: true,
                 prjDID: prjDID
             }
@@ -225,7 +225,7 @@
             });
 
             var formData = {
-                year: specificYear,
+                // year: specificYear,
                 isManagerCheck: true,
             }
             SubContractorApplyUtil.fetchSCApplyItems(formData)
