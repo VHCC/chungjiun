@@ -113,6 +113,7 @@
                         majorID: allProjects[index].majorID,
                         managerID: allProjects[index].managerID,
                         ezName: nameResult,
+                        combinedID: allProjects[index].combinedID,
                     };
                 }
             });
