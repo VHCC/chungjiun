@@ -39,6 +39,7 @@ module.exports = function (app) {
             year: req.body.year,
             month: req.body.month,
             prjDID: req.body.prjDID,
+            payDate: req.body.payDate,
         }, function (err, payment) {
             if (err) {
                 res.send(err);

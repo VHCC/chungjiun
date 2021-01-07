@@ -355,12 +355,12 @@
                 referenceId: 'payment_main'
             });
 
-
             var formData = {
                 creatorDID: type == 0 ? $scope.userDID : vm.executiveAddUser.selected._id,
                 year: specificYear,
                 month: specificMonth,
                 prjDID: prjDID,
+                payDate: moment(((specificYear+1911) + "/" + specificMonth)).format('YYYY/MM'),
             }
             PaymentFormsUtil.insertPaymentItem(formData)
                 .success(function (res) {

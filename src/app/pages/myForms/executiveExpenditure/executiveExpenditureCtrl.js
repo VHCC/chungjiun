@@ -180,6 +180,7 @@
                 creatorDID: $scope.userDID,
                 year: specificYear,
                 month: specificMonth,
+                payDate: moment(((specificYear+1911) + "/" + specificMonth)).format('YYYY/MM'),
                 prjDID: prjDID,
             }
 
