@@ -877,16 +877,22 @@
                             $scope.specificUserTablesItems[index].day === 0 ? 6 : $scope.specificUserTablesItems[index].day - 1) +
                         "  審查？ 時數：" + hour;
 
-                    $scope.checkText += "\n" + "代理人：" + table.agent.name;
-                    $scope.checkingTable = $scope.specificUserTablesItems[index];
-                    $scope.checkingButton = button;
-                    $scope.checkingIndex = index;
-                    ngDialog.open({
-                        template: 'app/pages/myModalTemplate/myWorkOffTableFormReviewModal.html',
-                        className: 'ngdialog-theme-default',
-                        scope: $scope,
-                        showClose: false,
-                    });
+                    try {
+                        $scope.checkText += "\n" + "代理人：" + table.agent.name;
+                        $scope.checkingTable = $scope.specificUserTablesItems[index];
+                        $scope.checkingButton = button;
+                        $scope.checkingIndex = index;
+                        ngDialog.open({
+                            template: 'app/pages/myModalTemplate/myWorkOffTableFormReviewModal.html',
+                            className: 'ngdialog-theme-default',
+                            scope: $scope,
+                            showClose: false,
+                        });
+                    } catch (err) {
+                        toastr.error('項目缺漏', '錯誤');
+                    }
+
+
                 }, 150)
             }
             //跟後臺溝通
