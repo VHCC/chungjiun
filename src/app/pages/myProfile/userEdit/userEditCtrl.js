@@ -206,6 +206,10 @@
                 name: "主任",
                 roleType: 6
             },
+            {
+                name: "專案管理",
+                roleType: 7
+            },
         ];
 
         vm.roleOptions = options_ragular;
