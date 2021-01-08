@@ -73,7 +73,7 @@
         Project.findAll()
             .success(function (allProjects) {
                 console.log(" ======== related login user Projects ======== ");
-                vm.projects = allProjects.slice();
+                // vm.projects = allProjects.slice();
                 $scope.allProjectCache = [];
                 for (var index = 0; index < allProjects.length; index++) {
 
@@ -100,15 +100,12 @@
                         combinedID: allProjects[index].combinedID,
                     };
                 }
-                // console.log($scope);
             });
 
         $scope.initProject = function() {
             Project.findAllEnable()
                 .success(function (allProjects) {
-                    // console.log(allProjects);
                     vm.projects = allProjects.slice();
-                    vm.projects_executiveAdd = allProjects.slice();
                 });
         }
 
@@ -224,7 +221,6 @@
 
                 timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
             };
-            // $scope.loginUserTablesItems.push(inserted);
 
             TravelApplicationUtil.insertTravelApplicationItem(formData)
                 .success(function (resp) {
@@ -234,13 +230,9 @@
         }
 
         $scope.removeTravelApplication = function (index) {
-            // console.log('removeTravelApplicationItem, Index= ' + index);
-
             bsLoadingOverlayService.start({
                 referenceId: 'travelApplication_tab_main'
             });
-
-            console.log($scope.loginUserTablesItems);
 
             var formData = {
                 tableID: $scope.loginUserTablesItems[index]._id
@@ -250,8 +242,6 @@
                 .success(function (res) {
                     $scope.getUsersTravelApplicationData($scope.userDID, thisYear);
                 })
-
-            // $scope.createSubmit(0);
         };
 
         $scope.getUsersTravelApplicationData = function (userDID, year) {
@@ -262,7 +252,6 @@
             };
             TravelApplicationUtil.getTravelApplicationItem(formData)
                 .success(function (resp) {
-                    console.log(resp);
                     $scope.loginUserTablesItems = [];
                     for (var index = 0; index < resp.payload.length; index ++) {
                         $scope.loginUserTablesItems.push(resp.payload[index]);
@@ -275,13 +264,6 @@
                     }, 500)
 
                     $(document).ready(function () {
-                        // $('#inputStartDay')[0].value = DateUtil.getShiftDatefromFirstDate(
-                        //     DateUtil.getFirstDayofThisWeek(moment()),
-                        //     moment().day() === 0 ? 6 : moment().day() - 1);
-                        // $('#inputEndDay')[0].value = DateUtil.getShiftDatefromFirstDate(
-                        //     DateUtil.getFirstDayofThisWeek(moment()),
-                        //     moment().day() === 0 ? 6 : moment().day() - 1);
-
                         $('.customDate').mask('2KY0/M0/D0', {
                             translation: {
                                 'K': {
@@ -298,7 +280,6 @@
                                 }
                             }
                         });
-
                     });
                 })
         }
@@ -361,7 +342,7 @@
                 })
         }
 
-
+        $scope.initProject();
     }
 
 })();

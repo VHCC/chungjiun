@@ -159,8 +159,8 @@
             </td>
 
             <!--訂約金額-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="applyItem.isSendReview">{{applyItem.contractAmount}}</span>
+            <td class="form-group" style="vertical-align: inherit; text-align: right">
+                <span ng-if="applyItem.isSendReview">{{(applyItem.contractAmount*1).toLocaleString()}}</span>
                 <input type="text"
                        ng-if="!applyItem.isSendReview"
                        ng-model="applyItem.contractAmount"

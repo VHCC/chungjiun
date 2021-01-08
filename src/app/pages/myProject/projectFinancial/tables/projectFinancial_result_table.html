@@ -206,7 +206,7 @@
             </td>
         </tr>
 
-        <tr style="vertical-align: inherit; text-align: center">
+        <tr style="vertical-align: inherit; text-align: right">
             <!--金額-->
             <td style="vertical-align: inherit; text-align: center">
                 金額
@@ -237,8 +237,8 @@
                 </button>
             </td>
             <!-- 收入 -->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span>{{calIncome(1)}}</span>
+            <td class="form-group" style="vertical-align: inherit">
+                <span>{{calIncome(1).toLocaleString()}}</span>
                 <!--<input type="text"-->
                        <!--style="text-align: center"-->
                        <!--ng-model="item.income"-->
@@ -246,8 +246,8 @@
                        <!--class="form-control input-sm">-->
             </td>
             <!-- 不含稅收入B=A/1.05 -->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span>{{calIncome(2)}}</span>
+            <td class="form-group" style="vertical-align: inherit">
+                <span>{{calIncome(2).toLocaleString()}}</span>
                 <!--<input type="text"-->
                 <!--style="text-align: center"-->
                 <!--ng-model="item.income"-->
@@ -258,54 +258,54 @@
             <!-- 公司調整(規劃、設計、監造廷整)C=B*調整值 -->
             <td class="form-group" style="vertical-align: inherit;">
                 <!--<span >{{item.rate_item_5 * calIncome(2) / 100}}</span>-->
-                <span >{{calResult(3, item)}}</span>
+                <span style="text-align: right">{{calResult(3, item).toLocaleString()}}</span>
             </td>
 
             <!-- 廠商請款(未稅金額) D -->
             <td class="form-group" style="vertical-align: inherit;">
-                <span >{{calSubContractorPay()}}</span>
+                <span style="text-align: right">{{calSubContractorPay().toLocaleString()}}</span>
             </td>
 
             <!-- 實際收入E=C-D -->
             <td class="form-group" style="vertical-align: inherit;">
                 <!--<span >{{ ((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()}}</span>-->
-                <span >{{calResult(4, item)}}</span>
+                <span style="text-align: right">{{calResult(4, item).toLocaleString()}}</span>
             </td>
 
             <!-- 行政費 -->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
                 <!--<span>{{item.rate_item_2 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>-->
-                <span>{{calResult(5, item)}}</span>
+                <span style="text-align: right">{{calResult(5, item).toLocaleString()}}</span>
             </td>
 
             <!--技師費-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
                 <!--<span >{{item.rate_item_1 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>-->
-                <span>{{calResult(6, item)}}</span>
+                <span style="text-align: right">{{calResult(6, item).toLocaleString()}}</span>
             </td>
 
             <!--風險-->
             <td class="form-group " style="vertical-align: inherit;">
                 <!--<span >{{item.rate_item_4 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>-->
-                <span>{{calResult(7, item)}}</span>
+                <span style="text-align: right">{{calResult(7, item).toLocaleString()}}</span>
             </td>
 
             <!--利潤-->
             <td class="form-group" style="vertical-align: inherit;">
                 <!--<span >{{item.rate_item_3 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>-->
-                <span>{{calResult(8, item)}}</span>
+                <span style="text-align: right">{{calResult(8, item).toLocaleString()}}</span>
             </td>
 
             <!-- 專案成本(人時支出、墊付款、其他支出) -->
             <td class="form-group" style="vertical-align: inherit;">
                 <!--<span >{{calcAllCost()}}</span>-->
-                <span >{{calcAllCost_special20201207()}}</span>
+                <span style="text-align: right">{{calcAllCost_special20201207().toLocaleString()}}</span>
             </td>
             <!--其他-->
-            <td class="form-group" style="vertical-align: inherit;">
+            <td class="form-group" style="vertical-align: inherit;text-align: right">
                 <span ng-if="item.isPrjClose">{{item.otherCost}}</span>
                 <input type="text"
-                       style="text-align: center"
+                       style="text-align: right"
                        ng-if="!item.isPrjClose"
                        ng-model="item.otherCost"
                        value="{{item.otherCost}}"
@@ -332,7 +332,7 @@
                     <!-- - (item.rate_item_4 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100)-->
                     <!-- - calcAllCost()-->
                     <!-- - item.otherCost}}</span>-->
-                <span>{{calResult(9, item)}}</span>
+                <span>{{calResult(9, item).toLocaleString()}}</span>
             </td>
         </tr>
         </tbody>

@@ -420,7 +420,7 @@
             }
             SubContractorPayItemUtil.updateSCPayItem(formData)
                 .success(function (res) {
-                    $scope.fetchSCPayItemProject();
+                    $scope.fetchSCPayItemProject_Executive();
                 })
         }
 

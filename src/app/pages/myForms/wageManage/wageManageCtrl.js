@@ -817,7 +817,7 @@
                     (isNaN(this.wgae_item_15) ? 0 : parseInt(this.wgae_item_15)) +
                     (isNaN(this.wgae_item_16) ? 0 : parseInt(this.wgae_item_16));
 
-                this.total_wage = total_wage_temp;
+                this.total_wage = total_wage_temp.toLocaleString();
             }
 
             $scope.getTotalWage_yellow = function () {
@@ -834,7 +834,7 @@
                     (isNaN(this.withholding_item_4) ? 0 : parseInt(this.withholding_item_4)) +
                     (isNaN(this.withholding_item_5) ? 0 : parseInt(this.withholding_item_5));
 
-                this.total_wage_withholding = total_withholding;
+                this.total_wage_withholding = total_withholding.toLocaleString();
             }
 
             $scope.getTotalWage_green = function () {
@@ -853,7 +853,7 @@
                     (isNaN(this.green_item_9) ? 0 : parseInt(this.green_item_9)) +
                     (isNaN(this.green_item_10) ? 0 : parseInt(this.green_item_10));
 
-                this.total_wage_green = total_green;
+                this.total_wage_green = total_green.toLocaleString();
             }
 
             $scope.getTotalWage_servitor = function () {
@@ -870,7 +870,7 @@
                     (isNaN(this.blue_item_6) ? 0 : parseInt(this.blue_item_6)) +
                     (isNaN(this.blue_item_7) ? 0 : parseInt(this.blue_item_7));
 
-                this.total_wage_servitor = total_wage_temp;
+                this.total_wage_servitor = total_wage_temp.toLocaleString();
             }
 
         } // End of function

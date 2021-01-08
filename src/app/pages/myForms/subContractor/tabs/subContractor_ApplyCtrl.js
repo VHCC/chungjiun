@@ -247,7 +247,9 @@
                 year: year,
                 month: month,
                 vendorDID: applyItem.vendorDID,
+                vendorName: applyItem.vendorName,
                 itemDID: applyItem.itemDID,
+                itemName: applyItem.itemName,
                 contractDate: applyItem.contractDate,
                 contractAmount: applyItem.contractAmount,
                 contents: applyItem.contents,
@@ -310,12 +312,14 @@
         $scope.changeSubContractorVendor = function (dom) {
             if (dom.$parent.applyItem != undefined) {
                 dom.$parent.applyItem.vendorDID = dom.subContractorVendor._id;
+                dom.$parent.applyItem.vendorName = dom.subContractorVendor.subContractorVendorName;
             }
         }
 
         $scope.changeSubContractorItem = function (dom) {
             if (dom.$parent.applyItem != undefined) {
                 dom.$parent.applyItem.itemDID = dom.subContractorItem._id;
+                dom.$parent.applyItem.itemName = dom.subContractorItem.subContractorItemName;
             }
         }
 

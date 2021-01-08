@@ -24,7 +24,7 @@
                     預計淨收入
                 </th>
                 <!-- 預計收入 -->
-                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                <th class="form-group" style="vertical-align: inherit; text-align: right">
                     <span ng-if="financialResult.isPrjClose">{{financialResult.preIncome}}</span>
                     <input type="text"
                            style="text-align: center"
@@ -42,8 +42,8 @@
                 </th>
 
                 <!-- 預計收入 * 技師、行政、風險 -->
-                <th class="form-group" style="vertical-align: inherit; text-align: center">
-                    {{calcRates() * financialResult.preIncome / 100}}
+                <th class="form-group" style="vertical-align: inherit; text-align: right">
+                    {{(calcRates() * financialResult.preIncome / 100).toLocaleString()}}
                 </th>
 
                 <!-- 預計支出 -->
@@ -53,7 +53,7 @@
 
                 <!-- 預計支出 -->
                 <!-- 專案經理輸入 -->
-                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                <th class="form-group" style="vertical-align: inherit; text-align: right">
                     <span ng-if="financialResult.isPrjClose">{{financialResult.preCost}}</span>
                     <input type="text"
                            style="text-align: center"
@@ -69,8 +69,8 @@
                 </th>
 
                 <!-- 預計結餘 -->
-                <th class="form-group" style="vertical-align: inherit; text-align: center">
-                    <span >{{financialResult.preIncome - (calcRates() * financialResult.preIncome / 100) - financialResult.preCost}}</span>
+                <th class="form-group" style="vertical-align: inherit; text-align: right">
+                    <span >{{(financialResult.preIncome - (calcRates() * financialResult.preIncome / 100) - financialResult.preCost).toLocaleString()}}</span>
                 </th>
 
                 <!-- 備註 -->
@@ -130,91 +130,91 @@
             </tr>
 
             <!-- main -->
-            <tr style="vertical-align: inherit; text-align: center; white-space:nowrap">
+            <tr style="vertical-align: inherit; text-align: right; white-space:nowrap">
                 <th style="vertical-align: inherit; text-align: center">
                     合計
                 </th>
-                <th class="form-group" style="vertical-align: inherit; text-align: center">
-                    {{calIncome(2)}}
+                <th class="form-group" style="vertical-align: inherit; text-align: right">
+                    {{calIncome(2).toLocaleString()}}
                 </th>
                 <!--人時支出-->
-                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                <th class="form-group" style="vertical-align: inherit; text-align: right">
                     <!--{{calcCost(1)}}-->
-                    {{calcCost_special20201207(1)}}
+                    {{calcCost_special20201207(1).toLocaleString()}}
                 </th>
                 <!--墊付款-->
-                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                <th class="form-group" style="vertical-align: inherit; text-align: right">
                     <!--{{calcCost(2)}}-->
-                    {{calcCost_special20201207(2)}}
+                    {{calcCost_special20201207(2).toLocaleString()}}
                 </th>
                 <!--廠商請款-->
-                <th class="form-group" style="vertical-align: inherit; text-align: center">
-                    {{calSubContractorPay()}}
+                <th class="form-group" style="vertical-align: inherit; text-align: right">
+                    {{calSubContractorPay().toLocaleString()}}
                 </th>
                 <!--其他支出-->
-                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                <th class="form-group" style="vertical-align: inherit; text-align: right">
                     <!--{{calcCost(3)}}-->
-                    {{calcCost_special20201207(3)}}
+                    {{calcCost_special20201207(3).toLocaleString()}}
                 </th>
                 <!--罰款-->
-                <th class="form-group" style="vertical-align: inherit; text-align: center">
-                    {{calFines()}}
+                <th class="form-group" style="vertical-align: inherit; text-align: right">
+                    {{calFines().toLocaleString()}}
                 </th>
                 <!--匯費-->
-                <th class="form-group" style="vertical-align: inherit; text-align: center">
-                    {{calFee()}}
+                <th class="form-group" style="vertical-align: inherit; text-align: right">
+                    {{calFee().toLocaleString()}}
                 </th>
                 <!--實際盈餘-->
-                <th class="form-group" style="vertical-align: inherit; text-align: center">
-                    {{calProfit()}}
+                <th class="form-group" style="vertical-align: inherit; text-align: right">
+                    {{calProfit().toLocaleString()}}
                 </th>
             </tr>
         </thead>
         <tbody ng-repeat="item in overall_data">
-        <tr style="vertical-align: inherit; text-align: center; white-space:nowrap">
+        <tr style="vertical-align: inherit; text-align: right; white-space:nowrap">
             <th style="vertical-align: inherit; text-align: center">
                 {{item._date}}
             </th>
 
             <!-- 收入 -->
-            <th class="form-group" style="vertical-align: inherit; text-align: center">
-                {{calcItem(item, 4)}}
+            <th class="form-group" style="vertical-align: inherit; text-align: right">
+                {{calcItem(item, 4).toLocaleString()}}
             </th>
 
             <!-- 人時 -->
-            <th class="form-group" style="vertical-align: inherit; text-align: center">
-                {{calcItem(item, 7)}}
+            <th class="form-group" style="vertical-align: inherit; text-align: right">
+                {{calcItem(item, 7).toLocaleString()}}
             </th>
 
             <!-- 墊付款 -->
-            <th class="form-group" style="vertical-align: inherit; text-align: center">
-                {{calcItem(item, 2)}}
+            <th class="form-group" style="vertical-align: inherit; text-align: right">
+                {{calcItem(item, 2).toLocaleString()}}
             </th>
 
             <!-- 廠商請款 -->
-            <th class="form-group" style="vertical-align: inherit; text-align: center">
-                {{calcItem(item, 5)}}
+            <th class="form-group" style="vertical-align: inherit; text-align: right">
+                {{calcItem(item, 5).toLocaleString()}}
             </th>
 
             <!--  其他 -->
-            <th class="form-group" style="vertical-align: inherit; text-align: center">
-                {{calcItem(item, 3)}}
+            <th class="form-group" style="vertical-align: inherit; text-align: right">
+                {{calcItem(item, 3).toLocaleString()}}
             </th>
 
             <!-- 罰款 -->
-            <th class="form-group" style="vertical-align: inherit; text-align: center">
-                {{calcItem(item, 6)}}
+            <th class="form-group" style="vertical-align: inherit; text-align: right">
+                {{calcItem(item, 6).toLocaleString()}}
             </th>
 
             <!-- 匯費 -->
-            <th class="form-group" style="vertical-align: inherit; text-align: center">
-                {{calcItem(item, 8)}}
+            <th class="form-group" style="vertical-align: inherit; text-align: right">
+                {{calcItem(item, 8).toLocaleString()}}
             </th>
 
-            <th class="form-group" style="vertical-align: inherit; text-align: center">
+            <th class="form-group" style="vertical-align: inherit; text-align: right">
             </th>
 
-            <th class="form-group" style="vertical-align: inherit; text-align: center">
+            <th class="form-group" style="vertical-align: inherit; text-align: right">
             </th>
         </tr>
         </tbody>

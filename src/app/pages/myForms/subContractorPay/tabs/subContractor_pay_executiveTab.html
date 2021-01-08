@@ -63,8 +63,8 @@
             </td>
 
             <!--訂約金額-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="applyItem.isSendReview">{{applyItem.contractAmount}}</span>
+            <td class="form-group" style="vertical-align: inherit; text-align: right">
+                <span ng-if="applyItem.isSendReview">{{(applyItem.contractAmount*1).toLocaleString()}}</span>
                 <input type="text"
                        ng-if="!applyItem.isSendReview"
                        ng-model="applyItem.contractAmount"
@@ -169,9 +169,9 @@
                 </my>
             </td>
             <!--本期請款-->
-            <td style="vertical-align: inherit; text-align: center">
+            <td style="vertical-align: inherit; text-align: right">
                 <my ng-if="payItem.isSendReview">
-                    {{payItem.payApply}}
+                    {{(payItem.payApply*1).toLocaleString()}}
                 </my>
                 <input type="text"
                        ng-if="!payItem.isSendReview"
@@ -238,7 +238,7 @@
                        class="form-control subContractDateInput input-sm">
             </td>
             <!--稅金-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
+            <td class="form-group" style="vertical-align: inherit; text-align: right">
                 <!--<span ng-if="payItem.isManagerCheck">{{payItem.payTax}}</span>-->
                 <input type="text"
                        ng-if="roleType == '100' && payItem.isManagerCheck"
@@ -247,7 +247,7 @@
                        class="form-control input-sm">
             </td>
             <!--雜支-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
+            <td class="form-group" style="vertical-align: inherit; text-align: right">
                 <!--<span ng-if="payItem.isManagerCheck">{{payItem.payOthers}}</span>-->
                 <input type="text"
                        ng-if="roleType == '100' && payItem.isManagerCheck"
@@ -256,8 +256,8 @@
                        class="form-control input-sm">
             </td>
             <!--未稅金額-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span >{{calculateNonTaxValue(payItem)}}</span>
+            <td class="form-group" style="vertical-align: inherit; text-align: right">
+                <span >{{calculateNonTaxValue(payItem).toLocaleString()}}</span>
             </td>
             <!--行政確認-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
