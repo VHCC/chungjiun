@@ -212,6 +212,7 @@
                 _id: item._id,
                 payDate: item.payDate,
                 targetDID: item.targetDID,
+                targetName: item.targetName,
                 contents: item.contents,
                 amount: item.amount,
                 itemIndex: item.itemIndex,
@@ -272,6 +273,7 @@
         $scope.changeExpenditureTarget = function (dom) {
             if (dom.$parent.item != undefined) {
                 dom.$parent.item.targetDID = dom.expenditureTarget._id;
+                dom.$parent.item.targetName = dom.expenditureTarget.targetName;
             }
         }
 

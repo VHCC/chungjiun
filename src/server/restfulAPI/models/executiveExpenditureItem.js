@@ -26,6 +26,10 @@ module.exports = mongoose.model('ExecutiveExpenditureItem', {
     targetDID: {
         type: String,
     },
+    // 支出項目 Name
+    targetName: {
+        type: String,
+    },
 
     // 日期
     payDate: {
