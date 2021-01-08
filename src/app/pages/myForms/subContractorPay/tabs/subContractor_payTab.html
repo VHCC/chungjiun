@@ -108,8 +108,8 @@
             </td>
 
             <!--訂約金額-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="applyItem.isSendReview">{{applyItem.contractAmount}}</span>
+            <td class="form-group" style="vertical-align: inherit; text-align: right">
+                <span ng-if="applyItem.isSendReview">{{(applyItem.contractAmount*1).toLocaleString()}}</span>
                 <input type="text"
                        ng-if="!applyItem.isSendReview"
                        ng-model="applyItem.contractAmount"
@@ -156,13 +156,13 @@
             <!--</td>-->
 
             <!-- 實際撥款累計金額 -->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="applyItem.isSendReview">{{calcActuallyPay(applyItem)}}</span>
+            <td class="form-group" style="vertical-align: inherit; text-align: right">
+                <span ng-if="applyItem.isSendReview">{{calcActuallyPay(applyItem).toLocaleString()}}</span>
             </td>
 
             <!-- 剩餘款 -->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="applyItem.isSendReview">{{checkResidual(applyItem)}}</span>
+            <td class="form-group" style="vertical-align: inherit; text-align: right">
+                <span ng-if="applyItem.isSendReview">{{checkResidual(applyItem).toLocaleString()}}</span>
             </td>
 
             <!-- 結清 -->
@@ -226,9 +226,9 @@
                 </my>
             </td>
             <!--本期請款-->
-            <td style="vertical-align: inherit; text-align: center">
+            <td style="vertical-align: inherit; text-align: right">
                 <my ng-if="payItem.isSendReview">
-                    {{payItem.payApply}}
+                    {{(payItem.payApply*1).toLocaleString()}}
                 </my>
                 <input type="text"
                        ng-if="!payItem.isSendReview"
@@ -306,16 +306,16 @@
                 <span ng-if="payItem.isExecutiveCheck">{{payItem.payConfirmDate}}</span>
             </td>
             <!--稅金-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="payItem.isExecutiveCheck">{{payItem.payTax}}</span>
+            <td class="form-group" style="vertical-align: inherit; text-align: right">
+                <span ng-if="payItem.isExecutiveCheck">{{(payItem.payTax*1).toLocaleString()}}</span>
             </td>
             <!--雜支-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="payItem.isExecutiveCheck">{{payItem.payOthers}}</span>
+            <td class="form-group" style="vertical-align: inherit; text-align: right">
+                <span ng-if="payItem.isExecutiveCheck">{{(payItem.payOthers*1).toLocaleString()}}</span>
             </td>
             <!--未稅金額-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="payItem.isExecutiveCheck">{{calculateNonTaxValue(payItem)}}</span>
+            <td class="form-group" style="vertical-align: inherit; text-align: right">
+                <span ng-if="payItem.isExecutiveCheck">{{calculateNonTaxValue(payItem).toLocaleString()}}</span>
             </td>
             <!--行政確認-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">

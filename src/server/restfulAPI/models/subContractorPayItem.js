@@ -27,8 +27,16 @@ module.exports = mongoose.model('SubContractorPayItem', {
         type: String,
     },
 
+    vendorName: {
+        type: String,
+    },
+
     // 委外項目ＤＩＤ
     itemDID: {
+        type: String,
+    },
+
+    itemName: {
         type: String,
     },
 

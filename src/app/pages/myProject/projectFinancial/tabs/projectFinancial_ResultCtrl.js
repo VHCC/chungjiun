@@ -828,7 +828,7 @@
             for (var i = 0; i < $scope.overall_data.length; i ++) {
                 // console.log($scope.overall_data[i])
                 for (var j = 0; j < $scope.overall_data[i]._payments.length; j ++) {
-                    resultB += parseInt($scope.overall_data[i]._payments[j].amount)
+                    resultB += $scope.overall_data[i]._payments[j].amount == undefined ? 0 : parseInt($scope.overall_data[i]._payments[j].amount)
                 }
             }
             // console.log("resultB:> " + resultB)
@@ -837,7 +837,7 @@
             var resultC = 0.0;
             for (var i = 0; i < $scope.overall_data.length; i ++) {
                 for (var j = 0; j < $scope.overall_data[i]._otherCost.length; j ++) {
-                    resultC += parseInt($scope.overall_data[i]._otherCost[j].amount)
+                    resultC += $scope.overall_data[i]._otherCost[j].amount = undefined ? 0 : parseInt($scope.overall_data[i]._otherCost[j].amount)
                 }
             }
             // console.log("resultC:> " + resultC)

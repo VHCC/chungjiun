@@ -59,9 +59,9 @@
                 </my>
             </td>
             <!--正常時數Cost-->
-            <td class="form-group has-success" style="vertical-align: inherit;">
+            <td class="form-group has-success" style="vertical-align: inherit;text-align: right">
                 <my >
-                    {{calculateHours_type2(item, 2)}}
+                    {{calculateHours_type2(item, 2).toLocaleString()}}
                 </my>
             </td>
             <!--加班總時數-->
@@ -71,9 +71,9 @@
                 </my>
             </td>
             <!--加班總時數Cost 1.67-->
-            <td class="form-group has-success" style="vertical-align: inherit;">
+            <td class="form-group has-success" style="vertical-align: inherit;text-align: right">
                 <my >
-                    {{calculateHours_type2_add(item, 1, 2)}}
+                    {{calculateHours_type2_add(item, 1, 2).toLocaleString()}}
                 </my>
             </td>
             <!--換休總時數-->
@@ -83,9 +83,9 @@
                 </my>
             </td>
             <!--換休總時數Cost 2.0 -->
-            <td class="form-group has-success" style="vertical-align: inherit;">
+            <td class="form-group has-success" style="vertical-align: inherit;text-align: right">
                 <my >
-                    {{calculateHours_type2_add(item, 2, 2)}}
+                    {{calculateHours_type2_add(item, 2, 2).toLocaleString()}}
                 </my>
             </td>
 

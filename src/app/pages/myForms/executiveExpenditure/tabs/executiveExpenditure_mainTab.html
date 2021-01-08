@@ -122,8 +122,8 @@
                        class="form-control input-sm">
             </td>
             <!--金額-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="item.isSendReview">{{item.amount}}</span>
+            <td class="form-group" style="vertical-align: inherit; text-align: right">
+                <span ng-if="item.isSendReview">{{(item.amount*1).toLocaleString()}}</span>
                 <input type="text"
                        ng-if="!item.isSendReview"
                        ng-model="item.amount"
@@ -133,12 +133,12 @@
         </tr>
         </tbody>
         <tfoot>
-            <tr style="vertical-align: inherit; text-align: center">
+            <tr style="vertical-align: inherit; text-align: right">
                 <td colspan="5" style="vertical-align: inherit;">
                     小計
                 </td>
                 <td style="vertical-align: inherit;">
-                    {{calculateSumEE()}}
+                    {{calculateSumEE().toLocaleString()}}
                 </td>
             </tr>
         </tfoot>

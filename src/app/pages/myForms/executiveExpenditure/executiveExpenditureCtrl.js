@@ -207,7 +207,18 @@
         }
 
         $scope.setExecutiveExpenditureItem = function(item) {
-            // console.log(item);
+            console.log(item);
+
+            if (item.targetDID == undefined) {
+                toastr.error('操作異常', '請先選取項目');
+               return
+            }
+
+            if (item.amount == undefined || item.amount == "") {
+                toastr.error('操作異常', '請輸入金額');
+                return
+            }
+
             var formData = {
                 _id: item._id,
                 payDate: item.payDate,
