@@ -22,6 +22,7 @@ global.apiUrl = {
     post_project_find_by_name : '/api/projectFindByName',
     post_project_find_by_code : '/api/post_project_find_by_code',
     post_project_find_group_list : '/api/post_project_find_group_list',
+    post_project_find_related_combined_array: '/api/post_project_find_related_combined_array',
     // 尋找總數
     get_project_find_by_code_distinct : '/api/projectFindByCodeDistinct',
     post_project_number_find_by_prj_number_distinct : '/api/post_project_number_find_by_prj_number_distinct',
@@ -76,6 +77,7 @@ global.apiUrl = {
     post_payment_items_update_by_id : '/api/post_payment_items_update_by_id',
     post_payment_multiple_get : '/api/post_payment_multiple_get',
     post_payment_fetch_items_by_prjdid : '/api/post_payment_fetch_items_by_prjdid',
+    post_payment_fetch_items_by_prjdid_array : '/api/post_payment_fetch_items_by_prjdid_array',
 
     // global configs
     fetch_global_configs: '/api/fetch_global_configs',
@@ -114,6 +116,7 @@ global.apiUrl = {
     query_statistics_form_CJ_type3 : '/api/query_statistics_form_CJ_type3',
     query_statistics_tables : '/api/query_statistics_tables',
     queryStatisticsForms_projectIncome_Cost : '/api/queryStatisticsForms_projectIncome_Cost',
+    queryStatisticsForms_projectIncome_Cost_byPrjDIDArray : '/api/queryStatisticsForms_projectIncome_Cost_byPrjDIDArray',
 
     // employeeStatistics
     query_employee_statistics : '/api/query_employee_statistics',
@@ -167,6 +170,7 @@ global.apiUrl = {
     // projectIncome
     post_project_income_create : '/api/post_project_income_create',
     post_project_income_find : '/api/post_project_income_find',
+    post_project_income_find_by_prjdid_array : '/api/post_project_income_find_by_prjdid_array',
     post_project_income_update : '/api/post_project_income_update',
     post_project_income_remove : '/api/post_project_income_remove',
 
@@ -305,6 +309,7 @@ global.apiUrl = {
     post_executive_expenditure_remove_item : '/api/post_executive_expenditure_remove_item',
     post_executive_expenditure_fetch_items : '/api/post_executive_expenditure_fetch_items',
     post_executive_expenditure_fetch_items_by_prj_did : '/api/post_executive_expenditure_fetch_items_by_prj_did',
+    post_executive_expenditure_fetch_items_by_prj_did_array : '/api/post_executive_expenditure_fetch_items_by_prj_did_array',
     post_executive_expenditure_items_update_one : '/api/post_executive_expenditure_items_update_one',
     post_executive_expenditure_items_update_many : '/api/post_executive_expenditure_items_update_many',
 
@@ -339,6 +344,7 @@ global.apiUrl = {
 
     // subContractorPayItem
     post_fetch_sub_contractor_pay_item : '/api/post_fetch_sub_contractor_pay_item',
+    post_fetch_sub_contractor_pay_item_by_prj_did_array : '/api/post_fetch_sub_contractor_pay_item_by_prj_did_array',
     post_insert_sub_contractor_pay_item : '/api/post_insert_sub_contractor_pay_item',
     post_update_sub_contractor_pay_item : '/api/post_update_sub_contractor_pay_item',
     post_remove_sub_contractor_pay_item : '/api/post_remove_sub_contractor_pay_item',

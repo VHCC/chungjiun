@@ -1,4 +1,5 @@
 <div class="horizontal-scroll">
+    <div ng-if="selectPrjArray.length > 1" style="margin: 10px; color: darkred;"> 此專案包含：{{showCombinedPrjCode()}}</div>
     <table class="table table-bordered table-hover table-condensed" st-table="statisticsResults">
         <thead>
         <tr style="white-space:nowrap" class="sortable">

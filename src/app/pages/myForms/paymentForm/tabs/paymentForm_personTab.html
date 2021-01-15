@@ -69,8 +69,8 @@
                     <span ng-if="item.isSendReview">{{item.contents}}</span>
                 </td>
                 <!--墊付金額-->
-                <td class="form-group" style="vertical-align: inherit; text-align: center">
-                    <span ng-if="item.isSendReview">{{item.amount}}</span>
+                <td class="form-group" style="vertical-align: inherit; text-align: right">
+                    <span ng-if="item.isSendReview">{{(item.amount*1).toLocaleString()}}</span>
                 </td>
                 <!--經理簽章-->
                 <td class="form-group no-print" style="vertical-align: inherit; text-align: center">
@@ -119,8 +119,8 @@
                 <td colspan="5" style="vertical-align: inherit;">
                     小計
                 </td>
-                <td style="vertical-align: inherit;">
-                    {{calculateSum(3)}}
+                <td style="vertical-align: inherit; text-align: right">
+                    {{calculateSum(3).toLocaleString()}}
                 </td>
             </tr>
             </tfoot>

@@ -237,8 +237,7 @@ module.exports = function (app) {
         console.log(query);
 
         PaymentFormItem.find(query)
-            .sort({
-            })
+            .sort({})
             .exec(function (err, workHourForms) {
                 if (err) {
                     res.send(err);
@@ -288,8 +287,62 @@ module.exports = function (app) {
                 }
             });
         }
-
-
     })
 
+
+    // 合併、轉換專案
+    app.post(global.apiUrl.post_payment_fetch_items_by_prjdid_array, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.e + "API, post_payment_fetch_items_by_prjdid_array");
+
+        var findData = []
+        for (var index = 0; index < req.body.prjDIDArray.length; index++) {
+            var target = {
+                prjDID: req.body.prjDIDArray[index],
+            }
+            findData.push(target);
+        }
+        ;
+
+        var query = {};
+        query.$or = findData;
+
+        if (req.body.year) {
+            query.isExecutiveCheck = true;
+            query.year = req.body.year;
+            query.month = req.body.month;
+
+            PaymentFormItem.find(query, function (err, paymentItems) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_payment_fetch_items_by_prjdid_array");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: paymentItems,
+                    });
+                }
+            });
+        } else {
+            query.isExecutiveCheck = true;
+            PaymentFormItem.find(query, function (err, paymentItems) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_payment_fetch_items_by_prjdid_array");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: paymentItems,
+                    });
+                }
+            });
+        }
+    })
 }

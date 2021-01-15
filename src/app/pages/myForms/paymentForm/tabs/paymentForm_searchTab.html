@@ -54,6 +54,8 @@
 
     <hr>
 
+    <div ng-if="selectPrjArray.length > 1" style="margin: 10px; color: darkred;"> 此專案包含：{{showCombinedPrjCode()}}</div>
+
     <table class="table table-bordered table-hover table-condensed" id="form_main_pdf">
         <thead>
         <tr style="white-space:nowrap">
@@ -108,8 +110,8 @@
                        class="form-control input-sm">
             </td>
             <!--墊付金額-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="item.isSendReview">{{item.amount}}</span>
+            <td class="form-group" style="vertical-align: inherit; text-align: right">
+                <span ng-if="item.isSendReview">{{(item.amount*1).toLocaleString()}}</span>
                 <input type="text"
                        ng-if="!item.isSendReview"
                        ng-model="item.amount"
@@ -166,8 +168,8 @@
                 <td colspan="5" style="vertical-align: inherit;">
                     小計
                 </td>
-                <td style="vertical-align: inherit;">
-                    {{calculateSum(4)}}
+                <td style="vertical-align: inherit; text-align: right">
+                    {{calculateSum(4).toLocaleString()}}
                 </td>
             </tr>
         </tfoot>

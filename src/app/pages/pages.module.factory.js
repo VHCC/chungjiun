@@ -42,6 +42,10 @@
                     return http.post('/api/post_project_find_group_list', projectData);
                 },
 
+                fetchRelatedCombinedPrjArray: function(projectData) {
+                    return http.post('/api/post_project_find_related_combined_array', projectData);
+                },
+
                 // 找總案
                 findAllByGroup: function () {
                     return http.get('/api/projectFindAllByGroup');
@@ -465,7 +469,11 @@
 
                 fetchPaymentsItemByPrjDID: function (formData) {
                     return http.post('/api/post_payment_fetch_items_by_prjdid', formData);
-                }
+                },
+
+                fetchPaymentsItemByPrjDIDArray: function (formData) {
+                    return http.post('/api/post_payment_fetch_items_by_prjdid_array', formData);
+                },
             }
         }])
         .factory('GlobalConfigUtil', ['$http', function (http) {
@@ -517,6 +525,9 @@
                 },
                 findIncome: function (formData) {
                     return http.post('/api/post_project_income_find', formData)
+                },
+                findIncomeByPrjDIDArray: function (formData) {
+                    return http.post('/api/post_project_income_find_by_prjdid_array', formData)
                 },
                 updateIncome: function (formData) {
                     return http.post('/api/post_project_income_update', formData)
@@ -625,6 +636,10 @@
                 // project Income Cost
                 queryStatisticsForms_projectIncome_Cost: function (formData) {
                     return http.post('/api/queryStatisticsForms_projectIncome_Cost', formData);
+                },
+
+                queryStatisticsForms_projectIncome_Cost_ByPrjDIDArray: function (formData) {
+                    return http.post('/api/queryStatisticsForms_projectIncome_Cost_byPrjDIDArray', formData);
                 },
             }
         }])
@@ -770,6 +785,10 @@
                     return http.post('/api/post_executive_expenditure_fetch_items_by_prj_did', formData);
                 },
 
+                fetchExecutiveExpenditureItemsByPrjDIDArray: function (formData) {
+                    return http.post('/api/post_executive_expenditure_fetch_items_by_prj_did_array', formData);
+                },
+
                 updateExecutiveExpenditureOne: function (formData) {
                     return http.post('/api/post_executive_expenditure_items_update_one', formData);
                 },
@@ -882,6 +901,11 @@
                 fetchSCPayItems: function (formData) {
                     return http.post('/api/post_fetch_sub_contractor_pay_item', formData);
                 },
+
+                fetchSCPayItemsByPrjDIDArray: function (formData) {
+                    return http.post('/api/post_fetch_sub_contractor_pay_item_by_prj_did_array', formData);
+                },
+
 
                 createSCPayItem: function (formData) {
                     return http.post('/api/post_insert_sub_contractor_pay_item', formData);

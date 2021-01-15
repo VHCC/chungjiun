@@ -136,9 +136,9 @@
                 });
             }
             if (!selected) return 'Not Set'
-            if (selected[0].combinedID != undefined) {
-                return $scope.showPrjCodeWithCombine(selected[0].combinedID);
-            }
+            // if (selected[0].combinedID != undefined) {
+            //     return $scope.showPrjCodeWithCombine(selected[0].combinedID);
+            // }
             return selected.length > 0 ? selected[0].prjCode : 'Not Set';
         };
 
@@ -197,6 +197,13 @@
                             $scope.project_table = [];
                             var evalString;
 
+                            // var formData = {
+                            //     // prjDID: prjDID
+                            //     prjDIDArray: $scope.selectPrjArray
+                            // }
+
+                            // console.log($scope.groupList)
+
                             for (var index = 0; index < $scope.groupList.length; index ++) {
                                 // project
                                 // prjCheckTable.push($scope.groupList[index]._id);
@@ -211,7 +218,6 @@
                                 $scope.project_table.push(manipulateObject)
                             }
 
-                            console.log($scope.project_table);
                             if ($scope.groupList.length > 0) {
                                 for (var index = 0; index < $scope.groupList.length; index ++) {
                                     $scope.fetchPrjIncomeOverAll_Multi($scope.groupList[index])
@@ -234,6 +240,7 @@
                                 bsLoadingOverlayService.stop({
                                     referenceId: 'mainPage_project_income_multi_overall'
                                 });
+                                console.log($scope.project_table)
                             }, 1000)
                         });
                 })
@@ -247,8 +254,7 @@
         // =============== Main Function ===============
         $scope.fetchPrjIncomeOverAll_Multi = function (prjItemInfo) {
             console.log(" $$$$ fetchPrjIncomeOverAll_Multi $$$$ ")
-            console.log(prjItemInfo)
-            // $scope.selectPrjInfo = prjItemInfo;
+            console.log(prjItemInfo);
 
             var manipulatePrj = $scope.fetchPrjItemFromScope(prjItemInfo._id)
             $timeout(function () {
@@ -263,23 +269,18 @@
 
             ProjectFinancialResultUtil.findFR(formData)
                 .success(function (res) {
-                    console.log(" --- FinancialResult --- ");
+                    console.log(" === FinancialResult === ");
+                    console.log(res);
 
                     if (res.payload.length == 0) {
                         ProjectFinancialResultUtil.createFR(formData)
                             .success(function (res) {
-                                // console.log(res);
-                                // $scope.financialResult = res.payload;
                                 manipulatePrj.financialResult = res.payload;
                             })
                     } else {
-                        // $scope.financialResult = res.payload[0];
                         manipulatePrj.financialResult = res.payload[0];
                     }
 
-                    // $scope.projectFinancialResultTable = res.payload;
-
-                    // manipulatePrj.financialResult = res.payload[0];
                     if (!manipulatePrj.financialResult.is011Set) {
                         manipulatePrj.financialResult.rate_item_1 = $scope.yearRate.rate_item_1;
                         manipulatePrj.financialResult.rate_item_2 = $scope.yearRate.rate_item_2;
@@ -290,196 +291,222 @@
 
                     manipulatePrj.overall_data = [];
 
-                    var incomeFormData = {
-                        isEnable: true,
-                        prjDID: prjItemInfo._id
+                    var formData = {
+                        rootPrjDID: prjItemInfo._id
                     }
 
-                    // 收入
-                    ProjectIncomeUtil.findIncome(incomeFormData)
+                    Project.fetchRelatedCombinedPrjArray(formData)
                         .success(function (res) {
-                            console.log("收入");
                             console.log(res);
-                            manipulatePrj.projectIncomeTable = res.payload;
-                            for (var i = 0; i < res.payload.length; i ++) {
-                                if (moment(res.payload[i].realDate) >= moment("2020/01")) {
-                                    if (manipulatePrj.overall_data[res.payload[i].realDate] != undefined) {
-                                        var data = manipulatePrj.overall_data[res.payload[i].realDate];
-                                        data._income.push(res.payload[i]);
-                                    } else {
+                            manipulatePrj.selectPrjArray = res;
 
-                                        var data = {
-                                            _date: res.payload[i].realDate,
-                                            _income: [res.payload[i]],
-                                            _payments: [],
-                                            _otherCost: [],
-                                            _subContractorPay: [],
-                                            _overall: 0,
+
+
+                            var incomeFormData = {
+                                // isEnable: true,
+                                // prjDID: prjItemInfo._id,
+                                prjDIDArray: manipulatePrj.selectPrjArray
+                            }
+
+                            console.log(incomeFormData)
+
+                            // 收入
+                            // ProjectIncomeUtil.findIncome(incomeFormData)
+                            ProjectIncomeUtil.findIncomeByPrjDIDArray(incomeFormData)
+                                .success(function (res) {
+                                    console.log(" --- 收入 --- ");
+                                    console.log(res);
+                                    manipulatePrj.projectIncomeTable = res.payload;
+                                    for (var i = 0; i < res.payload.length; i ++) {
+                                        var tempDate = moment(res.payload[i].realDate).format("YYYY/MM");
+                                        if (moment(tempDate) >= moment("2020/01")) {
+                                            if (manipulatePrj.overall_data[tempDate] != undefined) {
+                                                var data = manipulatePrj.overall_data[tempDate];
+                                                data._income.push(res.payload[i]);
+                                            } else {
+
+                                                var data = {
+                                                    _date: tempDate,
+                                                    _income: [res.payload[i]],
+                                                    _payments: [],
+                                                    _otherCost: [],
+                                                    _subContractorPay: [],
+                                                    _overall: 0,
+                                                }
+
+                                                manipulatePrj.overall_data.push(data);
+                                                eval('manipulatePrj.overall_data[tempDate] = data')
+                                            }
                                         }
-
-                                        manipulatePrj.overall_data.push(data);
-                                        eval('manipulatePrj.overall_data[res.payload[i].realDate] = data')
                                     }
-                                }
-                            }
-                        })
+                                })
 
-                    // 墊付款
-                    PaymentFormsUtil.fetchPaymentsItemByPrjDID(formData)
-                        .success(function (res) {
-                            console.log("墊付款")
-                            console.log(res);
-                            manipulatePrj.searchPaymentsItems = res.payload;
-                            for (var i = 0; i < res.payload.length; i ++) {
-                                var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
-                                if (moment(tempDate) >= moment("2020/01")) {
-                                    if (manipulatePrj.overall_data[tempDate] != undefined) {
-                                        var data = manipulatePrj.overall_data[tempDate];
-                                        data._payments.push(res.payload[i]);
-                                    } else {
-                                        var data = {
-                                            _date: tempDate,
-                                            _income: [],
-                                            _payments: [res.payload[i]],
-                                            _otherCost: [],
-                                            _subContractorPay: [],
-                                            _overall: 0,
+                            var subFormData = {
+                                // prjDID: $scope.selectPrjInfo._id,
+                                prjDIDArray: manipulatePrj.selectPrjArray
+                            }
+
+                            // 墊付款
+                            // PaymentFormsUtil.fetchPaymentsItemByPrjDID(formData)
+                            PaymentFormsUtil.fetchPaymentsItemByPrjDIDArray(subFormData)
+                                .success(function (res) {
+                                    console.log(" --- 墊付款 --- ")
+                                    console.log(res);
+                                    manipulatePrj.searchPaymentsItems = res.payload;
+                                    for (var i = 0; i < res.payload.length; i ++) {
+                                        var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
+                                        if (moment(tempDate) >= moment("2020/01")) {
+                                            if (manipulatePrj.overall_data[tempDate] != undefined) {
+                                                var data = manipulatePrj.overall_data[tempDate];
+                                                data._payments.push(res.payload[i]);
+                                            } else {
+                                                var data = {
+                                                    _date: tempDate,
+                                                    _income: [],
+                                                    _payments: [res.payload[i]],
+                                                    _otherCost: [],
+                                                    _subContractorPay: [],
+                                                    _overall: 0,
+                                                }
+                                                manipulatePrj.overall_data.push(data);
+                                                eval('manipulatePrj.overall_data[tempDate] = data')
+                                            }
                                         }
-                                        manipulatePrj.overall_data.push(data);
-                                        eval('manipulatePrj.overall_data[tempDate] = data')
                                     }
-                                }
-                            }
-                        })
-                        .error(function (resp) {
-                        })
+                                })
+                                .error(function (resp) {
+                                })
 
-                    // 其他支出
-                    ExecutiveExpenditureUtil.fetchExecutiveExpenditureItemsByPrjDID(formData)
-                        .success(function (res) {
-                            console.log("其他支出")
-                            console.log(res)
-                            manipulatePrj.displayEEItems = res.payload;
-                            for (var i = 0; i < res.payload.length; i ++) {
-                                var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
+                            // 其他支出
+                            // ExecutiveExpenditureUtil.fetchExecutiveExpenditureItemsByPrjDID(formData)
+                            ExecutiveExpenditureUtil.fetchExecutiveExpenditureItemsByPrjDIDArray(subFormData)
+                                .success(function (res) {
+                                    console.log(" --- 其他支出 --- ");
+                                    console.log(res)
+                                    manipulatePrj.displayEEItems = res.payload;
+                                    for (var i = 0; i < res.payload.length; i ++) {
+                                        var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
+                                        if (moment(tempDate) >= moment("2020/01")) {
+                                            if (manipulatePrj.overall_data[tempDate] != undefined) {
+                                                var data = manipulatePrj.overall_data[tempDate];
+                                                data._otherCost.push(res.payload[i]);
+                                            } else {
+                                                var data = {
+                                                    _date: tempDate,
+                                                    _income: [],
+                                                    _payments: [],
+                                                    _subContractorPay: [],
+                                                    _otherCost: [res.payload[i]],
+                                                    _overall: 0,
+                                                }
 
-                                if (moment(tempDate) >= moment("2020/01")) {
-
-                                    if (manipulatePrj.overall_data[tempDate] != undefined) {
-                                        var data = manipulatePrj.overall_data[tempDate];
-                                        data._otherCost.push(res.payload[i]);
-                                    } else {
-                                        var data = {
-                                            _date: tempDate,
-                                            _income: [],
-                                            _payments: [],
-                                            _subContractorPay: [],
-                                            _otherCost: [res.payload[i]],
-                                            _overall: 0,
+                                                manipulatePrj.overall_data.push(data);
+                                                eval('manipulatePrj.overall_data[tempDate] = data')
+                                            }
                                         }
-
-                                        manipulatePrj.overall_data.push(data);
-                                        eval('manipulatePrj.overall_data[tempDate] = data')
                                     }
-                                }
+                                })
+                                .error(function (res) {
+                                })
+
+                            var fetchFormData = {
+                                prjDID: prjItemInfo._id,
+                                isExecutiveCheck: true
                             }
-                        })
-                        .error(function (res) {
-                        })
 
-                    var fetchFormData = {
-                        prjDID: prjItemInfo._id,
-                        isExecutiveCheck: true
-                    }
-
-                    // 廠商請款
-                    SubContractorPayItemUtil.fetchSCPayItems(fetchFormData)
-                        .success(function (res) {
-                            console.log("廠商請款")
-                            console.log(res)
-                            manipulatePrj.subContractorPayItems = res.payload;
-                            for (var i = 0; i < res.payload.length; i ++) {
-                                var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
-                                if (moment(tempDate) >= moment("2020/01")) {
-                                    if (manipulatePrj.overall_data[tempDate] != undefined) {
-                                        var data = manipulatePrj.overall_data[tempDate];
-                                        data._subContractorPay.push(res.payload[i]);
-                                    } else {
-                                        var data = {
-                                            _date: tempDate,
-                                            _income: [],
-                                            _payments: [],
-                                            _otherCost: [],
-                                            _subContractorPay: [res.payload[i]],
-                                            _overall: 0,
+                            // 廠商請款
+                            // SubContractorPayItemUtil.fetchSCPayItems(fetchFormData)
+                            SubContractorPayItemUtil.fetchSCPayItemsByPrjDIDArray(subFormData)
+                                .success(function (res) {
+                                    console.log(" --- 廠商請款 --- ")
+                                    console.log(res)
+                                    manipulatePrj.subContractorPayItems = res.payload;
+                                    for (var i = 0; i < res.payload.length; i ++) {
+                                        var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
+                                        if (moment(tempDate) >= moment("2020/01")) {
+                                            if (manipulatePrj.overall_data[tempDate] != undefined) {
+                                                var data = manipulatePrj.overall_data[tempDate];
+                                                data._subContractorPay.push(res.payload[i]);
+                                            } else {
+                                                var data = {
+                                                    _date: tempDate,
+                                                    _income: [],
+                                                    _payments: [],
+                                                    _otherCost: [],
+                                                    _subContractorPay: [res.payload[i]],
+                                                    _overall: 0,
+                                                }
+                                                manipulatePrj.overall_data.push(data);
+                                                eval('manipulatePrj.overall_data[tempDate] = data')
+                                            }
                                         }
-                                        manipulatePrj.overall_data.push(data);
-                                        eval('manipulatePrj.overall_data[tempDate] = data')
                                     }
-                                }
-                            }
-                        })
+                                })
 
-                    // 人時支出
-                    var getData = {};
+                            // 人時支出
+                            var getData = {};
 
-                    getData.branch = prjItemInfo.branch;
-                    getData.year = prjItemInfo.year;
-                    getData.code = prjItemInfo.code;
-                    getData.prjNumber = prjItemInfo.prjNumber;
-                    getData.prjSubNumber = prjItemInfo.prjSubNumber;
-                    getData.type = prjItemInfo.type;
+                            getData.branch = prjItemInfo.branch;
+                            getData.year = prjItemInfo.year;
+                            getData.code = prjItemInfo.code;
+                            getData.prjNumber = prjItemInfo.prjNumber;
+                            getData.prjSubNumber = prjItemInfo.prjSubNumber;
+                            getData.type = prjItemInfo.type;
 
-                    WorkHourUtil.queryStatisticsForms_projectIncome_Cost(getData)
-                        .success(function (res) {
+                            // WorkHourUtil.queryStatisticsForms_projectIncome_Cost(getData)
+                            WorkHourUtil.queryStatisticsForms_projectIncome_Cost_ByPrjDIDArray(subFormData)
+                                .success(function (res) {
+                                    console.log(" === 人工時 === ")
+                                    console.log(res)
 
-                            res.payload = res.payload.sort(function (a, b) {
-                                return a._id.userDID > b._id.userDID ? 1 : -1;
-                            });
+                                    res.payload = res.payload.sort(function (a, b) {
+                                        return a._id.userDID > b._id.userDID ? 1 : -1;
+                                    });
 
-                            for (var index = 0; index < res.payload.length; index ++) {
-                                for (var index_sub = 0; index_sub < res.payload_add.length; index_sub ++) {
-                                    if( res.payload_add[index_sub]._id.prjCode == res.payload[index]._id.prjCode &&
-                                        res.payload_add[index_sub]._id.userDID == res.payload[index]._id.userDID) {
-                                        res.payload[index]._add_tables = res.payload_add[index_sub].add_tables;
-                                    }
-                                }
-                            }
-                            manipulatePrj.statisticsResults_type1 = $scope.filter_type1_data(res.payload);
-                            // $scope.statisticsResults = $scope.filter_type2_data(res.payload);
-                            // console.log($scope.statisticsResults);
-                            manipulatePrj.statisticsResults_type1 = $scope.filter_type2_data_item(manipulatePrj.statisticsResults_type1);
-                            // console.log($scope.statisticsResults_type1);
-
-                            for (var i = 0; i < manipulatePrj.statisticsResults_type1.length; i ++) {
-                                var tempDate = manipulatePrj.statisticsResults_type1[i]._date;
-
-                                if (moment(tempDate) >= moment("2020/01")) {
-                                    if (manipulatePrj.overall_data[tempDate] != undefined) {
-                                        var data = manipulatePrj.overall_data[tempDate];
-                                        data._overall = manipulatePrj.statisticsResults_type1[i].totalCost +
-                                            manipulatePrj.statisticsResults_type1[i].hourTotal_add_cost_A +
-                                            manipulatePrj.statisticsResults_type1[i].hourTotal_add_cost_B;
-                                    } else {
-                                        var data = {
-                                            _date: tempDate,
-                                            _income: [],
-                                            _payments: [],
-                                            _otherCost: [],
-                                            _subContractorPay: [],
-                                            _overall: manipulatePrj.statisticsResults_type1[i].totalCost +
-                                            manipulatePrj.statisticsResults_type1[i].hourTotal_add_cost_A +
-                                            manipulatePrj.statisticsResults_type1[i].hourTotal_add_cost_B,
+                                    for (var index = 0; index < res.payload.length; index ++) {
+                                        for (var index_sub = 0; index_sub < res.payload_add.length; index_sub ++) {
+                                            // if( res.payload_add[index_sub]._id.prjCode == res.payload[index]._id.prjCode &&
+                                            //     res.payload_add[index_sub]._id.userDID == res.payload[index]._id.userDID) {
+                                                res.payload[index]._add_tables = res.payload_add[index_sub].add_tables;
+                                            // }
                                         }
-                                        manipulatePrj.overall_data.push(data);
-                                        eval('manipulatePrj.overall_data[tempDate] = data')
                                     }
-                                }
-                            }
+                                    manipulatePrj.statisticsResults_type1 = $scope.filter_type1_data(res.payload);
+                                    // $scope.statisticsResults = $scope.filter_type2_data(res.payload);
+                                    // console.log($scope.statisticsResults);
+                                    manipulatePrj.statisticsResults_type1 = $scope.filter_type2_data_item(manipulatePrj.statisticsResults_type1);
+                                    // console.log($scope.statisticsResults_type1);
 
-                            manipulatePrj.overall_data_sort = manipulatePrj.overall_data.sort(function (a, b) {
-                                return moment(a._date).unix() > moment(b._date).unix() ? 1 : -1;
-                            });
+                                    for (var i = 0; i < manipulatePrj.statisticsResults_type1.length; i ++) {
+                                        var tempDate = manipulatePrj.statisticsResults_type1[i]._date;
+
+                                        if (moment(tempDate) >= moment("2020/01")) {
+                                            if (manipulatePrj.overall_data[tempDate] != undefined) {
+                                                var data = manipulatePrj.overall_data[tempDate];
+                                                data._overall += manipulatePrj.statisticsResults_type1[i].totalCost +
+                                                    manipulatePrj.statisticsResults_type1[i].hourTotal_add_cost_A +
+                                                    manipulatePrj.statisticsResults_type1[i].hourTotal_add_cost_B;
+                                            } else {
+                                                var data = {
+                                                    _date: tempDate,
+                                                    _income: [],
+                                                    _payments: [],
+                                                    _otherCost: [],
+                                                    _subContractorPay: [],
+                                                    _overall: manipulatePrj.statisticsResults_type1[i].totalCost +
+                                                    manipulatePrj.statisticsResults_type1[i].hourTotal_add_cost_A +
+                                                    manipulatePrj.statisticsResults_type1[i].hourTotal_add_cost_B,
+                                                }
+                                                manipulatePrj.overall_data.push(data);
+                                                eval('manipulatePrj.overall_data[tempDate] = data')
+                                            }
+                                        }
+                                    }
+
+                                    manipulatePrj.overall_data_sort = manipulatePrj.overall_data.sort(function (a, b) {
+                                        return moment(a._date).unix() > moment(b._date).unix() ? 1 : -1;
+                                    });
+                                })
                         })
                 })
         }
@@ -830,7 +857,10 @@
                     var resultB = 0.0;
                     for (var i = 0; i < manipulatePrj.overall_data.length; i ++) {
                         for (var j = 0; j < manipulatePrj.overall_data[i]._payments.length; j ++) {
-                            resultB += parseInt(manipulatePrj.overall_data[i]._payments[j].amount)
+                            if (manipulatePrj.overall_data[i]._payments[j].amount == null || manipulatePrj.overall_data[i]._payments[j].amount == undefined) {
+                            } else {
+                                resultB += parseInt(manipulatePrj.overall_data[i]._payments[j].amount)
+                            }
                         }
                     }
                     // console.log("resultB:> " + resultB)
@@ -840,7 +870,10 @@
                     var resultC = 0.0;
                     for (var i = 0; i < manipulatePrj.overall_data.length; i ++) {
                         for (var j = 0; j < manipulatePrj.overall_data[i]._otherCost.length; j ++) {
-                            resultC += parseInt(manipulatePrj.overall_data[i]._otherCost[j].amount)
+                            if (manipulatePrj.overall_data[i]._otherCost[j].amount == null || manipulatePrj.overall_data[i]._otherCost[j].amount == undefined) {
+                            } else {
+                                resultC += parseInt(manipulatePrj.overall_data[i]._otherCost[j].amount)
+                            }
                         }
                     }
                     return Math.round(resultC)
@@ -1405,6 +1438,31 @@
             });
             console.log(result_sort);
             return result_sort;
+        }
+
+        $scope.showPrjCode= function (prjDID) {
+            var selected = [];
+            if (prjDID) {
+                selected = $filter('filter')($scope.allProjectCache, {
+                    prjDID: prjDID,
+                });
+            }
+            if (!selected) return 'Not Set'
+            return selected.length > 0 ? selected[0].prjCode : 'Not Set';
+        };
+
+        $scope.showCombinedPrjCode = function (item) {
+            var results = "[ ";
+
+            for (var index = 0; index < item.selectPrjArray.length; index ++) {
+                // console.log($scope.selectPrjArray[index])
+                results += $scope.showPrjCode(item.selectPrjArray[index])
+                if (index < item.selectPrjArray.length - 1) {
+                    results += ", "
+                }
+            }
+            results += " ]"
+            return results
         }
 
     }

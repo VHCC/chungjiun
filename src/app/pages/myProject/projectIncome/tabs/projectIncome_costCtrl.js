@@ -138,9 +138,9 @@
                 });
             }
             if (!selected) return 'Not Set'
-            if (selected[0].combinedID != undefined) {
-                return $scope.showPrjCodeWithCombine(selected[0].combinedID);
-            }
+            // if (selected[0].combinedID != undefined) {
+            //     return $scope.showPrjCodeWithCombine(selected[0].combinedID);
+            // }
             return selected.length > 0 ? selected[0].prjCode : 'Not Set';
         };
 
@@ -352,6 +352,7 @@
                     referenceId: 'mainPage_project_income_cost'
                 });
             }, 100)
+
             // 統計搜尋條件
             var getData = {};
 
@@ -362,49 +363,85 @@
             getData.prjSubNumber = prjInfo.prjSubNumber;
             getData.type = prjInfo.type;
 
-            console.log(getData);
+            var formData = {
+                rootPrjDID: prjInfo._id
+            }
 
-            WorkHourUtil.queryStatisticsForms_projectIncome_Cost(getData)
+            Project.fetchRelatedCombinedPrjArray(formData)
                 .success(function (res) {
-                    console.log(res)
+                    console.log(res);
+                    $scope.selectPrjArray = res;
 
-                    res.payload = res.payload.sort(function (a, b) {
-                        return a._id.userDID > b._id.userDID ? 1 : -1;
-                    });
-
-                    for (var index = 0; index < res.payload.length; index ++) {
-                        for (var index_sub = 0; index_sub < res.payload_add.length; index_sub ++) {
-                            if( res.payload_add[index_sub]._id.prjCode == res.payload[index]._id.prjCode &&
-                                res.payload_add[index_sub]._id.userDID == res.payload[index]._id.userDID) {
-                                res.payload[index]._add_tables = res.payload_add[index_sub].add_tables;
-                            }
-                        }
+                    var subFormData = {
+                        prjDIDArray: $scope.selectPrjArray
                     }
 
-                    // console.log(res.payload)
-                    $scope.statisticsResults = $scope.filter_type2_data(res.payload);
-                    console.log($scope.statisticsResults);
+                    // WorkHourUtil.queryStatisticsForms_projectIncome_Cost(getData)
+                    WorkHourUtil.queryStatisticsForms_projectIncome_Cost_ByPrjDIDArray(subFormData)
+                        .success(function (res) {
+                            console.log(res)
 
-                    angular.element(
-                        document.getElementById('includeHead_cost'))
-                        .html($compile(
-                            "<div ba-panel ba-panel-title=" +
-                            "'列表 - " + $scope.statisticsResults.length + "'" +
-                            "ba-panel-class= " +
-                            "'with-scroll'" + ">" +
-                            "<div " +
-                            "ng-include=\"'app/pages/myProject/projectIncome/tables/projectIncome_cost_table.html'\">" +
-                            "</div>" +
-                            "</div>"
-                        )($scope));
-                    $timeout(function () {
-                        bsLoadingOverlayService.stop({
-                            referenceId: 'mainPage_project_income_cost'
-                        });
-                    }, 1000)
+                            res.payload = res.payload.sort(function (a, b) {
+                                return a._id.userDID > b._id.userDID ? 1 : -1;
+                            });
+
+                            for (var index = 0; index < res.payload.length; index ++) {
+                                for (var index_sub = 0; index_sub < res.payload_add.length; index_sub ++) {
+                                    if( res.payload_add[index_sub]._id.prjCode == res.payload[index]._id.prjCode &&
+                                        res.payload_add[index_sub]._id.userDID == res.payload[index]._id.userDID) {
+                                        res.payload[index]._add_tables = res.payload_add[index_sub].add_tables;
+                                    }
+                                }
+                            }
+
+                            // console.log(res.payload)
+                            $scope.statisticsResults = $scope.filter_type2_data(res.payload);
+                            console.log($scope.statisticsResults);
+
+                            angular.element(
+                                document.getElementById('includeHead_cost'))
+                                .html($compile(
+                                    "<div ba-panel ba-panel-title=" +
+                                    "'列表 - " + $scope.statisticsResults.length + "'" +
+                                    "ba-panel-class= " +
+                                    "'with-scroll'" + ">" +
+                                    "<div " +
+                                    "ng-include=\"'app/pages/myProject/projectIncome/tables/projectIncome_cost_table.html'\">" +
+                                    "</div>" +
+                                    "</div>"
+                                )($scope));
+                            $timeout(function () {
+                                bsLoadingOverlayService.stop({
+                                    referenceId: 'mainPage_project_income_cost'
+                                });
+                            }, 1000)
+                        })
                 })
         }
 
+        $scope.showPrjCode= function (prjDID) {
+            var selected = [];
+            if (prjDID) {
+                selected = $filter('filter')($scope.allProjectCache, {
+                    prjDID: prjDID,
+                });
+            }
+            if (!selected) return 'Not Set'
+            return selected.length > 0 ? selected[0].prjCode : 'Not Set';
+        };
+
+        $scope.showCombinedPrjCode = function () {
+            var results = "[ ";
+
+            for (var index = 0; index < $scope.selectPrjArray.length; index ++) {
+                results += $scope.showPrjCode($scope.selectPrjArray[index])
+                if (index < $scope.selectPrjArray.length - 1) {
+                    results += ", "
+                }
+            }
+            results += " ]"
+            return results
+        }
 
     }
 })();
