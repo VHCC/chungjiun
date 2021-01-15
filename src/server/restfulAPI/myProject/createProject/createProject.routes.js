@@ -428,6 +428,65 @@ module.exports = function (app) {
         })
     });
 
+    app.post(global.apiUrl.post_project_find_related_combined_array, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_project_find_related_combined_array");
+        var projectsArray = [];
+        projectsArray.push(req.body.rootPrjDID)
+        var promise = findPrj(req.body.rootPrjDID, projectsArray)
+
+        promise.then((response) => {
+            console.log(" $$$ success $$$ ");
+            console.log(response);
+            res.json(response);
+        }, (fail) => {
+            // console.log(fail);
+        })
+    });
+
+    function findPrj(parentPrjDID, projectsArray) {
+        // console.log("findPrj")
+
+        return new Promise(function(resolve, reject) {
+            // console.log(" Promise -- parentPrjDID:> " + parentPrjDID)
+            // console.log(projectsArray)
+            Project.find({
+                combinedID: parentPrjDID
+            }, function (err, projects) {
+                // console.log(" --- projects --- ");
+                // console.log(projects);
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "function, findPrj");
+                    console.log(parentPrjDID);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                }
+                // console.log("projects.length:> " + projects.length)
+                if (projects.length > 0) {
+
+                    var promiseArray = []
+
+                    for (var index = 0; index < projects.length; index ++) {
+                        // console.log("find prj:> " + projects[index]._id + ", prjCode:> " + projects[index].prjCode)
+                        projectsArray.push(projects[index]._id)
+                        // console.log(projectsArray)
+                        var ppromise = findPrj(projects[index]._id, projectsArray)
+                        promiseArray.push(ppromise)
+                    }
+
+                    Promise.all(promiseArray).then((success)=> {
+                        // console.log(" == success == ");
+                        // console.log(success);
+                        resolve(projectsArray);
+                    })
+                } else {
+                    resolve(projectsArray);
+                }
+
+            })
+        })
+    }
+
+
 
     app.get(global.apiUrl.get_project_find_by_code_distinct, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, get projects by name distinct.");

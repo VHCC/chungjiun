@@ -78,6 +78,34 @@ module.exports = function (app) {
         });
     });
 
+    app.post(global.apiUrl.post_executive_expenditure_fetch_items_by_prj_did_array, function (req, res) {
+        console.log(req.body);
+
+        var findData = []
+        for (var index = 0; index < req.body.prjDIDArray.length; index++) {
+            var target = {
+                prjDID: req.body.prjDIDArray[index],
+            }
+            findData.push(target);
+        }
+
+        var query = {};
+        query.$or = findData;
+
+        ExecutiveExpenditureItem.find(query, function (err, items) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: items,
+                });
+            }
+        });
+    });
+
+
     // update table by parameters
     app.post(global.apiUrl.post_executive_expenditure_items_update_one, function (req, res) {
         console.log(JSON.stringify(req.body));

@@ -142,6 +142,7 @@
         // }
 
         // Filter
+
         $scope.showPrjCodeWithCombine = function (prjDID) {
             var selected = [];
             if (prjDID) {
@@ -150,9 +151,9 @@
                 });
             }
             if (!selected) return 'Not Set'
-            if (selected[0].combinedID != undefined) {
-                return $scope.showPrjCodeWithCombine(selected[0].combinedID);
-            }
+            // if (selected[0].combinedID != undefined) {
+            //     return $scope.showPrjCodeWithCombine(selected[0].combinedID);
+            // }
             return selected.length > 0 ? selected[0].prjCode : 'Not Set';
         };
 
@@ -191,7 +192,16 @@
 
             $scope.selectPrjInfo = prjInfo;
 
-            $scope.getFinancialRate();
+            var formData = {
+                rootPrjDID: $scope.selectPrjInfo._id
+            }
+
+            Project.fetchRelatedCombinedPrjArray(formData)
+                .success(function (res) {
+                    console.log(res);
+                    $scope.selectPrjArray = res;
+                    $scope.getFinancialRate();
+                })
 
             $timeout(function () {
                 bsLoadingOverlayService.start({
@@ -212,7 +222,8 @@
                         $scope.yearRate = res.payload;
 
                         var formData = {
-                            prjDID: $scope.selectPrjInfo._id
+                            prjDID: $scope.selectPrjInfo._id,
+                            prjDIDArray: $scope.selectPrjArray
                         }
 
                         ProjectFinancialResultUtil.findFR(formData)
@@ -227,8 +238,7 @@
                                         })
                                 } else {
                                     $scope.financialResult = res.payload[0];
-                                    console.log($scope.financialResult)
-                                    $scope.projectFinancialResultTable = res.payload;
+                                    // $scope.projectFinancialResultTable = res.payload;
 
                                     if (!$scope.financialResult.is011Set) {
                                         $scope.financialResult.rate_item_1 = $scope.yearRate.rate_item_1;
@@ -241,25 +251,28 @@
                                     $scope.overall_data = [];
 
                                     var incomeFormData = {
-                                        isEnable: true,
-                                        prjDID: $scope.selectPrjInfo._id
+                                        // isEnable: true,
+                                        // prjDID: $scope.selectPrjInfo._id,
+                                        prjDIDArray: $scope.selectPrjArray
                                     }
 
                                     // 收入
-                                    ProjectIncomeUtil.findIncome(incomeFormData)
+                                    // ProjectIncomeUtil.findIncome(incomeFormData)
+                                    ProjectIncomeUtil.findIncomeByPrjDIDArray(incomeFormData)
                                         .success(function (res) {
-                                            console.log("收入");
+                                            console.log(" --- 收入 --- ");
                                             console.log(res);
                                             $scope.projectIncomeTable = res.payload;
                                             for (var i = 0; i < res.payload.length; i ++) {
-                                                if (moment(res.payload[i].realDate) >= moment("2020/01")) {
-                                                    if ($scope.overall_data[res.payload[i].realDate] != undefined) {
-                                                        var data = $scope.overall_data[res.payload[i].realDate];
+                                                var tempDate = moment(res.payload[i].realDate).format("YYYY/MM");
+                                                if (moment(tempDate) >= moment("2020/01")) {
+                                                    if ($scope.overall_data[tempDate] != undefined) {
+                                                        var data = $scope.overall_data[tempDate];
                                                         data._income.push(res.payload[i]);
                                                     } else {
 
                                                         var data = {
-                                                            _date: res.payload[i].realDate,
+                                                            _date: tempDate,
                                                             _income: [res.payload[i]],
                                                             _payments: [],
                                                             _otherCost: [],
@@ -268,17 +281,18 @@
                                                         }
 
                                                         $scope.overall_data.push(data);
-                                                        eval('$scope.overall_data[res.payload[i].realDate] = data')
+                                                        eval('$scope.overall_data[tempDate] = data')
                                                     }
                                                 }
                                             }
-                                            console.log($scope.overall_data);
+                                            // console.log($scope.overall_data);
                                         })
 
                                     // 墊付款
-                                    PaymentFormsUtil.fetchPaymentsItemByPrjDID(formData)
+                                    // PaymentFormsUtil.fetchPaymentsItemByPrjDID(formData)
+                                    PaymentFormsUtil.fetchPaymentsItemByPrjDIDArray(formData)
                                         .success(function (res) {
-                                            console.log("墊付款")
+                                            console.log(" --- 墊付款 --- ")
                                             console.log(res);
                                             $scope.searchPaymentsItems = res.payload;
                                             for (var i = 0; i < res.payload.length; i ++) {
@@ -307,17 +321,15 @@
                                         })
 
                                     // 其他支出
-                                    ExecutiveExpenditureUtil.fetchExecutiveExpenditureItemsByPrjDID(formData)
+                                    // ExecutiveExpenditureUtil.fetchExecutiveExpenditureItemsByPrjDID(formData)
+                                    ExecutiveExpenditureUtil.fetchExecutiveExpenditureItemsByPrjDIDArray(formData)
                                         .success(function (res) {
-                                            console.log("其他支出")
-                                            console.log(res)
+                                            console.log(" --- 其他支出 --- ");
+                                            console.log(res);
                                             $scope.displayEEItems = res.payload;
                                             for (var i = 0; i < res.payload.length; i ++) {
                                                 var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
-                                                // console.log(tempDate)
-
                                                 if (moment(tempDate) >= moment("2020/01")) {
-
                                                     if ($scope.overall_data[tempDate] != undefined) {
                                                         var data = $scope.overall_data[tempDate];
                                                         data._otherCost.push(res.payload[i]);
@@ -346,9 +358,10 @@
                                     }
 
                                     // 廠商請款
-                                    SubContractorPayItemUtil.fetchSCPayItems(fetchFormData)
+                                    // SubContractorPayItemUtil.fetchSCPayItems(fetchFormData)
+                                    SubContractorPayItemUtil.fetchSCPayItemsByPrjDIDArray(formData)
                                         .success(function (res) {
-                                            console.log("廠商請款")
+                                            console.log(" --- 廠商請款 --- ")
                                             console.log(res)
                                             $scope.subContractorPayItems = res.payload;
                                             for (var i = 0; i < res.payload.length; i ++) {
@@ -383,9 +396,11 @@
                                     getData.prjSubNumber = $scope.selectPrjInfo.prjSubNumber;
                                     getData.type = $scope.selectPrjInfo.type;
 
-                                    WorkHourUtil.queryStatisticsForms_projectIncome_Cost(getData)
+                                    // WorkHourUtil.queryStatisticsForms_projectIncome_Cost(getData)
+                                    WorkHourUtil.queryStatisticsForms_projectIncome_Cost_ByPrjDIDArray(formData)
                                         .success(function (res) {
-                                            // console.log(res)
+                                            console.log(" === 人工時 === ")
+                                            console.log(res)
 
                                             res.payload = res.payload.sort(function (a, b) {
                                                 return a._id.userDID > b._id.userDID ? 1 : -1;
@@ -393,25 +408,26 @@
 
                                             for (var index = 0; index < res.payload.length; index ++) {
                                                 for (var index_sub = 0; index_sub < res.payload_add.length; index_sub ++) {
-                                                    if( res.payload_add[index_sub]._id.prjCode == res.payload[index]._id.prjCode &&
-                                                        res.payload_add[index_sub]._id.userDID == res.payload[index]._id.userDID) {
+                                                    // if( res.payload_add[index_sub]._id.prjCode == res.payload[index]._id.prjCode &&
+                                                    //     res.payload_add[index_sub]._id.userDID == res.payload[index]._id.userDID) {
                                                         res.payload[index]._add_tables = res.payload_add[index_sub].add_tables;
-                                                    }
+                                                    // }
                                                 }
                                             }
                                             $scope.statisticsResults_type1 = $scope.filter_type1_data(res.payload);
                                             $scope.statisticsResults = $scope.filter_type2_data(res.payload);
-                                            console.log($scope.statisticsResults);
+                                            // console.log($scope.statisticsResults);
                                             $scope.statisticsResults_type1 = $scope.filter_type2_data_item($scope.statisticsResults_type1);
-                                            console.log($scope.statisticsResults_type1);
+                                            // console.log($scope.statisticsResults_type1);
 
                                             for (var i = 0; i < $scope.statisticsResults_type1.length; i ++) {
+
                                                 var tempDate = $scope.statisticsResults_type1[i]._date;
 
                                                 if (moment(tempDate) >= moment("2020/01")) {
                                                     if ($scope.overall_data[tempDate] != undefined) {
                                                         var data = $scope.overall_data[tempDate];
-                                                        data._overall = $scope.statisticsResults_type1[i].totalCost +
+                                                        data._overall += $scope.statisticsResults_type1[i].totalCost +
                                                             $scope.statisticsResults_type1[i].hourTotal_add_cost_A +
                                                             $scope.statisticsResults_type1[i].hourTotal_add_cost_B;
                                                     } else {
@@ -430,7 +446,7 @@
                                                     }
                                                 }
                                             }
-
+                                            // console.log($scope.overall_data)
                                             $scope.overall_data_sort = $scope.overall_data.sort(function (a, b) {
                                                 return moment(a._date).unix() > moment(b._date).unix() ? 1 : -1;
                                             });
@@ -475,7 +491,7 @@
         }
 
         $scope.filter_type2_data_item = function(rawTables) {
-            console.log("filter_type2_data_item");
+            console.log(" --- filter_type2_data_item --- ");
             console.log(rawTables);
             var type2_result = [];
             for (var index = 0 ;index < rawTables.length; index ++) {
@@ -838,7 +854,10 @@
                     var resultB = 0.0;
                     if ($scope.searchPaymentsItems == undefined) return resultB;
                     for (var i = 0; i < $scope.searchPaymentsItems.length; i ++) {
-                        resultB += parseInt($scope.searchPaymentsItems[i].amount)
+                        if ($scope.searchPaymentsItems[i].amount == null || $scope.searchPaymentsItems[i].amount == undefined) {
+                        } else {
+                            resultB += parseInt($scope.searchPaymentsItems[i].amount)
+                        }
                     }
                     // console.log("resultB:> " + resultB)
                     return Math.round(resultB)
@@ -847,7 +866,10 @@
                     var resultC = 0.0;
                     if ($scope.displayEEItems == undefined) return resultC;
                     for (var i = 0; i < $scope.displayEEItems.length; i ++) {
-                        resultC += parseInt($scope.displayEEItems[i].amount)
+                        if ($scope.displayEEItems[i].amount == null || $scope.displayEEItems[i].amount == undefined) {
+                        } else {
+                            resultC += parseInt($scope.displayEEItems[i].amount)
+                        }
                     }
                     // console.log("resultC:> " + resultC)
                     return Math.round(resultC);
@@ -873,7 +895,10 @@
                     for (var i = 0; i < $scope.overall_data.length; i ++) {
                         // console.log($scope.overall_data[i])
                         for (var j = 0; j < $scope.overall_data[i]._payments.length; j ++) {
-                            resultB += parseInt($scope.overall_data[i]._payments[j].amount)
+                            if ($scope.overall_data[i]._payments[j].amount == null || $scope.overall_data[i]._payments[j].amount == undefined) {
+                            } else {
+                                resultB += parseInt($scope.overall_data[i]._payments[j].amount)
+                            }
                         }
                     }
                     // console.log("resultB:> " + resultB)
@@ -883,7 +908,10 @@
                     var resultC = 0.0;
                     for (var i = 0; i < $scope.overall_data.length; i ++) {
                         for (var j = 0; j < $scope.overall_data[i]._otherCost.length; j ++) {
-                            resultC += parseInt($scope.overall_data[i]._otherCost[j].amount)
+                            if ($scope.overall_data[i]._otherCost[j].amount == null || $scope.overall_data[i]._otherCost[j].amount == undefined) {
+                            } else {
+                                resultC += parseInt($scope.overall_data[i]._otherCost[j].amount)
+                            }
                         }
                     }
                     // console.log("resultC:> " + resultC)
@@ -909,7 +937,10 @@
                     // 墊付款
                     var resultB = 0.0;
                     for (var i = 0; i < item._payments.length; i ++) {
-                        resultB += parseInt(item._payments[i].amount)
+                        if (item._payments[i].amount == null || item._payments[i].amount == undefined) {
+                        } else {
+                            resultB += parseInt(item._payments[i].amount)
+                        }
                     }
                     // console.log("resultB:> " + resultB)
                     return Math.round(resultB)
@@ -917,7 +948,10 @@
                     // 其他
                     var resultC = 0.0;
                     for (var i = 0; i < item._otherCost.length; i ++) {
-                        resultC += parseInt(item._otherCost[i].amount)
+                        if (item._otherCost[i].amount == null || item._otherCost[i].amount == undefined) {
+                        } else {
+                            resultC += parseInt(item._otherCost[i].amount)
+                        }
                     }
                     // console.log("resultC:> " + resultC)
                     return Math.round(resultC)
@@ -983,9 +1017,30 @@
                 })
         }
 
+        $scope.showPrjCode= function (prjDID) {
+            var selected = [];
+            if (prjDID) {
+                selected = $filter('filter')($scope.allProjectCache, {
+                    prjDID: prjDID,
+                });
+            }
+            if (!selected) return 'Not Set'
+            return selected.length > 0 ? selected[0].prjCode : 'Not Set';
+        };
 
+        $scope.showCombinedPrjCode = function () {
+            var results = "[ ";
 
-
+            for (var index = 0; index < $scope.selectPrjArray.length; index ++) {
+                // console.log($scope.selectPrjArray[index])
+                results += $scope.showPrjCode($scope.selectPrjArray[index])
+                if (index < $scope.selectPrjArray.length - 1) {
+                    results += ", "
+                }
+            }
+            results += " ]"
+            return results
+        }
 
     //    ===================
         // type 1, 一天加一專案 為一筆

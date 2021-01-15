@@ -58,6 +58,35 @@ module.exports = function (app) {
         });
     })
 
+    app.post(global.apiUrl.post_project_income_find_by_prjdid_array, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_project_income_find_by_prjdid_array");
+        console.log(JSON.stringify(req.body));
+
+        var findData = []
+        for (var index = 0; index < req.body.prjDIDArray.length; index++) {
+            var target = {
+                prjDID: req.body.prjDIDArray[index],
+            }
+            findData.push(target);
+        }
+
+        var query = {};
+        query.$or = findData;
+        query.isEnable = true;
+
+        ProjectIncome.find(query, function (err, tables) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+                payload: tables,
+            });
+        });
+    })
+
+
     // update data
     app.post(global.apiUrl.post_project_income_update, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_project_income_update");

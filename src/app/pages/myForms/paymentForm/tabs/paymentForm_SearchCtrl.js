@@ -205,9 +205,9 @@
                 });
             }
             if (!selected) return 'Not Set'
-            if (selected[0].combinedID != undefined) {
-                return $scope.showPrjCodeWithCombine(selected[0].combinedID);
-            }
+            // if (selected[0].combinedID != undefined) {
+            //     return $scope.showPrjCodeWithCombine(selected[0].combinedID);
+            // }
             return selected.length > 0 ? selected[0].prjCode : 'Not Set';
         };
 
@@ -423,22 +423,65 @@
                 referenceId: 'payment_main'
             });
 
-            PaymentFormsUtil.fetchPaymentsItemByPrjDID(formData)
+            var formData = {
+                rootPrjDID: prjDID
+            }
+
+            Project.fetchRelatedCombinedPrjArray(formData)
                 .success(function (res) {
-                    $timeout(function () {
-                        bsLoadingOverlayService.stop({
-                            referenceId: 'payment_main'
-                        });
-                    }, 100)
-                    $scope.searchPaymentsItems = res.payload;
+                    console.log(" --- 相關專案 ---");
+                    console.log(res);
+                    $scope.selectPrjArray = res;
+
+                    var subFormData = {
+                        prjDIDArray: $scope.selectPrjArray
+                    }
+
+                    // PaymentFormsUtil.fetchPaymentsItemByPrjDID(formData)
+                    PaymentFormsUtil.fetchPaymentsItemByPrjDIDArray(subFormData)
+                        .success(function (res) {
+                            console.log(res)
+                            $timeout(function () {
+                                bsLoadingOverlayService.stop({
+                                    referenceId: 'payment_main'
+                                });
+                            }, 100)
+                            $scope.searchPaymentsItems = res.payload;
+                        })
+                        .error(function (resp) {
+                            $timeout(function () {
+                                bsLoadingOverlayService.stop({
+                                    referenceId: 'payment_main'
+                                });
+                            }, 100)
+                        })
                 })
-                .error(function (resp) {
-                    $timeout(function () {
-                        bsLoadingOverlayService.stop({
-                            referenceId: 'payment_main'
-                        });
-                    }, 100)
-                })
+
+            $scope.showPrjCode= function (prjDID) {
+                var selected = [];
+                if (prjDID) {
+                    selected = $filter('filter')($scope.allProjectCache, {
+                        prjDID: prjDID,
+                    });
+                }
+                if (!selected) return 'Not Set'
+                return selected.length > 0 ? selected[0].prjCode : 'Not Set';
+            };
+
+            $scope.showCombinedPrjCode = function () {
+                var results = "[ ";
+
+                for (var index = 0; index < $scope.selectPrjArray.length; index ++) {
+                    // console.log($scope.selectPrjArray[index])
+                    results += $scope.showPrjCode($scope.selectPrjArray[index])
+                    if (index < $scope.selectPrjArray.length - 1) {
+                        results += ", "
+                    }
+                }
+                results += " ]"
+                return results
+            }
+
         }
 
     }

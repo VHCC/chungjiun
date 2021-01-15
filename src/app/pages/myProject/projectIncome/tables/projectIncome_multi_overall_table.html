@@ -122,40 +122,41 @@
                 style="vertical-align: inherit; text-align: center; white-space:nowrap">
                 <th style="vertical-align: inherit; text-align: center">
                     {{item.prjInfo.prjCode}}
+                    <span ng-if="item.selectPrjArray.length > 1" style="color: darkred;"> <br/>此專案包含：{{showCombinedPrjCode(item)}}</span>
                 </th>
-                <th class="form-group" style="vertical-align: inherit; text-align: center">
-                    {{calIncomeMulti(item, 2)}}
+                <th class="form-group" style="vertical-align: inherit; text-align: right">
+                    {{calIncomeMulti(item, 2).toLocaleString()}}
                 </th>
                 <!--人時支出-->
-                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                <th class="form-group" style="vertical-align: inherit; text-align: right">
                     <!--{{calcCost(1)}}-->
-                    {{calcCost_special20201207Multi(item, 1)}}
+                    {{calcCost_special20201207Multi(item, 1).toLocaleString()}}
                 </th>
                 <!--墊付款-->
-                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                <th class="form-group" style="vertical-align: inherit; text-align: right">
                     <!--{{calcCost(2)}}-->
-                    {{calcCost_special20201207Multi(item, 2)}}
+                    {{calcCost_special20201207Multi(item, 2).toLocaleString()}}
                 </th>
                 <!--廠商請款-->
-                <th class="form-group" style="vertical-align: inherit; text-align: center">
-                    {{calSubContractorPayMulti(item)}}
+                <th class="form-group" style="vertical-align: inherit; text-align: right">
+                    {{calSubContractorPayMulti(item).toLocaleString()}}
                 </th>
                 <!--其他支出-->
-                <th class="form-group" style="vertical-align: inherit; text-align: center">
+                <th class="form-group" style="vertical-align: inherit; text-align: right">
                     <!--{{calcCost(3)}}-->
-                    {{calcCost_special20201207Multi(item, 3)}}
+                    {{calcCost_special20201207Multi(item, 3).toLocaleString()}}
                 </th>
                 <!--罰款-->
-                <th class="form-group" style="vertical-align: inherit; text-align: center">
-                    {{calFinesMulti(item)}}
+                <th class="form-group" style="vertical-align: inherit; text-align: right">
+                    {{calFinesMulti(item).toLocaleString()}}
                 </th>
                 <!--匯費-->
-                <th class="form-group" style="vertical-align: inherit; text-align: center">
-                    {{calFeeMulti(item)}}
+                <th class="form-group" style="vertical-align: inherit; text-align: right">
+                    {{calFeeMulti(item).toLocaleString()}}
                 </th>
                 <!--實際盈餘-->
-                <th class="form-group" style="vertical-align: inherit; text-align: center">
-                    {{calProfitMulti(item)}}
+                <th class="form-group" style="vertical-align: inherit; text-align: right">
+                    {{calProfitMulti(item).toLocaleString()}}
                 </th>
             </tr>
         </thead>

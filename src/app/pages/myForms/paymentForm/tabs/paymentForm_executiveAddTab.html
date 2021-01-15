@@ -131,10 +131,10 @@
                        class="form-control input-sm">
             </td>
             <!--墊付金額-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
+            <td class="form-group" style="vertical-align: inherit; text-align: right">
                 <input type="text"
                        ng-model="item.amount"
-                       value="{{item.amount}}"
+                       value="{{(item.amount*1).toLocaleString()}}"
                        class="form-control input-sm">
             </td>
             <!--經理簽章-->
@@ -198,8 +198,8 @@
             <td colspan="5" style="vertical-align: inherit;">
                 小計
             </td>
-            <td style="vertical-align: inherit;">
-                {{calculateSum(2)}}
+            <td style="vertical-align: inherit; text-align: right">
+                {{calculateSum(2).toLocaleString()}}
             </td>
         </tr>
         </tfoot>

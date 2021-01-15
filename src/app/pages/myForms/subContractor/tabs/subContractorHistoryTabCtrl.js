@@ -189,9 +189,9 @@
                 });
             }
             if (!selected) return 'Not Set'
-            if (selected[0].combinedID != undefined) {
-                return $scope.showPrjCodeWithCombine(selected[0].combinedID);
-            }
+            // if (selected[0].combinedID != undefined) {
+            //     return $scope.showPrjCodeWithCombine(selected[0].combinedID);
+            // }
             return selected.length > 0 ? selected[0].prjCode : 'Not Set';
         };
 
@@ -204,9 +204,9 @@
                 });
             }
             if (!selected) return 'Not Set'
-            if (selected[0].combinedID != undefined) {
-                return $scope.showPrjDIDWithCombine(selected[0].combinedID);
-            }
+            // if (selected[0].combinedID != undefined) {
+            //     return $scope.showPrjDIDWithCombine(selected[0].combinedID);
+            // }
             return selected.length > 0 ? selected[0].prjDID : 'Not Set';
         };
 
