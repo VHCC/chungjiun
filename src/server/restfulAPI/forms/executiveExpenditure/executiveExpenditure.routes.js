@@ -44,7 +44,7 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_executive_expenditure_fetch_items, function (req, res) {
         console.log(req.body);
         ExecutiveExpenditureItem.find({
-            creatorDID: req.body.creatorDID,
+            // creatorDID: req.body.creatorDID,
             year: req.body.year,
             month: req.body.month,
         }, function (err, items) {
