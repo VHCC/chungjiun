@@ -72,7 +72,7 @@ module.exports = function (app) {
 
         var query = {};
         query.$or = findData;
-        query.isEnable = true;
+        query.isEnable = req.body.isEnable;
 
         ProjectIncome.find(query, function (err, tables) {
             if (err) {

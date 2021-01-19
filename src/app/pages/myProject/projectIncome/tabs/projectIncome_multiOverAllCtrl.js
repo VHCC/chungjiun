@@ -305,7 +305,8 @@
                             var incomeFormData = {
                                 // isEnable: true,
                                 // prjDID: prjItemInfo._id,
-                                prjDIDArray: manipulatePrj.selectPrjArray
+                                prjDIDArray: manipulatePrj.selectPrjArray,
+                                isEnable: true
                             }
 
                             console.log(incomeFormData)

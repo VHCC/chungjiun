@@ -253,7 +253,8 @@
                                     var incomeFormData = {
                                         // isEnable: true,
                                         // prjDID: $scope.selectPrjInfo._id,
-                                        prjDIDArray: $scope.selectPrjArray
+                                        prjDIDArray: $scope.selectPrjArray,
+                                        isEnable: true,
                                     }
 
                                     // 收入

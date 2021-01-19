@@ -179,16 +179,19 @@
 
             Project.fetchRelatedCombinedPrjArray(formData)
                 .success(function (res) {
+                    console.log(res);
                     $scope.selectPrjArray = res;
 
                     var formData = {
                         // prjDID: prjDID
-                        prjDIDArray: $scope.selectPrjArray
+                        prjDIDArray: $scope.selectPrjArray,
+                        isEnable: false,
                     }
 
                     // ProjectIncomeUtil.findIncome(formData)
                     ProjectIncomeUtil.findIncomeByPrjDIDArray(formData)
                         .success(function (res) {
+                            console.log(res)
                             $scope.projectIncomeTable = res.payload;
 
                             angular.element(
@@ -240,8 +243,11 @@
                 prjDID: $scope.selectPrjDID
             }
 
+            console.log(formData)
+
             ProjectIncomeUtil.createIncome(formData)
                 .success(function (res) {
+                    console.log(res)
                     $scope.fetchProjectIncomeTable($scope.selectPrjDID)
                 })
         }
