@@ -185,7 +185,7 @@
                     var formData = {
                         // prjDID: prjDID
                         prjDIDArray: $scope.selectPrjArray,
-                        isEnable: false,
+                        // isEnable: true,
                     }
 
                     // ProjectIncomeUtil.findIncome(formData)
