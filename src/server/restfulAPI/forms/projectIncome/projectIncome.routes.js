@@ -72,7 +72,12 @@ module.exports = function (app) {
 
         var query = {};
         query.$or = findData;
-        query.isEnable = req.body.isEnable;
+
+        if (req.body.isEnable != null) {
+            query.isEnable = req.body.isEnable;
+        }
+
+        console.log(query)
 
         ProjectIncome.find(query, function (err, tables) {
             if (err) {
