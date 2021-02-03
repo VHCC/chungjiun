@@ -20,6 +20,7 @@
                 'Project',
                 'ProjectUtil',
                 'ProjectIncomeUtil',
+                'ProjectFinancialResultUtil',
                 'bsLoadingOverlayService',
                 projectIncomeCreateCtrl
             ])
@@ -37,6 +38,7 @@
                              Project,
                              ProjectUtil,
                              ProjectIncomeUtil,
+                             ProjectFinancialResultUtil,
                              bsLoadingOverlayService) {
 
         $scope.userDID = $cookies.get('userDID');
@@ -99,7 +101,7 @@
             });
 
         $scope.initProject = function() {
-            Project.findAllEnable()
+            Project.findAll()
                 .success(function (allProjects) {
                     $scope.allProject_raw = allProjects;
                     vm.projects = allProjects.slice();
@@ -170,64 +172,76 @@
             return selected.length ? selected[0].name : 'Not Set';
         };
 
-        $scope.fetchProjectIncomeTable = function (prjDID) {
-            $scope.selectPrjDID = prjDID;
+        $scope.fetchProjectIncomeTable = function (selectedPrj) {
+            $scope.selectPrj = selectedPrj;
+            $scope.selectPrjDID = selectedPrj._id;
 
-            var formData = {
-                rootPrjDID: prjDID
+            var formData_FR = {
+                prjDID: $scope.selectPrjDID,
             }
 
-            Project.fetchRelatedCombinedPrjArray(formData)
+            ProjectFinancialResultUtil.findFR(formData_FR)
                 .success(function (res) {
-                    console.log(res);
-                    $scope.selectPrjArray = res;
+                    $scope.FR = res.payload[0];
 
                     var formData = {
-                        // prjDID: prjDID
-                        prjDIDArray: $scope.selectPrjArray,
-                        // isEnable: true,
+                        rootPrjDID: $scope.selectPrjDID
                     }
 
-                    // ProjectIncomeUtil.findIncome(formData)
-                    ProjectIncomeUtil.findIncomeByPrjDIDArray(formData)
+                    Project.fetchRelatedCombinedPrjArray(formData)
                         .success(function (res) {
-                            console.log(res)
-                            $scope.projectIncomeTable = res.payload;
+                            console.log(res);
+                            $scope.selectPrjArray = res;
 
-                            angular.element(
-                                document.getElementById('includeHead_create'))
-                                .html($compile(
-                                    "<div ba-panel ba-panel-title=" +
-                                    "'列表 - " + $scope.projectIncomeTable.length + "'" +
-                                    "ba-panel-class= " +
-                                    "'with-scroll'" + ">" +
-                                    "<div " +
-                                    "ng-include=\"'app/pages/myProject/projectIncome/tables/projectIncome_create_table.html'\">" +
-                                    "</div>" +
-                                    "</div>"
-                                )($scope));
+                            var formData = {
+                                // prjDID: prjDID
+                                prjDIDArray: $scope.selectPrjArray,
+                                // isEnable: true,
+                            }
 
-                            $timeout(function () {
-                                bsLoadingOverlayService.stop({
-                                    referenceId: 'mainPage_project_income'
-                                });
-                                $('.incomeInput').mask('20Y0/M0/D0', {
-                                    translation: {
-                                        'Y': {
-                                            pattern: /[0123]/,
-                                        },
-                                        'M': {
-                                            pattern: /[01]/,
-                                        },
-                                        'D': {
-                                            pattern: /[0123]/,
-                                        }
-                                    }
-                                });
-                            }, 1000)
+                            // ProjectIncomeUtil.findIncome(formData)
+                            ProjectIncomeUtil.findIncomeByPrjDIDArray(formData)
+                                .success(function (res) {
+                                    console.log(res)
+                                    $scope.projectIncomeTable = res.payload;
+
+                                    angular.element(
+                                        document.getElementById('includeHead_create'))
+                                        .html($compile(
+                                            "<div ba-panel ba-panel-title=" +
+                                            "'列表 - " + $scope.projectIncomeTable.length + "'" +
+                                            "ba-panel-class= " +
+                                            "'with-scroll'" + ">" +
+                                            "<div " +
+                                            "ng-include=\"'app/pages/myProject/projectIncome/tables/projectIncome_create_table.html'\">" +
+                                            "</div>" +
+                                            "</div>"
+                                        )($scope));
+
+                                    $timeout(function () {
+                                        bsLoadingOverlayService.stop({
+                                            referenceId: 'mainPage_project_income'
+                                        });
+                                        $('.incomeInput').mask('20Y0/M0/D0', {
+                                            translation: {
+                                                'Y': {
+                                                    pattern: /[0123]/,
+                                                },
+                                                'M': {
+                                                    pattern: /[01]/,
+                                                },
+                                                'D': {
+                                                    pattern: /[0123]/,
+                                                }
+                                            }
+                                        });
+                                    }, 1000)
+                                })
+
                         })
-
                 })
+
+
 
             $timeout(function () {
                 bsLoadingOverlayService.start({
@@ -248,7 +262,7 @@
             ProjectIncomeUtil.createIncome(formData)
                 .success(function (res) {
                     console.log(res)
-                    $scope.fetchProjectIncomeTable($scope.selectPrjDID)
+                    $scope.fetchProjectIncomeTable($scope.selectPrj)
                 })
         }
 
@@ -258,7 +272,7 @@
             }
             ProjectIncomeUtil.removeIncome(formData)
                 .success(function (res) {
-                    $scope.fetchProjectIncomeTable($scope.selectPrjDID)
+                    $scope.fetchProjectIncomeTable($scope.selectPrj)
                 })
         }
 
@@ -287,7 +301,7 @@
             }
             ProjectIncomeUtil.updateIncome(formData)
                 .success(function (res) {
-                    $scope.fetchProjectIncomeTable($scope.selectPrjDID)
+                    $scope.fetchProjectIncomeTable($scope.selectPrj)
                 })
         }
 

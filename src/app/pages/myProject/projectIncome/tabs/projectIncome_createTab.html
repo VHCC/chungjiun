@@ -7,7 +7,7 @@
             <ui-select ng-model="projectIncomeCreateCtrlVm.prjItems.selected"
                        class="btn-group bootstrap-select form-control"
                        id="projectName"
-                       ng-change="fetchProjectIncomeTable($select.selected._id)"
+                       ng-change="fetchProjectIncomeTable($select.selected)"
                        append-to-body="true"
                        search-enabled="true">
                 <ui-select-match placeholder="選擇(查詢)">

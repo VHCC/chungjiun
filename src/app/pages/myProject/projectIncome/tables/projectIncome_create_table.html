@@ -1,4 +1,6 @@
 <div class="horizontal-scroll">
+    <div ng-if="FR.isPrjClose" style="color: red;margin: 10px;" width="30px">[已結算]</div>
+    <div ng-if="!FR.isPrjClose" style="color: blue;margin: 10px;" width="30px">[未結算]</div>
     <div ng-if="selectPrjArray.length > 1" style="margin: 10px; color: darkred;"> 此專案包含：{{showCombinedPrjCode()}}</div>
     <table class="table table-bordered table-hover table-condensed" st-table="projectIncomeTable">
         <thead>
@@ -22,10 +24,11 @@
             <td style="vertical-align: inherit; text-align: center">
                 <span>{{$index + 1}}</span><br>
                 <button class="btn btn-danger editable-table-button btn-xs"
+                        ng-if="!FR.isPrjClose && roleType == 100"
                         ng-click="removeProjectIncomeItem(item);">移除
                 </button>
                 <button class="btn btn-primary editable-table-button btn-xs"
-                        ng-if="!item.isEnable"
+                        ng-if="!item.isEnable && !FR.isPrjClose && roleType == 100"
                         ng-click="updateProjectIncome(item)">
                     設定
                 </button>
@@ -111,6 +114,7 @@
 <hr>
 <div class="row">
     <button type="button"
+            ng-if="roleType == 100 && !FR.isPrjClose"
             ng-click="projectIncomeCreate()"
             class="btn btn-info btn-icon">
         <i class="ion-plus-round"/>
