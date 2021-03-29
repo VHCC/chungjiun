@@ -22,7 +22,7 @@
             <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_BossTab.html'"></div>
         </uib-tab>
         <!--20200518 check right-->
-        <uib-tab heading="行政確認" ng-if="roleType === '100'"
+        <uib-tab heading="行政確認" ng-if="roleType === '100' || userDID === '5d197f16a6b04756c893a162'"
                  ng-click="initUser()">
             <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_ExecutiveTab.html'"></div>
         </uib-tab>

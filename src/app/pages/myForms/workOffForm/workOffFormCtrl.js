@@ -93,7 +93,7 @@
                 User.getAllUsers()
                     .success(function (allUsers) {
                         vm.users = allUsers;
-                        if ($scope.roleType === '100') {
+                        if ($scope.roleType === '100' || $scope.userDID == '5d197f16a6b04756c893a162') {
                             vm.executiveUsers = [];
                             WorkOffFormUtil.fetchAllExecutiveItem()
                                 .success(function (res) {
@@ -1991,7 +1991,7 @@
 
             // 對應行政總管
             $scope.isFitExecutive = function () {
-                return ($scope.roleType == 100)
+                return ($scope.roleType == 100 || $scope.userDID == '5d197f16a6b04756c893a162')
             }
 
             // ************* 行政核定後退回 ****************

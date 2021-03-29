@@ -112,7 +112,7 @@
         <uib-tab heading="經理/主任審核" ng-if="roleType === '2' || roleType === '100' || roleType === '6'">
             <div ng-include="'app/pages/myForms/forms/workHourTableForm_managerTab.html'"></div>
         </uib-tab>
-        <uib-tab heading="行政確認" ng-if="roleType === '100'">
+        <uib-tab heading="行政確認" ng-if="roleType === '100' || userDID == '5d197f16a6b04756c893a162'">
             <div ng-include="'app/pages/myForms/forms/workHourTableForm_executiveTab.html'"></div>
         </uib-tab>
         <uib-tab heading="歷史檢視" ng-if="roleType === '2' || roleType === '100' || roleType === '6'">

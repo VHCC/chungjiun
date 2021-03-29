@@ -68,6 +68,7 @@
 
         $scope.username = $cookies.get('username');
         $scope.roleType = $cookies.get('roletype');
+        $scope.userDID = $cookies.get('userDID');
 
         var formData = {
             userDID: $cookies.get('userDID'),
@@ -756,7 +757,7 @@
 
         // 對應行政總管
         $scope.isFitExecutive = function () {
-            return ($scope.roleType == 100)
+            return ($scope.roleType == 100 || $cookies.get('userDID') == '5d197f16a6b04756c893a162')
         }
 
         //讀取國定假日
@@ -2997,6 +2998,37 @@
                         })
                     break;
             }
+
+            if ($scope.userDID  == '5d197f16a6b04756c893a162') {
+                Project.getProjectRelatedToManager(formData)
+                    .success(function (relatedProjects) {
+                        console.log(" ======== Projects related to manager  ======== ");
+                        // console.log(relatedProjects);
+                        // console.log(" ======== Projects related to manager  ======== ");
+                        for(var index = 0; index < relatedProjects.length; index ++) {
+                            // 相關專案
+                            managersRelatedProjects.push(relatedProjects[index]._id);
+                        }
+
+                        // 行政總管跟每個人都有關
+
+                        // // 所有人，對照資料
+                        User.getAllUsers()
+                            .success(function (allUsers) {
+                                var relatedMembers_all = [];
+                                vm.executiveUsers = allUsers;
+
+                                for (var index = 0; index < vm.executiveUsers.length; index ++) {
+                                    relatedMembers_all.push(vm.executiveUsers[index]._id);
+                                    relatedMembers.push(vm.executiveUsers[index]._id);
+                                }
+                                $scope.mainRelatedMembers = relatedMembers;
+                                $scope.showRelatedMembersTableReview(typeManager);
+                                $scope.mainRelatedMembers_all = relatedMembers_all;
+                                $scope.showRelatedMembersTableReview(typeExecutive);
+                            });
+                    })
+            }
         }
 
         var typeManager = 1;
@@ -3074,6 +3106,13 @@
                         create_formDate: targetFormFullDate,
                     }
                 } break;
+            }
+
+            if($cookies.get('userDID')  == '5d197f16a6b04756c893a162') {
+                getData = {
+                    relatedMembers: $scope.mainRelatedMembers_all,
+                    create_formDate: targetFormFullDate,
+                }
             }
 
             WorkHourUtil.getWorkHourFormMultiple(getData)
@@ -3868,6 +3907,14 @@
                     }
                 }
                 break;
+            }
+
+            if ($cookies.get('userDID') == '5d197f16a6b04756c893a162') {
+                apiData = {
+                    users: $scope.mainRelatedMembers_all,
+                    creatorDID: $cookies.get('userDID')
+                    // date: $scope.firstFullDate_management
+                }
             }
 
             bsLoadingOverlayService.start({
