@@ -42,18 +42,16 @@
                  style="color: blue">
             <div ng-include="'app/pages/myForms/hrMachine/hrMachineForm_LoadTab.html'"></div>
         </uib-tab>
-        <uib-tab heading="打卡機月報表" ng-if="roleType === '100'"
+        <uib-tab heading="打卡機月報表" ng-if="roleType === '100'  ||
+                userDID === '5d197f16a6b04756c893a162'"
                  style="color: blue">
             <div ng-include="'app/pages/myForms/hrMachine/hrMachineForm_monthReportsTab.html'"></div>
         </uib-tab>
         <uib-tab heading="打卡機補登"
-                 ng-if="false"
                  style="color: blue">
             <hr-machine-form-remedy></hr-machine-form-remedy>
         </uib-tab>
-        <uib-tab heading="打卡機補登主管審核"
-                 ng-show="false"
-                 ng-if="roleType === '2' || roleType === '6' || roleType === '100'"
+        <uib-tab heading="打卡機補登主管審核" ng-if="roleType === '2' || roleType === '6' || roleType === '100'
                  style="color: blue">
                 <div class="row"
                      ng-controller="hrMachineFormRemedyReviewCtrl">
