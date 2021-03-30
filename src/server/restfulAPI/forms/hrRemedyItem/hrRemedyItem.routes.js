@@ -12,7 +12,7 @@ module.exports = function (app) {
             HrRemedyTable.create({
                 creatorDID: req.body.creatorDID,
                 create_formDate: req.body.create_formDate,
-                remedyType: req.body.remedyType,
+                workType: req.body.workType,
                 year: req.body.year,
                 month: req.body.month,
                 day: req.body.day,
@@ -45,23 +45,43 @@ module.exports = function (app) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_hr_remedy_fetch_items_by_creatorDID");
         console.log(JSON.stringify(req.body));
         // New Items
-        try {
-            HrRemedyTable.find({
-                creatorDID: req.body.creatorDID,
-                year: req.body.year,
 
-            }, function (err, items) {
-                res.status(200).send({
-                    code: 200,
-                    error: global.status._200,
-                    payload: items,
+        if(!req.body.year) {
+            try {
+                HrRemedyTable.find({
+                    creatorDID: req.body.creatorDID,
+                }, function (err, items) {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: items,
+                    });
                 });
-            });
-        } catch (err) {
-            if (err) {
-                res.send(err);
+            } catch (err) {
+                if (err) {
+                    res.send(err);
+                }
+            }
+        } else {
+            try {
+                HrRemedyTable.find({
+                    creatorDID: req.body.creatorDID,
+                    year: req.body.year,
+                }, function (err, items) {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: items,
+                    });
+                });
+            } catch (err) {
+                if (err) {
+                    res.send(err);
+                }
             }
         }
+
+
     });
 
     app.post(global.apiUrl.post_hr_remedy_delete_item, function (req, res) {

@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var moment = require('moment');
 
-// 休假單
+// 補登打卡
 module.exports = mongoose.model('HrRemedy', {
     //填表人
     creatorDID: {
@@ -17,16 +17,16 @@ module.exports = mongoose.model('HrRemedy', {
      *
      {
          name: "上班",
-         type: 0
+         type: 1
      },
      {
          name: "下班",
-         type: 1
+         type: 2
      },
      */
-    remedyType: {
-        type: Number,
-        default: -1
+    workType: {
+        type: String,
+        default: ""
     },
     // 年分
     year: {

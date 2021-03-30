@@ -63,6 +63,8 @@
                 $http.post('/api/post_hr_remedy_search_item_confirm', formData)
                     .success(function (response) {
 
+                        document.getElementById('includeHead_confirm').innerHTML = "";
+
                         $scope.remedyConfirmItems = response.payload;
                         $scope.remedyConfirmItems.slice(0, response.payload.length);
 
@@ -110,6 +112,8 @@
 
                         $http.post('/api/post_hr_remedy_search_item_confirm', formData)
                             .success(function (response) {
+
+                                document.getElementById('includeHead_confirm').innerHTML = "";
 
                                 $scope.remedyConfirmItems = response.payload;
                                 $scope.remedyConfirmItems.slice(0, response.payload.length);
@@ -218,9 +222,9 @@
             // 顯示補登類別
             $scope.showWRemedyTypeString = function (type) {
                 switch (type) {
-                    case 0:
+                    case "1":
                         return "補登上班"
-                    case 1:
+                    case "2":
                         return "補登下班"
                 }
             }
