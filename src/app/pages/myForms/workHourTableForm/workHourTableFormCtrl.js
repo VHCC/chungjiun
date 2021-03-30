@@ -3108,12 +3108,12 @@
                 } break;
             }
 
-            if($cookies.get('userDID')  == '5d197f16a6b04756c893a162') {
-                getData = {
-                    relatedMembers: $scope.mainRelatedMembers_all,
-                    create_formDate: targetFormFullDate,
-                }
-            }
+            // if($cookies.get('userDID')  == '5d197f16a6b04756c893a162') {
+            //     getData = {
+            //         relatedMembers: $scope.mainRelatedMembers_all,
+            //         create_formDate: targetFormFullDate,
+            //     }
+            // }
 
             WorkHourUtil.getWorkHourFormMultiple(getData)
                 .success(function (res) {
