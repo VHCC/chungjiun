@@ -184,9 +184,9 @@
             // 顯示補登類別
             $scope.showWRemedyTypeString = function (type) {
                 switch (type) {
-                    case 0:
+                    case "1":
                         return "補登上班"
-                    case 1:
+                    case "2":
                         return "補登下班"
                 }
             }

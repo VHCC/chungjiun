@@ -18,11 +18,11 @@
         $scope.remedyTypeOptions = [
             {
                 name: "補登上班",
-                type: 0
+                type: "1"
             },
             {
                 name: "補登下班",
-                type: 1
+                type: "2"
             },
         ];
 
@@ -32,7 +32,7 @@
             selectedRole = $filter('filter')($scope.remedyTypeOptions, {
                 type: inputType,
             });
-            $scope.remedyType = selectedRole[0];
+            $scope.workType = selectedRole[0];
         }
 
 

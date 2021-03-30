@@ -36,7 +36,7 @@
                 <!--日期-->
                 <td class="form-group" style="vertical-align: inherit; text-align: center">
                     <my ng-show="!rowform1.$waiting && !table.isSendReview">
-                        <my-date-picker formatted="yyyy/MM/dd" default="{{showDate(table)}}"></my-date-picker>
+                        <my-date-picker formatted="yyyy/MM/dd"></my-date-picker>
                     </my>
                     <my ng-show="rowform1.$waiting ||table.isSendReview">
                         {{showDate(table)}}
@@ -51,10 +51,10 @@
                 <!--補打卡別-->
                 <td class="form-group" style="vertical-align: inherit; text-align: center">
                     <my ng-show="!rowform1.$waiting && !table.isSendReview">
-                        <remedy-selector type="{{table.remedyType}}"></remedy-selector>
+                        <remedy-selector type="{{table.workType}}"></remedy-selector>
                     </my>
                     <my ng-show="rowform1.$waiting ||table.isSendReview">
-                        {{showWRemedyTypeString(table.remedyType)}}
+                        {{showWRemedyTypeString(table.workType)}}
                     </my>
                 </td>
 
@@ -90,13 +90,13 @@
                           class="form-buttons form-inline">
                     </form>
                     <!--審查中-->
-                    <div ng-show="rowform1.$waiting || (table.isSendReview && (!table.isBossCheck || !table.isExecutiveCheck))">
+                    <div ng-show="rowform1.$waiting || (table.isSendReview && (!table.isBossCheck))">
                         <button class="btn btn-warning editable-table-button btn-xs">
                             審查中
                         </button>
                     </div>
                     <!--審查完成-->
-                    <div ng-show="(table.isBossCheck && table.isExecutiveCheck)">
+                    <div ng-show="(table.isBossCheck)">
                         <button class="btn btn-success editable-table-button btn-xs">
                             審查完成
                         </button>

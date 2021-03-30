@@ -17,6 +17,7 @@
                     'User',
                     'DateUtil',
                     'TimeUtil',
+                    'RemedyUtil',
                     'TravelApplicationUtil',
                     'toastr',
                     'bsLoadingOverlayService',
@@ -34,6 +35,7 @@
                                 User,
                                 DateUtil,
                                 TimeUtil,
+                                RemedyUtil,
                                 TravelApplicationUtil,
                                 toastr,
                                 bsLoadingOverlayService) {
@@ -102,7 +104,7 @@
                 HrMachineUtil.fetchUserHrMachineDataOneDayByMachineDID(formData)
                     .success(function (res) {
 
-                        console.log(res.payload)
+                        console.log(res.payload);
 
                         res.payload = res.payload.sort(function (a, b) {
                             return a._id > b._id ? 1 : -1;
@@ -219,10 +221,12 @@
                                 case 0:
                                     $scope.hrMachineTable = hrMachineTableSorted;
                                     $scope.getUsersTravelApplicationData($scope.userDID, thisYear, 0);
+                                    $scope.getRemedyHistoryData($scope.userDID, 0);
                                     break;
                                 case 1:
                                     $scope.hrMachineTable_specific = hrMachineTableSorted;
                                     $scope.getUsersTravelApplicationData(selectedUser._id, thisYear, 1);
+                                    $scope.getRemedyHistoryData(selectedUser._id, 1);
                                     break;
                                 case 2:
                                     var targetMonth = moment(specificDate).month();
@@ -237,6 +241,7 @@
                                     }
                                     $scope.hrMachineTable_month_reports = hrMachineTableSorted;
                                     $scope.getUsersTravelApplicationData(selectedUser._id, thisYear, 2);
+                                    $scope.getRemedyHistoryData(selectedUser._id, 2);
                                     break;
                             }
                             $timeout(function () {
@@ -318,6 +323,7 @@
                             if (datas[index].workType === "1") {
                                 workOnArray.push(datas[index]);
                             }
+
                         }
                         if (workOnArray.length > 0) {
                             return workOnArray[0].time;
@@ -334,6 +340,7 @@
                                 workOffArray.push(datas[index]);
                                 isFirstWorkOff = true;
                             }
+
                             if (isFirstWorkOff && datas[index].workType === "1") {
                                 break;
                             }
@@ -356,6 +363,8 @@
                                     workOnArray.push(datas[index]);
                                 }
                             }
+
+
                         }
                         if (workOnArray.length > 0) {
                             return workOnArray[0].time;
@@ -1535,6 +1544,93 @@
                         }
                         break;
                 }
+            }
+
+            $scope.getRemedyHistoryData = function(userDID, type) {
+                var operateTable = undefined;
+
+                switch (type) {
+                    case 0:
+                        operateTable = $scope.hrMachineTable;
+                        break;
+                    case 1:
+                        operateTable = $scope.hrMachineTable_specific;
+                        break;
+                    case 2:
+                        operateTable = $scope.hrMachineTable_month_reports;
+                        break;
+                }
+
+
+                var formData = {
+                    creatorDID: userDID,
+                }
+                RemedyUtil.fetchRemedyItemFromDB(formData)
+                    .success(function (res) {
+                        console.log(res);
+
+                        var dateList = [];
+                        for (var key in operateTable) {
+                            // console.log("key " + key + " has value " + operateTable[key]);
+                            dateList.push(key);
+                        }
+
+                        var startDate = moment(parseInt(dateList[0].substring(0,3))+ 1911 + dateList[0].substring(3,7));
+                        startDate = startDate - 86400 * 1000 * 15;
+
+                        for (var index = 0; index < res.payload.length; index ++) {
+                            // $scope.travelApplicationItems.push(res.payload[index]);
+
+                            var dateTemp = DateUtil.getShiftDatefromFirstDate(
+                                DateUtil.getFirstDayofThisWeek(moment(res.payload[index].create_formDate)),
+                                res.payload[index].day === 0 ? 6 : res.payload[index].day - 1);
+
+                            var yearTemp = moment(dateTemp).format("YYYY") - 1911;
+
+                            var monthDayTemp = moment(dateTemp).format("MMDD");
+
+                            var dateTempNew = yearTemp + monthDayTemp;
+                            console.log(dateTempNew);
+
+                            var hrRemedyItem = {
+                                date: "",
+                                did: "",
+                                workType: ""
+                                // printType: "",
+                                // time: "",
+                                // workType: ""
+                            }
+
+                            var targetDate = moment(parseInt(dateTempNew.substring(0,3))+ 1911 + dateTempNew.substring(3,7))
+                            console.log("startDate :> " + startDate)
+                            console.log("targetDate :> " + targetDate)
+                            console.log("targetDate.isAfter(startDate) :> " + targetDate.isAfter(startDate))
+
+                            if (targetDate.isAfter(startDate)) {
+
+                                if (operateTable[dateTempNew] === undefined) {
+                                    var hrMachineCollection = [];
+
+                                    hrRemedyItem.date = dateTempNew;
+                                    hrRemedyItem.time = res.payload[index].start_time.replace(":", "");
+                                    hrRemedyItem.workType = res.payload[index].workType;
+
+                                    hrMachineCollection.push(hrRemedyItem);
+
+                                    operateTable[dateTempNew] = hrMachineCollection;
+                                } else {
+                                    hrRemedyItem.date = dateTempNew;
+                                    hrRemedyItem.time = res.payload[index].start_time.replace(":", "");
+                                    hrRemedyItem.workType = res.payload[index].workType;
+
+                                    operateTable[dateTempNew].push(hrRemedyItem);
+                                }
+                            }
+                        }
+
+                        console.log(operateTable);
+
+                    })
             }
         } // End of function
     }

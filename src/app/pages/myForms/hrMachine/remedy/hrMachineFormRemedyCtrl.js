@@ -99,7 +99,6 @@
 
             // 變更休假單日期
             $scope.changeWorkOffItemDay = function (dom) {
-                console.log("EREWRQER")
                 dom.table.create_formDate = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment(dom.myDT)), 0);
                 dom.table.year = dom.myDT.getFullYear() - 1911;
                 dom.table.month = dom.myDT.getMonth() + 1;
@@ -141,7 +140,7 @@
             $scope.changeRemedyType = function (dom) {
                 // 個人請假
                 if (dom.$parent.table != undefined) {
-                    dom.$parent.table.remedyType = dom.remedyType.type;
+                    dom.$parent.table.workType = dom.workType.type;
                 }
             }
 
@@ -152,7 +151,7 @@
 
                     var formData = {
                         creatorDID: $scope.userDID,
-                        remedyType: -1,
+                        workType: -1,
                         year: specificYear,
                         month: thisMonth,
                         day: thisDay,
@@ -192,9 +191,9 @@
             $scope.showWRemedyTypeString = function (type) {
                 // console.log(type)
                 switch (type) {
-                    case 0:
+                    case "1":
                         return "補登上班"
-                    case 1:
+                    case "2":
                         return "補登下班"
                 }
             }
@@ -202,8 +201,7 @@
             // Send WorkOffTable to Review
             $scope.reviewRemedyItem = function (table, button, index) {
                 $timeout(function () {
-                    console.log(table)
-                    var remedyString = $scope.showWRemedyTypeString($scope.redemyTablesItems[index].remedyType);
+                    var remedyString = $scope.showWRemedyTypeString($scope.redemyTablesItems[index].workType);
                     $scope.checkText = '確定提交 ' + remedyString + '：' +
                         DateUtil.getShiftDatefromFirstDate(
                             DateUtil.getFirstDayofThisWeek(moment($scope.redemyTablesItems[index].create_formDate)),
@@ -224,11 +222,10 @@
             //跟後臺溝通
             $scope.sendRemedyItemReview = function (checkingTable, checkingButton, checkingIndex) {
                 checkingButton.rowform1.$waiting = true;
-                console.log(checkingTable)
                 var formData = {
                     _id: checkingTable._id,
 
-                    remedyType: checkingTable.remedyType,
+                    workType: checkingTable.workType,
                     create_formDate: checkingTable.create_formDate,
                     year: checkingTable.year,
                     month: checkingTable.month,
