@@ -684,7 +684,7 @@
                 }
             }
 
-            $scope.showDay = function (date) {
+            $scope.showTaiwanDay = function (date) {
                 return DateUtil.getDay(moment(parseInt(date.substring(0,3)) + 1911 + date.substring(3,7)).day())
             }
 
