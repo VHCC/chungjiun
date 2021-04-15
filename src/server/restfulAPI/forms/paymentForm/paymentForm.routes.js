@@ -88,6 +88,69 @@ module.exports = function (app) {
         });
     });
 
+    // fetch items
+    app.post(global.apiUrl.post_payment_fetch_items_monthly_search, function (req, res) {
+        console.log(req.body);
+        // PaymentFormItem.find({
+        //     year: req.body.year,
+        //     month: req.body.month,
+        //     isExecutiveCheck: true,
+        // }, function (err, paymentItems) {
+        //     if (err) {
+        //         res.send(err);
+        //     } else {
+        //         res.status(200).send({
+        //             code: 200,
+        //             error: global.status._200,
+        //             payload: paymentItems,
+        //         });
+        //     }
+        // });
+
+        PaymentFormItem.aggregate(
+            [
+                {
+                    $match: {
+                        year: req.body.year,
+                        month: req.body.month,
+                        isExecutiveCheck: true,
+                    }
+                },
+                {
+                    $sort: {
+                        creatorDID: 1,
+                        itemIndex: 1
+                    }
+                },
+                // {
+                    // $group: {
+                    //     _id: "$creatorDID",
+                    //     totalAmount: { $sum: "$amount" },
+                    //     count: {
+                    //         $sum: 1
+                    //     }
+                    // }
+                // },
+                // {
+                //     $project: {
+                //         total: { $sum: "$amount" },
+                //     }
+                // }
+            ], function (err, items) {
+                if (err) {
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: items,
+                    });
+                }
+            }
+        )
+    });
+
     //create Form
     app.post(global.apiUrl.post_payment_create_form, function (req, res) {
         console.log(req.body);

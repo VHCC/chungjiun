@@ -71,6 +71,7 @@ global.apiUrl = {
     post_payment_insert_item : '/api/post_payment_insert_item',
     post_payment_remove_item : '/api/post_payment_remove_item',
     post_payment_fetch_items : '/api/post_payment_fetch_items',
+    post_payment_fetch_items_monthly_search : '/api/post_payment_fetch_items_monthly_search',
     post_payment_create_form : '/api/post_payment_create_form',
     post_payment_send_review : '/api/post_payment_send_review',
     post_payment_items_update : '/api/post_payment_items_update',

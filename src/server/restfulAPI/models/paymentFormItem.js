@@ -85,4 +85,9 @@ module.exports = mongoose.model('PaymentFormItem', {
         default: moment(new Date()).format("YYYYMMDD_HHmmss")
     },
 
+    isFrontHalfMonth :{
+        type: Boolean,
+        default: false
+    }
+
 });

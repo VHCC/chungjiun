@@ -450,6 +450,10 @@
                     return http.post('/api/post_payment_fetch_items', formData);
                 },
 
+                fetchPaymentItemsSearchMonthly: function (formData) {
+                    return http.post('/api/post_payment_fetch_items_monthly_search', formData);
+                },
+
                 createPaymentForm: function (formData) {
                     return http.post('/api/post_payment_create_form', formData);
                 },

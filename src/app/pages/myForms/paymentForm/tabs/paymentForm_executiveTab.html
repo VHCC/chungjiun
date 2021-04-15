@@ -30,6 +30,7 @@
                     <td style="vertical-align: inherit; text-align: center" width="100px">墊付金額</td>
                     <td style="vertical-align: inherit; text-align: center">簽核狀態</td>
                     <td style="vertical-align: inherit; text-align: center" width="20px">核定編號</td>
+                    <td style="vertical-align: inherit; text-align: center" width="35px">切分</td>
                 </tr>
                 </thead>
                 <tbody ng-repeat="item in fetchReviewItemsFromScope(user)">
@@ -127,6 +128,25 @@
                                ng-model="item.itemIndex"
                                value="{{item.itemIndex}}"
                                class="form-control input-sm">
+                    </td>
+
+                    <td class="form-group" style="vertical-align: inherit; text-align: center">
+                        <cj-switcher
+                                ng-if="roleType == '100' && !item.isExecutiveCheck"
+                                ng-click="changeSCItemStatus(this, item)"
+                                ng-model="item.isFrontHalfMonth"
+                                switcher-on="上半月"
+                                switcher-off="下半月"
+                                switcher-style="primary"
+                                switcher-value="item.isFrontHalfMonth"/>
+                        <div >
+                            <span ng-if="item.isFrontHalfMonth&&item.isExecutiveCheck">
+                                上半月
+                            </span>
+                            <span ng-if="!item.isFrontHalfMonth&&item.isExecutiveCheck">
+                                下半月
+                            </span>
+                        </div>
                     </td>
                 </tr>
                 </tbody>
