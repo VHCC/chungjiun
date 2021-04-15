@@ -568,6 +568,8 @@
         // 行政增修
         $scope.executiveModifiedPaymentItem = function(item) {
             // $scope.saveItems(2);
+            console.log(item);
+
             var formData = {
                 _id: item._id,
             }
@@ -583,6 +585,7 @@
                 isExecutiveAdd : true,
                 isExecutiveCheck: true,
                 itemIndex: item.itemIndex,
+                isFrontHalfMonth: item.isFrontHalfMonth,
             }
             PaymentFormsUtil.updatePaymentItemByID(formData)
                 .success(function (res) {
@@ -1008,6 +1011,7 @@
             console.log(item);
             $scope.checkText = '確定 核定：' +
                 $scope.showUser(userDID) + ", " +
+                (item.isFrontHalfMonth ? "上半月" : "下半月") + ", " +
                 $scope.showPrjCodeWithCombine(item.prjDID) + ", 金額：" +
                 item.amount + ", 核定編號：" +
                 item.itemIndex +

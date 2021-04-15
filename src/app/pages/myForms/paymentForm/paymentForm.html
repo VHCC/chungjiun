@@ -125,6 +125,11 @@
                 <div ng-controller="paymentFormSearchCtrl as paymentFormSearchCtrlVm"
                         ng-include="'app/pages/myForms/paymentForm/tabs/paymentForm_searchTab.html'"></div>
             </uib-tab>
+
+            <uib-tab heading="墊付款（月）查詢" ng-if="roleType === '100'">
+                <div ng-controller="paymentFormSearchMonthlyCtrl as paymentFormSearchMonthlyCtrlVm"
+                     ng-include="'app/pages/myForms/paymentForm/tabs/paymentForm_searchMonthlyTab.html'"></div>
+            </uib-tab>
         </uib-tabset>
     </div>
 </div>
