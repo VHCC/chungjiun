@@ -401,25 +401,31 @@
                                     WorkHourUtil.queryStatisticsForms_projectIncome_Cost_ByPrjDIDArray(formData)
                                         .success(function (res) {
                                             console.log(" === 人工時 === ")
-                                            console.log(res)
+                                            console.log(res);
 
-                                            res.payload = res.payload.sort(function (a, b) {
+                                            var manipulateData = jQuery.extend(true, {}, res); // 深度複製
+
+                                            manipulateData.payload = manipulateData.payload.sort(function (a, b) {
                                                 return a._id.userDID > b._id.userDID ? 1 : -1;
                                             });
 
-                                            for (var index = 0; index < res.payload.length; index ++) {
-                                                for (var index_sub = 0; index_sub < res.payload_add.length; index_sub ++) {
+                                            for (var index = 0; index < manipulateData.payload.length; index ++) {
+                                                for (var index_sub = 0; index_sub < manipulateData.payload_add.length; index_sub ++) {
                                                     // if( res.payload_add[index_sub]._id.prjCode == res.payload[index]._id.prjCode &&
                                                     //     res.payload_add[index_sub]._id.userDID == res.payload[index]._id.userDID) {
-                                                        res.payload[index]._add_tables = res.payload_add[index_sub].add_tables;
+                                                    manipulateData.payload[index]._add_tables = manipulateData.payload_add[index_sub].add_tables;
                                                     // }
                                                 }
                                             }
-                                            $scope.statisticsResults_type1 = $scope.filter_type1_data(res.payload);
-                                            $scope.statisticsResults = $scope.filter_type2_data(res.payload);
+                                            $scope.statisticsResults_type1 = $scope.filter_type1_data(manipulateData.payload);
+                                            console.log(" ----- filter_type1_data -------- ")
+                                            console.log($scope.statisticsResults_type1);
+                                            // $scope.statisticsResults = $scope.filter_type2_data(manipulateData.payload);
+                                            // console.log(" ----- filter_type2_data -------- ")
                                             // console.log($scope.statisticsResults);
                                             $scope.statisticsResults_type1 = $scope.filter_type2_data_item($scope.statisticsResults_type1);
-                                            // console.log($scope.statisticsResults_type1);
+                                            console.log(" ----- filter_type2_data_item -------- ")
+                                            console.log($scope.statisticsResults_type1);
 
                                             for (var i = 0; i < $scope.statisticsResults_type1.length; i ++) {
 
@@ -633,7 +639,7 @@
         }
 
         $scope.calculateHours_type2_add = function (item, type, showType) {
-            // console.log(item)
+            // console.log(item);
             switch (type) {
                 case 1:
                     if (item.iscalculate_A) {
@@ -687,9 +693,9 @@
             var type2_add_data = [];
 
             for (var index = 0; index < item._add_tables.length; index ++) {
+                // console.log(item._add_tables[index])
                 var operatedFormDate = item._add_tables[index].create_formDate;
                 if (item._add_tables[index].workAddType == type) {
-
                     // var date_id = DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1) + "_"
                     //     + item._id.prjCode + "_"
                     //     + item._user_info._id;
@@ -718,7 +724,7 @@
                     }
                 }
             }
-            // console.log(type2_add_data);
+            console.log(type2_add_data);
             var hour = 0
             for (var i = 0 ; i < type2_add_data.length; i ++) {
                 hour = type2_add_data[i].min % 60 < 30 ? Math.round(type2_add_data[i].min / 60) : Math.round(type2_add_data[i].min / 60) - 0.5;
@@ -884,7 +890,7 @@
                     // 人時
                     var resultG = 0.0;
                     for (var i = 0; i < $scope.overall_data.length; i ++) {
-                        // console.log($scope.overall_data[i])
+                        // console.log($scope.overall_data[i]);
                         resultG += parseInt($scope.overall_data[i]._overall)
                         // console.log(resultG)
                     }
@@ -1050,6 +1056,7 @@
             var itemList = [];
 
             var type1_data = [];
+            var table_add_id_array = [];
 
             for (var memberCount = 0; memberCount < rawTables.length; memberCount++) {
                 // console.log(rawTables[memberCount].tables);
@@ -1422,12 +1429,10 @@
                             }
                         }
                     }
-
-
                 }
 
-                // work add
 
+                // work add
                 if (rawTables[memberCount]._add_tables != undefined) {
                     for (var table_add_index = 0 ;table_add_index < rawTables[memberCount]._add_tables.length; table_add_index ++) {
 
@@ -1438,7 +1443,11 @@
                         if (!rawTables[memberCount]._add_tables[table_add_index].isExecutiveConfirm) {
                             continue;
                         }
+                        if (table_add_id_array.includes(rawTables[memberCount]._add_tables[table_add_index]._id)) continue;
+                        table_add_id_array.push(rawTables[memberCount]._add_tables[table_add_index]._id)
+
                         var tableData_add = {
+                            _id: rawTables[memberCount]._add_tables[table_add_index]._id,
                             create_formDate: rawTables[memberCount]._add_tables[table_add_index].create_formDate,
                             day: rawTables[memberCount]._add_tables[table_add_index].day,
                             workAddType: rawTables[memberCount]._add_tables[table_add_index].workAddType,
@@ -1446,6 +1455,7 @@
                             end_time: rawTables[memberCount]._add_tables[table_add_index].end_time,
                             reason: rawTables[memberCount]._add_tables[table_add_index].reason,
                             userMonthSalary: rawTables[memberCount]._add_tables[table_add_index].userMonthSalary,
+                            isExecutiveConfirm: rawTables[memberCount]._add_tables[table_add_index].isExecutiveConfirm,
                         }
 
                         if (type1_data[item] != undefined) {
