@@ -1581,6 +1581,8 @@
                         for (var index = 0; index < res.payload.length; index ++) {
                             // $scope.travelApplicationItems.push(res.payload[index]);
 
+                            if (!res.payload[index].isBossCheck) continue
+
                             var dateTemp = DateUtil.getShiftDatefromFirstDate(
                                 DateUtil.getFirstDayofThisWeek(moment(res.payload[index].create_formDate)),
                                 res.payload[index].day === 0 ? 6 : res.payload[index].day - 1);
