@@ -201,6 +201,7 @@
             // Send WorkOffTable to Review
             $scope.reviewRemedyItem = function (table, button, index) {
                 $timeout(function () {
+                    console.log(table)
                     var remedyString = $scope.showWRemedyTypeString($scope.redemyTablesItems[index].workType);
                     $scope.checkText = '確定提交 ' + remedyString + '：' +
                         DateUtil.getShiftDatefromFirstDate(
@@ -211,6 +212,12 @@
                     $scope.checkingTable = table;
                     $scope.checkingButton = button;
                     $scope.checkingIndex = index;
+
+                    if (table.start_time == "") {
+                        toastr.error('輸入法異常', '（時間輸入格式錯誤，可能有輸入到中文、注音、英文字母、請重新整理後再次輸入）');
+                        return;
+                    }
+
                     ngDialog.open({
                         template: 'app/pages/myModalTemplate/remedyFormReviewModal.html',
                         className: 'ngdialog-theme-default',
