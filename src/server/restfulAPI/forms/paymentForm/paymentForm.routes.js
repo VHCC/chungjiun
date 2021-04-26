@@ -91,22 +91,6 @@ module.exports = function (app) {
     // fetch items
     app.post(global.apiUrl.post_payment_fetch_items_monthly_search, function (req, res) {
         console.log(req.body);
-        // PaymentFormItem.find({
-        //     year: req.body.year,
-        //     month: req.body.month,
-        //     isExecutiveCheck: true,
-        // }, function (err, paymentItems) {
-        //     if (err) {
-        //         res.send(err);
-        //     } else {
-        //         res.status(200).send({
-        //             code: 200,
-        //             error: global.status._200,
-        //             payload: paymentItems,
-        //         });
-        //     }
-        // });
-
         PaymentFormItem.aggregate(
             [
                 {
@@ -116,8 +100,38 @@ module.exports = function (app) {
                         isExecutiveCheck: true,
                     }
                 },
+                // {
+                //     $sort: {
+                //         creatorDID: 1,
+                //         itemIndex: 1
+                //     }
+                // },
+                {
+                    $addFields: {
+                        "_userDID": {
+                            $toObjectId: "$creatorDID"
+                        },
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "_userDID",
+                        foreignField: "_id",
+                        as: "_user_info"
+                    }
+                },
+                {
+                    $unwind: "$_user_info"
+                },
+                {
+                    $addFields: {
+                        "_machineDID": "$_user_info.machineDID",
+                    }
+                },
                 {
                     $sort: {
+                        _machineDID: 1,
                         creatorDID: 1,
                         itemIndex: 1
                     }
