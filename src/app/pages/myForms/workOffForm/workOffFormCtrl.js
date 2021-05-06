@@ -876,7 +876,7 @@
                             DateUtil.getFirstDayofThisWeek(moment($scope.specificUserTablesItems[index].create_formDate)),
                             $scope.specificUserTablesItems[index].day === 0 ? 6 : $scope.specificUserTablesItems[index].day - 1) +
                         "  審查？ 時數：" + hour;
-
+                    console.log($scope.userMonthSalary)
                     try {
                         $scope.checkText += "\n" + "代理人：" + table.agent.name;
                         $scope.checkingTable = $scope.specificUserTablesItems[index];
@@ -910,7 +910,7 @@
                     start_time: checkingTable.start_time,
                     end_time: checkingTable.end_time,
 
-                    userMonthSalary: checkingTable.userMonthSalary,
+                    userMonthSalary: $scope.userMonthSalary,
                     isSendReview: true,
 
                     agentID: checkingTable.agent.value,
