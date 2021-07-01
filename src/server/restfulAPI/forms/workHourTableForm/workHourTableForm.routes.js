@@ -27,11 +27,11 @@ module.exports = function (app) {
                 console.log(err);
                 res.send(err);
             } else {
-                if (req.body.oldTables.hasOwnProperty('tableIDArray')) {
+                if (req.body.oldTables.length > 0) {
                     var findData = []
-                    for (var index = 0; index < req.body.oldTables.tableIDArray.length; index++) {
+                    for (var index = 0; index < req.body.oldTables.length; index++) {
                         var target = {
-                            _id: req.body.oldTables.tableIDArray[index],
+                            _id: req.body.oldTables[index],
                             creatorDID: req.body.creatorDID,
                             create_formDate: req.body.create_formDate,
                         }
