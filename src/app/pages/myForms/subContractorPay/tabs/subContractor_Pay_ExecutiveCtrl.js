@@ -398,7 +398,7 @@
             var dateTemp = moment(payItem.specialDate);
 
             var data = moment(payItem.specialDate)
-            if (payItem.specialDate !== data.format('YYYY/MM')) {
+            if (payItem.specialDate !== data._i) {
                 toastr.error('廠請年月 日期格式錯誤', '請輸入 YYYY/MM');
                 return
             }
