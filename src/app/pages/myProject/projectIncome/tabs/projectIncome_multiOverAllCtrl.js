@@ -466,10 +466,10 @@
 
                                     for (var index = 0; index < res.payload.length; index ++) {
                                         for (var index_sub = 0; index_sub < res.payload_add.length; index_sub ++) {
-                                            // if( res.payload_add[index_sub]._id.prjCode == res.payload[index]._id.prjCode &&
-                                            //     res.payload_add[index_sub]._id.userDID == res.payload[index]._id.userDID) {
+                                            if( res.payload_add[index_sub]._id.prjCode == res.payload[index]._id.prjCode &&
+                                                res.payload_add[index_sub]._id.userDID == res.payload[index]._id.userDID) {
                                                 res.payload[index]._add_tables = res.payload_add[index_sub].add_tables;
-                                            // }
+                                            }
                                         }
                                     }
                                     manipulatePrj.statisticsResults_type1 = $scope.filter_type1_data(res.payload);
