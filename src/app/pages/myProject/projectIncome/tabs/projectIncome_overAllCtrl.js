@@ -265,7 +265,7 @@
                                             console.log(res);
                                             $scope.projectIncomeTable = res.payload;
                                             for (var i = 0; i < res.payload.length; i ++) {
-                                                var tempDate = moment(res.payload[i].realDate).format("YYYY/MM");
+                                                var tempDate = moment(res.payload[i].realDate).utcOffset(+480).format("YYYY/MM");
                                                 if (moment(tempDate) >= moment("2020/01")) {
                                                     if ($scope.overall_data[tempDate] != undefined) {
                                                         var data = $scope.overall_data[tempDate];
@@ -297,7 +297,7 @@
                                             console.log(res);
                                             $scope.searchPaymentsItems = res.payload;
                                             for (var i = 0; i < res.payload.length; i ++) {
-                                                var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
+                                                var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).utcOffset(+480).format("YYYY/MM");
                                                 if (moment(tempDate) >= moment("2020/01")) {
                                                     if ($scope.overall_data[tempDate] != undefined) {
                                                         var data = $scope.overall_data[tempDate];
@@ -329,7 +329,7 @@
                                             console.log(res);
                                             $scope.displayEEItems = res.payload;
                                             for (var i = 0; i < res.payload.length; i ++) {
-                                                var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
+                                                var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).utcOffset(+480).format("YYYY/MM");
                                                 if (moment(tempDate) >= moment("2020/01")) {
                                                     if ($scope.overall_data[tempDate] != undefined) {
                                                         var data = $scope.overall_data[tempDate];
@@ -366,7 +366,7 @@
                                             console.log(res)
                                             $scope.subContractorPayItems = res.payload;
                                             for (var i = 0; i < res.payload.length; i ++) {
-                                                var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
+                                                var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).utcOffset(+480).format("YYYY/MM");
                                                 if (moment(tempDate) >= moment("2020/01")) {
                                                     if ($scope.overall_data[tempDate] != undefined) {
                                                         var data = $scope.overall_data[tempDate];
@@ -404,19 +404,20 @@
                                             console.log(res);
 
                                             var manipulateData = jQuery.extend(true, {}, res); // 深度複製
-
+                                            console.log(manipulateData)
                                             manipulateData.payload = manipulateData.payload.sort(function (a, b) {
                                                 return a._id.userDID > b._id.userDID ? 1 : -1;
                                             });
 
                                             for (var index = 0; index < manipulateData.payload.length; index ++) {
                                                 for (var index_sub = 0; index_sub < manipulateData.payload_add.length; index_sub ++) {
-                                                    // if( res.payload_add[index_sub]._id.prjCode == res.payload[index]._id.prjCode &&
-                                                    //     res.payload_add[index_sub]._id.userDID == res.payload[index]._id.userDID) {
-                                                    manipulateData.payload[index]._add_tables = manipulateData.payload_add[index_sub].add_tables;
-                                                    // }
+                                                    if( manipulateData.payload_add[index_sub]._id.prjCode == manipulateData.payload[index]._id.prjCode &&
+                                                        manipulateData.payload_add[index_sub]._id.userDID == manipulateData.payload[index]._id.userDID) {
+                                                        manipulateData.payload[index]._add_tables = manipulateData.payload_add[index_sub].add_tables;
+                                                    }
                                                 }
                                             }
+                                            console.log(manipulateData.payload)
                                             $scope.statisticsResults_type1 = $scope.filter_type1_data(manipulateData.payload);
                                             console.log(" ----- filter_type1_data -------- ")
                                             console.log($scope.statisticsResults_type1);
@@ -639,6 +640,7 @@
         }
 
         $scope.calculateHours_type2_add = function (item, type, showType) {
+            // console.log(" *** calculateHours_type2_add *** ");
             // console.log(item);
             switch (type) {
                 case 1:
@@ -724,7 +726,7 @@
                     }
                 }
             }
-            console.log(type2_add_data);
+            // console.log(type2_add_data);
             var hour = 0
             for (var i = 0 ; i < type2_add_data.length; i ++) {
                 hour = type2_add_data[i].min % 60 < 30 ? Math.round(type2_add_data[i].min / 60) : Math.round(type2_add_data[i].min / 60) - 0.5;
@@ -812,7 +814,7 @@
             if ($scope.subContractorPayItems == undefined) return resultD;
             for (var i = 0; i < $scope.subContractorPayItems.length; i ++) {
                 var tempDate = moment($scope.subContractorPayItems[i].year+1911 + "/" +
-                    $scope.subContractorPayItems[i].month).format("YYYY/MM");
+                    $scope.subContractorPayItems[i].month).utcOffset(+480).format("YYYY/MM");
                 if (moment(tempDate) >= moment("2020/01")) {
                     resultD += (parseInt($scope.subContractorPayItems[i].payApply) -
                         parseInt($scope.subContractorPayItems[i].payTax) -
@@ -894,7 +896,7 @@
                         resultG += parseInt($scope.overall_data[i]._overall)
                         // console.log(resultG)
                     }
-                    // console.log("resultG:> " + resultG)
+                    // console.log("20201207 resultG:> " + resultG)
                     return Math.round(resultG);
                 case 2:
                     // 墊付款
@@ -908,12 +910,15 @@
                             }
                         }
                     }
-                    // console.log("resultB:> " + resultB)
+                    // console.log("20201207 resultB:> " + resultB)
                     return Math.round(resultB);
                 case 3:
                     // 其他
                     var resultC = 0.0;
+                    // console.log(" *** overall_data *** ")
+                    // console.log($scope.overall_data)
                     for (var i = 0; i < $scope.overall_data.length; i ++) {
+                        // console.log($scope.overall_data[i])
                         for (var j = 0; j < $scope.overall_data[i]._otherCost.length; j ++) {
                             if ($scope.overall_data[i]._otherCost[j].amount == null || $scope.overall_data[i]._otherCost[j].amount == undefined) {
                             } else {
@@ -921,7 +926,7 @@
                             }
                         }
                     }
-                    // console.log("resultC:> " + resultC)
+                    // console.log("20201207 resultC:> " + resultC)
                     return Math.round(resultC)
             }
 
@@ -954,9 +959,12 @@
                 case 3:
                     // 其他
                     var resultC = 0.0;
+                    // console.log("其他:> ");
+                    // console.log(item);
                     for (var i = 0; i < item._otherCost.length; i ++) {
                         if (item._otherCost[i].amount == null || item._otherCost[i].amount == undefined) {
                         } else {
+                            // console.log(item._otherCost[i].amount)
                             resultC += parseInt(item._otherCost[i].amount)
                         }
                     }
@@ -1434,6 +1442,7 @@
 
                 // work add
                 if (rawTables[memberCount]._add_tables != undefined) {
+                    console.log("memberCount:> " + memberCount)
                     for (var table_add_index = 0 ;table_add_index < rawTables[memberCount]._add_tables.length; table_add_index ++) {
 
                         var item = "_" + DateUtil.getShiftDatefromFirstDate_month(moment(rawTables[memberCount]._add_tables[table_add_index].create_formDate),
@@ -1458,6 +1467,7 @@
                             isExecutiveConfirm: rawTables[memberCount]._add_tables[table_add_index].isExecutiveConfirm,
                         }
 
+                        // console.log(item)
                         if (type1_data[item] != undefined) {
                             var data = type1_data[item];
                             data._add_tables.push(tableData_add);
