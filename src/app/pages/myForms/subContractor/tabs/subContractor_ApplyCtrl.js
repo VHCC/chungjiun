@@ -64,7 +64,7 @@
         $scope.displaySubContractorApplyItems;
 
         // 所有人，對照資料
-        User.getAllUsers()
+        User.getAllUsersWithSignOut()
             .success(function (allUsers) {
                 vm.users = allUsers; // 新增表單
 
