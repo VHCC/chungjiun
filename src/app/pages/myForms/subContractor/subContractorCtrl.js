@@ -36,7 +36,11 @@
             }
 
             $scope.reloadSCApplyData = function (dom) {
-                dom.$$childTail.$$prevSibling.$$prevSibling.$$prevSibling.$$prevSibling.fetchSCApplyData();
+                if (typeof dom.$$childTail.$$prevSibling.$$prevSibling.$$prevSibling.$$prevSibling.fetchSCApplyData != "undefined") {
+                    dom.$$childTail.$$prevSibling.$$prevSibling.$$prevSibling.$$prevSibling.fetchSCApplyData();
+                } else {
+                    dom.$$childTail.$$prevSibling.$$prevSibling.fetchSCApplyData();
+                }
             }
 
         } // End of function
