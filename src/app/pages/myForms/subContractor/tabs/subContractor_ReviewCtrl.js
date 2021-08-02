@@ -308,7 +308,7 @@
                     prjDID: prjDID
                 });
             }
-            if (majorSelected == undefined) return 'Not Set';
+            if (majorSelected == undefined) return false;
             var managerDID = majorSelected[0].managerID;
             return managerDID === $scope.userDID ? true : false;
         };
