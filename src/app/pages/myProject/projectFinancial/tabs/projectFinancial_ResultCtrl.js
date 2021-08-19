@@ -82,7 +82,7 @@
                 }
             });
 
-        Project.findAll()
+        Project.findAllEnable()
             .success(function (allProjects) {
                 $scope.allProjectCache = [];
                 var prjCount = allProjects.length;
