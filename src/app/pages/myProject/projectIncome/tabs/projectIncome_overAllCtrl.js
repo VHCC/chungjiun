@@ -417,10 +417,10 @@
                                                     }
                                                 }
                                             }
-                                            console.log(manipulateData.payload)
+                                            // console.log(manipulateData.payload)
                                             $scope.statisticsResults_type1 = $scope.filter_type1_data(manipulateData.payload);
                                             console.log(" ----- filter_type1_data -------- ")
-                                            console.log($scope.statisticsResults_type1);
+                                            // console.log($scope.statisticsResults_type1);
                                             // $scope.statisticsResults = $scope.filter_type2_data(manipulateData.payload);
                                             // console.log(" ----- filter_type2_data -------- ")
                                             // console.log($scope.statisticsResults);
@@ -429,7 +429,6 @@
                                             console.log($scope.statisticsResults_type1);
 
                                             for (var i = 0; i < $scope.statisticsResults_type1.length; i ++) {
-
                                                 var tempDate = $scope.statisticsResults_type1[i]._date;
 
                                                 if (moment(tempDate) >= moment("2020/01")) {
@@ -454,7 +453,7 @@
                                                     }
                                                 }
                                             }
-                                            // console.log($scope.overall_data)
+                                            console.log($scope.overall_data)
                                             $scope.overall_data_sort = $scope.overall_data.sort(function (a, b) {
                                                 return moment(a._date).unix() > moment(b._date).unix() ? 1 : -1;
                                             });
@@ -1060,7 +1059,7 @@
     //    ===================
         // type 1, 一天加一專案 為一筆
         $scope.filter_type1_data = function(rawTables) {
-            console.log(rawTables)
+            // console.log(rawTables)
             var itemList = [];
 
             var type1_data = [];
@@ -1070,7 +1069,6 @@
                 // console.log(rawTables[memberCount].tables);
                 if (rawTables[memberCount].tables != undefined) {
                     for (var table_index = 0 ;table_index < rawTables[memberCount].tables.length; table_index ++) {
-
                         if (rawTables[memberCount].tables[table_index].mon_hour > 0) {
                             var item = "_" + DateUtil.getShiftDatefromFirstDate_month(moment(rawTables[memberCount].tables[table_index].create_formDate)
                                 , 0) + "_" +
@@ -1442,7 +1440,6 @@
 
                 // work add
                 if (rawTables[memberCount]._add_tables != undefined) {
-                    console.log("memberCount:> " + memberCount)
                     for (var table_add_index = 0 ;table_add_index < rawTables[memberCount]._add_tables.length; table_add_index ++) {
 
                         var item = "_" + DateUtil.getShiftDatefromFirstDate_month(moment(rawTables[memberCount]._add_tables[table_add_index].create_formDate),
