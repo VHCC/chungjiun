@@ -169,6 +169,7 @@
 
 
             <!-- 專案成本(人時支出、墊付款、其他支出) -->
+            <!-- (匯費、罰款) -->
             <td class="form-group" style="vertical-align: inherit;">
                 <!--<span ng-if="item.isEnable">{{item.fines}}</span>-->
                 <!--<input type="text"-->
@@ -297,8 +298,14 @@
             </td>
 
             <!-- 專案成本(人時支出、墊付款、其他支出) -->
+            <!-- (匯費、罰款) -->
             <td class="form-group" style="vertical-align: inherit;">
                 <!--<span >{{calcAllCost()}}</span>-->
+                <!--<span style="text-align: right">人時支出：{{calcAllCost_special20210819(1).toLocaleString()}}</span><br>-->
+                <!--<span style="text-align: right">墊付款：{{calcAllCost_special20210819(2).toLocaleString()}}</span><br>-->
+                <!--<span style="text-align: right">其他支出：{{calcAllCost_special20210819(3).toLocaleString()}}</span><br>-->
+                <!--<span style="text-align: right">匯費：{{calcAllCost_special20210819(4).toLocaleString()}}</span><br>-->
+                <!--<span style="text-align: right">罰款：{{calcAllCost_special20210819(5).toLocaleString()}}</span><br>-->
                 <span style="text-align: right">{{calcAllCost_special20201207().toLocaleString()}}</span>
             </td>
             <!--其他-->

@@ -399,9 +399,12 @@
                                                     }
                                                 }
                                             }
-                                            $scope.statisticsResults = $scope.filter_type2_data(res.payload);
+                                            // $scope.statisticsResults = $scope.filter_type2_data(res.payload);
                                             $scope.statisticsResults_type1 = $scope.filter_type1_data(res.payload);
+                                            console.log(" ----- filter_type1_data -------- ")
                                             $scope.statisticsResults_type1 = $scope.filter_type2_data_item($scope.statisticsResults_type1);
+                                            console.log(" ----- filter_type2_data_item -------- ")
+                                            console.log($scope.statisticsResults_type1);
 
                                             for (var i = 0; i < $scope.statisticsResults_type1.length; i ++) {
                                                 var tempDate = $scope.statisticsResults_type1[i]._date;
@@ -428,7 +431,7 @@
                                                     }
                                                 }
                                             }
-
+                                            console.log($scope.overall_data)
                                         })
 
                                     angular.element(
@@ -444,7 +447,6 @@
                                             "</div>"
                                         )($scope));
                                 }
-
 
                                 $timeout(function () {
                                     bsLoadingOverlayService.stop({
@@ -721,6 +723,7 @@
 
         $scope.calIncome = function (type) {
             var incomeA = 0.0;
+            if ($scope.projectIncomeTable == null) return
             for (var i = 0; i < $scope.projectIncomeTable.length; i ++) {
                 if (moment($scope.projectIncomeTable[i].realDate) >= moment("2020/01")) {
                     incomeA += parseInt($scope.projectIncomeTable[i].expectAmount)
@@ -803,6 +806,7 @@
             }
             // console.log("resultC:> " + resultC)
 
+            //
             var resultD = 0.0;
             for (var i = 0; i < $scope.projectIncomeTable.length; i ++) {
                 if (moment($scope.projectIncomeTable[i].realDate) >= moment("2020/01")) {
@@ -826,7 +830,7 @@
             // 墊付款
             var resultB = 0.0;
             for (var i = 0; i < $scope.overall_data.length; i ++) {
-                console.log($scope.overall_data[i])
+                // console.log($scope.overall_data[i])
                 for (var j = 0; j < $scope.overall_data[i]._payments.length; j ++) {
                     resultB += $scope.overall_data[i]._payments[j].amount == null ? 0 :$scope.overall_data[i]._payments[j].amount == undefined ? 0 : parseInt($scope.overall_data[i]._payments[j].amount)
                 }
@@ -842,6 +846,41 @@
             }
             // console.log("resultC:> " + resultC)
             return Math.round(resultG+resultB+resultC+$scope.calFines() + $scope.calFee())
+        }
+
+        $scope.calcAllCost_special20210819  = function(type) {
+            switch(type) {
+                case 1:
+                    // 人時
+                    var resultG = 0.0;
+                    for (var i = 0; i < $scope.overall_data.length; i ++) {
+                        // console.log($scope.overall_data[i])
+                        resultG += parseInt($scope.overall_data[i]._overall)
+                        // console.log(resultG)
+                    }
+                    return resultG
+                case 2:
+                    var resultB = 0.0;
+                    for (var i = 0; i < $scope.overall_data.length; i ++) {
+                        // console.log($scope.overall_data[i])
+                        for (var j = 0; j < $scope.overall_data[i]._payments.length; j ++) {
+                            resultB += $scope.overall_data[i]._payments[j].amount == null ? 0 :$scope.overall_data[i]._payments[j].amount == undefined ? 0 : parseInt($scope.overall_data[i]._payments[j].amount)
+                        }
+                    }
+                    return resultB
+                case 3:
+                    var resultC = 0.0;
+                    for (var i = 0; i < $scope.overall_data.length; i ++) {
+                        for (var j = 0; j < $scope.overall_data[i]._otherCost.length; j ++) {
+                            resultC += $scope.overall_data[i]._otherCost[j].amount == null ? 0 : $scope.overall_data[i]._otherCost[j].amount == undefined ? 0 : parseInt($scope.overall_data[i]._otherCost[j].amount)
+                        }
+                    }
+                    return resultC
+                case 4:
+                    return $scope.calFines()
+                case 5:
+                    return $scope.calFee()
+            }
         }
 
         $scope.calResult = function (type, item) {
@@ -883,12 +922,12 @@
             var itemList = [];
 
             var type1_data = [];
+            var table_add_id_array = [];
 
             for (var memberCount = 0; memberCount < rawTables.length; memberCount++) {
                 // console.log(rawTables[memberCount].tables);
                 if (rawTables[memberCount].tables != undefined) {
                     for (var table_index = 0 ;table_index < rawTables[memberCount].tables.length; table_index ++) {
-
                         if (rawTables[memberCount].tables[table_index].mon_hour > 0) {
                             var item = "_" + DateUtil.getShiftDatefromFirstDate_month(moment(rawTables[memberCount].tables[table_index].create_formDate)
                                 , 0) + "_" +
@@ -1255,12 +1294,9 @@
                             }
                         }
                     }
-
-
                 }
 
                 // work add
-
                 if (rawTables[memberCount]._add_tables != undefined) {
                     for (var table_add_index = 0 ;table_add_index < rawTables[memberCount]._add_tables.length; table_add_index ++) {
 
@@ -1272,7 +1308,12 @@
                             continue;
                         }
 
+                        if (table_add_id_array.includes(rawTables[memberCount]._add_tables[table_add_index]._id)) continue;
+                        table_add_id_array.push(rawTables[memberCount]._add_tables[table_add_index]._id)
+
+
                         var tableData_add = {
+                            _id: rawTables[memberCount]._add_tables[table_add_index]._id,
                             create_formDate: rawTables[memberCount]._add_tables[table_add_index].create_formDate,
                             day: rawTables[memberCount]._add_tables[table_add_index].day,
                             workAddType: rawTables[memberCount]._add_tables[table_add_index].workAddType,
@@ -1280,6 +1321,7 @@
                             end_time: rawTables[memberCount]._add_tables[table_add_index].end_time,
                             reason: rawTables[memberCount]._add_tables[table_add_index].reason,
                             userMonthSalary: rawTables[memberCount]._add_tables[table_add_index].userMonthSalary,
+                            isExecutiveConfirm: rawTables[memberCount]._add_tables[table_add_index].isExecutiveConfirm,
                         }
 
                         if (type1_data[item] != undefined) {

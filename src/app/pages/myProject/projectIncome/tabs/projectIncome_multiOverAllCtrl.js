@@ -974,10 +974,10 @@
         //    ===================
         // type 1, 一天加一專案 為一筆
         $scope.filter_type1_data = function(rawTables) {
-            console.log(rawTables)
             var itemList = [];
 
             var type1_data = [];
+            var table_add_id_array = [];
 
             for (var memberCount = 0; memberCount < rawTables.length; memberCount++) {
                 // console.log(rawTables[memberCount].tables);
@@ -1355,7 +1355,6 @@
                 }
 
                 // work add
-
                 if (rawTables[memberCount]._add_tables != undefined) {
                     for (var table_add_index = 0 ;table_add_index < rawTables[memberCount]._add_tables.length; table_add_index ++) {
 
@@ -1366,7 +1365,13 @@
                         if (!rawTables[memberCount]._add_tables[table_add_index].isExecutiveConfirm) {
                             continue;
                         }
+
+                        if (table_add_id_array.includes(rawTables[memberCount]._add_tables[table_add_index]._id)) continue;
+                        table_add_id_array.push(rawTables[memberCount]._add_tables[table_add_index]._id)
+
+
                         var tableData_add = {
+                            _id: rawTables[memberCount]._add_tables[table_add_index]._id,
                             create_formDate: rawTables[memberCount]._add_tables[table_add_index].create_formDate,
                             day: rawTables[memberCount]._add_tables[table_add_index].day,
                             workAddType: rawTables[memberCount]._add_tables[table_add_index].workAddType,
@@ -1374,6 +1379,7 @@
                             end_time: rawTables[memberCount]._add_tables[table_add_index].end_time,
                             reason: rawTables[memberCount]._add_tables[table_add_index].reason,
                             userMonthSalary: rawTables[memberCount]._add_tables[table_add_index].userMonthSalary,
+                            isExecutiveConfirm: rawTables[memberCount]._add_tables[table_add_index].isExecutiveConfirm,
                         }
 
                         if (type1_data[item] != undefined) {
