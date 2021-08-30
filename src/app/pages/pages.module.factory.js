@@ -746,6 +746,35 @@
                 updateWorkOffTableSalary: function (formData) {
                     return http.post('/api/post_work_off_table_update_salary', formData);
                 },
+
+                fetchWorkOffPDFFiles : function (formData) {
+                    return http.post('/api/post_work_off_pdf_fetch_file', formData);
+                },
+
+                // 電子檔 pdf
+                uploadWorkOffPDFlFile: function (uploadData) {
+                    return http.post('/api/post_work_off_pdf_upload_file', uploadData, {
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': undefined}
+                    }).success(function () {
+                        console.log("success!!");
+                    }).error(function () {
+                        console.log("error!!");
+                    });
+                },
+
+                getWorkOffPDFFile : function (formData) {
+                    return http.post('/api/post_work_off_pdf_get_file', formData);
+                },
+
+                downloadWorkOffPDFFile : function (formData) {
+                    return http.post('/api/post_work_off_pdf_download_file', formData);
+                },
+
+                deleteWorkOffPDFFile : function (formData) {
+                    return http.post('/api/post_work_off_pdf_delete_file', formData);
+                },
+
             }
         }])
         .factory('RemedyUtil', ['$http', function (http) {

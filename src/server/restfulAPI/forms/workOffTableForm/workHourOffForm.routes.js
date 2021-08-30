@@ -1,4 +1,5 @@
 var WorkOffForm = require('../../models/workOffForm');
+var fs = require('fs');
 var WorkOffTableForm = require('../../models/workOffTableForm');
 var moment = require('moment');
 
@@ -459,6 +460,175 @@ module.exports = function (app) {
                     });
                 }
             });
+    })
+
+
+    const dirTemp = '../WorkOffPDF';
+    const fileStorageDir = '../WorkOffPDF'
+
+    // PDF
+    app.post(global.apiUrl.post_work_off_pdf_fetch_file, function (req, res) {
+
+        console.log(req.body);
+
+        var fetchDir = fileStorageDir + '/' + req.body.userDID + req.body.archiveNumber + "/";
+
+
+        if (!fs.existsSync(fetchDir)){
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+        } else {
+            // fs.readdir(dirTemp, function (err, files) {
+            fs.readdir(fetchDir, function (err, files) {
+                if (err) {
+                    console.log("err:> " + err)
+                    // some sort of error
+                } else {
+                    if (!files.length) {
+                        // directory appears to be empty
+                        res.status(200).send({
+                            code: 200,
+                            payload: filesResult,
+                            error: global.status._200,
+                        });
+                    } else {
+
+                        var filesResult = [];
+
+                        for (var index = 0; index < files.length; index++) {
+
+                            var pdfItem = {
+                                name: files[index]
+                            };
+                            // if (files[index].indexOf(".pdf") > 0) {
+                            //     // var stats = fs.statSync(dirTemp + "/" + files[index]);
+                            //     var stats = fs.statSync(fetchDir + "/" + files[index]);
+                            //     // console.log(stats.size + " bytes");
+                            //     // console.log(Math.round(stats.size / 1000) + " KB");
+                            //     pdfItem.size = Math.round(stats.size / 1000) + " KB";
+                            //     filesResult.push(pdfItem);
+                            // }
+                            if (files[index].indexOf(".") > 0) {
+                                // var stats = fs.statSync(dirTemp + "/" + files[index]);
+                                var stats = fs.statSync(fetchDir + "/" + files[index]);
+                                // console.log(stats.size + " bytes");
+                                // console.log(Math.round(stats.size / 1000) + " KB");
+                                pdfItem.size = Math.round(stats.size / 1000) + " KB";
+
+                                if ((stats.size/ 1000) > 1000) {
+                                    pdfItem.size = Math.round(stats.size / 1000 / 1000) + " MB";
+                                }
+
+                                filesResult.push(pdfItem);
+                            }
+                        }
+
+                        res.status(200).send({
+                            code: 200,
+                            payload: filesResult,
+                            error: global.status._200,
+                        });
+                    }
+                }
+            });
+        }
+    })
+
+    var multer = require('multer');
+
+    var storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            if (!fs.existsSync(dirTemp + '/' + req.body.userDID)){
+                fs.mkdirSync(dirTemp + '/' + req.body.userDID);
+            }
+            cb(null, dirTemp + '/' + req.body.userDID);
+        },
+        filename: function (req, file, cb) {
+            // console.log(req.body);
+            // console.log("build Official Doc name:" + req.body.userDID + ".pdf");
+            // cb(null, req.body.userDID + '.pdf');
+            console.log("build WorkOff PDF name: " + req.body.fileName);
+            cb(null, req.body.fileName);
+        }
+    });
+
+    var upload = multer({storage: storage});
+
+    // upload file
+    app.post(global.apiUrl.post_work_off_pdf_upload_file,
+        upload.single('file'),
+        function (req, res) {
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
+            // req.file is the `avatar` file
+            // req.body will hold the text fields, if there were any
+        })
+
+    // download file
+    app.post(global.apiUrl.post_work_off_pdf_download_file, function (req, res) {
+
+        // var files = fs.createReadStream(dir + '/' + req.body.fileName);
+        // res.writeHead(200, {
+        //     'Content-disposition': 'attachment; filename=demo.pdf'
+        // }); //here you can add more headers
+        // files.pipe(res)
+        console.log(req.body)
+        var storageDir = fileStorageDir + '/' + req.body.userDID + req.body.fileMapNumber
+
+        // fs.readFile(dirTemp + '/' + req.body.fileName,
+        fs.readFile(storageDir + '/' + req.body.fileName,
+            'base64',
+            function (err, data) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.send(data);
+                }
+            });
+    })
+
+    // get file
+    // from storage
+    app.post(global.apiUrl.post_work_off_pdf_get_file, function (req, res) {
+
+        console.log(req.body);
+
+        var storageDir = fileStorageDir + '/' + req.body.userDID + req.body.fileMapNumber
+
+        // fs.readFile(dirTemp + '/' + req.body.fileName,
+        fs.readFile(storageDir + '/' + req.body.fileName,
+            'base64',
+            function (err, data) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.send(data);
+                }
+            });
+    })
+
+    // remove file from cache
+    app.post(global.apiUrl.post_work_off_pdf_delete_file, function (req, res) {
+
+        // fs.unlink(dir + '/' + req.body.userDID + '.pdf', function (err) {
+        console.log(req.body)
+        console.log(dirTemp + '/' + req.body.userDID + '/' + req.body.fileName)
+        fs.unlink(dirTemp + '/' + req.body.userDID + '/' + req.body.fileName, function (err) {
+            // fs.unlink(dirTemp + '/' + req.body.userDID + '/', { recursive: true }, function (err) {
+            if (err) {
+                console.error(err);
+            } else {
+                console.log(req.body.fileName + ' has been Deleted');
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
+            }
+        });
     })
 
 }

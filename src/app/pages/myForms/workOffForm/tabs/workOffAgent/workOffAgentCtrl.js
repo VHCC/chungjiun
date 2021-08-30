@@ -75,7 +75,7 @@
 
                     WorkOffFormUtil.fetchAllAgentItem(formData)
                         .success(function (resp) {
-                            console.log(resp);
+                            $scope.agentUsers = [];
                             for (var index = 0; index < resp.payload.length; index ++) {
                                 var selected = [];
                                 selected = $filter('filter')($scope.allUsers, {
@@ -94,10 +94,10 @@
                 })
 
             $scope.fetchAllAgentItems = function () {
-                console.log(" fetchAllAgentItems ");
                 WorkOffFormUtil.fetchAllAgentItem(formData)
                     .success(function (resp) {
                         console.log(resp);
+                        $scope.agentUsers = [];
                         for (var index = 0; index < resp.payload.length; index ++) {
                             var selected = [];
                             selected = $filter('filter')($scope.allUsers, {
@@ -182,7 +182,6 @@
                 $scope.agentCheckWorkOffItems = [];
                 WorkOffFormUtil.findWorkOffTableItemByParameter(formData)
                     .success(function (res) {
-                        console.log(res);
                         for (var index = 0; index < res.payload.length; index++) {
                             var detail = {
                                 tableID: res.payload[index]._id,
@@ -203,6 +202,8 @@
                                 userMonthSalary: res.payload[index].userMonthSalary,
 
                                 agentID: res.payload[index].agentID,
+                                fileMapNumber: res.payload[index].fileMapNumber,
+
                             };
                             $scope.agentCheckWorkOffItems.push(detail);
                         }

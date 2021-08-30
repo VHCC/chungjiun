@@ -156,6 +156,12 @@ global.apiUrl = {
     post_work_off_table_item_find_by_user_did_executive : '/api/post_work_off_table_item_find_by_user_did_executive', //@Deprecated 20200218
     // integrate
     post_work_off_table_item_find_by_parameter : '/api/post_work_off_table_item_find_by_parameter',
+    // PDF
+    post_work_off_pdf_fetch_file : '/api/post_work_off_pdf_fetch_file',
+    post_work_off_pdf_upload_file : '/api/post_work_off_pdf_upload_file',
+    post_work_off_pdf_get_file : '/api/post_work_off_pdf_get_file',
+    post_work_off_pdf_download_file : '/api/post_work_off_pdf_download_file',
+    post_work_off_pdf_delete_file : '/api/post_work_off_pdf_delete_file',
 
     //workOffExchangeTable Form
     post_work_off_exchange_table_insert_item : '/api/post_work_off_exchange_table_insert_item',

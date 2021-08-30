@@ -28,7 +28,9 @@
                     'OverTimeDayUtil',
                     'WorkHourAddItemUtil',
                     'NotificationMsgUtil',
+                    'OfficialDocUtil',
                     'toastr',
+                    '$uibModal',
                     'HolidayDataForms',
                     'bsLoadingOverlayService',
                     'intiWorkOffAllService',
@@ -53,7 +55,9 @@
                                  OverTimeDayUtil,
                                  WorkHourAddItemUtil,
                                  NotificationMsgUtil,
+                                 OfficialDocUtil,
                                  toastr,
+                                 $uibModal,
                                  HolidayDataForms,
                                  bsLoadingOverlayService,
                                  intiWorkOffAllService) {
@@ -256,6 +260,7 @@
                                 isAgentCheck: res.payload[index].isAgentCheck,
                                 isAgentReject: res.payload[index].isAgentReject,
                                 agentReject_memo: res.payload[index].agentReject_memo,
+                                fileMapNumber: res.payload[index].fileMapNumber,
                             };
                             $scope.specificUserTablesItems.push(detail);
                         }
@@ -596,7 +601,8 @@
                     }
                     WorkOffFormUtil.insertWorkOffTableItem(formData)
                         .success(function (res) {
-                            $scope.specificUserTablesItems[$scope.specificUserTablesItems.length - 1].tableID = res.payload.tableID;
+                            // $scope.specificUserTablesItems[$scope.specificUserTablesItems.length - 1].tableID = res.payload.tableID;
+                            $scope.getWorkOffTable(null, thisYear);
                         })
                         .error(function () {
                             console.log('ERROR WorkOffFormUtil.insertWorkOffTableItem');
@@ -899,6 +905,14 @@
             $scope.sendWorkOffTable = function (checkingTable, checkingButton, checkingIndex) {
                 checkingButton.rowform1.$waiting = true;
 
+                var fileMapNumber = "";
+
+                console.log($scope.fileMap)
+
+                if ($scope.fileMap[checkingTable.tableID] != undefined) {
+                    fileMapNumber = $scope.fileMap[checkingTable.tableID];
+                }
+
                 var formData = {
                     tableID: checkingTable.tableID,
 
@@ -917,7 +931,11 @@
                     isAgentCheck: false,
                     isAgentReject: false,
 
+                    fileMapNumber: fileMapNumber,
+
                 }
+
+                console.log(formData);
 
                 var targetList = [$scope.bossID];
                 var msgTopicList = [2000];
@@ -1123,6 +1141,7 @@
                                 isAgentCheck: res.payload[index].isAgentCheck,
                                 isAgentReject: res.payload[index].isAgentReject,
                                 agentReject_memo: res.payload[index].agentReject_memo,
+                                fileMapNumber: res.payload[index].fileMapNumber,
                             };
                             $scope.bossCheckTablesItems.push(detail);
                         }
@@ -1170,6 +1189,7 @@
                                 isAgentCheck: res.payload[index].isAgentCheck,
                                 isAgentReject: res.payload[index].isAgentReject,
                                 agentReject_memo: res.payload[index].agentReject_memo,
+                                fileMapNumber: res.payload[index].fileMapNumber,
                             };
                             $scope.executiveCheckTablesItems.push(detail);
                         }
@@ -2098,6 +2118,191 @@
                 }
                 return selected.length ? selected[0].name : '沒有代理人';
             }
+
+            $scope.fileList = [];
+            $scope.fileMap = {};
+
+            $scope.initDropZone = function (index, tableUUID) {
+                if (tableUUID == undefined) return;
+                console.log(index)
+
+                console.log(tableUUID);
+                var itemUUID = tableUUID;
+
+                setTimeout(function(){
+                    var fileUnique = moment().format("YYYYMMDD_HHmmss");
+                    console.log(itemUUID)
+                    // console.log("fileUnique:> " + fileUnique);
+                    var $ed = $('.dropzone')
+                        , $style = $('#styles')
+                    ;
+                    $ed.val($style.html());
+                    var targetID = '#demo-upload' + "_" + index;
+                    var dropzone = new Dropzone(targetID,
+                        {
+                            url: "handle-upload.php",
+                            previewTemplate: document.querySelector('#preview-template').innerHTML,
+                            addRemoveLinks: true,
+                            dictRemoveFile: "移除",
+                            parallelUploads: 2,
+                            thumbnailHeight: 120,
+                            thumbnailWidth: 120,
+                            maxFilesize: 500, // MB
+                            filesizeBase: 1000,
+                            acceptedFiles: ".pdf",
+                            thumbnail: function (file, dataUrl) {
+                                if (file.previewElement) {
+                                    file.previewElement.classList.remove("dz-file-preview");
+                                    var images = file.previewElement.querySelectorAll("[data-dz-thumbnail]");
+                                    for (var i = 0; i < images.length; i++) {
+                                        var thumbnailElement = images[i];
+                                        thumbnailElement.alt = file.name;
+                                        thumbnailElement.src = dataUrl;
+                                    }
+                                    setTimeout(function () {
+                                        file.previewElement.classList.add("dz-image-preview");
+                                    }, 1);
+                                }
+                            },
+
+                            removedfile: function (file) {
+                                // console.log(file);
+                                if (file.previewElement != null && file.previewElement.parentNode != null) {
+                                    file.previewElement.parentNode.removeChild(file.previewElement);
+
+                                    var formData = {
+                                        fileName: file.name,
+                                        userDID: cookies.get('userDID') + "_" + fileUnique,
+                                    }
+
+                                    // OfficialDocUtil.deleteOfficialDocFile(formData);
+                                    WorkOffFormUtil.deleteWorkOffPDFFile(formData);
+                                }
+                            },
+
+                            success: function (file) {
+                                var uploadData = new FormData();
+                                uploadData.append('userDID', cookies.get('userDID') + "_" + fileUnique);
+                                uploadData.append('fileName', file.name);
+                                uploadData.append('file', file);
+
+                                WorkOffFormUtil.uploadWorkOffPDFlFile(uploadData)
+                                    .success(function (res) {
+                                        $scope.fileList.push(file.name);
+                                        $scope.fileMap[itemUUID] = "_" + fileUnique;
+                                    })
+                            },
+
+                            error: function (file, message) {
+                                if (file.previewElement != null && file.previewElement.parentNode != null) {
+                                    file.previewElement.parentNode.removeChild(file.previewElement);
+                                    toastr.error('新增失敗', '只開放接收.pdf檔案');
+                                }
+                            },
+
+                            // drop: function (event) {
+                            //   console.log(event);
+                            // },
+                            //
+                            // dragstart: function (event) {
+                            //     console.log(event);
+                            // },
+                            //
+                            // dragend: function (event) {
+                            //     console.log(event);
+                            // },
+                            //
+                            // dragenter: function (event) {
+                            //     console.log(event);
+                            // },
+                            //
+                            // dragover: function (event) { // 停留在zone
+                            //     // console.log(event);
+                            // },
+
+                        });
+
+
+
+                    // Now fake the file upload, since GitHub does not handle file uploads
+                    // and returns a 404
+
+                    var minSteps = 6,
+                        maxSteps = 60,
+                        timeBetweenSteps = 100,
+                        bytesPerStep = 100000;
+
+                    dropzone.uploadFiles = function (files) {
+                        var self = this;
+
+                        for (var i = 0; i < files.length; i++) {
+
+                            var file = files[i];
+                            var totalSteps = Math.round(Math.min(maxSteps, Math.max(minSteps, file.size / bytesPerStep)));
+
+                            for (var step = 0; step < totalSteps; step++) {
+                                var duration = timeBetweenSteps * (step + 1);
+                                setTimeout(function (file, totalSteps, step) {
+                                    return function () {
+                                        file.upload = {
+                                            progress: 100 * (step + 1) / totalSteps,
+                                            total: file.size,
+                                            bytesSent: (step + 1) * file.size / totalSteps
+                                        };
+
+                                        self.emit('uploadprogress', file, file.upload.progress, file.upload.bytesSent);
+                                        if (file.upload.progress == 100) {
+                                            file.status = Dropzone.SUCCESS;
+                                            self.emit("success", file, 'success', null);
+                                            self.emit("complete", file);
+                                            self.processQueue();
+                                            // document.getElementsByClassName("dz-success-mark")[0].style.opacity = "1";
+                                        }
+                                    };
+                                }(file, totalSteps, step), duration);
+                            }
+                        }
+                    }
+
+                },1000);
+            }
+
+            $scope.pdfList = {};
+
+            // pdf 檔案列表
+            $scope.fetchWorkOffPDFFiles = function (table, userDID) {
+                var fileMapNumber = table.fileMapNumber;
+                var formData = {
+                    userDID: userDID,
+                    archiveNumber: table.fileMapNumber,
+                }
+
+                WorkOffFormUtil.fetchWorkOffPDFFiles(formData)
+                    .success(function (res) {
+                        $scope.pdfList[fileMapNumber] = res.payload;
+                    })
+            }
+
+            // show pdf View
+            $scope.showWorkOffPDF = function (dom, fileMapNumber) {
+                dom.fileMapNumber = fileMapNumber;
+                $uibModal.open({
+                    animation: true,
+                    controller: 'workOffPDFViewerModalCtrl',
+                    templateUrl: 'app/pages/myForms/workOffForm/model/workOffPDFViewerModal.html',
+                    resolve: {
+                        parent: function () {
+                            return $scope;
+                        },
+                        dom: function () {
+                            return dom;
+                        },
+                    }
+                }).result.then(function (data) {
+
+                });
+            };
+
 
         } // End of function
     }

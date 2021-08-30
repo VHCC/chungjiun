@@ -33,6 +33,7 @@
             <td style="vertical-align: inherit; text-align: center">時數</td>
             <td style="vertical-align: inherit; text-align: center">代理人</td>
             <td style="vertical-align: inherit; text-align: center">行政確認</td>
+            <td style="vertical-align: inherit; text-align: center">夾帶檔案</td>
         </tr>
         </thead>
         <tbody ng-repeat="table in executiveCheckTablesItems">
@@ -90,6 +91,31 @@
                 </div>
             </td>
 
+            <!-- 夾帶檔案 -->
+            <td>
+                <section>
+
+                    <div ng-if="table.isSendReview"
+                         class="attachedzone" ng-init="fetchWorkOffPDFFiles(table, userDID)"  ng-show="pdfList[table.fileMapNumber] != undefined">
+
+                        <my ng-if="pdfList[table.fileMapNumber] != undefined" ng-repeat="pdfItem in pdfList[table.fileMapNumber]">
+                            <div class="pdf-item" ng-click="showWorkOffPDF(this, table.fileMapNumber)">
+                                <div class="pdf-img">
+                                    <img src="assets/img/pdf-svgrepo-com.svg"/>
+                                </div>
+                                <div class="pdf-detail">
+                                    <div class="pdf-size"><span data-pdf-size="">{{pdfItem.size}}</span></div>
+                                    <div class="pdf-filename"><span data-pdf-name="">{{pdfItem.name}}</span></div>
+                                </div>
+                                <div class="pdf-delete-buttons" ng-if="false">
+                                    <button class="btn btn-danger" ng-click="deleteFile(this)">刪除</button>
+                                </div>
+                            </div>
+                        </my>
+
+                    </div>
+                </section>
+            </td>
         </tr>
         </tbody>
     </table>
