@@ -45,10 +45,10 @@
                 <section>
 
                     <div ng-if="tableItem.isSendReview"
-                         class="attachedzone" ng-init="fetchWorkOffPDFFiles(tableItem, userDID)"  ng-show="pdfList[tableItem.fileMapNumber] != undefined">
+                         class="attachedzone" ng-init="fetchWorkOffPDFFiles(tableItem, workOffFormCtrlVm.userReview.selected._id)"  ng-show="pdfList[tableItem.fileMapNumber] != undefined">
 
                         <my ng-if="pdfList[tableItem.fileMapNumber] != undefined" ng-repeat="pdfItem in pdfList[tableItem.fileMapNumber]">
-                            <div class="pdf-item" ng-click="showWorkOffPDF(this, tableItem.fileMapNumber)">
+                            <div class="pdf-item" ng-click="showWorkOffPDF(this, tableItem.fileMapNumber, workOffFormCtrlVm.userReview.selected._id)">
                                 <div class="pdf-img">
                                     <img src="assets/img/pdf-svgrepo-com.svg"/>
                                 </div>
