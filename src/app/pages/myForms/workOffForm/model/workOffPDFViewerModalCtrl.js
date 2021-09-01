@@ -31,7 +31,7 @@
 
         // initial
         $scope.username = $cookies.get('username');
-        $scope.userDID = $cookies.get('userDID');
+        // $scope.userDID = $cookies.get('userDID');
         $scope.roleType = $cookies.get('roletype');
 
         var pdfjsLib = window['pdfjs-dist/build/pdf'];
@@ -41,10 +41,8 @@
 
         $scope.getPDF = function (dom) {
 
-            console.log(dom)
-
             var formData = {
-                userDID: $scope.userDID,
+                userDID: dom.userDID,
                 fileMapNumber: dom.fileMapNumber,
                 fileName: dom.$parent.pdfItem.name
             }
@@ -124,10 +122,10 @@
         }
 
         $scope.downloadPDF = function (dom) {
-            console.log(dom);
+            // console.log(dom);
 
             var formData = {
-                userDID: $scope.userDID,
+                userDID: dom.dom.userDID,
                 fileMapNumber: dom.dom.fileMapNumber,
                 fileName: dom.dom.$parent.pdfItem.name
             }
