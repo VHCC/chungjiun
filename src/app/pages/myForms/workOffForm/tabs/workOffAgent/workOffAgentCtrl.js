@@ -183,29 +183,32 @@
                 WorkOffFormUtil.findWorkOffTableItemByParameter(formData)
                     .success(function (res) {
                         for (var index = 0; index < res.payload.length; index++) {
-                            var detail = {
-                                tableID: res.payload[index]._id,
+                            if (res.payload[index].agentID == $scope.userDID) {
+                                var detail = {
+                                    tableID: res.payload[index]._id,
 
-                                workOffType: res.payload[index].workOffType,
-                                create_formDate: res.payload[index].create_formDate,
-                                year: res.payload[index].year,
-                                month: res.payload[index].month,
-                                day: res.payload[index].day,
-                                start_time: res.payload[index].start_time,
-                                end_time: res.payload[index].end_time,
+                                    workOffType: res.payload[index].workOffType,
+                                    create_formDate: res.payload[index].create_formDate,
+                                    year: res.payload[index].year,
+                                    month: res.payload[index].month,
+                                    day: res.payload[index].day,
+                                    start_time: res.payload[index].start_time,
+                                    end_time: res.payload[index].end_time,
 
-                                //RIGHT
-                                isSendReview: res.payload[index].isSendReview,
-                                isBossCheck: res.payload[index].isBossCheck,
-                                isExecutiveCheck: res.payload[index].isExecutiveCheck,
-                                // userHourSalary: res.payload[index].userHourSalary,
-                                userMonthSalary: res.payload[index].userMonthSalary,
+                                    //RIGHT
+                                    isSendReview: res.payload[index].isSendReview,
+                                    isBossCheck: res.payload[index].isBossCheck,
+                                    isExecutiveCheck: res.payload[index].isExecutiveCheck,
+                                    // userHourSalary: res.payload[index].userHourSalary,
+                                    userMonthSalary: res.payload[index].userMonthSalary,
 
-                                agentID: res.payload[index].agentID,
-                                fileMapNumber: res.payload[index].fileMapNumber,
+                                    agentID: res.payload[index].agentID,
+                                    fileMapNumber: res.payload[index].fileMapNumber,
 
-                            };
-                            $scope.agentCheckWorkOffItems.push(detail);
+                                };
+                                $scope.agentCheckWorkOffItems.push(detail);
+                            }
+
                         }
                     })
                     .error(function () {
