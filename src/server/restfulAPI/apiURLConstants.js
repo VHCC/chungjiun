@@ -319,6 +319,7 @@ global.apiUrl = {
     post_executive_expenditure_fetch_items_by_prj_did_array : '/api/post_executive_expenditure_fetch_items_by_prj_did_array',
     post_executive_expenditure_items_update_one : '/api/post_executive_expenditure_items_update_one',
     post_executive_expenditure_items_update_many : '/api/post_executive_expenditure_items_update_many',
+    post_executive_expenditure_fetch_items_by_prjdid_array : '/api/post_executive_expenditure_fetch_items_by_prjdid_array',
 
     // expenditure target
     post_fetch_expenditure_target : '/api/post_fetch_expenditure_target',
