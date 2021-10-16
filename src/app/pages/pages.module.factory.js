@@ -829,6 +829,9 @@
                 updateExecutiveExpenditureItems: function (formData) {
                     return http.post('/api/post_executive_expenditure_items_update_many', formData);
                 },
+                fetchExecutiveExpenditureItemByPrjDIDArray: function (formData) {
+                    return http.post('/api/post_executive_expenditure_fetch_items_by_prjdid_array', formData);
+                },
 
             }
         }])

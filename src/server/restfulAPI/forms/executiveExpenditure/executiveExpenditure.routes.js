@@ -169,5 +169,61 @@ module.exports = function (app) {
         })
     })
 
+    // 合併、轉換專案
+    app.post(global.apiUrl.post_executive_expenditure_fetch_items_by_prjdid_array, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.e + "API, post_executive_expenditure_fetch_items_by_prjdid_array");
+
+        var findData = []
+        for (var index = 0; index < req.body.prjDIDArray.length; index++) {
+            var target = {
+                prjDID: req.body.prjDIDArray[index],
+            }
+            findData.push(target);
+        }
+        ;
+
+        var query = {};
+        query.$or = findData;
+
+        if (req.body.year) {
+            query.isSendReview = true;
+            query.year = req.body.year;
+            query.month = req.body.month;
+
+            ExecutiveExpenditureItem.find(query, function (err, eeItems) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_executive_expenditure_fetch_items_by_prjdid_array");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: eeItems,
+                    });
+                }
+            });
+        } else {
+            query.isSendReview = true;
+            ExecutiveExpenditureItem.find(query, function (err, eeItems) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_executive_expenditure_fetch_items_by_prjdid_array");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: eeItems,
+                    });
+                }
+            });
+        }
+    })
+
 
 }

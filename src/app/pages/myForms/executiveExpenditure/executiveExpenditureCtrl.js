@@ -85,7 +85,7 @@
 
         Project.findAll()
             .success(function (allProjects) {
-                console.log(allProjects)
+                console.log(allProjects);
                 $scope.allProjectCache = [];
                 var prjCount = allProjects.length;
                 for (var index = 0; index < prjCount; index++) {

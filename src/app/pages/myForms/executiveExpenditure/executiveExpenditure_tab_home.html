@@ -10,6 +10,10 @@
         <uib-tab heading="支出項目選單" >
             <executive-expenditure-target></executive-expenditure-target>
         </uib-tab>
+        <uib-tab heading="其他支出查詢">
+            <div ng-controller="executiveExpenditureSearchCtrl as executiveExpenditureSearchCtrlVm"
+                 ng-include="'app/pages/myForms/executiveExpenditure/tabs/executiveExpenditure_searchTab.html'"></div>
+        </uib-tab>
     </uib-tabset>
 </div>
 
