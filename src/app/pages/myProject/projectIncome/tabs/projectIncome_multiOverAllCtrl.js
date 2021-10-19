@@ -645,12 +645,12 @@
                 switch (type) {
                     case 1:
                         item.iscalculate_A = true;
-                        item.hourTotal_add_A = hourTotal * cons_3;
+                        item.hourTotal_add_A = hourTotal;
                         item.hourTotal_add_cost_A = parseInt(totalCost * cons_3);
                         break;
                     case 2:
                         item.iscalculate_B = true;
-                        item.hourTotal_add_B = hourTotal * cons_2;
+                        item.hourTotal_add_B = hourTotal;
                         item.hourTotal_add_cost_B = parseInt(totalCost * cons_2);
                         break;
                 }
@@ -661,6 +661,9 @@
 
             for (var index = 0; index < item._add_tables.length; index ++) {
                 var operatedFormDate = item._add_tables[index].create_formDate;
+                if (moment(DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1)) < moment("2020/01/01")) {
+                    continue
+                }
                 if (item._add_tables[index].workAddType == type) {
 
                     // var date_id = DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1) + "_"
@@ -671,7 +674,7 @@
                         continue;
                     }
 
-                    var date_id = DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1)
+                    var date_id = DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1) + "_"+ item._add_tables[index].creatorDID;
                     var min = parseInt(TimeUtil.getCalculateHourDiffByTime(item._add_tables[index].start_time, item._add_tables[index].end_time))
                     // mins += min;
                     // console.log(item)
@@ -684,7 +687,8 @@
                         var data = {
                             _date: DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), item._add_tables[index].day - 1),
                             min: min,
-                            monthSalary: item._add_tables[index].userMonthSalary
+                            monthSalary: item._add_tables[index].userMonthSalary,
+                            creatorDID: item._add_tables[index].creatorDID,
                         }
                         type2_add_data.push(data);
                         eval('type2_add_data[date_id] = data')
@@ -710,7 +714,7 @@
                     break;
                 case 2:
                     item.iscalculate_B = true;
-                    item.hourTotal_add_B = hourTotal * cons_2;
+                    item.hourTotal_add_B = hourTotal;
                     item.hourTotal_add_cost_B = parseInt(totalCost * cons_2);
                     break;
             }

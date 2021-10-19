@@ -1,5 +1,6 @@
 var User = require('../../models/user');
 var Project = require('../../models/project');
+var ProjectFinancialResult = require('../../models/projectFinancialResult');
 
 var moment = require('moment');
 
@@ -347,6 +348,65 @@ module.exports = function (app) {
                     res.json(projects);
                 }
         })
+    });
+
+    // only include enable prj
+    app.get(global.apiUrl.get_project_find_all_closed, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, get_project_find_all_closed");
+
+        ProjectFinancialResult.aggregate([
+            {
+                $addFields: {
+                    "_prjDIDObj": {
+                        $toObjectId: "$prjDID"
+                    },
+                }
+            },
+            {
+                $lookup: {
+                    from: "projects", // 年跟月的屬性
+                    localField: "_prjDIDObj",
+                    foreignField: "_id",
+                    as: "_prjInfo"
+                }
+            },
+
+            {
+                $unwind: "$_prjInfo",
+            },
+
+            {
+                $match: {
+                    isPrjClose: true
+                }
+            },
+        ], function (err, projects) {
+            if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, get_project_find_all_closed");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
+                res.send(err);
+            } else {
+                res.json(projects);
+            }
+        })
+
+
+        // Project.find({
+        //         isPrjClose: true
+        //     },
+        //     function (err, projects) {
+        //         if (err) {
+        //             console.log(global.timeFormat(new Date()) + global.log.e + "API, get_project_find_all_closed");
+        //             console.log(req.body);
+        //             console.log(" ***** ERROR ***** ");
+        //             console.log(err);
+        //             res.send(err);
+        //         } else {
+        //             res.json(projects);
+        //         }
+        //     })
     });
 
     app.get(global.apiUrl.get_project_find_all_by_group, function (req, res) {
