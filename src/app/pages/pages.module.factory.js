@@ -56,6 +56,9 @@
                 findAllEnable: function () {
                     return http.get('/api/projectFindAllEnable');
                 },
+                findAllProjectClosed: function () {
+                    return http.get('/api/projectFindAllClosed');
+                },
                 create: function (projectData) {
                     return http.post('/api/projectCreate', projectData);
                 },
@@ -543,7 +546,6 @@
         }])
         .factory('ProjectFinancialResultUtil', ['$http', function (http) {
             return {
-
                 createFR: function (formData) {
                     return http.post('/api/post_project_financial_result_create', formData)
                 },
@@ -552,6 +554,22 @@
                 },
                 updateFR: function (formData) {
                     return http.post('/api/post_project_financial_result_update', formData)
+                },
+            }
+        }])
+        .factory('ProjectFinancialDistributeUtil', ['$http', function (http) {
+            return {
+                createFD: function (formData) {
+                    return http.post('/api/post_project_financial_distribute_create', formData)
+                },
+                findFD: function (formData) {
+                    return http.post('/api/post_project_financial_distribute_find', formData)
+                },
+                updateFD: function (formData) {
+                    return http.post('/api/post_project_financial_distribute_update', formData)
+                },
+                removeFD: function (formData) {
+                    return http.post('/api/post_project_financial_distribute_remove', formData)
                 },
             }
         }])

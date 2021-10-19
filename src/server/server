@@ -58,6 +58,7 @@ require('./restfulAPI/forms/hrRemedyItem/hrRemedyItem.routes')(app);
 require('./restfulAPI/forms/workOverTime/workOverTimeItem.routes')(app);
 require('./restfulAPI/forms/projectIncome/projectIncome.routes')(app);
 require('./restfulAPI/forms/projectFinancialResult/projectFinancialResult.routes')(app);
+require('./restfulAPI/forms/projectFinancialResult/projectFinancialDistribute.routes')(app);
 
 
 

@@ -1,12 +1,12 @@
 /**
  * @author IChen.Chu
- * created on 26.09.2020
+ * created on 17.10.2021
  */
 (function () {
     'use strict';
 
     angular.module('BlurAdmin.pages.myForms')
-        .controller('projectFinancialSearchCtrl',
+        .controller('projectFinancialDistributeCtrl',
             [
                 '$scope',
                 'toastr',
@@ -24,16 +24,17 @@
                 'ProjectUtil',
                 'ProjectFinancialRateUtil',
                 'ProjectFinancialResultUtil',
+                'ProjectFinancialDistributeUtil',
                 'PaymentFormsUtil',
                 'ExecutiveExpenditureUtil',
                 'SubContractorPayItemUtil',
                 'ProjectIncomeUtil',
                 'bsLoadingOverlayService',
-                projectFinancialSearchCtrl
+                projectFinancialDistributeCtrl
             ])
 
     /** @ngInject */
-    function projectFinancialSearchCtrl($scope,
+    function projectFinancialDistributeCtrl($scope,
                              toastr,
                              $cookies,
                              $filter,
@@ -49,6 +50,7 @@
                              ProjectUtil,
                              ProjectFinancialRateUtil,
                              ProjectFinancialResultUtil,
+                             ProjectFinancialDistributeUtil,
                              PaymentFormsUtil,
                              ExecutiveExpenditureUtil,
                              SubContractorPayItemUtil,
@@ -68,11 +70,126 @@
         var specificYear = thisYear;
         var specificMonth = thisMonth;
 
+        $scope.relatedMembers = []
+        $scope.relatedMembersArray = [];
+        $scope.relatedMembersArrayResults = [];
+
+        $scope.isSeconedSearchFD = false;
+
+        $scope.fetchProjectRelatedMembers = function (prjInfo) {
+            $scope.selectPrjInfo = prjInfo;
+
+            var formData = {
+                rootPrjDID: prjInfo._id
+            }
+
+            Project.fetchRelatedCombinedPrjArray(formData)
+                .success(function (res) {
+                    console.log(" --- 相關專案 ---");
+                    console.log(res);
+                    $scope.selectPrjArray = res;
+
+                    var formData = {
+                        prjDID: prjInfo._id
+                    }
+                    // TODO find 績效分配資料
+                    ProjectFinancialDistributeUtil.findFD(formData)
+                        .success(function (res) {
+                            console.log(res);
+                            if (res.payload.length == 0 && $scope.isSeconedSearchFD == false) {
+
+                                var subFormData = {
+                                    prjDIDArray: $scope.selectPrjArray
+                                }
+
+                                // 第 3 類型
+                                WorkHourUtil.queryStatisticsForms_projectIncome_Cost_ByPrjDIDArray(subFormData)
+                                    .success(function (res) {
+                                        console.log(res)
+                                        for (var index = 0; index < res.payload.length; index ++) {
+                                            if ($scope.relatedMembers.indexOf(res.payload[index]._user_info.name) == -1) {
+                                                $scope.relatedMembers.push(res.payload[index]._user_info.name)
+                                                $scope.relatedMembersArray.push(res.payload[index]._user_info)
+                                                var formData = {
+                                                    prjDID: prjInfo._id,
+                                                    userDID: res.payload[index]._user_info._id,
+                                                    is011Add: false,
+                                                }
+                                                ProjectFinancialDistributeUtil.createFD(formData)
+                                                    .success(function (res) {
+                                                    })
+                                            }
+                                        }
+                                        for (var index_sub = 0; index_sub < res.payload_add.length; index_sub ++) {
+                                            if ($scope.relatedMembers.indexOf(res.payload_add[index_sub]._user_info.name) == -1) {
+                                                $scope.relatedMembers.push(res.payload_add[index_sub]._user_info.name)
+                                                $scope.relatedMembersArray.push(res.payload_add[index_sub]._user_info)
+                                                var formData = {
+                                                    prjDID: prjInfo._id,
+                                                    userDID: res.payload_add[index]._user_info._id,
+                                                    is011Add: false,
+                                                }
+                                                ProjectFinancialDistributeUtil.createFD(formData)
+                                                    .success(function (res) {
+                                                    })
+                                            }
+                                        }
+                                        console.log($scope.relatedMembers);
+                                        console.log($scope.relatedMembersArray);
+                                        $scope.isSeconedSearchFD = true;
+                                        $scope.fetchProjectRelatedMembers(prjInfo);
+                                    })
+                                    .error(function () {
+                                        $timeout(function () {
+                                            bsLoadingOverlayService.stop({
+                                                referenceId: 'includeHead_financial_distribute'
+                                            });
+                                        }, 500)
+                                    })
+                            } else {
+                                $scope.relatedMembers = []
+                                for (var index = 0; index < res.payload.length; index ++) {
+                                    $scope.relatedMembers.push(res.payload[index]._user_info._id)
+                                }
+                                $scope.relatedMembersArrayResults = res.payload;
+                                // TODO operate payload to show up
+                                $scope.getFinancialRate();
+                                try {
+                                    angular.element(
+                                        document.getElementById('includeHead_financial_distribute'))
+                                        .html($compile(
+                                            "<div ba-panel ba-panel-title=" +
+                                            "'列表 - " + $scope.relatedMembersArrayResults.length + "'" +
+                                            "ba-panel-class= " +
+                                            "'with-scroll'" + ">" +
+                                            "<div " +
+                                            "ng-include=\"'app/pages/myProject/projectFinancial/tables/projectFinancial_distribute_table.html'\">" +
+                                            "</div>" +
+                                            "</div>"
+                                        )($scope));
+
+                                    $timeout(function () {
+                                        bsLoadingOverlayService.stop({
+                                            referenceId: 'includeHead_financial_distribute'
+                                        });
+                                    }, 500)
+                                } catch (e) {
+                                    toastr['warning'](e.toString(), '搜尋異常');
+                                    $timeout(function () {
+                                        bsLoadingOverlayService.stop({
+                                            referenceId: 'includeHead_financial_distribute'
+                                        });
+                                    }, 500)
+                                }
+                            }
+                        })
+                })
+        }
+
         // 所有人，對照資料
         User.getAllUsers()
             .success(function (allUsers) {
                 vm.users = allUsers; // 新增表單
-
                 $scope.projectManagers = [];
                 for (var i = 0; i < allUsers.length; i++) {
                     $scope.projectManagers[i] = {
@@ -82,7 +199,59 @@
                 }
             });
 
-        Project.findAllEnable()
+        $scope.addRelatedMember = function(userSelected) {
+            console.log($scope.relatedMembers);
+            if ($scope.relatedMembers.indexOf(userSelected._id) == -1) {
+                var formData = {
+                    prjDID: $scope.selectPrjInfo._id,
+                    userDID: userSelected._id,
+                    is011Add: true,
+                }
+                ProjectFinancialDistributeUtil.createFD(formData)
+                    .success(function (res) {
+                        $scope.fetchProjectRelatedMembers($scope.selectPrjInfo);
+                    })
+            } else {
+                toastr.error("該人員已存在", 'Error');
+                return;
+            }
+        }
+
+        $scope.removeRelatedMember = function(relatedMember) {
+            var formData = {
+                _id: relatedMember._id,
+            }
+            ProjectFinancialDistributeUtil.removeFD(formData)
+                .success(function (res) {
+                    $scope.fetchProjectRelatedMembers($scope.selectPrjInfo);
+                })
+        }
+
+        $scope.saveRelatedMember = function() {
+            bsLoadingOverlayService.start({
+                referenceId: 'mainPage_project_financial_distribute'
+            });
+            for (var index = 0; index < $scope.relatedMembersArrayResults.length; index ++) {
+                var formData = {
+                    _id: $scope.relatedMembersArrayResults[index]._id,
+                    distribute: $scope.relatedMembersArrayResults[index].distribute,
+                }
+                ProjectFinancialDistributeUtil.updateFD(formData)
+                    .success(function (res) {
+                    })
+            }
+            $scope.fetchProjectRelatedMembers($scope.selectPrjInfo);
+            $timeout(function () {
+                bsLoadingOverlayService.stop({
+                    referenceId: 'mainPage_project_financial_distribute'
+                });
+            }, 500)
+        }
+
+        $scope.allProject_raw = [];
+
+        // 對照用Cache
+        Project.findAll()
             .success(function (allProjects) {
                 $scope.allProjectCache = [];
                 var prjCount = allProjects.length;
@@ -107,15 +276,22 @@
                         managerID: allProjects[index].managerID,
                         ezName: nameResult,
                         combinedID: allProjects[index].combinedID,
+                        technician: allProjects[index].technician,
                     };
                 }
             });
 
+
+        // 只顯示已結算
         $scope.initProject = function() {
-            Project.findAll()
+            Project.findAllProjectClosed()
                 .success(function (allProjects) {
-                    $scope.allProject_raw = allProjects;
-                    vm.projects = allProjects.slice();
+                    console.log(allProjects);
+                    for (var index = 0; index < allProjects.length; index++) {
+                        $scope.allProject_raw.push(allProjects[index]._prjInfo);
+                    }
+                    // $scope.allProject_raw = allProjects;
+                    vm.projects = $scope.allProject_raw.slice();
                 });
         }
 
@@ -162,6 +338,27 @@
             return selected.length > 0 ? selected[0].name : 'Not Set';
         };
 
+        $scope.showTechs = function (prjDID) {
+            var majorSelected = [];
+            if (prjDID) {
+                majorSelected = $filter('filter')($scope.allProjectCache, {
+                    prjDID: prjDID
+                });
+            }
+            if (majorSelected == undefined) return 'Not Set';
+            var technician = majorSelected[0].technician;
+            var result = "";
+            var selected = [];
+            // if ($scope.projectTechs === undefined) return;
+            for (var index = 0; index < technician.length; index++) {
+                selected = $filter('filter')($scope.projectManagers, {
+                    value: technician[index],
+                });
+                result += selected.length ? selected[0].name + ", " : '未指定';
+            }
+            return result;
+        }
+
         $scope.showUser = function (userDID) {
             var selected = [];
             if (vm.users === undefined) return;
@@ -172,21 +369,6 @@
             }
             return selected.length ? selected[0].name : 'Not Set';
         };
-
-        $scope.setFinancialRate = function (rateItem) {
-            var formData = {
-                year: rateItem.year,
-                rate_item_1: rateItem.rate_item_1,
-                rate_item_2: rateItem.rate_item_2,
-                rate_item_3: rateItem.rate_item_3,
-                rate_item_4: rateItem.rate_item_4,
-                rate_item_5: rateItem.rate_item_5,
-            }
-            ProjectFinancialRateUtil.updateFinancialRate(formData)
-                .success(function (res) {
-                    $scope.getFinancialRate()
-                })
-        }
 
         $scope.getFinancialRate = function () {
             $timeout(function () {
@@ -199,7 +381,7 @@
                         $scope.yearRate = res.payload;
 
                         var formData = {
-                            prjDID: $scope.selectPrjInfo._id
+                            prjDID: $scope.selectPrjInfo._id,
                         }
 
                         ProjectFinancialResultUtil.findFR(formData)
@@ -208,10 +390,11 @@
                                 console.log(res);
 
                                 if (res.payload.length == 0) {
-                                    ProjectFinancialResultUtil.createFR(formData)
-                                        .success(function (res) {
-                                            $scope.fetchProjectFinancialResult($scope.selectPrjInfo);
-                                        })
+                                    console.log("error, please close project First")
+                                    // ProjectFinancialResultUtil.createFR(formData)
+                                    //     .success(function (res) {
+                                    //         // $scope.fetchProjectFinancialResult($scope.selectPrjInfo);
+                                    //     })
                                 } else {
                                     $scope.projectFinancialResultTable = res.payload;
 
@@ -226,8 +409,6 @@
                                     $scope.overall_data = [];
 
                                     var incomeFormData = {
-                                        // isEnable: true,
-                                        // prjDID: $scope.selectPrjInfo._id
                                         prjDIDArray: $scope.selectPrjArray,
                                         isEnable: true
                                     }
@@ -239,16 +420,17 @@
                                             console.log(res);
                                             $scope.projectIncomeTable = res.payload;
                                             for (var i = 0; i < res.payload.length; i ++) {
-                                                var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
+                                                var tempDate = moment(res.payload[i].realDate).format("YYYY/MM");
                                                 if (moment(tempDate) >= moment("2020/01")) {
                                                     if ($scope.overall_data[tempDate] != undefined) {
                                                         var data = $scope.overall_data[tempDate];
-                                                        data._payments.push(res.payload[i]);
+                                                        data._income.push(res.payload[i]);
                                                     } else {
+
                                                         var data = {
                                                             _date: tempDate,
-                                                            _income: [],
-                                                            _payments: [res.payload[i]],
+                                                            _income: [res.payload[i]],
+                                                            _payments: [],
                                                             _otherCost: [],
                                                             _subContractorPay: [],
                                                             _overall: 0,
@@ -265,7 +447,6 @@
                                     }
 
                                     // 墊付款
-                                    // PaymentFormsUtil.fetchPaymentsItemByPrjDID(formData)
                                     PaymentFormsUtil.fetchPaymentsItemByPrjDIDArray(subFormData)
                                         .success(function (res) {
                                             console.log(" --- 墊付款 --- ")
@@ -296,11 +477,10 @@
                                         })
 
                                     // 其他支出
-                                    // ExecutiveExpenditureUtil.fetchExecutiveExpenditureItemsByPrjDID(formData)
                                     ExecutiveExpenditureUtil.fetchExecutiveExpenditureItemsByPrjDIDArray(subFormData)
                                         .success(function (res) {
                                             console.log(" --- 其他支出 --- ");
-                                            console.log(res)
+                                            console.log(res);
                                             $scope.displayEEItems = res.payload;
                                             for (var i = 0; i < res.payload.length; i ++) {
                                                 var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
@@ -326,17 +506,11 @@
                                         .error(function (res) {
                                         })
 
-                                    var fetchFormData = {
-                                        prjDID: $scope.selectPrjInfo._id,
-                                        isExecutiveCheck: true
-                                    }
-
                                     // 廠商請款
-                                    // SubContractorPayItemUtil.fetchSCPayItems(fetchFormData)
                                     SubContractorPayItemUtil.fetchSCPayItemsByPrjDIDArray(subFormData)
                                         .success(function (res) {
                                             console.log(" --- 廠商請款 --- ")
-                                            console.log(res)
+                                            console.log(res);
                                             $scope.subContractorPayItems = res.payload;
                                             for (var i = 0; i < res.payload.length; i ++) {
                                                 var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
@@ -374,13 +548,13 @@
                                     WorkHourUtil.queryStatisticsForms_projectIncome_Cost_ByPrjDIDArray(subFormData)
                                         .success(function (res) {
                                             console.log(" === 人工時 === ")
-                                            console.log(res)
+                                            console.log(res);
 
                                             res.payload = res.payload.sort(function (a, b) {
                                                 return a._id.userDID > b._id.userDID ? 1 : -1;
                                             });
-
                                             for (var index = 0; index < res.payload.length; index ++) {
+
                                                 for (var index_sub = 0; index_sub < res.payload_add.length; index_sub ++) {
                                                     if( res.payload_add[index_sub]._id.prjCode == res.payload[index]._id.prjCode &&
                                                         res.payload_add[index_sub]._id.userDID == res.payload[index]._id.userDID) {
@@ -388,19 +562,24 @@
                                                     }
                                                 }
                                             }
-                                            // $scope.statisticsResults = $scope.filter_type2_data(res.payload);
-                                            $scope.statisticsResults_type1 = $scope.filter_type1_data(res.payload);
-                                            $scope.statisticsResults_type1 = $scope.filter_type2_data_item($scope.statisticsResults_type1);
 
-                                            for (var i = 0; i < $scope.statisticsResults_type1.length; i ++) {
-                                                var tempDate = $scope.statisticsResults_type1[i]._date;
+                                            // $scope.statisticsResults = $scope.filter_type2_data(res.payload);
+                                            // $scope.statisticsResults_type1 = $scope.filter_type1_data(res.payload);
+                                            // console.log(" ----- filter_type1_data -------- ")
+
+                                            $scope.statisticsResults_type2 = $scope.filter_type2_data(res.payload);
+                                            console.log(" ----- filter_type2_data_item -------- ")
+                                            console.log($scope.statisticsResults_type2);
+
+                                            for (var i = 0; i < $scope.statisticsResults_type2.length; i ++) {
+                                                var tempDate = $scope.statisticsResults_type2[i]._date;
 
                                                 if (moment(tempDate) >= moment("2020/01")) {
                                                     if ($scope.overall_data[tempDate] != undefined) {
                                                         var data = $scope.overall_data[tempDate];
-                                                        data._overall += $scope.statisticsResults_type1[i].totalCost +
-                                                            $scope.statisticsResults_type1[i].hourTotal_add_cost_A +
-                                                            $scope.statisticsResults_type1[i].hourTotal_add_cost_B;
+                                                        data._overall += $scope.statisticsResults_type2[i].totalCost +
+                                                            $scope.statisticsResults_type2[i].hourTotal_add_cost_A +
+                                                            $scope.statisticsResults_type2[i].hourTotal_add_cost_B;
                                                     } else {
                                                         var data = {
                                                             _date: tempDate,
@@ -408,43 +587,27 @@
                                                             _payments: [],
                                                             _otherCost: [],
                                                             _subContractorPay: [],
-                                                            _overall: $scope.statisticsResults_type1[i].totalCost +
-                                                            $scope.statisticsResults_type1[i].hourTotal_add_cost_A +
-                                                            $scope.statisticsResults_type1[i].hourTotal_add_cost_B,
+                                                            _overall: $scope.statisticsResults_type2[i].totalCost +
+                                                            $scope.statisticsResults_type2[i].hourTotal_add_cost_A +
+                                                            $scope.statisticsResults_type2[i].hourTotal_add_cost_B,
                                                         }
                                                         $scope.overall_data.push(data);
                                                         eval('$scope.overall_data[tempDate] = data')
                                                     }
                                                 }
                                             }
+                                            console.log($scope.overall_data)
                                         })
-
-                                    angular.element(
-                                        document.getElementById('includeHead_financial_search'))
-                                        .html($compile(
-                                            "<div ba-panel ba-panel-title=" +
-                                            "'" + "" + "'" +
-                                            "ba-panel-class= " +
-                                            "'with-scroll'" + ">" +
-                                            "<div " +
-                                            "ng-include=\"'app/pages/myProject/projectFinancial/tables/projectFinancial_search_table.html'\">" +
-                                            "</div>" +
-                                            "</div>"
-                                        )($scope));
                                 }
-
 
                                 $timeout(function () {
                                     bsLoadingOverlayService.stop({
-                                        referenceId: 'mainPage_project_financial_search'
+                                        referenceId: 'mainPage_project_financial_distribute'
                                     });
                                 }, 1000)
                             })
-
                     })
-
-            }, 2000)
-
+            }, 100)
         }
 
         $scope.calcRates = function (rateItem) {
@@ -453,38 +616,17 @@
                 + parseFloat(rateItem.rate_item_2)
                 + parseFloat(rateItem.rate_item_3)
                 + parseFloat(rateItem.rate_item_4)
-                + parseFloat(rateItem.rate_item_5)
-        }
-
-        $scope.fetchProjectFinancialResult = function (prjInfo) {
-            $scope.selectPrjInfo = prjInfo;
-
-            var formData = {
-                rootPrjDID: $scope.selectPrjInfo._id
-            }
-
-            Project.fetchRelatedCombinedPrjArray(formData)
-                .success(function (res) {
-                    console.log(" --- 相關專案 ---");
-                    console.log(res);
-                    $scope.selectPrjArray = res;
-                    $scope.getFinancialRate();
-                })
-
-            $timeout(function () {
-                bsLoadingOverlayService.start({
-                    referenceId: 'mainPage_project_financial_search'
-                });
-            }, 100)
-
+                // + parseFloat(rateItem.rate_item_5)
         }
 
         // type 2, 一專案加一人名 為一筆
         $scope.filter_type2_data = function(rawTables) {
+            console.log(rawTables)
             var type2_result = [];
             for (var index = 0 ;index < rawTables.length; index ++) {
                 if ( ($scope.calculateHours_type2(rawTables[index]) + $scope.calculateHours_type2_add(rawTables[index], 1) + $scope.calculateHours_type2_add(rawTables[index], 2) != 0)) {
                     type2_result.push(rawTables[index]);
+                    eval('type2_result[rawTables[index]._id.userDID] = rawTables[index]')
                 }
             }
             return type2_result;
@@ -499,7 +641,6 @@
                 switch (type) {
                     case 1:
                         return item.hourTotal;
-                        // return item.totalCost;
                         break;
                     case 2:
                         return parseInt(item.totalCost);
@@ -558,40 +699,9 @@
                     return parseInt(totalCost);
                     break;
             }
-
         }
 
-        $scope.calculateHours_type2_add = function (item, type, showType) {
-            // console.log(item)
-            switch (type) {
-                case 1:
-                    if (item.iscalculate_A) {
-                        switch (showType) {
-                            case 1:
-                                return item.hourTotal_add_A;
-                                // return item.totalCost;
-                                break;
-                            case 2:
-                                return parseInt(item.hourTotal_add_cost_A);
-                                break;
-                        }
-                    }
-                    break;
-                case 2:
-                    if (item.iscalculate_B) {
-                        switch (showType) {
-                            case 1:
-                                return item.hourTotal_add_B;
-                                // return item.totalCost;
-                                break;
-                            case 2:
-                                return parseInt(item.hourTotal_add_cost_B);
-                                break;
-                        }
-                    }
-                    break;
-            }
-
+        $scope.calculateHours_type2_add = function (item, type) {
             var mins = 0
 
             var hourTotal = 0;
@@ -622,9 +732,6 @@
                 }
                 if (item._add_tables[index].workAddType == type) {
 
-                    // var date_id = DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1) + "_"
-                    //     + item._id.prjCode + "_"
-                    //     + item._user_info._id;
                     if (!item._add_tables[index].isExecutiveConfirm) {
                         continue;
                     }
@@ -632,9 +739,6 @@
                     var date_id = DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1) + "_"+ item._add_tables[index].creatorDID;
                     var min = parseInt(TimeUtil.getCalculateHourDiffByTime(item._add_tables[index].start_time, item._add_tables[index].end_time))
                     // mins += min;
-                    // console.log(item)
-                    // console.log(type2_add_data);
-                    // console.log(date_id);
                     if (type2_add_data[date_id] != undefined) {
                         var data = type2_add_data[date_id];
                         data.min = min + type2_add_data[date_id].min;
@@ -650,7 +754,7 @@
                     }
                 }
             }
-            // console.log(type2_add_data);
+            console.log(type2_add_data);
             var hour = 0
             for (var i = 0 ; i < type2_add_data.length; i ++) {
                 hour = type2_add_data[i].min % 60 < 30 ? Math.round(type2_add_data[i].min / 60) : Math.round(type2_add_data[i].min / 60) - 0.5;
@@ -675,9 +779,96 @@
             }
             return hourTotal;
         }
+        // $scope.calculateHours_type2_add = function (item, type) {
+        //     switch (type) {
+        //         case 1:
+        //             if (item.iscalculate_A) return item.hourTotal_add_A;
+        //             break;
+        //         case 2:
+        //             if (item.iscalculate_B) return item.hourTotal_add_B;
+        //             break;
+        //     }
+        //     // console.log(item);
+        //     var type2_add_data = [];
+        //
+        //     var mins = 0
+        //
+        //     var hourTotal = 0;
+        //     var hourTotal = 0;
+        //     var totalCost = 0.0;
+        //
+        //     if (item._add_tables == undefined) {
+        //         switch (type) {
+        //             case 1:
+        //                 item.iscalculate_A = true;
+        //                 item.hourTotal_add_A = hourTotal;
+        //                 item.hourTotal_add_cost_A = parseInt(totalCost * cons_3);
+        //                 break;
+        //             case 2:
+        //                 item.iscalculate_B = true;
+        //                 item.hourTotal_add_B = hourTotal;
+        //                 item.hourTotal_add_cost_B = parseInt(totalCost * cons_2);
+        //                 break;
+        //         }
+        //         return hourTotal;
+        //     }
+        //
+        //     for (var index = 0; index < item._add_tables.length; index ++) {
+        //         var operatedFormDate = item._add_tables[index].create_formDate;
+        //         if (item._add_tables[index].workAddType == type) {
+        //
+        //             var date_id = DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1) + "_"
+        //                 + item._id.prjCode + "_"
+        //                 + item._user_info._id;
+        //
+        //             var min = parseInt(TimeUtil.getCalculateHourDiffByTime(item._add_tables[index].start_time, item._add_tables[index].end_time))
+        //             // mins += min;
+        //             if (type2_add_data[date_id] != undefined) {
+        //                 var data = type2_add_data[date_id];
+        //                 data.min = min + type2_add_data[date_id].min;
+        //                 // type2_add_data[date_id] = (min + type2_add_data[date_id])
+        //             } else {
+        //                 var data = {
+        //                     _date: DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), item._add_tables[index].day - 1),
+        //                     min: min
+        //                 }
+        //                 type2_add_data.push(data);
+        //                 eval('type2_add_data[date_id] = data')
+        //             }
+        //         }
+        //     }
+        //
+        //     console.log(type2_add_data);
+        //
+        //     var hour = 0
+        //     for (var i = 0 ; i < type2_add_data.length; i ++) {
+        //         hour = type2_add_data[i].min % 60 < 30 ? Math.round(type2_add_data[i].min / 60) : Math.round(type2_add_data[i].min / 60) - 0.5;
+        //         if (hour < 1) {
+        //             hourTotal += 0;
+        //         } else {
+        //             hourTotal += hour;
+        //             totalCost += hour * type2_add_data[i].monthSalary / 30 / 8;
+        //         }
+        //     }
+        //
+        //     switch (type) {
+        //         case 1:
+        //             item.iscalculate_A = true;
+        //             item.hourTotal_add_A = hourTotal;
+        //             item.hourTotal_add_cost_A = parseInt(totalCost * cons_3);
+        //             break;
+        //         case 2:
+        //             item.iscalculate_B = true;
+        //             item.hourTotal_add_B = hourTotal;
+        //             item.hourTotal_add_cost_B = parseInt(totalCost * cons_2);
+        //             break;
+        //     }
+        //     return hourTotal;
+        // }
 
         $scope.calIncome = function (type) {
             var incomeA = 0.0;
+            if ($scope.projectIncomeTable == null) return
             for (var i = 0; i < $scope.projectIncomeTable.length; i ++) {
                 if (moment($scope.projectIncomeTable[i].realDate) >= moment("2020/01")) {
                     incomeA += parseInt($scope.projectIncomeTable[i].expectAmount)
@@ -760,22 +951,26 @@
             }
             // console.log("resultC:> " + resultC)
 
+            //
             var resultD = 0.0;
             for (var i = 0; i < $scope.projectIncomeTable.length; i ++) {
-                resultD += parseInt($scope.projectIncomeTable[i].fines)
-                resultD += parseInt($scope.projectIncomeTable[i].fee)
+                if (moment($scope.projectIncomeTable[i].realDate) >= moment("2020/01")) {
+                    resultD += parseInt($scope.projectIncomeTable[i].fines)
+                    resultD += parseInt($scope.projectIncomeTable[i].fee)
+                }
             }
             return Math.round(resultA + resultB + resultC + resultD);
         }
 
         $scope.calcAllCost_special20201207 = function() {
+            if ($scope.overall_data === undefined) return;
             // 人時
             var resultG = 0.0;
-            for (var i = 0; i < $scope.overall_data.length; i ++) {
-                // console.log($scope.overall_data[i])
-                resultG += parseInt($scope.overall_data[i]._overall)
-                // console.log(resultG)
-            }
+            // for (var i = 0; i < $scope.overall_data.length; i ++) {
+            //     // console.log($scope.overall_data[i])
+            //     resultG += parseInt($scope.overall_data[i]._overall)
+            //     // console.log(resultG)
+            // }
             // console.log("resultG:> " + resultG)
 
             // 墊付款
@@ -783,8 +978,7 @@
             for (var i = 0; i < $scope.overall_data.length; i ++) {
                 // console.log($scope.overall_data[i])
                 for (var j = 0; j < $scope.overall_data[i]._payments.length; j ++) {
-                    // resultB += parseInt($scope.overall_data[i]._payments[j].amount)
-                    resultB += $scope.overall_data[i]._payments[j].amount == undefined ? 0 : parseInt($scope.overall_data[i]._payments[j].amount)
+                    resultB += $scope.overall_data[i]._payments[j].amount == null ? 0 :$scope.overall_data[i]._payments[j].amount == undefined ? 0 : parseInt($scope.overall_data[i]._payments[j].amount)
                 }
             }
             // console.log("resultB:> " + resultB)
@@ -793,15 +987,51 @@
             var resultC = 0.0;
             for (var i = 0; i < $scope.overall_data.length; i ++) {
                 for (var j = 0; j < $scope.overall_data[i]._otherCost.length; j ++) {
-                    // resultC += parseInt($scope.overall_data[i]._otherCost[j].amount)
-                    resultC += $scope.overall_data[i]._otherCost[j].amount = undefined ? 0 : parseInt($scope.overall_data[i]._otherCost[j].amount)
+                    resultC += $scope.overall_data[i]._otherCost[j].amount == null ? 0 : $scope.overall_data[i]._otherCost[j].amount == undefined ? 0 : parseInt($scope.overall_data[i]._otherCost[j].amount)
                 }
             }
             // console.log("resultC:> " + resultC)
             return Math.round(resultG+resultB+resultC+$scope.calFines() + $scope.calFee())
         }
 
+        $scope.calcAllCost_special20210819  = function(type) {
+            if ($scope.overall_data === undefined) return;
+            switch(type) {
+                case 1:
+                    // 人時
+                    var resultG = 0.0;
+                    for (var i = 0; i < $scope.overall_data.length; i ++) {
+                        // console.log($scope.overall_data[i])
+                        resultG += parseInt($scope.overall_data[i]._overall)
+                        // console.log(resultG)
+                    }
+                    return resultG
+                case 2:
+                    var resultB = 0.0;
+                    for (var i = 0; i < $scope.overall_data.length; i ++) {
+                        // console.log($scope.overall_data[i])
+                        for (var j = 0; j < $scope.overall_data[i]._payments.length; j ++) {
+                            resultB += $scope.overall_data[i]._payments[j].amount == null ? 0 :$scope.overall_data[i]._payments[j].amount == undefined ? 0 : parseInt($scope.overall_data[i]._payments[j].amount)
+                        }
+                    }
+                    return resultB
+                case 3:
+                    var resultC = 0.0;
+                    for (var i = 0; i < $scope.overall_data.length; i ++) {
+                        for (var j = 0; j < $scope.overall_data[i]._otherCost.length; j ++) {
+                            resultC += $scope.overall_data[i]._otherCost[j].amount == null ? 0 : $scope.overall_data[i]._otherCost[j].amount == undefined ? 0 : parseInt($scope.overall_data[i]._otherCost[j].amount)
+                        }
+                    }
+                    return resultC
+                case 4:
+                    return $scope.calFines()
+                case 5:
+                    return $scope.calFee()
+            }
+        }
+
         $scope.calResult = function (type, item) {
+            if (item === undefined) return;
             switch (type) {
                 // 公司調整(規劃、設計、監造廷整)C=B*調整值
                 case 3:
@@ -823,14 +1053,14 @@
                     return Math.round(item.rate_item_3 * ($scope.calResult(4, item)) / 100);
                 // 可分配績效
                 case 9:
-                    return Math.round(($scope.calResult(4, item))
-                        - ($scope.calResult(5, item))
-                        - ($scope.calResult(6, item))
-                        - ($scope.calResult(7, item))
-                        - ($scope.calResult(8, item))
-                        // - $scope.calcAllCost()
-                        - $scope.calcAllCost_special20201207()
-                        - item.otherCost)
+                    return (Math.round(($scope.calResult(4, item))
+                    - ($scope.calResult(5, item))
+                    - ($scope.calResult(6, item))
+                    - ($scope.calResult(7, item))
+                    - ($scope.calResult(8, item))
+                    // - $scope.calcAllCost()
+                    - $scope.calcAllCost_special20201207()
+                    - item.otherCost))
             }
         }
 
@@ -845,7 +1075,6 @@
                 // console.log(rawTables[memberCount].tables);
                 if (rawTables[memberCount].tables != undefined) {
                     for (var table_index = 0 ;table_index < rawTables[memberCount].tables.length; table_index ++) {
-
                         if (rawTables[memberCount].tables[table_index].mon_hour > 0) {
                             var item = "_" + DateUtil.getShiftDatefromFirstDate_month(moment(rawTables[memberCount].tables[table_index].create_formDate)
                                 , 0) + "_" +
@@ -1212,8 +1441,6 @@
                             }
                         }
                     }
-
-
                 }
 
                 // work add
@@ -1286,7 +1513,6 @@
                     }
                 }
             }
-            // console.log(itemList);
             console.log(type1_data);
 
             var result = [];
@@ -1310,8 +1536,6 @@
         }
 
         $scope.filter_type2_data_item = function(rawTables) {
-            // console.log("filter_type2_data_item");
-            // console.log(rawTables);
             var type2_result = [];
             for (var index = 0 ;index < rawTables.length; index ++) {
                 if ( ($scope.calculateHours_type2_item(rawTables[index]) + $scope.calculateHours_type2_add(rawTables[index], 1) + $scope.calculateHours_type2_add(rawTables[index], 2) != 0)) {
@@ -1321,8 +1545,251 @@
             return type2_result;
         }
 
+        // type 3, 一天加一專案加一人名 為一筆
+        $scope.filter_type3_data = function(rawTables) {
+            var itemList = [];
+
+            var type3_data = [];
+            for (var memberCount = 0; memberCount < rawTables.length; memberCount++) {
+
+                if (rawTables[memberCount].tables != undefined) {
+
+                    for (var table_index = 0 ;table_index < rawTables[memberCount].tables.length; table_index ++) {
+                        // mon
+                        if (rawTables[memberCount].tables[table_index].mon_hour > 0) {
+                            var data = {
+                                _date: DateUtil.getShiftDatefromFirstDate(moment(rawTables[memberCount].tables[table_index].create_formDate), 0),
+                                _date_short: DateUtil.formatDate(
+                                    DateUtil.getShiftDatefromFirstDate(
+                                        moment(rawTables[memberCount].tables[table_index].create_formDate), 0)),
+                                _day: 1,
+                                _day_tw: DateUtil.getDay(1),
+                                _id: rawTables[memberCount]._id,
+                                _prjCode: rawTables[memberCount]._id.prjCode,
+                                _userDID: rawTables[memberCount]._id.userDID,
+                                _project_info: rawTables[memberCount]._project_info,
+                                _user_info: rawTables[memberCount]._user_info,
+                                table: {
+                                    type_3_create_formDate: rawTables[memberCount].tables[table_index].create_formDate,
+                                    type_3_day: 0,
+                                    type_3_hour: rawTables[memberCount].tables[table_index].mon_hour,
+                                    type_3_hour_memo: rawTables[memberCount].tables[table_index].mon_memo
+                                },
+                            }
+                            type3_data.push(data);
+                        }
+
+                        // tue
+                        if (rawTables[memberCount].tables[table_index].tue_hour > 0) {
+                            var data = {
+                                _date: DateUtil.getShiftDatefromFirstDate(moment(rawTables[memberCount].tables[table_index].create_formDate), 1),
+                                _date_short: DateUtil.formatDate(
+                                    DateUtil.getShiftDatefromFirstDate(
+                                        moment(rawTables[memberCount].tables[table_index].create_formDate), 1)),
+                                _day: 2,
+                                _day_tw: DateUtil.getDay(2),
+                                _id: rawTables[memberCount]._id,
+                                _prjCode: rawTables[memberCount]._id.prjCode,
+                                _userDID: rawTables[memberCount]._id.userDID,
+                                _project_info: rawTables[memberCount]._project_info,
+                                _user_info: rawTables[memberCount]._user_info,
+                                table: {
+                                    type_3_create_formDate: rawTables[memberCount].tables[table_index].create_formDate,
+                                    type_3_day: 1,
+                                    type_3_hour: rawTables[memberCount].tables[table_index].tue_hour,
+                                    type_3_hour_memo: rawTables[memberCount].tables[table_index].tue_memo
+                                },
+                            }
+                            type3_data.push(data);
+                        }
+
+                        // wes
+                        if (rawTables[memberCount].tables[table_index].wes_hour > 0) {
+                            var data = {
+                                _date: DateUtil.getShiftDatefromFirstDate(moment(rawTables[memberCount].tables[table_index].create_formDate), 2),
+                                _date_short: DateUtil.formatDate(
+                                    DateUtil.getShiftDatefromFirstDate(
+                                        moment(rawTables[memberCount].tables[table_index].create_formDate), 2)),
+                                _day: 3,
+                                _day_tw: DateUtil.getDay(3),
+                                _id: rawTables[memberCount]._id,
+                                _prjCode: rawTables[memberCount]._id.prjCode,
+                                _userDID: rawTables[memberCount]._id.userDID,
+                                _project_info: rawTables[memberCount]._project_info,
+                                _user_info: rawTables[memberCount]._user_info,
+                                table: {
+                                    type_3_create_formDate: rawTables[memberCount].tables[table_index].create_formDate,
+                                    type_3_day: 2,
+                                    type_3_hour: rawTables[memberCount].tables[table_index].wes_hour,
+                                    type_3_hour_memo: rawTables[memberCount].tables[table_index].wes_memo
+                                },
+                            }
+                            type3_data.push(data);
+                        }
+
+                        // thu
+                        if (rawTables[memberCount].tables[table_index].thu_hour > 0) {
+                            var data = {
+                                _date: DateUtil.getShiftDatefromFirstDate(moment(rawTables[memberCount].tables[table_index].create_formDate), 3),
+                                _date_short: DateUtil.formatDate(
+                                    DateUtil.getShiftDatefromFirstDate(
+                                        moment(rawTables[memberCount].tables[table_index].create_formDate), 3)),
+                                _day: 4,
+                                _day_tw: DateUtil.getDay(4),
+                                _id: rawTables[memberCount]._id,
+                                _prjCode: rawTables[memberCount]._id.prjCode,
+                                _userDID: rawTables[memberCount]._id.userDID,
+                                _project_info: rawTables[memberCount]._project_info,
+                                _user_info: rawTables[memberCount]._user_info,
+                                table: {
+                                    type_3_create_formDate: rawTables[memberCount].tables[table_index].create_formDate,
+                                    type_3_day: 3,
+                                    type_3_hour: rawTables[memberCount].tables[table_index].thu_hour,
+                                    type_3_hour_memo: rawTables[memberCount].tables[table_index].thu_memo
+                                },
+                            }
+                            type3_data.push(data);
+                        }
+
+                        // fri
+                        if (rawTables[memberCount].tables[table_index].fri_hour > 0) {
+                            var data = {
+                                _date: DateUtil.getShiftDatefromFirstDate(moment(rawTables[memberCount].tables[table_index].create_formDate), 4),
+                                _date_short: DateUtil.formatDate(
+                                    DateUtil.getShiftDatefromFirstDate(
+                                        moment(rawTables[memberCount].tables[table_index].create_formDate), 4)),
+                                _day: 5,
+                                _day_tw: DateUtil.getDay(5),
+                                _id: rawTables[memberCount]._id,
+                                _prjCode: rawTables[memberCount]._id.prjCode,
+                                _userDID: rawTables[memberCount]._id.userDID,
+                                _project_info: rawTables[memberCount]._project_info,
+                                _user_info: rawTables[memberCount]._user_info,
+                                table: {
+                                    type_3_create_formDate: rawTables[memberCount].tables[table_index].create_formDate,
+                                    type_3_day: 4,
+                                    type_3_hour: rawTables[memberCount].tables[table_index].fri_hour,
+                                    type_3_hour_memo: rawTables[memberCount].tables[table_index].fri_memo
+                                },
+                            }
+                            type3_data.push(data);
+                        }
+
+                        // sat
+                        if (rawTables[memberCount].tables[table_index].sat_hour > 0) {
+                            var data = {
+                                _date: DateUtil.getShiftDatefromFirstDate(moment(rawTables[memberCount].tables[table_index].create_formDate), 5),
+                                _date_short: DateUtil.formatDate(
+                                    DateUtil.getShiftDatefromFirstDate(
+                                        moment(rawTables[memberCount].tables[table_index].create_formDate), 5)),
+                                _day: 6,
+                                _day_tw: DateUtil.getDay(6),
+                                _id: rawTables[memberCount]._id,
+                                _prjCode: rawTables[memberCount]._id.prjCode,
+                                _userDID: rawTables[memberCount]._id.userDID,
+                                _project_info: rawTables[memberCount]._project_info,
+                                _user_info: rawTables[memberCount]._user_info,
+                                table: {
+                                    type_3_create_formDate: rawTables[memberCount].tables[table_index].create_formDate,
+                                    type_3_day: 5,
+                                    type_3_hour: rawTables[memberCount].tables[table_index].sat_hour,
+                                    type_3_hour_memo: rawTables[memberCount].tables[table_index].sat_memo
+                                },
+                            }
+                            type3_data.push(data);
+                        }
+
+                        // sun
+                        if (rawTables[memberCount].tables[table_index].sun_hour > 0) {
+                            var data = {
+                                _date: DateUtil.getShiftDatefromFirstDate(moment(rawTables[memberCount].tables[table_index].create_formDate), 6),
+                                _date_short: DateUtil.formatDate(
+                                    DateUtil.getShiftDatefromFirstDate(
+                                        moment(rawTables[memberCount].tables[table_index].create_formDate), 6)),
+                                _day: 7,
+                                _day_tw: DateUtil.getDay(7),
+                                _id: rawTables[memberCount]._id,
+                                _prjCode: rawTables[memberCount]._id.prjCode,
+                                _userDID: rawTables[memberCount]._id.userDID,
+                                _project_info: rawTables[memberCount]._project_info,
+                                _user_info: rawTables[memberCount]._user_info,
+                                table: {
+                                    type_3_create_formDate: rawTables[memberCount].tables[table_index].create_formDate,
+                                    type_3_day: 6,
+                                    type_3_hour: rawTables[memberCount].tables[table_index].sun_hour,
+                                    type_3_hour_memo: rawTables[memberCount].tables[table_index].sun_memo
+                                },
+                            }
+                            type3_data.push(data);
+                        }
+                    }
+                }
+
+                console.log(type3_data)
+
+                if (rawTables[memberCount]._add_tables != undefined) {
+
+                    for (var table_add_index = 0 ;table_add_index < rawTables[memberCount]._add_tables.length; table_add_index ++) {
+
+                            var item = "_" + DateUtil.getShiftDatefromFirstDate_typeB(moment(rawTables[memberCount]._add_tables[table_add_index].create_formDate),
+                                rawTables[memberCount]._add_tables[table_add_index].day - 1) + "_" +
+                                rawTables[memberCount]._id.prjCode + "_" +
+                                rawTables[memberCount]._user_info._id + "_" +
+                                rawTables[memberCount]._add_tables[table_add_index].workAddType;
+
+                            var tableData_add = {
+                                type_3_create_formDate: rawTables[memberCount]._add_tables[table_add_index].create_formDate,
+                                type_3_day: rawTables[memberCount]._add_tables[table_add_index].day,
+                                type_3_workAddType: rawTables[memberCount]._add_tables[table_add_index].workAddType,
+                                type_3_start_time: rawTables[memberCount]._add_tables[table_add_index].start_time,
+                                type_3_end_time: rawTables[memberCount]._add_tables[table_add_index].end_time,
+                                type_3_reason: rawTables[memberCount]._add_tables[table_add_index].reason,
+                            }
+
+                            console.log(item);
+
+                            if (type3_data[item] != undefined) {
+                                var data = type3_data[item];
+                                data.table_add.push(tableData_add);
+                            } else {
+
+                                itemList.push(item);
+
+                                var tables_add = [];
+
+                                tables_add.push(tableData_add);
+
+                                var data = {
+                                    _date: DateUtil.getShiftDatefromFirstDate(moment(rawTables[memberCount]._add_tables[table_add_index].create_formDate), rawTables[memberCount]._add_tables[table_add_index].day - 1),
+                                    _date_short: DateUtil.formatDate(
+                                        DateUtil.getShiftDatefromFirstDate(
+                                            moment(rawTables[memberCount]._add_tables[table_add_index].create_formDate), rawTables[memberCount]._add_tables[table_add_index].day - 1)),
+                                    _day: rawTables[memberCount]._add_tables[table_add_index].day,
+                                    _day_tw: DateUtil.getDay(rawTables[memberCount]._add_tables[table_add_index].day),
+                                    _id: rawTables[memberCount]._id,
+                                    _prjCode: rawTables[memberCount]._id.prjCode,
+                                    _userDID: rawTables[memberCount]._id.userDID,
+                                    _project_info: rawTables[memberCount]._project_info,
+                                    _user_info: rawTables[memberCount]._user_info,
+                                    _workAddType: rawTables[memberCount]._add_tables[table_add_index].workAddType,
+                                    table_add: tables_add
+                                }
+
+                                type3_data.push(data);
+                                eval('type3_data[item] = data')
+                            }
+                    }
+                }
+            }
+
+            type3_data = type3_data.sort(function (a, b) {
+                return a._date > b._date ? 1 : -1;
+            });
+            console.log(type3_data);
+            return type3_data;
+        }
+
         $scope.calculateHours_type2_item = function (item, type) {
-            // console.log(item)
             if (item.iscalculate_A && item.iscalculate_B) {
                 switch (type) {
                     case 1:
@@ -1334,7 +1801,6 @@
                         break;
                 }
             }
-            // console.log(item);
             var hourTotal = 0;
             var totalCost = 0.0;
             for (var index = 0; index < item.tables.length; index ++) {
@@ -1392,6 +1858,24 @@
             }
         }
 
+        $scope.fetchResult = function(userDID, type) {
+            if ($scope.statisticsResults_type2 === undefined || $scope.statisticsResults_type2[userDID] === undefined) return;
+            switch (type) {
+                case 1:
+                    return Math.round($scope.statisticsResults_type2[userDID].hourTotal + $scope.statisticsResults_type2[userDID].hourTotal_add_A + $scope.statisticsResults_type2[userDID].hourTotal_add_B);
+                case 2:
+                    return Math.round($scope.statisticsResults_type2[userDID].totalCost + $scope.statisticsResults_type2[userDID].hourTotal_add_cost_A + $scope.statisticsResults_type2[userDID].hourTotal_add_cost_B);
+                case 1001:
+                    return $scope.statisticsResults_type2[userDID].hourTotal
+                case 1002:
+                    return $scope.statisticsResults_type2[userDID].hourTotal_add_A
+                case 1003:
+                    return $scope.statisticsResults_type2[userDID].hourTotal_add_B
+
+            }
+
+        }
+
         $scope.showPrjCode= function (prjDID) {
             var selected = [];
             if (prjDID) {
@@ -1415,6 +1899,14 @@
             }
             results += " ]"
             return results
+        }
+
+        $scope.showPercentTotal = function () {
+            var total = 0;
+            for (var index = 0; index < $scope.relatedMembersArrayResults.length; index ++) {
+                total += parseInt($scope.relatedMembersArrayResults[index].distribute);
+            }
+            return total;
         }
 
     }

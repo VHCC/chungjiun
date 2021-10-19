@@ -18,6 +18,7 @@ global.apiUrl = {
     get_all_managers : '/api/getAllManagers',
     get_project_find_all : '/api/projectFindAll',
     get_project_find_all_enable : '/api/projectFindAllEnable',
+    get_project_find_all_closed : '/api/projectFindAllClosed',
     get_project_find_all_by_group : '/api/projectFindAllByGroup',
     post_project_find_by_name : '/api/projectFindByName',
     post_project_find_by_code : '/api/post_project_find_by_code',
@@ -185,6 +186,12 @@ global.apiUrl = {
     post_project_financial_result_find : '/api/post_project_financial_result_find',
     post_project_financial_result_create : '/api/post_project_financial_result_create',
     post_project_financial_result_update : '/api/post_project_financial_result_update',
+
+    // projectFinalcialDistribute
+    post_project_financial_distribute_create : '/api/post_project_financial_distribute_create',
+    post_project_financial_distribute_find : '/api/post_project_financial_distribute_find',
+    post_project_financial_distribute_update : '/api/post_project_financial_distribute_update',
+    post_project_financial_distribute_remove : '/api/post_project_financial_distribute_remove',
 
     // nationalHolidayForm
     post_national_holiday_data_form_create : '/api/post_national_holiday_data_form_create',

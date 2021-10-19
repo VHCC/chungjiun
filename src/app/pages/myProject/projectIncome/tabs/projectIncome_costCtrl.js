@@ -183,7 +183,6 @@
                 switch (type) {
                     case 1:
                         return item.hourTotal;
-                        // return item.totalCost;
                         break;
                     case 2:
                         return parseInt(item.totalCost);
@@ -193,29 +192,47 @@
             // console.log(item);
             var hourTotal = 0;
             var totalCost = 0.0;
+
             for (var index = 0; index < item.tables.length; index ++) {
-                hourTotal += parseFloat(item.tables[index].mon_hour)
-                totalCost += parseFloat(item.tables[index].mon_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
+                if (item.tables[index].create_formDate == "2019/12/30") {
+                    hourTotal += parseFloat(item.tables[index].wes_hour)
+                    totalCost += parseFloat(item.tables[index].wes_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
 
-                hourTotal += parseFloat(item.tables[index].tue_hour)
-                totalCost += parseFloat(item.tables[index].tue_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
+                    hourTotal += parseFloat(item.tables[index].thu_hour)
+                    totalCost += parseFloat(item.tables[index].thu_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
 
-                hourTotal += parseFloat(item.tables[index].wes_hour)
-                totalCost += parseFloat(item.tables[index].wes_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
+                    hourTotal += parseFloat(item.tables[index].fri_hour)
+                    totalCost += parseFloat(item.tables[index].fri_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
 
-                hourTotal += parseFloat(item.tables[index].thu_hour)
-                totalCost += parseFloat(item.tables[index].thu_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
+                    hourTotal += parseFloat(item.tables[index].sat_hour)
+                    totalCost += parseFloat(item.tables[index].sat_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
 
-                hourTotal += parseFloat(item.tables[index].fri_hour)
-                totalCost += parseFloat(item.tables[index].fri_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
+                    hourTotal += parseFloat(item.tables[index].sun_hour)
+                    totalCost += parseFloat(item.tables[index].sun_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
+                } else if (moment(item.tables[index].create_formDate) > moment("2020/01/01")) {
+                    hourTotal += parseFloat(item.tables[index].mon_hour)
+                    totalCost += parseFloat(item.tables[index].mon_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
 
-                hourTotal += parseFloat(item.tables[index].sat_hour)
-                totalCost += parseFloat(item.tables[index].sat_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
+                    hourTotal += parseFloat(item.tables[index].tue_hour)
+                    totalCost += parseFloat(item.tables[index].tue_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
 
-                hourTotal += parseFloat(item.tables[index].sun_hour)
-                totalCost += parseFloat(item.tables[index].sun_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
+                    hourTotal += parseFloat(item.tables[index].wes_hour)
+                    totalCost += parseFloat(item.tables[index].wes_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
 
+                    hourTotal += parseFloat(item.tables[index].thu_hour)
+                    totalCost += parseFloat(item.tables[index].thu_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
+
+                    hourTotal += parseFloat(item.tables[index].fri_hour)
+                    totalCost += parseFloat(item.tables[index].fri_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
+
+                    hourTotal += parseFloat(item.tables[index].sat_hour)
+                    totalCost += parseFloat(item.tables[index].sat_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
+
+                    hourTotal += parseFloat(item.tables[index].sun_hour)
+                    totalCost += parseFloat(item.tables[index].sun_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
+                }
             }
+
             item.hourTotal = hourTotal;
             item.totalCost = totalCost;
             switch (type) {
@@ -226,6 +243,7 @@
                     return parseInt(totalCost);
                     break;
             }
+            console.log(item);
         }
 
         $scope.calculateHours_type2_add = function (item, type, showType) {
@@ -268,12 +286,12 @@
                 switch (type) {
                     case 1:
                         item.iscalculate_A = true;
-                        item.hourTotal_add_A = hourTotal * cons_3;
+                        item.hourTotal_add_A = hourTotal;
                         item.hourTotal_add_cost_A = parseInt(totalCost * cons_3);
                         break;
                     case 2:
                         item.iscalculate_B = true;
-                        item.hourTotal_add_B = hourTotal * cons_2;
+                        item.hourTotal_add_B = hourTotal;
                         item.hourTotal_add_cost_B = parseInt(totalCost * cons_2);
                         break;
                 }
@@ -282,8 +300,10 @@
 
             for (var index = 0; index < item._add_tables.length; index ++) {
                 var operatedFormDate = item._add_tables[index].create_formDate;
+                if (moment(DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1)) < moment("2020/01/01")) {
+                    continue
+                }
                 if (item._add_tables[index].workAddType == type) {
-
                     var date_id = DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1) + "_"
                         + item._id.prjCode + "_"
                         + item._user_info._id;
@@ -302,7 +322,8 @@
                         var data = {
                             _date: DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), item._add_tables[index].day - 1),
                             min: min,
-                            monthSalary: item._add_tables[index].userMonthSalary
+                            monthSalary: item._add_tables[index].userMonthSalary,
+                            creatorDID: item._add_tables[index].creatorDID,
                         }
                         type2_add_data.push(data);
                         eval('type2_add_data[date_id] = data')
@@ -339,7 +360,10 @@
         $scope.filter_type2_data = function(rawTables) {
             var type2_result = [];
             for (var index = 0 ;index < rawTables.length; index ++) {
-                if ( ($scope.calculateHours_type2(rawTables[index]) + $scope.calculateHours_type2_add(rawTables[index], 1) + $scope.calculateHours_type2_add(rawTables[index], 2) != 0)) {
+                console.log(rawTables[index])
+                if ( ($scope.calculateHours_type2(rawTables[index]) +
+                    $scope.calculateHours_type2_add(rawTables[index], 1) +
+                    $scope.calculateHours_type2_add(rawTables[index], 2) != 0)) {
                     type2_result.push(rawTables[index]);
                 }
             }
