@@ -48,7 +48,8 @@
         var thisYear = new Date().getFullYear() - 1911;
         var thisMonth = new Date().getMonth() + 1; //January is 0!;
 
-        Project.findAllEnable()
+        //所有專案，資料比對用
+        Project.findAll()
             .success(function (allProjects) {
                 $scope.allProject_raw = allProjects;
 
