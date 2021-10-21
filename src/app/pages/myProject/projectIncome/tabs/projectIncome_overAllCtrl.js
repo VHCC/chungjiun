@@ -85,7 +85,9 @@
                 }
             });
 
-        Project.findAllEnable()
+        //所有專案，資料比對用
+        // Project.findAllEnable()
+        Project.findAll()
             .success(function (allProjects) {
                 $scope.allProjectCache = [];
                 var prjCount = allProjects.length;

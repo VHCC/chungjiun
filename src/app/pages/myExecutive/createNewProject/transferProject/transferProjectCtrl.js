@@ -48,7 +48,7 @@
         var thisYear = new Date().getFullYear() - 1911;
         var thisMonth = new Date().getMonth() + 1; //January is 0!;
 
-        Project.findAllEnable()
+        Project.findAll()
             .success(function (allProjects) {
 
                 console.log(allProjects);
