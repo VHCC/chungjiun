@@ -224,10 +224,6 @@
 
         // 使用者確定移除工時表項目
         $scope.removeWorkItem = function (item, tableIndex, itemIndex) {
-            // for (var index = 0; index< $scope.tables.length; index ++) {
-            //     $scope.tables[index].tablesItems.splice(itemIndex, 1);
-            // }
-
             $scope.tables[tableIndex].tablesItems.splice(itemIndex, 1);
 
             var tempMonth;
@@ -404,15 +400,22 @@
             WorkHourUtil.getWorkHourForm(getData) // 拿工時表資料
                 .success(function (res) {
                     if (res.payload.length > 0) {
+                        res.payload = res.payload.sort(function (a, b) {
+                            var dateA = a.year +1911 + "/" + a.month;
+                            var dateB = b.year +1911 + "/" + b.month;
+                            return moment(dateA) > moment(dateB) ? 1 : -1;
+                        });
+
+                        console.log(res)
+
                         var needUpdateWorkTableIDArray = [];
 
                         $scope.getWorkHourForms = res.payload;
                         $scope.loadWOTTotal($cookies.get('userDID'), res.payload);
                         for (var majorIndex = 0; majorIndex < res.payload.length; majorIndex ++) {
+
                             var tableIndex = 0;
-                            // console.log(res.payload);
                             var workItemCount = res.payload[majorIndex].formTables.length;
-                            // console.log("tables= " + res.payload.length);
 
                             var prjIDArray = [];
                             var workTableIDArray = [];
@@ -451,7 +454,7 @@
                                             referenceId: 'mainPage_workHour'
                                         });
                                     }, 200)
-                                    console.log('ERROR Project.findPrjByIDArray');
+                                    console.log('ERROR:> Project.findPrjByIDArray');
                                     toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
                                 })
 
@@ -467,6 +470,7 @@
                                 isFindManagerReject: null,
                                 isFindExecutiveReject: null
                             };
+
                             tableSort.push(workTableIDArray);
 
                             // 取得 Table Data
@@ -2228,6 +2232,11 @@
                 .success(function (res) {
 
                     if (res.payload.length > 0) {
+                        res.payload = res.payload.sort(function (a, b) {
+                            var dateA = a.year +1911 + "/" + a.month;
+                            var dateB = b.year +1911 + "/" + b.month;
+                            return moment(dateA) > moment(dateB) ? 1 : -1;
+                        });
                         $scope.loadWOTTotal(vm.history.selected._id, res.payload);
                         for (var majorIndex = 0; majorIndex < res.payload.length; majorIndex ++) {
                             var tableIndex = 0;
@@ -3122,6 +3131,11 @@
                     var existDIDArray = [];
                     // console.log($scope);
                     if (res.payload.length > 0) {
+                        res.payload = res.payload.sort(function (a, b) {
+                            var dateA = a.year +1911 + "/" + a.month;
+                            var dateB = b.year +1911 + "/" + b.month;
+                            return moment(dateA) > moment(dateB) ? 1 : -1;
+                        });
                         // console.log(res.payload);
                         // users
                         for (var formIndex = 0; formIndex < res.payload.length; formIndex ++) {
