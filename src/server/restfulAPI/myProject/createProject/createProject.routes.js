@@ -733,4 +733,34 @@ module.exports = function (app) {
             }
         })
     })
+
+
+    app.post(global.apiUrl.post_project_find_by_request, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_project_find_by_year");
+        var keyArray = Object.keys(req.body);
+        var findRequest = {};
+        for (var index = 0; index < keyArray.length; index++) {
+            var evalString = "findRequest.";
+            evalString += keyArray[index];
+
+            var evalFooter = "req.body.";
+            evalFooter += keyArray[index];
+            eval(evalString + " = " + evalFooter);
+        }
+        console.log("--- findRequest ---");
+        console.log(findRequest);
+        try {
+            Project.find(findRequest, function (err, items) {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: items,
+                });
+            });
+        } catch (err) {
+            if (err) {
+                res.send(err);
+            }
+        }
+    });
 }

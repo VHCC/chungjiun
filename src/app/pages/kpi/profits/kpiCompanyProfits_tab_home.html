@@ -1,0 +1,17 @@
+<div bs-loading-overlay
+     bs-loading-overlay-reference-id="mainPage_kpi_companyProfits">
+
+    <uib-tabset active="$tabSetStatus.activeTab">
+        <uib-tab heading="公司利潤" >
+            <div ng-controller="kpiCompanyProfitsCtrl"
+                    ng-include="'app/pages/kpi/profits/tabs/kpiCompanyProfitsMainTab.html'"></div>
+        </uib-tab>
+
+        <uib-tab heading="年度總表">
+            <div ng-controller="subContractorItemCtrl"
+                 ng-include="'app/pages/kpi/risk/tabs/subContractorItemTab.html'"></div>
+        </uib-tab>
+
+    </uib-tabset>
+</div>
+

@@ -70,7 +70,6 @@ module.exports = function (app) {
 
     app.post(global.apiUrl.post_fetch_sub_contractor_pay_item_by_prj_did_array, function (req, res) {
         console.log(req.body);
-
         var findData = []
         for (var index = 0; index < req.body.prjDIDArray.length; index++) {
             var target = {
@@ -82,7 +81,6 @@ module.exports = function (app) {
         var query = {};
         query.$or = findData;
         query.isExecutiveCheck = true;
-
         SubContractorPayItem.find(query, function (err, items) {
             if (err) {
                 res.send(err);
@@ -91,6 +89,7 @@ module.exports = function (app) {
                     code: 200,
                     error: global.status._200,
                     payload: items,
+                    prjDID: req.body.prjDIDArray[0],
                 });
             }
         });

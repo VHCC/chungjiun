@@ -709,14 +709,27 @@
 
                 _id: item._id,
                 // income: item.income,
-                otherCost: item.otherCost,
+                otherCost: item.otherCost, <!--其他-->
                 rate_item_1: item.rate_item_1,
                 rate_item_2: item.rate_item_2,
                 rate_item_3: item.rate_item_3,
                 rate_item_4: item.rate_item_4,
                 rate_item_5: item.rate_item_5,
                 memo: item.memo,
-                isPrjClose: true
+                is011Set: true,
+                isPrjClose: true,
+
+                kpi1: $scope.calIncome(1), <!-- 收入 -->
+                kpi2: $scope.calIncome(2), <!-- 不含稅收入B=A/1.05 -->
+                kpi3: $scope.calResult(3, item), <!-- 公司調整(規劃、設計、監造廷整)C=B*調整值 -->
+                kpi4: $scope.calSubContractorPay(), <!-- 廠商請款(未稅金額) D -->
+                kpi5: $scope.calResult(4, item), <!-- 實際收入E=C-D -->
+                kpi6: $scope.calResult(5, item), <!-- 行政費 -->
+                kpi7: $scope.calResult(6, item), <!--技師費-->
+                kpi8: $scope.calResult(7, item), <!--風險-->
+                kpi9: $scope.calResult(8, item), <!--利潤-->
+                kpi10: $scope.calcAllCost_special20201207(), <!-- 專案成本(墊付款、其他支出) --> <!-- (匯費、罰款) -->
+                kpi11: $scope.calResult(9, item), <!--可分配績效-->
             }
 
             ProjectFinancialResultUtil.updateFR(formData)

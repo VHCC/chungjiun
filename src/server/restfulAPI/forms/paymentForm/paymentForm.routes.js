@@ -400,6 +400,7 @@ module.exports = function (app) {
                         code: 200,
                         error: global.status._200,
                         payload: paymentItems,
+                        prjDID: req.body.prjDIDArray[0],
                     });
                 }
             });
@@ -417,6 +418,7 @@ module.exports = function (app) {
                         code: 200,
                         error: global.status._200,
                         payload: paymentItems,
+                        prjDID: req.body.prjDIDArray[0],
                     });
                 }
             });

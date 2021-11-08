@@ -40,6 +40,11 @@ global.pages = {
 
     //
     cgKPI : 400,
+    cgKPI_personal : 100,
+    cgKPI_tech : 200,
+    cgKPI_executive : 300,
+    cgKPI_companyRisk : 400,
+    cgKPI_companyProfits : 400,
 
     myCalender : 500,
 

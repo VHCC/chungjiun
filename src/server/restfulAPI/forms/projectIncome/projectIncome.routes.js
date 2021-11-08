@@ -87,6 +87,7 @@ module.exports = function (app) {
                 code: 200,
                 error: global.status._200,
                 payload: tables,
+                prjDID: req.body.prjDIDArray[0],
             });
         });
     })

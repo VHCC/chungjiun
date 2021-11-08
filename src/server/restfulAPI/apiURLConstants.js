@@ -60,6 +60,7 @@ global.apiUrl = {
     post_project_update_main_name: '/api/post_project_update_main_name',
     post_project_update_prj_name: '/api/post_project_update_prj_name',
     post_project_update_prj_sub_name: '/api/post_project_update_prj_sub_name',
+    post_project_find_by_request: '/api/post_project_find_by_request',
 
     // todolist
     post_todo_create : '/api/createTodo',
@@ -80,6 +81,17 @@ global.apiUrl = {
     post_payment_multiple_get : '/api/post_payment_multiple_get',
     post_payment_fetch_items_by_prjdid : '/api/post_payment_fetch_items_by_prjdid',
     post_payment_fetch_items_by_prjdid_array : '/api/post_payment_fetch_items_by_prjdid_array',
+
+    // kpi
+    post_get_kpi_elements_by_prjdid_array : '/api/post_get_kpi_elements_by_prjdid_array',
+    post_get_kpi_financial_results_by_year : '/api/post_get_kpi_financial_results_by_year',
+    post_get_kpi_elements_by_year : '/api/post_get_kpi_elements_by_year',
+
+    post_get_kpi_elements_insert : '/api/post_get_kpi_elements_insert',
+    post_get_kpi_elements_update : '/api/post_get_kpi_elements_update',
+    post_get_kpi_elements_delete : '/api/post_get_kpi_elements_delete',
+
+
 
     // global configs
     fetch_global_configs: '/api/fetch_global_configs',
@@ -186,8 +198,10 @@ global.apiUrl = {
     post_project_financial_result_find : '/api/post_project_financial_result_find',
     post_project_financial_result_create : '/api/post_project_financial_result_create',
     post_project_financial_result_update : '/api/post_project_financial_result_update',
+    post_project_financial_result_sync_project : '/api/post_project_financial_result_sync_project',
+    post_project_financial_result_find_by_request : '/api/post_project_financial_result_find_by_request',
 
-    // projectFinalcialDistribute
+    // projectFinanlcialDistribute
     post_project_financial_distribute_create : '/api/post_project_financial_distribute_create',
     post_project_financial_distribute_find : '/api/post_project_financial_distribute_find',
     post_project_financial_distribute_update : '/api/post_project_financial_distribute_update',
