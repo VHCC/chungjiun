@@ -59,5 +59,7 @@ require('./restfulAPI/forms/projectIncome/projectIncome.routes')(app);
 require('./restfulAPI/forms/projectFinancialResult/projectFinancialResult.routes')(app);
 require('./restfulAPI/forms/projectFinancialResult/projectFinancialDistribute.routes')(app);
 
+require('./restfulAPI/forms/kpi/kpi.routes')(app);
+
 
 

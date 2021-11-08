@@ -69,7 +69,58 @@ module.exports = mongoose.model('ProjectFinancialResult', {
     is011Set: {
         type: Boolean,
         default: false
-    }
+    },
+
+    kpi1: { <!-- 收入 -->
+        type: Number,
+        default: 0
+    },
+
+    kpi2: { <!-- 不含稅收入B=A/1.05 -->
+        type: Number,
+        default: 0
+    },
+
+    kpi3: { <!-- 公司調整(規劃、設計、監造廷整)C=B*調整值 -->
+        type: Number,
+        default: 0
+    },
+
+    kpi4: { <!-- 廠商請款(未稅金額) D -->
+        type: Number,
+        default: 0
+    },
+    kpi5: { <!-- 實際收入E=C-D -->
+        type: Number,
+        default: 0
+    },
+    kpi6: { <!-- 行政費 -->
+        type: Number,
+        default: 0
+    },
+    kpi7: { <!--技師費-->
+        type: Number,
+        default: 0
+    },
+    kpi8: { <!--風險-->
+        type: Number,
+        default: 0
+    },
+    kpi9: { <!--利潤-->
+        type: Number,
+        default: 0
+    },
+    kpi10: { <!-- 專案成本(墊付款、其他支出) --> <!-- (匯費、罰款) -->
+        type: Number,
+        default: 0
+    },
+    kpi11: {  <!--可分配績效-->
+        type: Number,
+        default: 0
+    },
+
+
+
 
 
 });

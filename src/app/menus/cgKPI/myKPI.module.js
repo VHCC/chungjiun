@@ -5,11 +5,23 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.cgKPI', [])
+    angular.module('BlurAdmin.pages.cgKPI', [
+        'ui.select',
+        'ngSanitize',
+        'BlurAdmin.pages.ui.notifications',
+        'bsLoadingOverlay',
+        'bsLoadingOverlaySpinJs',
+    ])
+        .run(function(bsLoadingOverlayService) {
+            bsLoadingOverlayService.setGlobalConfig({
+                templateUrl: 'components/loading-overlay-template.html'
+                // templateUrl: 'bsLoadingOverlaySpinJs'
+            });
+        })
         .config(routeConfig);
 
     /** @ngInject */
-    function routeConfig($stateProvider, $urlRouterProvider) {
+    function routeConfig($stateProvider) {
         $stateProvider
             .state('cgKPI',
                 {
@@ -22,44 +34,54 @@
                         order: global.pages.cgKPI,
                     },
                 })
-            .state('cgKPI.100',
+            .state('cgKPI.personal',
                 {
                     url: '/empty',
                     templateUrl: 'app/pages/myNewPage/empty.html',
                     title: '個人績效',
                     accessLevel: [9999],
                     sidebarMeta: {
-                        order: 100,
+                        order: global.pages.cgKPI_personal,
                     },
                 })
-            .state('cgKPI.200',
+            .state('cgKPI.tech',
                 {
                     url: '/empty',
                     templateUrl: 'app/pages/myNewPage/empty.html',
                     title: '技師績效',
                     accessLevel: [9999],
                     sidebarMeta: {
-                        order: 200,
+                        order: global.pages.cgKPI_tech,
                     },
                 })
-            .state('cgKPI.300',
+            .state('cgKPI.executive',
                 {
-                    url: '/empty',
-                    templateUrl: 'app/pages/myNewPage/empty.html',
+                    url: '/KPIExecutive',
+                    templateUrl: 'app/pages/kpi/executive/kpiExecutiveHomePage.html',
                     title: '行政績效',
-                    accessLevel: [9999],
+                    // accessLevel: [9999],
                     sidebarMeta: {
-                        order: 300,
+                        order: global.pages.cgKPI_executive,
                     },
                 })
-            .state('cgKPI.400',
+            .state('cgKPI.companyRisk',
                 {
-                    url: '/empty',
-                    templateUrl: 'app/pages/myNewPage/empty.html',
-                    title: '公司利潤',
-                    accessLevel: [9999],
+                    url: '/KPICompanyRisk',
+                    templateUrl: 'app/pages/kpi/risk/kpiCompanyRiskHomePage.html',
+                    title: '公司風險',
+                    // accessLevel: [9999],
                     sidebarMeta: {
-                        order: 400,
+                        order: global.pages.cgKPI_companyRisk,
+                    },
+                })
+            .state('cgKPI.companyProfits',
+                {
+                    url: '/KPICompanyProfits',
+                    templateUrl: 'app/pages/kpi/profits/kpiCompanyProfitsHomePage.html',
+                    title: '公司利潤',
+                    // accessLevel: [9999],
+                    sidebarMeta: {
+                        order: global.pages.cgKPI_companyProfits,
                     },
                 })
     }

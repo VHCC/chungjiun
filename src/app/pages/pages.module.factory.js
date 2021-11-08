@@ -137,6 +137,10 @@
                     return http.post('/api/post_project_update_prj_sub_name', formData);
                 },
 
+                findByRequest: function (formData) {
+                    return http.post('/api/post_project_find_by_request', formData);
+                },
+
             }
         }])
         .factory('Todos', ['$http', function (http) {
@@ -436,6 +440,36 @@
                 },
             }
         }])
+        .factory('KpiUtil', ['$http', function (http) {
+            return {
+
+                insertKPIElement: function(formData) {
+                    return http.post('/api/post_get_kpi_elements_insert', formData);
+                },
+                updateKPIElement: function(formData) {
+                    return http.post('/api/post_get_kpi_elements_update', formData);
+                },
+                deleteKPIElement: function(formData) {
+                    return http.post('/api/post_get_kpi_elements_delete', formData);
+                },
+
+                findKPIElement : function(formData) {
+                    return http.post('/api/post_get_kpi_elements_by_year', formData);
+                },
+
+                findKPIYear : function (formData) {
+                    return http.post('/api/post_get_kpi_financial_results_by_year', formData);
+                },
+                // including
+                // ProjectIncomeUtil
+                // PaymentFormsUtil
+                // ExecutiveExpenditureUtil
+                // SubContractorPayItemUtil
+                fetchKpiItemsByPrjDIDArray: function (formData) {
+                    return http.post('/api/post_get_kpi_elements_by_prjdid_array', formData);
+                },
+            }
+        }])
         .factory('PaymentFormsUtil', ['$http', function (http) {
             return {
                 // createForms: function (formData) {
@@ -554,6 +588,9 @@
                 },
                 updateFR: function (formData) {
                     return http.post('/api/post_project_financial_result_update', formData)
+                },
+                syncAllFRAndProject: function (formData) {
+                    return http.post('/api/post_project_financial_result_sync_project', formData)
                 },
             }
         }])

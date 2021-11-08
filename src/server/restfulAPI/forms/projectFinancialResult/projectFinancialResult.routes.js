@@ -1,4 +1,5 @@
 var ProjectFinancialResult = require('../../models/projectFinancialResult');
+var Project = require('../../models/project');
 var moment = require('moment');
 
 module.exports = function (app) {
@@ -71,19 +72,81 @@ module.exports = function (app) {
 
         console.log(updateTarget);
 
-        ProjectFinancialResult.updateOne({
+        ProjectFinancialResult.find({
             _id: req.body._id,
-        }, {
-            $set: updateTarget
-        }, function (err) {
+        }, function (err, fr) {
             if (err) {
                 res.send(err);
             }
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
+            Project.updateOne({
+                _id: fr[0].prjDID,
+            }, {
+                $set: {
+                    isPrjClose: req.body.isPrjClose,
+                }
+            }, function (err) {
+                if (err) {
+                    res.send(err);
+                }
+            });
+
+            ProjectFinancialResult.updateOne({
+                _id: req.body._id,
+            }, {
+                $set: updateTarget
+            }, function (err) {
+                if (err) {
+                    res.send(err);
+                }
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
             });
         });
     })
+
+    // sync
+    app.post(global.apiUrl.post_project_financial_result_sync_project, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_project_financial_result_sync_project");
+
+        ProjectFinancialResult.find({
+            isPrjClose: true,
+        }, function (err, frs) {
+            if (err) {
+                res.send(err);
+            }
+
+            var findData = []
+            for (var index = 0; index < frs.length; index++) {
+                var target = {
+                    _id: frs[index].prjDID,
+                }
+                findData.push(target);
+            }
+            Project.updateMany(
+                {
+                    $or: findData,
+                }, {
+                    $set: {
+                        isPrjClose: true,
+                    }
+                }, function (err) {
+                    if (err) {
+                        console.log(global.timeFormat(new Date()) + global.log.e + "API, get_project_find_by_prjid_array");
+                        console.log(req.body);
+                        console.log(" ***** ERROR ***** ");
+                        console.log(err);
+                        res.send(err);
+                    } else {
+                        res.status(200).send({
+                            code: 200,
+                            error: global.status._200,
+                        });
+                    }
+                })
+        });
+    })
+
 
 }

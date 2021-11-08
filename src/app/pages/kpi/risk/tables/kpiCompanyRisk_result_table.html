@@ -1,0 +1,218 @@
+<style type="text/css">
+    .AutoNewline
+    {
+        word-break: break-all;/*必須*/
+    }
+</style>
+<div class="horizontal-scroll">
+    <table class="table table-bordered table-hover table-condensed"
+           style="width:120%; table-layout: auto">
+        <colgroup>
+            <col span="1" style="width: 1%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
+        </colgroup>
+        <thead>
+        <!--<tr >-->
+            <!--<th-->
+                <!--style="vertical-align: inherit; text-align: center" >項目</th>-->
+            <!--<th style="vertical-align: inherit; text-align: center" >-->
+                <!--含稅收入(發票金額)-->
+                <!--<br>-->
+                <!--<span style="color:blue">A</span>-->
+            <!--</th>-->
+            <!--<th style="vertical-align: inherit; text-align: center" >-->
+                <!--不含稅收入-->
+                <!--<br>-->
+                <!--<span style="color:blue">B=A/1.05</span>-->
+            <!--</th>-->
+            <!--<th style="vertical-align: inherit; text-align: center" class="AutoNewline">-->
+                <!--公司調整(規劃、設計、監造廷整)-->
+                <!--<br>-->
+                <!--<span style="color:blue">C=B*調整值</span>-->
+            <!--</th>-->
+            <!--<th style="vertical-align: inherit; text-align: center" >-->
+                <!--廠商請款(未稅金額)-->
+                <!--<br>-->
+                <!--<span style="color:blue">D</span>-->
+            <!--</th>-->
+            <!--<th style="vertical-align: inherit; text-align: center" >-->
+                <!--實際收入-->
+                <!--<br>-->
+                <!--<span style="color:blue">E=C-D</span>-->
+            <!--</th>-->
+            <!--<th style="vertical-align: inherit; text-align: center" >-->
+                <!--行政費-->
+                <!--<br>-->
+                <!--<span style="color:blue">E*N</span>-->
+            <!--</th>-->
+            <!--<th style="vertical-align: inherit; text-align: center" >-->
+                <!--技師費-->
+                <!--<br>-->
+                <!--<span style="color:blue">E*N</span>-->
+            <!--</th>-->
+            <!--<th style="vertical-align: inherit; text-align: center" >-->
+                <!--風險-->
+                <!--<br>-->
+                <!--<span style="color:blue">E*N</span>-->
+            <!--</th>-->
+            <!--<th style="vertical-align: inherit; text-align: center" >-->
+                <!--利潤-->
+                <!--<br>-->
+                <!--<span style="color:blue">E*N</span>-->
+            <!--</th>-->
+            <!--<th style="vertical-align: inherit; text-align: center" >-->
+                <!--專案成本-->
+                <!--<br>-->
+                <!--<span style="color:blue">(墊付款、其他支出)</span>-->
+                <!--<br>-->
+                <!--<span style="color:blue">(匯費、罰款)</span>-->
+            <!--</th>-->
+            <!--<th style="vertical-align: inherit; text-align: center" >其他</th>-->
+            <!--<th style="vertical-align: inherit; text-align: center" >說明</th>-->
+            <!--<th style="vertical-align: inherit; text-align: center" >可分配績效</th>-->
+        <!--</tr>-->
+        <tr >
+            <th style="vertical-align: inherit; text-align: center" >項目</th>
+            <th style="vertical-align: inherit; text-align: center" >專案代碼</th>
+            <th style="vertical-align: inherit; text-align: center" >專案名稱</th>
+            <th style="vertical-align: inherit; text-align: center" >經理/主任</th>
+            <th style="vertical-align: inherit; text-align: center" >技師</th>
+            <th style="vertical-align: inherit; text-align: center" >
+                風險
+            </th>
+        </tr>
+        </thead>
+        <tbody ng-repeat="item in projectFinancialResultTable">
+        <tr style="vertical-align: inherit; text-align: right">
+            <!--Index-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{$index + 1}}</span>
+            </td >
+            <!--專案代碼-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{showPrjInfo(item.prjDID).prjCode}}</span>
+            </td>
+            <!--專案名稱-->
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                <span>{{showPrjName(item.prjDID)}}</span>
+            </td>
+            <!--經理-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{showManager(showPrjInfo(item.prjDID))}}</span>
+            </td>
+            <!--技師-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{showTechs(showPrjTech(item.prjDID))}}</span>
+            </td>
+
+            <!-- 收入 -->
+            <!--<td class="form-group" style="vertical-align: inherit">-->
+                <!--<span>{{calIncomeKpi(1, item).toLocaleString()}}</span>-->
+            <!--</td>-->
+
+            <!-- 不含稅收入B=A/1.05 -->
+            <!--<td class="form-group" style="vertical-align: inherit">-->
+                <!--<span>{{calIncomeKpi(2, item).toLocaleString()}}</span>-->
+            <!--</td>-->
+
+            <!-- 公司調整(規劃、設計、監造廷整)C=B*調整值 -->
+            <!--<td class="form-group" style="vertical-align: inherit;">-->
+                <!--<span style="text-align: right">{{calResultKpi(3, item).toLocaleString()}}</span>-->
+            <!--</td>-->
+
+            <!-- 廠商請款(未稅金額) D -->
+            <!--<td class="form-group" style="vertical-align: inherit;">-->
+                <!--<span style="text-align: right">{{calSubContractorPayKpi(item).toLocaleString()}}</span>-->
+            <!--</td>-->
+
+            <!-- 實際收入E=C-D -->
+            <!--<td class="form-group" style="vertical-align: inherit;">-->
+                <!--<span style="text-align: right">{{calResultKpi(4, item).toLocaleString()}}</span>-->
+            <!--</td>-->
+
+            <!-- 行政費 -->
+            <!--<td class="form-group" style="vertical-align: inherit;">-->
+                <!--<span style="text-align: right">{{calResultKpi(5, item).toLocaleString()}}</span>-->
+            <!--</td>-->
+
+            <!--技師費-->
+            <!--<td class="form-group" style="vertical-align: inherit;">-->
+                <!--<span style="text-align: right">{{calResultKpi(6, item).toLocaleString()}}</span>-->
+            <!--</td>-->
+
+            <!--風險-->
+            <td class="form-group " style="vertical-align: inherit;">
+                <!--<span >{{item.rate_item_4 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>-->
+                <!--<span style="text-align: right">{{calResultKpi(7, item).toLocaleString()}}</span>-->
+                <span style="text-align: right">{{fetchKPIValue(8, item).toLocaleString()}}</span>
+            </td>
+            <!--利潤-->
+            <!--<td class="form-group" style="vertical-align: inherit;">-->
+                <!--&lt;!&ndash;<span >{{item.rate_item_3 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>&ndash;&gt;-->
+                <!--<span style="text-align: right">{{calResult(8, item).toLocaleString()}}</span>-->
+            <!--</td>-->
+        </tr>
+        </tbody>
+        <tr style="vertical-align: inherit; text-align: center">
+            <td colspan="5" style="vertical-align: inherit;">
+                小計
+            </td>
+            <td style="vertical-align: inherit; text-align: right">
+                {{calResultKpiAll(8).toLocaleString()}}
+            </td>
+        </tr>
+        <tr style="vertical-align: inherit; text-align: center">
+            <td style="vertical-align: inherit;">
+
+            </td>
+            <td colspan="1" style="vertical-align: inherit;">
+            </td>
+            <td style="vertical-align: inherit; text-align: right">
+                Memo
+            </td>
+            <td colspan="2" style="vertical-align: inherit;">
+            </td>
+            <td style="vertical-align: inherit; text-align: right">
+                金額
+            </td>
+        </tr>
+        <tr style="vertical-align: inherit; text-align: center"
+            ng-repeat="kpi in projectKPIElements">
+            <!--Index-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{$index + 1}}</span>
+                <button type="submit"
+                        style="margin: 5px"
+                        ng-if="!item.isPrjClose"
+                        ng-click="deleteKPIElement(kpi)"
+                        class="btn btn-danger">
+                    刪除
+                </button>
+            </td >
+            <td colspan="1" style="vertical-align: inherit;">
+            </td>
+            <td style="vertical-align: inherit; text-align: right">
+                <input type="text"
+                       style="text-align: right"
+                       ng-model="kpi.memo"
+                       value="{{kpi.memo}}"
+                       class="form-control input-sm">
+            </td>
+            <td colspan="2" style="vertical-align: inherit;">
+            </td>
+            <td style="vertical-align: inherit; text-align: right">
+                <input type="number"
+                       style="text-align: right"
+                       ng-model="kpi.amount"
+                       value="{{kpi.amount}}"
+                       class="form-control input-sm">
+            </td>
+        </tr>
+
+    </table>
+</div>
+<hr>
