@@ -82,7 +82,7 @@
             <th style="vertical-align: inherit; text-align: center" >經理/主任</th>
             <th style="vertical-align: inherit; text-align: center" >技師</th>
             <th style="vertical-align: inherit; text-align: center" >
-                利潤
+                行政績效
             </th>
         </tr>
         </thead>
@@ -154,7 +154,7 @@
             <td class="form-group" style="vertical-align: inherit;">
                 <!--&lt;!&ndash;<span >{{item.rate_item_3 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>&ndash;&gt;-->
                 <!--<span style="text-align: right">{{calResult(8, item).toLocaleString()}}</span>-->
-                <span style="text-align: right">{{fetchKPIValue(9, item).toLocaleString()}}</span>
+                <span style="text-align: right">{{fetchKPIValue(6, item).toLocaleString()}}</span>
             </td>
         </tr>
         </tbody>
@@ -163,7 +163,7 @@
                 小計
             </td>
             <td style="vertical-align: inherit; text-align: right">
-                {{calResultKpiAll(9).toLocaleString()}}
+                {{calResultKpiAll(6).toLocaleString()}}
             </td>
         </tr>
         <tr style="vertical-align: inherit; text-align: center">

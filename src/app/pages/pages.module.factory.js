@@ -610,6 +610,22 @@
                 },
             }
         }])
+        .factory('KpiTechDistributeUtil', ['$http', function (http) {
+            return {
+                createTD: function (formData) {
+                    return http.post('/api/post_kpi_tech_distribute_create', formData)
+                },
+                findTD: function (formData) {
+                    return http.post('/api/post_kpi_tech_distribute_find', formData)
+                },
+                updateTD: function (formData) {
+                    return http.post('/api/post_kpi_tech_distribute_update', formData)
+                },
+                removeTD: function (formData) {
+                    return http.post('/api/post_kpi_tech_distribute_remove', formData)
+                },
+            }
+        }])
         .factory('WorkHourUtil', ['$http', function (http) {
             return {
                 createWorkHourTableForm: function (formData) {
@@ -690,6 +706,11 @@
                 // 20200703
                 queryEmployeeStatistics: function (formData) {
                     return http.post('/api/query_employee_statistics', formData);
+                },
+
+                // 20211117
+                queryKPIPersonalWorkHour: function (formData) {
+                    return http.post('/api/query_kpi_personal_workhour', formData);
                 },
 
                 // project Income Cost

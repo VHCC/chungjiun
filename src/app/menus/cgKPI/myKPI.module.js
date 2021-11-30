@@ -36,20 +36,20 @@
                 })
             .state('cgKPI.personal',
                 {
-                    url: '/empty',
-                    templateUrl: 'app/pages/myNewPage/empty.html',
+                    url: '/KPIPersonal',
+                    templateUrl: 'app/pages/kpi/personal/kpiPersonHomePage.html',
                     title: '個人績效',
-                    accessLevel: [9999],
+                    // accessLevel: [9999],
                     sidebarMeta: {
                         order: global.pages.cgKPI_personal,
                     },
                 })
             .state('cgKPI.tech',
                 {
-                    url: '/empty',
-                    templateUrl: 'app/pages/myNewPage/empty.html',
+                    url: '/KPITech',
+                    templateUrl: 'app/pages/kpi/tech/kpiTechHomePage.html',
                     title: '技師績效',
-                    accessLevel: [9999],
+                    // accessLevel: [9999],
                     sidebarMeta: {
                         order: global.pages.cgKPI_tech,
                     },

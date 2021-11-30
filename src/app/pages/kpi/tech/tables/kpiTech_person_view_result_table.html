@@ -1,0 +1,116 @@
+<style type="text/css">
+    .AutoNewline
+    {
+        word-break: break-all;/*必須*/
+    }
+</style>
+<div class="horizontal-scroll">
+    <table class="table table-bordered table-hover table-condensed"
+           style="width:120%; table-layout: auto">
+        <colgroup>
+            <!--項目-->
+            <col span="1" style="width: 1%;">
+            <!--專案代碼-->
+            <col span="1" style="width: 5%;">
+            <!--專案名稱-->
+            <col span="1" >
+            <!--經理/主任-->
+            <col span="1" style="width: 3%;">
+            <!--技師-->
+            <col span="1" style="width: 5%;">
+            <!--技師費-->
+            <col span="1" style="width: 10%;">
+
+            <!--新增人員-->
+            <!--<col span="1" ng-repeat="user in projectTechMembers" style="width: 10%;">-->
+
+            <!--&lt;!&ndash;小計&ndash;&gt;-->
+            <!--<col span="1" style="width: 10%;">-->
+        </colgroup>
+        <thead>
+        <tr >
+            <th style="vertical-align: inherit; text-align: center" >項目</th>
+            <th style="vertical-align: inherit; text-align: center" >專案代碼</th>
+            <th style="vertical-align: inherit; text-align: center" >專案名稱</th>
+            <th style="vertical-align: inherit; text-align: center" >經理/主任</th>
+            <th style="vertical-align: inherit; text-align: center" >技師</th>
+            <th style="vertical-align: inherit; text-align: center" >
+                技師費
+            </th>
+            <th style="vertical-align: inherit; text-align: center" ng-repeat="user in projectTechMembers">
+                {{showUser(user.userDID)}}
+            </th>
+            <!--<th style="vertical-align: inherit; text-align: center" >-->
+            <!--</th>-->
+            <!--<th style="vertical-align: inherit; text-align: center" >-->
+                <!--餘額-->
+            <!--</th>-->
+        </tr>
+        </thead>
+        <tbody >
+        <tr style="vertical-align: inherit; text-align: right" ng-repeat="item in projectFinancialResultTable">
+            <!--Index-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{$index + 1}}</span>
+            </td >
+            <!--專案代碼-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{item.prjCode}}</span>
+            </td>
+            <!--專案名稱-->
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                <span>{{showPrjName(item.prjDID)}}</span>
+            </td>
+            <!--經理-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{showManager(showPrjInfo(item.prjDID))}}</span>
+            </td>
+            <!--技師-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{showTechs(showPrjTech(item.prjDID))}}</span>
+            </td>
+            <!--技師費-->
+            <td class="form-group" style="vertical-align: inherit;">
+                <span style="text-align: right">{{fetchKPIValue(7, item).toLocaleString()}}</span>
+            </td>
+
+            <td ng-repeat="user in projectTechMembers">
+                <span>{{user[item.prjCode]}}</span>
+            <td/>
+            <!--<td>-->
+                <!--{{showPrjSum(item).toLocaleString()}}-->
+            <!--</td>-->
+        </tr>
+        </tbody>
+        <tr style="vertical-align: inherit; text-align: center">
+            <td colspan="5" style="vertical-align: inherit;">
+                小計
+            </td>
+            <td style="vertical-align: inherit; text-align: right">
+                {{calResultKpiAll(7).toLocaleString()}}
+            </td>
+            <td style="vertical-align: inherit; text-align: right" ng-repeat="user in projectTechMembers">
+                {{showSum(user).toLocaleString()}}
+            </td>
+            <!--<td></td>-->
+            <!--<td>{{ showTotalSum().toLocaleString()}}</td>-->
+        </tr>
+        <!--<tr style="vertical-align: inherit; text-align: center">-->
+            <!--<td style="vertical-align: inherit;">-->
+
+            <!--</td>-->
+            <!--<td colspan="1" style="vertical-align: inherit;">-->
+            <!--</td>-->
+            <!--<td style="vertical-align: inherit; text-align: right">-->
+                <!--Memo-->
+            <!--</td>-->
+            <!--<td colspan="2" style="vertical-align: inherit;">-->
+            <!--</td>-->
+            <!--<td style="vertical-align: inherit; text-align: right">-->
+                <!--金額-->
+            <!--</td>-->
+        <!--</tr>-->
+
+    </table>
+</div>
+<hr>
