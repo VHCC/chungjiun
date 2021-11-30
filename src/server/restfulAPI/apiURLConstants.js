@@ -134,6 +134,7 @@ global.apiUrl = {
 
     // employeeStatistics
     query_employee_statistics : '/api/query_employee_statistics',
+    query_kpi_personal_workhour : '/api/query_kpi_personal_workhour',
 
 
     //workHourTable Form Work Add
@@ -206,6 +207,12 @@ global.apiUrl = {
     post_project_financial_distribute_find : '/api/post_project_financial_distribute_find',
     post_project_financial_distribute_update : '/api/post_project_financial_distribute_update',
     post_project_financial_distribute_remove : '/api/post_project_financial_distribute_remove',
+
+    // KpiTechDistributeUtil
+    post_kpi_tech_distribute_create : '/api/post_kpi_tech_distribute_create',
+    post_kpi_tech_distribute_find : '/api/post_kpi_tech_distribute_find',
+    post_kpi_tech_distribute_update : '/api/post_kpi_tech_distribute_update',
+    post_kpi_tech_distribute_remove : '/api/post_kpi_tech_distribute_remove',
 
     // nationalHolidayForm
     post_national_holiday_data_form_create : '/api/post_national_holiday_data_form_create',

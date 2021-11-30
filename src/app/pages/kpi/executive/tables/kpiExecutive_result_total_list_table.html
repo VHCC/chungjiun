@@ -10,10 +10,10 @@
         <colgroup>
             <col span="1" style="width: 1%;">
             <col span="1" style="width: 5%;">
-            <col span="1" style="width: 10%;">
             <col span="1" style="width: 5%;">
-            <col span="1" style="width: 5%;">
-            <col span="1" style="width: 5%;">
+            <!--<col span="1" style="width: 5%;">-->
+            <!--<col span="1" style="width: 5%;">-->
+            <!--<col span="1" style="width: 5%;">-->
         </colgroup>
         <thead>
         <!--<tr >-->
@@ -77,37 +77,38 @@
         <!--</tr>-->
         <tr >
             <th style="vertical-align: inherit; text-align: center" >項目</th>
-            <th style="vertical-align: inherit; text-align: center" >專案代碼</th>
-            <th style="vertical-align: inherit; text-align: center" >專案名稱</th>
-            <th style="vertical-align: inherit; text-align: center" >經理/主任</th>
-            <th style="vertical-align: inherit; text-align: center" >技師</th>
+            <th style="vertical-align: inherit; text-align: center" >年度</th>
             <th style="vertical-align: inherit; text-align: center" >
-                利潤
+                行政
             </th>
         </tr>
         </thead>
-        <tbody ng-repeat="item in projectFinancialResultTable_total">
+        <tbody ng-repeat="item in projectFinancialResultTable_Total">
         <tr style="vertical-align: inherit; text-align: right">
             <!--Index-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
                 <span>{{$index + 1}}</span>
             </td >
+            <!--年度-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{item.yearShow}}</span>
+            </td >
             <!--專案代碼-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span>{{showPrjInfo(item.prjDID).prjCode}}</span>
-            </td>
+            <!--<td class="form-group" style="vertical-align: inherit; text-align: center">-->
+                <!--<span>{{showPrjInfo(item.prjDID).prjCode}}</span>-->
+            <!--</td>-->
             <!--專案名稱-->
-            <td class="form-group" style="vertical-align: inherit; text-align: left">
-                <span>{{showPrjName(item.prjDID)}}</span>
-            </td>
+            <!--<td class="form-group" style="vertical-align: inherit; text-align: left">-->
+                <!--<span>{{showPrjName(item.prjDID)}}</span>-->
+            <!--</td>-->
             <!--經理-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span>{{showManager(showPrjInfo(item.prjDID))}}</span>
-            </td>
+            <!--<td class="form-group" style="vertical-align: inherit; text-align: center">-->
+                <!--<span>{{showManager(showPrjInfo(item.prjDID))}}</span>-->
+            <!--</td>-->
             <!--技師-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span>{{showTechs(showPrjTech(item.prjDID))}}</span>
-            </td>
+            <!--<td class="form-group" style="vertical-align: inherit; text-align: center">-->
+                <!--<span>{{showTechs(showPrjTech(item.prjDID))}}</span>-->
+            <!--</td>-->
 
             <!-- 收入 -->
             <!--<td class="form-group" style="vertical-align: inherit">-->
@@ -145,74 +146,19 @@
             <!--</td>-->
 
             <!--風險-->
-            <!--<td class="form-group " style="vertical-align: inherit;">-->
+            <td class="form-group " style="vertical-align: inherit;">
                 <!--<span >{{item.rate_item_4 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>-->
                 <!--<span style="text-align: right">{{calResultKpi(7, item).toLocaleString()}}</span>-->
                 <!--<span style="text-align: right">{{fetchKPIValue(8, item).toLocaleString()}}</span>-->
-            <!--</td>-->
+                <span style="text-align: right">{{calResultKpiAllTotalList(6, item).toLocaleString()}}</span>
+            </td>
             <!--利潤-->
-            <td class="form-group" style="vertical-align: inherit;">
+            <!--<td class="form-group" style="vertical-align: inherit;">-->
                 <!--&lt;!&ndash;<span >{{item.rate_item_3 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>&ndash;&gt;-->
                 <!--<span style="text-align: right">{{calResult(8, item).toLocaleString()}}</span>-->
-                <span style="text-align: right">{{fetchKPIValue(9, item).toLocaleString()}}</span>
-            </td>
+            <!--</td>-->
         </tr>
         </tbody>
-        <tr style="vertical-align: inherit; text-align: center">
-            <td colspan="5" style="vertical-align: inherit;">
-                小計
-            </td>
-            <td style="vertical-align: inherit; text-align: right">
-                {{calResultKpiAll(9).toLocaleString()}}
-            </td>
-        </tr>
-        <tr style="vertical-align: inherit; text-align: center">
-            <td style="vertical-align: inherit;">
-
-            </td>
-            <td colspan="1" style="vertical-align: inherit;">
-            </td>
-            <td style="vertical-align: inherit; text-align: right">
-                Memo
-            </td>
-            <td colspan="2" style="vertical-align: inherit;">
-            </td>
-            <td style="vertical-align: inherit; text-align: right">
-                金額
-            </td>
-        </tr>
-        <tr style="vertical-align: inherit; text-align: center"
-            ng-repeat="kpi in projectKPIElements">
-            <!--Index-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span>{{$index + 1}}</span>
-                <button type="submit"
-                        style="margin: 5px"
-                        ng-if="!item.isPrjClose"
-                        ng-click="deleteKPIElement(kpi)"
-                        class="btn btn-danger">
-                    刪除
-                </button>
-            </td >
-            <td colspan="1" style="vertical-align: inherit;">
-            </td>
-            <td style="vertical-align: inherit; text-align: right">
-                <input type="text"
-                       style="text-align: right"
-                       ng-model="kpi.memo"
-                       value="{{kpi.memo}}"
-                       class="form-control input-sm">
-            </td>
-            <td colspan="2" style="vertical-align: inherit;">
-            </td>
-            <td style="vertical-align: inherit; text-align: right">
-                <input type="number"
-                       style="text-align: right"
-                       ng-model="kpi.amount"
-                       value="{{kpi.amount}}"
-                       class="form-control input-sm">
-            </td>
-        </tr>
 
     </table>
 </div>

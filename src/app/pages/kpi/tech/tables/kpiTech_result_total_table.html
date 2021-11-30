@@ -1,0 +1,50 @@
+<style type="text/css">
+    .AutoNewline {
+        word-break: break-all; /*必須*/
+    }
+</style>
+<div class="horizontal-scroll">
+    <table class="table table-bordered table-hover table-condensed"
+           style="width:120%; table-layout: auto">
+        <colgroup>
+            <!--項目-->
+            <col span="1" style="width: 1%;">
+            <!--年度-->
+            <col span="1" style="width: 5%;">
+            <!--技師費-->
+            <col span="1" style="width: 47%;">
+            <!--已分配額度-->
+            <col span="1" style="width: 47%;">
+        </colgroup>
+        <thead>
+        <tr>
+            <th style="vertical-align: inherit; text-align: center">編號</th>
+            <th style="vertical-align: inherit; text-align: center">年度</th>
+            <th style="vertical-align: inherit; text-align: center">技師費</th>
+            <th style="vertical-align: inherit; text-align: center">
+                <sapn style="color:red">已分配額</sapn>
+            </th>
+        </tr>
+        </thead>
+        <tbody ng-if="true">
+        <tr style="vertical-align: inherit; text-align: right" ng-repeat="year in mainYears">
+            <!--Index-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{$index + 1}}</span>
+            </td>
+            <!--年度-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <sapn>{{year}}</sapn>
+            </td>
+            <!--技師費-->
+            <td style="vertical-align: inherit; text-align: right">
+                {{calResultKpiAllTotal(7, year).toLocaleString()}}
+            </td>
+            <!--已分配額度-->
+            <td>{{showTotalSumTotal(year).toLocaleString()}}</td>
+        </tr>
+        </tbody>
+
+    </table>
+</div>
+<hr>
