@@ -314,6 +314,11 @@
             }
 
             $scope.showHrMachineTime = function (datas, type) {
+
+                datas = datas.sort(function (a, b) {
+                    return a.time > b.time ? 1 : -1;
+                });
+
                 switch(type) {
                     // 上班 1
                     // 連續多筆type=1，以第一筆為主
@@ -411,9 +416,13 @@
                     // 遇到 加班簽退 2 就停止
                     case 41:
                         var workOverOffArray = [];
+                        var isFirstWorkOverOn = false;
                         var isFirstWorkOverOff = false;
                         for (var index = 0; index < datas.length; index++) {
-                            if (datas[index].workType === "4") {
+                            if (datas[index].workType === "3") {
+                                isFirstWorkOverOn = true;
+                            }
+                            if (datas[index].workType === "4" && isFirstWorkOverOn) {
                                 workOverOffArray.push(datas[index]);
                                 isFirstWorkOverOff = true;
                             }
@@ -472,9 +481,14 @@
                     // 一定要有 加班簽退 1
                     case 32:
                         var workOverOnArray = [];
+                        var isFirstWorkOverOn = false;
                         var isSecondWorkOverOn = false;
                         for (var index = 0; index < datas.length; index++) {
-                            if (datas[index].workType === "4") {
+                            if (datas[index].workType === "3") {
+                                isFirstWorkOverOn = true;
+                            }
+
+                            if (datas[index].workType === "4" && isFirstWorkOverOn) {
                                 isSecondWorkOverOn = true;
                             }
                             if (datas[index].workType === "3" && datas[index].time != "0000") {
@@ -491,11 +505,16 @@
                     // 一定要有 加班簽到 2
                     case 42:
                         var workOverOnArray = [];
+                        var isFirstWorkOverOn = false;
                         var isSecondWorkOverOn = false;
                         var workOverOffArray = [];
                         var isSecondWorkOffOn = false;
                         for (var index = 0; index < datas.length; index++) {
-                            if (datas[index].workType === "4") {
+                            if (datas[index].workType === "3") {
+                                isFirstWorkOverOn = true;
+                            }
+
+                            if (datas[index].workType === "4" && isFirstWorkOverOn) {
                                 isSecondWorkOverOn = true;
                             }
                             if (datas[index].workType === "3" && datas[index].time != "0000") {
