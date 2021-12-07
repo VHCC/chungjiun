@@ -91,6 +91,7 @@
             <span id="prjCode{{$parent.$index}}">{{showPrjCode(item.prjDID)}}</span>
             <span style="display: none;" id="prjDID{{$parent.$index}}">{{item.prjDID}}</span>
             <br>
+            <span style="display: none">{{item.tableID}}</span>
             <button class="btn btn-danger editable-table-button btn-xs"
                     ng-show="!rowform1.$waiting && !item.isSendReview"
                     ng-click="deleteCheck(item, $parent.$index, $index);">
