@@ -399,6 +399,7 @@
 
             WorkHourUtil.getWorkHourForm(getData) // 拿工時表資料
                 .success(function (res) {
+                    console.log(res)
                     if (res.payload.length > 0) {
                         res.payload = res.payload.sort(function (a, b) {
                             var dateA = a.year +1911 + "/" + a.month;
@@ -408,11 +409,12 @@
                         // console.log(res);
 
                         var needUpdateWorkTableIDArray = [];
+                        $scope.workhourFormDidArray = [];
 
                         $scope.getWorkHourForms = res.payload;
                         $scope.loadWOTTotal($cookies.get('userDID'), res.payload);
                         for (var majorIndex = 0; majorIndex < res.payload.length; majorIndex ++) {
-
+                            $scope.workhourFormDidArray.push(res.payload[majorIndex]._id);
                             var tableIndex = 0;
                             var workItemCount = res.payload[majorIndex].formTables.length;
 
@@ -1953,7 +1955,7 @@
                         }
                     }
 
-                    var formData = {
+                    var createFormData = {
                         year: sendYear,
                         month: sendMonth,
                         creatorDID: $cookies.get('userDID'),
@@ -1964,41 +1966,42 @@
                         // oldTables: needRemoveOldTable,
                     };
 
-                    WorkHourUtil.removeWorkHourTableForm(formData)
+                    $scope.removeFormData = {
+                        year: sendYear,
+                        month: sendMonth,
+                        creatorDID: $cookies.get('userDID'),
+                        create_formDate: $scope.firstFullDate,
+                        // workHourTableData 為 []，也要送，作為更新。
+                        formTables: workHourTableData,
+                        oldTables: qqq,
+                        oldFormsDID: $scope.workhourFormDidArray,
+                        // oldTables: needRemoveOldTable,
+                    };
+
+                    // TODO 跨月
+                    WorkHourUtil.createWorkHourTableForm(createFormData)
                         .success(function (res) {
-                            // console.log(res);
+                            var workIndex = tableIndex;
+                            tableIndex++;
+                            // // 更新old Table ID Array
+                            // var workTableIDArray = [];
+                            if (res.payload.length > 0) {
+                                for (var index = 0; index < res.payload.length; index++) {
+                                    needUpdateWorkTableIDArray.push(res.payload[index].tableID);
+                                    $scope.tables[workIndex].tablesItems[index].tableID = res.payload[index].tableID; // for send to review.
+                                }
+                            }
+                            // 移除舊有 tableID;
+                            needRemoveOldTable = {
+                                tableIDArray: needUpdateWorkTableIDArray,
+                            }
+                            // sleep(200);
+                            if (isRefreshProjectSelector && tableIndex === $scope.tables.length) {
+                                $scope.getWorkHourTables();
+                            }
 
-                            var createFormData = {
-                                year: res.payload.year,
-                                month: res.payload.month,
-                                creatorDID: res.payload.creatorDID,
-                                create_formDate: res.payload.create_formDate,
-                                // workHourTableData 為 []，也要送，作為更新。
-                                formTables: res.payload.formTables,
-                                oldTables: res.payload.oldTables,
-                            };
-
-                            // TODO 跨月
-                            WorkHourUtil.createWorkHourTableForm(createFormData)
+                            WorkHourUtil.removeWorkHourTableForm($scope.removeFormData)
                                 .success(function (res) {
-                                    var workIndex = tableIndex;
-                                    tableIndex++;
-                                    // // 更新old Table ID Array
-                                    // var workTableIDArray = [];
-                                    if (res.payload.length > 0) {
-                                        for (var index = 0; index < res.payload.length; index++) {
-                                            needUpdateWorkTableIDArray.push(res.payload[index].tableID);
-                                            $scope.tables[workIndex].tablesItems[index].tableID = res.payload[index].tableID; // for send to review.
-                                        }
-                                    }
-                                    // 移除舊有 tableID;
-                                    needRemoveOldTable = {
-                                        tableIDArray: needUpdateWorkTableIDArray,
-                                    }
-                                    // sleep(200);
-                                    if (isRefreshProjectSelector && tableIndex === $scope.tables.length) {
-                                        $scope.getWorkHourTables();
-                                    }
                                 })
                                 .error(function () {
                                     console.log('ERROR WorkHourUtil.createWorkHourTableForm');
@@ -2017,6 +2020,62 @@
                                 });
                             }, 200)
                         })
+
+
+
+                    // WorkHourUtil.removeWorkHourTableForm($scope.removeFormData)
+                    //     .success(function (res) {
+                    //         // console.log(res);
+                    //
+                    //         var createFormData = {
+                    //             year: res.payload.year,
+                    //             month: res.payload.month,
+                    //             creatorDID: res.payload.creatorDID,
+                    //             create_formDate: res.payload.create_formDate,
+                    //             // workHourTableData 為 []，也要送，作為更新。
+                    //             formTables: res.payload.formTables,
+                    //             oldTables: res.payload.oldTables,
+                    //         };
+                    //
+                    //         // TODO 跨月
+                    //         WorkHourUtil.createWorkHourTableForm(createFormData)
+                    //             .success(function (res) {
+                    //                 var workIndex = tableIndex;
+                    //                 tableIndex++;
+                    //                 // // 更新old Table ID Array
+                    //                 // var workTableIDArray = [];
+                    //                 if (res.payload.length > 0) {
+                    //                     for (var index = 0; index < res.payload.length; index++) {
+                    //                         needUpdateWorkTableIDArray.push(res.payload[index].tableID);
+                    //                         $scope.tables[workIndex].tablesItems[index].tableID = res.payload[index].tableID; // for send to review.
+                    //                     }
+                    //                 }
+                    //                 // 移除舊有 tableID;
+                    //                 needRemoveOldTable = {
+                    //                     tableIDArray: needUpdateWorkTableIDArray,
+                    //                 }
+                    //                 // sleep(200);
+                    //                 if (isRefreshProjectSelector && tableIndex === $scope.tables.length) {
+                    //                     $scope.getWorkHourTables();
+                    //                 }
+                    //             })
+                    //             .error(function () {
+                    //                 console.log('ERROR WorkHourUtil.createWorkHourTableForm');
+                    //                 $timeout(function () {
+                    //                     bsLoadingOverlayService.stop({
+                    //                         referenceId: 'mainPage_workHour'
+                    //                     });
+                    //                 }, 200)
+                    //             })
+                    //     })
+                    //     .error(function () {
+                    //         console.log('ERROR WorkHourUtil.createWorkHourTableForm');
+                    //         $timeout(function () {
+                    //             bsLoadingOverlayService.stop({
+                    //                 referenceId: 'mainPage_workHour'
+                    //             });
+                    //         }, 200)
+                    //     })
 
                 }
             }, delayTime);
@@ -3110,6 +3169,7 @@
 
             WorkHourUtil.getWorkHourFormMultiple(getData)
                 .success(function (res) {
+                    console.log(res);
                     var relatedUsersAndTables = [];
                     // 一個UserDID只有一個物件
                     var existDIDArray = [];
