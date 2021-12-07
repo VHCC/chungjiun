@@ -13,12 +13,23 @@ module.exports = function (app) {
     // remove Form
     app.post(global.apiUrl.post_work_hour_remove_table, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_remove_table");
+        var removeFormData = []
+        for (var index = 0; index < req.body.oldFormsDID.length; index++) {
+            var target = {
+                _id: req.body.oldFormsDID[index],
+            }
+            removeFormData.push(target);
+        };
+
         // 刪除既有工時表
+        // WorkHourForm.remove({
+        //     creatorDID: req.body.creatorDID,
+        //     create_formDate: req.body.create_formDate,
+        //     year: req.body.year,
+        //     month: req.body.month,
+        // }, function (err) {
         WorkHourForm.remove({
-            creatorDID: req.body.creatorDID,
-            create_formDate: req.body.create_formDate,
-            year: req.body.year,
-            month: req.body.month,
+            $or: removeFormData
         }, function (err) {
             if (err) {
                 console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_remove_table");
