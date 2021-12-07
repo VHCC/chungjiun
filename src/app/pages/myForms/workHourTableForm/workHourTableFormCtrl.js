@@ -1997,20 +1997,19 @@
                             }
                             // sleep(200);
                             if (isRefreshProjectSelector && tableIndex === $scope.tables.length) {
-                                $scope.getWorkHourTables();
+                                WorkHourUtil.removeWorkHourTableForm($scope.removeFormData)
+                                    .success(function (res) {
+                                        $scope.getWorkHourTables();
+                                    })
+                                    .error(function () {
+                                        console.log('ERROR WorkHourUtil.createWorkHourTableForm');
+                                        $timeout(function () {
+                                            bsLoadingOverlayService.stop({
+                                                referenceId: 'mainPage_workHour'
+                                            });
+                                        }, 200)
+                                    })
                             }
-
-                            WorkHourUtil.removeWorkHourTableForm($scope.removeFormData)
-                                .success(function (res) {
-                                })
-                                .error(function () {
-                                    console.log('ERROR WorkHourUtil.createWorkHourTableForm');
-                                    $timeout(function () {
-                                        bsLoadingOverlayService.stop({
-                                            referenceId: 'mainPage_workHour'
-                                        });
-                                    }, 200)
-                                })
                         })
                         .error(function () {
                             console.log('ERROR WorkHourUtil.createWorkHourTableForm');
@@ -2020,8 +2019,6 @@
                                 });
                             }, 200)
                         })
-
-
 
                     // WorkHourUtil.removeWorkHourTableForm($scope.removeFormData)
                     //     .success(function (res) {
