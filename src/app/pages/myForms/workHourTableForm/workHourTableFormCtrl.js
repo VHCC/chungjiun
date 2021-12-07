@@ -204,7 +204,7 @@
 
         // 暫存表單，＊＊＊使用者互動 主要儲存功能＊＊＊
         $scope.saveTemp = function () {
-            $scope.createSubmit(10, false);
+            $scope.createSubmit(10, true);
         }
 
         // Remove Work Hour Check
@@ -1771,7 +1771,7 @@
                             table.fri_hour_add +
                             table.sat_hour_add +
                             table.sun_hour_add;
-                        $scope.createSubmit(10, false);
+                        $scope.createSubmit(10, true);
                     })
                     .error(function () {
                         console.log('ERROR WorkHourAddItemUtil.createWorkHourAddItem')
@@ -1997,19 +1997,19 @@
                             }
                             // sleep(200);
                             if (isRefreshProjectSelector && tableIndex === $scope.tables.length) {
-                                WorkHourUtil.removeWorkHourTableForm($scope.removeFormData)
-                                    .success(function (res) {
-                                        $scope.getWorkHourTables();
-                                    })
-                                    .error(function () {
-                                        console.log('ERROR WorkHourUtil.createWorkHourTableForm');
-                                        $timeout(function () {
-                                            bsLoadingOverlayService.stop({
-                                                referenceId: 'mainPage_workHour'
-                                            });
-                                        }, 200)
-                                    })
+                                $scope.getWorkHourTables();
                             }
+                        })
+                        .error(function () {
+                            console.log('ERROR WorkHourUtil.createWorkHourTableForm');
+                            $timeout(function () {
+                                bsLoadingOverlayService.stop({
+                                    referenceId: 'mainPage_workHour'
+                                });
+                            }, 200)
+                        })
+                    WorkHourUtil.removeWorkHourTableForm($scope.removeFormData)
+                        .success(function (res) {
                         })
                         .error(function () {
                             console.log('ERROR WorkHourUtil.createWorkHourTableForm');
