@@ -400,6 +400,7 @@
             WorkHourUtil.getWorkHourForm(getData) // 拿工時表資料
                 .success(function (res) {
                     console.log(res)
+                    $scope.workhourFormDidArray = [];
                     if (res.payload.length > 0) {
                         res.payload = res.payload.sort(function (a, b) {
                             var dateA = a.year +1911 + "/" + a.month;
