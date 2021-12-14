@@ -101,6 +101,7 @@ module.exports = function (app) {
             line_photo: req.body.linePicture,
             line_id: req.body.lineID,
             user_name: req.body.vhcIDBindLine,
+            user_mobile: req.body.vhcMobileBindLine,
         }, function (err) {
             if (err) {
                 res.send(err);

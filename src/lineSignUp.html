@@ -149,9 +149,9 @@
         <h5 class="text-center area-margin" id="line_email" ng-model="formData.lineEmail"></h5>
         <div class="inputs">
             <label>姓名或暱稱</label>
-            <input type="text" placeholder="填寫姓名或暱稱"/>
+            <input type="text" id="userName" ng-model="formData.vhcIDBindLine" placeholder="填寫姓名或暱稱"/>
             <label>手機(Mobile)</label>
-            <input type="text" placeholder="09XX123456"/>
+            <input type="text" id="userMobile" ng-model="formData.vhcMobileBindLine" placeholder="09XX123456"/>
             <!--<button type="submit">LOGIN</button>-->
             <button type="button" id="signUpVhcMember">註冊保健視會員</button>
         </div>
@@ -236,6 +236,7 @@
             return;
         }
         qqq.vhcIDBindLine = angular.element(document.getElementById('main')).scope().formData.vhcIDBindLine;
+        qqq.vhcMobileBindLine = angular.element(document.getElementById('main')).scope().formData.vhcMobileBindLine;
         angular.element(document.getElementById('main')).scope().vhcSignUp(qqq);
     });
 
