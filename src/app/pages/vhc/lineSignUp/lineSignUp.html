@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>LINE Login Demo</title>
+</head>
+<body>
+<button id="lineLoginBtn">LINE 登入</button>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js'></script>
+<script>
+    $('#lineLoginBtn').on('click', function(e) {
+        let client_id = '1656703065';
+        let client_secret = '1751c7107a7aa05f6893da3b76fc5253';
+        let redirect_uri = 'https://vhc.ichenprocin.dsmynas.com/api/auth';
+        let link = 'https://access.line.me/oauth2/v2.1/authorize?';
+        link += 'response_type=code';
+        link += '&client_id=' + client_id;
+        link += '&client_secret=' + client_secret;
+        link += '&redirect_uri=' + redirect_uri;
+        link += '&state=login';
+        link += '&scope=openid%20profile%20email';
+        window.location.href = link;
+    });
+</script>
+</body>
+</html>

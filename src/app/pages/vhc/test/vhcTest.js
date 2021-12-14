@@ -21,7 +21,6 @@
                      VhcMigrateUtil) {
 
         $scope.migrateFromMySQLToMongo = function () {
-
             var postData = {
                 aaa : "aaa"
             }
@@ -29,6 +28,17 @@
             VhcMigrateUtil.connectDB(postData)
                 .success(function () {
                     console.log("migrate done.");
+                })
+        }
+
+        $scope.bindingCustomerToPurchaseData = function () {
+            var postData = {
+                aaa : "aaa"
+            }
+
+            VhcMigrateUtil.bindingCustomerWithPurchase(postData)
+                .success(function (res) {
+                    console.log(res)
                 })
         }
     }

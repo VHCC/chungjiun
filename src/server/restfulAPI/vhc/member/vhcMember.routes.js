@@ -25,7 +25,7 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_vhc_member_old_rx_by_number, function (req, res) {
         console.log(req.body);
         VhcUserEyeCheckInfo.findOne({
-            user_number: req.body.user_number
+            userUUID: req.body.userUUID
         }, function (err, oldRx) {
             if (err) {
                 res.send(err);
@@ -103,16 +103,13 @@ module.exports = function (app) {
                 user_email: req.body.member.user_email,
                 user_address: req.body.member.user_address,
                 user_memo: req.body.member.user_memo,
+                user_number: req.body.member.user_number,
             }
         }, function (err) {
-            if (err) {
-                res.send(err);
-            } else {
-                res.status(200).send({
-                    code: 200,
-                    error: global.status._200,
-                });
-            }
+            res.status(200).send({
+                code: 200,
+                error: global.status._200,
+            });
         })
     });
 

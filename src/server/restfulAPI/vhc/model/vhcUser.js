@@ -7,22 +7,26 @@ module.exports = mongoose.model('VhcUser', {
     user_number: {
         type: String,
     },
-    user_name:{
+    user_name: {
         type: String,
     },
-    user_sex:{
+    user_sex: {
         type: String,
     },
     user_birth: {
         type: String,
     },
-    user_mobile:{
+    user_mobile: {
         type: String,
     },
-    user_homephone:{type: String,},
-    user_officephone:{type: String,},
-    user_email:{type: String,},
-    user_address:{type: String,},
-    user_memo:{type: String,},
+    user_homephone: {type: String,},
+    user_officephone: {type: String,},
+    user_email: {type: String,},
+    user_address: {type: String,},
+    user_memo: {type: String,},
+
+    line_photo: {type: String,},
+    line_id: {type: String,},
+    line_binding_name: {type: String,},
 
 });

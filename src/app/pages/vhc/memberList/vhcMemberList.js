@@ -62,7 +62,6 @@
 
 
         $scope.editMember = function (member) {
-            // console.log(member);
             $uibModal.open({
                 animation: true,
                 controller: 'vhcMemberModalCtrl',
@@ -75,8 +74,13 @@
                         return $scope;
                     },
                 }
-            }).result.then(function () {
-                // toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
+            // }).result.then(function () {
+            //     toastr.warning('尚未儲存表單 請留意資料遺失', 'Warning');
+            // });
+            }).result.then(function (selectedItem) {
+                console.log(selectedItem)
+            }, function () {
+                toastr.warning('Modal dismissed at: ' + new Date());
             });
         }
 
@@ -101,12 +105,11 @@
         $scope.editRx = function (member) {
 
             var postData = {
-                user_number: member.user_number
+                // user_number: member.user_number
+                userUUID: member._id
             }
             VhcOldRxUtil.findOldRxByMemberNumber(postData)
                 .success(function (res) {
-                    console.log(res);
-
                     $uibModal.open({
                         animation: true,
                         controller: 'vhcOldRxModalCtrl',

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset=utf-8'/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+    <link rel="stylesheet"
+          href="https://github.com/line/line-login-starter/blob/master/src/main/resources/static/css/line-login.css"/>
+    <title>LINE 保健視 Login</title>
+
+    <link rel="stylesheet" href="../bower_components/noty/lib/noty.css">
+    <script src="../bower_components/angular/angular.min.js"></script>
+    <script src="../bower_components/angular-cookies/angular-cookies.min.js"></script>
+    <script src="server/restfulAPI/lineLogin/auth/lineSingUpCtrl.js"></script>
+    <script src="../bower_components/noty/lib/noty.js"></script>
+</head>
+
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;900&display=swap");
+
+    body {
+        margin: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #ecf0f3;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        place-items: center;
+        overflow: hidden;
+        font-family: poppins;
+        overflow: auto;
+    }
+
+    .container {
+        position: relative;
+        width: 400px;
+        height: 800px;
+        border-radius: 20px;
+        padding: 40px;
+        box-sizing: border-box;
+        background: #ecf0f3;
+        box-shadow: 14px 14px 20px #cbced1, -14px -14px 20px white;
+    }
+
+    .brand-logo {
+        height: 100px;
+        width: 100px;
+        background: url("assets/img/logo/310986_10150331112957475_1134986217_n.jpeg");
+        margin: auto;
+        /*border-radius: 50%;*/
+        box-sizing: border-box;
+        box-shadow: 7px 7px 10px #cbced1, -7px -7px 10px white;
+    }
+
+    .brand-title {
+        margin-top: 10px;
+        font-weight: 300;
+        font-size: 1.8rem;
+        color: #1da1f2;
+        letter-spacing: 1px;
+    }
+
+    .inputs {
+        text-align: left;
+        margin-top: 30px;
+    }
+
+    label,
+    input,
+    button {
+        display: block;
+        width: 100%;
+        padding: 0;
+        border: none;
+        outline: none;
+        box-sizing: border-box;
+    }
+
+    label {
+        margin-bottom: 4px;
+    }
+
+    label:nth-of-type(2) {
+        margin-top: 12px;
+    }
+
+    input::placeholder {
+        color: gray;
+    }
+
+    input {
+        background: #ecf0f3;
+        padding: 10px;
+        padding-left: 20px;
+        height: 50px;
+        font-size: 14px;
+        border-radius: 50px;
+        box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white;
+        border-bottom-style: solid;
+    }
+
+    button {
+        margin-top: 20px;
+        background: #1da1f2;
+        height: 40px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: 900;
+        box-shadow: 6px 6px 6px #cbced1, -6px -6px 6px white;
+        transition: 0.5s;
+    }
+
+    button:hover {
+        box-shadow: none;
+    }
+
+    h6 {
+        font-size: 8px;
+        bottom: 4px;
+        right: 4px;
+        text-decoration: none;
+        color: #6e6e6e;
+        border-radius: 10px;
+        padding: 2px;
+    }
+
+    h1 {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+</style>
+
+<body id="main" ng-app="lineSingUpCtrl" ng-controller="lineSingUpController">
+    <div class="container">
+        <br>
+        <!--<div class="brand-logo"></div>-->
+        <img width="150px" height="150px" style="margin-top: 40px"
+             src="assets/img/logo/310986_10150331112957475_1134986217_n.jpeg">
+        <div class="brand-title">保健視不是保健室 Line 資料授權</div>
+        <img id="line_picture" width="150px" height="150px"  style="margin-top: 10px"
+             ng-model="formData.linePicture"
+             src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif">
+        <h5 class="text-center area-margin" id="line_id" ng-model="formData.lindID"></h5>
+        <h5 class="text-center area-margin" id="line_email" ng-model="formData.lineEmail"></h5>
+        <div class="inputs">
+            <label>姓名或暱稱</label>
+            <input type="text" placeholder="填寫姓名或暱稱"/>
+            <label>手機(Mobile)</label>
+            <input type="text" placeholder="09XX123456"/>
+            <!--<button type="submit">LOGIN</button>-->
+            <button type="button" id="signUpVhcMember">註冊保健視會員</button>
+        </div>
+        <h6 style="text-align: center">© iChen Chu Web-Solution.@ 保健視眼鏡</h6>
+    </div>
+</body>
+
+
+
+<!--<div class="container">-->
+    <!--<div class="row">-->
+        <!--<div class="col-md-4 col-md-offset-4">-->
+            <!--<div class="area">-->
+                <!--<h4 class="text-center area-margin">保健視不是保健室 Line 資料授權</h4>-->
+                <!--<img width="150px" height="150px" class="center-block"-->
+                     <!--src="assets/img/logo/310986_10150331112957475_1134986217_n.jpeg">-->
+                <!--&lt;!&ndash;<br>&ndash;&gt;-->
+                <!--&lt;!&ndash;<img id="line_picture" width="150px" height="150px" class="center-block"&ndash;&gt;-->
+                     <!--&lt;!&ndash;ng-model="formData.linePicture"&ndash;&gt;-->
+                     <!--&lt;!&ndash;src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif">&ndash;&gt;-->
+                <!--<h5 class="text-center area-margin" id="line_id" ng-model="formData.lindID"></h5>-->
+                <!--<h5 class="text-center area-margin" id="line_email" ng-model="formData.lineEmail"></h5>-->
+                <!--<input width="120px" class="center-block" id="userName" type="text" placeholder="填寫姓名或暱稱"-->
+                       <!--ng-model="formData.vhcIDBindLine">-->
+                <!--<br>-->
+                <!--&lt;!&ndash;<button type="button" id="signUpVhcMember">註冊保健視會員</button>&ndash;&gt;-->
+                <!--<br>-->
+                <!--<h5 class="text-center area-margin" style="color:#989898">© iChen Chu Web-Solution.@ 保健視眼鏡</h5>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<button style="display: none">LINE 登入</button>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js'></script>
+<script>
+    var url = location.href;
+    console.log("URL:> " + location.href);
+    var captured = /id_token=([^&]+)/.exec(url)[1]; // Value is in [1] ('384' in our case)
+    var id_token = captured ? captured : 'inValid';
+    // console.log(id_token);
+
+    let client_id = '1656703065';
+    let link = 'https://api.line.me/oauth2/v2.1/verify?';
+    link += 'id_token=' + id_token;
+    link += '&client_id=' + client_id;
+
+    var lineServerResponse = "";
+
+    const http = new XMLHttpRequest();
+
+    http.open("POST", link)
+    http.send();
+
+    let qqq = {};
+
+    http.onload = function () {
+        // console.log(http.responseText);
+        JSON.parse(http.responseText, function (k, v) {
+            // console.log(k + ": " + v)
+            if (k == "name") {
+                $('#line_id').html(v);
+                qqq.lineID = v;
+            } else if (k == "email") {
+                $('#line_email').html(v);
+                qqq.lineEmail = v;
+            } else if (k == "picture") {
+                $('#line_picture').attr('src', v);
+                qqq.linePicture = v;
+            }
+        });
+    }
+
+    $('#signUpVhcMember').on('click', function (e) {
+
+        if ($('#userName').val() == "") {
+            new Noty({
+                text: '名稱為空，請再確認',
+                layout: 'center',
+                theme: 'light',
+                type: 'error',
+            }).show();
+            return;
+        }
+        qqq.vhcIDBindLine = angular.element(document.getElementById('main')).scope().formData.vhcIDBindLine;
+        angular.element(document.getElementById('main')).scope().vhcSignUp(qqq);
+    });
+
+    function userExist() {
+        new Noty({
+            text: '您已經註冊過囉',
+            layout: 'center',
+            theme: 'light',
+            type: 'success',
+        }).show();
+    }
+
+    function signUpSuccess() {
+        new Noty({
+            text: '您註冊成功囉，恭喜您',
+            layout: 'center',
+            theme: 'light',
+            type: 'success',
+        }).show();
+    }
+
+
+</script>
+</body>
+</html>

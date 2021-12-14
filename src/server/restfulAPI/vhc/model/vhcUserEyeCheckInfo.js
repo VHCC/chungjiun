@@ -25,6 +25,6 @@ module.exports = mongoose.model('VhcUserEyeCheckInfo', {
     user_leftoldva:{type: String,},
     user_leftoldpd:{type: String,},
 
-
+    userUUID: {type: String,},
 
 });

@@ -64,9 +64,7 @@
         </thead>
         <tbody>
 
-        <tr ng-repeat="mem in members" class="editable-tr-wrap"
-            >
-
+        <tr ng-repeat="mem in members" class="editable-tr-wrap">
             <!--會員ID-->
             <td class="table-id" style="width: 5%">{{mem.user_number}}
                 <my ng-class="{vhcMember: hover}"
@@ -87,40 +85,27 @@
                 </my>
             </td>
             <!--姓名-->
-            <td style="width: 20%">
+            <td >
                 {{mem.user_name}}
             </td>
-
-            <!--性別-->
-            <!--<td style="width: 20%">-->
-                <!--{{mem.user_sex}}-->
-            <!--</td>-->
             <!--生日-->
-            <td style="width: 13%">
+            <td >
                 {{mem.user_birth}}
             </td>
             <!--手機-->
-            <td style="width: 13%">
+            <td >
                 {{mem.user_mobile}}
             </td>
-            <!--家裡電話-->
-            <!--<td style="width: 13%">-->
-                <!--{{mem.user_homephone}}-->
-            <!--</td>-->
-            <!--辦公室電話-->
-            <!--<td style="width: 13%">-->
-                <!--{{mem.user_officephone}}-->
-            <!--</td>-->
             <!--Email-->
-            <td style="width: 13%">
+            <td >
                 {{mem.user_email}}
             </td>
             <!--住址-->
-            <td style="width: 13%">
+            <td >
                 {{mem.user_address}}
             </td>
             <!--備註-->
-            <td style="width: 13%">
+            <td >
                 {{mem.user_memo}}
             </td>
 

@@ -37,22 +37,24 @@
         // initial
 
         $scope.checkUserNumber = function (dom) {
-            console.log(dom.member.user_number);
             var postData = {
                 user_number: dom.member.user_number
             }
             VhcMemberUtil.findIfExistNumber(postData)
                 .success(function (res) {
-                    console.log(res);
-                    console.log(res.payload);
-                    console.log(res.payload == null);
                     if (res.payload == null) {
                         // can add
                         $('#addBtn').html("新增");
                         $('#addBtn').attr("disabled", false);
+                        $('#editBtn').html("儲存");
+                        $('#editBtn').attr("disabled", false);
                     } else {
-                        $('#addBtn').html("號碼已經存在！！");
-                        $('#addBtn').attr("disabled", true);
+                        if (dom.member._id != res.payload._id) {
+                            $('#addBtn').html("號碼已經存在！！");
+                            $('#addBtn').attr("disabled", true);
+                            $('#editBtn').html("號碼已經存在！！");
+                            $('#editBtn').attr("disabled", true);
+                        }
                         // exist member
                     }
                 })
@@ -60,23 +62,17 @@
         }
 
         $scope.saveVhcMember = function () {
-            console.log($scope.member);
-
             var postData = {
                 member: $scope.member
             }
 
             VhcMemberUtil.updateVhcMember(postData)
                 .success(function (res) {
-                    console.log(res);
                     $uibModalInstance.close();
                 })
         };
 
         $scope.addVhcMember = function () {
-
-            console.log($scope);
-
             if ($scope.member == undefined
                 || (!$scope.member.user_number || $scope.member.user_number.trim() == "")
                 || (!$scope.member.user_name || $scope.member.user_name.trim() == "")
@@ -91,10 +87,8 @@
 
             VhcMemberUtil.createVhcMember(postData)
                 .success(function (res) {
-                    console.log(res);
                     $window.location.reload();
                 })
-
         };
 
         $scope.closeDialog = function () {

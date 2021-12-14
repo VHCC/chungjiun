@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv='Content-type' content='text/html; charset=utf-8'/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+    <link rel="stylesheet"
+          href="https://github.com/line/line-login-starter/blob/master/src/main/resources/static/css/line-login.css"/>
+    <title>LINE 保健視 Login</title>
+</head>
+
+<style>
+
+    #center {
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    img {
+
+    }
+
+    #lineLoginBtn:hover {
+        cursor: pointer;
+    }
+
+</style>
+
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="area">
+                <h4 class="text-center area-margin">保健視不是保健室 Line 連結</h4>
+                <img width="150px" height="150px" class="center-block"
+                     src="assets/img/logo/310986_10150331112957475_1134986217_n.jpeg">
+                <div style="margin: 15px" id="web-login-button" class="center-block area-margin">
+                    <img id="lineLoginBtn" class="center-block" src="assets/img/btn/btn_login_base.png"
+                         onmouseover="this.src='assets/img/btn/btn_login_hover.png'"
+                         onmouseout="this.src='assets/img/btn/btn_login_base.png'">
+                </div>
+                <br>
+                <!--<div id="center">-->
+                    <!--<div class="fb-login-button" data-width="300" data-size="large" data-button-type="continue_with"-->
+                         <!--data-layout="default" data-auto-logout-link="false" data-use-continue-as="true"></div>-->
+                <!--</div>-->
+
+                <br>
+                <h5 class="text-center area-margin" style="color:#989898">© iChen Chu Web-Solution.@ 保健視眼鏡</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<button style="display: none">LINE 登入</button>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js'></script>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v12.0&appId=449621520098888&autoLogAppEvents=1" nonce="cMSBd4Ss"></script>
+<script>
+    $('#lineLoginBtn').on('click', function (e) {
+        let client_id = '1656703065';
+        let client_secret = '1751c7107a7aa05f6893da3b76fc5253';
+        let redirect_uri = 'https://vhc.ichenprocin.dsmynas.com/api/auth';
+        let link = 'https://access.line.me/oauth2/v2.1/authorize?';
+        link += 'response_type=code';
+        link += '&client_id=' + client_id;
+        link += '&client_secret=' + client_secret;
+        link += '&redirect_uri=' + redirect_uri;
+        link += '&state=login';
+        link += '&scope=openid%20profile%20email';
+        window.location.href = link;
+    });
+
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '449621520098888',
+            cookie: true,
+            xfbml: true,
+            version: 'v12.0'
+        });
+
+        FB.AppEvents.logPageView();
+
+        FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+        });
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    function checkLoginState() {
+        FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+        });
+    }
+</script>
+</body>
+</html>

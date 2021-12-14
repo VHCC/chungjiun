@@ -7,6 +7,13 @@
 
     angular.module('BlurAdmin.pages.factory', [])
         .config(routeConfig)
+        .factory('ServerInfo', ['$http', function (http) {
+            return {
+                getAllUsers: function () {
+                    return http.get('/api/getVersion');
+                },
+            }
+        }])
         .factory('User', ['$http', function (http) {
             return {
                 getAllUsers: function () {
@@ -598,6 +605,10 @@
             return {
                 connectDB: function (formData) {
                     return http.post('/api/connect_db', formData);
+                },
+
+                bindingCustomerWithPurchase: function (formData) {
+                    return http.post('/api/bindingDAta', formData);
                 }
             }
         }])
@@ -645,7 +656,14 @@
                 },
             }
         }])
-    ;
+        .factory('LineLoginUtil', ['$http', function (http) {
+            return {
+                updatePurchaseItem: function (formData) {
+                    return http.get('/api/auth', {code: code});
+                },
+
+            }
+        }])
 
 
     /** @ngInject */

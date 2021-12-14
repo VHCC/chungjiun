@@ -9,7 +9,7 @@
                 style="border: 1px solid #ff855f"
                 placeholder="會員號碼"
                 value="{{member.user_number}}"
-                ng-disabled="!isAddMember"
+                ng-disabled="false"
                 ng-change="checkUserNumber(this)"
                 ng-model="member.user_number"
                 required>
@@ -68,6 +68,7 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-danger"
                 ng-if="!isAddMember"
+                id="editBtn"
                 ng-click="saveVhcMember()">儲存
         </button>
         <button type="button" class="btn btn-success"

@@ -90,7 +90,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(bodyParser.json({type: 'application/vnd.api+json'})); // parse application/vnd.api+json as json
 
-app.use(timeout('10s'))
+app.use(timeout('60s'))
 
 // view engine setup
 // uncomment after placing your favicon in /public

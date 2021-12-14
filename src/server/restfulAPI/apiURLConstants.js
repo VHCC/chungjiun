@@ -148,6 +148,7 @@ global.apiUrl = {
 
     //Vhc
     connect_db : '/api/connect_db',
+    bindingDAta : '/api/bindingDAta',
 
     // Vhc MemberList
     get_vhc_member_all : '/api/get_vhc_member_all',
@@ -165,4 +166,8 @@ global.apiUrl = {
     post_vhc_purchase_add : '/api/post_vhc_purchase_add',
     // line notify
     get_line_notify_auth_register : '/api/post_line_notify_auth_register',
+    // line login
+    post_line_login_callback: '/api/auth',
+    post_line_login_email_check: '/api/emailCheck',
+    post_line_login_email_add_member: '/api/addVhcMemberViaLine',
 };
