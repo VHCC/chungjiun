@@ -35,5 +35,6 @@ require('./restfulAPI/vhc/member/vhcMember.routes')(app);
 require('./restfulAPI/vhc/purchase/vhcPurchase.routes')(app);
 require('./restfulAPI/lineNotify/auth/auth.route')(app);
 require('./restfulAPI/lineLogin/auth/auth.route')(app);
+require('./restfulAPI/jenkinsProxy/stravaWebhook/proxy.route')(app);
 
 

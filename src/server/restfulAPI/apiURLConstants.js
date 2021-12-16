@@ -170,4 +170,10 @@ global.apiUrl = {
     post_line_login_callback: '/api/auth',
     post_line_login_email_check: '/api/emailCheck',
     post_line_login_email_add_member: '/api/addVhcMemberViaLine',
+
+
+    // Jenkins Proxy
+    // - strava
+    get_jenkins_proxy_strava_webhook: '/api/strava/webhook',
+    post_jenkins_proxy_strava_webhook: '/api/strava/webhook',
 };
