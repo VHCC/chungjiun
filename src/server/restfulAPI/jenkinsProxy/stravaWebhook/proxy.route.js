@@ -14,8 +14,12 @@ module.exports = function (app) {
     // fetch
     app.post(global.apiUrl.post_jenkins_proxy_strava_webhook, function (req, res) {
         // var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-        console.log(req)
+        // console.log(req)
         // console.log("auth URL:> " + fullUrl);
+        // custom agent as global variable
+        const agent = new https.Agent({
+            rejectUnauthorized: false,
+        });
 
         var post_data = querystring.stringify({
             token: "TOKEN_STRVA_REFRESH",
@@ -29,7 +33,8 @@ module.exports = function (app) {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Content-Length': Buffer.byteLength(post_data)
-            }
+            },
+            agent
         }
 
         // Set up the request
@@ -53,7 +58,7 @@ module.exports = function (app) {
 
 
     app.get(global.apiUrl.get_jenkins_proxy_strava_webhook, function (req, res) {
-        console.log(req);
+        // console.log(req);
         // Your verify token. Should be a random string.
         const VERIFY_TOKEN = "STRAVA";
         // Parses the query params
