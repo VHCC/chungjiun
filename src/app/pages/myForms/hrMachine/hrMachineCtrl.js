@@ -1124,7 +1124,7 @@
                         // console.log(dateList);
                         // console.log(moment(parseInt(dateList[0].substring(0,3))+ 1911 + dateList[0].substring(3,7)));
                         var startDate = moment(parseInt(dateList[0].substring(0,3))+ 1911 + dateList[0].substring(3,7))
-                        startDate = startDate - 86400 * 1000 * 15
+                        // startDate = startDate - 86400 * 1000 * 15
                         // console.log(moment(parseInt(dateList[dateList.length - 1].substring(0,3))+ 1911 + dateList[dateList.length - 1].substring(3,7)));
                         var endDate = moment(parseInt(dateList[dateList.length - 1].substring(0,3))+ 1911 + dateList[dateList.length - 1].substring(3,7));
 
