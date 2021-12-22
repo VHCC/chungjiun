@@ -68,7 +68,7 @@
             $scope.userMonthSalary = cookies.get('userMonthSalary');
 
             // 行政總管、經理專屬，主任無權
-            if ($scope.roleType == 100 || $scope.roleType == 2 || $scope.roleType == 6) {
+            if ($scope.roleType == 100 || $scope.roleType == 2 || $scope.roleType == 6 || $scope.roleType == 1) {
                 // 所有人，對照資料
                 User.getAllUsers()
                     .success(function (allUsers) {
@@ -112,7 +112,7 @@
                                 })
                         }
 
-                        if ($scope.roleType === '2' || $scope.roleType === '100' || $scope.roleType === '6') {
+                        if ($scope.roleType === '2' || $scope.roleType === '100' || $scope.roleType === '6' || $scope.roleType === '1') {
                             var underling = []
                             for (var x = 0; x < allUsers.length; x++) {
                                 if (allUsers[x].bossID === cookies.get('userDID')) {

@@ -13,7 +13,7 @@
         </uib-tab>
 
         <uib-tab heading="專案人時支出查詢" ng-click="checkExecutiveData(this)"
-                 ng-show="roleType === '2' || roleType === '6' || roleType === '100'">
+                 ng-show="roleType === '2' || roleType === '6' || roleType === '100' || roleType === '1'">
             <div ng-controller="projectIncomeCostCtrl as projectIncomeCostCtrlVm"
                  ng-include="'app/pages/myProject/projectIncome/tabs/projectIncome_costTab.html'"></div>
         </uib-tab>

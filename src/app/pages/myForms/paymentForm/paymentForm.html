@@ -113,7 +113,7 @@
             <uib-tab heading="歷史檢視" ng-if="roleType === '100'">
                 <div ng-include="'app/pages/myForms/paymentForm/tabs/paymentForm_historyTab.html'"></div>
             </uib-tab>
-            <uib-tab heading="經理/主任審核" ng-if="roleType === '2' || roleType === '100' || roleType === '6'"
+            <uib-tab heading="經理/主任審核" ng-if="roleType === '2' || roleType === '100' || roleType === '6' || roleType === '1'"
                      ng-click="getPaymentReviewData_manager()">
                 <div ng-include="'app/pages/myForms/paymentForm/tabs/paymentForm_managerTab.html'"></div>
             </uib-tab>

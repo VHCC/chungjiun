@@ -84,7 +84,7 @@
              <work-off-agent ></work-off-agent>
         </uib-tab>
         <!--20200518 check right-->
-        <uib-tab heading="主管審核" ng-if="roleType === '2' || roleType === '100' || roleType === '6'"
+        <uib-tab heading="主管審核" ng-if="roleType === '2' || roleType === '100' || roleType === '6' || roleType === '1'"
                  ng-click="initUser()">
             <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_BossTab.html'"></div>
         </uib-tab>
