@@ -866,7 +866,7 @@
                     var resultG = 0.0;
                     for (var i = 0; i < $scope.overall_data.length; i++) {
                         // console.log($scope.overall_data[i]);
-                        resultG += parseInt($scope.overall_data[i]._overall)
+                        resultG += parseFloat($scope.overall_data[i]._overall)
                         // console.log(resultG)
                     }
                     // console.log("20201207 resultG:> " + resultG)
@@ -879,7 +879,7 @@
                         for (var j = 0; j < $scope.overall_data[i]._payments.length; j++) {
                             if ($scope.overall_data[i]._payments[j].amount == null || $scope.overall_data[i]._payments[j].amount == undefined) {
                             } else {
-                                resultB += parseInt($scope.overall_data[i]._payments[j].amount)
+                                resultB += parseFloat($scope.overall_data[i]._payments[j].amount)
                             }
                         }
                     }
@@ -895,7 +895,7 @@
                         for (var j = 0; j < $scope.overall_data[i]._otherCost.length; j++) {
                             if ($scope.overall_data[i]._otherCost[j].amount == null || $scope.overall_data[i]._otherCost[j].amount == undefined) {
                             } else {
-                                resultC += parseInt($scope.overall_data[i]._otherCost[j].amount)
+                                resultC += parseFloat($scope.overall_data[i]._otherCost[j].amount)
                             }
                         }
                     }

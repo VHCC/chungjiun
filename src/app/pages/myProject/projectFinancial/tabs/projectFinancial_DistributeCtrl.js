@@ -232,9 +232,16 @@
                 referenceId: 'mainPage_project_financial_distribute'
             });
             for (var index = 0; index < $scope.relatedMembersArrayResults.length; index ++) {
+                var item = $scope.relatedMembersArrayResults[index];
+                var canDistributeAmount = $scope.calResult(9, $scope.projectFinancialResultTable[0]);
                 var formData = {
-                    _id: $scope.relatedMembersArrayResults[index]._id,
-                    distribute: $scope.relatedMembersArrayResults[index].distribute,
+                    _id: item._id,
+                    year: $scope.selectPrjInfo.year,
+                    distribute: item.distribute,
+                    canDistributeAmount: canDistributeAmount,
+                    cost: $scope.fetchResult(item.userDID, 2),
+                    costHour: $scope.fetchResult(item.userDID, 1),
+                    distributeBonus: (canDistributeAmount * (item.distribute)/ 100) - $scope.fetchResult(item.userDID, 2),
                 }
                 ProjectFinancialDistributeUtil.updateFD(formData)
                     .success(function (res) {
@@ -976,7 +983,6 @@
             // 墊付款
             var resultB = 0.0;
             for (var i = 0; i < $scope.overall_data.length; i ++) {
-                // console.log($scope.overall_data[i])
                 for (var j = 0; j < $scope.overall_data[i]._payments.length; j ++) {
                     resultB += $scope.overall_data[i]._payments[j].amount == null ? 0 :$scope.overall_data[i]._payments[j].amount == undefined ? 0 : parseInt($scope.overall_data[i]._payments[j].amount)
                 }
@@ -1002,7 +1008,7 @@
                     var resultG = 0.0;
                     for (var i = 0; i < $scope.overall_data.length; i ++) {
                         // console.log($scope.overall_data[i])
-                        resultG += parseInt($scope.overall_data[i]._overall)
+                        resultG += parseFloat($scope.overall_data[i]._overall)
                         // console.log(resultG)
                     }
                     return resultG
@@ -1011,7 +1017,7 @@
                     for (var i = 0; i < $scope.overall_data.length; i ++) {
                         // console.log($scope.overall_data[i])
                         for (var j = 0; j < $scope.overall_data[i]._payments.length; j ++) {
-                            resultB += $scope.overall_data[i]._payments[j].amount == null ? 0 :$scope.overall_data[i]._payments[j].amount == undefined ? 0 : parseInt($scope.overall_data[i]._payments[j].amount)
+                            resultB += $scope.overall_data[i]._payments[j].amount == null ? 0 :$scope.overall_data[i]._payments[j].amount == undefined ? 0 : parseFloat($scope.overall_data[i]._payments[j].amount)
                         }
                     }
                     return resultB
@@ -1019,7 +1025,7 @@
                     var resultC = 0.0;
                     for (var i = 0; i < $scope.overall_data.length; i ++) {
                         for (var j = 0; j < $scope.overall_data[i]._otherCost.length; j ++) {
-                            resultC += $scope.overall_data[i]._otherCost[j].amount == null ? 0 : $scope.overall_data[i]._otherCost[j].amount == undefined ? 0 : parseInt($scope.overall_data[i]._otherCost[j].amount)
+                            resultC += $scope.overall_data[i]._otherCost[j].amount == null ? 0 : $scope.overall_data[i]._otherCost[j].amount == undefined ? 0 : parseFloat($scope.overall_data[i]._otherCost[j].amount)
                         }
                     }
                     return resultC
@@ -1051,7 +1057,7 @@
                 // 利潤 E*N
                 case 8:
                     return Math.round(item.rate_item_3 * ($scope.calResult(4, item)) / 100);
-                // 可分配績效
+                // 可分配金額
                 case 9:
                     return (Math.round(($scope.calResult(4, item))
                     - ($scope.calResult(5, item))
@@ -1902,9 +1908,9 @@
         }
 
         $scope.showPercentTotal = function () {
-            var total = 0;
+            var total = 0.0;
             for (var index = 0; index < $scope.relatedMembersArrayResults.length; index ++) {
-                total += parseInt($scope.relatedMembersArrayResults[index].distribute);
+                total += parseFloat($scope.relatedMembersArrayResults[index].distribute);
             }
             return total;
         }

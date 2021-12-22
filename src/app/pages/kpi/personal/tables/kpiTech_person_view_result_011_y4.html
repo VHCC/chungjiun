@@ -20,12 +20,6 @@
             <col span="1" style="width: 5%;">
             <!--技師費-->
             <col span="1" style="width: 10%;">
-
-            <!--新增人員-->
-            <!--<col span="1" ng-repeat="user in projectTechMembers" style="width: 10%;">-->
-
-            <!--&lt;!&ndash;小計&ndash;&gt;-->
-            <!--<col span="1" style="width: 10%;">-->
         </colgroup>
         <thead>
         <tr >
@@ -37,20 +31,15 @@
             <th style="vertical-align: inherit; text-align: center" >
                 技師費
             </th>
-            <th style="vertical-align: inherit; text-align: center" ng-repeat="user in projectTechMembers">
+            <th style="vertical-align: inherit; text-align: center" ng-repeat="user in projectTechMembers_y4">
                 {{showUser(user.userDID)}}
             </th>
-            <!--<th style="vertical-align: inherit; text-align: center" >-->
-            <!--</th>-->
-            <!--<th style="vertical-align: inherit; text-align: center" >-->
-                <!--餘額-->
-            <!--</th>-->
         </tr>
         </thead>
         <tbody >
-        <tr style="vertical-align: inherit; text-align: right" ng-repeat="item in projectFinancialResultTable">
+        <tr style="vertical-align: inherit; text-align: right" ng-repeat="item in projectFinancialResultTable_y4" >
             <!--Index-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
+            <td class="form-group" style="vertical-align: inherit; text-align: center" >
                 <span>{{$index + 1}}</span>
             </td >
             <!--專案代碼-->
@@ -74,40 +63,20 @@
                 <span style="text-align: right">{{fetchKPIValue(7, item).toLocaleString()}}</span>
             </td>
 
-            <td ng-repeat="user in projectTechMembers">
-                <span>{{user[item.prjCode]}}</span>
+            <td ng-repeat="user in projectTechMembers_y4" >
+                <span >{{(user[item.prjCode]).toLocaleString()}}</span>
             </td>
-            <!--<td>-->
-                <!--{{showPrjSum(item).toLocaleString()}}-->
-            <!--</td>-->
         </tr>
         </tbody>
-        <tr style="vertical-align: inherit; text-align: center">
-            <td colspan="5" style="vertical-align: inherit;">
-                小計
-            </td>
-            <td style="vertical-align: inherit; text-align: right">
-                {{calResultKpiAll(7).toLocaleString()}}
-            </td>
-            <td style="vertical-align: inherit; text-align: right" ng-repeat="user in projectTechMembers">
-                {{showSum(user).toLocaleString()}}
-            </td>
-            <!--<td></td>-->
-            <!--<td>{{ showTotalSum().toLocaleString()}}</td>-->
-        </tr>
         <!--<tr style="vertical-align: inherit; text-align: center">-->
-            <!--<td style="vertical-align: inherit;">-->
-
-            <!--</td>-->
-            <!--<td colspan="1" style="vertical-align: inherit;">-->
+            <!--<td colspan="5" style="vertical-align: inherit;">-->
+                <!--小計-->
             <!--</td>-->
             <!--<td style="vertical-align: inherit; text-align: right">-->
-                <!--Memo-->
+                <!--{{calResultKpiAll(7).toLocaleString()}}-->
             <!--</td>-->
-            <!--<td colspan="2" style="vertical-align: inherit;">-->
-            <!--</td>-->
-            <!--<td style="vertical-align: inherit; text-align: right">-->
-                <!--金額-->
+            <!--<td style="vertical-align: inherit; text-align: right" ng-repeat="user in projectTechMembers">-->
+                <!--{{showSum(user).toLocaleString()}}-->
             <!--</td>-->
         <!--</tr>-->
 

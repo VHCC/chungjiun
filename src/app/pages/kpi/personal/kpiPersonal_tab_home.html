@@ -1,20 +1,26 @@
+<style>
+    .uib-datepicker-popup table tbody tr:hover{
+        background-color: #99c7ee;
+    }
+</style>
+
 <div bs-loading-overlay
      bs-loading-overlay-reference-id="mainPage_kpi_personal">
 
     <uib-tabset active="$tabSetStatus.activeTab">
-        <uib-tab heading="個人績效(宜)" >
+        <uib-tab heading="績效分配" >
             <div ng-controller="kpiPersonal_011Ctrl as kpiPersonal_011CtrlVM"
                     ng-include="'app/pages/kpi/personal/tabs/kpiPersonalMain_011Tab.html'"></div>
         </uib-tab>
 
-        <uib-tab heading="個人績效" >
+        <uib-tab heading="個人年度執行成本查詢" >
             <div ng-controller="kpiPersonalCtrl as kpiPersonalCtrlVM"
                  ng-include="'app/pages/kpi/personal/tabs/kpiPersonalMainTab.html'"></div>
         </uib-tab>
 
-        <uib-tab heading="績效分配">
-            <div ng-controller="subContractorItemCtrl"
-                 ng-include="'app/pages/kpi/risk/tabs/subContractorItemTab.html'"></div>
+        <uib-tab heading="績效查詢">
+            <div ng-controller="kpiPersonal_SearchCtrl as kpiPersonal_SearchCtrlVM"
+                 ng-include="'app/pages/kpi/personal/tabs/kpiPersonalMain_SearchTab.html'"></div>
         </uib-tab>
 
     </uib-tabset>

@@ -852,7 +852,7 @@
                     var resultG = 0.0;
                     for (var i = 0; i < manipulatePrj.overall_data.length; i ++) {
                         // console.log($scope.overall_data[i])
-                        resultG += parseInt(manipulatePrj.overall_data[i]._overall)
+                        resultG += parseFloat(manipulatePrj.overall_data[i]._overall)
                         // console.log(resultG)
                     }
                     // console.log("resultG:> " + resultG)
@@ -864,7 +864,7 @@
                         for (var j = 0; j < manipulatePrj.overall_data[i]._payments.length; j ++) {
                             if (manipulatePrj.overall_data[i]._payments[j].amount == null || manipulatePrj.overall_data[i]._payments[j].amount == undefined) {
                             } else {
-                                resultB += parseInt(manipulatePrj.overall_data[i]._payments[j].amount)
+                                resultB += parseFloat(manipulatePrj.overall_data[i]._payments[j].amount)
                             }
                         }
                     }
@@ -877,7 +877,7 @@
                         for (var j = 0; j < manipulatePrj.overall_data[i]._otherCost.length; j ++) {
                             if (manipulatePrj.overall_data[i]._otherCost[j].amount == null || manipulatePrj.overall_data[i]._otherCost[j].amount == undefined) {
                             } else {
-                                resultC += parseInt(manipulatePrj.overall_data[i]._otherCost[j].amount)
+                                resultC += parseFloat(manipulatePrj.overall_data[i]._otherCost[j].amount)
                             }
                         }
                     }

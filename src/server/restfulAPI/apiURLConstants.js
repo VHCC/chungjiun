@@ -85,11 +85,19 @@ global.apiUrl = {
     // kpi
     post_get_kpi_elements_by_prjdid_array : '/api/post_get_kpi_elements_by_prjdid_array',
     post_get_kpi_financial_results_by_year : '/api/post_get_kpi_financial_results_by_year',
+    post_get_kpi_financial_results_by_year_and_user_uuid : '/api/post_get_kpi_financial_results_by_year_and_user_uuid',
     post_get_kpi_elements_by_year : '/api/post_get_kpi_elements_by_year',
 
     post_get_kpi_elements_insert : '/api/post_get_kpi_elements_insert',
     post_get_kpi_elements_update : '/api/post_get_kpi_elements_update',
     post_get_kpi_elements_delete : '/api/post_get_kpi_elements_delete',
+
+
+    // BONUS
+    post_get_kpi_bonus_find : '/api/post_get_kpi_bonus_find',
+    post_get_kpi_bonus_insert : '/api/post_get_kpi_bonus_insert',
+    post_get_kpi_bonus_update : '/api/post_get_kpi_bonus_update',
+
 
 
 
@@ -207,6 +215,8 @@ global.apiUrl = {
     post_project_financial_distribute_find : '/api/post_project_financial_distribute_find',
     post_project_financial_distribute_update : '/api/post_project_financial_distribute_update',
     post_project_financial_distribute_remove : '/api/post_project_financial_distribute_remove',
+    post_project_financial_distribute_find_by_year : '/api/post_project_financial_distribute_find_by_year',
+    post_project_financial_distribute_find_by_user_uuid : '/api/post_project_financial_distribute_find_by_user_uuid',
 
     // KpiTechDistributeUtil
     post_kpi_tech_distribute_create : '/api/post_kpi_tech_distribute_create',
@@ -288,6 +298,7 @@ global.apiUrl = {
     post_user_update_profile : '/api/userUpdateProfile',
     post_user_set_residual_rest_hour : '/api/setUserResidualRestHour',
     post_user_send_test_mail : '/api/post_user_send_test_mail',
+    post_user_info_update_before_108_kpi : '/api/post_user_info_update_before_108_kpi',
 
 
     // WorkAddConfirmFormUtil

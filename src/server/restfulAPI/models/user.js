@@ -79,8 +79,14 @@ module.exports = mongoose.model('User', {
         default: false
     },
 
+    // 2021/12/22 add
+    before108Kpi: {
+        type: Number,
+        default: 0
+    },
+
     timestamp: {
-        type : String,
+        type: String,
         default: moment(new Date()).format("YYYYMMDD_HHmmss")
     },
 

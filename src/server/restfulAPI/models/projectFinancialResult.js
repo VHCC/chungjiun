@@ -114,7 +114,15 @@ module.exports = mongoose.model('ProjectFinancialResult', {
         type: Number,
         default: 0
     },
-    kpi11: {  <!--可分配績效-->
+    kpi11: {  <!--可分配金額-->
+        type: Number,
+        default: 0
+    },
+    kpi12: {  <!--執行成本-->
+        type: Number,
+        default: 0
+    },
+    kpi13: {  <!--績效結餘-->
         type: Number,
         default: 0
     },

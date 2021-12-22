@@ -88,7 +88,6 @@ module.exports = function (app) {
                     error: global.status._200,
                 });
             }
-
         })
     })
 
@@ -110,10 +109,8 @@ module.exports = function (app) {
                     error: global.status._200,
                 });
             }
-
         })
     })
-
 
 
     // send test mail
@@ -143,5 +140,24 @@ module.exports = function (app) {
                 console.log('Send Successfully:');
             }
         });
+    })
+
+    app.post(global.apiUrl.post_user_info_update_before_108_kpi, function (req, res) {
+        User.update({
+            _id: req.body.userDID,
+        }, {
+            $set: {
+                before108Kpi: req.body.before108Kpi,
+            }
+        }, function (err) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                });
+            }
+        })
     })
 }

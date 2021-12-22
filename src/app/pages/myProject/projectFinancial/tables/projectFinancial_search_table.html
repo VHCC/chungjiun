@@ -16,6 +16,7 @@
             <col span="1" style="width: 10%;">
             <col span="1" style="width: 20%;">
             <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
         </colgroup>
         <thead>
         <tr style="white-space:nowrap">
@@ -32,7 +33,7 @@
                 <span style="color:blue">B=A/1.05</span>
             </th>
             <th style="vertical-align: inherit; text-align: center" class="AutoNewline">
-                公司調整(規劃、設計、監造廷整)
+                公司調整
                 <br>
                 <span style="color:blue">C=B*調整值</span>
             </th>
@@ -75,7 +76,9 @@
             </th>
             <th style="vertical-align: inherit; text-align: center" >其他</th>
             <th style="vertical-align: inherit; text-align: center" >說明</th>
-            <th style="vertical-align: inherit; text-align: center" >可分配績效</th>
+            <th style="vertical-align: inherit; text-align: center" >可分配金額</th>
+            <th style="vertical-align: inherit; text-align: center" >人時成本</th>
+            <th style="vertical-align: inherit; text-align: center" >績效結餘</th>
 
         </tr>
         </thead>
@@ -215,9 +218,19 @@
                 <span >{{item.memo}}</span>
             </td>
 
-            <!--可分配績效-->
+            <!--可分配金額-->
+            <td style="vertical-align: inherit; text-align: center">
+                {{calResult(9, projectFinancialResultTable[0]).toLocaleString()}}
+            </td>
+
+            <!--執行成本-->
+            <td class="form-group" style="vertical-align: inherit; text-align: right">
+                {{calcAllCost_special20210819(1).toLocaleString()}}
+            </td>
+
+            <!--績效結餘-->
             <td class="form-group" style="vertical-align: inherit;">
-                <span>{{calResult(9, item).toLocaleString()}}</span>
+                <span>{{(calResult(9, item) - calcAllCost_special20210819(1)).toLocaleString()}}</span>
             </td>
         </tr>
         </tbody>

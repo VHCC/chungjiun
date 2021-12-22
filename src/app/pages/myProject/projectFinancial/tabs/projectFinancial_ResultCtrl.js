@@ -729,7 +729,9 @@
                 kpi8: $scope.calResult(7, item), <!--風險-->
                 kpi9: $scope.calResult(8, item), <!--利潤-->
                 kpi10: $scope.calcAllCost_special20201207(), <!-- 專案成本(墊付款、其他支出) --> <!-- (匯費、罰款) -->
-                kpi11: $scope.calResult(9, item), <!--可分配績效-->
+                kpi11: $scope.calResult(9, item), <!--可分配金額-->
+                kpi12: $scope.calcAllCost_special20210819(1), <!-- 執行成本 -->
+                kpi13: ($scope.calResult(9, item) - $scope.calcAllCost_special20210819(1)), <!-- 績效結餘 -->
             }
 
             ProjectFinancialResultUtil.updateFR(formData)
@@ -858,7 +860,6 @@
                 // console.log(resultG)
             // }
             // console.log("resultG:> " + resultG)
-
             // 墊付款
             var resultB = 0.0;
             for (var i = 0; i < $scope.overall_data.length; i ++) {
@@ -887,7 +888,7 @@
                     var resultG = 0.0;
                     for (var i = 0; i < $scope.overall_data.length; i ++) {
                         // console.log($scope.overall_data[i])
-                        resultG += parseInt($scope.overall_data[i]._overall)
+                        resultG += parseFloat($scope.overall_data[i]._overall)
                         // console.log(resultG)
                     }
                     return resultG
