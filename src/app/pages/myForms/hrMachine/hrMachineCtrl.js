@@ -1595,7 +1595,7 @@
                         }
 
                         var startDate = moment(parseInt(dateList[0].substring(0,3))+ 1911 + dateList[0].substring(3,7));
-                        startDate = startDate - 86400 * 1000 * 15;
+                        // startDate = startDate - 86400 * 1000 * 15;
 
                         for (var index = 0; index < res.payload.length; index ++) {
                             // $scope.travelApplicationItems.push(res.payload[index]);
@@ -1623,9 +1623,9 @@
                             }
 
                             var targetDate = moment(parseInt(dateTempNew.substring(0,3))+ 1911 + dateTempNew.substring(3,7))
-                            console.log("startDate :> " + startDate)
-                            console.log("targetDate :> " + targetDate)
-                            console.log("targetDate.isAfter(startDate) :> " + targetDate.isAfter(startDate))
+                            // console.log("startDate :> " + startDate)
+                            // console.log("targetDate :> " + targetDate)
+                            // console.log("targetDate.isAfter(startDate) :> " + targetDate.isAfter(startDate))
 
                             if (targetDate.isAfter(startDate)) {
 
