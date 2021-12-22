@@ -5,7 +5,7 @@
 (function () {
     'use strict';
     angular.module('BlurAdmin.pages.cgKPI')
-        .controller('kpiPersonal_011Ctrl',
+        .controller('kpiPersonal_SearchCtrl',
             [
                 '$scope',
                 'toastr',
@@ -31,11 +31,11 @@
                 'KpiUtil',
                 'KpiTechDistributeUtil',
                 'bsLoadingOverlayService',
-                kpiPersonal011Ctrl
+                kpiPersonalSearchCtrl
             ])
 
     /** @ngInject */
-    function kpiPersonal011Ctrl($scope,
+    function kpiPersonalSearchCtrl($scope,
                                 toastr,
                                 $cookies,
                                 $filter,
@@ -74,7 +74,6 @@
         $scope.year = 109;
 
         $scope.listen5Years = function (dom) {
-            console.log("listen5Years")
             dom.$watch('myYear', function (newValue, oldValue) {
                 if (dom.isShiftYearSelect) {
                     dom.isShiftYearSelect = false;
@@ -108,7 +107,6 @@
             }
             User.updateUserBefore108Kpi(formData)
                 .success(function (res) {
-                    $scope.initBonus($scope.personSelect);
                     toastr.success('儲存成功', 'Success');
                 })
         }
@@ -120,7 +118,6 @@
             }
             KpiUtil.updateKPIBonus(formData)
                 .success(function (res) {
-                    $scope.initBonus($scope.personSelect);
                     toastr.success('儲存成功', 'Success');
                 })
         }
@@ -543,7 +540,7 @@
                     $scope.personalFDData_y0 = res.payload;
 
                     angular.element(
-                        document.getElementById('includeHead_kpi_personal_result_011_0y'))
+                        document.getElementById('includeHead_kpi_personal_result_search_0y'))
                         .html($compile(
                             "<div ba-panel ba-panel-title=" +
                             "'列表 - " +  $scope.personalFDData_y0.length + "'" +
@@ -602,7 +599,7 @@
                                     }
                                 }
                                 angular.element(
-                                    document.getElementById('includeHead_kpi_personal_result_011_tech_0y'))
+                                    document.getElementById('includeHead_kpi_personal_result_search_tech_0y'))
                                     .html($compile(
                                         "<div ba-panel ba-panel-title=" +
                                         "'" + "" + "'" +
@@ -636,7 +633,7 @@
                     $scope.personalFDData_y1 = res.payload;
 
                     angular.element(
-                        document.getElementById('includeHead_kpi_personal_result_011_1y'))
+                        document.getElementById('includeHead_kpi_personal_result_search_1y'))
                         .html($compile(
                             "<div ba-panel ba-panel-title=" +
                             "'列表 - " +  $scope.personalFDData_y1.length + "'" +
@@ -698,7 +695,7 @@
                                     }
                                 }
                                 angular.element(
-                                    document.getElementById('includeHead_kpi_personal_result_011_tech_1y'))
+                                    document.getElementById('includeHead_kpi_personal_result_search_tech_1y'))
                                     .html($compile(
                                         "<div ba-panel ba-panel-title=" +
                                         "'" + "" + "'" +
@@ -732,7 +729,7 @@
                     $scope.personalFDData_y2 = res.payload;
 
                     angular.element(
-                        document.getElementById('includeHead_kpi_personal_result_011_2y'))
+                        document.getElementById('includeHead_kpi_personal_result_search_2y'))
                         .html($compile(
                             "<div ba-panel ba-panel-title=" +
                             "'列表 - " +  $scope.personalFDData_y2.length + "'" +
@@ -788,7 +785,7 @@
                                     }
                                 }
                                 angular.element(
-                                    document.getElementById('includeHead_kpi_personal_result_011_tech_2y'))
+                                    document.getElementById('includeHead_kpi_personal_result_search_tech_2y'))
                                     .html($compile(
                                         "<div ba-panel ba-panel-title=" +
                                         "'" + "" + "'" +
@@ -821,7 +818,7 @@
                     $scope.personalFDData_y3 = res.payload;
 
                     angular.element(
-                        document.getElementById('includeHead_kpi_personal_result_011_3y'))
+                        document.getElementById('includeHead_kpi_personal_result_search_3y'))
                         .html($compile(
                             "<div ba-panel ba-panel-title=" +
                             "'列表 - " +  $scope.personalFDData_y3.length + "'" +
@@ -877,7 +874,7 @@
                                     }
                                 }
                                 angular.element(
-                                    document.getElementById('includeHead_kpi_personal_result_011_tech_3y'))
+                                    document.getElementById('includeHead_kpi_personal_result_search_tech_3y'))
                                     .html($compile(
                                         "<div ba-panel ba-panel-title=" +
                                         "'" + "" + "'" +
@@ -911,7 +908,7 @@
                     $scope.personalFDData_y4 = res.payload;
 
                     angular.element(
-                        document.getElementById('includeHead_kpi_personal_result_011_4y'))
+                        document.getElementById('includeHead_kpi_personal_result_search_4y'))
                         .html($compile(
                             "<div ba-panel ba-panel-title=" +
                             "'列表 - " +  $scope.personalFDData_y4.length + "'" +
@@ -970,7 +967,7 @@
                                     }
                                 }
                                 angular.element(
-                                    document.getElementById('includeHead_kpi_personal_result_011_tech_4y'))
+                                    document.getElementById('includeHead_kpi_personal_result_search_tech_4y'))
                                     .html($compile(
                                         "<div ba-panel ba-panel-title=" +
                                         "'" + "" + "'" +
@@ -988,294 +985,6 @@
                 })
         }
 
-        // 年度、月份
-        // 總案代碼、專案代碼、子案代碼、類型代碼
-        // 工時類型、相關人員
-        // $scope.fetchWorkHour = function (userSelected, yearAdd) {
-        //     var getData = {
-        //         year: ($scope.year + yearAdd) + "",
-        //         targerUsers : userSelected,
-        //     };
-        //
-        //     bsLoadingOverlayService.start({
-        //         referenceId: 'mainPage_kpi_personal'
-        //     });
-        //
-        //     WorkHourUtil.queryKPIPersonalWorkHour(getData)
-        //         .success(function (res) {
-        //             console.log(res);
-        //             res.payload = res.payload.sort(function (a, b) {
-        //                 return a._id.prjCode > b._id.prjCode ? 1 : -1;
-        //             });
-        //
-        //             for (var index = 0; index < res.payload.length; index++) {
-        //                 for (var index_sub = 0; index_sub < res.payload_add.length; index_sub++) {
-        //                     if (res.payload_add[index_sub]._id.prjCode == res.payload[index]._id.prjCode &&
-        //                         res.payload_add[index_sub]._id.userDID == res.payload[index]._id.userDID) {
-        //                         res.payload[index]._add_tables = res.payload_add[index_sub].add_tables;
-        //                     }
-        //                 }
-        //             }
-        //             $scope.statisticsResults_type2 = $scope.filter_type2_data(res.payload);
-        //
-        //             // $scope.overall_data = [];
-        //
-        //             angular.element(
-        //                 document.getElementById('includeHead_kpi_personal_result_011'))
-        //                 .html($compile(
-        //                     "<div ba-panel ba-panel-title=" +
-        //                     "'列表 - " + $scope.statisticsResults_type2.length + "'" +
-        //                     "ba-panel-class= " +
-        //                     "'with-scroll'" + ">" +
-        //                     "<div " +
-        //                     "ng-include=\"'app/pages/kpi/personal/tables/kpiPersonalTable_type2.html'\">" +
-        //                     "</div>" +
-        //                     "</div>"
-        //                 )($scope));
-        //
-        //             $timeout(function () {
-        //                 bsLoadingOverlayService.stop({
-        //                     referenceId: 'mainPage_kpi_personal'
-        //                 });
-        //             }, 500)
-        //
-        //         })
-        //         .error(function () {
-        //             $timeout(function () {
-        //                 bsLoadingOverlayService.stop({
-        //                     referenceId: 'mainPage_kpi_personal'
-        //                 });
-        //             }, 500)
-        //         })
-        // }
-        //
-        // $scope.fetchWorkHour2 = function (userSelected, yearAdd) {
-        //     var getData = {
-        //         year: ($scope.year + yearAdd) + "",
-        //         targerUsers : userSelected,
-        //     };
-        //
-        //     bsLoadingOverlayService.start({
-        //         referenceId: 'mainPage_kpi_personal'
-        //     });
-        //
-        //     WorkHourUtil.queryKPIPersonalWorkHour(getData)
-        //         .success(function (res) {
-        //             console.log(res);
-        //             res.payload = res.payload.sort(function (a, b) {
-        //                 return a._id.prjCode > b._id.prjCode ? 1 : -1;
-        //             });
-        //
-        //             for (var index = 0; index < res.payload.length; index++) {
-        //                 for (var index_sub = 0; index_sub < res.payload_add.length; index_sub++) {
-        //                     if (res.payload_add[index_sub]._id.prjCode == res.payload[index]._id.prjCode &&
-        //                         res.payload_add[index_sub]._id.userDID == res.payload[index]._id.userDID) {
-        //                         res.payload[index]._add_tables = res.payload_add[index_sub].add_tables;
-        //                     }
-        //                 }
-        //             }
-        //             $scope.statisticsResults_type2_y2 = $scope.filter_type2_data(res.payload);
-        //
-        //             // $scope.overall_data_y2 = [];
-        //
-        //             angular.element(
-        //                 document.getElementById('includeHead_kpi_personal_result_011_2y'))
-        //                 .html($compile(
-        //                     "<div ba-panel ba-panel-title=" +
-        //                     "'列表 - " + $scope.statisticsResults_type2_y2.length + "'" +
-        //                     "ba-panel-class= " +
-        //                     "'with-scroll'" + ">" +
-        //                     "<div " +
-        //                     "ng-include=\"'app/pages/kpi/personal/tables/kpiPersonalTable_type2_y2.html'\">" +
-        //                     "</div>" +
-        //                     "</div>"
-        //                 )($scope));
-        //             $timeout(function () {
-        //                 bsLoadingOverlayService.stop({
-        //                     referenceId: 'mainPage_kpi_personal'
-        //                 });
-        //             }, 500)
-        //
-        //         })
-        //         .error(function () {
-        //             $timeout(function () {
-        //                 bsLoadingOverlayService.stop({
-        //                     referenceId: 'mainPage_kpi_personal'
-        //                 });
-        //             }, 500)
-        //         })
-        // }
-        //
-        // $scope.fetchWorkHour3 = function (userSelected, yearAdd) {
-        //     var getData = {
-        //         year: ($scope.year + yearAdd) + "",
-        //         targerUsers : userSelected,
-        //     };
-        //
-        //     bsLoadingOverlayService.start({
-        //         referenceId: 'mainPage_kpi_personal'
-        //     });
-        //
-        //     WorkHourUtil.queryKPIPersonalWorkHour(getData)
-        //         .success(function (res) {
-        //             console.log(res);
-        //             res.payload = res.payload.sort(function (a, b) {
-        //                 return a._id.prjCode > b._id.prjCode ? 1 : -1;
-        //             });
-        //
-        //             for (var index = 0; index < res.payload.length; index++) {
-        //                 for (var index_sub = 0; index_sub < res.payload_add.length; index_sub++) {
-        //                     if (res.payload_add[index_sub]._id.prjCode == res.payload[index]._id.prjCode &&
-        //                         res.payload_add[index_sub]._id.userDID == res.payload[index]._id.userDID) {
-        //                         res.payload[index]._add_tables = res.payload_add[index_sub].add_tables;
-        //                     }
-        //                 }
-        //             }
-        //             $scope.statisticsResults_type2_y3 = $scope.filter_type2_data(res.payload);
-        //
-        //             // $scope.overall_data_y2 = [];
-        //
-        //             angular.element(
-        //                 document.getElementById('includeHead_kpi_personal_result_011_3y'))
-        //                 .html($compile(
-        //                     "<div ba-panel ba-panel-title=" +
-        //                     "'列表 - " + $scope.statisticsResults_type2_y3.length + "'" +
-        //                     "ba-panel-class= " +
-        //                     "'with-scroll'" + ">" +
-        //                     "<div " +
-        //                     "ng-include=\"'app/pages/kpi/personal/tables/kpiPersonalTable_type2_y3.html'\">" +
-        //                     "</div>" +
-        //                     "</div>"
-        //                 )($scope));
-        //             $timeout(function () {
-        //                 bsLoadingOverlayService.stop({
-        //                     referenceId: 'mainPage_kpi_personal'
-        //                 });
-        //             }, 500)
-        //
-        //         })
-        //         .error(function () {
-        //             $timeout(function () {
-        //                 bsLoadingOverlayService.stop({
-        //                     referenceId: 'mainPage_kpi_personal'
-        //                 });
-        //             }, 500)
-        //         })
-        // }
-        //
-        // $scope.fetchWorkHour4 = function (userSelected, yearAdd) {
-        //     var getData = {
-        //         year: ($scope.year + yearAdd) + "",
-        //         targerUsers : userSelected,
-        //     };
-        //
-        //     bsLoadingOverlayService.start({
-        //         referenceId: 'mainPage_kpi_personal'
-        //     });
-        //
-        //     WorkHourUtil.queryKPIPersonalWorkHour(getData)
-        //         .success(function (res) {
-        //             console.log(res);
-        //             res.payload = res.payload.sort(function (a, b) {
-        //                 return a._id.prjCode > b._id.prjCode ? 1 : -1;
-        //             });
-        //
-        //             for (var index = 0; index < res.payload.length; index++) {
-        //                 for (var index_sub = 0; index_sub < res.payload_add.length; index_sub++) {
-        //                     if (res.payload_add[index_sub]._id.prjCode == res.payload[index]._id.prjCode &&
-        //                         res.payload_add[index_sub]._id.userDID == res.payload[index]._id.userDID) {
-        //                         res.payload[index]._add_tables = res.payload_add[index_sub].add_tables;
-        //                     }
-        //                 }
-        //             }
-        //             $scope.statisticsResults_type2_y4 = $scope.filter_type2_data(res.payload);
-        //
-        //             // $scope.overall_data_y2 = [];
-        //
-        //             angular.element(
-        //                 document.getElementById('includeHead_kpi_personal_result_011_4y'))
-        //                 .html($compile(
-        //                     "<div ba-panel ba-panel-title=" +
-        //                     "'列表 - " + $scope.statisticsResults_type2_y4.length + "'" +
-        //                     "ba-panel-class= " +
-        //                     "'with-scroll'" + ">" +
-        //                     "<div " +
-        //                     "ng-include=\"'app/pages/kpi/personal/tables/kpiPersonalTable_type2_y4.html'\">" +
-        //                     "</div>" +
-        //                     "</div>"
-        //                 )($scope));
-        //             $timeout(function () {
-        //                 bsLoadingOverlayService.stop({
-        //                     referenceId: 'mainPage_kpi_personal'
-        //                 });
-        //             }, 500)
-        //
-        //         })
-        //         .error(function () {
-        //             $timeout(function () {
-        //                 bsLoadingOverlayService.stop({
-        //                     referenceId: 'mainPage_kpi_personal'
-        //                 });
-        //             }, 500)
-        //         })
-        // }
-        //
-        // $scope.fetchWorkHour5 = function (userSelected, yearAdd) {
-        //     var getData = {
-        //         year: ($scope.year + yearAdd) + "",
-        //         targerUsers : userSelected,
-        //     };
-        //
-        //     bsLoadingOverlayService.start({
-        //         referenceId: 'mainPage_kpi_personal'
-        //     });
-        //
-        //     WorkHourUtil.queryKPIPersonalWorkHour(getData)
-        //         .success(function (res) {
-        //             console.log(res);
-        //             res.payload = res.payload.sort(function (a, b) {
-        //                 return a._id.prjCode > b._id.prjCode ? 1 : -1;
-        //             });
-        //
-        //             for (var index = 0; index < res.payload.length; index++) {
-        //                 for (var index_sub = 0; index_sub < res.payload_add.length; index_sub++) {
-        //                     if (res.payload_add[index_sub]._id.prjCode == res.payload[index]._id.prjCode &&
-        //                         res.payload_add[index_sub]._id.userDID == res.payload[index]._id.userDID) {
-        //                         res.payload[index]._add_tables = res.payload_add[index_sub].add_tables;
-        //                     }
-        //                 }
-        //             }
-        //             $scope.statisticsResults_type2_y5 = $scope.filter_type2_data(res.payload);
-        //
-        //             // $scope.overall_data_y2 = [];
-        //
-        //             angular.element(
-        //                 document.getElementById('includeHead_kpi_personal_result_011_5y'))
-        //                 .html($compile(
-        //                     "<div ba-panel ba-panel-title=" +
-        //                     "'列表 - " + $scope.statisticsResults_type2_y5.length + "'" +
-        //                     "ba-panel-class= " +
-        //                     "'with-scroll'" + ">" +
-        //                     "<div " +
-        //                     "ng-include=\"'app/pages/kpi/personal/tables/kpiPersonalTable_type2_y5.html'\">" +
-        //                     "</div>" +
-        //                     "</div>"
-        //                 )($scope));
-        //             $timeout(function () {
-        //                 bsLoadingOverlayService.stop({
-        //                     referenceId: 'mainPage_kpi_personal'
-        //                 });
-        //             }, 500)
-        //
-        //         })
-        //         .error(function () {
-        //             $timeout(function () {
-        //                 bsLoadingOverlayService.stop({
-        //                     referenceId: 'mainPage_kpi_personal'
-        //                 });
-        //             }, 500)
-        //         })
-        // }
 
 
         // END

@@ -771,17 +771,16 @@
         $scope.calcAllCost_special20201207 = function() {
             // 人時
             var resultG = 0.0;
-            for (var i = 0; i < $scope.overall_data.length; i ++) {
+            // for (var i = 0; i < $scope.overall_data.length; i ++) {
                 // console.log($scope.overall_data[i])
-                resultG += parseInt($scope.overall_data[i]._overall)
+                // resultG += parseInt($scope.overall_data[i]._overall)
                 // console.log(resultG)
-            }
+            // }
             // console.log("resultG:> " + resultG)
 
             // 墊付款
             var resultB = 0.0;
             for (var i = 0; i < $scope.overall_data.length; i ++) {
-                // console.log($scope.overall_data[i])
                 for (var j = 0; j < $scope.overall_data[i]._payments.length; j ++) {
                     // resultB += parseInt($scope.overall_data[i]._payments[j].amount)
                     resultB += $scope.overall_data[i]._payments[j].amount == undefined ? 0 : parseInt($scope.overall_data[i]._payments[j].amount)
@@ -821,7 +820,7 @@
                 // 利潤 E*N
                 case 8:
                     return Math.round(item.rate_item_3 * ($scope.calResult(4, item)) / 100);
-                // 可分配績效
+                // 可分配金額
                 case 9:
                     return Math.round(($scope.calResult(4, item))
                         - ($scope.calResult(5, item))
@@ -1415,6 +1414,42 @@
             }
             results += " ]"
             return results
+        }
+
+        $scope.calcAllCost_special20210819  = function(type) {
+            if ($scope.overall_data === undefined) return;
+            switch(type) {
+                case 1:
+                    // 人時
+                    var resultG = 0.0;
+                    for (var i = 0; i < $scope.overall_data.length; i ++) {
+                        // console.log($scope.overall_data[i])
+                        resultG += parseFloat($scope.overall_data[i]._overall)
+                        // console.log(resultG)
+                    }
+                    return resultG
+                case 2:
+                    var resultB = 0.0;
+                    for (var i = 0; i < $scope.overall_data.length; i ++) {
+                        // console.log($scope.overall_data[i])
+                        for (var j = 0; j < $scope.overall_data[i]._payments.length; j ++) {
+                            resultB += $scope.overall_data[i]._payments[j].amount == null ? 0 :$scope.overall_data[i]._payments[j].amount == undefined ? 0 : parseFloat($scope.overall_data[i]._payments[j].amount)
+                        }
+                    }
+                    return resultB
+                case 3:
+                    var resultC = 0.0;
+                    for (var i = 0; i < $scope.overall_data.length; i ++) {
+                        for (var j = 0; j < $scope.overall_data[i]._otherCost.length; j ++) {
+                            resultC += $scope.overall_data[i]._otherCost[j].amount == null ? 0 : $scope.overall_data[i]._otherCost[j].amount == undefined ? 0 : parseFloat($scope.overall_data[i]._otherCost[j].amount)
+                        }
+                    }
+                    return resultC
+                case 4:
+                    return $scope.calFines()
+                case 5:
+                    return $scope.calFee()
+            }
         }
 
     }

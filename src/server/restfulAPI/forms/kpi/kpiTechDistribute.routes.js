@@ -44,7 +44,11 @@ module.exports = function (app) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_project_financial_distribute_find");
 
         var findRequest = {
-            year: req.body.year,
+            // year: req.body.year,
+        }
+
+        if (req.body.year != undefined) {
+            findRequest.year = req.body.year;
         }
 
         if (req.body.userDID != undefined) {

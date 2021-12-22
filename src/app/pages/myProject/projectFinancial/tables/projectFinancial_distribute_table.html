@@ -28,7 +28,7 @@
             <!--<th style="vertical-align: inherit; text-align: center" >換休總時數</th>-->
             <th style="vertical-align: inherit; text-align: center" >執行工時</th>
             <th style="vertical-align: inherit; text-align: center" >執行成本</th>
-            <th style="vertical-align: inherit; text-align: center" >分配金額</th>
+            <th style="vertical-align: inherit; text-align: center" >分配績效</th>
         </tr>
         </thead>
         <tbody ng-repeat="item in relatedMembersArrayResults">
@@ -71,9 +71,9 @@
                 <span ng-if="item.is011Add" >0</span>
             </td>
 
-            <!--分配金額-->
+            <!--分配績效-->
             <td class="form-group" style="vertical-align: inherit;">
-                <span >{{(calResult(9, projectFinancialResultTable[0]) * (item.distribute)/ 100).toLocaleString()}}</span>
+                <span >{{((calResult(9, projectFinancialResultTable[0]) * (item.distribute)/ 100) - fetchResult(item.userDID, 2)).toLocaleString()}}</span>
             </td>
         </tr>
         </tbody>
@@ -85,7 +85,7 @@
             </th>
             <!--分配比例-->
             <th class="form-group" style="vertical-align: inherit; text-align: right">
-                {{showPercentTotal()}}
+                {{showPercentTotal().toFixed(2)}}
             </th>
             <!--正常總時數-->
             <!--<th class="form-group" style="vertical-align: inherit; text-align: right">-->
@@ -103,9 +103,9 @@
             <th class="form-group" style="vertical-align: inherit; text-align: right">
                 {{calcAllCost_special20210819(1).toLocaleString()}}
             </th>
-            <!--分配金額-->
+            <!--分配績效-->
             <th class="form-group" style="vertical-align: inherit; text-align: right">
-                {{(calResult(9, projectFinancialResultTable[0]) * (showPercentTotal())/ 100).toLocaleString()}}
+                {{((calResult(9, projectFinancialResultTable[0]) * (showPercentTotal())/ 100) - calcAllCost_special20210819(1)).toLocaleString()}}
             </th>
         </tr>
         </tfoot>

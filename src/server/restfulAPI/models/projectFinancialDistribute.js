@@ -3,6 +3,11 @@ var moment = require('moment');
 
 module.exports = mongoose.model('ProjectFinancialDistribute', {
 
+    // Year
+    year: {
+        type: String,
+    },
+
     // 專案ＤＩＤ
     prjDID: {
         type: String,
@@ -14,6 +19,30 @@ module.exports = mongoose.model('ProjectFinancialDistribute', {
 
     // 11 輸入
     distribute: {
+        type: Number,
+        default: 0
+    },
+
+    // 可分配金額
+    canDistributeAmount: {
+        type: Number,
+        default: 0
+    },
+
+    // 工時
+    costHour: {
+        type: Number,
+        default: 0
+    },
+
+    // 執行成本
+    cost: {
+        type: Number,
+        default: 0
+    },
+
+    // 分配績效
+    distributeBonus: {
         type: Number,
         default: 0
     },

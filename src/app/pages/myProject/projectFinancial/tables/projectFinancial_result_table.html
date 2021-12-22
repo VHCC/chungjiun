@@ -38,7 +38,7 @@
                 <span style="color:blue">B=A/1.05</span>
             </th>
             <th style="vertical-align: inherit; text-align: center" class="AutoNewline">
-                公司調整(規劃、設計、監造廷整)
+                公司調整
                 <br>
                 <span style="color:blue">C=B*調整值</span>
             </th>
@@ -81,7 +81,9 @@
             </th>
             <th style="vertical-align: inherit; text-align: center" >其他</th>
             <th style="vertical-align: inherit; text-align: center" >說明</th>
-            <th style="vertical-align: inherit; text-align: center" >可分配績效</th>
+            <th style="vertical-align: inherit; text-align: center" >可分配金額</th>
+            <th style="vertical-align: inherit; text-align: center" >人時成本</th>
+            <th style="vertical-align: inherit; text-align: center" >績效結餘</th>
 
         </tr>
         </thead>
@@ -330,16 +332,19 @@
                        class="form-control input-sm"/>
             </td>
 
-            <!--可分配績效-->
+            <!--可分配金額-->
             <td class="form-group" style="vertical-align: inherit;">
-                <!--<span >{{(((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay())-->
-                    <!-- - (item.rate_item_1 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100)-->
-                    <!-- - (item.rate_item_2 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100)-->
-                    <!-- - (item.rate_item_3 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100)-->
-                    <!-- - (item.rate_item_4 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100)-->
-                    <!-- - calcAllCost()-->
-                    <!-- - item.otherCost}}</span>-->
                 <span>{{calResult(9, item).toLocaleString()}}</span>
+            </td>
+
+            <!--執行成本-->
+            <td class="form-group" style="vertical-align: inherit; text-align: right">
+                {{calcAllCost_special20210819(1).toLocaleString()}}
+            </td>
+
+            <!--績效結餘-->
+            <td class="form-group" style="vertical-align: inherit;">
+                <span>{{(calResult(9, item) - calcAllCost_special20210819(1)).toLocaleString()}}</span>
             </td>
         </tr>
         </tbody>

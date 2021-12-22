@@ -43,7 +43,7 @@
             <td style="vertical-align: inherit; text-align: center" width="150px">專案名稱</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">經理</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">技師</td>
-            <td style="vertical-align: inherit; text-align: center" width="150px">可執行金額</td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">可分配金額</td>
         </tr>
         </thead>
         <tbody>
@@ -60,7 +60,7 @@
             <td class="form-group" style="vertical-align: inherit; text-align: center">{{showProjectManager(selectPrjInfo._id)}}</td>
             <!--技師-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">{{showTechs(selectPrjInfo._id)}}</td>
-            <!--可分配績效-->
+            <!--可分配金額-->
             <td style="vertical-align: inherit; text-align: center">{{calResult(9, projectFinancialResultTable[0]).toLocaleString()}}</td>
         </tr>
         </tbody>

@@ -1,0 +1,19 @@
+<div>
+    <my class="input-group">
+        <input type="text"
+               class="form-control my5YearlyDatePicker"
+               uib-datepicker-popup="{{format}}"
+               datepicker-options=my5YearOptions
+               ng-model="myYear"
+               is-open="opened"
+               ng-change="shiftYear(this)"
+               ng-required="true"
+               style="display: none"
+               close-text="Close"
+               show-button-bar="false"/>
+            <button type="button" class="btn btn-default btn-icon"
+                    ng-click="open5YearlyDatePicker()">
+                <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+    </my>
+</div>

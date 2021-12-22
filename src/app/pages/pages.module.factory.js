@@ -30,9 +30,12 @@
                 updateUserProfile: function (formData) {
                     return http.post('/api/userUpdateProfile', formData);
                 },
-
                 setUserResidualRestHour: function (formData) {
-                    return http.post('/api/setUserResidualRestHour', formData)
+                    return http.post('/api/setUserResidualRestHour', formData);
+                },
+
+                updateUserBefore108Kpi: function (formData) {
+                    return http.post('/api/post_user_info_update_before_108_kpi', formData);
                 }
             }
         }])
@@ -460,6 +463,7 @@
                 findKPIYear : function (formData) {
                     return http.post('/api/post_get_kpi_financial_results_by_year', formData);
                 },
+
                 // including
                 // ProjectIncomeUtil
                 // PaymentFormsUtil
@@ -467,6 +471,16 @@
                 // SubContractorPayItemUtil
                 fetchKpiItemsByPrjDIDArray: function (formData) {
                     return http.post('/api/post_get_kpi_elements_by_prjdid_array', formData);
+                },
+
+                findKPIBonus: function(formData) {
+                    return http.post('/api/post_get_kpi_bonus_find', formData);
+                },
+                insertKPIBonus: function(formData) {
+                    return http.post('/api/post_get_kpi_bonus_insert', formData);
+                },
+                updateKPIBonus: function(formData) {
+                    return http.post('/api/post_get_kpi_bonus_update', formData);
                 },
             }
         }])
@@ -608,6 +622,15 @@
                 removeFD: function (formData) {
                     return http.post('/api/post_project_financial_distribute_remove', formData)
                 },
+
+                findFDByYear: function (formData) {
+                    return http.post('/api/post_project_financial_distribute_find_by_year', formData)
+                },
+
+                findFDByUserUUID: function (formData) {
+                    return http.post('/api/post_project_financial_distribute_find_by_user_uuid', formData)
+                },
+
             }
         }])
         .factory('KpiTechDistributeUtil', ['$http', function (http) {

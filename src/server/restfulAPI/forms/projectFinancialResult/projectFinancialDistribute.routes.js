@@ -71,19 +71,6 @@ module.exports = function (app) {
             }
         )
 
-
-        // ProjectFinancialDistribute.find({
-        //     prjDID: req.body.prjDID,
-        // }, function (err, tables) {
-        //     if (err) {
-        //         res.send(err);
-        //     }
-        //     res.status(200).send({
-        //         code: 200,
-        //         error: global.status._200,
-        //         payload: tables,
-        //     });
-        // });
     })
 
     // update data
@@ -122,6 +109,42 @@ module.exports = function (app) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_project_financial_distribute_remove");
         ProjectFinancialDistribute.remove({
             _id: req.body._id,
+        }, function (err, results) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: results,
+                });
+            }
+        });
+    })
+
+    // find by year
+    app.post(global.apiUrl.post_project_financial_distribute_find_by_year, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_project_financial_distribute_find_by_year");
+        ProjectFinancialDistribute.find({
+            year: req.body.year,
+            userDID: req.body.targetUser._id
+        }, function (err, results) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: results,
+                });
+            }
+        });
+    })
+
+    // find by user uuid
+    app.post(global.apiUrl.post_project_financial_distribute_find_by_user_uuid, function (req, res) {
+        ProjectFinancialDistribute.find({
+            userDID: req.body.targetUser._id
         }, function (err, results) {
             if (err) {
                 res.send(err);

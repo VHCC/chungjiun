@@ -1,0 +1,65 @@
+<div class="horizontal-scroll">
+    <table class="table table-bordered table-hover table-condensed">
+        <colgroup>
+            <!--序號-->
+            <col span="1" style="width: 3%;">
+            <!--專案代碼-->
+            <col span="1" style="width: 10%;">
+            <!--專案名稱-->
+            <col span="1" style="width: 57%;">
+            <!--總工時-->
+            <col span="1" style="width: 15%;">
+            <!--執行成本-->
+            <col span="1" style="width: 15%;">
+        </colgroup>
+        <thead>
+        <tr style="white-space:nowrap" >
+            <th style="vertical-align: inherit; text-align: center" >序號</th>
+            <th style="vertical-align: inherit; text-align: center" >專案代碼</th>
+            <th style="vertical-align: inherit; text-align: center" >專案名稱</th>
+            <th style="vertical-align: inherit; text-align: center" >
+                總工時
+                <br>
+                <span style="vertical-align: inherit; text-align: center; color:blue" >(正常+換休+加班)</span>
+            </th>
+            <th style="vertical-align: inherit; text-align: center" >執行成本</th>
+            <th style="vertical-align: inherit; text-align: center" >分配績效</th>
+
+        </tr>
+        </thead>
+        <tbody ng-repeat="item in personalFDData_y0">
+        <tr style="vertical-align: inherit; text-align: center">
+            <!--序號-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{$index + 1}}</span>
+            </td>
+            <!--專案代碼-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                {{showPrjInfo(item.prjDID).prjCode}}
+            </td>
+            <!--專案名稱-->
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                {{showPrjInfo(item.prjDID).mainName}}
+                -
+                {{showPrjInfo(item.prjDID).prjName}}
+                -
+                {{showPrjInfo(item.prjDID).prjSubName}}
+                -
+                {{prjTypeToName(showPrjInfo(item.prjDID).type)}}
+            </td>
+            <!--時數-->
+            <td class="form-group has-success" style="vertical-align: inherit; text-align: right">
+                {{item.costHour}}
+            </td>
+            <!--執行成本-->
+            <th class="form-group" style="vertical-align: inherit; text-align: right">
+                {{(item.cost).toLocaleString()}}
+            </th>
+            <!--分配績效-->
+            <th class="form-group" style="vertical-align: inherit; text-align: right">
+                {{item.distributeBonus.toFixed(0)}}
+            </th>
+        </tr>
+        </tbody>
+    </table>
+</div>

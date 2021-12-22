@@ -6,6 +6,7 @@ var PaymentFormItem = require('../../models/paymentFormItem');
 var Project = require('../../models/project');
 var ProjectFinancialResult = require('../../models/projectFinancialResult');
 var ProjectKPIElements = require('../../models/projectKPIElement');
+var KpiYearBonus = require('../../models/kpiYearBonus');
 
 var moment = require('moment');
 
@@ -126,11 +127,49 @@ module.exports = function (app) {
                         payload: findData,
                     });
                 }
-
             }
-
         });
+    });
 
+    app.post(global.apiUrl.post_get_kpi_financial_results_by_year_and_user_uuid, function (req, res) {
+        console.log(JSON.stringify(req.body));
+        Project.find({
+            year: req.body.year,
+            isPrjClose: true,
+        }, function (err, projects) {
+            if (err) {
+                res.send(err);
+            } else {
+                var findData = []
+                if (projects.length != 0) {
+                    for (var index = 0; index < projects.length; index++) {
+                        var target = {
+                            prjDID: projects[index]._id,
+                        }
+                        findData.push(target);
+                    }
+                    var query = {};
+                    query.$or = findData;
+                    ProjectFinancialResult.find(query,
+                        function (err, items) {
+                            if (err) {
+                                res.send(err);
+                            }
+                            res.status(200).send({
+                                code: 200,
+                                error: global.status._200,
+                                payload: items,
+                            });
+                        });
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: findData,
+                    });
+                }
+            }
+        });
     });
 
     app.post(global.apiUrl.post_get_kpi_elements_by_prjdid_array, function (req, res) {
@@ -275,10 +314,80 @@ module.exports = function (app) {
                     }
                 }
         });
-
     });
 
 
+
+    // BONUS
+    app.post(global.apiUrl.post_get_kpi_bonus_find, function (req, res) {
+
+        console.log(req.body)
+
+        var findRequest = {
+            // year: req.body.year,
+        }
+
+        if (req.body.year != undefined) {
+            findRequest.year = req.body.year;
+        }
+
+        if (req.body.userDID != undefined) {
+            findRequest.userDID = req.body.userDID;
+        }
+
+        KpiYearBonus.find(findRequest, function (err, results) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: results,
+                });
+            }
+        });
+    });
+
+    app.post(global.apiUrl.post_get_kpi_bonus_insert, function (req, res) {
+        console.log(JSON.stringify(req.body));
+        KpiYearBonus.create({
+            year: req.body.year,
+            userDID: req.body.userDID,
+            amount: req.body.amount,
+            timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
+        }, function (err, results) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: results,
+                });
+            }
+        });
+    });
+
+    app.post(global.apiUrl.post_get_kpi_bonus_update, function (req, res) {
+        console.log(JSON.stringify(req.body));
+        KpiYearBonus.updateOne({
+            _id: req.body._id,
+        },{
+            $set: {
+                amount: req.body.amount,
+            }
+        }, function (err, results) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: results,
+                });
+            }
+        });
+    });
 
 
 }

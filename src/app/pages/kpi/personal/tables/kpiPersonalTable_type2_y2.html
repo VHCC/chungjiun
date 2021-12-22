@@ -1,0 +1,91 @@
+<div class="horizontal-scroll">
+    <table class="table table-bordered table-hover table-condensed">
+        <colgroup>
+            <!--序號-->
+            <col span="1" style="width: 2%;">
+            <!--專案代碼-->
+            <col span="1" style="width: 10%;">
+            <!--專案名稱-->
+            <col span="1" style="width: 75%;">
+            <!--總工時-->
+            <col span="1" style="width: 3%;">
+            <!--執行成本-->
+            <col span="1" style="width: 10%;">
+        </colgroup>
+        <thead>
+        <tr style="white-space:nowrap" >
+            <th style="vertical-align: inherit; text-align: center" >序號</th>
+            <!--<th style="vertical-align: inherit; text-align: center" width="20px">年份</th>-->
+            <!--<th style="vertical-align: inherit; text-align: center" width="20px">月份</th>-->
+            <!--<th style="vertical-align: inherit; text-align: center" width="30px">區間</th>-->
+            <th style="vertical-align: inherit; text-align: center" >專案代碼</th>
+            <th style="vertical-align: inherit; text-align: center" >專案名稱</th>
+            <!--<th style="vertical-align: inherit; text-align: center" width="80px">人員</th>-->
+            <th style="vertical-align: inherit; text-align: center" >
+                總工時
+                <br>
+                <span style="vertical-align: inherit; text-align: center; color:blue" >(正常+換休+加班)</span>
+            </th>
+            <!--<th style="vertical-align: inherit; text-align: center" width="30px">類別</th>-->
+            <!--<th style="vertical-align: inherit; text-align: center" width="30px">加班總時數</th>-->
+            <!--<th style="vertical-align: inherit; text-align: center" width="30px">換休總時數</th>-->
+            <th style="vertical-align: inherit; text-align: center" >執行成本</th>
+
+        </tr>
+        </thead>
+        <tbody ng-repeat="item in statisticsResults_type2_y2">
+        <tr style="vertical-align: inherit; text-align: center"
+            ng-if="item.tables.length > 0 || item._add_tables !== undefined">
+            <!--序號-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{$index + 1}}</span>
+            </td>
+            <!--區間-->
+            <!--<td style="vertical-align: inherit; text-align: center">-->
+            <!--<span>{{startDay}} - {{endDay}}</span>-->
+            <!--</td>-->
+            <!--專案代碼-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                {{item._project_info.prjCode}}
+            </td>
+            <!--專案名稱-->
+            <td class="form-group" style="vertical-align: inherit; text-align: left">
+                {{item._project_info.mainName}}
+                -
+                {{item._project_info.prjName}}
+                -
+                {{item._project_info.prjSubName}}
+                -
+                {{prjTypeToName(item._project_info.type)}}
+            </td>
+            <!--人員-->
+            <!--<td class="form-group" style="vertical-align: inherit; text-align: center">-->
+                <!--{{item._user_info.name}}-->
+            <!--</td>-->
+            <!--時數-->
+            <td class="form-group has-success" style="vertical-align: inherit; text-align: right">
+                <my>
+                    {{item.hourTotal + item.hourTotal_add_A + item.hourTotal_add_B}}
+                </my>
+            </td>
+            <!--加班總時數-->
+            <!--<td class="form-group has-success" style="vertical-align: inherit;">-->
+            <!--<my >-->
+            <!--{{calculateHours_type2_add(item, 1)}}-->
+            <!--</my>-->
+            <!--</td>-->
+            <!--換休總時數-->
+            <!--<td class="form-group has-success" style="vertical-align: inherit;">-->
+            <!--<my >-->
+            <!--{{calculateHours_type2_add(item, 2)}}-->
+            <!--</my>-->
+            <!--</td>-->
+            <!--執行成本-->
+            <th class="form-group" style="vertical-align: inherit; text-align: right">
+                {{getTotalCost(item).toLocaleString()}}
+            </th>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
