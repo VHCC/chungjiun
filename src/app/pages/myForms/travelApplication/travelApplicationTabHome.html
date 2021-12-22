@@ -19,14 +19,14 @@
                  ng-include="'app/pages/myForms/travelApplication/tabs/travelApplication_main.html'"></div>
         </uib-tab>
         <uib-tab heading="審核"
-                 ng-if="roleType === '2' || roleType === '100' || roleType === '6'">
+                 ng-if="roleType === '2' || roleType === '100' || roleType === '6' || roleType === '1'">
             <div class="row"
                  ng-controller="travelApplicationReviewCtrl">
                 <div class="col-md-12" id="includeHead_review">
                 </div>
             </div>
         </uib-tab>
-        <uib-tab heading="查詢" ng-if="roleType === '2' || roleType === '100' || roleType === '6'">
+        <uib-tab heading="查詢" ng-if="roleType === '2' || roleType === '100' || roleType === '6' || roleType === '1'">
             <div class="row"
                  ng-controller="travelApplicationLookUpCtrl as travelApplicationLookUpCtrlVm"
                  ng-include="'app/pages/myForms/travelApplication/tabs/travelApplication_lookUp.html'">

@@ -59,7 +59,7 @@
 
             // 行政總管專屬
             // 20200415 新增主任＆經理可以
-            if ($scope.roleType == 100 || $scope.roleType == 2 || $scope.roleType == 6) {
+            if ($scope.roleType == 100 || $scope.roleType == 2 || $scope.roleType == 6 || $scope.roleType == 1) {
                 // 所有人，對照資料
                 User.getAllUsers()
                     .success(function (allUsers) {

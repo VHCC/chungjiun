@@ -18,7 +18,8 @@
             <div ng-controller="projectFinancialDistributeCtrl as projectFinancialDistributeCtrlVm"
                  ng-include="'app/pages/myProject/projectFinancial/tabs/projectFinancial_distributeTab.html'"></div>
         </uib-tab>
-        <uib-tab heading="結算查詢" ng-if="roleType === '2' || roleType === '100' || roleType === '6'">
+
+        <uib-tab heading="結算查詢" ng-if="roleType === '2' || roleType === '100' || roleType === '6' || roleType === '1'">
             <!-- 只有主管 -->
             <div ng-controller="projectFinancialSearchCtrl as projectFinancialSearchCtrlVm"
                  ng-include="'app/pages/myProject/projectFinancial/tabs/projectFinancial_searchTab.html'"></div>
