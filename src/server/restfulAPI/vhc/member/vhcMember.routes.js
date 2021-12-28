@@ -103,6 +103,7 @@ module.exports = function (app) {
                 user_email: req.body.member.user_email,
                 user_address: req.body.member.user_address,
                 user_memo: req.body.member.user_memo,
+                user_name: req.body.member.user_name,
                 user_number: req.body.member.user_number,
             }
         }, function (err) {
