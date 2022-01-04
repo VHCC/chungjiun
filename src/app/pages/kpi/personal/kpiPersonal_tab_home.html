@@ -8,7 +8,7 @@
      bs-loading-overlay-reference-id="mainPage_kpi_personal">
 
     <uib-tabset active="$tabSetStatus.activeTab">
-        <uib-tab heading="績效分配" >
+        <uib-tab heading="績效分配" ng-if="userDID === '5eec6f1902a94a4eebf2af7d' ">
             <div ng-controller="kpiPersonal_011Ctrl as kpiPersonal_011CtrlVM"
                     ng-include="'app/pages/kpi/personal/tabs/kpiPersonalMain_011Tab.html'"></div>
         </uib-tab>
@@ -18,7 +18,7 @@
                  ng-include="'app/pages/kpi/personal/tabs/kpiPersonalMainTab.html'"></div>
         </uib-tab>
 
-        <uib-tab heading="績效查詢">
+        <uib-tab heading="績效查詢" ng-show="false">
             <div ng-controller="kpiPersonal_SearchCtrl as kpiPersonal_SearchCtrlVM"
                  ng-include="'app/pages/kpi/personal/tabs/kpiPersonalMain_SearchTab.html'"></div>
         </uib-tab>

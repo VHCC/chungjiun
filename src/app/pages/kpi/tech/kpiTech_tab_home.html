@@ -2,7 +2,7 @@
      bs-loading-overlay-reference-id="mainPage_kpi_personal">
 
     <uib-tabset active="$tabSetStatus.activeTab">
-        <uib-tab heading="年度績效" >
+        <uib-tab heading="年度績效" ng-if="userDID === '5eec6f1902a94a4eebf2af7d' ">
             <div ng-controller="kpiTechCtrl as kpiTechCtrlVM"
                     ng-include="'app/pages/kpi/tech/tabs/kpiTechMainTab.html'"></div>
         </uib-tab>

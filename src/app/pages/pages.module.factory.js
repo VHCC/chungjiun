@@ -460,6 +460,14 @@
                     return http.post('/api/post_get_kpi_elements_by_year', formData);
                 },
 
+                // 個人績效
+                findKPIPersonElement : function(formData) {
+                    return http.post('/api/post_get_kpi_person_elements_by_year', formData);
+                },
+                insertKPIPersonElement: function(formData) {
+                    return http.post('/api/post_kpi_person_elements_insert', formData);
+                },
+
                 findKPIYear : function (formData) {
                     return http.post('/api/post_get_kpi_financial_results_by_year', formData);
                 },
@@ -473,6 +481,7 @@
                     return http.post('/api/post_get_kpi_elements_by_prjdid_array', formData);
                 },
 
+                // 年終獎金
                 findKPIBonus: function(formData) {
                     return http.post('/api/post_get_kpi_bonus_find', formData);
                 },

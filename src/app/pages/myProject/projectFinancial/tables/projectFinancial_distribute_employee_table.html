@@ -1,0 +1,111 @@
+<div class="horizontal-scroll">
+    <table class="table table-bordered table-hover table-condensed"
+           style="width:100%">
+        <colgroup>
+            <col span="1" style="width: 5%;">
+            <!--<col span="1" style="width: 5%;">-->
+            <!--<col span="1" style="width: 5%;">-->
+            <!--<col span="1" style="width: 5%;">-->
+            <col span="1" style="width: 2%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 5%;">
+            <!--<col span="1" style="width: 5%;">-->
+            <!--<col span="1" style="width: 5%;">-->
+            <!--<col span="1" style="width: 5%;">-->
+            <!--<col span="1" style="width: 5%;">-->
+            <!--<col span="1" style="width: 5%;">-->
+            <!--<col span="1" style="width: 10%;">-->
+            <!--<col span="1" style="width: 20%;">-->
+            <!--<col span="1" style="width: 5%;">-->
+        </colgroup>
+        <thead>
+        <tr style="white-space:nowrap">
+            <th style="vertical-align: inherit; text-align: center" >姓名</th>
+            <th style="vertical-align: inherit; text-align: center" >貢獻度比例</th>
+            <!--<th style="vertical-align: inherit; text-align: center" >正常總時數</th>-->
+            <!--<th style="vertical-align: inherit; text-align: center" >加班總時數</th>-->
+            <!--<th style="vertical-align: inherit; text-align: center" >換休總時數</th>-->
+            <th style="vertical-align: inherit; text-align: center" >執行工時</th>
+            <th style="vertical-align: inherit; text-align: center" >執行成本</th>
+            <th style="vertical-align: inherit; text-align: center" >分配績效</th>
+        </tr>
+        </thead>
+        <tbody ng-repeat="item in relatedMembersArrayResults">
+        <tr style="vertical-align: inherit; text-align: right">
+            <!--姓名-->
+            <td style="vertical-align: inherit; text-align: center">
+                {{item._user_info.name}}
+                <button class="btn btn-danger editable-table-button btn-xs"
+                        ng-if="item.is011Add"
+                        ng-click="removeRelatedMember(item)">移除</button>
+            </td>
+            <!--分配比例-->
+            <td class="form-group" style="vertical-align: inherit;">
+                {{item.distribute}}%
+            </td>
+            <!--正常總時數-->
+            <!--<td class="form-group" style="vertical-align: inherit;">-->
+                <!--<span style="text-align: right">{{fetchResult(item.userDID, 1001).toLocaleString()}}</span>-->
+            <!--</td>-->
+            <!--加班總時數-->
+            <!--<td class="form-group" style="vertical-align: inherit;">-->
+                <!--<span style="text-align: right">{{fetchResult(item.userDID, 1002).toLocaleString()}}</span>-->
+            <!--</td>-->
+            <!--換休總時數-->
+            <!--<td class="form-group" style="vertical-align: inherit;">-->
+                <!--<span style="text-align: right">{{fetchResult(item.userDID, 1003).toLocaleString()}}</span>-->
+            <!--</td>-->
+            <!--執行工時-->
+            <td class="form-group" style="vertical-align: inherit;">
+                <span ng-if="!item.is011Add" style="text-align: right">{{fetchResult(item.userDID, 1).toLocaleString()}}</span>
+                <span ng-if="item.is011Add" >0</span>
+            </td>
+            <!--執行成本-->
+            <td class="form-group" style="vertical-align: inherit;">
+                <span ng-if="!item.is011Add" style="text-align: right">{{fetchResult(item.userDID, 2).toLocaleString()}}</span>
+                <span ng-if="item.is011Add" >0</span>
+            </td>
+
+            <!--分配績效-->
+            <td class="form-group" style="vertical-align: inherit;">
+                <span >{{((calResult(9, projectFinancialResultTable[0]) * (item.distribute)/ 100) - fetchResult(item.userDID, 2)).toLocaleString()}}</span>
+            </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <!-- main -->
+        <tr style="vertical-align: inherit; text-align: right; white-space:nowrap">
+            <th style="vertical-align: inherit; text-align: center">
+                小計
+            </th>
+            <!--分配比例-->
+            <th class="form-group" style="vertical-align: inherit; text-align: right">
+                {{showPercentTotal().toFixed(2)}}
+            </th>
+            <!--正常總時數-->
+            <!--<th class="form-group" style="vertical-align: inherit; text-align: right">-->
+            <!--</th>-->
+            <!--加班總時數-->
+            <!--<th class="form-group" style="vertical-align: inherit; text-align: right">-->
+            <!--</th>-->
+            <!--換休總時數-->
+            <!--<th class="form-group" style="vertical-align: inherit; text-align: right">-->
+            <!--</th>-->
+            <!--執行工時-->
+            <th class="form-group" style="vertical-align: inherit; text-align: right">
+            </th>
+            <!--執行成本-->
+            <th class="form-group" style="vertical-align: inherit; text-align: right">
+                {{calcAllCost_special20210819(1).toLocaleString()}}
+            </th>
+            <!--分配績效-->
+            <th class="form-group" style="vertical-align: inherit; text-align: right">
+                {{((calResult(9, projectFinancialResultTable[0]) * (showPercentTotal())/ 100) - calcAllCost_special20210819(1)).toLocaleString()}}
+            </th>
+        </tr>
+        </tfoot>
+    </table>
+
+</div>
+<hr>

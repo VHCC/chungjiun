@@ -31,6 +31,44 @@ module.exports = function (app) {
         });
     });
 
+    app.post(global.apiUrl.post_get_kpi_person_elements_by_year, function (req, res) {
+        console.log(JSON.stringify(req.body));
+        ProjectKPIElements.find({
+            year: req.body.year,
+            userDID: req.body.userDID,
+        }, function (err, items) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: items,
+                });
+            }
+        });
+    });
+
+    app.post(global.apiUrl.post_kpi_person_elements_insert, function (req, res) {
+        console.log(JSON.stringify(req.body));
+        ProjectKPIElements.create({
+            year: req.body.year,
+            userDID: req.body.userDID,
+            timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
+        }, function (err, results) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: results,
+                });
+            }
+        });
+    });
+
+
     app.post(global.apiUrl.post_get_kpi_elements_delete, function (req, res) {
         console.log(JSON.stringify(req.body));
         ProjectKPIElements.remove({
@@ -318,7 +356,7 @@ module.exports = function (app) {
 
 
 
-    // BONUS
+    // BONUS 年終
     app.post(global.apiUrl.post_get_kpi_bonus_find, function (req, res) {
 
         console.log(req.body)

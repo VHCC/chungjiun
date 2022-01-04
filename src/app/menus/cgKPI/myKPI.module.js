@@ -39,6 +39,8 @@
                     url: '/KPIPersonal',
                     templateUrl: 'app/pages/kpi/personal/kpiPersonHomePage.html',
                     title: '個人績效',
+                    controller: 'myKPIHomeCtrl',
+                    controllerAs: 'myKPIHomeCtrlVM',
                     // accessLevel: [9999],
                     sidebarMeta: {
                         order: global.pages.cgKPI_personal,
@@ -49,6 +51,8 @@
                     url: '/KPITech',
                     templateUrl: 'app/pages/kpi/tech/kpiTechHomePage.html',
                     title: '技師績效',
+                    controller: 'myKPIHomeCtrl',
+                    controllerAs: 'myKPIHomeCtrlVM',
                     // accessLevel: [9999],
                     sidebarMeta: {
                         order: global.pages.cgKPI_tech,
@@ -59,6 +63,8 @@
                     url: '/KPIExecutive',
                     templateUrl: 'app/pages/kpi/executive/kpiExecutiveHomePage.html',
                     title: '行政績效',
+                    controller: 'myKPIHomeCtrl',
+                    controllerAs: 'myKPIHomeCtrlVM',
                     // accessLevel: [9999],
                     sidebarMeta: {
                         order: global.pages.cgKPI_executive,
@@ -69,6 +75,8 @@
                     url: '/KPICompanyRisk',
                     templateUrl: 'app/pages/kpi/risk/kpiCompanyRiskHomePage.html',
                     title: '公司風險',
+                    controller: 'myKPIHomeCtrl',
+                    controllerAs: 'myKPIHomeCtrlVM',
                     // accessLevel: [9999],
                     sidebarMeta: {
                         order: global.pages.cgKPI_companyRisk,
@@ -79,6 +87,8 @@
                     url: '/KPICompanyProfits',
                     templateUrl: 'app/pages/kpi/profits/kpiCompanyProfitsHomePage.html',
                     title: '公司利潤',
+                    controller: 'myKPIHomeCtrl',
+                    controllerAs: 'myKPIHomeCtrlVM',
                     // accessLevel: [9999],
                     sidebarMeta: {
                         order: global.pages.cgKPI_companyProfits,

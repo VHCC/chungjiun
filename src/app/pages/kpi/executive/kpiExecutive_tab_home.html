@@ -2,7 +2,7 @@
      bs-loading-overlay-reference-id="mainPage_kpi_companyProfits">
 
     <uib-tabset active="$tabSetStatus.activeTab">
-        <uib-tab heading="行政績效" >
+        <uib-tab heading="行政績效" ng-if="userDID === '5eec6f1902a94a4eebf2af7d' ">
             <div ng-controller="kpiExecutiveCtrl"
                     ng-include="'app/pages/kpi/executive/tabs/kpiExecutiveMainTab.html'"></div>
         </uib-tab>
