@@ -48,8 +48,6 @@
                 </button>
             </th>
             <th style="vertical-align: inherit; text-align: center" >
-            </th>
-            <th style="vertical-align: inherit; text-align: center" >
                 餘額
             </th>
         </tr>
@@ -144,9 +142,8 @@
             <td style="vertical-align: inherit; text-align: right" ng-repeat="user in projectTechMembers">
                 {{showSum(user).toLocaleString()}}
             </td>
-            <td></td>
             <!--<td>{{showTotalSum().toLocaleString()}}</td>-->
-            <td>{{showResidualSum().toLocaleString()}}</td>
+            <td style="vertical-align: inherit; text-align: right" >{{showResidualSum().toLocaleString()}}</td>
         </tr>
         <!--<tr style="vertical-align: inherit; text-align: center">-->
             <!--<td style="vertical-align: inherit;">-->

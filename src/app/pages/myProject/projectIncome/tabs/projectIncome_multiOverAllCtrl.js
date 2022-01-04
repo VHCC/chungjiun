@@ -113,8 +113,9 @@
         $scope.initProject = function() {
             Project.findAllByGroup()
                 .success(function (allProjects) {
+                    console.log(allProjects);
                     $scope.allProject_raw = allProjects;
-                    vm.projects = allProjects.slice();
+                    vm.projects = $scope.allProject_raw.slice();
                 });
         }
 
@@ -792,11 +793,13 @@
         }
 
         // 技師、行政、風險
+        // 20220103 新增利潤
         $scope.calcRates = function (manipulatePrj) {
             if (manipulatePrj.financialResult == undefined) return 0;
             // console.log($scope.financialResult[0]);
             var rates = parseFloat(manipulatePrj.financialResult.rate_item_1)
                 + parseFloat(manipulatePrj.financialResult.rate_item_2)
+                + parseFloat(manipulatePrj.financialResult.rate_item_3)
                 + parseFloat(manipulatePrj.financialResult.rate_item_4);
 
             if (rates == 0.0) {
@@ -804,6 +807,7 @@
             } else {
                 return parseFloat(manipulatePrj.financialResult.rate_item_1)
                     + parseFloat(manipulatePrj.financialResult.rate_item_2)
+                    + parseFloat(manipulatePrj.financialResult.rate_item_3)
                     + parseFloat(manipulatePrj.financialResult.rate_item_4)
             }
 

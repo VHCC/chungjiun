@@ -2,7 +2,7 @@
      bs-loading-overlay-reference-id="mainPage_kpi_companyProfits">
 
     <uib-tabset active="$tabSetStatus.activeTab">
-        <uib-tab heading="公司利潤" >
+        <uib-tab heading="公司利潤" ng-if="userDID == '5eec6f1902a94a4eebf2af7d' ">
             <div ng-controller="kpiCompanyProfitsCtrl"
                     ng-include="'app/pages/kpi/profits/tabs/kpiCompanyProfitsMainTab.html'"></div>
         </uib-tab>

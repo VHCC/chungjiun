@@ -39,10 +39,10 @@
                     固定支出
                     <span style="color:red">{{calcRates()}}</span> %
                     <br>
-                    (技師、行政、風險)
+                    (技師、行政、風險、利潤)
                 </th>
 
-                <!-- 預計收入 * 技師、行政、風險 -->
+                <!-- 預計收入 * 技師、行政、風險、利潤 -->
                 <th class="form-group" style="vertical-align: inherit; text-align: right">
                     {{(calcRates() * financialResult.preIncome / 100).toLocaleString()}}
                 </th>

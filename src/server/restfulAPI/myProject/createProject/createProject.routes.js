@@ -413,6 +413,11 @@ module.exports = function (app) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, find all project by group");
         Project.aggregate([
             {
+                $match: {
+                    branch: "C",
+                },
+            },
+            {
                 $group: {
                     _id: '$mainName',  //$region is the column name in collection
                     mainName: {$first: '$mainName'},
@@ -421,6 +426,7 @@ module.exports = function (app) {
                     prjCode: {$first: '$prjCode'},
                     year: {$first: '$year'},
                     branch: {$first: '$branch'},
+                    // branch: "C",
                 }
             }
         ], function (err, projects) {

@@ -2,7 +2,7 @@
      bs-loading-overlay-reference-id="mainPage_kpi_companyRisk">
 
     <uib-tabset active="$tabSetStatus.activeTab">
-        <uib-tab heading="公司風險" >
+        <uib-tab heading="公司風險" ng-if="userDID === '5eec6f1902a94a4eebf2af7d' ">
             <div ng-controller="kpiCompanyRiskCtrl"
                     ng-include="'app/pages/kpi/risk/tabs/kpiCompanyRiskMainTab.html'"></div>
         </uib-tab>

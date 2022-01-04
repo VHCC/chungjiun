@@ -1,0 +1,81 @@
+<div class="row col-md-12">
+
+    <div class="form-group">
+
+        <label for="projectName" style="color:blue">已結算專案(經理負責之專案)</label>
+        <label for="projectName">總案名稱 - 專案名稱 - 子案名稱 - 類型 - 代碼</label>
+        <ui-select ng-model="projectFinancialDistributeEmployeeCtrlVm.prjItems.selected"
+                   class="btn-group bootstrap-select form-control"
+                   id="projectName"
+                   ng-change="fetchProjectRelatedMembers($select.selected)"
+                   append-to-body="true"
+                   search-enabled="true">
+            <ui-select-match placeholder="選擇(查詢)">
+                {{$select.selected.mainName}} -
+                {{$select.selected.prjName}} -
+                {{$select.selected.prjSubName}} -
+                {{prjTypeToName($select.selected.type)}} -
+                {{$select.selected.prjCode}}
+            </ui-select-match>
+            <ui-select-choices
+                    ng-model="prjName"
+                    repeat="prjItems in projectFinancialDistributeEmployeeCtrlVm.projects |
+                            groupSelectpickerOptions: {
+                            mainName: $select.search,
+                            prjName: $select.search,
+                            prjSubName: $select.search,
+                            prjCode: $select.search
+                            }"
+                    group-by="'mainName'">
+                <span ng-bind-html="prjItems.prjName + ' - ' + prjItems.prjSubName + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+    <hr>
+
+
+    <div ng-if="selectPrjArray.length > 1" style="margin: 10px; color: darkred;"> 此專案包含：{{showCombinedPrjCode()}}</div>
+    <table
+            class="table table-bordered table-hover table-condensed" id="form_main_pdf">
+        <thead>
+        <tr style="white-space:nowrap">
+            <td style="vertical-align: inherit; text-align: center" width="80px">專案代碼</td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">專案名稱</td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">經理</td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">技師</td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">可分配金額</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-if="projectFinancialDistributeEmployeeCtrlVm.prjItems.selected"
+                style="vertical-align: inherit; text-align: center">
+            <!--專案代碼-->
+            <td style="vertical-align: inherit; text-align: center">
+                <span id="prjCode">{{selectPrjInfo.prjCode}}</span>
+            </td>
+            <!--專案名稱-->
+            <td style="vertical-align: inherit; text-align: center">
+                {{selectPrjInfo.mainName}}</td>
+            <!--經理-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">{{showProjectManager(selectPrjInfo._id)}}</td>
+            <!--技師-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">{{showTechs(selectPrjInfo._id)}}</td>
+            <!--可分配金額-->
+            <td style="vertical-align: inherit; text-align: center">{{calResult(9, projectFinancialResultTable[0]).toLocaleString()}}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <hr>
+    <div bs-loading-overlay
+         bs-loading-overlay-reference-id="mainPage_project_financial_distribute">
+        <div class="row" >
+            <div class="col-md-12" id="includeHead_financial_distribute_employee">
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+
+</div>

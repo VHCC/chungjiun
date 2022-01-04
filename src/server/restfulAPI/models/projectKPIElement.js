@@ -17,11 +17,15 @@ module.exports = mongoose.model('ProjectKPIElements', {
         default: 0
     },
 
-    type: { // risk, profits,
+    type: { // risk, profits, person
         type: String,
     },
 
     timestamp: {
+        type: String,
+    },
+
+    userDID: {
         type: String,
     },
 

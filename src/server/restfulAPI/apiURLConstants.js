@@ -88,6 +88,9 @@ global.apiUrl = {
     post_get_kpi_financial_results_by_year_and_user_uuid : '/api/post_get_kpi_financial_results_by_year_and_user_uuid',
     post_get_kpi_elements_by_year : '/api/post_get_kpi_elements_by_year',
 
+    post_get_kpi_person_elements_by_year : '/api/post_get_kpi_person_elements_by_year',
+    post_kpi_person_elements_insert : '/api/post_kpi_person_elements_insert',
+
     post_get_kpi_elements_insert : '/api/post_get_kpi_elements_insert',
     post_get_kpi_elements_update : '/api/post_get_kpi_elements_update',
     post_get_kpi_elements_delete : '/api/post_get_kpi_elements_delete',

@@ -14,9 +14,16 @@
                  ng-include="'app/pages/myProject/projectFinancial/tabs/projectFinancial_resultTab.html'"></div>
         </uib-tab>
 
-        <uib-tab heading="專案結算分配" >
+        <uib-tab heading="專案結算分配" ng-if="userDID === '5eec6f1902a94a4eebf2af7d' ">
+        <!--<uib-tab heading="專案結算分配" >-->
             <div ng-controller="projectFinancialDistributeCtrl as projectFinancialDistributeCtrlVm"
                  ng-include="'app/pages/myProject/projectFinancial/tabs/projectFinancial_distributeTab.html'"></div>
+        </uib-tab>
+
+        <uib-tab heading="分配查詢" ng-if="roleType === '2' || roleType === '100' || roleType === '6' || roleType === '1'">
+            <!--<uib-tab heading="專案結算分配" >-->
+            <div ng-controller="projectFinancialDistributeEmployeeCtrl as projectFinancialDistributeEmployeeCtrlVm"
+                 ng-include="'app/pages/myProject/projectFinancial/tabs/projectFinancial_distribute_employeeTab.html'"></div>
         </uib-tab>
 
         <uib-tab heading="結算查詢" ng-if="roleType === '2' || roleType === '100' || roleType === '6' || roleType === '1'">
