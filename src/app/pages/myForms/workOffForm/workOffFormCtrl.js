@@ -2271,6 +2271,9 @@
 
             // pdf 檔案列表
             $scope.fetchWorkOffPDFFiles = function (table, userDID) {
+                if (userDID == undefined) {
+                    userDID = $scope.userDID;
+                }
                 var fileMapNumber = table.fileMapNumber;
                 var formData = {
                     userDID: userDID,
