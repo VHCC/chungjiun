@@ -57,7 +57,8 @@
                     <!--</div>-->
                     <div class="img-area">
                         <img class="photo-msg-item"
-                             ng-src="{{::( msg.creatorDID | profilePicture )}}">
+                             ng-src="{{::( msg.creatorDID | profilePicture )}}"
+                             onerror="this.src='uploads/usersAvatar/no-photo.png'">
                     </div>
 
                     <div class="msg-area">
