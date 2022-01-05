@@ -2288,6 +2288,9 @@
 
             // show pdf View
             $scope.showWorkOffPDF = function (dom, fileMapNumber, userDID) {
+                if (userDID == undefined) {
+                    userDID = $scope.userDID;
+                }
                 dom.fileMapNumber = fileMapNumber;
                 dom.userDID = userDID;
                 $uibModal.open({
