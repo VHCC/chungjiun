@@ -10,7 +10,6 @@ module.exports = function (app) {
 
 // ----- define routes
 
-    // create
     app.get(global.apiUrl.get_all_users, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, getAllUsers");
         User.find(
@@ -23,6 +22,28 @@ module.exports = function (app) {
             function (err, users) {
                 if (err) {
                     console.log(global.timeFormat(new Date()) + global.log.e + "API, get_all_users");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.json(users);
+                }
+            });
+    });
+
+    app.get(global.apiUrl.get_all_resign_users, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, get_all_resign_users");
+        User.find(
+            {
+                workStatus:false
+            },
+            {
+                password: 0
+            },
+            function (err, users) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, get_all_resign_users");
                     console.log(req.body);
                     console.log(" ***** ERROR ***** ");
                     console.log(err);

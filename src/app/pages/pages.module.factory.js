@@ -12,6 +12,9 @@
                 getAllUsers: function () { // can sign in
                     return http.get('/api/getAllUsers');
                 },
+                getAllResignUsers: function () { // can sign in
+                    return http.get('/api/get_all_resign_users');
+                },
                 getAllUsersWithSignOut: function () {
                     return http.get('/api/getAllUsersWithSignOut');
                 },
@@ -464,6 +467,11 @@
                 findKPIPersonElement : function(formData) {
                     return http.post('/api/post_get_kpi_person_elements_by_year', formData);
                 },
+                // 個人全部
+                findKPIPersonElementAll : function(formData) {
+                    return http.post('/api/post_get_kpi_person_elements_all', formData);
+                },
+
                 insertKPIPersonElement: function(formData) {
                     return http.post('/api/post_kpi_person_elements_insert', formData);
                 },
