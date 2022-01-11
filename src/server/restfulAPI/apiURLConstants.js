@@ -13,6 +13,7 @@ global.apiUrl = {
 
     //create project
     get_all_users : '/api/getAllUsers',
+    get_all_resign_users : '/api/get_all_resign_users',
     get_all_users_with_unregister : '/api/getAllUsersWithSignOut',
     get_all_techs : '/api/getAllTechs',
     get_all_managers : '/api/getAllManagers',
@@ -89,6 +90,7 @@ global.apiUrl = {
     post_get_kpi_elements_by_year : '/api/post_get_kpi_elements_by_year',
 
     post_get_kpi_person_elements_by_year : '/api/post_get_kpi_person_elements_by_year',
+    post_get_kpi_person_elements_all : '/api/post_get_kpi_person_elements_all',
     post_kpi_person_elements_insert : '/api/post_kpi_person_elements_insert',
 
     post_get_kpi_elements_insert : '/api/post_get_kpi_elements_insert',

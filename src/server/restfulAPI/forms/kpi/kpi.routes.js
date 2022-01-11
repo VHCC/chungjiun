@@ -49,6 +49,23 @@ module.exports = function (app) {
         });
     });
 
+    app.post(global.apiUrl.post_get_kpi_person_elements_all, function (req, res) {
+        console.log(JSON.stringify(req.body));
+        ProjectKPIElements.find({
+            userDID: req.body.userDID,
+        }, function (err, items) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: items,
+                });
+            }
+        });
+    });
+
     app.post(global.apiUrl.post_kpi_person_elements_insert, function (req, res) {
         console.log(JSON.stringify(req.body));
         ProjectKPIElements.create({
@@ -413,6 +430,7 @@ module.exports = function (app) {
         },{
             $set: {
                 amount: req.body.amount,
+                memo: req.body.memo,
             }
         }, function (err, results) {
             if (err) {

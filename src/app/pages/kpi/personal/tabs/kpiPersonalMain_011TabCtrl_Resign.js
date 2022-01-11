@@ -1,11 +1,11 @@
 /**
  * @author IChen.chu
- * created on 18 Nov 2021
+ * created on 11 01 2022
  */
 (function () {
     'use strict';
     angular.module('BlurAdmin.pages.cgKPI')
-        .controller('kpiPersonal_011Ctrl',
+        .controller('kpiPersonal_011Ctrl_Resign',
             [
                 '$scope',
                 'toastr',
@@ -31,11 +31,11 @@
                 'KpiUtil',
                 'KpiTechDistributeUtil',
                 'bsLoadingOverlayService',
-                kpiPersonal011Ctrl
+                kpiPersonal011CtrlResign
             ])
 
     /** @ngInject */
-    function kpiPersonal011Ctrl($scope,
+    function kpiPersonal011CtrlResign($scope,
                                 toastr,
                                 $cookies,
                                 $filter,
@@ -297,7 +297,7 @@
         // 所有人，對照資料
         User.getAllUsers()
             .success(function (allUsers) {
-                vm.users = allUsers;
+                // vm.users = allUsers;
                 $scope.projectManagers = [];
                 for (var i = 0; i < allUsers.length; i++) {
                     $scope.projectManagers[i] = {
@@ -305,6 +305,12 @@
                         name: allUsers[i].name
                     };
                 }
+            });
+
+        // 已離職人員
+        User.getAllResignUsers()
+            .success(function (allUsers) {
+                vm.users = allUsers;
             });
 
         //技師
@@ -500,7 +506,7 @@
                     $scope.personalFDData_y0 = res.payload;
 
                     angular.element(
-                        document.getElementById('includeHead_kpi_personal_result_011_0y'))
+                        document.getElementById('includeHead_kpi_personal_result_011_0y_r'))
                         .html($compile(
                             "<div ba-panel ba-panel-title=" +
                             "'列表 - " +  $scope.personalFDData_y0.length + "'" +
@@ -557,7 +563,7 @@
                                     }
                                 }
                                 angular.element(
-                                    document.getElementById('includeHead_kpi_personal_result_011_tech_0y'))
+                                    document.getElementById('includeHead_kpi_personal_result_011_tech_0y_r'))
                                     .html($compile(
                                         "<div ba-panel ba-panel-title=" +
                                         "'" + "" + "'" +
@@ -604,7 +610,7 @@
                             // console.log(res);
                             $scope.projectKPIPersonElements_y0 = res.payload;
                             angular.element(
-                                document.getElementById('includeHead_kpi_person_result_elements_0y'))
+                                document.getElementById('includeHead_kpi_person_result_elements_0y_r'))
                                 .html($compile(
                                     "<div ba-panel ba-panel-title=" +
                                     "'" + "" + "'" +
@@ -623,7 +629,7 @@
                             // console.log(res);
                             $scope.projectKPIPersonElements_y1 = res.payload;
                             angular.element(
-                                document.getElementById('includeHead_kpi_person_result_elements_1y'))
+                                document.getElementById('includeHead_kpi_person_result_elements_1y_r'))
                                 .html($compile(
                                     "<div ba-panel ba-panel-title=" +
                                     "'" + "" + "'" +
@@ -642,7 +648,7 @@
                             // console.log(res);
                             $scope.projectKPIPersonElements_y2 = res.payload;
                             angular.element(
-                                document.getElementById('includeHead_kpi_person_result_elements_2y'))
+                                document.getElementById('includeHead_kpi_person_result_elements_2y_r'))
                                 .html($compile(
                                     "<div ba-panel ba-panel-title=" +
                                     "'" + "" + "'" +
@@ -661,7 +667,7 @@
                             // console.log(res);
                             $scope.projectKPIPersonElements_y3 = res.payload;
                             angular.element(
-                                document.getElementById('includeHead_kpi_person_result_elements_3y'))
+                                document.getElementById('includeHead_kpi_person_result_elements_3y_r'))
                                 .html($compile(
                                     "<div ba-panel ba-panel-title=" +
                                     "'" + "" + "'" +
@@ -680,7 +686,7 @@
                             // console.log(res);
                             $scope.projectKPIPersonElements_y4 = res.payload;
                             angular.element(
-                                document.getElementById('includeHead_kpi_person_result_elements_4y'))
+                                document.getElementById('includeHead_kpi_person_result_elements_4y_r'))
                                 .html($compile(
                                     "<div ba-panel ba-panel-title=" +
                                     "'" + "" + "'" +
@@ -766,7 +772,7 @@
                     $scope.personalFDData_y1 = res.payload;
 
                     angular.element(
-                        document.getElementById('includeHead_kpi_personal_result_011_1y'))
+                        document.getElementById('includeHead_kpi_personal_result_011_1y_r'))
                         .html($compile(
                             "<div ba-panel ba-panel-title=" +
                             "'列表 - " +  $scope.personalFDData_y1.length + "'" +
@@ -827,7 +833,7 @@
                                     }
                                 }
                                 angular.element(
-                                    document.getElementById('includeHead_kpi_personal_result_011_tech_1y'))
+                                    document.getElementById('includeHead_kpi_personal_result_011_tech_1y_r'))
                                     .html($compile(
                                         "<div ba-panel ba-panel-title=" +
                                         "'" + "" + "'" +
@@ -860,7 +866,7 @@
                 .success(function (res) {
                     $scope.personalFDData_y2 = res.payload;
                     angular.element(
-                        document.getElementById('includeHead_kpi_personal_result_011_2y'))
+                        document.getElementById('includeHead_kpi_personal_result_011_2y_r'))
                         .html($compile(
                             "<div ba-panel ba-panel-title=" +
                             "'列表 - " +  $scope.personalFDData_y2.length + "'" +
@@ -916,7 +922,7 @@
                                     }
                                 }
                                 angular.element(
-                                    document.getElementById('includeHead_kpi_personal_result_011_tech_2y'))
+                                    document.getElementById('includeHead_kpi_personal_result_011_tech_2y_r'))
                                     .html($compile(
                                         "<div ba-panel ba-panel-title=" +
                                         "'" + "" + "'" +
@@ -947,7 +953,7 @@
                 .success(function (res) {
                     $scope.personalFDData_y3 = res.payload;
                     angular.element(
-                        document.getElementById('includeHead_kpi_personal_result_011_3y'))
+                        document.getElementById('includeHead_kpi_personal_result_011_3y_r'))
                         .html($compile(
                             "<div ba-panel ba-panel-title=" +
                             "'列表 - " +  $scope.personalFDData_y3.length + "'" +
@@ -1003,7 +1009,7 @@
                                     }
                                 }
                                 angular.element(
-                                    document.getElementById('includeHead_kpi_personal_result_011_tech_3y'))
+                                    document.getElementById('includeHead_kpi_personal_result_011_tech_3y_r'))
                                     .html($compile(
                                         "<div ba-panel ba-panel-title=" +
                                         "'" + "" + "'" +
@@ -1038,7 +1044,7 @@
                     $scope.personalFDData_y4 = res.payload;
 
                     angular.element(
-                        document.getElementById('includeHead_kpi_personal_result_011_4y'))
+                        document.getElementById('includeHead_kpi_personal_result_011_4y_r'))
                         .html($compile(
                             "<div ba-panel ba-panel-title=" +
                             "'列表 - " +  $scope.personalFDData_y4.length + "'" +
@@ -1097,7 +1103,7 @@
                                     }
                                 }
                                 angular.element(
-                                    document.getElementById('includeHead_kpi_personal_result_011_tech_4y'))
+                                    document.getElementById('includeHead_kpi_personal_result_011_tech_4y_r'))
                                     .html($compile(
                                         "<div ba-panel ba-panel-title=" +
                                         "'" + "" + "'" +

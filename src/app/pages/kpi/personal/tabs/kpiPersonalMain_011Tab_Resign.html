@@ -1,7 +1,7 @@
 <div>
 
     <div class="form-group">
-        <ui-select ng-model="kpiPersonal_011CtrlVM.users.selected"
+        <ui-select ng-model="kpiPersonal_011Ctrl_ResignVM.users.selected"
                    class="btn-group bootstrap-select form-control"
                    ng-disabled="false"
                    ng-change="personSelected($select.selected)"
@@ -11,7 +11,7 @@
                 {{$select.selected.name}}
             </ui-select-match>
             <ui-select-choices
-                    repeat="user in kpiPersonal_011CtrlVM.users |
+                    repeat="user in kpiPersonal_011Ctrl_ResignVM.users |
                         groupSelectpickerOptions: {name: $select.search}">
                 <span ng-bind-html="user.name| highlight: $select.search"></span>
             </ui-select-choices>
@@ -19,14 +19,12 @@
     </div>
 
     <my5-yearly-date-picker ng-click="listen5Years(this)"
-                            ng-if="kpiPersonal_011CtrlVM.users.selected"></my5-yearly-date-picker>
-    <!--<my-year-picker ng-click="listen5Years(this)"-->
-                    <!--ng-if="kpiPersonal_011CtrlVM.users.selected"></my-year-picker>-->
+                            ng-if="kpiPersonal_011Ctrl_ResignVM.users.selected"></my5-yearly-date-picker>
     <h5 ng-if="kpiPersonal_011CtrlVM.users.selected">{{year}} - {{year + 4}} 年</h5>
 
     <hr>
 
-    <div class="col-md-12" ng-if="kpiPersonal_011CtrlVM.users.selected">
+    <div class="col-md-12" ng-if="kpiPersonal_011Ctrl_ResignVM.users.selected">
         <label class="col-md-2 control-label">108年前個人績效結餘</label>
         <div class="col-md-3">
             <input type="text"
@@ -42,7 +40,7 @@
             </button>
         </div>
     </div>
-    <div class="col-md-12" ng-if="kpiPersonal_011CtrlVM.users.selected">
+    <div class="col-md-12" ng-if="kpiPersonal_011Ctrl_ResignVM.users.selected">
         <label class="col-md-2 control-label">個人績效結餘</label>
         <div class="col-md-3">
             <input type="text"
@@ -60,10 +58,10 @@
 
 
     <hr>
-    <h3 class="with-line" ng-if="kpiPersonal_011CtrlVM.users.selected"> {{year}}年 專案績效</h3>
+    <h3 class="with-line" ng-if="kpiPersonal_011Ctrl_ResignVM.users.selected"> {{year}}年 專案績效</h3>
 
     <div bs-loading-overlay
-         ng-if="kpiPersonal_011CtrlVM.users.selected"
+         ng-if="kpiPersonal_011Ctrl_ResignVM.users.selected"
          bs-loading-overlay-reference-id="mainPage_kpi_personal_result_011">
 
         <div class="form-group row clearfix">
@@ -91,23 +89,23 @@
 
         </div>
         <div class="row">
-            <div class="col-md-12" id="includeHead_kpi_personal_result_011_0y">
+            <div class="col-md-12" id="includeHead_kpi_personal_result_011_0y_r">
             </div>
         </div>
         <!--個人績效額外-->
         <div class="row">
-            <div class="col-md-12" id="includeHead_kpi_person_result_elements_0y">
+            <div class="col-md-12" id="includeHead_kpi_person_result_elements_0y_r">
             </div>
         </div>
         <!--技師-->
         <div class="row">
-            <div class="col-md-12" id="includeHead_kpi_personal_result_011_tech_0y">
+            <div class="col-md-12" id="includeHead_kpi_personal_result_011_tech_0y_r">
             </div>
         </div>
 
         <hr>
         <!--y+1-->
-        <h3 class="with-line" ng-if="kpiPersonal_011CtrlVM.users.selected">{{year + 1}}年 專案績效</h3>
+        <h3 class="with-line" ng-if="kpiPersonal_011Ctrl_ResignVM.users.selected">{{year + 1}}年 專案績效</h3>
         <div class="form-group row clearfix">
             <label class="col-md-1 control-label">{{year+1}}年終獎金</label>
 
@@ -131,23 +129,23 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12" id="includeHead_kpi_personal_result_011_1y">
+            <div class="col-md-12" id="includeHead_kpi_personal_result_011_1y_r">
             </div>
         </div>
         <!--個人績效額外-->
         <div class="row">
-            <div class="col-md-12" id="includeHead_kpi_person_result_elements_1y">
+            <div class="col-md-12" id="includeHead_kpi_person_result_elements_1y_r">
             </div>
         </div>
         <!--技師-->
         <div class="row">
-            <div class="col-md-12" id="includeHead_kpi_personal_result_011_tech_1y">
+            <div class="col-md-12" id="includeHead_kpi_personal_result_011_tech_1y_r">
             </div>
         </div>
 
         <hr>
         <!--y+2-->
-        <h3 class="with-line" ng-if="kpiPersonal_011CtrlVM.users.selected">{{year + 2}}年 專案績效</h3>
+        <h3 class="with-line" ng-if="kpiPersonal_011Ctrl_ResignVM.users.selected">{{year + 2}}年 專案績效</h3>
         <div class="form-group row clearfix">
             <label class="col-md-1 control-label">{{year+2}}年終獎金</label>
 
@@ -171,23 +169,23 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12" id="includeHead_kpi_personal_result_011_2y">
+            <div class="col-md-12" id="includeHead_kpi_personal_result_011_2y_r">
             </div>
         </div>
         <!--個人績效額外-->
         <div class="row">
-            <div class="col-md-12" id="includeHead_kpi_person_result_elements_2y">
+            <div class="col-md-12" id="includeHead_kpi_person_result_elements_2y_r">
             </div>
         </div>
         <!--技師-->
         <div class="row">
-            <div class="col-md-12" id="includeHead_kpi_personal_result_011_tech_2y">
+            <div class="col-md-12" id="includeHead_kpi_personal_result_011_tech_2y_r">
             </div>
         </div>
 
         <hr>
         <!-- y + 3-->
-        <h3 class="with-line" ng-if="kpiPersonal_011CtrlVM.users.selected">{{year + 3}}年 專案績效</h3>
+        <h3 class="with-line" ng-if="kpiPersonal_011Ctrl_ResignVM.users.selected">{{year + 3}}年 專案績效</h3>
         <div class="form-group row clearfix">
             <label class="col-md-1 control-label">{{year+3}}年終獎金</label>
 
@@ -211,23 +209,23 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12" id="includeHead_kpi_personal_result_011_3y">
+            <div class="col-md-12" id="includeHead_kpi_personal_result_011_3y_r">
             </div>
         </div>
         <!--個人績效額外-->
         <div class="row">
-            <div class="col-md-12" id="includeHead_kpi_person_result_elements_3y">
+            <div class="col-md-12" id="includeHead_kpi_person_result_elements_3y_r">
             </div>
         </div>
         <!--技師-->
         <div class="row">
-            <div class="col-md-12" id="includeHead_kpi_personal_result_011_tech_3y">
+            <div class="col-md-12" id="includeHead_kpi_personal_result_011_tech_3y_r">
             </div>
         </div>
 
         <hr>
         <!-- y +4-->
-        <h3 class="with-line" ng-if="kpiPersonal_011CtrlVM.users.selected">{{year + 4}}年 專案績效</h3>
+        <h3 class="with-line" ng-if="kpiPersonal_011Ctrl_ResignVM.users.selected">{{year + 4}}年 專案績效</h3>
         <div class="form-group row clearfix">
             <label class="col-md-1 control-label">{{year+4}}年終獎金</label>
 
@@ -251,17 +249,17 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12" id="includeHead_kpi_personal_result_011_4y">
+            <div class="col-md-12" id="includeHead_kpi_personal_result_011_4y_r">
             </div>
         </div>
         <!--個人績效額外-->
         <div class="row">
-            <div class="col-md-12" id="includeHead_kpi_person_result_elements_4y">
+            <div class="col-md-12" id="includeHead_kpi_person_result_elements_4y_r">
             </div>
         </div>
         <!--技師-->
         <div class="row">
-            <div class="col-md-12" id="includeHead_kpi_personal_result_011_tech_4y">
+            <div class="col-md-12" id="includeHead_kpi_personal_result_011_tech_4y_r">
             </div>
         </div>
     </div>
