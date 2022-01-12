@@ -1782,6 +1782,9 @@
 
         // ************************ CREATE SUBMIT ***************************
         $scope.createSubmit = function (delayTime, isRefreshProjectSelector) {
+            bsLoadingOverlayService.start({
+                referenceId: 'mainPage_workHour'
+            });
             return $timeout(function () {
                 if ($cookies.get('userDID') == undefined ||
                     $cookies.get('userDID') == null ||
