@@ -138,6 +138,7 @@ module.exports = function (app) {
                     technician: req.body.technician,
                     // endDate: req.body.prjEndDate,
                     enable: true,
+                    isPrjClose: false,
                     prjNumber: req.body.prjNumber,
                     prjName: req.body.prjName,
                     prjSubNumber: req.body.prjSubNumber,
@@ -187,6 +188,7 @@ module.exports = function (app) {
                     prjCode: req.body.prjCode,
                     technician: req.body.technician,
                     enable: true,
+                    isPrjClose: false,
                     prjNumber: req.body.prjNumber,
                     prjName: req.body.prjName,
                     prjSubNumber: req.body.prjSubNumber,
@@ -258,6 +260,7 @@ module.exports = function (app) {
                     prjCode: req.body.prjCode,
                     technician: req.body.technician,
                     enable: true,
+                    isPrjClose: false,
                     prjNumber: req.body.prjNumber,
                     prjName: req.body.prjName,
                     prjSubNumber: req.body.prjSubNumber,
@@ -357,7 +360,7 @@ module.exports = function (app) {
         Project.find(
             {
                 enable: true,
-                isPrjClose: false,
+                // isPrjClose: false,
             },
             function (err, projects) {
                 if (err) {
