@@ -335,7 +335,7 @@ module.exports = function (app) {
 
     });
 
-    // include disable prj
+    // include disable, closed prj
     app.get(global.apiUrl.get_project_find_all, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, get projects");
         Project.find(function (err, projects) {
@@ -356,7 +356,8 @@ module.exports = function (app) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, get projects");
         Project.find(
             {
-                enable: true
+                enable: true,
+                isPrjClose: false,
             },
             function (err, projects) {
                 if (err) {

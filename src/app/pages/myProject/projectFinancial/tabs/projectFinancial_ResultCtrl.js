@@ -717,6 +717,7 @@
                 rate_item_5: item.rate_item_5,
                 memo: item.memo,
                 is011Set: true,
+                enable: false,
                 isPrjClose: true,
 
                 kpi1: $scope.calIncome(1), <!-- 收入 -->
@@ -745,6 +746,7 @@
         $scope.openProjectFR = function(item) {
             var formData = {
                 _id: item._id,
+                enable: true,
                 isPrjClose: false
             }
 

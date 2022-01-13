@@ -81,6 +81,8 @@
             });
         }
 
+        $scope.tech;
+
         $scope.fetchKpiTechDistribute = function() {
             $scope.projectTechMembers = [];
             var formData = {
@@ -91,6 +93,10 @@
             KpiTechDistributeUtil.findTD(formData)
                 .success(function (res) {
                     $scope.projectTechMembers = res.payload;
+                    if (res.payload.length > 0) {
+                        $scope.tech = res.payload[0];
+                    }
+                    console.log($scope.projectTechMembers);
                     $timeout(function () {
                         bsLoadingOverlayService.stop({
                             referenceId: 'mainPage_kpi_tech_person_view_result'
@@ -254,6 +260,9 @@
                             res.payload[index].prjCode = $scope.showPrjInfo(res.payload[index].prjDID).prjCode;
                             $scope.projectFinancialResultTable.push(res.payload[index]);
                         }
+                        $scope.projectFinancialResultTable = $scope.projectFinancialResultTable.sort(function (a, b) {
+                            return a.prjCode > b.prjCode ? 1 : -1;
+                        });
                         KpiUtil.findKPIElement(formData)
                             .success(function (res) {
                                 $scope.projectKPIElements = res.payload

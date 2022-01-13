@@ -82,6 +82,7 @@ module.exports = function (app) {
                 _id: fr[0].prjDID,
             }, {
                 $set: {
+                    enable: req.body.enable,
                     isPrjClose: req.body.isPrjClose,
                 }
             }, function (err) {
