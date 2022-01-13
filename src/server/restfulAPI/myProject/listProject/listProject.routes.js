@@ -14,6 +14,7 @@ module.exports = function (app) {
         findDataOr.push({workers: req.body.relatedID});
         var findDataAnd = [];
         findDataAnd.push({enable: true});
+        findDataAnd.push({isPrjClose: false});
         Project.find({
             // enable: true,
             $or: findDataOr,

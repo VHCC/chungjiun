@@ -1866,7 +1866,7 @@
         }
 
         $scope.fetchResult = function(userDID, type) {
-            if ($scope.statisticsResults_type2 === undefined || $scope.statisticsResults_type2[userDID] === undefined) return;
+            if ($scope.statisticsResults_type2 === undefined || $scope.statisticsResults_type2[userDID] === undefined) return 0;
             switch (type) {
                 case 1:
                     return Math.round($scope.statisticsResults_type2[userDID].hourTotal + $scope.statisticsResults_type2[userDID].hourTotal_add_A + $scope.statisticsResults_type2[userDID].hourTotal_add_B);

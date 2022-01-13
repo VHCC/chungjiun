@@ -255,6 +255,9 @@
                             res.payload[index].prjCode = $scope.showPrjInfo(res.payload[index].prjDID).prjCode;
                             $scope.projectFinancialResultTable.push(res.payload[index]);
                         }
+                        $scope.projectFinancialResultTable = $scope.projectFinancialResultTable.sort(function (a, b) {
+                            return a.prjCode > b.prjCode ? 1 : -1;
+                        });
                         KpiUtil.findKPIElement(formData)
                             .success(function (res) {
                                 $scope.projectKPIElements = res.payload
