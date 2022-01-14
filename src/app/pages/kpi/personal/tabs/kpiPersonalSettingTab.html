@@ -1,0 +1,53 @@
+<div>
+    <!--<my-year-picker ng-click="listenYear(this)"></my-year-picker>-->
+    <div class="form-group">
+        <ui-select ng-model="kpiPersonalSettingCtrlVM.users.selected"
+                   class="btn-group bootstrap-select form-control"
+                   ng-disabled="false"
+                   ng-change="personSelected($select.selected)"
+                   append-to-body="true"
+                   search-enabled="true">
+            <ui-select-match placeholder="選擇員工">
+                {{$select.selected.name}}
+            </ui-select-match>
+            <ui-select-choices
+                    repeat="user in kpiPersonalSettingCtrlVM.users |
+                        groupSelectpickerOptions: {name: $select.search}">
+                <span ng-bind-html="user.name| highlight: $select.search"></span>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+
+    <h3 class="with-line" >{{kpiPersonalSettingCtrlVM.users.selected.name}}-績效查詢-權限設定</h3>
+    <div class="row" >
+
+    </div>
+
+    <hr>
+
+    <div class="form-group" ng-if="kpiPersonalSettingCtrlVM.users.selected">
+        <ui-select ng-model="kpiPersonalSettingCtrlVM.targetUsers.targetSelected"
+                   class="btn-group bootstrap-select form-control"
+                   ng-disabled="false"
+                   ng-change="targetPersonSelected($select.selected)"
+                   append-to-body="true"
+                   search-enabled="true">
+            <ui-select-match placeholder="新增">
+                {{$select.selected.name}}
+            </ui-select-match>
+            <ui-select-choices
+                    repeat="user in kpiPersonalSettingCtrlVM.targetUsers |
+                        groupSelectpickerOptions: {name: $select.search}">
+                <span ng-bind-html="user.name| highlight: $select.search"></span>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+
+    <div bs-loading-overlay
+         bs-loading-overlay-reference-id="setting_kpi_personal_result">
+        <div class="row" >
+            <div class="col-md-12" id="includeHead_setting_kpi_personal_result">
+            </div>
+        </div>
+    </div>
+</div>

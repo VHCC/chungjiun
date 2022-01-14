@@ -17,12 +17,17 @@
                  ng-include="'app/pages/kpi/personal/tabs/kpiPersonalMain_011Tab_Resign.html'"></div>
         </uib-tab>
 
+        <uib-tab heading="績效權限設定" ng-if="userDID === '5eec6f1902a94a4eebf2af7d' ">
+            <div ng-controller="kpiPersonalSettingCtrl as kpiPersonalSettingCtrlVM"
+                 ng-include="'app/pages/kpi/personal/tabs/kpiPersonalSettingTab.html'"></div>
+        </uib-tab>
+
         <uib-tab heading="個人年度執行成本查詢" >
             <div ng-controller="kpiPersonalCtrl as kpiPersonalCtrlVM"
                  ng-include="'app/pages/kpi/personal/tabs/kpiPersonalMainTab.html'"></div>
         </uib-tab>
 
-        <uib-tab heading="績效查詢" ng-show="false">
+        <uib-tab heading="績效查詢">
             <div ng-controller="kpiPersonal_SearchCtrl as kpiPersonal_SearchCtrlVM"
                  ng-include="'app/pages/kpi/personal/tabs/kpiPersonalMain_SearchTab.html'"></div>
         </uib-tab>

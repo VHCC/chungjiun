@@ -97,6 +97,10 @@ global.apiUrl = {
     post_get_kpi_elements_update : '/api/post_get_kpi_elements_update',
     post_get_kpi_elements_delete : '/api/post_get_kpi_elements_delete',
 
+    // Setting
+    post_find_kpi_person_setting : '/api/post_find_kpi_person_setting',
+    post_insert_kpi_person_setting : '/api/post_insert_kpi_person_setting',
+    post_update_kpi_person_setting : '/api/post_update_kpi_person_setting',
 
     // BONUS
     post_get_kpi_bonus_find : '/api/post_get_kpi_bonus_find',
