@@ -472,6 +472,19 @@
                     return http.post('/api/post_get_kpi_person_elements_all', formData);
                 },
 
+                // Setting
+                findKPIPersonQuerySetting : function(formData) {
+                    return http.post('/api/post_find_kpi_person_setting', formData);
+                },
+
+                insertKPIPersonQuerySetting : function(formData) {
+                    return http.post('/api/post_insert_kpi_person_setting', formData);
+                },
+
+                updateKPIPersonQuerySetting : function(formData) {
+                    return http.post('/api/post_update_kpi_person_setting', formData);
+                },
+
                 insertKPIPersonElement: function(formData) {
                     return http.post('/api/post_kpi_person_elements_insert', formData);
                 },

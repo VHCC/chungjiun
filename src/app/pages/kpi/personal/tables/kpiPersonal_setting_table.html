@@ -1,0 +1,39 @@
+<style type="text/css">
+    .AutoNewline
+    {
+        word-break: break-all;/*必須*/
+    }
+</style>
+<div class="horizontal-scroll">
+    <table class="table table-bordered table-hover table-condensed"
+           style="width:120%; table-layout: auto">
+        <colgroup>
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 95%;">
+        </colgroup>
+        <thead>
+        <tr >
+            <th style="vertical-align: inherit; text-align: center" >項目</th>
+            <th style="vertical-align: inherit; text-align: center" >姓名</th>
+        </tr>
+        </thead>
+        <tr style="vertical-align: inherit; text-align: center"
+            ng-repeat="userDID in userDIDArray">
+            <!--Index-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span>{{$index + 1}}</span>
+                <button type="submit"
+                        style="margin: 5px"
+                        ng-click="removeUserFromArray(userDID, $index)"
+                        class="btn btn-danger">
+                    刪除
+                </button>
+            </td >
+            <td colspan="1" style="vertical-align: inherit;">
+                {{showUserName(userDID)}}
+            </td>
+        </tr>
+
+    </table>
+</div>
+<hr>

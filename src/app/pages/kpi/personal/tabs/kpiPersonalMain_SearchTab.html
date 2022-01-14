@@ -1,7 +1,7 @@
 <div>
 
     <div class="form-group">
-        <ui-select ng-model="kpiPersonal_SearchCtrlVM.users.selected"
+        <ui-select ng-model="kpiPersonal_SearchCtrlVM.queryUsers.selected"
                    class="btn-group bootstrap-select form-control"
                    ng-disabled="false"
                    ng-change="personSelected($select.selected)"
@@ -11,7 +11,7 @@
                 {{$select.selected.name}}
             </ui-select-match>
             <ui-select-choices
-                    repeat="user in kpiPersonal_SearchCtrlVM.users |
+                    repeat="user in kpiPersonal_SearchCtrlVM.queryUsers |
                         groupSelectpickerOptions: {name: $select.search}">
                 <span ng-bind-html="user.name| highlight: $select.search"></span>
             </ui-select-choices>
@@ -19,12 +19,12 @@
     </div>
 
     <my5-yearly-date-picker ng-click="listen5Years(this)"
-                            ng-if="kpiPersonal_SearchCtrlVM.users.selected"></my5-yearly-date-picker>
-    <h5 ng-if="kpiPersonal_SearchCtrlVM.users.selected">{{year}} - {{year + 4}} 年</h5>
+                            ng-if="kpiPersonal_SearchCtrlVM.queryUsers.selected"></my5-yearly-date-picker>
+    <h5 ng-if="kpiPersonal_SearchCtrlVM.queryUsers.selected">{{year}} - {{year + 4}} 年</h5>
 
     <hr>
 
-    <div class="col-md-12" ng-if="kpiPersonal_SearchCtrlVM.users.selected">
+    <div class="col-md-12" ng-if="kpiPersonal_SearchCtrlVM.queryUsers.selected">
         <label class="col-md-2 control-label">108年前個人績效結餘</label>
         <div class="col-md-3">
             <input type="text"
@@ -35,7 +35,7 @@
                    style="color: #000000;">
         </div>
     </div>
-    <div class="col-md-12" ng-if="kpiPersonal_SearchCtrlVM.users.selected">
+    <div class="col-md-12" ng-if="kpiPersonal_SearchCtrlVM.queryUsers.selected">
         <label class="col-md-2 control-label">個人績效結餘</label>
         <div class="col-md-3">
             <input type="text"
@@ -44,21 +44,14 @@
                    placeholder=""
                    value="{{showKpiResidual().toLocaleString()}}"
                    style="color: #000000;">
-            <!--{{personSelect.before108Kpi}}-->
-            <!--{{userKpiDistributeTotal}}-->
-            <!--{{userTechKpiTotal}}-->
-            <!--{{userSelectedAllBonus}}-->
         </div>
     </div>
 
-
-    <hr>
-    <h3 class="with-line" ng-if="kpiPersonal_SearchCtrlVM.users.selected"> {{year}}年 專案績效</h3>
-
     <div bs-loading-overlay
-         ng-if="kpiPersonal_SearchCtrlVM.users.selected"
-         bs-loading-overlay-reference-id="mainPage_kpi_personal_result_search">
-
+         bs-loading-overlay-reference-id="mainPage_kpi_personal_result_search"
+         ng-if="kpiPersonal_SearchCtrlVM.queryUsers.selected">
+        <hr>
+        <h3 class="with-line" ng-if="kpiPersonal_SearchCtrlVM.queryUsers.selected"> {{year}}年 專案績效</h3>
         <div class="form-group row clearfix">
             <label class="col-md-1 control-label">{{year}}年終獎金</label>
 
@@ -70,6 +63,12 @@
                        placeholder=""
                        ng-model="bonusData.y1.amount"
                        style="color: #000000;">
+                <input type="text"
+                       disabled="true"
+                       class="form-control"
+                       placeholder="備註"
+                       ng-model="bonusData.y1.memo"
+                       style="color: #000000;">
             </div>
 
         </div>
@@ -77,6 +76,12 @@
             <div class="col-md-12" id="includeHead_kpi_personal_result_search_0y">
             </div>
         </div>
+        <!--個人績效額外-->
+        <div class="row">
+            <div class="col-md-12" id="includeHead_kpi_person_result_search_elements_0y">
+            </div>
+        </div>
+        <!--技師-->
         <div class="row">
             <div class="col-md-12" id="includeHead_kpi_personal_result_search_tech_0y">
             </div>
@@ -84,7 +89,7 @@
 
         <hr>
         <!--y+1-->
-        <h3 class="with-line" ng-if="kpiPersonal_SearchCtrlVM.users.selected">{{year + 1}}年 專案績效</h3>
+        <h3 class="with-line" ng-if="kpiPersonal_SearchCtrlVM.queryUsers.selected">{{year + 1}}年 專案績效</h3>
         <div class="form-group row clearfix">
             <label class="col-md-1 control-label">{{year+1}}年終獎金</label>
 
@@ -95,12 +100,24 @@
                        placeholder=""
                        ng-model="bonusData.y2.amount"
                        style="color: #000000;">
+                <input type="text"
+                       disabled="true"
+                       class="form-control"
+                       placeholder="備註"
+                       ng-model="bonusData.y2.memo"
+                       style="color: #000000;">
             </div>
         </div>
         <div class="row">
             <div class="col-md-12" id="includeHead_kpi_personal_result_search_1y">
             </div>
         </div>
+        <!--個人績效額外-->
+        <div class="row">
+            <div class="col-md-12" id="includeHead_kpi_person_result_search_elements_1y">
+            </div>
+        </div>
+        <!--技師-->
         <div class="row">
             <div class="col-md-12" id="includeHead_kpi_personal_result_search_tech_1y">
             </div>
@@ -108,7 +125,7 @@
 
         <hr>
         <!--y+2-->
-        <h3 class="with-line" ng-if="kpiPersonal_SearchCtrlVM.users.selected">{{year + 2}}年 專案績效</h3>
+        <h3 class="with-line" ng-if="kpiPersonal_SearchCtrlVM.queryUsers.selected">{{year + 2}}年 專案績效</h3>
         <div class="form-group row clearfix">
             <label class="col-md-1 control-label">{{year+2}}年終獎金</label>
 
@@ -119,12 +136,24 @@
                        placeholder=""
                        ng-model="bonusData.y3.amount"
                        style="color: #000000;">
+                <input type="text"
+                       disabled="true"
+                       class="form-control"
+                       placeholder="備註"
+                       ng-model="bonusData.y3.memo"
+                       style="color: #000000;">
             </div>
         </div>
         <div class="row">
             <div class="col-md-12" id="includeHead_kpi_personal_result_search_2y">
             </div>
         </div>
+        <!--個人績效額外-->
+        <div class="row">
+            <div class="col-md-12" id="includeHead_kpi_person_result_search_elements_2y">
+            </div>
+        </div>
+        <!--技師-->
         <div class="row">
             <div class="col-md-12" id="includeHead_kpi_personal_result_search_tech_2y">
             </div>
@@ -132,7 +161,7 @@
 
         <hr>
         <!-- y + 3-->
-        <h3 class="with-line" ng-if="kpiPersonal_SearchCtrlVM.users.selected">{{year + 3}}年 專案績效</h3>
+        <h3 class="with-line" ng-if="kpiPersonal_SearchCtrlVM.queryUsers.selected">{{year + 3}}年 專案績效</h3>
         <div class="form-group row clearfix">
             <label class="col-md-1 control-label">{{year+3}}年終獎金</label>
 
@@ -143,12 +172,24 @@
                        placeholder=""
                        ng-model="bonusData.y4.amount"
                        style="color: #000000;">
+                <input type="text"
+                       disabled="true"
+                       class="form-control"
+                       placeholder="備註"
+                       ng-model="bonusData.y4.memo"
+                       style="color: #000000;">
             </div>
         </div>
         <div class="row">
             <div class="col-md-12" id="includeHead_kpi_personal_result_search_3y">
             </div>
         </div>
+        <!--個人績效額外-->
+        <div class="row">
+            <div class="col-md-12" id="includeHead_kpi_person_result_search_elements_3y">
+            </div>
+        </div>
+        <!--技師-->
         <div class="row">
             <div class="col-md-12" id="includeHead_kpi_personal_result_search_tech_3y">
             </div>
@@ -156,7 +197,7 @@
 
         <hr>
         <!-- y +4-->
-        <h3 class="with-line" ng-if="kpiPersonal_SearchCtrlVM.users.selected">{{year + 4}}年 專案績效</h3>
+        <h3 class="with-line" ng-if="kpiPersonal_SearchCtrlVM.queryUsers.selected">{{year + 4}}年 專案績效</h3>
         <div class="form-group row clearfix">
             <label class="col-md-1 control-label">{{year+4}}年終獎金</label>
 
@@ -167,12 +208,24 @@
                        placeholder=""
                        ng-model="bonusData.y5.amount"
                        style="color: #000000;">
+                <input type="text"
+                       disabled="true"
+                       class="form-control"
+                       placeholder="備註"
+                       ng-model="bonusData.y5.memo"
+                       style="color: #000000;">
             </div>
         </div>
         <div class="row">
             <div class="col-md-12" id="includeHead_kpi_personal_result_search_4y">
             </div>
         </div>
+        <!--個人績效額外-->
+        <div class="row">
+            <div class="col-md-12" id="includeHead_kpi_person_result_search_elements_4y">
+            </div>
+        </div>
+        <!--技師-->
         <div class="row">
             <div class="col-md-12" id="includeHead_kpi_personal_result_search_tech_4y">
             </div>

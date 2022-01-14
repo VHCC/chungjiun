@@ -95,7 +95,6 @@
         }
 
         $scope.saveBefore108KPI = function (userSelected) {
-            // console.log(userSelected);
             var formData = {
                 userDID: userSelected._id,
                 before108Kpi: userSelected.before108Kpi,
@@ -125,8 +124,6 @@
             var formData = {
                 userDID: userSelected._id
             }
-
-            // console.log(userSelected);
 
             KpiUtil.findKPIBonus(formData)
                 .success(function (res) {
@@ -248,7 +245,6 @@
                         eval(evalString);
                     }
                 })
-
             $scope.fetchYearlyKpiPersonElementsAll();
         }
 
@@ -439,8 +435,6 @@
         //     }
         // }
 
-        // $scope.personSelect;
-
         $scope.personSelected = function (userSelected) {
             $scope.personSelect = userSelected;
             $scope.initBonus($scope.personSelect);
@@ -460,7 +454,6 @@
                     for (var i = 0; i < res.payload.length; i ++) {
                         $scope.userKpiDistributeTotal += parseInt(res.payload[i].distributeBonus);
                     }
-                    // console.log($scope.userKpiDistributeTotal);
                 })
 
             var formData = {
@@ -582,7 +575,6 @@
                         })
                         .error(function () {
                         })
-
                 })
             $scope.fetchYearlyKpiPersonElements($scope.year, yearAdd);
         }
@@ -606,6 +598,8 @@
                 year: (year + yearAdd),
                 userDID: $scope.personSelect._id,
             }
+
+            $scope.canElementEdit = true;
 
             switch(yearAdd) {
                 case 0:
@@ -1070,10 +1064,8 @@
             bsLoadingOverlayService.start({
                 referenceId: 'mainPage_kpi_personal'
             });
-            // console.log(getData)
             ProjectFinancialDistributeUtil.findFDByYear(getData)
                 .success(function (res) {
-                    // console.log(res)
                     for (var index = 0; index < res.payload.length; index++) {
                         var prjCode = $scope.showPrjInfo(res.payload[index].prjDID).prjCode;
                         res.payload[index].prjCode = prjCode
@@ -1082,7 +1074,6 @@
                     $scope.personalFDData_y4 = $scope.personalFDData_y4.sort(function (a, b) {
                         return a.prjCode > b.prjCode ? 1 : -1;
                     });
-
                     angular.element(
                         document.getElementById('includeHead_kpi_personal_result_011_4y'))
                         .html($compile(
@@ -1117,7 +1108,6 @@
             // console.log(formData)
             KpiTechDistributeUtil.findTD(formData)
                 .success(function (res) {
-                    // console.log(res)
                     $scope.projectTechMembers_y4 = res.payload;
 
                     var formDataTech = {
@@ -1131,7 +1121,6 @@
 
                     KpiUtil.findKPIYear(formDataTech)
                         .success(function (res) {
-                            // console.log(res)
                             if (res.payload.length == 0) {
                             } else {
                                 for (var index = 0; index < res.payload.length; index++) {

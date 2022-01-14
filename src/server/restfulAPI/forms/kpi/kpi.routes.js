@@ -7,6 +7,7 @@ var Project = require('../../models/project');
 var ProjectFinancialResult = require('../../models/projectFinancialResult');
 var ProjectKPIElements = require('../../models/projectKPIElement');
 var KpiYearBonus = require('../../models/kpiYearBonus');
+var KpiPersonQuerySetting = require('../../models/kpiPersonQuerySetting');
 
 var moment = require('moment');
 
@@ -431,6 +432,67 @@ module.exports = function (app) {
             $set: {
                 amount: req.body.amount,
                 memo: req.body.memo,
+            }
+        }, function (err, results) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: results,
+                });
+            }
+        });
+    });
+
+    // Query Setting
+    app.post(global.apiUrl.post_find_kpi_person_setting, function (req, res) {
+        console.log(JSON.stringify(req.body));
+
+        var findRequest = {
+            userDID: req.body.userDID,
+        }
+
+        KpiPersonQuerySetting.find(findRequest, function (err, results) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: results,
+                });
+            }
+        });
+    });
+
+    app.post(global.apiUrl.post_insert_kpi_person_setting, function (req, res) {
+        console.log(JSON.stringify(req.body));
+
+        KpiPersonQuerySetting.create({
+            userDID: req.body.userDID,
+            timestamp: moment(new Date()).format("YYYY/MM/DD-HH:mm:ss"),
+        }, function (err, results) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: results,
+                });
+            }
+        });
+    });
+
+    app.post(global.apiUrl.post_update_kpi_person_setting, function (req, res) {
+        console.log(JSON.stringify(req.body));
+        KpiPersonQuerySetting.updateOne({
+            userDID: req.body.userDID,
+        },{
+            $set: {
+                userDIDArray: req.body.userDIDArray,
             }
         }, function (err, results) {
             if (err) {

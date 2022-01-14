@@ -95,7 +95,6 @@
         }
 
         $scope.saveBefore108KPI = function (userSelected) {
-            // console.log(userSelected);
             var formData = {
                 userDID: userSelected._id,
                 before108Kpi: userSelected.before108Kpi,
@@ -125,8 +124,6 @@
             var formData = {
                 userDID: userSelected._id
             }
-
-            // console.log(userSelected);
 
             KpiUtil.findKPIBonus(formData)
                 .success(function (res) {
@@ -406,46 +403,6 @@
             }
         }
 
-        // $scope.calResultKpiAll = function (type) {
-        //     var result = 0.0;
-        //     switch (type) {
-        //         // 行政費
-        //         case 6:
-        //             for (var index = 0; index < $scope.projectFinancialResultTable_total.length; index++) {
-        //                 var item = $scope.projectFinancialResultTable_total[index];
-        //                 result += item.kpi6;
-        //             }
-        //             for (var index = 0; index < $scope.projectKPIElements.length; index++) {
-        //                 var item = $scope.projectKPIElements[index];
-        //                 result += item.amount;
-        //             }
-        //             return result;
-        //         // 風險 E*N
-        //         case 8:
-        //             for (var index = 0; index < $scope.projectFinancialResultTable_total.length; index++) {
-        //                 var item = $scope.projectFinancialResultTable_total[index];
-        //                 result += item.kpi8;
-        //             }
-        //             for (var index = 0; index < $scope.projectKPIElements.length; index++) {
-        //                 var item = $scope.projectKPIElements[index];
-        //                 result += item.amount;
-        //             }
-        //             return result;
-        //         // 利潤 E*N
-        //         case 9:
-        //             for (var index = 0; index < $scope.projectFinancialResultTable_total.length; index++) {
-        //                 var item = $scope.projectFinancialResultTable_total[index];
-        //                 result += item.kpi9;
-        //             }
-        //             for (var index = 0; index < $scope.projectKPIElements.length; index++) {
-        //                 var item = $scope.projectKPIElements[index];
-        //                 result += item.amount;
-        //             }
-        //             return result;
-        //     }
-        // }
-
-        // $scope.personSelect;
 
         $scope.personSelected = function (userSelected) {
             $scope.personSelect = userSelected;
@@ -504,6 +461,9 @@
             ProjectFinancialDistributeUtil.findFDByYear(getData)
                 .success(function (res) {
                     $scope.personalFDData_y0 = res.payload;
+                    $scope.personalFDData_y0 = $scope.personalFDData_y0.sort(function (a, b) {
+                        return a.prjCode > b.prjCode ? 1 : -1;
+                    });
 
                     angular.element(
                         document.getElementById('includeHead_kpi_personal_result_011_0y_r'))
@@ -561,6 +521,9 @@
                                     if (user !== undefined && user[prjCode] !== undefined && user[prjCode] > 0) {
                                         $scope.projectFinancialResultTable_y0.push(res.payload[index]);
                                     }
+                                    $scope.projectFinancialResultTable_y0 = $scope.projectFinancialResultTable_y0.sort(function (a, b) {
+                                        return a.prjCode > b.prjCode ? 1 : -1;
+                                    });
                                 }
                                 angular.element(
                                     document.getElementById('includeHead_kpi_personal_result_011_tech_0y_r'))
@@ -769,7 +732,14 @@
 
             ProjectFinancialDistributeUtil.findFDByYear(getData)
                 .success(function (res) {
+                    for (var index = 0; index < res.payload.length; index++) {
+                        var prjCode = $scope.showPrjInfo(res.payload[index].prjDID).prjCode;
+                        res.payload[index].prjCode = prjCode
+                    }
                     $scope.personalFDData_y1 = res.payload;
+                    $scope.personalFDData_y1 = $scope.personalFDData_y1.sort(function (a, b) {
+                        return a.prjCode > b.prjCode ? 1 : -1;
+                    });
 
                     angular.element(
                         document.getElementById('includeHead_kpi_personal_result_011_1y_r'))
@@ -828,9 +798,11 @@
                                     var user = $scope.projectTechMembers_y1[0];
 
                                     if (user !== undefined && user[prjCode] !== undefined && user[prjCode] > 0) {
-
                                         $scope.projectFinancialResultTable_y1.push(res.payload[index]);
                                     }
+                                    $scope.projectFinancialResultTable_y1 = $scope.projectFinancialResultTable_y1.sort(function (a, b) {
+                                        return a.prjCode > b.prjCode ? 1 : -1;
+                                    });
                                 }
                                 angular.element(
                                     document.getElementById('includeHead_kpi_personal_result_011_tech_1y_r'))
@@ -864,7 +836,14 @@
 
             ProjectFinancialDistributeUtil.findFDByYear(getData)
                 .success(function (res) {
+                    for (var index = 0; index < res.payload.length; index++) {
+                        var prjCode = $scope.showPrjInfo(res.payload[index].prjDID).prjCode;
+                        res.payload[index].prjCode = prjCode
+                    }
                     $scope.personalFDData_y2 = res.payload;
+                    $scope.personalFDData_y2 = $scope.personalFDData_y2.sort(function (a, b) {
+                        return a.prjCode > b.prjCode ? 1 : -1;
+                    });
                     angular.element(
                         document.getElementById('includeHead_kpi_personal_result_011_2y_r'))
                         .html($compile(
@@ -920,6 +899,9 @@
                                     if (user !== undefined && user[prjCode] !== undefined && user[prjCode] > 0) {
                                         $scope.projectFinancialResultTable_y2.push(res.payload[index]);
                                     }
+                                    $scope.projectFinancialResultTable_y2 = $scope.projectFinancialResultTable_y2.sort(function (a, b) {
+                                        return a.prjCode > b.prjCode ? 1 : -1;
+                                    });
                                 }
                                 angular.element(
                                     document.getElementById('includeHead_kpi_personal_result_011_tech_2y_r'))
@@ -951,7 +933,14 @@
             });
             ProjectFinancialDistributeUtil.findFDByYear(getData)
                 .success(function (res) {
+                    for (var index = 0; index < res.payload.length; index++) {
+                        var prjCode = $scope.showPrjInfo(res.payload[index].prjDID).prjCode;
+                        res.payload[index].prjCode = prjCode
+                    }
                     $scope.personalFDData_y3 = res.payload;
+                    $scope.personalFDData_y3 = $scope.personalFDData_y3.sort(function (a, b) {
+                        return a.prjCode > b.prjCode ? 1 : -1;
+                    });
                     angular.element(
                         document.getElementById('includeHead_kpi_personal_result_011_3y_r'))
                         .html($compile(
@@ -1007,6 +996,9 @@
                                     if (user !== undefined && user[prjCode] !== undefined && user[prjCode] > 0) {
                                         $scope.projectFinancialResultTable_y3.push(res.payload[index]);
                                     }
+                                    $scope.projectFinancialResultTable_y3 = $scope.projectFinancialResultTable_y3.sort(function (a, b) {
+                                        return a.prjCode > b.prjCode ? 1 : -1;
+                                    });
                                 }
                                 angular.element(
                                     document.getElementById('includeHead_kpi_personal_result_011_tech_3y_r'))
@@ -1037,12 +1029,16 @@
             bsLoadingOverlayService.start({
                 referenceId: 'mainPage_kpi_personal'
             });
-            // console.log(getData)
             ProjectFinancialDistributeUtil.findFDByYear(getData)
                 .success(function (res) {
-                    // console.log(res)
+                    for (var index = 0; index < res.payload.length; index++) {
+                        var prjCode = $scope.showPrjInfo(res.payload[index].prjDID).prjCode;
+                        res.payload[index].prjCode = prjCode
+                    }
                     $scope.personalFDData_y4 = res.payload;
-
+                    $scope.personalFDData_y4 = $scope.personalFDData_y4.sort(function (a, b) {
+                        return a.prjCode > b.prjCode ? 1 : -1;
+                    });
                     angular.element(
                         document.getElementById('includeHead_kpi_personal_result_011_4y_r'))
                         .html($compile(
@@ -1077,7 +1073,6 @@
             // console.log(formData)
             KpiTechDistributeUtil.findTD(formData)
                 .success(function (res) {
-                    // console.log(res)
                     $scope.projectTechMembers_y4 = res.payload;
 
                     var formDataTech = {
@@ -1101,6 +1096,9 @@
                                     if (user !== undefined && user[prjCode] !== undefined && user[prjCode] > 0) {
                                         $scope.projectFinancialResultTable_y4.push(res.payload[index]);
                                     }
+                                    $scope.projectFinancialResultTable_y4 = $scope.projectFinancialResultTable_y4.sort(function (a, b) {
+                                        return a.prjCode > b.prjCode ? 1 : -1;
+                                    });
                                 }
                                 angular.element(
                                     document.getElementById('includeHead_kpi_personal_result_011_tech_4y_r'))

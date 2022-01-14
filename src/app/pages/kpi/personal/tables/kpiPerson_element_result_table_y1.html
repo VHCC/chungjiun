@@ -16,55 +16,7 @@
             <col span="1" style="width: 5%;">
         </colgroup>
         <thead>
-        <!--<tr >-->
-            <!--<th style="vertical-align: inherit; text-align: center" >項目</th>-->
-            <!--<th style="vertical-align: inherit; text-align: center" >專案代碼</th>-->
-            <!--<th style="vertical-align: inherit; text-align: center" >專案名稱</th>-->
-            <!--<th style="vertical-align: inherit; text-align: center" >經理/主任</th>-->
-            <!--<th style="vertical-align: inherit; text-align: center" >技師</th>-->
-            <!--<th style="vertical-align: inherit; text-align: center" >-->
-                <!--風險-->
-            <!--</th>-->
-        <!--</tr>-->
         </thead>
-        <!--<tbody ng-repeat="item in projectFinancialResultTable">-->
-        <!--<tr style="vertical-align: inherit; text-align: right">-->
-            <!--&lt;!&ndash;Index&ndash;&gt;-->
-            <!--<td class="form-group" style="vertical-align: inherit; text-align: center">-->
-                <!--<span>{{$index + 1}}</span>-->
-            <!--</td >-->
-            <!--&lt;!&ndash;專案代碼&ndash;&gt;-->
-            <!--<td class="form-group" style="vertical-align: inherit; text-align: center">-->
-                <!--<span>{{showPrjInfo(item.prjDID).prjCode}}</span>-->
-            <!--</td>-->
-            <!--&lt;!&ndash;專案名稱&ndash;&gt;-->
-            <!--<td class="form-group" style="vertical-align: inherit; text-align: left">-->
-                <!--<span>{{showPrjName(item.prjDID)}}</span>-->
-            <!--</td>-->
-            <!--&lt;!&ndash;經理&ndash;&gt;-->
-            <!--<td class="form-group" style="vertical-align: inherit; text-align: center">-->
-                <!--<span>{{showManager(showPrjInfo(item.prjDID))}}</span>-->
-            <!--</td>-->
-            <!--&lt;!&ndash;技師&ndash;&gt;-->
-            <!--<td class="form-group" style="vertical-align: inherit; text-align: center">-->
-                <!--<span>{{showTechs(showPrjTech(item.prjDID))}}</span>-->
-            <!--</td>-->
-            <!--&lt;!&ndash;風險&ndash;&gt;-->
-            <!--<td class="form-group " style="vertical-align: inherit;">-->
-                <!--&lt;!&ndash;<span >{{item.rate_item_4 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>&ndash;&gt;-->
-                <!--&lt;!&ndash;<span style="text-align: right">{{calResultKpi(7, item).toLocaleString()}}</span>&ndash;&gt;-->
-                <!--<span style="text-align: right">{{fetchKPIValue(8, item).toLocaleString()}}</span>-->
-            <!--</td>-->
-        <!--</tr>-->
-        <!--</tbody>-->
-        <!--<tr style="vertical-align: inherit; text-align: center">-->
-            <!--<td colspan="5" style="vertical-align: inherit;">-->
-                <!--小計-->
-            <!--</td>-->
-            <!--<td style="vertical-align: inherit; text-align: right">-->
-                <!--{{calResultKpiAll(8).toLocaleString()}}-->
-            <!--</td>-->
-        <!--</tr>-->
         <tr style="vertical-align: inherit; text-align: center">
             <td style="vertical-align: inherit;">
 
@@ -87,7 +39,7 @@
                 <span>{{$index + 1}}</span>
                 <button type="submit"
                         style="margin: 5px"
-                        ng-if="!item.isPrjClose"
+                        ng-if="canElementEdit"
                         ng-click="deleteKPIElement(kpi, 1)"
                         class="btn btn-danger">
                     刪除
@@ -97,30 +49,40 @@
             </td>
             <td style="vertical-align: inherit; text-align: right">
                 <input type="text"
+                       ng-if="canElementEdit"
                        style="text-align: right"
                        ng-model="kpi.memo"
                        value="{{kpi.memo}}"
                        class="form-control input-sm">
+                <span ng-if="!canElementEdit">
+                    {{kpi.memo}}
+                </span>
             </td>
             <td colspan="2" style="vertical-align: inherit;">
             </td>
             <td style="vertical-align: inherit; text-align: right">
                 <input type="number"
+                       ng-if="canElementEdit"
                        style="text-align: right"
                        ng-model="kpi.amount"
                        value="{{kpi.amount}}"
                        class="form-control input-sm">
+                <span ng-if="!canElementEdit">
+                    {{kpi.amount}}
+                </span>
             </td>
         </tr>
     </table>
     <hr>
     <button type="button"
+            ng-if="canElementEdit"
             ng-click="addKPIElement(1)"
             class="btn btn-info btn-icon">
         <i class="ion-plus-round"/>
     </button>
     <button type="submit"
             style="margin: 5px"
+            ng-if="canElementEdit"
             ng-click="saveKPIElements(1)"
             class="btn btn-primary">
         儲存
