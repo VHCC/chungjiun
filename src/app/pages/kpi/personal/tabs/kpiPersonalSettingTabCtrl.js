@@ -114,7 +114,6 @@
             }
             KpiUtil.findKPIPersonQuerySetting(formData)
                 .success(function (res) {
-                    console.log(res);
                     if (res.payload.length == 0) {
                         KpiUtil.insertKPIPersonQuerySetting(formData)
                             .success(function (res) {
@@ -140,10 +139,10 @@
 
         $scope.targetPersonSelected = function (userSelected) {
             vm.targetUsers.targetSelected = null;
-            if ($scope.personSelect._id === userSelected._id) {
-                toastr.warning('不需要新增自己', 'Warning');
-                return;
-            }
+            // if ($scope.personSelect._id === userSelected._id) {
+            //     toastr.warning('不需要新增自己', 'Warning');
+            //     return;
+            // }
             if ($scope.userDIDArray.includes(userSelected._id)) {
                 toastr.warning('該同仁已經存在', 'Warning');
                 return;
