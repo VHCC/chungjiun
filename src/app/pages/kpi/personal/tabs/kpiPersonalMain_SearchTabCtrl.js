@@ -291,12 +291,12 @@
                             })
                     } else {
                         vm.queryUsers = [];
-                        var loginUserSelf = {
-                            _id: $scope.userDID,
-                            name: $scope.showUser($scope.userDID),
-                            before108Kpi: $scope.showBefore108Kpi($scope.userDID),
-                        };
-                        vm.queryUsers.push(loginUserSelf);
+                        // var loginUserSelf = {
+                        //     _id: $scope.userDID,
+                        //     name: $scope.showUser($scope.userDID),
+                        //     before108Kpi: $scope.showBefore108Kpi($scope.userDID),
+                        // };
+                        // vm.queryUsers.push(loginUserSelf);
                         for (var i = 0; i < res.payload[0].userDIDArray.length; i++) {
                             var temp = {
                                 _id: res.payload[0].userDIDArray[i],
