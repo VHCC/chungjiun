@@ -518,7 +518,7 @@
                                     var prjCode = $scope.showPrjInfo(res.payload[index].prjDID).prjCode;
                                     res.payload[index].prjCode = prjCode
                                     var user = $scope.projectTechMembers_y0[0];
-                                    if (user !== undefined && user[prjCode] !== undefined && user[prjCode] > 0) {
+                                    if (user !== undefined && user[prjCode] !== undefined && user[prjCode] != 0) {
                                         $scope.projectFinancialResultTable_y0.push(res.payload[index]);
                                     }
                                     $scope.projectFinancialResultTable_y0 = $scope.projectFinancialResultTable_y0.sort(function (a, b) {
@@ -797,7 +797,7 @@
 
                                     var user = $scope.projectTechMembers_y1[0];
 
-                                    if (user !== undefined && user[prjCode] !== undefined && user[prjCode] > 0) {
+                                    if (user !== undefined && user[prjCode] !== undefined && user[prjCode] != 0) {
                                         $scope.projectFinancialResultTable_y1.push(res.payload[index]);
                                     }
                                     $scope.projectFinancialResultTable_y1 = $scope.projectFinancialResultTable_y1.sort(function (a, b) {
@@ -896,7 +896,7 @@
                                     var prjCode = $scope.showPrjInfo(res.payload[index].prjDID).prjCode;
                                     res.payload[index].prjCode = prjCode
                                     var user = $scope.projectTechMembers_y2[0];
-                                    if (user !== undefined && user[prjCode] !== undefined && user[prjCode] > 0) {
+                                    if (user !== undefined && user[prjCode] !== undefined && user[prjCode] != 0) {
                                         $scope.projectFinancialResultTable_y2.push(res.payload[index]);
                                     }
                                     $scope.projectFinancialResultTable_y2 = $scope.projectFinancialResultTable_y2.sort(function (a, b) {
@@ -993,7 +993,7 @@
                                     var prjCode = $scope.showPrjInfo(res.payload[index].prjDID).prjCode;
                                     res.payload[index].prjCode = prjCode
                                     var user = $scope.projectTechMembers_y3[0];
-                                    if (user !== undefined && user[prjCode] !== undefined && user[prjCode] > 0) {
+                                    if (user !== undefined && user[prjCode] !== undefined && user[prjCode] != 0) {
                                         $scope.projectFinancialResultTable_y3.push(res.payload[index]);
                                     }
                                     $scope.projectFinancialResultTable_y3 = $scope.projectFinancialResultTable_y3.sort(function (a, b) {
@@ -1093,7 +1093,7 @@
                                     var prjCode = $scope.showPrjInfo(res.payload[index].prjDID).prjCode;
                                     res.payload[index].prjCode = prjCode
                                     var user = $scope.projectTechMembers_y4[0];
-                                    if (user !== undefined && user[prjCode] !== undefined && user[prjCode] > 0) {
+                                    if (user !== undefined && user[prjCode] !== undefined && user[prjCode] != 0) {
                                         $scope.projectFinancialResultTable_y4.push(res.payload[index]);
                                     }
                                     $scope.projectFinancialResultTable_y4 = $scope.projectFinancialResultTable_y4.sort(function (a, b) {
