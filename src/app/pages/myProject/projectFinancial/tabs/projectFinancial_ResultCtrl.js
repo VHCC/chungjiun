@@ -430,7 +430,7 @@
                                                     }
                                                 }
                                             }
-                                            console.log($scope.overall_data)
+                                            // console.log($scope.overall_data)
                                         })
 
                                     angular.element(
