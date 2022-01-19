@@ -205,7 +205,7 @@
                         ProjectFinancialResultUtil.findFR(formData)
                             .success(function (res) {
                                 console.log(" === findFR === ");
-                                console.log(res);
+                                // console.log(res);
 
                                 if (res.payload.length == 0) {
                                     ProjectFinancialResultUtil.createFR(formData)
@@ -236,7 +236,7 @@
                                     ProjectIncomeUtil.findIncomeByPrjDIDArray(incomeFormData)
                                         .success(function (res) {
                                             console.log(" --- 收入 --- ");
-                                            console.log(res);
+                                            // console.log(res);
                                             $scope.projectIncomeTable = res.payload;
                                             for (var i = 0; i < res.payload.length; i ++) {
                                                 var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
@@ -269,7 +269,7 @@
                                     PaymentFormsUtil.fetchPaymentsItemByPrjDIDArray(subFormData)
                                         .success(function (res) {
                                             console.log(" --- 墊付款 --- ")
-                                            console.log(res);
+                                            // console.log(res);
                                             $scope.searchPaymentsItems = res.payload;
                                             for (var i = 0; i < res.payload.length; i ++) {
                                                 var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
@@ -300,7 +300,7 @@
                                     ExecutiveExpenditureUtil.fetchExecutiveExpenditureItemsByPrjDIDArray(subFormData)
                                         .success(function (res) {
                                             console.log(" --- 其他支出 --- ");
-                                            console.log(res)
+                                            // console.log(res)
                                             $scope.displayEEItems = res.payload;
                                             for (var i = 0; i < res.payload.length; i ++) {
                                                 var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
@@ -336,7 +336,7 @@
                                     SubContractorPayItemUtil.fetchSCPayItemsByPrjDIDArray(subFormData)
                                         .success(function (res) {
                                             console.log(" --- 廠商請款 --- ")
-                                            console.log(res)
+                                            // console.log(res)
                                             $scope.subContractorPayItems = res.payload;
                                             for (var i = 0; i < res.payload.length; i ++) {
                                                 var tempDate = moment(res.payload[i].year+1911 + "/" + res.payload[i].month).format("YYYY/MM");
@@ -374,7 +374,7 @@
                                     WorkHourUtil.queryStatisticsForms_projectIncome_Cost_ByPrjDIDArray(subFormData)
                                         .success(function (res) {
                                             console.log(" === 人工時 === ")
-                                            console.log(res)
+                                            // console.log(res)
 
                                             res.payload = res.payload.sort(function (a, b) {
                                                 return a._id.userDID > b._id.userDID ? 1 : -1;
@@ -466,7 +466,7 @@
             Project.fetchRelatedCombinedPrjArray(formData)
                 .success(function (res) {
                     console.log(" --- 相關專案 ---");
-                    console.log(res);
+                    // console.log(res);
                     $scope.selectPrjArray = res;
                     $scope.getFinancialRate();
                 })
@@ -1295,7 +1295,7 @@
                 result.push(type1_data[itemList[index]]);
             }
 
-            console.log(result);
+            // console.log(result);
             result_sort = result.sort(function (a, b) {
 
                 if (a._date == b._date) {
@@ -1304,7 +1304,7 @@
                 return a._date > b._date ? 1 : -1;
 
             });
-            console.log(result_sort);
+            // console.log(result_sort);
             return result_sort;
         }
 
