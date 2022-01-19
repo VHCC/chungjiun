@@ -292,7 +292,7 @@
         $scope.initProject = function() {
             Project.findAllProjectClosed()
                 .success(function (allProjects) {
-                    console.log(allProjects);
+                    // console.log(allProjects);
                     for (var index = 0; index < allProjects.length; index++) {
                         if (allProjects[index]._prjInfo.managerID == $scope.userDID) {
                             $scope.allProject_raw.push(allProjects[index]._prjInfo);
