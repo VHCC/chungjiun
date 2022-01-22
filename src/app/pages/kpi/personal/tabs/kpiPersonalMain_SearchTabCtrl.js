@@ -226,6 +226,7 @@
             if (!$scope.personSelect) return;
             return parseInt($scope.personSelect.before108Kpi) +
                 parseInt($scope.userKpiDistributeTotal) +
+                parseInt($scope.projectKPIPersonElements_all) +
                 parseInt($scope.userTechKpiTotal) -
                 parseInt($scope.userSelectedAllBonus);
         }
