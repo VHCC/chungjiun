@@ -2958,6 +2958,7 @@
 
             switch($scope.roleType) {
                 case "6": // 主任
+                case "1": // 技師
                 case "2": // 經理
                     Project.getProjectRelatedToManager(formData)
                         .success(function (relatedProjects) {
