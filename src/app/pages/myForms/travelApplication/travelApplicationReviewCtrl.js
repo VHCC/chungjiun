@@ -160,7 +160,7 @@
                     };
                 }
 
-                if ($scope.roleType === '2' || $scope.roleType === '100' || $scope.roleType === '6' || roleType === '1') {
+                if ($scope.roleType === '2' || $scope.roleType === '100' || $scope.roleType === '6' || $scope.roleType === '1') {
                     for (var index = 0; index < allUsers.length; index++) {
                         if (allUsers[index].bossID === $cookies.get('userDID')) {
                             creatorDIDArray.push(allUsers[index]._id)
