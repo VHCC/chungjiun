@@ -212,7 +212,7 @@
                         ng-click="removeSCPayItemOne(payItem);">移除
                 </button>
                 <button class="btn btn-danger editable-table-button btn-xs"
-                        ng-if="payItem.isExecutiveCheck"
+                        ng-if="payItem.isExecutiveCheck && roleType == 100"
                         ng-click="repentSCPayItem(payItem);">退回
                 </button>
             </td>
