@@ -225,6 +225,12 @@
                                 }
                             }
 
+                            if ($scope.project_table.length > 0) {
+                                $scope.project_table = $scope.project_table.sort(function (a, b) {
+                                    return a.prjInfo.prjCode > b.prjInfo.prjCode ? 1 : -1;
+                                });
+                            }
+
                             angular.element(
                                 document.getElementById('includeHead_multi_over_all'))
                                 .html($compile(
