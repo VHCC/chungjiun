@@ -735,7 +735,7 @@
 
             for (var index = 0; index < item._add_tables.length; index ++) {
                 var operatedFormDate = item._add_tables[index].create_formDate;
-                if (moment(DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1)) < moment("2020/01/01")) {
+                if (moment(DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), item._add_tables[index].day - 1)) < moment("2020/01/01")) {
                     continue
                 }
                 if (item._add_tables[index].workAddType == type) {
@@ -1869,7 +1869,7 @@
             if ($scope.statisticsResults_type2 === undefined || $scope.statisticsResults_type2[userDID] === undefined) return 0;
             switch (type) {
                 case 1:
-                    return Math.round($scope.statisticsResults_type2[userDID].hourTotal + $scope.statisticsResults_type2[userDID].hourTotal_add_A + $scope.statisticsResults_type2[userDID].hourTotal_add_B);
+                    return $scope.statisticsResults_type2[userDID].hourTotal + $scope.statisticsResults_type2[userDID].hourTotal_add_A + $scope.statisticsResults_type2[userDID].hourTotal_add_B;
                 case 2:
                     return Math.round($scope.statisticsResults_type2[userDID].totalCost + $scope.statisticsResults_type2[userDID].hourTotal_add_cost_A + $scope.statisticsResults_type2[userDID].hourTotal_add_cost_B);
                 case 1001:

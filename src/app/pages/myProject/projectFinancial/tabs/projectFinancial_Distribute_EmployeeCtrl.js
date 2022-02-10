@@ -735,7 +735,7 @@
 
             for (var index = 0; index < item._add_tables.length; index ++) {
                 var operatedFormDate = item._add_tables[index].create_formDate;
-                if (moment(DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1)) < moment("2020/01/01")) {
+                if (moment(DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), item._add_tables[index].day - 1)) < moment("2020/01/01")) {
                     continue
                 }
                 if (item._add_tables[index].workAddType == type) {
