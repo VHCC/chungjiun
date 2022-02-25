@@ -99,8 +99,6 @@
         Project.findAll()
             .success(function (allProjects) {
 
-                $scope.allProject_raw = allProjects;
-
                 $scope.allProjectCache = [];
                 var prjCount = allProjects.length;
                 for (var index = 0; index < prjCount; index++) {
@@ -172,6 +170,7 @@
         $scope.initProject = function() {
             Project.findAllEnable()
                 .success(function (allProjects) {
+                    $scope.allProject_raw = allProjects;
                     // console.log(allProjects);
                     vm.projects = allProjects.slice();
                     vm.projects_executiveAdd = allProjects.slice();
