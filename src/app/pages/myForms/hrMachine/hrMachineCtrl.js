@@ -146,6 +146,12 @@
                                     workType: ""
                                 }
 
+                                // console.log(dateString);
+                                if (dateString == "0227" && $scope.machineDID == "130002") {
+                                    console.log("2022/02/27 ignore for 老賢")
+                                    continue;
+                                }
+
                                 if (hrMachineTableSorted[arrayResult[0][index].date] === undefined) {
                                     hrMachineItem.date = arrayResult[0][index].date;
                                     hrMachineItem.did = arrayResult[0][index].did;
@@ -1311,7 +1317,6 @@
                     // 連續多筆type=2，以最後一筆為主
                     // 遇到 上班 2 就停止
                     case 21:
-                        console.log(tableItem);
                         var workOffArray = [];
                         var isFirstWorkOff = false;
                         for (var index = 0; index < tableItem.length; index++) {
