@@ -85,22 +85,26 @@
                 ({{showTaiwanDay(tableItem[0].date)}})
             </td>
             <!--上班 1-->
-            <td ng-class="(isGPS(tableItem, 11)) ? 'gps' : 'sunNormal'"
+            <td ng-class="(isGPS(tableItem, 11)) ? 'gps' : 'sunNormal' &&
+                          (isRemedyType(tableItem, 11)) ? 'remedy' : 'sunNormal'"
                 class="form-group" style="vertical-align: inherit;">
                 {{showHrMachineTime(tableItem, 11)}}
             </td>
             <!--下班 1-->
-            <td ng-class="(isGPS(tableItem, 21)) ? 'gps' : 'sunNormal'"
+            <td ng-class="(isGPS(tableItem, 21)) ? 'gps' : 'sunNormal' &&
+                          (isRemedyType(tableItem, 21)) ? 'remedy' : 'sunNormal'"
                 class="form-group" style="vertical-align: inherit;">
                 {{showHrMachineTime(tableItem, 21)}}
             </td>
             <!--上班 2-->
-            <td ng-class="(isGPS(tableItem, 12)) ? 'gps' : 'sunNormal'"
+            <td ng-class="(isGPS(tableItem, 12)) ? 'gps' : 'sunNormal' &&
+                          (isRemedyType(tableItem, 12)) ? 'remedy' : 'sunNormal'"
                 class="form-group" style="vertical-align: inherit;">
                 {{showHrMachineTime(tableItem, 12)}}
             </td>
             <!--下班 2-->
-            <td ng-class="(isGPS(tableItem, 22)) ? 'gps' : 'sunNormal'"
+            <td ng-class="(isGPS(tableItem, 22)) ? 'gps' : 'sunNormal' &&
+                          (isRemedyType(tableItem, 22)) ? 'remedy' : 'sunNormal'"
                 class="form-group" style="vertical-align: inherit;">
                 {{showHrMachineTime(tableItem, 22)}}
             </td>

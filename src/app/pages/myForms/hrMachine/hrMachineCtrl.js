@@ -104,6 +104,7 @@
                 HrMachineUtil.fetchUserHrMachineDataOneDayByMachineDID(formData)
                     .success(function (res) {
 
+                        console.log("=== fetchUserHrMachineDataOneDayByMachineDID ===");
                         console.log(res.payload);
 
                         res.payload = res.payload.sort(function (a, b) {
@@ -1290,8 +1291,283 @@
                     return results;
                 }
             }
+            // is 補登 判斷
+            $scope.isRemedyType = function (tableItem, type) {
+                switch(type) {
+                    // 上班 1
+                    // 連續多筆type=1，以第一筆為主
+                    case 11:
+                        var workOnArray = [];
+                        for (var index = 0; index < tableItem.length; index++) {
+                            if (tableItem[index].workType === "1") {
+                                workOnArray.push(tableItem[index]);
+                            }
+                        }
+                        if (workOnArray.length > 0) {
+                            return workOnArray[0].isRemedy;
+                        }
+                        break;
+                    // 下班 1
+                    // 連續多筆type=2，以最後一筆為主
+                    // 遇到 上班 2 就停止
+                    case 21:
+                        console.log(tableItem);
+                        var workOffArray = [];
+                        var isFirstWorkOff = false;
+                        for (var index = 0; index < tableItem.length; index++) {
+                            if (tableItem[index].workType === "2") {
+                                workOffArray.push(tableItem[index]);
+                                isFirstWorkOff = true;
+                            }
+                            if (isFirstWorkOff && tableItem[index].workType === "1") {
+                                break;
+                            }
+                        }
+                        if (workOffArray.length > 0) {
+                            return workOffArray[workOffArray.length - 1].isRemedy;
+                        }
+                        break;
+                    // 上班 2
+                    // 一定要有 下班 1
+                    case 12:
+                        var workOnArray = [];
+                        var isSecondWorkOn = false;
+                        for (var index = 0; index < tableItem.length; index++) {
+                            if (tableItem[index].workType === "2") {
+                                isSecondWorkOn = true;
+                            }
+                            if (tableItem[index].workType === "1") {
+                                if (isSecondWorkOn) {
+                                    workOnArray.push(tableItem[index]);
+                                }
+                            }
+                        }
+                        if (workOnArray.length > 0) {
+                            return workOnArray[0].isRemedy;
+                        }
+                        break;
+                    // 下班 2
+                    // 一定要有 上班 2
+                    case 22:
+                        var workOnArray = [];
+                        var isSecondWorkOn = false;
+                        var workOffArray = [];
+                        for (var index = 0; index < tableItem.length; index++) {
+                            if (tableItem[index].workType === "2") {
+                                isSecondWorkOn = true;
+                            }
+                            if (tableItem[index].workType === "1") {
+                                if (isSecondWorkOn) {
+                                    workOnArray.push(tableItem[index]);
+                                }
+                            }
+                            if (workOnArray.length > 0 && tableItem[index].workType === "2") {
+                                workOffArray.push(tableItem[index]);
+                            }
+                        }
+                        if (workOffArray.length > 0) {
+                            return workOffArray[workOffArray.length - 1].isRemedy;
+                        }
+                        break;
+                    // // 加班簽到 1
+                    // // 連續多筆type=3，以第一筆為主
+                    // case 31:
+                    //     var workOverOnArray = [];
+                    //     for (var index = 0; index < tableItem.length; index++) {
+                    //         if (tableItem[index].workType === "3") {
+                    //             workOverOnArray.push(tableItem[index]);
+                    //             // return datas[index].time
+                    //         }
+                    //     }
+                    //     if (workOverOnArray.length > 0) {
+                    //         return workOverOnArray[0].printType == "G";
+                    //     }
+                    //     break;
+                    // // 加班簽退 1
+                    // // 連續多筆type=4，以最後一筆為主
+                    // // 遇到 加班簽退 2 就停止
+                    // case 41:
+                    //     var workOverOffArray = [];
+                    //     var isFirstWorkOverOff = false;
+                    //     for (var index = 0; index < tableItem.length; index++) {
+                    //         if (tableItem[index].workType === "4") {
+                    //             workOverOffArray.push(tableItem[index]);
+                    //             isFirstWorkOverOff = true;
+                    //         }
+                    //         if (isFirstWorkOverOff && tableItem[index].workType === "3") {
+                    //             break;
+                    //         }
+                    //     }
+                    //     if (workOverOffArray.length > 0) {
+                    //         return workOverOffArray[workOverOffArray.length - 1].printType == "G";
+                    //     }
+                    //     break;
+                    // //  加班簽到2
+                    // // 一定要有 加班簽退 1
+                    // case 32:
+                    //     var workOverOnArray = [];
+                    //     var isSecondWorkOverOn = false;
+                    //     for (var index = 0; index < tableItem.length; index++) {
+                    //         if (tableItem[index].workType === "4") {
+                    //             isSecondWorkOverOn = true;
+                    //         }
+                    //         if (tableItem[index].workType === "3" && tableItem[index].time != "0000") {
+                    //             if (isSecondWorkOverOn) {
+                    //                 workOverOnArray.push(tableItem[index]);
+                    //             }
+                    //         }
+                    //     }
+                    //     if (workOverOnArray.length > 0) {
+                    //         return workOverOnArray[0].time;
+                    //     }
+                    //     break;
+                    // // 加班簽退2
+                    // // 一定要有 加班簽到 2
+                    // case 42:
+                    //     var workOverOnArray = [];
+                    //     var isSecondWorkOverOn = false;
+                    //     var workOverOffArray = [];
+                    //     var isSecondWorkOffOn = false;
+                    //     for (var index = 0; index < tableItem.length; index++) {
+                    //         if (tableItem[index].workType === "4") {
+                    //             isSecondWorkOverOn = true;
+                    //         }
+                    //         if (tableItem[index].workType === "3" && tableItem[index].time != "0000") {
+                    //             if (isSecondWorkOverOn) {
+                    //                 workOverOnArray.push(tableItem[index]);
+                    //             }
+                    //             if (isSecondWorkOffOn) {
+                    //                 break;
+                    //             }
+                    //         }
+                    //         if (workOverOnArray.length > 0 && tableItem[index].workType === "4") {
+                    //             workOverOffArray.push(tableItem[index]);
+                    //             isSecondWorkOffOn = true;
+                    //         }
+                    //     }
+                    //     if (workOverOffArray.length > 0) {
+                    //         return workOverOffArray[workOverOffArray.length - 1].printType == "G";
+                    //     }
+                    //     break;
+                    // //  加班簽到3
+                    // // 一定要有 加班簽退 2
+                    // case 33:
+                    //     var workOverOnArray = [];
+                    //     var isSecondWorkOverOn = false;
+                    //     var workOverOffArray = [];
+                    //     var isSecondWorkOffOn = false;
+                    //     var workOverOnThirdArray = [];
+                    //     for (var index = 0; index < tableItem.length; index++) {
+                    //         if (tableItem[index].workType === "4") {
+                    //             isSecondWorkOverOn = true;
+                    //         }
+                    //         if (tableItem[index].workType === "3" && tableItem[index].time != "0000") {
+                    //             if (isSecondWorkOverOn) {
+                    //                 workOverOnArray.push(tableItem[index]);
+                    //             }
+                    //             if (isSecondWorkOffOn) {
+                    //                 workOverOnThirdArray.push(tableItem[index]);
+                    //             }
+                    //         }
+                    //         if (workOverOnArray.length > 0 && tableItem[index].workType === "4") {
+                    //             workOverOffArray.push(tableItem[index]);
+                    //             isSecondWorkOffOn = true;
+                    //         }
+                    //     }
+                    //     if (workOverOnThirdArray.length > 0) {
+                    //         return workOverOnThirdArray[0].printType == "G";
+                    //     }
+                    //     break;
+                    // //  加班簽退3
+                    // case 43:
+                    //     var workOverOnArray = [];
+                    //     var isSecondWorkOverOn = false;
+                    //     var workOverOffArray = [];
+                    //     var isSecondWorkOffOn = false;
+                    //     var workOverOnThirdArray = [];
+                    //     var isThirdWorkOffOn = false;
+                    //     var workOverOffThirdArray = [];
+                    //     for (var index = 0; index < tableItem.length; index++) {
+                    //         if (tableItem[index].workType === "4") {
+                    //             isSecondWorkOverOn = true;
+                    //         }
+                    //         if (tableItem[index].workType === "3" && tableItem[index].time != "0000") {
+                    //             if (isSecondWorkOverOn) {
+                    //                 workOverOnArray.push(tableItem[index]);
+                    //             }
+                    //             if (isSecondWorkOffOn) {
+                    //                 workOverOnThirdArray.push(tableItem[index]);
+                    //             }
+                    //             if (isThirdWorkOffOn) {
+                    //                 break;
+                    //             }
+                    //         }
+                    //         if (workOverOnArray.length > 0 && tableItem[index].workType === "4") {
+                    //             workOverOffArray.push(tableItem[index]);
+                    //             isSecondWorkOffOn = true;
+                    //         }
+                    //         if (workOverOnThirdArray.length > 0 && tableItem[index].workType === "4") {
+                    //             workOverOffThirdArray.push(tableItem[index]);
+                    //             isThirdWorkOffOn = true;
+                    //         }
+                    //     }
+                    //     if (workOverOffThirdArray.length > 0) {
+                    //         return workOverOffThirdArray[workOverOffThirdArray.length - 1].printType == "G";
+                    //     }
+                    //     break;
+                    // //  加班簽到4
+                    // case 34:
+                    //     var count = 0;
+                    //     var OverOnTime;
+                    //     for (var index = 0; index < tableItem.length; index++) {
+                    //         if (tableItem[index].workType === "3") {
+                    //             if (count == 3) {
+                    //                 if (tableItem[index].time != OverOnTime) {
+                    //                     return tableItem[index].printType == "G"
+                    //                 }
+                    //             }
+                    //             count ++
+                    //             OverOnTime = tableItem[index].time;
+                    //         }
+                    //     }
+                    //     break;
+                    // //  加班簽退4
+                    // case 44:
+                    //     var count = 0;
+                    //     var OverOffTime;
+                    //     for (var index = 0; index < tableItem.length; index++) {
+                    //         if (tableItem[index].workType === "4") {
+                    //             if (count == 3) {
+                    //                 if (tableItem[index].time != OverOffTime) {
+                    //                     return tableItem[index].printType == "G"
+                    //                 }
+                    //             }
+                    //             count ++
+                    //             OverOffTime = tableItem[index].time;
+                    //         }
+                    //     }
+                    //     break;
+                    // //  外出
+                    // case 5:
+                    //     for (var index = 0; index < tableItem.length; index++) {
+                    //         if (tableItem[index].workType === "5") {
+                    //             return tableItem[index].printType == "G"
+                    //         }
+                    //     }
+                    //     break;
+                    // //  返回
+                    // case 6:
+                    //     for (var index = 0; index < tableItem.length; index++) {
+                    //         if (tableItem[index].workType === "6") {
+                    //             return tableItem[index].printType == "G"
+                    //         }
+                    //     }
+                    //     break;
+                }
+            }
 
-            // 遲到判斷
+
+            // is GPS 判斷
             $scope.isGPS = function (tableItem, type) {
                 switch(type) {
                     // 上班 1
@@ -1586,6 +1862,7 @@
                 }
                 RemedyUtil.fetchRemedyItemFromDB(formData)
                     .success(function (res) {
+                        console.log("=== 補登RAW DATA ====");
                         console.log(res);
 
                         var dateList = [];
@@ -1611,12 +1888,13 @@
                             var monthDayTemp = moment(dateTemp).format("MMDD");
 
                             var dateTempNew = yearTemp + monthDayTemp;
-                            console.log(dateTempNew);
+                            console.log("=== 補登日期 === :> " + dateTempNew);
 
                             var hrRemedyItem = {
                                 date: "",
                                 did: "",
-                                workType: ""
+                                workType: "",
+                                isRemedy: true
                                 // printType: "",
                                 // time: "",
                                 // workType: ""
