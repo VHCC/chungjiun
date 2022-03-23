@@ -1,4 +1,9 @@
 <!-- 執行專案 -->
+<style>
+    /*.ui-select-bootstrap .ui-select-choices-row > a{*/
+        /*white-space: normal;*/
+    /*}*/
+</style>
 <div class="horizontal-scroll">
     <table class="table table-hover" st-table="projects">
         <thead>
@@ -243,10 +248,11 @@
                          data-e-name="workers"
                          name="workers"
                          e-append-to-body="true"
-                         data-e-style="min-width:100px;max-width:500px"
+                         data-e-style="min-width:100px;max-width:500px;white-space:normal;"
                          data-e-ng-model="prj.workers">
                         {{showWorkersName(prj.workers)}}
-                        <editable-ui-select-match placeholder="請選擇協辦人員">
+                        <editable-ui-select-match
+                                placeholder="請選擇協辦人員">
                             {{$select.selected[$index].name}}
                         </editable-ui-select-match>
                         <editable-ui-select-choices repeat="user in allWorkers | filter: $select.search ">
