@@ -389,6 +389,22 @@
         $scope.aaaaa = function () {
             console.log("QQQQQ")
         }
+
+        $scope.updateItem = function (form, table) {
+            try {
+                var formData = {
+                    _id: table.item._id,
+                    contents: table.item.contents,
+                }
+                ExecutiveExpenditureUtil.updateExecutiveExpenditureOne(formData)
+                    .success(function (res) {
+                        toastr.success('更新成功', 'Success');
+                    })
+            } catch (err) {
+                toastr['warning']('資訊未完整 !', '更新失敗');
+                return;
+            }
+        }
     }
 })();
 

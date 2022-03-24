@@ -72,9 +72,12 @@
         }
 
         $scope.setTargetName = function (item, dom) {
+            console.log(dom);
+            console.log(item);
             var formData = {
                 "_id": item._id,
-                "targetName": dom.$parent.targetSetName,
+                "targetName": item.targetName,
+                "isEnable": true,
                 "timestamp": moment(new Date()).format("YYYYMMDD HHmmss"),
             }
 
@@ -113,6 +116,23 @@
 
         $scope.reloadEEPageCross = function () {
             $scope.$$childHead.$$nextSibling.$$nextSibling.reloadEEPage();
+        }
+
+        $scope.updateTarget = function (form, table) {
+            try {
+                var formData = {
+                    _id: table.target._id,
+                    targetName: table.target.targetName,
+                    updateTimestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
+                }
+                ExpenditureTargetUtil.updateExpenditureTarget(formData)
+                    .success(function (res) {
+                        toastr.success('更新成功', 'Success');
+                    })
+            } catch (err) {
+                toastr['warning']('資訊未完整 !', '更新失敗');
+                return;
+            }
         }
 
     }

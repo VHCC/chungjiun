@@ -31,17 +31,42 @@
                 </td>
                 <!--名稱-->
                 <td style="vertical-align: inherit; text-align: center">
-
-                    <my ng-show="!target.isEnable">
-                        <input type="text"
-                               class="form-control"
-                               placeholder="{{target.targetName}}"
-                               ng-model="targetSetName"
-                               style="color: #000000;">
-                    </my>
-                    <my ng-show="target.isEnable">
-                        {{target.targetName}}
-                    </my>
+                    <form data-editable-form
+                          name="contentForm">
+                        <my ng-show="!target.isEnable || contentForm.$visible">
+                            <input type="text"
+                                   data-e-form="contentForm"
+                                   class="form-control"
+                                   placeholder="{{target.targetName}}"
+                                   ng-model="target.targetName"
+                                   value="{{target.targetName}}"
+                                   style="color: #000000;">
+                        </my>
+                        <my ng-show="target.isEnable && !contentForm.$visible">
+                            {{target.targetName}}
+                        </my>
+                        <br>
+                        <button class="btn btn-info editable-table-button btn-xs"
+                                ng-show="target.isEnable"
+                                ng-disabled="contentForm.$visible"
+                                ng-click="contentForm.$show()">
+                            修改
+                        </button>
+                        <button type="submit" class="btn btn-primary editable-table-button btn-xs"
+                                ng-hide="!contentForm.$visible"
+                                ng-show="contentForm.$visible"
+                                ng-click="updateTarget(contentForm, this)"
+                                ng-disabled="contentForm.$waiting">
+                            確認
+                        </button>
+                        <!--<button type="button" class="btn btn-default editable-table-button btn-xs"-->
+                                <!--ng-hide="!contentForm.$visible"-->
+                                <!--ng-show="contentForm.$visible"-->
+                                <!--ng-disabled="contentForm.$waiting"-->
+                                <!--ng-click="contentForm.$cancel()">-->
+                            <!--取消-->
+                        <!--</button>-->
+                    </form>
                 </td>
             </tr>
             </tbody>
