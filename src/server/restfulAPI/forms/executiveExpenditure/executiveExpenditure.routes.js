@@ -120,7 +120,7 @@ module.exports = function (app) {
             eval(evalString + " = " + evalFooter);
         }
 
-        ExecutiveExpenditureItem.update({
+        ExecutiveExpenditureItem.updateOne({
             _id: req.body._id
         }, {
             $set: updateTarget

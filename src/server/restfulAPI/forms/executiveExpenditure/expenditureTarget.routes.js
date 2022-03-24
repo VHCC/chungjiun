@@ -82,18 +82,25 @@ module.exports = function (app) {
     // update
     app.post(global.apiUrl.post_update_expenditure_target, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_update_expenditure_target");
-        console.log(req.body);
+        console.log(JSON.stringify(req.body));
 
-        ExpenditureTarget.update(
+        var keyArray = Object.keys(req.body);
+        var updateTarget = {};
+        for (var index = 0; index < keyArray.length; index++) {
+            var evalString = "updateTarget.";
+            evalString += keyArray[index];
+
+            var evalFooter = "req.body.";
+            evalFooter += keyArray[index];
+            eval(evalString + " = " + evalFooter);
+        }
+
+        ExpenditureTarget.updateOne(
             {
                 _id: req.body._id
             },
             {
-                $set: {
-                    targetName: req.body.targetName,
-                    timestamp: req.body.timestamp,
-                    isEnable: true,
-                }
+                $set: updateTarget
             },
             function (err) {
                 if (err) {

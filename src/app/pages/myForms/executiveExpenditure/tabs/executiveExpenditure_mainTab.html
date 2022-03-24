@@ -114,12 +114,38 @@
             <!--</td>-->
             <!--內容說明-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="item.isSendReview">{{item.contents}}</span>
-                <input type="text"
-                       ng-if="!item.isSendReview"
-                       ng-model="item.contents"
-                       value="{{item.contents}}"
-                       class="form-control input-sm">
+                <form data-editable-form
+                      name="contentForm">
+                    <span ng-show="item.isSendReview && !contentForm.$visible">{{item.contents}}</span>
+                    <input type="text"
+                           data-e-form="contentForm"
+                           ng-show="!item.isSendReview || contentForm.$visible"
+                           ng-model="item.contents"
+                           value="{{item.contents}}"
+                           class="form-control input-sm">
+                    <br>
+                    <button class="btn btn-info editable-table-button btn-xs"
+                            ng-hide="!item.isSendReview"
+                            ng-disabled="contentForm.$visible"
+                            ng-click="contentForm.$show()">
+                        修改
+                    </button>
+                    <button type="submit" class="btn btn-primary editable-table-button btn-xs"
+                            ng-hide="!contentForm.$visible"
+                            ng-show="contentForm.$visible"
+                            ng-click="updateItem(contentForm, this)"
+                            ng-disabled="contentForm.$waiting">
+                        確認
+                    </button>
+                    <!--<button type="button" class="btn btn-default editable-table-button btn-xs"-->
+                            <!--ng-hide="!contentForm.$visible"-->
+                            <!--ng-show="contentForm.$visible"-->
+                            <!--ng-disabled="contentForm.$waiting"-->
+                            <!--ng-click="contentForm.$cancel()">-->
+                        <!--取消-->
+                    <!--</button>-->
+                </form>
+
             </td>
             <!--金額-->
             <td class="form-group" style="vertical-align: inherit; text-align: right">
