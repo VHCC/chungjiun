@@ -97,8 +97,7 @@
                     "</div>"
                 )($scope));
 
-
-            User.getAllUsersWithSignOut()
+            User.getAllUsers()
                 .success(function (allUsers) {
                     // 協辦人員
                     $scope.allWorkers = [];
@@ -113,70 +112,41 @@
 
                     // 經理、主承辦
                     $scope.projectManagers = [];
-                    $scope.projectManagers[0] = {
-                        value: "",
-                        name: "None"
-                    };
+                    // 2021/01/22 不能不指派經理
+                    // $scope.projectManagers[0] = {
+                    //     value: "",
+                    //     name: "None"
+                    // };
                     for (var i = 0; i < allUsers.length; i++) {
-                        $scope.projectManagers[i+1] = {
+                        $scope.projectManagers[i] = {
                             value: allUsers[i]._id,
                             name: allUsers[i].name
                         };
                     }
 
+                })
+
+            User.getAllUsersWithSignOut()
+                .success(function (allUsers) {
+                    $scope.allWorkersTemp = [];
+                    for (var i = 0; i < allUsers.length; i++) {
+                        $scope.allWorkersTemp[i] = {
+                            value: allUsers[i]._id,
+                            name: allUsers[i].name,
+                        };
+                    }
                     // 顯示
                     for (var index = 0; index < $scope.projects.length; index++) {
                         var selected = [];
                         for (var subIndex = 0; subIndex < $scope.projects[index].workers.length; subIndex++) {
-                            selected = $filter('filter')($scope.allWorkers, {
+                            selected = $filter('filter')($scope.allWorkersTemp, {
                                 value: $scope.projects[index].workers[subIndex],
                             });
-
                             selected.length == 1 ? $scope.projects[index].workers[subIndex] = selected[0] : $scope.projects[index].workers[subIndex];
-
                         }
                     }
                 })
-
         })
-
-        // User.getAllUsers()
-        //     .success(function (allUsers) {
-        //         $scope.allWorkers = [];
-        //         $scope.allWorkersID = [];
-        //         for (var i = 0; i < allUsers.length; i++) {
-        //             $scope.allWorkers[i] = {
-        //                 value: allUsers[i]._id,
-        //                 name: allUsers[i].name,
-        //             };
-        //             $scope.allWorkersID[i] = allUsers[i]._id;
-        //         }
-        //
-        //         for (var index = 0; index < $scope.projects.length; index++) {
-        //             var selected = [];
-        //             for (var subIndex = 0; subIndex < $scope.projects[index].workers.length; subIndex++) {
-        //                 selected = $filter('filter')($scope.allWorkers, {
-        //                     value: $scope.projects[index].workers[subIndex],
-        //                 });
-        //                 selected.length ? $scope.projects[index].workers[subIndex] = selected[0] : "";
-        //             }
-        //         }
-        //     })
-
-        // User.getAllUsers()
-        //     .success(function (allUsers) {
-        //         $scope.projectManagers = [];
-        //         $scope.projectManagers[0] = {
-        //             value: "",
-        //             name: "None"
-        //         };
-        //         for (var i = 0; i < allUsers.length; i++) {
-        //             $scope.projectManagers[i+1] = {
-        //                 value: allUsers[i]._id,
-        //                 name: allUsers[i].name
-        //             };
-        //         }
-        //     });
 
         //技師
         User.findTechs()
