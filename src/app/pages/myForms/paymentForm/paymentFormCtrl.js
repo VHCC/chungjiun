@@ -74,12 +74,9 @@
         // 所有人，對照資料
         User.getAllUsers()
             .success(function (allUsers) {
-
-                var relatedMembers = [];
-
                 vm.users = allUsers; // 新增表單
-                vm.historyUsers = allUsers; // 歷史檢視
-                vm.executiveAddUsers = allUsers; // 行政修訂
+                // vm.historyUsers = allUsers; // 歷史檢視
+                // vm.executiveAddUsers = allUsers; // 行政修訂
 
                 $scope.projectManagers = [];
                 for (var i = 0; i < allUsers.length; i++) {
@@ -88,12 +85,20 @@
                         name: allUsers[i].name
                     };
                 }
+            });
+
+        User.getAllUsersWithSignOut()
+            .success(function (allUsers) {
+
+                var relatedMembers = [];
+
+                vm.historyUsers = allUsers; // 歷史檢視
+                vm.executiveAddUsers = allUsers; // 行政修訂
 
                 for (var index = 0; index < allUsers.length; index ++) {
                     relatedMembers.push(allUsers[index]._id);
                 }
                 $scope.mainRelatedMembers = relatedMembers;
-
             });
 
         Project.findAll()
@@ -137,14 +142,11 @@
 
             GlobalConfigUtil.getConfig(formData)
                 .success(function (resp) {
-                    // console.log(resp);
                     if (resp.payload.length > 0 ) {
                         vm.paymentsflag = resp.payload[0].paymentsSwitch;
                     } else {
-                        // console.log(formData);
                         GlobalConfigUtil.insertConfig(formData)
                             .success(function (resp) {
-                                // console.log(resp);
                                 $scope.getGlobalConfig();
                             })
                     }
@@ -163,7 +165,6 @@
 
             GlobalConfigUtil.updateConfig(formData)
                 .success(function (resp) {
-                    console.log(resp)
                 })
         }
 
@@ -171,7 +172,6 @@
             Project.findAllEnable()
                 .success(function (allProjects) {
                     $scope.allProject_raw = allProjects;
-                    // console.log(allProjects);
                     vm.projects = allProjects.slice();
                     vm.projects_executiveAdd = allProjects.slice();
                 });
@@ -348,7 +348,20 @@
 
         // main tab, type = 0
         // executive_Add, type = 2
-        $scope.insertPaymentItem = function (prjDID, type) {
+        $scope.removePaymentItem = function (item, type) {
+            var formData = {
+                _id: item._id,
+            }
+            PaymentFormsUtil.removePaymentItem(formData)
+                .success(function (res) {
+                    // $scope.fetchPaymentsData(null, 0);
+                    $scope.fetchPaymentsData(type == 0 ? $scope.userDID : vm.executiveAddUser.selected._id, type);
+                })
+        }
+
+        // main tab, type = 0
+        // executive_Add, type = 2
+        $scope.insertPaymentItemF = function (prjDID, type) {
 
             bsLoadingOverlayService.start({
                 referenceId: 'payment_main'
@@ -363,52 +376,48 @@
             }
             PaymentFormsUtil.insertPaymentItem(formData)
                 .success(function (res) {
-                    var formData = {
-                        creatorDID: type == 0 ? $scope.userDID : vm.executiveAddUser.selected._id,
-                        year: specificYear,
-                        month: specificMonth,
-                    }
-                    PaymentFormsUtil.fetchPaymentItems(formData)
-                        .success(function (res) {
-
-                            var formTables = [];
-
-                            for (var index = 0; index < res.payload.length; index ++) {
-                                var paymentItem = {
-                                    tableID: res.payload[index]._id,
-                                    prjDID: res.payload[index].prjDID,
-                                }
-                                formTables.push(paymentItem);
-                            }
-
-                            var formData = {
-                                creatorDID: type == 0 ? $scope.userDID : vm.executiveAddUser.selected._id,
-                                year: specificYear,
-                                month: specificMonth,
-                                formTables: formTables,
-                            }
-                            PaymentFormsUtil.createPaymentForm(formData)
-                                .success(function (res) {
-                                    // console.log(res);
-                                    $scope.fetchPaymentsData(type == 0 ? $scope.userDID : vm.executiveAddUser.selected._id, type);
-                                    // $scope.initProject();
-                                    $scope.resetProjectData();
-                                })
-                        })
-                })
-        }
-
-        // main tab, type = 0
-        // executive_Add, type = 2
-        $scope.removePaymentItem = function (item, type) {
-            var formData = {
-                _id: item._id,
-            }
-            PaymentFormsUtil.removePaymentItem(formData)
-                .success(function (res) {
-                    // $scope.fetchPaymentsData(null, 0);
                     $scope.fetchPaymentsData(type == 0 ? $scope.userDID : vm.executiveAddUser.selected._id, type);
+                    $scope.resetProjectData();
                 })
+            // $scope.fetchPaymentsData(type == 0 ? $scope.userDID : vm.executiveAddUser.selected._id, type);
+            // PaymentFormsUtil.insertPaymentItem(formData)
+            //     .success(function (res) {
+            //         console.log(res);
+            //         $scope.fetchPaymentsData(type == 0 ? $scope.userDID : vm.executiveAddUser.selected._id, type);
+            //         // $scope.initProject();
+            //         $scope.resetProjectData();
+            //         // var formData = {
+            //         //     creatorDID: type == 0 ? $scope.userDID : vm.executiveAddUser.selected._id,
+            //         //     year: specificYear,
+            //         //     month: specificMonth,
+            //         // }
+            //         // PaymentFormsUtil.fetchPaymentItems(formData)
+            //         //     .success(function (res) {
+            //         //
+            //         //         var formTables = [];
+            //         //
+            //         //         for (var index = 0; index < res.payload.length; index ++) {
+            //         //             var paymentItem = {
+            //         //                 tableID: res.payload[index]._id,
+            //         //                 prjDID: res.payload[index].prjDID,
+            //         //             }
+            //         //             formTables.push(paymentItem);
+            //         //         }
+            //         //
+            //         //         var formData = {
+            //         //             creatorDID: type == 0 ? $scope.userDID : vm.executiveAddUser.selected._id,
+            //         //             year: specificYear,
+            //         //             month: specificMonth,
+            //         //             formTables: formTables,
+            //         //         }
+            //         //         PaymentFormsUtil.createPaymentForm(formData)
+            //         //             .success(function (res) {
+            //         //                 $scope.fetchPaymentsData(type == 0 ? $scope.userDID : vm.executiveAddUser.selected._id, type);
+            //         //                 // $scope.initProject();
+            //         //                 $scope.resetProjectData();
+            //         //             })
+            //         //     })
+            //     })
         }
 
         var isHistoryInitDate = false;
@@ -459,7 +468,6 @@
                 year: specificYear,
                 month: specificMonth,
             }
-            // console.log(formData);
 
             PaymentFormsUtil.fetchPaymentItems(formData)
                 .success(function (res) {
@@ -467,7 +475,6 @@
                     switch (type) {
                         case 0:
                             $scope.displayPaymentItems = res.payload;
-                            console.log(res.payload);
                             break;
                         case 1:
                             res.payload = res.payload.sort(function (a, b) {
@@ -486,27 +493,20 @@
                             break;
                     }
 
-                    // if (specificUserDID == null || specificUserDID == undefined) {
-                    //     $scope.displayPaymentItems = res.payload;
-                    // } else {
-                    //     $scope.displayPaymentItems_history = res.payload;
-                    // }
-
                     $scope.getGlobalConfig();
 
                     $timeout(function () {
                         bsLoadingOverlayService.stop({
                             referenceId: 'payment_main'
                         });
-                    }, 500)
+                    }, 100)
                 })
                 .error(function (res) {
-
                     $timeout(function () {
                         bsLoadingOverlayService.stop({
                             referenceId: 'payment_main'
                         });
-                    }, 500)
+                    }, 100)
                 })
 
             $('#paymentItemIndexInput').mask('DD', {
@@ -516,7 +516,6 @@
                     }
                 }
             });
-
         }
 
         // Filter
@@ -567,8 +566,6 @@
         // 行政增修
         $scope.executiveModifiedPaymentItem = function(item) {
             // $scope.saveItems(2);
-            console.log(item);
-
             var formData = {
                 _id: item._id,
             }
@@ -601,27 +598,7 @@
             var unSendReviewCount = 0;
 
             for (var index = 0; index < $scope.displayPaymentItems.length; index ++) {
-
                 if (!$scope.displayPaymentItems[index].isSendReview) {
-
-                    // var dateTemp = moment($scope.displayPaymentItems[index].payDate);
-                    // console.log($scope.displayPaymentItems[index].payDate)
-                    // console.log(dateTemp.format('YYYY/MM/DD'))
-                    // if ($scope.displayPaymentItems[index].payDate !== dateTemp.format('YYYY/MM/DD')) {
-                    //     toastr.error('日期格式錯誤', '請輸入 YYYY/MM/DD');
-                    //     return
-                    // }
-
-                    // if ($scope.checkIsNumber($scope.displayPaymentItems[index].amount)) {
-                    //     toastr.error('金額格式錯誤', '請輸入 整數');
-                    //     return
-                    // }
-                    //
-                    // console.log($scope.displayPaymentItems[index].amount)
-                    // console.log($scope.checkRate($scope.displayPaymentItems[index].amount))
-                    // console.log(isNaN($scope.displayPaymentItems[index].amount))
-                    // console.log(parseInt($scope.displayPaymentItems[index].amount))
-
                     unSendReviewCount++
                 }
             }
@@ -641,10 +618,8 @@
         $scope.checkIsNumber = function(input) {
             var re = /^[0-9] .?[0-9]*/;//判斷字串是否為數字//判斷正整數/[1−9] [0−9]∗]∗/
             if (!re.test(input)) {
-                console.log("QQQQ")
                 return false
             }
-            console.log("AAAA")
             return true
         }
 
@@ -664,9 +639,6 @@
         // main tab, type = 0
         // executive_Add, type = 2
         $scope.saveItems = function (type) {
-
-            console.log(vm);
-            console.log($scope);
 
             var target;
             switch (type) {
@@ -710,7 +682,6 @@
 
             Project.getProjectRelatedToManager(formData)
                 .success(function (relatedProjects) {
-                    // console.log(relatedProjects);
                     for(var index = 0; index < relatedProjects.length; index ++) {
                         // 相關專案
                         managersRelatedProjects.push(relatedProjects[index]._id);
@@ -726,7 +697,6 @@
 
         // ***** 經理審查 *****
         $scope.getPaymentReviewData_manager = function () {
-            // console.log($scope);
             bsLoadingOverlayService.start({
                 referenceId: 'payment_main'
             });
@@ -746,22 +716,17 @@
                 isFindExecutiveCheck: null,
             }
 
-            // console.log(formData);
 
             PaymentFormsUtil.getPaymentsMultiple(formData)
                 .success(function (res) {
-                    // console.log(res);
                     var userResult = [];
                     var evalString;
 
-                    // console.log(managersRelatedProjects);
                     if (res.payload.length > 0) {
                         for (var paymentsItemsIndex = 0; paymentsItemsIndex < res.payload.length; paymentsItemsIndex ++) {
                             var isProjectIncluded = false;
                             inter:
                             if (managersRelatedProjects.includes(res.payload[paymentsItemsIndex].prjDID)) { // 行政總管跟每個人都有關, 經理只跟專案掛鉤
-                                // console.log(paymentsItemsIndex);
-                                // console.log(res.payload[paymentsItemsIndex].prjDID);
                                 isProjectIncluded = true;
                                 break inter;
                             }
@@ -791,7 +756,7 @@
                             bsLoadingOverlayService.stop({
                                 referenceId: 'payment_main'
                             });
-                        }, 500)
+                        }, 100)
 
                     } else {
                         $scope.usersReviewForManagers = [];
@@ -800,7 +765,7 @@
                             bsLoadingOverlayService.stop({
                                 referenceId: 'payment_main'
                             });
-                        }, 500)
+                        }, 100)
                     }
                 })
         }
@@ -834,7 +799,6 @@
 
         //專案經理一鍵確認 -1
         $scope.reviewPaymentManagerAll = function (userDID) {
-            // console.log(userDID);
             $scope.checkText = "確定 同意：" + $scope.showUser(userDID) + " ?";
             $scope.checkingUserDID = userDID;
             ngDialog.open({
@@ -931,7 +895,6 @@
 
             PaymentFormsUtil.getPaymentsMultiple(formData)
                 .success(function (res) {
-                    console.log(res);
                     var userResult = [];
                     var evalString;
                     if (res.payload.length > 0) {
@@ -958,40 +921,29 @@
                         // 檢查全部都核定過的物件
 
                         var userTemp = userResult.slice();
-                        // console.log(userResult);
                         for (var index = 0; index < userTemp.length; index ++) {
-                            // console.log(userTemp[index]);
                             evalString = "manipulateObject = $scope.tables_review['" + userTemp[index] + "']";
                             eval(evalString);
-                            // console.log(manipulateObject);
                             var isNeedShow = false
                             for (var itemIndex = 0; itemIndex < manipulateObject.length; itemIndex++) {
-                                // console.log(manipulateObject[itemIndex]);
                                 if (!manipulateObject[itemIndex].isExecutiveCheck) {
                                     isNeedShow = true;
                                 }
                             }
 
                             if (!isNeedShow) {
-                                // console.log(index);
                                 var location = userResult.indexOf(userTemp[index]);
-                                // console.log(userTemp[index]);
-                                // console.log(manipulateObject);
                                 userResult.splice(location, 1);
                             }
-
-
                         }
 
                         $scope.usersReviewForExecutive = userResult;
-
-                        // console.log($scope);
 
                         $timeout(function () {
                             bsLoadingOverlayService.stop({
                                 referenceId: 'payment_main'
                             });
-                        }, 500)
+                        }, 100)
 
                     } else {
                         $scope.usersReviewForExecutive = [];
@@ -1000,14 +952,13 @@
                             bsLoadingOverlayService.stop({
                                 referenceId: 'payment_main'
                             });
-                        }, 500)
+                        }, 100)
                     }
                 })
         }
 
         //行政總管單筆核定 -1
         $scope.reviewPaymentExecutiveItem = function (userDID, item) {
-            console.log(item);
             $scope.checkText = '確定 核定：' +
                 $scope.showUser(userDID) + ", " +
                 (item.isFrontHalfMonth ? "上半月" : "下半月") + ", " +
@@ -1205,7 +1156,6 @@
                         return;
                     }
                     for (var index = 0; index < operationTarget.length; index ++) {
-                        // console.log(operationTarget[index]);
                         if (operationTarget[index].amount != null || operationTarget[index].amount != undefined) {
                             result += parseInt(operationTarget[index].amount);
                         }
@@ -1233,7 +1183,6 @@
                         return;
                     }
                     for (var index = 0; index < operationTarget.length; index ++) {
-                        // console.log(operationTarget[index]);
                         if (operationTarget[index].amount != null || operationTarget[index].amount != undefined) {
                             result += parseInt(operationTarget[index].amount);
                         }
@@ -1328,13 +1277,9 @@
                 referenceId: 'payment_main'
             });
 
-            console.log("QQQ")
-
             PaymentFormsUtil.fetchPaymentsItemByPrjDID(formData)
                 .success(function (res) {
-                    console.log("AAA")
                     $timeout(function () {
-                        console.log("BBB")
                         bsLoadingOverlayService.stop({
                             referenceId: 'payment_main'
                         });
@@ -1343,7 +1288,6 @@
                 })
                 .error(function (resp) {
                     $timeout(function () {
-                        console.log("CCC")
                         bsLoadingOverlayService.stop({
                             referenceId: 'payment_main'
                         });
