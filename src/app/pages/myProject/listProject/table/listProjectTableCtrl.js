@@ -98,7 +98,7 @@
                 )($scope));
 
 
-            User.getAllUsers()
+            User.getAllUsersWithSignOut()
                 .success(function (allUsers) {
                     // 協辦人員
                     $scope.allWorkers = [];
