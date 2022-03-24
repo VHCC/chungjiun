@@ -8,8 +8,8 @@
                        class="btn-group bootstrap-select form-control"
                        id="projectName"
                        ng-disabled="!paymentFormCtrlVm.paymentsflag"
-                       ng-change="insertPaymentItem($select.selected._id, 0)"
-                       append-to-body="true"
+                       ng-change="insertPaymentItemF($select.selected._id, 0)"
+                       append-to-body="false"
                        search-enabled="true">
                 <ui-select-match placeholder="選擇(新增)">
                     {{$select.selected.mainName}} -
@@ -26,9 +26,12 @@
                             prjName: $select.search,
                             prjSubName: $select.search,
                             prjCode: $select.search
-                            }"
+                            } | limitTo: 100"
                         group-by="'mainName'">
-                    <span ng-bind-html="prjItems.prjName + ' - ' + prjItems.prjSubName + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
+                    <span ng-bind-html="prjItems.prjName + ' - '
+                                    + prjItems.prjSubName + ' - '
+                                    + prjTypeToName(prjItems.type) + ' - '
+                                    + prjItems.prjCode | highlight: $select.search"></span>
                 </ui-select-choices>
             </ui-select>
         </div>

@@ -33,7 +33,7 @@ module.exports = function (app) {
 
     // insert Item
     app.post(global.apiUrl.post_payment_insert_item, function (req, res) {
-        console.log(req.body);
+        // console.log(req.body);
         PaymentFormItem.create({
             creatorDID: req.body.creatorDID,
             year: req.body.year,
@@ -41,16 +41,51 @@ module.exports = function (app) {
             prjDID: req.body.prjDID,
             payDate: req.body.payDate,
         }, function (err, payment) {
-            if (err) {
-                res.send(err);
-            } else {
-                res.status(200).send({
-                    code: 200,
-                    error: global.status._200,
+            PaymentFormItem.find({
+                creatorDID: req.body.creatorDID,
+                year: req.body.year,
+                month: req.body.month,
+            }, function (err, paymentItems) {
+
+                var formTables = [];
+                for (var index = 0; index < paymentItems.length; index ++) {
+                    var paymentItem = {
+                        tableID: paymentItems[index]._id,
+                        prjDID: paymentItems[index].prjDID,
+                    }
+                    formTables.push(paymentItem);
+                }
+
+                PaymentForm.deleteOne({
+                    creatorDID: req.body.creatorDID,
+                    year: req.body.year,
+                    month: req.body.month,
+                }, function (err) {
+                    if (err) {
+                        res.send(err);
+                    } else {
+                        PaymentForm.create({
+                            creatorDID: req.body.creatorDID,
+                            year: req.body.year,
+                            month: req.body.month,
+                            formTables: formTables,
+                        }, function (err) {
+                            if (err) {
+                                res.send(err);
+                            } else {
+                                res.status(200).send({
+                                    code: 200,
+                                    error: global.status._200,
+                                });
+                            }
+                        });
+                    }
                 });
-            }
+
+            });
         });
     });
+
 
     // remove item
     app.post(global.apiUrl.post_payment_remove_item, function (req, res) {
