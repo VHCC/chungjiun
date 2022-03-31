@@ -1910,7 +1910,7 @@
                             // console.log("targetDate :> " + targetDate)
                             // console.log("targetDate.isAfter(startDate) :> " + targetDate.isAfter(startDate))
 
-                            if (targetDate.isAfter(startDate)) {
+                            if (targetDate.isSameOrAfter(startDate)) {
 
                                 if (operateTable[dateTempNew] === undefined) {
                                     var hrMachineCollection = [];
