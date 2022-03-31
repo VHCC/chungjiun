@@ -25,7 +25,7 @@
                             prjName: $select.search,
                             prjSubName: $select.search,
                             prjCode: $select.search
-                            }"
+                            } | limitTo: 100"
                         group-by="'mainName'">
                     <span ng-bind-html="prjItems.prjName + ' - ' + prjItems.prjSubName + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
                 </ui-select-choices>
@@ -58,110 +58,110 @@
 
     <table class="table table-bordered table-hover table-condensed" id="form_main_pdf">
         <thead>
-        <tr style="white-space:nowrap">
-            <td style="vertical-align: inherit; text-align: center" width="80px"></td>
-            <td style="vertical-align: inherit; text-align: center" width="100px">專案代碼</td>
-            <td style="vertical-align: inherit; text-align: center" width="150px">發票日期</td>
-            <td style="vertical-align: inherit; text-align: center" width="150px">發票號碼</td>
-            <td style="vertical-align: inherit; text-align: center">內容說明</td>
-            <td style="vertical-align: inherit; text-align: center" width="100px">墊付金額</td>
-            <td style="vertical-align: inherit; text-align: center">經理簽章</td>
-        </tr>
+            <tr style="white-space:nowrap">
+                <td style="vertical-align: inherit; text-align: center" width="80px"></td>
+                <td style="vertical-align: inherit; text-align: center" width="100px">專案代碼</td>
+                <td style="vertical-align: inherit; text-align: center" width="150px">發票日期</td>
+                <td style="vertical-align: inherit; text-align: center" width="150px">發票號碼</td>
+                <td style="vertical-align: inherit; text-align: center">內容說明</td>
+                <td style="vertical-align: inherit; text-align: center" width="100px">墊付金額</td>
+                <td style="vertical-align: inherit; text-align: center">經理簽章</td>
+            </tr>
         </thead>
         <tbody ng-repeat="item in searchPaymentsItems">
-        <tr style="vertical-align: inherit; text-align: center">
-            <!--序號-->
-            <td style="vertical-align: inherit; text-align: center">
-                <span id="prjCode">{{$index + 1}}</span>
-                <!--<button class="btn btn-danger editable-table-button btn-xs"-->
-                        <!--ng-if="!item.isSendReview"-->
-                        <!--ng-click="removePaymentItem(item, 0);">移除-->
-                <!--</button>-->
-            </td>
-            <!--專案代碼-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span>{{showPrjCodeWithCombine(item.prjDID)}}</span>
-            </td>
-            <!--發票日期-->
-            <td style="vertical-align: inherit; text-align: center">
-                <span ng-if="item.isSendReview">{{item.payDate}}</span>
-                <input type="text"
-                       ng-if="!item.isSendReview"
-                       ng-model="item.payDate"
-                       value="{{item.payDate}}"
-                       class="form-control input-sm">
-            </td>
-            <!--發票號碼-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="item.isSendReview">{{item.receiptCode}}</span>
-                <input type="text"
-                       ng-if="!item.isSendReview"
-                       ng-model="item.receiptCode"
-                       value="{{item.receiptCode}}"
-                       class="form-control input-sm">
-            </td>
-            <!--內容說明-->
-            <td class="form-group" style="vertical-align: inherit; text-align: center">
-                <span ng-if="item.isSendReview">{{item.contents}}</span>
-                <input type="text"
-                       ng-if="!item.isSendReview"
-                       ng-model="item.contents"
-                       value="{{item.contents}}"
-                       class="form-control input-sm">
-            </td>
-            <!--墊付金額-->
-            <td class="form-group" style="vertical-align: inherit; text-align: right">
-                <span ng-if="item.isSendReview">{{(item.amount*1).toLocaleString()}}</span>
-                <input type="text"
-                       ng-if="!item.isSendReview"
-                       ng-model="item.amount"
-                       value="{{item.amount}}"
-                       class="form-control input-sm">
-            </td>
-            <!--經理簽章-->
-            <td rowspan="2" style="vertical-align: inherit;">
-                <div ng-if="(item.isSendReview && !item.isManagerCheck)">
-                    <button class="btn btn-warning editable-table-button btn-xs"
-                            style="color: black">
-                        {{ showProjectManager(item.prjDID)}}
-                        <br>
-                        確認作業中
-                    </button>
-                </div>
-                <div ng-if="item.isManagerCheck">
-                    <div ng-if="!item.isExecutiveAdd">
-                        <button class="btn btn-info editable-table-button btn-xs"
+            <tr style="vertical-align: inherit; text-align: center">
+                <!--序號-->
+                <td style="vertical-align: inherit; text-align: center">
+                    <span id="prjCode">{{$index + 1}}</span>
+                    <!--<button class="btn btn-danger editable-table-button btn-xs"-->
+                            <!--ng-if="!item.isSendReview"-->
+                            <!--ng-click="removePaymentItem(item, 0);">移除-->
+                    <!--</button>-->
+                </td>
+                <!--專案代碼-->
+                <td class="form-group" style="vertical-align: inherit; text-align: center">
+                    <span>{{showPrjCodeWithCombine(item.prjDID)}}</span>
+                </td>
+                <!--發票日期-->
+                <td style="vertical-align: inherit; text-align: center">
+                    <span ng-if="item.isSendReview">{{item.payDate}}</span>
+                    <input type="text"
+                           ng-if="!item.isSendReview"
+                           ng-model="item.payDate"
+                           value="{{item.payDate}}"
+                           class="form-control input-sm">
+                </td>
+                <!--發票號碼-->
+                <td class="form-group" style="vertical-align: inherit; text-align: center">
+                    <span ng-if="item.isSendReview">{{item.receiptCode}}</span>
+                    <input type="text"
+                           ng-if="!item.isSendReview"
+                           ng-model="item.receiptCode"
+                           value="{{item.receiptCode}}"
+                           class="form-control input-sm">
+                </td>
+                <!--內容說明-->
+                <td class="form-group" style="vertical-align: inherit; text-align: center">
+                    <span ng-if="item.isSendReview">{{item.contents}}</span>
+                    <input type="text"
+                           ng-if="!item.isSendReview"
+                           ng-model="item.contents"
+                           value="{{item.contents}}"
+                           class="form-control input-sm">
+                </td>
+                <!--墊付金額-->
+                <td class="form-group" style="vertical-align: inherit; text-align: right">
+                    <span ng-if="item.isSendReview">{{(item.amount*1).toLocaleString()}}</span>
+                    <input type="text"
+                           ng-if="!item.isSendReview"
+                           ng-model="item.amount"
+                           value="{{item.amount}}"
+                           class="form-control input-sm">
+                </td>
+                <!--經理簽章-->
+                <td rowspan="2" style="vertical-align: inherit;">
+                    <div ng-if="(item.isSendReview && !item.isManagerCheck)">
+                        <button class="btn btn-warning editable-table-button btn-xs"
                                 style="color: black">
                             {{ showProjectManager(item.prjDID)}}
                             <br>
-                            確認完成
+                            確認作業中
                         </button>
                     </div>
-                    <div ng-if="item.isExecutiveAdd">
-                        <button class="btn btn-primary editable-table-button btn-xs"
+                    <div ng-if="item.isManagerCheck">
+                        <div ng-if="!item.isExecutiveAdd">
+                            <button class="btn btn-info editable-table-button btn-xs"
+                                    style="color: black">
+                                {{ showProjectManager(item.prjDID)}}
+                                <br>
+                                確認完成
+                            </button>
+                        </div>
+                        <div ng-if="item.isExecutiveAdd">
+                            <button class="btn btn-primary editable-table-button btn-xs"
+                                    style="color: black">
+                                行政修訂
+                            </button>
+                        </div>
+                    </div>
+                    <div ng-if="!item.isSendReview && item.isManagerReject">
+                        <button class="btn btn-warning editable-table-button btn-xs"
                                 style="color: black">
-                            行政修訂
+                            {{ showProjectManager(item.prjDID)}}
+                            <br>
+                            退回
                         </button>
                     </div>
-                </div>
-                <div ng-if="!item.isSendReview && item.isManagerReject">
-                    <button class="btn btn-warning editable-table-button btn-xs"
-                            style="color: black">
-                        {{ showProjectManager(item.prjDID)}}
-                        <br>
-                        退回
-                    </button>
-                </div>
-                <my ng-if="!item.isSendReview && item.isManagerReject"
-                    ng-class="{workAdd: hover}"
-                    class="mytooltip"
-                    ng-mouseover="hover = true"
-                    ng-mouseleave="hover = false">
-                    原因：<i class="ion-clipboard"></i>
-                    <span class="tooltiptext">{{item.managerReject_memo}}</span>
-                </my>
-            </td>
-        </tr>
+                    <my ng-if="!item.isSendReview && item.isManagerReject"
+                        ng-class="{workAdd: hover}"
+                        class="mytooltip"
+                        ng-mouseover="hover = true"
+                        ng-mouseleave="hover = false">
+                        原因：<i class="ion-clipboard"></i>
+                        <span class="tooltiptext">{{item.managerReject_memo}}</span>
+                    </my>
+                </td>
+            </tr>
         </tbody>
         <tfoot>
             <tr style="vertical-align: inherit; text-align: center">
