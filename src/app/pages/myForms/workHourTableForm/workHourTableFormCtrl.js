@@ -1402,6 +1402,55 @@
                             }
                             return result;
                         }
+                        case 20011: {
+                            // 加班時數
+                            for (index = 0; index < tables.length; index++) {
+                                result += tables[index].mon_hour_add;
+                            }
+                            return result;
+                        }
+                        case 20012: {
+                            // 加班時數
+                            for (index = 0; index < tables.length; index++) {
+                                result += tables[index].tue_hour_add;
+                            }
+                            return result;
+                        }
+                        case 20013: {
+                            // 加班時數
+                            for (index = 0; index < tables.length; index++) {
+                                result += tables[index].wes_hour_add;
+                            }
+                            return result;
+                        }
+                        case 20014: {
+                            // 加班時數
+                            for (index = 0; index < tables.length; index++) {
+                                result += tables[index].thu_hour_add;
+                            }
+                            return result;
+                        }
+                        case 20015: {
+                            // 加班時數
+                            for (index = 0; index < tables.length; index++) {
+                                result += tables[index].fri_hour_add;
+                            }
+                            return result;
+                        }
+                        case 20016: {
+                            // 加班時數
+                            for (index = 0; index < tables.length; index++) {
+                                result += tables[index].sat_hour_add;
+                            }
+                            return result;
+                        }
+                        case 20017: {
+                            // 加班時數
+                            for (index = 0; index < tables.length; index++) {
+                                result += tables[index].sun_hour_add;
+                            }
+                            return result;
+                        }
                     }
                 } break;
                 // 經理審核
