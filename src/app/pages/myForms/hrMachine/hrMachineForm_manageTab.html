@@ -1,0 +1,31 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>選擇員工</label>
+            <ui-select ng-model="vm.user.selected"
+                       class="btn-group bootstrap-select form-control"
+                       ng-change="getRemedyHistoryData(vm.user.selected)"
+                       ng-disabled="false"
+                       append-to-body="true"
+                       search-enabled="true">
+                <ui-select-match placeholder="選擇員工">
+                    {{$select.selected.name}} [{{$select.selected.machineDID}}]
+                </ui-select-match>
+                <ui-select-choices
+                        repeat="user in vm.users |
+                        groupSelectpickerOptions:
+                        {
+                            name: $select.search,
+                            machineDID: $select.search
+                        }">
+                    <span ng-bind-html="user.name + ' [' + user.machineDID + ']'| highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12" id="includeHead_manage">
+    </div>
+</div>
