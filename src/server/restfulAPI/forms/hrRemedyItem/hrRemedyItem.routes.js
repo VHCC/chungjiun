@@ -46,42 +46,32 @@ module.exports = function (app) {
         console.log(JSON.stringify(req.body));
         // New Items
 
-        if(!req.body.year) {
-            try {
-                HrRemedyTable.find({
-                    creatorDID: req.body.creatorDID,
-                }, function (err, items) {
-                    res.status(200).send({
-                        code: 200,
-                        error: global.status._200,
-                        payload: items,
-                    });
-                });
-            } catch (err) {
-                if (err) {
-                    res.send(err);
-                }
-            }
-        } else {
-            try {
-                HrRemedyTable.find({
-                    creatorDID: req.body.creatorDID,
-                    year: req.body.year,
-                }, function (err, items) {
-                    res.status(200).send({
-                        code: 200,
-                        error: global.status._200,
-                        payload: items,
-                    });
-                });
-            } catch (err) {
-                if (err) {
-                    res.send(err);
-                }
-            }
+        var keyArray = Object.keys(req.body);
+        var findTarget = {};
+        for (var index = 0; index < keyArray.length; index++) {
+            var evalString = "findTarget.";
+            evalString += keyArray[index];
+
+            var evalFooter = "req.body.";
+            evalFooter += keyArray[index];
+            eval(evalString + " = " + evalFooter);
         }
 
+        console.log(findTarget);
 
+        try {
+            HrRemedyTable.find(findTarget, function (err, items) {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: items,
+                });
+            });
+        } catch (err) {
+            if (err) {
+                res.send(err);
+            }
+        }
     });
 
     app.post(global.apiUrl.post_hr_remedy_delete_item, function (req, res) {

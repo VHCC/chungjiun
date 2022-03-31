@@ -71,7 +71,11 @@
                 <div class="col-md-12" id="includeHead_confirm">
                 </div>
             </div>
-            <!--<hr-machine-form-remedy-confirm></hr-machine-form-remedy-confirm>-->
+        </uib-tab>
+        <uib-tab heading="打卡機補登管理"
+                 style="color: blue">
+            <div ng-controller="hrMachineFormRemedyManageCtrl as vm"
+                 ng-include="'app/pages/myForms/hrMachine/hrMachineForm_manageTab.html'"></div>
         </uib-tab>
     </uib-tabset>
 

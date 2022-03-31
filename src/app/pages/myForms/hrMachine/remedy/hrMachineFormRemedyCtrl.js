@@ -292,7 +292,6 @@
             }
 
             $scope.remedyTimeChange = function (dom) {
-                console.log(dom)
                 dom.table.start_time = dom.tableTimeStart;
             }
 
