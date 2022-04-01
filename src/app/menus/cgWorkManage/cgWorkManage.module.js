@@ -56,6 +56,16 @@
                         order: global.pages.cgWorkManage_travelApplication,
                     },
                 })
+            .state('cgWorkManage.Bulletin',
+                {
+                    url: '/bulletin',
+                    templateUrl: 'app/pages/myForms/bulletin/bulletinPage.html',
+                    title: '請假出差公告',
+                    accessLevel: [1,2,3,4,6,7,100],
+                    sidebarMeta: {
+                        order: global.pages.cgWorkManage_bulletin,
+                    },
+                })
             .state('cgWorkManage.workOffForm',
                 {
                     url: '/workOffForm',

@@ -1,0 +1,161 @@
+
+<h3 class="with-line">請假</h3>
+<div class="row">
+    <table class="table table-bordered table-hover table-condensed">
+        <colgroup>
+            <!--項目-->
+            <col span="1" style="width: 2%;">
+            <!--日期-->
+            <col span="1" style="width: 8%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
+        </colgroup>
+        <thead>
+        <tr style="white-space:nowrap">
+            <td style="vertical-align: inherit; text-align: center" width="80px"></td>
+            <td style="vertical-align: inherit; text-align: center" width="170px">日期</td>
+            <td style="vertical-align: inherit; text-align: center" width="170px">請假人</td>
+            <td style="vertical-align: inherit; text-align: center">星期</td>
+            <td style="vertical-align: inherit; text-align: center">假別</td>
+
+            <td style="vertical-align: inherit; text-align: center" width="180px">時間</td>
+            <td style="vertical-align: inherit; text-align: center">時數</td>
+            <!-- 20200218-->
+            <td style="vertical-align: inherit; text-align: center">代理人</td>
+            <td style="vertical-align: inherit; text-align: center">主管</td>
+            <!--<td style="vertical-align: inherit; text-align: center">請假扣款</td>-->
+        </tr>
+        </thead>
+        <tbody ng-repeat="table in bulletinItems">
+        <tr style="vertical-align: inherit; text-align: center">
+            <!--序號-->
+            <td style="vertical-align: inherit; text-align: center">
+                <span id="prjCode">{{$index + 1}}</span>
+            </td>
+            <!--日期-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                {{table._date}}
+            </td>
+            <!--請假人-->
+            <td style="vertical-align: inherit; text-align: center">
+                <span >{{showMan(table.creatorDID)}}</span>
+            </td>
+            <!--星期-->
+            <td style="vertical-align: inherit; text-align: center">
+                {{showDay(table.day)}}
+            </td>
+            <!--假別-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                {{showWorkOffTypeString(table.workOffType)}}
+            </td>
+            <!--時間-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                {{table.start_time}} - {{table.end_time}}
+            </td>
+            <!--時數/天數-->
+            <td class="form-group has-success" style="vertical-align: inherit;">
+                {{getHourDiffByTime(table.start_time, table.end_time, table.workOffType)}}
+            </td>
+
+            <!--代理人確認-->
+            <!--20200218-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                {{showAgentName(table)}}
+            </td>
+
+            <!--主管確認-->
+            <td rowspan="2" style="vertical-align: inherit;">
+                {{showBoss(table.creatorDID)}}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<hr>
+
+<h3 class="with-line">出差</h3>
+
+<div>
+    <table class="table table-bordered table-hover table-condensed">
+        <colgroup>
+            <!--項目-->
+            <col span="1" style="width: 2%;">
+            <!--日期-->
+            <col span="1" style="width: 8%;">
+            <!--出差人-->
+            <col span="1" style="width: 5%;">
+            <!--時間-->
+            <col span="1" style="width: 5%;">
+            <!--時數-->
+            <col span="1" style="width: 5%;">
+            <!--事由-->
+            <col span="1" style="width: 20%;">
+            <!--主管-->
+            <col span="1" style="width: 5%;">
+        </colgroup>
+        <thead>
+        <tr style="white-space:nowrap">
+            <td style="vertical-align: inherit; text-align: center" width="80px"></td>
+            <td style="vertical-align: inherit; text-align: center" width="170px">日期</td>
+            <td style="vertical-align: inherit; text-align: center" width="170px">出差人</td>
+            <td style="vertical-align: inherit; text-align: center" width="180px">時間</td>
+            <td style="vertical-align: inherit; text-align: center" >申請時數</td>
+            <td style="vertical-align: inherit; text-align: center" >事由/地點</td>
+            <td style="vertical-align: inherit; text-align: center" >主管</td>
+            <!--<td style="vertical-align: inherit; text-align: center">行政確認</td>-->
+        </tr>
+        </thead>
+        <tbody ng-repeat="item in bulletinItems_travel">
+        <tr style="vertical-align: inherit; text-align: center">
+
+            <!--序號-->
+            <td style="vertical-align: inherit; text-align: center">
+                <span >{{$index + 1}}</span>
+            </td>
+
+            <!--專案代碼-->
+            <!--<td class="form-group" style="vertical-align: inherit; text-align: center">-->
+                <!--<span class="mytooltip">-->
+                    <!--{{showPrjCodeWithCombine(item.prjDID)}}-->
+                <!--</span>-->
+            <!--</td>-->
+
+            <!--日期-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                {{item.taStartDate}}
+            </td>
+
+            <!--出差人-->
+            <td style="vertical-align: inherit; text-align: center">
+                <span >{{showMan(item.creatorDID)}}</span>
+            </td>
+
+            <!--時間-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                {{item.start_time}} - {{item.end_time}}
+            </td>
+
+            <!--申請時數-->
+            <td class="form-group has-success" style="vertical-align: inherit;">
+                {{item.applyHour}}
+            </td>
+
+            <!--地點-->
+            <td class="form-group has-success" style="vertical-align: inherit;">
+                {{item.location}}
+            </td>
+
+            <!--主管確認-->
+            <td rowspan="2" style="vertical-align: inherit;">
+                {{showBoss(item.creatorDID)}}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
