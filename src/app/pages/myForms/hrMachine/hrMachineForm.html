@@ -72,7 +72,7 @@
                 </div>
             </div>
         </uib-tab>
-        <uib-tab heading="打卡機補登管理"
+        <uib-tab heading="打卡機補登管理" ng-if="userDID === '5ba4b02fd449b712d573de13'"
                  style="color: blue">
             <div ng-controller="hrMachineFormRemedyManageCtrl as vm"
                  ng-include="'app/pages/myForms/hrMachine/hrMachineForm_manageTab.html'"></div>
