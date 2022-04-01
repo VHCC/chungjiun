@@ -63,6 +63,16 @@ module.exports = function (app) {
             eval(evalString + " = " + evalFooter);
         }
 
+        if (req.body.isBulletin) {
+            delete findRequest ['isBulletin'];
+            findRequest.year = {
+                $gte: req.body.year
+            }
+            findRequest.month = {
+                $gte: req.body.month
+            }
+        }
+
         console.log("--- find Request ---");
         console.log(findRequest);
 

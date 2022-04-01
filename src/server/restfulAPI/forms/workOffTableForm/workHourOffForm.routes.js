@@ -98,6 +98,16 @@ module.exports = function (app) {
             eval(evalString + " = " + evalFooter);
         }
 
+        if (req.body.isBulletin) {
+            delete findQuery ['isBulletin'];
+            findQuery.year = {
+                $gte: req.body.year
+            }
+            findQuery.month = {
+                $gte: req.body.month
+            }
+        }
+
         console.log(findQuery);
 
         WorkOffTableForm.find(
