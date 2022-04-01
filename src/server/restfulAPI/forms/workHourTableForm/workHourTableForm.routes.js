@@ -345,7 +345,6 @@ module.exports = function (app) {
                     findData.push(target);
                 }
 
-
                 WorkHourForm.find({
                     // $or: findData,
                     creatorDID: req.body.creatorDID,
@@ -366,14 +365,12 @@ module.exports = function (app) {
                         });
                     }
                 });
-
             });
-
     })
 
-    // find table by tableid array
+    // find table by tableId array
     app.post(global.apiUrl.post_work_hour_table_find_by_tableid_array, function (req, res) {
-        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_table_find_by_tableid_array");
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_table_find_by_tableId_array");
 
         var tableCount = req.body.tableIDArray.length;
         var findData = []
@@ -402,11 +399,11 @@ module.exports = function (app) {
             query.isExecutiveReject = req.body.isFindExecutiveReject;
         }
 
-        // console.log(query);
+        console.log(query);
 
         WorkHourTable.find(query, function (err, tables) {
             if (err) {
-                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_table_find_by_tableid_array");
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_table_find_by_tableId_array");
                 console.log(req.body);
                 console.log(" ***** ERROR ***** ");
                 console.log(err);
@@ -416,7 +413,7 @@ module.exports = function (app) {
                     code: 200,
                     error: global.status._200,
                     payload: tables,
-                    creatorDID: req.body.creatorDID
+                    creatorDIDArray: req.body.creatorDIDArray
                 });
             }
         });
@@ -425,7 +422,6 @@ module.exports = function (app) {
     // update table form send review
     app.post(global.apiUrl.post_work_hour_table_update_send_review, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_table_update_send_review");
-
 
         WorkHourTable.update({
             _id: req.body.tableID,

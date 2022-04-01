@@ -16,13 +16,13 @@
     function workOverTimeDatePickerCtrl($scope,
                                         $cookies) {
         $scope.userDID = $cookies.get('userDID');
-        console.log($scope);
+        // console.log($scope);
         $scope.openDatePicker = openDatePicker;
         $scope.myDT = new Date();
         $scope.opened = false;
         // $scope.formats = ['dd-MMMM-yyyy', 'MM/dd', 'dd.MM.yyyy', 'shortDate'];
         // $scope.format = $scope.formats[1];
-        console.log($scope.isExecutive);
+        // console.log($scope.isExecutive);
         $scope.myOptions = {
             showWeeks: false,
             startingDay: 0,
@@ -46,7 +46,7 @@
             }
         });
         function openDatePicker() {
-            console.log($scope.format);
+            // console.log($scope.format);
             $scope.opened = true;
             if ( $scope.userDID == "5ba4af019bdd2a0ef86dc5ec" || $scope.isExecutive) {
                 $scope.myOptions = {

@@ -83,10 +83,10 @@
                 </td>
                 <!--日期-->
                 <td class="form-group" style="vertical-align: inherit; text-align: center">
-                    <my ng-show="!rowform1.$waiting && !table.isSendReview">
+                    <my ng-if="!table.isSendReview">
                         <work-over-time-date-picker formatted="yyyy/MM/dd" default="{{showDate(table)}}"></work-over-time-date-picker>
                     </my>
-                    <my ng-show="rowform1.$waiting ||table.isSendReview">
+                    <my ng-if="table.isSendReview">
                         {{showDate(table)}}
                     </my>
                     <!--{{table.month}} / {{table.day}}-->

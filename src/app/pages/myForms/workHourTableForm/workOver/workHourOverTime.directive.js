@@ -20,7 +20,7 @@
             controller: 'workHourOverTimeCtrl',
             controllerAs: 'workHourOverTimeCtrlVm',
             link: function ($scope, elem, attrs) {
-                console.log("load workHourOverTime directive");
+                // console.log("load workHourOverTime directive");
                 // $scope.format = attrs.formatted == undefined ? 'YYYY/MM' : attrs.formatted;
                 // $scope.myMonth = attrs.default === undefined ? moment(new Date()).format($scope.format) : new Date(attrs.default);
                 // $scope.qqqqqwww();
