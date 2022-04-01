@@ -105,8 +105,16 @@
         $scope.initProject = function() {
             Project.findAllEnable()
                 .success(function (allProjects) {
+                    $scope.allProject_raw = allProjects;
                     vm.projects = allProjects.slice();
                 });
+        }
+
+        $scope.resetProjectData = function() {
+            if (vm.prjItems) {
+                vm.prjItems.selected = null;
+            }
+            vm.projects = $scope.allProject_raw.slice();
         }
 
         User.getAllUsers()
@@ -224,8 +232,8 @@
 
             TravelApplicationUtil.insertTravelApplicationItem(formData)
                 .success(function (resp) {
-                    console.log(resp);
                     $scope.getUsersTravelApplicationData($scope.userDID, thisYear);
+                    $scope.resetProjectData();
                 })
         }
 

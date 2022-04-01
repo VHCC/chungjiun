@@ -436,7 +436,7 @@
 
             WorkHourUtil.getWorkHourForm(getData) // 拿工時表資料
                 .success(function (res) {
-                    console.log(res)
+                    console.log(res);
                     $scope.workhourFormDidArray = [];
                     if (res.payload.length > 0) {
                         res.payload = res.payload.sort(function (a, b) {
@@ -452,6 +452,7 @@
                         $scope.getWorkHourForms = res.payload;
                         $scope.loadWOTTotal($cookies.get('userDID'), res.payload);
                         for (var majorIndex = 0; majorIndex < res.payload.length; majorIndex ++) {
+                            $scope.tables[majorIndex].formId = res.payload[majorIndex]._id;
                             $scope.workhourFormDidArray.push(res.payload[majorIndex]._id);
                             var tableIndex = 0;
                             var workItemCount = res.payload[majorIndex].formTables.length;
@@ -1208,7 +1209,7 @@
         }
 
         // 計算小計
-        $scope.showCalculateHour = function (tableIndex, firstFullDate, tables, day, type, tableForm) {
+        $scope.showCalculateHour = function (formIndex, firstFullDate, tables, day, type, tableForm) {
             var index = 0;
             var result = 0;
             switch (type) {
@@ -1290,7 +1291,7 @@
                                 result += tables[index].sun_hour;
                             }
 
-                            if (tableIndex === 0) {
+                            if (formIndex === 0) {
                                 //國定假日
                                 if ($scope.checkIsCrossMonth(firstFullDate) > 7
                                     || $scope.checkIsCrossMonth(firstFullDate) < 0) {
@@ -1501,55 +1502,55 @@
                             for (index = 0; index < $scope.fetchFormDataFromScope(tableForm).length; index++) {
                                 result += $scope.fetchFormDataFromScope(tableForm)[index].mon_hour;
                             }
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 1);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 1);
+                            result += $scope.showWorkOffCalculateHour(formIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 1);
+                            result += $scope.showNHCalculateHour(formIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 1);
 
                         } break;
                         case 2: {
                             for (index = 0; index < $scope.fetchFormDataFromScope(tableForm).length; index++) {
                                 result += $scope.fetchFormDataFromScope(tableForm)[index].tue_hour;
                             }
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 2);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 2);
+                            result += $scope.showWorkOffCalculateHour(formIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 2);
+                            result += $scope.showNHCalculateHour(formIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 2);
 
                         } break;
                         case 3: {
                             for (index = 0; index < $scope.fetchFormDataFromScope(tableForm).length; index++) {
                                 result += $scope.fetchFormDataFromScope(tableForm)[index].wes_hour;
                             }
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 3);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 3);
+                            result += $scope.showWorkOffCalculateHour(formIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 3);
+                            result += $scope.showNHCalculateHour(formIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 3);
 
                         } break;
                         case 4: {
                             for (index = 0; index < $scope.fetchFormDataFromScope(tableForm).length; index++) {
                                 result += $scope.fetchFormDataFromScope(tableForm)[index].thu_hour;
                             }
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 4);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 4);
+                            result += $scope.showWorkOffCalculateHour(formIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 4);
+                            result += $scope.showNHCalculateHour(formIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 4);
 
                         } break;
                         case 5: {
                             for (index = 0; index < $scope.fetchFormDataFromScope(tableForm).length; index++) {
                                 result += $scope.fetchFormDataFromScope(tableForm)[index].fri_hour;
                             }
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 5);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 5);
+                            result += $scope.showWorkOffCalculateHour(formIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 5);
+                            result += $scope.showNHCalculateHour(formIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 5);
                         } break;
                         case 6: {
                             for (index = 0; index < $scope.fetchFormDataFromScope(tableForm).length; index++) {
                                 result += $scope.fetchFormDataFromScope(tableForm)[index].sat_hour;
                             }
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 6);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 6);
+                            result += $scope.showWorkOffCalculateHour(formIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 6);
+                            result += $scope.showNHCalculateHour(formIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 6);
 
                         } break;
                         case 7: {
                             for (index = 0; index < $scope.fetchFormDataFromScope(tableForm).length; index++) {
                                 result += $scope.fetchFormDataFromScope(tableForm)[index].sun_hour;
                             }
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 0);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 0);
+                            result += $scope.showWorkOffCalculateHour(formIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 0);
+                            result += $scope.showNHCalculateHour(formIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 0);
 
                         } break;
                         case 1001: {
@@ -1563,21 +1564,21 @@
                                 result += $scope.fetchFormDataFromScope(tableForm)[index].sun_hour;
                             }
 
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 1);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 2);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 3);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 4);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 5);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 6);
-                            result += $scope.showNHCalculateHour(tableIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 0);
+                            result += $scope.showNHCalculateHour(formIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 1);
+                            result += $scope.showNHCalculateHour(formIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 2);
+                            result += $scope.showNHCalculateHour(formIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 3);
+                            result += $scope.showNHCalculateHour(formIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 4);
+                            result += $scope.showNHCalculateHour(formIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 5);
+                            result += $scope.showNHCalculateHour(formIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 6);
+                            result += $scope.showNHCalculateHour(formIndex, firstFullDate, $scope.fetchNHTableFormDataFromScope(tableForm), 0);
 
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 1);
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 2);
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 3);
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 4);
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 5);
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 6);
-                            result += $scope.showWorkOffCalculateHour(tableIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 0);
+                            result += $scope.showWorkOffCalculateHour(formIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 1);
+                            result += $scope.showWorkOffCalculateHour(formIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 2);
+                            result += $scope.showWorkOffCalculateHour(formIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 3);
+                            result += $scope.showWorkOffCalculateHour(formIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 4);
+                            result += $scope.showWorkOffCalculateHour(formIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 5);
+                            result += $scope.showWorkOffCalculateHour(formIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 6);
+                            result += $scope.showWorkOffCalculateHour(formIndex, firstFullDate, $scope.fetchWorkOffTableFormDataFromScope(tableForm), 0);
                             return result;
                         }
                         case 2001: {
@@ -2118,11 +2119,11 @@
         }
 
         // 提醒使用者工時表時數 Via Dialog
-        $scope.reviewFormCheck = function(tableIndex) {
+        $scope.reviewFormCheck = function(formIndex, table) {
 
             // 國定假日
             var NHCount = 0;
-            var NHCount_befor_cross = 0;
+            var NHCount_before_cross = 0;
             var NHCount_after_cross = 0;
             // console.log($scope.nationalHolidayTables);
             for (var index = 0; index < $scope.nationalHolidayTables.length; index ++) {
@@ -2131,7 +2132,7 @@
                     if ($scope.nationalHolidayTables[index].day >= $scope.checkIsCrossMonth($scope.firstFullDate) || $scope.nationalHolidayTables[index].day === 0) {
                         NHCount_after_cross ++;
                     } else {
-                        NHCount_befor_cross ++;
+                        NHCount_before_cross ++;
                     }
                 }
             }
@@ -2139,7 +2140,7 @@
 
             // 補班日
             var OTCount = 0;
-            var OTCount_befor_cross = 0;
+            var OTCount_before_cross = 0;
             var OTCount_after_cross = 0;
             // console.log($scope.overTimeTables);
             for (var index = 0; index < $scope.overTimeTables.length; index ++) {
@@ -2149,7 +2150,7 @@
                     if ($scope.overTimeTables[index].day >= $scope.checkIsCrossMonth($scope.firstFullDate) || $scope.overTimeTables[index].day === 0) {
                         OTCount_after_cross ++;
                     } else {
-                        OTCount_befor_cross ++;
+                        OTCount_before_cross ++;
                     }
                 }
             }
@@ -2162,13 +2163,13 @@
             // 有跨週情形，跨週日
             // console.log("checkIsCrossMonth (跨週日)= " + $scope.checkIsCrossMonth($scope.firstFullDate));
             if ($scope.checkIsCrossMonth($scope.firstFullDate) > 0) {
-                switch(tableIndex) {
+                switch(formIndex) {
                     case 0:
                         // console.log("cross work day= " + ($scope.checkIsCrossMonth($scope.firstFullDate) > 5 ? 5 : $scope.checkIsCrossMonth($scope.firstFullDate) - 1));
                         weeklyWorkDay = ($scope.checkIsCrossMonth($scope.firstFullDate) > 5 ? 5 : $scope.checkIsCrossMonth($scope.firstFullDate) - 1);
                         // console.log("上表單，OTCount_befor_cross= " + OTCount_befor_cross);
                         // console.log("上表單，NHCount_befor_cross= " + NHCount_befor_cross);
-                        reviewWorkDay = weeklyWorkDay + OTCount_befor_cross - NHCount_befor_cross;
+                        reviewWorkDay = weeklyWorkDay + OTCount_before_cross - NHCount_before_cross;
                         break;
                     case 1:
                         // console.log("cross work day= " + ($scope.checkIsCrossMonth($scope.firstFullDate) > 5 ? 0 : (weeklyWorkDay - ($scope.checkIsCrossMonth($scope.firstFullDate)) + 1)));
@@ -2182,10 +2183,10 @@
             // console.log("reviewWorkDay (工作日) counts= " + reviewWorkDay + ", hours= " + $scope.showCalculateHour(tableIndex, $scope.firstFullDate, $scope.tables[tableIndex].tablesItems, 1001, 1));
             // console.log(((reviewWorkDay + NHCount_after_cross - OTCount_after_cross) * 8));
 
-            switch(tableIndex) {
+            switch(formIndex) {
                 case 0:
-                    if ($scope.showCalculateHour(tableIndex, $scope.firstFullDate, $scope.tables[tableIndex].tablesItems, 1001, 1) !==
-                        ((reviewWorkDay + NHCount_befor_cross - OTCount_befor_cross) * 8)) {
+                    if ($scope.showCalculateHour(formIndex, $scope.firstFullDate, $scope.tables[formIndex].tablesItems, 1001, 1) !==
+                        ((reviewWorkDay + NHCount_before_cross - OTCount_before_cross) * 8)) {
                         $scope.titleClass = 'bg-danger';
                         $scope.checkText = '該周工時表時數非 ' + ((reviewWorkDay)  * 8) + '，確定提交 審查？';
                     } else {
@@ -2194,7 +2195,7 @@
                     }
                     break;
                 case 1:
-                    if ($scope.showCalculateHour(tableIndex, $scope.firstFullDate, $scope.tables[tableIndex].tablesItems, 1001, 1) !==
+                    if ($scope.showCalculateHour(formIndex, $scope.firstFullDate, $scope.tables[formIndex].tablesItems, 1001, 1) !==
                         ((reviewWorkDay + NHCount_after_cross - OTCount_after_cross) * 8)) {
                         $scope.titleClass = 'bg-danger';
                         $scope.checkText = '該周工時表時數非 ' + ((reviewWorkDay)  * 8) + '，確定提交 審查？';
@@ -2204,10 +2205,7 @@
                     }
                     break;
             }
-
-            $scope.reviewTableIndex = tableIndex;
-
-            // console.log($scope.tables[0].tablesItems.length);
+            $scope.reviewTable = table;
 
             ngDialog.open({
                 template: 'app/pages/myModalTemplate/myWorkHourTableFormReviewModalTotal.html',
@@ -2218,24 +2216,18 @@
         }
 
         // 使用者確認提交
-        $scope.reviewForm = function(tableIndex) {
-            // console.log(tableIndex)
-            // console.log($scope.tables);
+        $scope.reviewForm = function(table) {
             var tableList = [];
             var targetList = [];
             var msgTopicList = [];
             var msgDetailList = [];
             var memoList = [];
-            for (var index = 0; index < $scope.tables[tableIndex].tablesItems.length; index ++) {
-                // console.log(tableIndex);
-                // console.log(index);
-                // console.log($scope.tables[tableIndex].tablesItems[index].tableID);
-                tableList[index] = $scope.tables[tableIndex].tablesItems[index].tableID;
-                // console.log($scope.tables[tableIndex].tablesItems[index].isSendReview);
-                if (!$scope.tables[tableIndex].tablesItems[index].isSendReview) { // 未被審查的項目 才需要通知；已經遞交審查的不通知
-                    if (!targetList.includes($scope.showProjectManagerDID($scope.tables[tableIndex].tablesItems[index].prjDID))) { // 一張表格多個項目有相同的經理的話，只通知一次
-                        targetList[index] = $scope.showProjectManagerDID($scope.tables[tableIndex].tablesItems[index].prjDID);
-                        memoList[index] = $scope.tables[tableIndex].tablesItems[index].create_formDate;
+            for (var index = 0; index < table.tablesItems.length; index ++) {
+                tableList[index] = table.tablesItems[index].tableID;
+                if (!table.tablesItems[index].isSendReview) { // 未被審查的項目 才需要通知；已經遞交審查的不通知
+                    if (!targetList.includes($scope.showProjectManagerDID(table.tablesItems[index].prjDID))) { // 一張表格多個項目有相同的經理的話，只通知一次
+                        targetList[index] = $scope.showProjectManagerDID(table.tablesItems[index].prjDID);
+                        memoList[index] = table.tablesItems[index].create_formDate;
                         msgTopicList[index] = 1000;
                         msgDetailList[index] = 1001;
                     }
@@ -2248,7 +2240,7 @@
                 tableArray: tableList,
             }
             // console.log(" ===== updateTotalTableSendReview ===== ");
-            // console.log(formData);
+            console.log(formData);
             WorkHourUtil.updateTotalTableSendReview(formData)
                 .success(function (res) {
                     // console.log(res.code);
@@ -3204,7 +3196,7 @@
                     }
                 } break;
             }
-            // console.log(getData);
+            console.log(getData);
             // 為審查做準備的資料
             WorkHourUtil.getWorkHourFormMultiple(getData)
                 .success(function (res) {
@@ -3372,6 +3364,7 @@
                                 break;
                             case typeExecutive:
                                 $scope.usersReviewForExecutive = userResult;
+                                console.log($scope.usersReviewForExecutive)
                                 break;
                         }
                         switch (type) {
@@ -3501,7 +3494,7 @@
                                           , isFindExecutiveReject
                                           , type) {
             // console.log(" ==== showTableOfItem ===== ");
-            // console.log(userData);
+            console.log(userData);
             //TODO Multiple
             var tablesLength = userData[userData.DID].length;
 

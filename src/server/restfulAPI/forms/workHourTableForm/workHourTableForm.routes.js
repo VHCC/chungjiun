@@ -49,7 +49,7 @@ module.exports = function (app) {
                         findData.push(target);
                     };
                     console.log("==== remove workhourtableforms table id ====");
-                    console.log(findData);
+                    // console.log(findData);
                     // 刪除既有 工時表格
                     WorkHourTable.remove(
                         {
@@ -166,7 +166,7 @@ module.exports = function (app) {
                         }
 
                         if (resIndex === req.body.formTables.length) {
-                            console.log(formTable);
+                            // console.log(formTable);
                             WorkHourForm.create({
                                 year: req.body.year,
                                 month: req.body.month,
@@ -214,7 +214,7 @@ module.exports = function (app) {
             create_formDate: req.body.create_formDate,
         }
 
-        console.log(query);
+        // console.log(query);
         var d = new Date(req.body.create_formDate);
         if (d.getMonth() == 11) {
             WorkHourForm.find(query)
@@ -399,8 +399,6 @@ module.exports = function (app) {
             query.isExecutiveReject = req.body.isFindExecutiveReject;
         }
 
-        console.log(query);
-
         WorkHourTable.find(query, function (err, tables) {
             if (err) {
                 console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_table_find_by_tableId_array");
@@ -448,7 +446,7 @@ module.exports = function (app) {
     // update all table ***
     app.post(global.apiUrl.post_work_hour_table_total_update_send_review, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_table_total_update_send_review");
-        console.log(req.body);
+        // console.log(req.body);
         for (var index = 0; index < req.body.tableArray.length; index++) {
             WorkHourTable.update({
                 _id: req.body.tableArray[index],
@@ -489,7 +487,7 @@ module.exports = function (app) {
             evalFooter += keyArray[index];
             eval(evalString + " = " + evalFooter);
         }
-        console.log(query);
+        // console.log(query);
 
         // var setQuery = {};
 

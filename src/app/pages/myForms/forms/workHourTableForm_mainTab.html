@@ -1243,12 +1243,18 @@
                     Save
                 </button>
 
-                <button ng-click="reviewFormCheck($index)"
+                <button ng-click="reviewFormCheck($index, table)"
                         style="float: right; padding: 0 60px; line-height: 4"
                         id="btnReview"
                         pb-style="shrink"
                         class="btn btn-primary">
-                    提交審查
+                    <span ng-if="$index == 0">
+                        提交審查
+                    </span>
+                    <span ng-if="$index == 1">
+                        提交審查(跨月)
+                    </span>
+
                 </button>
             </section>
         </td>
