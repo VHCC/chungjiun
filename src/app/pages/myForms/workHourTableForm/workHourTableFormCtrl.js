@@ -160,6 +160,36 @@
             bsLoadingOverlayService.start({
                 referenceId: 'mainPage_workHour'
             });
+            var firstTableExist = false;
+            var secondTableExist = false;
+            var isExistInFormsCounts = 0;
+
+            for (var outIndex = 0; outIndex < $scope.tables.length; outIndex++) {
+                for (var index = 0; index < $scope.tables[outIndex].tablesItems.length; index++) {
+                    if ($scope.tables[outIndex].tablesItems[index].prjDID === prj._id) {
+                        isExistInFormsCounts ++;
+                        switch(outIndex) {
+                            case 0:
+                                firstTableExist = true;
+                                continue;
+                                break;
+                            case 1:
+                                secondTableExist = true;
+                                break;
+                        }
+                    }
+                }
+
+                if (isExistInFormsCounts == $scope.tables.length) {
+                    toastr.warning('工時表已經存在該專案', 'warning');
+                    $timeout(function () {
+                        bsLoadingOverlayService.stop({
+                            referenceId: 'mainPage_workHour'
+                        });
+                    }, 0)
+                    return;
+                }
+            }
 
             vm.prjItems.selected = "";
             var newTableItem = {
@@ -183,6 +213,7 @@
                 sat_hour: 0,
                 sat_hour_add: 0,
                 //SUN
+
                 sun_hour: 0,
                 sun_hour_add: 0,
                 //RIGHT
@@ -194,8 +225,14 @@
 
             };
 
-            for (var index = 0; index < $scope.tables.length; index ++) {
-                $scope.tables[index].tablesItems.push(newTableItem);
+            // for (var index = 0; index < $scope.tables.length; index ++) {
+            //     $scope.tables[index].tablesItems.push(newTableItem);
+            // }
+            if (!firstTableExist) {
+                $scope.tables[0].tablesItems.push(newTableItem);
+            }
+            if (!secondTableExist && $scope.tables.length > 1) {
+                $scope.tables[1].tablesItems.push(newTableItem);
             }
             // console.log(newTableItem);
 
@@ -436,15 +473,16 @@
                                     $scope.loading = false;
                                     vm.relatedProjects = [];
                                     for (var outIndex = 0; outIndex < allRelatedPrjDatas.length; outIndex++) {
-                                        var isExistInForms = false;
-                                        for (var index = 0; index < res.payload.length; index++) {
-                                            if (allRelatedPrjDatas[outIndex]._id === res.payload[index]._id) {
-                                                isExistInForms = true;
-                                            }
-                                        }
-                                        if (!isExistInForms) {
-                                            vm.relatedProjects.push(allRelatedPrjDatas[outIndex]);
-                                        }
+                                    //     var isExistInForms = false;
+                                    //     for (var index = 0; index < res.payload.length; index++) {
+                                    //         if (allRelatedPrjDatas[outIndex]._id === res.payload[index]._id) {
+                                    //             isExistInForms = true;
+                                    //         }
+                                    //     }
+                                    //     if (!isExistInForms) {
+                                    //         vm.relatedProjects.push(allRelatedPrjDatas[outIndex]);
+                                    //     }
+                                        vm.relatedProjects.push(allRelatedPrjDatas[outIndex]);
                                     }
                                     // console.log(" ======== Projects can add to form  ======== ");
                                 })
@@ -476,6 +514,7 @@
                             // 取得 Table Data
                             WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                                 .success(function (res) {
+                                    // console.log("1")
                                     // 填入表單資訊
                                     $scope.tableData = {};
 
@@ -2311,6 +2350,7 @@
                             // 取得 Table Data
                             WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                                 .success(function (res) {
+                                    // console.log("2")
                                     var workIndex = tableIndex;
                                     tableIndex++;
                                     // 填入表單資訊
@@ -3164,10 +3204,11 @@
                     }
                 } break;
             }
-
+            // console.log(getData);
+            // 為審查做準備的資料
             WorkHourUtil.getWorkHourFormMultiple(getData)
                 .success(function (res) {
-                    console.log(res);
+                    // console.log(res);
                     var relatedUsersAndTables = [];
                     // 一個UserDID只有一個物件
                     var existDIDArray = [];
@@ -3178,7 +3219,6 @@
                             var dateB = b.year +1911 + "/" + b.month;
                             return moment(dateA) > moment(dateB) ? 1 : -1;
                         });
-                        // console.log(res.payload);
                         // users
                         for (var formIndex = 0; formIndex < res.payload.length; formIndex ++) {
 
@@ -3217,7 +3257,7 @@
                             //         break inter;
                             //     }
                             // }
-                            if (true) {
+                            // if (true) {
                                 for(var userIndex = 0; userIndex < relatedUsersAndTables.length; userIndex ++) {
                                     if (res.payload[formIndex].creatorDID === relatedUsersAndTables[userIndex].DID) {
                                         var manipulateObject = undefined;
@@ -3235,7 +3275,7 @@
                                         }
                                     }
                                 }
-                            }
+                            // }
                         }
                         switch (type) {
                             case typeManager:
@@ -3304,27 +3344,28 @@
                                                 , isFindManagerCheckFlag
                                                 , isFindExecutiveCheck
                                                 , type) {
-            // console.log(userTables);
-
-            var userTotalLength = 0;
-
-            const getData = async (formDataTable) => {
+            var tableTotalCounts = 0;
+            const getReviewData = async (formDataTable) => {
                 // 取得 Table Data
                 WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                     .success(function (res) {
-                        // 填入表單資訊
                         for (var index = 0; index < res.payload.length; index++) {
                             if (managersRelatedProjects.includes(res.payload[index].prjDID) || type == 2 || type == 6) {
-                                var mUser = $scope.fetchReviewUserFromScope(res.creatorDID);
-                                if (res.payload.length > 0) {
-                                    if (!userDIDExistArray.includes(mUser.DID)) {
-                                        userResult.push(mUser);
-                                        userDIDExistArray.push(mUser.DID);
-                                    }
+                                var mUser = $scope.fetchReviewUserFromScope(res.payload[index].creatorDID);
+                                if (!userDIDExistArray.includes(mUser.DID)) {
+                                    userResult.push(mUser);
+                                    userDIDExistArray.push(mUser.DID);
                                 }
+                                // var mUser = $scope.fetchReviewUserFromScope(res.creatorDID);
+                                // if (res.payload.length > 0) {
+                                //     if (!userDIDExistArray.includes(mUser.DID)) {
+                                //         userResult.push(mUser);
+                                //         userDIDExistArray.push(mUser.DID);
+                                //     }
+                                // }
                             }
                         }
-                        userCount ++;
+                        // userCount ++;
                         switch (type) {
                             case typeManager:
                                 $scope.usersReviewForManagers = userResult;
@@ -3333,23 +3374,21 @@
                                 $scope.usersReviewForExecutive = userResult;
                                 break;
                         }
-                        if (userCount == userTotalLength) {
-                            switch (type) {
-                                case typeManager:
-                                    $timeout(function () {
-                                        bsLoadingOverlayService.stop({
-                                            referenceId: 'manager_workHour'
-                                        });
-                                    }, 200);
-                                    break;
-                                case typeExecutive:
-                                    $timeout(function () {
-                                        bsLoadingOverlayService.stop({
-                                            referenceId: 'executive_workHour'
-                                        });
-                                    }, 200);
-                                    break;
-                            }
+                        switch (type) {
+                            case typeManager:
+                                $timeout(function () {
+                                    bsLoadingOverlayService.stop({
+                                        referenceId: 'manager_workHour'
+                                    });
+                                }, 200);
+                                break;
+                            case typeExecutive:
+                                $timeout(function () {
+                                    bsLoadingOverlayService.stop({
+                                        referenceId: 'executive_workHour'
+                                    });
+                                }, 200);
+                                break;
                         }
                     })
                     .error(function () {
@@ -3371,54 +3410,68 @@
                         }
                         toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
                     })
-                return 'aaa';
+                return 'getData sendRequest Done';
             }
+            // var worker = new Worker("app/webWorkers/worker.js"); // 創建一個 worker 物件
+            //
+            // worker.onmessage = function(e) { // 設定 worker 的監聽事件
+            //     getReviewData(e.data).then(res => {
+            //         // console.log(res);
+            //     })
+            //     // worker.terminate(); // 結束 worker
+            // }
 
-            var worker = new Worker("app/webWorkers/worker.js"); // 創建一個 worker 物件
-
-            worker.onmessage = function(e) { // 設定 worker 的監聽事件
-                getData(e.data).then(res => {
-                    // console.log(res);
-                })
-                // worker.terminate(); // 結束 worker
-            }
-
-            var userResult = [];
-            var userDIDExistArray = [];
-            var userCount = 0;
+            var userResult = []; // 審查的人員清單
+            var userDIDExistArray = []; // 檢查清單不重複
+            // var userCount = 0;
+            var workTableIDArray = [];
+            var user;
+            var userDIDArray = [];
             for (var userIndex = 0; userIndex < userTables.length; userIndex ++) {
-
-                var user = userTables[userIndex];
+                user = userTables[userIndex];
+                userDIDArray.push(user.DID);
 
                 var tablesLength = user[user.DID].length;
 
                 if (tablesLength > 0) {
-                    userTotalLength += tablesLength;
+                    tableTotalCounts += tablesLength;
                 }
 
                 for (var majorIndex = 0; majorIndex < tablesLength; majorIndex ++) {
                     var workItemCount = user[user.DID][majorIndex].formTables.length;
-                    var workTableIDArray = [];
+                    // workTableIDArray = [];
                     // 組成 prjID Array, TableID Array，再去Server要資料
                     for (var index = 0; index < workItemCount; index++) {
-                        workTableIDArray[index] = user[user.DID][majorIndex].formTables[index].tableID;
+                        // workTableIDArray[index] = user[user.DID][majorIndex].formTables[index].tableID;
+                        workTableIDArray.push(user[user.DID][majorIndex].formTables[index].tableID);
                     }
-
-                    formDataTable = {
-                        creatorDID: user.DID,
-                        tableIDArray: workTableIDArray,
-                        isFindSendReview: true,
-                        isFindManagerCheck: isFindManagerCheckFlag,
-                        isFindExecutiveCheck: isFindExecutiveCheck,
-                        isFindManagerReject: null,
-                        isFindExecutiveReject: null
-                    }
-                    getData(formDataTable).then(res => {
-                        // console.log(res);
-                    })
+                    // formDataTable = {
+                    //     creatorDID: user.DID,
+                    //     tableIDArray: workTableIDArray,
+                    //     isFindSendReview: true,
+                    //     isFindManagerCheck: isFindManagerCheckFlag,
+                    //     isFindExecutiveCheck: isFindExecutiveCheck,
+                    //     isFindManagerReject: null,
+                    //     isFindExecutiveReject: null
+                    // }
+                    // getReviewData(formDataTable).then(res => {
+                    //     // console.log(res);
+                    // })
                 }
             }
-            if (userTotalLength == 0) {
+            formDataTable = {
+                // creatorDIDArray: userDIDArray,
+                tableIDArray: workTableIDArray,
+                isFindSendReview: true,
+                isFindManagerCheck: isFindManagerCheckFlag,
+                isFindExecutiveCheck: isFindExecutiveCheck,
+                isFindManagerReject: null,
+                isFindExecutiveReject: null
+            }
+            getReviewData(formDataTable).then(resp => {
+                console.log(resp);
+            })
+            if (tableTotalCounts == 0) {
                 switch (type) {
                     case typeManager:
                         $timeout(function () {
@@ -3481,6 +3534,7 @@
                 tableSort.push(workTableIDArray);
                 WorkHourUtil.findWorkHourTableFormByTableIDArray(formDataTable)
                     .success(function (res) {
+                        // console.log("4")
                         var isNeedToReview = false;
                         // console.log(res.payload);
                         var workIndex = tableIndex;
@@ -3825,6 +3879,7 @@
 
         // 資料存取TableItem.
         $scope.fetchFormDataFromScope = function(table) {
+            if(table == undefined) return;
             return $scope.tables_review.tablesItems[table.creatorDID + table._id] === undefined ? [] : $scope.tables_review.tablesItems[table.creatorDID + table._id];
         }
 
