@@ -33,6 +33,7 @@
                 <td style="vertical-align: inherit; text-align: center" width="180px">時間</td>
                 <td style="vertical-align: inherit; text-align: center">時數</td>
                 <td style="vertical-align: inherit; text-align: center">代理人確認</td>
+                <td style="vertical-align: inherit; text-align: center">更新時間</td>
                 <td style="vertical-align: inherit; text-align: center">夾帶檔案</td>
             </tr>
             </thead>
@@ -69,7 +70,7 @@
                 <td class="form-group has-success" style="vertical-align: inherit;">
                     {{getHourDiffByTime(table.start_time, table.end_time, table.workOffType)}}
                 </td>
-                <!--行政確認-->
+                <!--代理人確認-->
                 <td rowspan="2" style="vertical-align: inherit;">
                     <div ng-show="!table.isBossCheck">
                         <button class="btn btn-info editable-table-button btn-xs"
@@ -85,6 +86,17 @@
                             退回
                         </button>
                     </div>
+                </td>
+
+                <!--更新時間-->
+                <td style="vertical-align: inherit;">
+                    <span ng-if="table.updateTs != undefined">
+                        {{table.updateTs}}
+                    </span>
+                        <br>
+                        <span ng-if="table.updateTs != undefined">
+                        {{showUpdateAction(table.updateAction)}}
+                    </span>
                 </td>
 
                 <!-- 夾帶檔案 -->

@@ -1406,6 +1406,36 @@
                 }
             }
         }])
+        .factory('UpdateActionUtil', ['$http', function (http) {
+            return {
+                convertAction: function (actionString) {
+                    switch (actionString) {
+                        case "cancelReview":
+                            return "抽單";
+                        case "executiveAgree":
+                            return "行政確認";
+                        case "executiveReject":
+                            return "行政退回";
+                        case "sendReview":
+                            return "提交審查";
+                        case "executiveCancel":
+                            return "行政核定後退回";
+                        case "bossReject":
+                            return "主管退回";
+                        case "bossAgree":
+                            return "主管同意";
+                        case "executiveAgree":
+                            return "行政同意";
+                        case "agentAgree":
+                            return "代理人同意"
+                        case "agentReject":
+                            return "代理人退回"
+                        default:
+                            return "Not Set";
+                    }
+                }
+            }
+        }])
         .factory('WorkOffTypeUtil', ['$http', function (http) {
             return {
                 getWorkOffString: function (type) {

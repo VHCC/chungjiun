@@ -17,6 +17,7 @@
                     'User',
                     'Project',
                     'WorkOffFormUtil',
+                    'UpdateActionUtil',
                     '$compile',
                     WorkOffAgentCtrl
                 ]);
@@ -33,6 +34,7 @@
                                  User,
                                  Project,
                                  WorkOffFormUtil,
+                                 UpdateActionUtil,
                                  $compile) {
             var vm = this;
 
@@ -205,6 +207,8 @@
                                     agentID: res.payload[index].agentID,
                                     fileMapNumber: res.payload[index].fileMapNumber,
 
+                                    updateTs: res.payload[index].updateTs,
+                                    updateAction: res.payload[index].updateAction,
                                 };
                                 $scope.agentCheckWorkOffItems.push(detail);
                             }
@@ -237,6 +241,9 @@
                 var formData = {
                     tableID: checkingTable.tableID,
                     isAgentCheck: true,
+
+                    updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                    updateAction: "agentAgree"
                 }
 
                 WorkOffFormUtil.updateWorkOffItem(formData)
@@ -277,12 +284,19 @@
 
                     isExecutiveCheck: false,
                     isExecutiveReject: false,
+
+                    updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                    updateAction: "agentReject"
                 }
 
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
                         $scope.findWorkOffItemByUserDID_agent(vm.agentItem.selected);
                     })
+            }
+
+            $scope.showUpdateAction = function (action) {
+                return UpdateActionUtil.convertAction(action);
             }
         }// End of function
     }

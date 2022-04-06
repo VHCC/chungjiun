@@ -321,6 +321,7 @@
             <td style="vertical-align: inherit; text-align: center">代理人</td>
             <td style="vertical-align: inherit; text-align: center">主管確認</td>
             <td style="vertical-align: inherit; text-align: center">行政確認</td>
+            <td style="vertical-align: inherit; text-align: center">更新時間</td>
             <td style="vertical-align: inherit; text-align: center">夾帶檔案</td>
             <!--<td style="vertical-align: inherit; text-align: center">請假扣款</td>-->
         </tr>
@@ -398,6 +399,15 @@
                         </button>
                     </div>
                 </div>
+                <!--抽單-->
+                <div ng-if="table.isSendReview">
+                    <div class="buttons" >
+                        <button class="btn btn-success editable-table-button btn-xs"
+                                ng-click="cancelReview(table) ">抽單
+                        </button>
+                    </div>
+                </div>
+
             </td>
 
             <!--代理人確認-->
@@ -522,18 +532,15 @@
                     <span class="tooltiptext">{{table.executiveReject_memo}}</span>
                 </my>
             </td>
-            <!--請假扣款-->
-            <!--<td style="vertical-align: inherit;">-->
-            <!--&lt;!&ndash;審查完成&ndash;&gt;-->
-            <!--<div ng-show="(table.isBossCheck && table.isExecutiveCheck &&-->
-            <!--(table.workOffType === 0 || table.workOffType === 1))">-->
-            <!--&lt;!&ndash;只有事假、病假要扣錢 20190312&ndash;&gt;-->
-            <!--<span>-->
-            <!--&lt;!&ndash; -{{(table.userHourSalary) * table.myHourDiff}}&ndash;&gt;-->
-            <!-- -{{formatFloat((table.userMonthSalary/240) * table.myHourDiff, 2)}}-->
-            <!--</span>-->
-            <!--</div>-->
-            <!--</td>-->
+            <td style="vertical-align: inherit;">
+                <span ng-if="table.updateTs != undefined">
+                    {{table.updateTs}}
+                </span>
+                <br>
+                <span ng-if="table.updateTs != undefined">
+                    {{showUpdateAction(table.updateAction)}}
+                </span>
+            </td>
             <!-- 夾帶檔案 -->
             <td>
                 <section>
