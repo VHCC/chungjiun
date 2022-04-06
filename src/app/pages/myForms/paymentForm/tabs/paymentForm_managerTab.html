@@ -29,6 +29,7 @@
                         <td style="vertical-align: inherit; text-align: center">內容說明</td>
                         <td style="vertical-align: inherit; text-align: center" width="100px">墊付金額</td>
                         <td style="vertical-align: inherit; text-align: center">經理簽章</td>
+                        <td style="vertical-align: inherit; text-align: center" width="50px">更新時間</td>
                     </tr>
                 </thead>
                 <tbody ng-repeat="item in fetchReviewItemsFromScope(user)">
@@ -115,6 +116,17 @@
                                     </button>
                                 </div>
                             </div>
+                        </td>
+
+                        <!--更新時間-->
+                        <td style="vertical-align: inherit;">
+                            <span ng-if="item.updateTs != undefined">
+                                {{item.updateTs}}
+                            </span>
+                            <br>
+                            <span ng-if="item.updateTs != undefined">
+                                {{showUpdateAction(item.updateAction)}}
+                            </span>
                         </td>
                     </tr>
                 </tbody>

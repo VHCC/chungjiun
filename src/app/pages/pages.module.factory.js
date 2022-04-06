@@ -1412,20 +1412,28 @@
                     switch (actionString) {
                         case "cancelReview":
                             return "抽單";
-                        case "executiveAgree":
-                            return "行政確認";
-                        case "executiveReject":
-                            return "行政退回";
                         case "sendReview":
                             return "提交審查";
-                        case "executiveCancel":
-                            return "行政核定後退回";
-                        case "bossReject":
-                            return "主管退回";
+                        // 主管
                         case "bossAgree":
                             return "主管同意";
+                        case "bossReject":
+                            return "主管退回";
+                        // 專案經理
+                        case "managerAgree":
+                            return "經理同意";
+                        case "managerReject":
+                            return "經理退回";
+                        // 行政
                         case "executiveAgree":
                             return "行政同意";
+                        case "executiveReject":
+                            return "行政退回";
+                        case "executiveCancel":
+                            return "行政核定後退回";
+                        case "executiveEdit":
+                            return "行政增修";
+                        // 代理人
                         case "agentAgree":
                             return "代理人同意"
                         case "agentReject":

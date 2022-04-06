@@ -85,6 +85,7 @@
             <td style="vertical-align: inherit; text-align: center" width="150px">發票號碼</td>
             <td style="vertical-align: inherit; text-align: center">內容說明</td>
             <td style="vertical-align: inherit; text-align: center" width="100px">墊付金額</td>
+            <td style="vertical-align: inherit; text-align: center" width="50px">更新時間</td>
             <td style="vertical-align: inherit; text-align: center">經理簽章</td>
         </tr>
         </thead>
@@ -138,6 +139,18 @@
                        value="{{item.amount}}"
                        class="form-control input-sm">
             </td>
+
+            <!--更新時間-->
+            <td style="vertical-align: inherit;">
+                <span ng-if="item.updateTs != undefined">
+                    {{item.updateTs}}
+                </span>
+                <br>
+                <span ng-if="item.updateTs != undefined">
+                    {{showUpdateAction(item.updateAction)}}
+                </span>
+            </td>
+
             <!--經理簽章-->
             <td rowspan="2" style="vertical-align: inherit;">
                 <div ng-if="(item.isSendReview && !item.isManagerCheck)">
@@ -180,6 +193,14 @@
                     原因：<i class="ion-clipboard"></i>
                     <span class="tooltiptext">{{item.managerReject_memo}}</span>
                 </my>
+                <!--抽單-->
+                <div ng-if="item.isSendReview">
+                    <div class="buttons" >
+                        <button class="btn btn-success editable-table-button btn-xs"
+                                ng-click="cancelReview(item) ">抽單
+                        </button>
+                    </div>
+                </div>
             </td>
         </tr>
         </tbody>

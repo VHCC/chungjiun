@@ -88,6 +88,14 @@ module.exports = mongoose.model('PaymentFormItem', {
     isFrontHalfMonth :{
         type: Boolean,
         default: false
+    },
+
+    updateTs: {
+        type : String,
+    },
+
+    updateAction: {
+
     }
 
 });

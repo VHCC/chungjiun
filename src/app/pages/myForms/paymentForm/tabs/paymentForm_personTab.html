@@ -43,6 +43,7 @@
                 <td style="vertical-align: inherit; text-align: center">墊付金額</td>
                 <td style="vertical-align: inherit; text-align: center" class="no-print">經理簽章</td>
                 <td style="vertical-align: inherit; text-align: center" class="no-print">行政核定</td>
+                <td style="vertical-align: inherit; text-align: center" width="50px">更新時間</td>
             </tr>
             </thead>
             <tbody ng-repeat="item in displayPaymentItems_person">
@@ -110,6 +111,17 @@
                             核定中
                         </button>
                     </div>
+                </td>
+
+                <!--更新時間-->
+                <td style="vertical-align: inherit;">
+                            <span ng-if="item.updateTs != undefined">
+                                {{item.updateTs}}
+                            </span>
+                    <br>
+                    <span ng-if="item.updateTs != undefined">
+                                {{showUpdateAction(item.updateAction)}}
+                            </span>
                 </td>
 
             </tr>

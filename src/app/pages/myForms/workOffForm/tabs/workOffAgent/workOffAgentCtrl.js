@@ -254,7 +254,6 @@
 
             //代理人退回
             $scope.disagreeItem_agent = function (table, index) {
-                console.log(table);
                 $scope.checkText = '確定 退回：' + vm.agentItem.selected.name + " " +
                     DateUtil.getShiftDatefromFirstDate(
                         DateUtil.getFirstDayofThisWeek(moment(table.create_formDate)),

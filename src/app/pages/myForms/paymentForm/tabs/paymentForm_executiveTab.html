@@ -31,6 +31,7 @@
                     <td style="vertical-align: inherit; text-align: center">簽核狀態</td>
                     <td style="vertical-align: inherit; text-align: center" width="20px">核定編號</td>
                     <td style="vertical-align: inherit; text-align: center" width="35px">切分</td>
+                    <td style="vertical-align: inherit; text-align: center" width="50px">更新時間</td>
                 </tr>
                 </thead>
                 <tbody ng-repeat="item in fetchReviewItemsFromScope(user)">
@@ -147,6 +148,16 @@
                                 下半月
                             </span>
                         </div>
+                    </td>
+                    <!--更新時間-->
+                    <td style="vertical-align: inherit;">
+                        <span ng-if="item.updateTs != undefined">
+                            {{item.updateTs}}
+                        </span>
+                                <br>
+                                <span ng-if="item.updateTs != undefined">
+                            {{showUpdateAction(item.updateAction)}}
+                        </span>
                     </td>
                 </tr>
                 </tbody>
