@@ -21,6 +21,8 @@
                 'ProjectUtil',
                 'PaymentFormsUtil',
                 'GlobalConfigUtil',
+                'UpdateActionUtil',
+                'DateUtil',
                 'bsLoadingOverlayService',
                 PaymentFormCtrl
             ])
@@ -39,6 +41,8 @@
                              ProjectUtil,
                              PaymentFormsUtil,
                              GlobalConfigUtil,
+                             UpdateActionUtil,
+                             DateUtil,
                              bsLoadingOverlayService) {
 
         $scope.userDID = $cookies.get('userDID');
@@ -379,45 +383,6 @@
                     $scope.fetchPaymentsData(type == 0 ? $scope.userDID : vm.executiveAddUser.selected._id, type);
                     $scope.resetProjectData();
                 })
-            // $scope.fetchPaymentsData(type == 0 ? $scope.userDID : vm.executiveAddUser.selected._id, type);
-            // PaymentFormsUtil.insertPaymentItem(formData)
-            //     .success(function (res) {
-            //         console.log(res);
-            //         $scope.fetchPaymentsData(type == 0 ? $scope.userDID : vm.executiveAddUser.selected._id, type);
-            //         // $scope.initProject();
-            //         $scope.resetProjectData();
-            //         // var formData = {
-            //         //     creatorDID: type == 0 ? $scope.userDID : vm.executiveAddUser.selected._id,
-            //         //     year: specificYear,
-            //         //     month: specificMonth,
-            //         // }
-            //         // PaymentFormsUtil.fetchPaymentItems(formData)
-            //         //     .success(function (res) {
-            //         //
-            //         //         var formTables = [];
-            //         //
-            //         //         for (var index = 0; index < res.payload.length; index ++) {
-            //         //             var paymentItem = {
-            //         //                 tableID: res.payload[index]._id,
-            //         //                 prjDID: res.payload[index].prjDID,
-            //         //             }
-            //         //             formTables.push(paymentItem);
-            //         //         }
-            //         //
-            //         //         var formData = {
-            //         //             creatorDID: type == 0 ? $scope.userDID : vm.executiveAddUser.selected._id,
-            //         //             year: specificYear,
-            //         //             month: specificMonth,
-            //         //             formTables: formTables,
-            //         //         }
-            //         //         PaymentFormsUtil.createPaymentForm(formData)
-            //         //             .success(function (res) {
-            //         //                 $scope.fetchPaymentsData(type == 0 ? $scope.userDID : vm.executiveAddUser.selected._id, type);
-            //         //                 // $scope.initProject();
-            //         //                 $scope.resetProjectData();
-            //         //             })
-            //         //     })
-            //     })
         }
 
         var isHistoryInitDate = false;
@@ -582,6 +547,9 @@
                 isExecutiveCheck: true,
                 itemIndex: item.itemIndex,
                 isFrontHalfMonth: item.isFrontHalfMonth,
+
+                updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                updateAction: "executiveEdit"
             }
             PaymentFormsUtil.updatePaymentItemByID(formData)
                 .success(function (res) {
@@ -596,17 +564,19 @@
         $scope.sendReview = function (dom) {
 
             var unSendReviewCount = 0;
+            var unSendReviewIds = [];
 
             for (var index = 0; index < $scope.displayPaymentItems.length; index ++) {
                 if (!$scope.displayPaymentItems[index].isSendReview) {
-                    unSendReviewCount++
+                    unSendReviewCount++;
+                    unSendReviewIds.push($scope.displayPaymentItems[index]._id);
                 }
             }
 
             $scope.saveItems(0);
 
             $scope.checkText = "確定 提交：" + unSendReviewCount + "筆 墊付款 ?";
-            $scope.checkingUserDID = $scope.userDID;
+            $scope.unSendReviewIds = unSendReviewIds;
             ngDialog.open({
                 template: 'app/pages/myForms/paymentForm//dialog/paymentReviewSend_Modal.html',
                 className: 'ngdialog-theme-default',
@@ -623,17 +593,38 @@
             return true
         }
 
-        $scope.checkToSendReview = function(userDID) {
-            var formData = {
-                creatorDID: userDID,
-                year: specificYear,
-                month: specificMonth,
-                isSendReview: true,
+        $scope.checkToSendReview = function(unSendReviewIds) {
+            // var formData = {
+            //     creatorDID: userDID,
+            //     year: specificYear,
+            //     month: specificMonth,
+            //     isSendReview: true,
+            //
+            //     updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+            //     updateAction: "sendReview"
+            // }
+            // PaymentFormsUtil.updatePaymentItems(formData)
+            //     .success(function (res) {
+            //         $scope.fetchPaymentsData(null, 0);
+            //     })
+
+            var resultCount = 0;
+            for (var index = 0; index < unSendReviewIds.length; index ++) {
+                var formData = {
+                    _id: unSendReviewIds[index],
+                    isSendReview: true,
+
+                    updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                    updateAction: "sendReview"
+                }
+                PaymentFormsUtil.updatePaymentItemByID(formData)
+                    .success(function (res) {
+                        resultCount ++
+                        if (resultCount == unSendReviewIds.length) {
+                            $scope.fetchPaymentsData(null, 0);
+                        }
+                    })
             }
-            PaymentFormsUtil.updatePaymentItems(formData)
-                .success(function (res) {
-                    $scope.fetchPaymentsData(null, 0);
-                })
         }
 
         // main tab, type = 0
@@ -827,6 +818,9 @@
                 var formData = {
                     _id: itemDID,
                     isManagerCheck: true,
+
+                    updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                    updateAction: "managerAgree"
                 }
                 PaymentFormsUtil.updatePaymentItemByID(formData)
                     .success(function (res) {
@@ -862,7 +856,10 @@
                 isSendReview: false,
                 isManagerCheck: false,
                 isManagerReject: true,
-                managerReject_memo: rejectMsg
+                managerReject_memo: rejectMsg,
+
+                updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                updateAction: "managerReject"
             }
             PaymentFormsUtil.updatePaymentItemByID(formData)
                 .success(function (res) {
@@ -981,7 +978,10 @@
             var formData = {
                 _id: item._id,
                 isExecutiveCheck: true,
-                itemIndex: item.itemIndex
+                itemIndex: item.itemIndex,
+
+                updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                updateAction: "executiveAgree"
             }
             PaymentFormsUtil.updatePaymentItemByID(formData)
                 .success(function (res) {
@@ -1018,6 +1018,9 @@
                 var formData = {
                     _id: itemDID,
                     isExecutiveCheck: true,
+
+                    updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                    updateAction: "executiveAgree"
                 }
                 PaymentFormsUtil.updatePaymentItemByID(formData)
                     .success(function (res) {
@@ -1054,6 +1057,9 @@
                 isSendReview: false,
                 isManagerCheck: false,
                 isManagerReject: false,
+
+                updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                updateAction: "executiveReject"
             }
             PaymentFormsUtil.updatePaymentItemByID(formData)
                 .success(function (res) {
@@ -1083,6 +1089,9 @@
                 isSendReview: true,
                 isManagerCheck: true,
                 isExecutiveCheck: false,
+
+                updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                updateAction: "executiveCancel"
             }
             PaymentFormsUtil.updatePaymentItemByID(formData)
                 .success(function (res) {
@@ -1293,6 +1302,43 @@
                         });
                     }, 100)
                 })
+        }
+
+        $scope.showUpdateAction = function (action) {
+            return UpdateActionUtil.convertAction(action);
+        }
+
+        // 抽單
+        $scope.cancelReview = function(table) {
+            console.log(table)
+            $scope.checkText = '確定 抽回：' +
+                table.payDate + ", " + table.contents + " - " + table.amount +
+                " ？";
+            $scope.checkingTable = table;
+            ngDialog.open({
+                template: 'app/pages/myModalTemplate/myWorkOffTableFormCancelReview_Modal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+
+        $scope.sendCancelReview = function(checkingTable) {
+
+            var formData = {
+                _id: checkingTable._id,
+                isSendReview: false,
+                isManagerCheck: false,
+                isManagerReject: false,
+
+                updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                updateAction: "cancelReview"
+            }
+            PaymentFormsUtil.updatePaymentItemByID(formData)
+                .success(function (res) {
+                    $scope.fetchPaymentsData(null, 0);
+                })
+
         }
 
     }

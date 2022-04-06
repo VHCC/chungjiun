@@ -95,6 +95,7 @@
             <td style="vertical-align: inherit; text-align: center">經理簽章</td>
             <td style="vertical-align: inherit; text-align: center" width="20px">核定編號</td>
             <td style="vertical-align: inherit; text-align: center" width="35px">切分</td>
+            <td style="vertical-align: inherit; text-align: center" width="50px">更新時間</td>
         </tr>
         </thead>
         <tbody ng-repeat="item in displayPaymentItems_executiveAdd">
@@ -193,6 +194,7 @@
                        class="form-control input-sm">
             </td>
 
+            <!--切分-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
                 <cj-switcher
                         ng-if="roleType == '100'"
@@ -202,6 +204,17 @@
                         switcher-off="下半月"
                         switcher-style="primary"
                         switcher-value="item.isFrontHalfMonth"/>
+            </td>
+
+            <!--更新時間-->
+            <td style="vertical-align: inherit;">
+                <span ng-if="item.updateTs != undefined">
+                    {{item.updateTs}}
+                </span>
+                <br>
+                <span ng-if="item.updateTs != undefined">
+                    {{showUpdateAction(item.updateAction)}}
+                </span>
             </td>
         </tr>
         </tbody>
