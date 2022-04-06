@@ -126,6 +126,14 @@ module.exports = mongoose.model('workOffTableForm', {
 
     fileMapNumber: {
         type: String,
+    },
+
+    updateTs: {
+        type : String,
+    },
+
+    updateAction: {
+
     }
 
 });

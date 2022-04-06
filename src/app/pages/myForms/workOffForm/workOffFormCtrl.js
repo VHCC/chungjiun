@@ -29,6 +29,7 @@
                     'WorkHourAddItemUtil',
                     'NotificationMsgUtil',
                     'OfficialDocUtil',
+                    'UpdateActionUtil',
                     'toastr',
                     '$uibModal',
                     'HolidayDataForms',
@@ -56,6 +57,7 @@
                                  WorkHourAddItemUtil,
                                  NotificationMsgUtil,
                                  OfficialDocUtil,
+                                 UpdateActionUtil,
                                  toastr,
                                  $uibModal,
                                  HolidayDataForms,
@@ -261,6 +263,9 @@
                                 isAgentReject: res.payload[index].isAgentReject,
                                 agentReject_memo: res.payload[index].agentReject_memo,
                                 fileMapNumber: res.payload[index].fileMapNumber,
+
+                                updateTs: res.payload[index].updateTs,
+                                updateAction: res.payload[index].updateAction,
                             };
                             $scope.specificUserTablesItems.push(detail);
                         }
@@ -362,6 +367,9 @@
                                 isAgentCheck: res.payload[index].isAgentCheck,
                                 isAgentReject: res.payload[index].isAgentReject,
                                 agentReject_memo: res.payload[index].agentReject_memo,
+
+                                updateTs: res.payload[index].updateTs,
+                                updateAction: res.payload[index].updateAction,
                             };
                             $scope.specificUserTablesItems_history.push(detail);
                         }
@@ -675,11 +683,7 @@
 
             // 休假規則，未滿一小算一小
             $scope.getHourDiff = function (dom) {
-                console.log(dom)
                 if (dom.tableTimeStart && dom.tableTimeEnd) {
-
-                    console.log(dom.tableTimeStart)
-                    console.log(dom.tableTimeEnd)
 
                     dom.table.start_time = dom.tableTimeStart;
                     dom.table.end_time = dom.tableTimeEnd;
@@ -867,7 +871,6 @@
             $scope.reviewWorkOffItem = function (table, button, index) {
                 $timeout(function () {
 
-                    console.log(table.myHourDiff);
                     var hour = "";
 
                     if (table.myHourDiff == "-") {
@@ -882,7 +885,6 @@
                             DateUtil.getFirstDayofThisWeek(moment($scope.specificUserTablesItems[index].create_formDate)),
                             $scope.specificUserTablesItems[index].day === 0 ? 6 : $scope.specificUserTablesItems[index].day - 1) +
                         "  審查？ 時數：" + hour;
-                    console.log($scope.userMonthSalary)
                     try {
                         $scope.checkText += "\n" + "代理人：" + table.agent.name;
                         $scope.checkingTable = $scope.specificUserTablesItems[index];
@@ -897,17 +899,12 @@
                     } catch (err) {
                         toastr.error('項目缺漏', '錯誤');
                     }
-
-
                 }, 150)
             }
             //跟後臺溝通
             $scope.sendWorkOffTable = function (checkingTable, checkingButton, checkingIndex) {
                 checkingButton.rowform1.$waiting = true;
-
                 var fileMapNumber = "";
-
-                console.log($scope.fileMap)
 
                 if ($scope.fileMap[checkingTable.tableID] != undefined) {
                     fileMapNumber = $scope.fileMap[checkingTable.tableID];
@@ -933,9 +930,9 @@
 
                     fileMapNumber: fileMapNumber,
 
+                    updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                    updateAction: "sendReview"
                 }
-
-                console.log(formData);
 
                 var targetList = [$scope.bossID];
                 var msgTopicList = [2000];
@@ -944,7 +941,6 @@
 
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-                        // $scope.specificUserTablesItems[checkingIndex].isSendReview = true;
                         $scope.getWorkOffTable(null, thisYear);
                     })
             }
@@ -970,6 +966,9 @@
                 var formData = {
                     tableID: checkingTable.tableID,
                     isExecutiveCheck: true,
+
+                    updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                    updateAction: "executiveAgree"
                 }
 
                 var targetList = [vm.executive.selected._id];
@@ -1014,6 +1013,9 @@
                     isExecutiveCheck: false,
                     isExecutiveReject: true,
                     executiveReject_memo: rejectMsg,
+
+                    updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                    updateAction: "executiveReject"
                 }
 
                 var targetList = [vm.executive.selected._id];
@@ -1048,6 +1050,9 @@
                 var formData = {
                     tableID: checkingTable.tableID,
                     isBossCheck: true,
+
+                    updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                    updateAction: "bossAgree"
                 }
 
                 var targetList = ["5b3c65903e93d2f3b0a0c582"];
@@ -1092,6 +1097,9 @@
 
                     isExecutiveCheck: false,
                     isExecutiveReject: false,
+
+                    updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                    updateAction: "bossReject"
                 }
 
                 var targetList = [vm.boss.selected._id];
@@ -1102,6 +1110,45 @@
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
                         $scope.bossCheckTablesItems.splice(index, 1);
+                    })
+            }
+
+            $scope.cancelReview = function(table) {
+                $scope.checkText = '確定 抽回：' +
+                    DateUtil.getShiftDatefromFirstDate(
+                        DateUtil.getFirstDayofThisWeek(moment(table.create_formDate)),
+                        table.day === 0 ? 6 : table.day - 1) +
+                    "  ？";
+                $scope.checkingTable = table;
+                ngDialog.open({
+                    template: 'app/pages/myModalTemplate/myWorkOffTableFormCancelReview_Modal.html',
+                    className: 'ngdialog-theme-default',
+                    scope: $scope,
+                    showClose: false,
+                });
+            }
+
+            $scope.sendCancelReview = function(checkingTable) {
+                var formData = {
+                    tableID: checkingTable.tableID,
+                    isSendReview: false,
+
+                    isAgentCheck: false,
+                    isAgentReject: false,
+
+                    isBossCheck: false,
+                    isBossReject: false,
+
+                    isExecutiveCheck: false,
+                    isExecutiveReject: false,
+
+                    updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                    updateAction: "cancelReview"
+                }
+
+                WorkOffFormUtil.updateWorkOffItem(formData)
+                    .success(function (res) {
+                        $scope.getWorkOffTable(null, thisYear);
                     })
             }
 
@@ -1142,6 +1189,9 @@
                                 isAgentReject: res.payload[index].isAgentReject,
                                 agentReject_memo: res.payload[index].agentReject_memo,
                                 fileMapNumber: res.payload[index].fileMapNumber,
+
+                                updateTs: res.payload[index].updateTs,
+                                updateAction: res.payload[index].updateAction,
                             };
                             $scope.bossCheckTablesItems.push(detail);
                         }
@@ -1190,6 +1240,9 @@
                                 isAgentReject: res.payload[index].isAgentReject,
                                 agentReject_memo: res.payload[index].agentReject_memo,
                                 fileMapNumber: res.payload[index].fileMapNumber,
+
+                                updateTs: res.payload[index].updateTs,
+                                updateAction: res.payload[index].updateAction,
                             };
                             $scope.executiveCheckTablesItems.push(detail);
                         }
@@ -1207,7 +1260,6 @@
                         $scope.getWorkOffTable(vm.user.selected._id, thisYear);
                         // $scope.getWorkOffTable();
                         // toastr['success']('成功', '更新成功');
-
                     })
             }
 
@@ -1229,7 +1281,6 @@
                             .success(function (res) {
                                 if (res.payload.length > 0) {
                                     vm.holidayForm = res.payload[0];
-                                    console.log(vm.holidayForm);
                                     vm.holidayForm.calculate_sick = $scope.showWorkOffCount(1);
                                     vm.holidayForm.calculate_private = $scope.showWorkOffCount(0);
                                     vm.holidayForm.calculate_observed = $scope.showWorkOffCount(2);
@@ -1243,7 +1294,6 @@
                                     // vm.holidayForm.calculate_paternity = $scope.showWorkOffCount(9);
                                     // vm.holidayForm.calculate_others = $scope.showWorkOffCount(1001);
                                     vm.holidayForm.person_residual_rest_hour = parseFloat($scope.preciseResidualRestHour);
-                                    console.log(vm.holidayForm);
                                 } else {
                                     HolidayDataForms.createForms(formData)
                                         .success(function (res) {
@@ -1491,12 +1541,12 @@
                     creatorDID: userDID,
                     year: year,
                 }
-                console.log(" === 顯示兌現單，目的找補休、特休兌換數 [request] === ");
-                console.log(formData);
+                // console.log(" === 顯示兌現單，目的找補休、特休兌換數 [request] === ");
+                // console.log(formData);
                 WorkOffExchangeFormUtil.fetchExchangeItemsByYear(formData)
                     .success(function (res) {
-                        console.log(" === 顯示兌現單，目的找補休、特休兌換數 [resp] === ");
-                        console.log(res);
+                        // console.log(" === 顯示兌現單，目的找補休、特休兌換數 [resp] === ");
+                        // console.log(res);
                         res.payload = res.payload.sort(function (a, b) {
                             return a._id > b._id ? 1 : -1;
                         });
@@ -1515,7 +1565,6 @@
                                                 $scope.loginUser_exchange_observed += parseFloat(exchangeItems[index].exchangeHour);
                                                 break;
                                             case 3:
-                                                // console.log(exchangeItems[index]);
                                                 $scope.loginUser_exchange_special += parseFloat(exchangeItems[index].exchangeHour);
                                                 break;
                                         }
@@ -1597,7 +1646,7 @@
                                                 var dateString = (exchangeItems[index].year + 1911) + "/" + exchangeItems[index].month;
                                                 var itemDate = moment(dateString).format("YYYY/MM/DD");
                                                 var isBetween = moment(itemDate).isBetween(vm.loginUserHolidayForm.start_special, vm.loginUserHolidayForm.end_special, null, "()");
-                                                console.log(itemDate + ", isBetween= " + isBetween);
+                                                // console.log(itemDate + ", isBetween= " + isBetween);
                                                 if (isBetween) {
                                                     $scope.loginUser_exchange_special_history += parseFloat(exchangeItems[index].exchangeHour);
                                                 }
@@ -1621,7 +1670,7 @@
                                                 var dateString = (exchangeItems[index].year + 1911) + "/" + exchangeItems[index].month;
                                                 var itemDate = moment(dateString).format("YYYY/MM/DD");
                                                 var isBetween = moment(itemDate).isBetween(vm.holidayForm.start_special, vm.holidayForm.end_special, null, "()");
-                                                console.log(itemDate + ", isBetween= " + isBetween);
+                                                // console.log(itemDate + ", isBetween= " + isBetween);
                                                 if (isBetween) {
                                                     $scope.specificUser_exchange_special_history += parseFloat(exchangeItems[index].exchangeHour);
                                                 }
@@ -1646,7 +1695,7 @@
                                             var dateString = (exchangeItems[index].year + 1911) + "/" + exchangeItems[index].month;
                                             var itemDate = moment(dateString).format("YYYY/MM/DD");
                                             var isBetween = moment(itemDate).isBetween(subVM.exchangeForm.start_special, subVM.exchangeForm.end_special, null, "()");
-                                            console.log(itemDate + ", isBetween= " + isBetween);
+                                            // console.log(itemDate + ", isBetween= " + isBetween);
                                             if (isBetween) {
                                                 subVM.exchangeForm.specificUser_exchange_special_history += parseFloat(exchangeItems[index].exchangeHour);
                                             }
@@ -1720,14 +1769,10 @@
                         if (tables[index].isExecutiveConfirm) {
                             if (type == tables[index].items[index_item].item_workAddType) {
                                 result += parseInt(TimeUtil.getCalculateHourDiffByTime(tables[index].items[index_item].item_start_time, tables[index].items[index_item].item_end_time));
-                                // console.log(tables[index].items[index_item].item_start_time + ", " + tables[index].items[index_item].item_end_time);
-                                // console.log(tables[index].create_formDate + ", " + tables[index].day);
-                                // console.log(result);
                             }
                         }
                     }
                     result = result % 60 < 30 ? Math.round(result / 60) : Math.round(result / 60) - 0.5;
-                    // console.log(result);
                     if (result < 1) {
                         result = 0;
                     }
@@ -1761,7 +1806,7 @@
                             };
                             $scope.overTimeDayTablesItems.push(detail);
                         }
-                        console.log($scope.overTimeDayTablesItems);
+                        // console.log($scope.overTimeDayTablesItems);
                     })
                     .error(function () {
                         console.log('ERROR OverTimeDayUtil.fetchAllOverTimeDays');
@@ -2038,6 +2083,9 @@
                 var formData = {
                     tableID: checkingTable._id,
                     isExecutiveCheck: false,
+
+                    updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                    updateAction: "executiveCancel"
                 }
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
@@ -2124,9 +2172,6 @@
 
             $scope.initDropZone = function (index, tableUUID) {
                 if (tableUUID == undefined) return;
-                console.log(index)
-
-                console.log(tableUUID);
                 var itemUUID = tableUUID;
 
                 setTimeout(function(){
@@ -2310,7 +2355,9 @@
                 });
             };
 
-
+            $scope.showUpdateAction = function (action) {
+                return UpdateActionUtil.convertAction(action);
+            }
         } // End of function
     }
 

@@ -33,6 +33,7 @@
             <td style="vertical-align: inherit; text-align: center">時數</td>
             <td style="vertical-align: inherit; text-align: center">代理人</td>
             <td style="vertical-align: inherit; text-align: center">主管確認</td>
+            <td style="vertical-align: inherit; text-align: center">更新時間</td>
             <td style="vertical-align: inherit; text-align: center">夾帶檔案</td>
         </tr>
         </thead>
@@ -89,6 +90,17 @@
                         退回
                     </button>
                 </div>
+            </td>
+
+            <!--更新時間-->
+            <td style="vertical-align: inherit;">
+                    <span ng-if="table.updateTs != undefined">
+                        {{table.updateTs}}
+                    </span>
+                <br>
+                <span ng-if="table.updateTs != undefined">
+                        {{showUpdateAction(table.updateAction)}}
+                    </span>
             </td>
 
             <!-- 夾帶檔案 -->
