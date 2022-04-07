@@ -335,6 +335,7 @@ global.apiUrl = {
     post_travel_application_update_item : '/api/post_travel_application_update_item', // 20200120
     post_travel_application_search_item : '/api/post_travel_application_search_item', // 20200120
     post_travel_application_search_item_2 : '/api/post_travel_application_search_item_2', // 20200205
+    post_travel_application_search_item_by_prjDID : '/api/post_travel_application_search_item_by_prjDID', // 20220406
 
     // remedy
     post_hr_remedy_insert_item : '/api/post_hr_remedy_insert_item', // 20200618

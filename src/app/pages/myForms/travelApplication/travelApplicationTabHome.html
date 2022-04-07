@@ -13,22 +13,33 @@
 <div bs-loading-overlay
      bs-loading-overlay-reference-id="travelApplication_tab_main">
     <uib-tabset active="$tabSetStatus.activeTab" >
-        <uib-tab heading="申請" >
+        <uib-tab heading="申請"
+                 ng-click="getApply()">
             <div class="row"
-                 ng-controller="travelApplicationApplyCtrl as travelApplicationApplyCtrlVm"
+                 ng-controller="travelApplicationApplyCtrl as vm"
                  ng-include="'app/pages/myForms/travelApplication/tabs/travelApplication_main.html'"></div>
         </uib-tab>
-        <uib-tab heading="審核"
+        <uib-tab heading="經理審核"
+                 ng-click="getManagerReview()"
                  ng-if="roleType === '2' || roleType === '100' || roleType === '6' || roleType === '1'">
             <div class="row"
-                 ng-controller="travelApplicationReviewCtrl">
-                <div class="col-md-12" id="includeHead_review">
+                 ng-controller="TravelApplicationManagerReviewCtrl as vm">
+                <div class="col-md-12" id="includeHead_review_manage">
+                </div>
+            </div>
+        </uib-tab>
+        <uib-tab heading="主管審核"
+                 ng-click="getBossReview()"
+                 ng-if="roleType === '2' || roleType === '100' || roleType === '6' || roleType === '1'">
+            <div class="row"
+                 ng-controller="travelApplicationBossReviewCtrl">
+                <div class="col-md-12" id="includeHead_review_boss">
                 </div>
             </div>
         </uib-tab>
         <uib-tab heading="查詢" ng-if="roleType === '2' || roleType === '100' || roleType === '6' || roleType === '1'">
             <div class="row"
-                 ng-controller="travelApplicationLookUpCtrl as travelApplicationLookUpCtrlVm"
+                 ng-controller="travelApplicationLookUpCtrl as vm"
                  ng-include="'app/pages/myForms/travelApplication/tabs/travelApplication_lookUp.html'">
             </div>
         </uib-tab>

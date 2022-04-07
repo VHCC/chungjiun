@@ -31,6 +31,7 @@
 
             <td style="vertical-align: inherit; text-align: center; width: 5%" >申請時數</td>
             <td style="vertical-align: inherit; text-align: center; width: 5%" >審核</td>
+            <td style="vertical-align: inherit; text-align: center; width: 5%" >更新時間</td>
         </tr>
 
         </thead>
@@ -116,16 +117,20 @@
                             退回
                         </button>
                     </div>
-                    <!--<div ng-show="item.isManagerCheck">-->
-                        <!--<button class="btn btn-info editable-table-button btn-xs"-->
-                                <!--style="color: black">-->
-                            <!--{{ showProjectManager(item.prjDID)}}-->
-                            <!--<br>-->
-                            <!--確認完成-->
-                        <!--</button>-->
-                    <!--</div>-->
                 </div>
             </td>
+
+            <!--更新時間-->
+            <td class="form-group has-success" style="vertical-align: inherit; text-align: center; width: 5%">
+                <span ng-if="item.updateTs != undefined">
+                    {{item.updateTs}}
+                </span>
+                <br>
+                <span ng-if="item.updateTs != undefined">
+                    {{showUpdateAction(item.updateAction)}}
+                </span>
+            </td>
+
 
         </tr>
         </tbody>

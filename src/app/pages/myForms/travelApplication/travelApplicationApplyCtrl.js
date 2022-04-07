@@ -15,12 +15,11 @@
                 'Project',
                 'ProjectUtil',
                 'TravelApplicationUtil',
+                'UpdateActionUtil',
                 '$compile',
                 'bsLoadingOverlayService',
                 TravelApplicationApplyCtrl
-            ])
-    ;
-
+            ]);
     /**
      * @ngInject
      */
@@ -36,6 +35,7 @@
                                     Project,
                                     ProjectUtil,
                                     TravelApplicationUtil,
+                                    UpdateActionUtil,
                                     $compile,
                                     bsLoadingOverlayService) {
 
@@ -52,28 +52,21 @@
         }
         User.findUserByUserDID(formData)
             .success(function (user) {
-                // $scope.userMonthSalary = user.userMonthSalary;
                 $scope.bossID = user.bossID;
-                // $scope.residualRestHour = user.residualRestHour;
             })
 
         $scope.listenYear = function (dom) {
             dom.$watch('myYear',function(newValue, oldValue) {
-                console.log("newValue= " + newValue + ", oldValue= " + oldValue);
                 if (newValue != oldValue) {
                     $scope.year = thisYear = newValue - 1911;
                     $scope.getUsersTravelApplicationData($scope.userDID, thisYear);
                 }
-                // $scope.fetchNationHolidays_workOff(specificYear);
-                // $scope.fetchOverTimeDays(specificYear);
-                // $scope.getWorkOffTable(null, specificYear, null)
             });
         }
 
         Project.findAll()
             .success(function (allProjects) {
                 console.log(" ======== related login user Projects ======== ");
-                // vm.projects = allProjects.slice();
                 $scope.allProjectCache = [];
                 for (var index = 0; index < allProjects.length; index++) {
 
@@ -103,9 +96,16 @@
             });
 
         $scope.initProject = function() {
-            Project.findAllEnable()
+            Project.findAll()
                 .success(function (allProjects) {
                     $scope.allProject_raw = allProjects;
+                    $scope.relatedProjects = [];
+                    for (var i = 0; i < allProjects.length; i++) {
+                        $scope.relatedProjects[i] = {
+                            value: allProjects[i]._id,
+                            managerID: allProjects[i].managerID
+                        };
+                    }
                     vm.projects = allProjects.slice();
                 });
         }
@@ -119,7 +119,6 @@
 
         User.getAllUsers()
             .success(function (allUsers) {
-                // console.log(allUsers);
                 // 經理、主承辦、主管
                 $scope.allUsers = [];
                 $scope.allUsers[0] = {
@@ -143,9 +142,6 @@
                 });
             }
             if (!selected) return 'Not Set'
-            // if (selected[0].combinedID != undefined) {
-            //     return $scope.showPrjCodeWithCombine(selected[0].combinedID);
-            // }
             return selected.length > 0 ? selected[0].prjCode : 'Not Set';
         };
 
@@ -194,7 +190,6 @@
             return ProjectUtil.getTypeText(type);
         }
 
-
         // 主要顯示
         $scope.loginUserTablesItems = [];
 
@@ -222,6 +217,7 @@
 
                 //RIGHT
                 isSendReview: false,
+                isManagerCheck: false,
                 isBossCheck: false,
                 isExecutiveCheck: false,
 
@@ -237,20 +233,45 @@
                 })
         }
 
-        $scope.removeTravelApplication = function (index) {
-            bsLoadingOverlayService.start({
-                referenceId: 'travelApplication_tab_main'
-            });
+        // $scope.removeTravelApplication = function (index) {
+        //     bsLoadingOverlayService.start({
+        //         referenceId: 'travelApplication_tab_main'
+        //     });
+        //
+        //     var formData = {
+        //         tableID: $scope.loginUserTablesItems[index]._id
+        //     }
+        //
+        //     TravelApplicationUtil.removeTravelApplicationItem(formData)
+        //         .success(function (res) {
+        //             $scope.getUsersTravelApplicationData($scope.userDID, thisYear);
+        //         })
+        // };
 
+        $scope.removeTravelApplication = function (item) {
+            var workOffString = item.taStartDate;
+
+            $scope.checkText = '確定刪除 ' + workOffString + "  ？";
+            $scope.checkingItem = item;
+            ngDialog.open({
+                template: 'app/pages/myForms/travelApplication/modal/travelApplicationDeleteModal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        };
+
+        //跟後臺溝通
+        $scope.sendTravelApplicationDelete = function (travelApplicationItem) {
             var formData = {
-                tableID: $scope.loginUserTablesItems[index]._id
+                tableID: travelApplicationItem._id,
             }
 
             TravelApplicationUtil.removeTravelApplicationItem(formData)
                 .success(function (res) {
                     $scope.getUsersTravelApplicationData($scope.userDID, thisYear);
                 })
-        };
+        }
 
         $scope.getUsersTravelApplicationData = function (userDID, year) {
 
@@ -260,6 +281,7 @@
             };
             TravelApplicationUtil.getTravelApplicationItem(formData)
                 .success(function (resp) {
+                    console.log(resp)
                     $scope.loginUserTablesItems = [];
                     for (var index = 0; index < resp.payload.length; index ++) {
                         $scope.loginUserTablesItems.push(resp.payload[index]);
@@ -269,7 +291,7 @@
                         bsLoadingOverlayService.stop({
                             referenceId: 'travelApplication_tab_main'
                         });
-                    }, 500)
+                    }, 100)
 
                     $(document).ready(function () {
                         $('.customDate').mask('2KY0/M0/D0', {
@@ -294,9 +316,12 @@
 
         $scope.getUsersTravelApplicationData($scope.userDID, thisYear);
 
+        $scope.getApplyData = function() {
+            $scope.getUsersTravelApplicationData($scope.userDID, thisYear);
+        }
+
         // Send Travel Application to Review
         $scope.reviewTravelApplicationItem = function (table, button, index) {
-            console.log($scope.loginUserTablesItems[index]);
             var workOffString = $scope.loginUserTablesItems[index].taStartDate + " " +
                 $scope.loginUserTablesItems[index].start_time + " ~ " +
                 $scope.loginUserTablesItems[index].taStartDate + " " +
@@ -342,6 +367,9 @@
                 location: travelApplicationItem.location,
 
                 isSendReview: true,
+
+                updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                updateAction: "sendReview"
             }
 
             TravelApplicationUtil.updateTravelApplicationItem(formData)
@@ -351,6 +379,65 @@
         }
 
         $scope.initProject();
+
+        $scope.showUpdateAction = function (action) {
+            return UpdateActionUtil.convertAction(action);
+        }
+
+        $scope.showManagerName = function (item) {
+            var selected = [];
+            if ($scope.relatedProjects === undefined) return;
+            if (item.prjDID) {
+                selected = $filter('filter')($scope.relatedProjects, {
+                    value: item.prjDID
+                });
+            }
+            var selected_manager = [];
+            if (selected.length) {
+                selected_manager = $filter('filter')($scope.allUsers, {
+                    value: selected[0].managerID
+                });
+            }
+            return selected_manager.length ? selected_manager[0].name : 'Not Set';
+        }
+
+        $scope.cancelReview = function(table) {
+
+            var workOffString = table.taStartDate + " " +
+                table.start_time + " ~ " +
+                table.taStartDate + " " +
+                table.end_time;
+
+            $scope.checkText = '確定 抽回：' +
+                workOffString +
+                "  ？";
+            $scope.checkingTable = table;
+            ngDialog.open({
+                template: 'app/pages/myModalTemplate/myWorkOffTableFormCancelReview_Modal.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope,
+                showClose: false,
+            });
+        }
+
+        $scope.sendCancelReview = function(checkingTable) {
+            var formData = {
+                _id: checkingTable._id,
+
+                isSendReview: false,
+                isManagerCheck: false,
+                isBossCheck: false,
+
+                updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                updateAction: "cancelReview"
+            }
+
+            TravelApplicationUtil.updateTravelApplicationItem(formData)
+                .success(function (resp) {
+                    $scope.getUsersTravelApplicationData($scope.userDID, thisYear);
+                })
+
+        }
     }
 
 })();

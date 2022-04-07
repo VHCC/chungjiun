@@ -13,10 +13,10 @@
                 'Project',
                 'ProjectUtil',
                 'TravelApplicationUtil',
+                'UpdateActionUtil',
                 '$compile',
                 TravelApplicationLookUpCtrl
-            ])
-    ;
+            ]);
 
     /**
      * @ngInject
@@ -30,6 +30,7 @@
                                  Project,
                                  ProjectUtil,
                                  TravelApplicationUtil,
+                                 UpdateActionUtil,
                                  $compile) {
 
         $scope.userDID = $cookies.get('userDID');
@@ -42,7 +43,6 @@
 
         $scope.listenYear = function (dom) {
             dom.$watch('myYear',function(newValue, oldValue) {
-                console.log("newValue= " + newValue + ", oldValue= " + oldValue);
                 if (newValue != oldValue) {
                     $scope.year = thisYear = newValue - 1911;
                     $scope.getUsersTravelApplicationData(vm.specificUser.selected._id, thisYear);
@@ -53,7 +53,6 @@
         Project.findAll()
             .success(function (allProjects) {
                 console.log(" ======== related login user Projects ======== ");
-                vm.projects = allProjects.slice();
                 $scope.allProjectCache = [];
                 for (var index = 0; index < allProjects.length; index++) {
 
@@ -80,13 +79,19 @@
                         combinedID: allProjects[index].combinedID,
                     };
                 }
-                // console.log($scope);
             });
 
         $scope.initProject = function() {
-            Project.findAllEnable()
+            Project.findAll()
                 .success(function (allProjects) {
-                    // console.log(allProjects);
+                    $scope.allProject_raw = allProjects;
+                    $scope.relatedProjects = [];
+                    for (var i = 0; i < allProjects.length; i++) {
+                        $scope.relatedProjects[i] = {
+                            value: allProjects[i]._id,
+                            managerID: allProjects[i].managerID
+                        };
+                    }
                     vm.projects = allProjects.slice();
                     vm.projects_executiveAdd = allProjects.slice();
                 });
@@ -94,8 +99,6 @@
 
         User.getAllUsers()
             .success(function (allUsers) {
-                // console.log(allUsers);
-
                 vm.specificUsers = allUsers; // 歷史檢視
 
                 // 經理、主承辦、主管
@@ -121,9 +124,6 @@
                 });
             }
             if (!selected) return 'Not Set'
-            // if (selected[0].combinedID != undefined) {
-            //     return $scope.showPrjCodeWithCombine(selected[0].combinedID);
-            // }
             return selected.length > 0 ? selected[0].prjCode : 'Not Set';
         };
 
@@ -172,7 +172,6 @@
             };
             TravelApplicationUtil.getTravelApplicationItem(formData)
                 .success(function (resp) {
-                    // console.log(resp);
                     $scope.lookUpUserTablesItems = [];
                     for (var index = 0; index < resp.payload.length; index ++) {
                         $scope.lookUpUserTablesItems.push(resp.payload[index]);
@@ -204,9 +203,7 @@
             }
             User.findUserByUserDID(formData)
                 .success(function (user) {
-                    // $scope.userMonthSalary = user.userMonthSalary;
                     $scope.bossID = user.bossID;
-                    // $scope.residualRestHour = user.residualRestHour;
                 })
         }
 
@@ -218,10 +215,6 @@
         }
 
         $scope.removeTravelApplication = function (item) {
-            // console.log('removeTravelApplicationItem, Index= ' + index);
-
-            console.log(item);
-
             var workOffString = item.taStartDate;
 
             $scope.checkText = '確定刪除 ' + workOffString + "  ？";
@@ -242,14 +235,34 @@
                 tableID: travelApplicationItem._id,
             }
 
-            console.log(formData);
-
             TravelApplicationUtil.removeTravelApplicationItem(formData)
                 .success(function (res) {
                     $scope.getUsersTravelApplicationData(vm.specificUserDID, thisYear);
                 })
         }
 
+        $scope.showUpdateAction = function (action) {
+            return UpdateActionUtil.convertAction(action);
+        }
+
+        $scope.showManagerName = function (item) {
+            var selected = [];
+            if ($scope.relatedProjects === undefined) return;
+            if (item.prjDID) {
+                selected = $filter('filter')($scope.relatedProjects, {
+                    value: item.prjDID
+                });
+            }
+            var selected_manager = [];
+            if (selected.length) {
+                selected_manager = $filter('filter')($scope.allUsers, {
+                    value: selected[0].managerID
+                });
+            }
+            return selected_manager.length ? selected_manager[0].name : 'Not Set';
+        }
+
+        $scope.initProject();
 
     }
 
