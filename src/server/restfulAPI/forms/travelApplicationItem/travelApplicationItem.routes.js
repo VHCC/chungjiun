@@ -220,11 +220,8 @@ module.exports = function (app) {
 
     app.post(global.apiUrl.post_travel_application_search_item_2, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_travel_application_search_item_2");
-        // console.log(JSON.stringify(req.body));
+        console.log(JSON.stringify(req.body));
         try {
-
-
-
             var findData = [];
             for (var index = 0; index < req.body.creatorDIDList.length; index++) {
                 var target = {
@@ -246,6 +243,7 @@ module.exports = function (app) {
                             $match: {
                                 $or: findData,
                                 isSendReview: true,
+                                isManagerCheck: true,
                                 isBossCheck: false
                             }
                         },
@@ -268,9 +266,60 @@ module.exports = function (app) {
                     }
                 )
             }
+        } catch (err) {
+            if (err) {
+                res.send(err);
+            }
+        }
+    });
 
+    app.post(global.apiUrl.post_travel_application_search_item_by_prjDID, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_travel_application_search_item_by_prjDID");
+        // console.log(JSON.stringify(req.body));
+        try {
+            var findData = [];
+            for (var index = 0; index < req.body.prjDIDArray.length; index++) {
+                var target = {
+                    prjDID: req.body.prjDIDArray[index],
+                }
+                findData.push(target);
+            }
 
-
+            if (req.body.prjDIDArray.length == 0){
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: [],
+                });
+            } else {
+                TravelApplicationItem.aggregate(
+                    [
+                        {
+                            $match: {
+                                $or: findData,
+                                isSendReview: true,
+                                isManagerCheck: false
+                            }
+                        },
+                        {
+                            $sort: {
+                                timestamp: 1
+                            }
+                        }
+                    ], function (err, items) {
+                        if (err) {
+                            console.log(err);
+                            res.send(err);
+                        } else {
+                            res.status(200).send({
+                                code: 200,
+                                error: global.status._200,
+                                payload: items,
+                            });
+                        }
+                    }
+                )
+            }
         } catch (err) {
             if (err) {
                 res.send(err);

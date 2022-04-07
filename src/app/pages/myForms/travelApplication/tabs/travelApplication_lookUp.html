@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label>選擇員工</label>
-                <ui-select ng-model="travelApplicationLookUpCtrlVm.specificUser.selected"
+                <ui-select ng-model="vm.specificUser.selected"
                            class="btn-group bootstrap-select form-control"
                            ng-disabled="false"
                            ng-change="fetchTravelApplicationData($select.selected._id)"
@@ -15,7 +15,7 @@
                         {{$select.selected.name}}
                     </ui-select-match>
                     <ui-select-choices
-                            repeat="user in travelApplicationLookUpCtrlVm.specificUsers |
+                            repeat="user in vm.specificUsers |
                             groupSelectpickerOptions: {name: $select.search}">
                         <span ng-bind-html="user.name| highlight: $select.search"></span>
                     </ui-select-choices>
@@ -24,12 +24,12 @@
         </div>
     </div>
 
-    <div ng-if="travelApplicationLookUpCtrlVm.specificUser.selected">
+    <div ng-if="vm.specificUser.selected">
         <my-year-picker ng-click="listenYear(this)"></my-year-picker>
 
         <h3 class="with-line">{{year}} 年</h3>
 
-        <h3 class="with-line">{{travelApplicationLookUpCtrlVm.specificUser.selected.name}} 出差單</h3>
+        <h3 class="with-line">{{vm.specificUser.selected.name}} 出差單</h3>
 
         <div>
             <table class="table table-bordered table-hover table-condensed">
@@ -50,7 +50,9 @@
                     <td style="vertical-align: inherit; text-align: center" width="120px">申請時數</td>
 
                     <td style="vertical-align: inherit; text-align: center">狀態</td>
+                    <td style="vertical-align: inherit; text-align: center">經理確認</td>
                     <td style="vertical-align: inherit; text-align: center">主管確認</td>
+                    <td style="vertical-align: inherit; text-align: center">更新時間</td>
                     <!--<td style="vertical-align: inherit; text-align: center">行政確認</td>-->
                 </tr>
                 </thead>
@@ -175,6 +177,45 @@
                         <!--</div>-->
                     </td>
 
+                    <!--經理確認-->
+                    <td rowspan="2" style="vertical-align: inherit;">
+                        <div ng-if="rowform1.$waiting || (item.isSendReview && !item.isManagerCheck)">
+                            <button class="btn btn-warning editable-table-button btn-xs"
+                                    style="color: black">
+                                <!--{{ showProjectManager(item.prjDID)}}-->
+                                {{ showManagerName(item)}}
+                                <br>
+                                確認作業中
+                            </button>
+                        </div>
+                        <div ng-if="item.isManagerCheck">
+                            <button class="btn btn-info editable-table-button btn-xs"
+                                    style="color: black">
+                                <!--{{ showProjectManager(item.prjDID)}}-->
+                                {{ showManagerName(item)}}
+                                <br>
+                                確認完成
+                            </button>
+                        </div>
+                        <div ng-if="!item.isSendReview && item.isManagerReject">
+                            <button class="btn btn-warning editable-table-button btn-xs"
+                                    style="color: black">
+                                <!--{{ showProjectManager(item.prjDID)}}-->
+                                {{ showManagerName(item)}}
+                                <br>
+                                退回
+                            </button>
+                        </div>
+                        <my ng-show="!item.isSendReview && item.isManagerReject"
+                            ng-class="{workAdd: hover}"
+                            class="mytooltip"
+                            ng-mouseover="hover = true"
+                            ng-mouseleave="hover = false">
+                            原因：<i class="ion-clipboard"></i>
+                            <span class="tooltiptext">{{item.managerReject_memo}}</span>
+                        </my>
+                    </td>
+
                     <!--主管確認-->
                     <td rowspan="2" style="vertical-align: inherit;">
                         <div ng-show="rowform1.$waiting || (item.isSendReview && !item.isBossCheck)">
@@ -212,6 +253,17 @@
                             原因：<i class="ion-clipboard"></i>
                             <span class="tooltiptext">{{item.bossReject_memo}}</span>
                         </my>
+                    </td>
+
+                    <!--更新時間-->
+                    <td style="vertical-align: inherit;">
+                        <span ng-if="item.updateTs != undefined">
+                            {{item.updateTs}}
+                        </span>
+                        <br>
+                        <span ng-if="item.updateTs != undefined">
+                            {{showUpdateAction(item.updateAction)}}
+                        </span>
                     </td>
 
                     <!--行政確認-->

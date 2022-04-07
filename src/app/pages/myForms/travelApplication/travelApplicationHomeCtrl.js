@@ -9,9 +9,6 @@
                 '$cookies',
                 '$uibModal',
                 'User',
-                'Project',
-                'OfficialDocUtil',
-                'OfficialDocVendorUtil',
                 '$compile',
                 TravelApplicationHomeCtrl
             ])
@@ -25,13 +22,22 @@
                                  $cookies,
                                  $uibModal,
                                  User,
-                                 Project,
-                                 OfficialDocUtil,
-                                 OfficialDocVendorUtil,
                                  $compile) {
 
         $scope.roleType = $cookies.get('roletype');
         $scope.username = $cookies.get('username');
+
+        $scope.getApply = function() {
+            this.$$childHead.$$nextSibling.getApplyData();
+        }
+
+        $scope.getManagerReview = function() {
+            this.$$childTail.getManagerReviewData();
+        }
+
+        $scope.getBossReview = function () {
+            this.$$childTail.getBossReviewData();
+        }
     }
 
 })();

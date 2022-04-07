@@ -2,7 +2,7 @@
     'user strict';
 
     angular.module('BlurAdmin.pages.cgWorkManage')
-        .controller('travelApplicationReviewCtrl',
+        .controller('TravelApplicationManagerReviewCtrl',
             [
                 '$scope',
                 '$http',
@@ -14,14 +14,15 @@
                 'Project',
                 'ProjectUtil',
                 'TravelApplicationUtil',
+                'UpdateActionUtil',
                 '$compile',
-                TravelApplicationReviewCtrl
+                TravelApplicationManagerReviewCtrl
             ]);
 
     /**
      * @ngInject
      */
-    function TravelApplicationReviewCtrl($scope,
+    function TravelApplicationManagerReviewCtrl($scope,
                                          $http,
                                          $filter,
                                          $cookies,
@@ -31,70 +32,31 @@
                                          Project,
                                          ProjectUtil,
                                          TravelApplicationUtil,
+                                         UpdateActionUtil,
                                          $compile) {
 
         var vm = this;
 
         $scope.roleType = $cookies.get('roletype');
 
-        var creatorDIDArray = [];
+        $scope.getManagerReviewData = function () {
 
-        $scope.getReviewData = function () {
-
-            document.getElementById('includeHead_review').innerHTML = "";
-
-            // 找跟 Login User有關係的 Project
-            // var formData = {
-            //     relatedID: $cookies.get('userDID'),
-            // }
-            // Project.getProjectRelated(formData)
-            //     .success(function (relatedProjects) {
-            //
-            //         var formData = {
-            //             prjItems: relatedProjects
-            //         }
-            //
-            //         $http.post('/api/post_travel_application_search_item', formData)
-            //             .success(function (response) {
-            //                 console.log(response);
-            //
-            //                 $scope.travelApplicationReviewItems = response.payload;
-            //                 $scope.travelApplicationReviewItems.slice(0, response.payload.length);
-            //
-            //                 angular.element(
-            //                     document.getElementById('includeHead_review'))
-            //                     .append($compile(
-            //                         "<div ba-panel ba-panel-title=" +
-            //                         "'待審列表 - " + response.payload.length + "'" +
-            //                         "ba-panel-class= " +
-            //                         "'with-scroll'" + ">" +
-            //                         "<div " +
-            //                         "ng-include=\"'app/pages/myForms/travelApplication/table/travelApplicationReviewTable.html'\">" +
-            //                         "</div>" +
-            //                         "</div>"
-            //                     )($scope));
-            //
-            //             });
-            //     });
-
-            for (var index = 0; index < $scope.allUsers.length; index++) {
-                if ($scope.allUsers[index].bossID === $cookies.get('userDID')) {
-                    creatorDIDArray.push($scope.allUsers[index]._id)
-                }
-            }
+            document.getElementById('includeHead_review_manage').innerHTML = "";
 
             var formData = {
-                creatorDIDList: creatorDIDArray
+                prjDIDArray: managersRelatedProjects
             }
 
-            $http.post('/api/post_travel_application_search_item_2', formData)
+            $http.post('/api/post_travel_application_search_item_by_prjDID', formData)
                 .success(function (response) {
+
+                    console.log(response);
 
                     $scope.travelApplicationReviewItems = response.payload;
                     $scope.travelApplicationReviewItems.slice(0, response.payload.length);
 
                     angular.element(
-                        document.getElementById('includeHead_review'))
+                        document.getElementById('includeHead_review_manage'))
                         .append($compile(
                             "<div ba-panel ba-panel-title=" +
                             "'待審列表 - " + response.payload.length + "'" +
@@ -108,8 +70,6 @@
 
                 });
         }
-
-        // $scope.getReviewData();
 
         Project.findAll()
             .success(function (allProjects) {
@@ -141,12 +101,10 @@
                         combinedID: allProjects[index].combinedID,
                     };
                 }
-                // console.log($scope);
             });
 
         User.getAllUsers()
             .success(function (allUsers) {
-                // console.log(allUsers);
                 // 經理、主承辦、主管
                 $scope.allUsers = [];
                 $scope.allUsers[0] = {
@@ -159,40 +117,24 @@
                         name: allUsers[i].name
                     };
                 }
-
-                if ($scope.roleType === '2' || $scope.roleType === '100' || $scope.roleType === '6' || $scope.roleType === '1') {
-                    for (var index = 0; index < allUsers.length; index++) {
-                        if (allUsers[index].bossID === $cookies.get('userDID')) {
-                            creatorDIDArray.push(allUsers[index]._id)
-                        }
-                    }
-
-                    var formData = {
-                        creatorDIDList: creatorDIDArray
-                    }
-
-                    $http.post('/api/post_travel_application_search_item_2', formData)
-                        .success(function (response) {
-
-                            $scope.travelApplicationReviewItems = response.payload;
-                            $scope.travelApplicationReviewItems.slice(0, response.payload.length);
-
-                            angular.element(
-                                document.getElementById('includeHead_review'))
-                                .append($compile(
-                                    "<div ba-panel ba-panel-title=" +
-                                    "'待審列表 - " + response.payload.length + "'" +
-                                    "ba-panel-class= " +
-                                    "'with-scroll'" + ">" +
-                                    "<div " +
-                                    "ng-include=\"'app/pages/myForms/travelApplication/table/travelApplicationReviewTable.html'\">" +
-                                    "</div>" +
-                                    "</div>"
-                                )($scope));
-
-                        });
-                }
+                $scope.fetchRelatedMembers();
             })
+
+        var managersRelatedProjects = [];
+        //顯示經理審查人員
+        // Fetch Manager Related Members
+        $scope.fetchRelatedMembers = function () {
+            var formData = {
+                relatedID: $cookies.get('userDID'),
+            }
+            Project.getProjectRelatedToManager(formData)
+                .success(function (relatedProjects) {
+                    for(var index = 0; index < relatedProjects.length; index ++) {
+                        // 相關專案
+                        managersRelatedProjects.push(relatedProjects[index]._id);
+                    }
+                })
+        }
 
         // *** Filter ***
         $scope.showPrjCodeWithCombine = function (prjDID) {
@@ -203,9 +145,6 @@
                 });
             }
             if (!selected) return 'Not Set'
-            // if (selected[0].combinedID != undefined) {
-            //     return $scope.showPrjCodeWithCombine(selected[0].combinedID);
-            // }
             return selected.length > 0 ? selected[0].prjCode : 'Not Set';
         };
 
@@ -263,12 +202,15 @@
                 _id: travelApplicationItem._id,
 
                 isSendReview: true,
-                isBossCheck: true,
-            }
+                isManagerCheck: true,
 
+                updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                updateAction: "managerAgree"
+            }
+            console.log("isManagerCheck");
             TravelApplicationUtil.updateTravelApplicationItem(formData)
                 .success(function (resp) {
-                    $scope.getReviewData();
+                    $scope.getManagerReviewData();
                 })
         }
 
@@ -296,14 +238,22 @@
                 _id: travelApplicationItem._id,
 
                 isSendReview: false,
-                isBossReject: true,
-                bossReject_memo: rejectMsg,
+                isManagerReject: true,
+                isBossReject: false,
+                managerReject_memo: rejectMsg,
+
+                updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                updateAction: "managerReject"
             }
 
             TravelApplicationUtil.updateTravelApplicationItem(formData)
                 .success(function (resp) {
-                    $scope.getReviewData();
+                    $scope.getManagerReviewData();
                 })
+        }
+
+        $scope.showUpdateAction = function (action) {
+            return UpdateActionUtil.convertAction(action);
         }
 
     }

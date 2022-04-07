@@ -10,7 +10,7 @@
          id="colHead">
         <div class="form-group">
             <label for="projectName">總案名稱 - 專案名稱 - 子案名稱 - 類型 - 代碼</label>
-            <ui-select ng-model="travelApplicationApplyCtrlVm.prjItems.selected"
+            <ui-select ng-model="vm.prjItems.selected"
                        class="btn-group bootstrap-select form-control"
                        id="projectName"
                        ng-change="addTravelApplicationItem($select.selected._id)"
@@ -25,7 +25,7 @@
                 </ui-select-match>
                 <ui-select-choices
                         ng-model="prjName"
-                        repeat="prjItems in travelApplicationApplyCtrlVm.projects |
+                        repeat="prjItems in vm.projects |
                         groupSelectpickerOptions: {
                         mainName: $select.search,
                         prjName: $select.search,
@@ -59,7 +59,9 @@
             <td style="vertical-align: inherit; text-align: center" width="120px">申請時數</td>
 
             <td style="vertical-align: inherit; text-align: center">狀態</td>
+            <td style="vertical-align: inherit; text-align: center">經理確認</td>
             <td style="vertical-align: inherit; text-align: center">主管確認</td>
+            <td style="vertical-align: inherit; text-align: center">更新時間</td>
             <!--<td style="vertical-align: inherit; text-align: center">行政確認</td>-->
         </tr>
         </thead>
@@ -71,7 +73,7 @@
                 <span id="prjCode">{{$index + 1}}</span>
                 <button class="btn btn-danger editable-table-button btn-xs"
                         ng-show="!rowform1.$waiting && !item.isSendReview"
-                        ng-click="removeTravelApplication($index);">移除
+                        ng-click="removeTravelApplication(item);">移除
                 </button>
             </td>
 
@@ -175,27 +177,72 @@
                       class="form-buttons form-inline">
                 </form>
                 <!--審查中-->
-                <!--<div ng-show="rowform1.$waiting || (item.isSendReview && (!item.isBossCheck || !item.isExecutiveCheck))">-->
-                <div ng-show="rowform1.$waiting || (item.isSendReview && (!item.isBossCheck))">
+                <div ng-if="rowform1.$waiting || (item.isSendReview && (!item.isManagerCheck) && (!item.isBossCheck))">
                     <button class="btn btn-warning editable-table-button btn-xs">
                         審查中
                     </button>
                 </div>
                 <!--審查完成-->
-                <!--<div ng-show="(item.isBossCheck && item.isExecutiveCheck)">-->
-                <div ng-show="(item.isBossCheck)">
+                <div ng-if="(item.isBossCheck) && (item.isManagerCheck)">
                     <button class="btn btn-success editable-table-button btn-xs">
                         審查完成
                     </button>
                 </div>
                 <!--提交-->
-                <div ng-show="!rowform1.$waiting && !item.isSendReview">
+                <div ng-if="!rowform1.$waiting && !item.isSendReview">
                     <div class="buttons" ng-show="!rowform1.$visible">
                         <button class="btn btn-danger editable-table-button btn-xs"
                                 ng-click="reviewTravelApplicationItem(item, this, $index) ">提交審查
                         </button>
                     </div>
                 </div>
+                <!--抽單-->
+                <div ng-if="item.isSendReview">
+                    <div class="buttons" >
+                        <button class="btn btn-success editable-table-button btn-xs"
+                                ng-click="cancelReview(item) ">抽單
+                        </button>
+                    </div>
+                </div>
+            </td>
+
+            <!--經理確認-->
+            <td rowspan="2" style="vertical-align: inherit;">
+                <div ng-if="rowform1.$waiting || (item.isSendReview && !item.isManagerCheck)">
+                    <button class="btn btn-warning editable-table-button btn-xs"
+                            style="color: black">
+                        <!--{{ showProjectManager(item.prjDID)}}-->
+                        {{ showManagerName(item)}}
+                        <br>
+                        確認作業中
+                    </button>
+                </div>
+                <div ng-if="item.isManagerCheck">
+                    <button class="btn btn-info editable-table-button btn-xs"
+                            style="color: black">
+                        <!--{{ showProjectManager(item.prjDID)}}-->
+                        {{ showManagerName(item)}}
+                        <br>
+                        確認完成
+                    </button>
+                </div>
+                <div ng-if="!item.isSendReview && item.isManagerReject">
+                    <button class="btn btn-warning editable-table-button btn-xs"
+                            style="color: black">
+                        <!--{{ showProjectManager(item.prjDID)}}-->
+                        {{ showManagerName(item)}}
+                        <br>
+                        退回
+                    </button>
+                </div>
+                <my ng-show="!item.isSendReview && item.isManagerReject"
+                    ng-class="{workAdd: hover}"
+                    class="mytooltip"
+                    ng-mouseover="hover = true"
+                    ng-mouseleave="hover = false">
+                    原因：<i class="ion-clipboard"></i>
+                    <span class="tooltiptext">{{item.managerReject_memo}}</span>
+                </my>
             </td>
 
             <!--主管確認-->
@@ -233,8 +280,19 @@
                     ng-mouseover="hover = true"
                     ng-mouseleave="hover = false">
                     原因：<i class="ion-clipboard"></i>
-                    <span class="tooltiptext">{{item.bossReject_memo}}</span>
+                    <spn class="tooltiptext">{{item.bossReject_memo}}</spn>
                 </my>
+            </td>
+
+            <!--更新時間-->
+            <td style="vertical-align: inherit;">
+                <span ng-if="item.updateTs != undefined">
+                    {{item.updateTs}}
+                </span>
+                <br>
+                <span ng-if="item.updateTs != undefined">
+                    {{showUpdateAction(item.updateAction)}}
+                </span>
             </td>
 
             <!--行政確認-->
