@@ -86,6 +86,8 @@
         <colgroup>
             <!--項目-->
             <col span="1" style="width: 2%;">
+            <!--專案代碼-->
+            <col span="1" style="width: 5%;">
             <!--日期-->
             <col span="1" style="width: 8%;">
             <!--出差人-->
@@ -96,17 +98,21 @@
             <col span="1" style="width: 5%;">
             <!--事由-->
             <col span="1" style="width: 20%;">
+            <!--經理-->
+            <col span="1" style="width: 5%;">
             <!--主管-->
             <col span="1" style="width: 5%;">
         </colgroup>
         <thead>
         <tr style="white-space:nowrap">
             <td style="vertical-align: inherit; text-align: center" width="80px"></td>
+            <td style="vertical-align: inherit; text-align: center" width="150px">專案代碼</td>
             <td style="vertical-align: inherit; text-align: center" width="170px">日期</td>
             <td style="vertical-align: inherit; text-align: center" width="170px">出差人</td>
             <td style="vertical-align: inherit; text-align: center" width="180px">時間</td>
             <td style="vertical-align: inherit; text-align: center" >申請時數</td>
             <td style="vertical-align: inherit; text-align: center" >事由/地點</td>
+            <td style="vertical-align: inherit; text-align: center" >經理</td>
             <td style="vertical-align: inherit; text-align: center" >主管</td>
             <!--<td style="vertical-align: inherit; text-align: center">行政確認</td>-->
         </tr>
@@ -120,11 +126,11 @@
             </td>
 
             <!--專案代碼-->
-            <!--<td class="form-group" style="vertical-align: inherit; text-align: center">-->
-                <!--<span class="mytooltip">-->
-                    <!--{{showPrjCodeWithCombine(item.prjDID)}}-->
-                <!--</span>-->
-            <!--</td>-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span class="mytooltip">
+                    {{showPrjCodeWithCombine(item.prjDID)}}
+                </span>
+            </td>
 
             <!--日期-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
@@ -151,7 +157,12 @@
                 {{item.location}}
             </td>
 
-            <!--主管確認-->
+            <!--經理-->
+            <td rowspan="2" style="vertical-align: inherit;">
+                {{showManagerName(item)}}
+            </td>
+
+            <!--主管-->
             <td rowspan="2" style="vertical-align: inherit;">
                 {{showBoss(item.creatorDID)}}
             </td>

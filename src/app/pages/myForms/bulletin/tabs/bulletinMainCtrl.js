@@ -58,7 +58,6 @@
 
         User.getAllUsersWithSignOut()
             .success(function (allUsers) {
-                console.log(allUsers);
                 $scope.usersBosses = [];
                 vm.usersReview = allUsers;
                 for (var i = 0; i < allUsers.length; i++) {
@@ -69,6 +68,52 @@
                     };
                 }
             })
+
+        Project.findAll()
+            .success(function (allProjects) {
+                console.log(" ======== related login user Projects ======== ");
+                $scope.allProjectCache = [];
+                for (var index = 0; index < allProjects.length; index++) {
+
+                    // 專案名稱顯示規則 2019/07 定義
+                    var nameResult = "";
+                    if (allProjects[index].prjSubName != undefined && allProjects[index].prjSubName.trim() != "") {
+                        nameResult = allProjects[index].prjSubName + " - " + ProjectUtil.getTypeText(allProjects[index].type);
+                    } else if (allProjects[index].prjName != undefined && allProjects[index].prjName.trim() != "") {
+                        nameResult = allProjects[index].prjName + " - " + ProjectUtil.getTypeText(allProjects[index].type);
+                    } else {
+                        nameResult = allProjects[index].mainName + " - " + ProjectUtil.getTypeText(allProjects[index].type);
+                    }
+
+                    $scope.allProjectCache[index] = {
+                        prjDID: allProjects[index]._id,
+                        prjCode: allProjects[index].prjCode,
+                        mainName: allProjects[index].mainName + " - "
+                        + allProjects[index].prjName + " - "
+                        + allProjects[index].prjSubName + " - "
+                        + ProjectUtil.getTypeText(allProjects[index].type),
+                        majorID: allProjects[index].majorID,
+                        managerID: allProjects[index].managerID,
+                        ezName: nameResult,
+                        combinedID: allProjects[index].combinedID,
+                    };
+                }
+            });
+
+        $scope.initProject = function() {
+            Project.findAll()
+                .success(function (allProjects) {
+                    $scope.allProject_raw = allProjects;
+                    $scope.relatedProjects = [];
+                    for (var i = 0; i < allProjects.length; i++) {
+                        $scope.relatedProjects[i] = {
+                            value: allProjects[i]._id,
+                            managerID: allProjects[i].managerID
+                        };
+                    }
+                    vm.projects = allProjects.slice();
+                });
+        }
 
         $scope.showBoss = function (userDID) {
             var selected = [];
@@ -82,7 +127,7 @@
             var selectedBoss = [];
             if (bossDID) {
                 selectedBoss = $filter('filter')($scope.usersBosses, {
-                    bossID: bossDID
+                    value: bossDID
                 });
             }
             if (!selectedBoss) return 'Not Set'
@@ -324,6 +369,37 @@
                 }
             }
         }
+
+        $scope.initProject();
+
+        $scope.showManagerName = function (item) {
+            var selected = [];
+            if ($scope.relatedProjects === undefined) return;
+            if (item.prjDID) {
+                selected = $filter('filter')($scope.relatedProjects, {
+                    value: item.prjDID
+                });
+            }
+            var selected_manager = [];
+            if (selected.length) {
+                selected_manager = $filter('filter')($scope.usersBosses, {
+                    value: selected[0].managerID
+                });
+            }
+            return selected_manager.length ? selected_manager[0].name : 'Not Set';
+        }
+
+        // Filter
+        $scope.showPrjCodeWithCombine = function (prjDID) {
+            var selected = [];
+            if (prjDID) {
+                selected = $filter('filter')($scope.allProjectCache, {
+                    prjDID: prjDID,
+                });
+            }
+            if (!selected) return 'Not Set'
+            return selected.length > 0 ? selected[0].prjCode : 'Not Set';
+        };
 
     }
 
