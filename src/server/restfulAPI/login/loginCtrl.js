@@ -84,10 +84,16 @@
                         scope.loading = false;
 
                         console.log(data);
-                        if (data.code == 400) {
-                            window.userPWDWrong();
-                        }  else if (data.code == 404) {
-                            window.userNoFind();
+                        switch (data.code) {
+                            case 400:
+                                window.userPWDWrong();
+                                break;
+                            case 401:
+                                window.userPWDChanged(data);
+                                break;
+                            case 404:
+                                window.userNoFind();
+                                break;
                         }
                     });
 

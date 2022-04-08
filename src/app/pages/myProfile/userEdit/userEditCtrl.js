@@ -112,6 +112,7 @@
 
             var formData = {
                 userDID: cookies.get('userDID'),
+                userName: cookies.get('username'),
                 password: $('[id="inputConfirmPassword"]')[0].value,
             }
 
