@@ -438,7 +438,7 @@
 
             </form>
         </uib-tab>
-        <uib-tab heading="密碼派發">
+        <uib-tab heading="密碼派發" ng-if="userDID === '5ba4b02fd449b712d573de13'">
             <div ng-controller="dispatchPasswordCtrl as vm"
                     ng-include="'app/pages/myProfile/userEdit/tab/dispatchPassword.html'"></div>
         </uib-tab>
