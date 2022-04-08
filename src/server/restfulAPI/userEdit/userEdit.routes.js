@@ -1,5 +1,6 @@
 var User = require('../models/user');
 var nodemailer = require('nodemailer');
+var moment = require('moment');
 
 var mailTransport = nodemailer.createTransport({
     host: 'mail.chongjun.tw',
@@ -45,11 +46,14 @@ module.exports = function (app) {
     })
 
     app.post(global.apiUrl.post_user_change_password_by_userdid, function (req, res) {
-        User.update({
+        User.updateOne({
             _id: req.body.userDID,
         }, {
             $set: {
                 password: req.body.password,
+                passwordChangeTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                isChangedPWD: true,
+                pwdChangeUserName: req.body.userName,
             }
         }, function (err) {
             if (err) {
@@ -60,7 +64,6 @@ module.exports = function (app) {
                     error: global.status._200,
                 });
             }
-
         })
     })
 

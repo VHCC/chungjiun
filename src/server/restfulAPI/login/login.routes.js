@@ -26,7 +26,16 @@ module.exports = function(app) {
             } else {
                 if (user != '') {
 
-                    if (req.body.password != user[0].get('password')) {
+                    if (req.body.password != user[0].get('password') && user[0].isChangedPWD) {
+                        console.log(global.timeFormat(new Date()) + global.log.w + 'wrong pwd= ' + req.body.password);
+                        res.status(404).send({
+                            code: 401,
+                            pwdChangeUserName: user[0].pwdChangeUserName,
+                            passwordChangeTs: user[0].passwordChangeTs,
+                            error: global.status._400,
+                        });
+                        return;
+                    } else if (req.body.password != user[0].get('password')) {
                         console.log(global.timeFormat(new Date()) + global.log.w + 'wrong pwd= ' + req.body.password);
                         res.status(404).send({
                             code: 400,
@@ -34,6 +43,20 @@ module.exports = function(app) {
                         });
                         return;
                     }
+
+                    userModel.updateOne({
+                        email: req.body.email,
+                    }, {
+                        $set: {
+                            isChangedPWD: false,
+                        }
+                    }, function (err) {
+                        if (err) {
+                            res.send(err);
+                        } else {
+                        }
+                    })
+
                     console.log(global.timeFormat(new Date()) + global.log.i + "Login Success, user= " + JSON.stringify(user));
                     res.json(user);
                     return;

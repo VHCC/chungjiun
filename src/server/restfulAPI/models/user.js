@@ -90,4 +90,16 @@ module.exports = mongoose.model('User', {
         default: moment(new Date()).format("YYYYMMDD_HHmmss")
     },
 
+    passwordChangeTs: {
+        type: String,
+    },
+
+    isChangedPWD: {
+        type: Boolean,
+    },
+
+    pwdChangeUserName: {
+        type: String,
+    }
+
 });

@@ -124,6 +124,17 @@
         }).show();
     }
 
+    function userPWDChanged(data) {
+        var updateTime = "更新時間：" + data.passwordChangeTs + " </br>";
+        var updateUser = "變更人：" + data.pwdChangeUserName;
+        new Noty({
+            text: '近期有更新密碼，請確認 </br> ' + updateTime + updateUser,
+            layout: 'center',
+            theme: 'light',
+            type: 'error',
+        }).show();
+    }
+
     function signOutSucess() {
         new Noty({
             text: 'Sign Out Success.',
