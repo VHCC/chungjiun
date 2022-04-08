@@ -93,20 +93,20 @@
             <!--</td>-->
             <!--委外廠商-->
             <td style="vertical-align: inherit; text-align: center">
-                <my ng-show="!applyItem.isSendReview">
+                <my ng-if="!applyItem.isSendReview">
                     <sub-contractor-vendor-selector itemName="{{applyItem.vendorDID}}"></sub-contractor-vendor-selector>
                 </my>
-                <my ng-show="applyItem.isSendReview">
+                <my ng-if="applyItem.isSendReview">
                     {{showSCVendorName(applyItem.vendorDID)}}
                 </my>
             </td>
             <!--委外項目-->
             <td style="vertical-align: inherit; text-align: center">
-                <my ng-show="!applyItem.isSendReview">
+                <my ng-if="!applyItem.isSendReview">
                     <!--<target-selector itemName="{{applyItem.targetDID}}"></target-selector>-->
                     <sub-contractor-item-selector itemName="{{applyItem.itemDID}}"></sub-contractor-item-selector>
                 </my>
-                <my ng-show="applyItem.isSendReview">
+                <my ng-if="applyItem.isSendReview">
                     <!--{{showTargetName(item.targetDID)}}-->
                     {{showSCItemName(applyItem.itemDID)}}
                 </my>

@@ -196,20 +196,21 @@
 
             SubContractorApplyUtil.fetchSCApplyItems(formData, specificYear, specificMonth)
                 .success(function (res) {
+                    console.log("=== fetchSCApplyItems Done ===");
                     $scope.subContractorConfirmItemsMonthly = res.payload;
                     $scope.fetchSCPayItemData(null, specificYear, specificMonth);
                     $timeout(function () {
                         bsLoadingOverlayService.stop({
                             referenceId: 'mainPage_subContractorPay'
                         });
-                    }, 500)
+                    }, 100)
                 })
                 .error(function (res) {
                     $timeout(function () {
                         bsLoadingOverlayService.stop({
                             referenceId: 'mainPage_subContractorPay'
                         });
-                    }, 500)
+                    }, 100)
                 })
         }
 
@@ -380,6 +381,7 @@
 
             SubContractorPayItemUtil.fetchSCPayItems(formData)
                 .success(function (res) {
+                    console.log("=== fetchSCPayItems Done ===");
                     $scope.subContractorSearchItemsMonthly = res.payload;
                     $timeout(function () {
                         bsLoadingOverlayService.stop({
