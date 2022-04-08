@@ -34,6 +34,7 @@
 
 
         $scope.username = cookies.get('username');
+        $scope.userDID = cookies.get('userDID');
         $scope.roleType = cookies.get('roletype');
         $scope.email = cookies.get('email');
         $scope.machineDID = cookies.get('machineDID');
