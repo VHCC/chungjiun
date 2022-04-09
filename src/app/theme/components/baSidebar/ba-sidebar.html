@@ -14,9 +14,12 @@
 
             <a ng-mouseenter="hoverItem($event, item)" ng-if="::item.subMenu"
                class="al-sidebar-list-link" ba-ui-sref-toggler>
-                <i class="{{ ::item.icon }}"></i><span>{{ ::item.title }}</span>
+                <i class="{{ ::item.icon }}"></i>
+                <span>{{ ::item.title }}　</span>
+                <span style="color:red" id="{{::item.name}}"></span>
                 <b class="fa fa-angle-down" ui-sref-active="fa-angle-up"
                    ng-if="::item.subMenu"></b>
+
             </a>
 
             <ul ng-if="::item.subMenu" class="al-sidebar-sublist"
@@ -51,11 +54,12 @@
                        class="menu_not_allowed">
                         {{ ::subitem.title }}
                     </a>
-                    <a ng-mouseenter="hoverItem($event, item)" target="{{::(subitem.blank ? '_blank' : '_self')}}"
+                    <a  target="{{::(subitem.blank ? '_blank' : '_self')}}"
                        ng-if="::(!subitem.subMenu && isMenuHaveRight(subitem))"
                        ui-state="subitem.stateRef || ''"
                        ng-href="{{::(subitem.fixedHref ? subitem.fixedHref: '')}}">
                         {{ ::subitem.title}}
+                        <span class="circle" id="{{::subitem.name}}"></span>
                     </a>
                 </li>
             </ul>

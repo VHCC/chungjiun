@@ -85,45 +85,84 @@ module.exports = function (app) {
     // find table item by parameter
     app.post(global.apiUrl.post_work_off_table_item_find_by_parameter, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_off_table_item_find_by_parameter");
-        console.log(JSON.stringify(req.body));
-
+        // console.log(JSON.stringify(req.body));
         var keyArray = Object.keys(req.body);
-        var findQuery = {};
-        for (var index = 0; index < keyArray.length; index++) {
-            var evalString = "findQuery.";
-            evalString += keyArray[index];
 
-            var evalFooter = "req.body.";
-            evalFooter += keyArray[index];
-            eval(evalString + " = " + evalFooter);
-        }
-
-        if (req.body.isBulletin) {
-            delete findQuery ['isBulletin'];
-            findQuery.year = {
-                $gte: req.body.year
+        if (req.body.relatedUserDIDArray != undefined) {
+            var findDataOr = [];
+            for (var index = 0; index < req.body.relatedUserDIDArray.length; index++) {
+                findDataOr.push({creatorDID: req.body.relatedUserDIDArray[index]});
             }
-            findQuery.month = {
-                $gte: req.body.month
+
+            var findDataAnd = [];
+            keyArray = keyArray.filter(el => el !== 'relatedUserDIDArray');
+
+            var findQuery = {};
+            for (var index = 0; index < keyArray.length; index++) {
+                var evalString = "findDataAnd.push({";
+                evalString += keyArray[index];
+
+                var evalFooter = "req.body.";
+                evalFooter += keyArray[index];
+                eval(evalString + " : " + evalFooter + "})");
             }
-        }
 
-        console.log(findQuery);
+            console.log(findDataOr);
+            console.log(findDataAnd);
+            WorkOffTableForm.find({
+                    $or: findDataOr,
+                    $and: findDataAnd
+                },
+                function (err, tables) {
+                    if (err) {
+                        console.log(err);
+                        res.send(err);
+                    } else {
+                        res.status(200).send({
+                            code: 200,
+                            error: global.status._200,
+                            payload: tables,
+                        });
+                    }
+                })
+        } else {
+            var findQuery = {};
+            for (var index = 0; index < keyArray.length; index++) {
+                var evalString = "findQuery.";
+                evalString += keyArray[index];
 
-        WorkOffTableForm.find(
-            findQuery,
-            function (err, tables) {
-                if (err) {
-                    console.log(err);
-                    res.send(err);
-                } else {
-                    res.status(200).send({
-                        code: 200,
-                        error: global.status._200,
-                        payload: tables,
-                    });
+                var evalFooter = "req.body.";
+                evalFooter += keyArray[index];
+                eval(evalString + " = " + evalFooter);
+            }
+
+            if (req.body.isBulletin) {
+                delete findQuery ['isBulletin'];
+                findQuery.year = {
+                    $gte: req.body.year
                 }
-        })
+                findQuery.month = {
+                    $gte: req.body.month
+                }
+            }
+
+            WorkOffTableForm.find(
+                findQuery,
+                function (err, tables) {
+                    if (err) {
+                        console.log(err);
+                        res.send(err);
+                    } else {
+                        res.status(200).send({
+                            code: 200,
+                            error: global.status._200,
+                            payload: tables,
+                        });
+                    }
+                })
+        }
+
+
     })
 
     // find table item by user DID to boss
@@ -261,7 +300,6 @@ module.exports = function (app) {
             }
             findData.push(target);
         }
-        console.log(findData);
         WorkOffTableForm.aggregate(
             [
                 {

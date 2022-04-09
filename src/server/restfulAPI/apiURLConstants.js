@@ -328,6 +328,9 @@ global.apiUrl = {
     post_notification_msg_update : '/api/post_notification_msg_update',
     post_notification_msg_update_all : '/api/post_notification_msg_update_all',
 
+    // RelatedTasksUtil
+    fetch_related_tasks : '/api/fetch_related_tasks',
+
     // travel Application
     post_travel_application_insert_item : '/api/post_travel_application_insert_item', // 20200120
     post_travel_application_get_item : '/api/post_travel_application_get_item', // 20200120

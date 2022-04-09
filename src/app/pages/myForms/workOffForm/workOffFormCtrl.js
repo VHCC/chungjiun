@@ -12,6 +12,7 @@
             .controller('workOffFormCtrl',
                 [
                     '$scope',
+                    '$rootScope',
                     '$filter',
                     '$cookies',
                     '$timeout',
@@ -40,8 +41,9 @@
 
         /** @ngInject */
         function WorkOffFormCtrl($scope,
+                                 $rootScope,
                                  $filter,
-                                 cookies,
+                                 $cookies,
                                  $timeout,
                                  ngDialog,
                                  $compile,
@@ -64,10 +66,42 @@
                                  bsLoadingOverlayService,
                                  intiWorkOffAllService) {
 
-            $scope.username = cookies.get('username');
-            $scope.userDID = cookies.get('userDID');
-            $scope.roleType = cookies.get('roletype');
-            $scope.userMonthSalary = cookies.get('userMonthSalary');
+            $scope.username = $cookies.get('username');
+            $scope.userDID = $cookies.get('userDID');
+            $scope.roleType = $cookies.get('roletype');
+            $scope.userMonthSalary = $cookies.get('userMonthSalary');
+
+            $scope.relatedUserDIDArray_Boss = JSON.parse($cookies.get('relatedUserDIDArray_Boss'));
+            $scope.relatedUserDIDArray_Executive = JSON.parse($cookies.get('relatedUserDIDArray_Executive'));
+
+            $scope.initWatchRelatedTask = function() {
+
+                $scope.$watch(function() {
+                    return $rootScope.workOff_Rejected;
+                }, function() {
+                    $scope.workOff_Rejected = $rootScope.workOff_Rejected;
+                }, true);
+
+                $scope.$watch(function() {
+                    return $rootScope.workOff_Agent_Tasks;
+                }, function() {
+                    $scope.workOff_Agent_Tasks = $rootScope.workOff_Agent_Tasks;
+                }, true);
+
+                $scope.$watch(function() {
+                    return $rootScope.workOff_Boss_Tasks;
+                }, function() {
+                    $scope.workOff_Boss_Tasks = $rootScope.workOff_Boss_Tasks;
+                }, true);
+
+                $scope.$watch(function() {
+                    return $rootScope.workOff_Executive_Tasks;
+                }, function() {
+                    $scope.workOff_Executive_Tasks = $rootScope.workOff_Executive_Tasks;
+                }, true);
+            }
+
+            $scope.initWatchRelatedTask();
 
             // 行政總管、經理專屬，主任無權
             if ($scope.roleType == 100 || $scope.roleType == 2 || $scope.roleType == 6 || $scope.roleType == 1) {
@@ -80,7 +114,7 @@
             }
 
             var formData = {
-                userDID: cookies.get('userDID'),
+                userDID: $cookies.get('userDID'),
             }
             User.findUserByUserDID(formData)
                 .success(function (user) {
@@ -95,54 +129,10 @@
                 });
 
             // 主管審核、行政確認
-            $scope.initUser = function () {
-                User.getAllUsers()
-                    .success(function (allUsers) {
-                        vm.users = allUsers;
-                        if ($scope.roleType === '100' || $scope.userDID == '5d197f16a6b04756c893a162') {
-                            vm.executiveUsers = [];
-                            WorkOffFormUtil.fetchAllExecutiveItem()
-                                .success(function (res) {
-                                    for (var outIndex = 0; outIndex < res.payload.length; outIndex++) {
-                                        for (var index = 0; index < allUsers.length; index++) {
-                                            if (res.payload[outIndex]._id === allUsers[index]._id) {
-                                                allUsers[index].excutive_count = res.payload[outIndex].count;
-                                                vm.executiveUsers.push(allUsers[index]);
-                                            }
-                                        }
-                                    }
-                                })
-                        }
-
-                        if ($scope.roleType === '2' || $scope.roleType === '100' || $scope.roleType === '6' || $scope.roleType === '1') {
-                            var underling = []
-                            for (var x = 0; x < allUsers.length; x++) {
-                                if (allUsers[x].bossID === cookies.get('userDID')) {
-                                    underling.push(allUsers[x]._id)
-                                }
-                            }
-                            var formData = {
-                                underlingArray: underling,
-                            }
-                            vm.bossUsers = [];
-                            WorkOffFormUtil.fetchAllBossItem(formData)
-                                .success(function (res) {
-                                    console.log(res.payload);
-                                    for (var outIndex = 0; outIndex < res.payload.length; outIndex++) {
-                                        console.log(res.payload[outIndex]);
-                                        for (var index = 0; index < allUsers.length; index++) {
-                                            if (res.payload[outIndex]._id === allUsers[index]._id) {
-                                                allUsers[index].boss_count = res.payload[outIndex].count;
-                                                vm.bossUsers.push(allUsers[index]);
-                                            }
-                                        }
-                                    }
-                                    if (vm.user !== undefined) {
-                                        $scope.getWorkOffTable(vm.user.selected._id, thisYear);
-                                    }
-                                })
-                        }
-                    });
+            $scope.fetchHolidayForm = function () {
+                if (vm.user !== undefined) {
+                    $scope.getWorkOffTable(vm.user.selected._id, thisYear);
+                }
             }
 
             // 主要顯示
@@ -271,7 +261,7 @@
                         }
 
                         console.log(" === 取得使用者個人休假表 === ");
-                        console.log($scope.specificUserTablesItems);
+                        // console.log($scope.specificUserTablesItems);
                         if (userDID !== undefined && userDID !== null) {
                             $scope.findHolidayFormByUserDID(userDID === undefined ? $scope.userDID : userDID, subVM);
                         } else {
@@ -307,7 +297,8 @@
                             bsLoadingOverlayService.stop({
                                 referenceId: 'mainPage_workOff'
                             });
-                        },1000);
+                            $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
+                        },200);
 
                     })
                     .error(function () {
@@ -315,7 +306,7 @@
                             bsLoadingOverlayService.stop({
                                 referenceId: 'mainPage_workOff'
                             });
-                        }, 500)
+                        }, 200)
                         console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByUserDID');
                         toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
                     })
@@ -627,7 +618,8 @@
 
                 WorkOffFormUtil.removeWorkOffTableItem(formData)
                     .success(function (res) {
-                        $scope.specificUserTablesItems.splice(index, 1);
+                        // $scope.specificUserTablesItems.splice(index, 1);
+                        $scope.getWorkOffTable(null, thisYear);
                     })
                     .error(function () {
                         console.log('ERROR WorkOffFormUtil.removeWorkOffTableItem');
@@ -653,6 +645,17 @@
                 }
                 return selected.length ? selected[0].name : 'Not Set';
             };
+
+            $scope.showApplier = function (item) {
+                var selected = [];
+                if ($scope.allUsers === undefined) return;
+                if (item.creatorDID) {
+                    selected = $filter('filter')($scope.usersBosses, {
+                        value: item.creatorDID
+                    });
+                }
+                return selected.length ? selected[0].name : 'Not Set';
+            }
 
             // 變更休假單日期
             $scope.changeWorkOffItemDay = function (dom) {
@@ -947,7 +950,7 @@
 
             //行政確認
             $scope.reviewExecutiveItem = function (table, index) {
-                $scope.checkText = '確定 同意：' + vm.executive.selected.name + " " +
+                $scope.checkText = '確定 同意：' + $scope.showApplier(table) + " " +
                     DateUtil.getShiftDatefromFirstDate(
                         DateUtil.getFirstDayofThisWeek(moment(table.create_formDate)),
                         table.day === 0 ? 6 : table.day - 1) +
@@ -971,20 +974,21 @@
                     updateAction: "executiveAgree"
                 }
 
-                var targetList = [vm.executive.selected._id];
+                var targetList = [checkingTable.creatorDID];
                 var msgTopicList = [2000];
                 var msgDetailList = [2005];
                 var memoList = [$scope.showDate(checkingTable)];
 
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-                        $scope.executiveCheckTablesItems.splice(index, 1);
+                        // $scope.executiveCheckTablesItems.splice(index, 1);
+                        $scope.findWorkOffItemByUserDID_executive();
                     })
             }
 
             //行政退回
             $scope.disagreeItem_executive = function (table, index) {
-                $scope.checkText = '確定 退回：' + vm.executive.selected.name + " " +
+                $scope.checkText = '確定 退回：' + $scope.showApplier(table) + " " +
                     DateUtil.getShiftDatefromFirstDate(
                         DateUtil.getFirstDayofThisWeek(moment(table.create_formDate)),
                         table.day === 0 ? 6 : table.day - 1) +
@@ -1018,20 +1022,21 @@
                     updateAction: "executiveReject"
                 }
 
-                var targetList = [vm.executive.selected._id];
+                var targetList = [checkingTable.creatorDID];
                 var msgTopicList = [2000];
                 var msgDetailList = [2004];
                 var memoList = [$scope.showDate(checkingTable)];
 
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-                        $scope.executiveCheckTablesItems.splice(index, 1);
+                        // $scope.executiveCheckTablesItems.splice(index, 1);
+                        $scope.findWorkOffItemByUserDID_executive();
                     })
             }
 
             //主管確認
             $scope.reviewBossItem = function (table, index) {
-                $scope.checkText = '確定 同意：' + vm.boss.selected.name + " " +
+                $scope.checkText = '確定 同意：' + $scope.showApplier(table) + " " +
                     DateUtil.getShiftDatefromFirstDate(
                         DateUtil.getFirstDayofThisWeek(moment(table.create_formDate)),
                         table.day === 0 ? 6 : table.day - 1) +
@@ -1062,13 +1067,14 @@
 
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-                        $scope.bossCheckTablesItems.splice(index, 1);
+                        // $scope.bossCheckTablesItems.splice(index, 1);
+                        $scope.findWorkOffItemByUserDID_boss();
                     })
             }
 
             //主管退回
             $scope.disagreeItem_boss = function (table, index) {
-                $scope.checkText = '確定 退回：' + vm.boss.selected.name + " " +
+                $scope.checkText = '確定 退回：' + $scope.showApplier(table) + " " +
                     DateUtil.getShiftDatefromFirstDate(
                         DateUtil.getFirstDayofThisWeek(moment(table.create_formDate)),
                         table.day === 0 ? 6 : table.day - 1) +
@@ -1102,14 +1108,15 @@
                     updateAction: "bossReject"
                 }
 
-                var targetList = [vm.boss.selected._id];
+                var targetList = [checkingTable.creatorDID];
                 var msgTopicList = [2000];
                 var msgDetailList = [2003];
                 var memoList = [$scope.showDate(checkingTable)];
 
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-                        $scope.bossCheckTablesItems.splice(index, 1);
+                        // $scope.bossCheckTablesItems.splice(index, 1);
+                        $scope.findWorkOffItemByUserDID_boss();
                     })
             }
 
@@ -1156,8 +1163,13 @@
 
             $scope.findWorkOffItemByUserDID_boss = function () {
 
+                bsLoadingOverlayService.start({
+                    referenceId: 'mainPage_workOff'
+                });
+
                 var formData = {
-                    creatorDID: vm.boss.selected._id,
+                    // creatorDID: vm.boss.selected._id,
+                    relatedUserDIDArray: $scope.relatedUserDIDArray_Boss,
                     isSendReview: true,
                     isAgentCheck: true,
                     isBossCheck: false,
@@ -1168,6 +1180,8 @@
                         for (var index = 0; index < res.payload.length; index++) {
                             var detail = {
                                 tableID: res.payload[index]._id,
+
+                                creatorDID: res.payload[index].creatorDID,
 
                                 workOffType: res.payload[index].workOffType,
                                 create_formDate: res.payload[index].create_formDate,
@@ -1195,9 +1209,20 @@
                             };
                             $scope.bossCheckTablesItems.push(detail);
                         }
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'mainPage_workOff'
+                            });
+                            $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
+                        },200);
                     })
                     .error(function () {
                         console.log('ERROR WorkOffFormUtil.findWorkOffTableItemByUserDID');
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'mainPage_workOff'
+                            });
+                        },200);
                     })
             }
 
@@ -1205,8 +1230,14 @@
 
             $scope.findWorkOffItemByUserDID_executive = function () {
 
+                bsLoadingOverlayService.start({
+                    referenceId: 'mainPage_workOff'
+                });
+
                 var formData = {
-                    creatorDID: vm.executive.selected._id,
+                    // creatorDID: vm.executive.selected._id,
+
+                    relatedUserDIDArray: $scope.relatedUserDIDArray_Executive,
                     isSendReview: true,
                     isAgentCheck: true,
                     isBossCheck: true,
@@ -1219,6 +1250,8 @@
                         for (var index = 0; index < res.payload.length; index++) {
                             var detail = {
                                 tableID: res.payload[index]._id,
+
+                                creatorDID: res.payload[index].creatorDID,
 
                                 workOffType: res.payload[index].workOffType,
                                 create_formDate: res.payload[index].create_formDate,
@@ -1246,9 +1279,20 @@
                             };
                             $scope.executiveCheckTablesItems.push(detail);
                         }
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'mainPage_workOff'
+                            });
+                            $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
+                        },200);
                     })
                     .error(function () {
                         console.log('ERROR WorkOffFormUtil.findWorkOffTableItemByUserDID');
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'mainPage_workOff'
+                            });
+                        },200);
                     })
             }
 
@@ -1921,7 +1965,8 @@
                             bsLoadingOverlayService.stop({
                                 referenceId: 'allHistory_workOff'
                             });
-                        } ,300);
+                            $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
+                        } ,200);
 
                     })
                     .error(function () {
@@ -1929,7 +1974,7 @@
                             bsLoadingOverlayService.stop({
                                 referenceId: 'allHistory_workOff'
                             });
-                        }, 500)
+                        }, 200)
                         console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByUserDID');
                         toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
                     });
@@ -1989,14 +2034,15 @@
                             bsLoadingOverlayService.stop({
                                 referenceId: 'allHistory_workOff'
                             });
-                        }, 300);
+                            $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
+                        }, 200);
                     })
                     .error(function () {
                         $timeout(function () {
                             bsLoadingOverlayService.stop({
                                 referenceId: 'allHistory_workOff'
                             });
-                        }, 500)
+                        }, 200)
                         console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByUserDID');
                         toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
                     });
@@ -2041,14 +2087,15 @@
                             bsLoadingOverlayService.stop({
                                 referenceId: 'allHistory_workOff'
                             });
-                        }, 300);
+                            $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
+                        }, 200);
                     })
                     .error(function () {
                         $timeout(function () {
                             bsLoadingOverlayService.stop({
                                 referenceId: 'allHistory_workOff'
                             });
-                        }, 300)
+                        }, 200)
                         console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByUserDID');
                         toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
                     })
@@ -2089,7 +2136,8 @@
                 }
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-                        workOffTables.splice(index, 1);
+                        // workOffTables.splice(index, 1);
+                        $scope.findWorkOffItemByUserDID_executive();
                     })
             }
 
@@ -2138,7 +2186,8 @@
                                     bsLoadingOverlayService.stop({
                                         referenceId: 'allHistory_workOff'
                                     });
-                                } ,300);
+                                    $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
+                                } ,200);
 
                             })
                             .error(function () {
@@ -2146,7 +2195,7 @@
                                     bsLoadingOverlayService.stop({
                                         referenceId: 'allHistory_workOff'
                                     });
-                                }, 500)
+                                }, 200)
                                 console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByUserDID');
                                 toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
                             });
@@ -2176,11 +2225,9 @@
 
                 setTimeout(function(){
                     var fileUnique = moment().format("YYYYMMDD_HHmmss");
-                    console.log(itemUUID)
+                    // console.log(itemUUID)
                     // console.log("fileUnique:> " + fileUnique);
-                    var $ed = $('.dropzone')
-                        , $style = $('#styles')
-                    ;
+                    var $ed = $('.dropzone'), $style = $('#styles');
                     $ed.val($style.html());
                     var targetID = '#demo-upload' + "_" + index;
                     var dropzone = new Dropzone(targetID,
@@ -2217,7 +2264,7 @@
 
                                     var formData = {
                                         fileName: file.name,
-                                        userDID: cookies.get('userDID') + "_" + fileUnique,
+                                        userDID: $cookies.get('userDID') + "_" + fileUnique,
                                     }
 
                                     // OfficialDocUtil.deleteOfficialDocFile(formData);
@@ -2227,7 +2274,7 @@
 
                             success: function (file) {
                                 var uploadData = new FormData();
-                                uploadData.append('userDID', cookies.get('userDID') + "_" + fileUnique);
+                                uploadData.append('userDID', $cookies.get('userDID') + "_" + fileUnique);
                                 uploadData.append('fileName', file.name);
                                 uploadData.append('file', file);
 
@@ -2316,12 +2363,12 @@
 
             // pdf 檔案列表
             $scope.fetchWorkOffPDFFiles = function (table, userDID) {
-                if (userDID == undefined) {
-                    userDID = $scope.userDID;
-                }
                 var fileMapNumber = table.fileMapNumber;
+                if (table.fileMapNumber == '' || table.fileMapNumber == undefined) {
+                    return;
+                }
                 var formData = {
-                    userDID: userDID,
+                    userDID: table.creatorDID,
                     archiveNumber: table.fileMapNumber,
                 }
 
@@ -2333,9 +2380,9 @@
 
             // show pdf View
             $scope.showWorkOffPDF = function (dom, fileMapNumber, userDID) {
-                if (userDID == undefined) {
-                    userDID = $scope.userDID;
-                }
+                // if (userDID == undefined) {
+                //     userDID = $scope.userDID;
+                // }
                 dom.fileMapNumber = fileMapNumber;
                 dom.userDID = userDID;
                 $uibModal.open({
@@ -2351,12 +2398,19 @@
                         },
                     }
                 }).result.then(function (data) {
-
                 });
             };
 
             $scope.showUpdateAction = function (action) {
                 return UpdateActionUtil.convertAction(action);
+            }
+
+            $scope.apiProxy = function (dom) {
+                switch (dom.vm.constructor.name) {
+                    case "WorkOffAgentCtrl":
+                        dom.findWorkOffItemByUserDID_agent();
+                        break;
+                }
             }
         } // End of function
     }

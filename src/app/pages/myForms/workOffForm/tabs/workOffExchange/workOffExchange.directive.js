@@ -18,7 +18,7 @@
             replace: true,
             restrict: 'E',
             controller: 'workOffExchangeCtrl',
-            controllerAs: 'workOffExchangeCtrlVm',
+            controllerAs: 'vm',
             link: function ($scope, elem, attrs) {
                 console.log("load workOffExchange directive");
                 // $scope.format = attrs.formatted == undefined ? 'YYYY/MM' : attrs.formatted;

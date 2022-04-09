@@ -18,7 +18,7 @@
             replace: true,
             restrict: 'E',
             controller: 'workOffAgentCtrl',
-            controllerAs: 'workOffAgentCtrlVm',
+            controllerAs: 'vm',
             link: function ($scope, elem, attrs) {
                 console.log("load workOffAgent directive");
                 // $scope.format = attrs.formatted == undefined ? 'YYYY/MM' : attrs.formatted;

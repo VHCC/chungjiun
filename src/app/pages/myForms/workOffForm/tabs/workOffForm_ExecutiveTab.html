@@ -1,30 +1,31 @@
-<div class="row">
-    <div class="col-md-12">
-        <div class="form-group">
-            <label>選擇員工</label>
-            <ui-select ng-model="workOffFormCtrlVm.executive.selected"
-                       class="btn-group bootstrap-select form-control"
-                       ng-disabled="false"
-                       ng-change="findWorkOffItemByUserDID_executive()"
-                       append-to-body="true"
-                       search-enabled="true">
-                <ui-select-match placeholder="選擇員工">
-                    {{$select.selected.name}} ({{$select.selected.excutive_count}})
-                </ui-select-match>
-                <ui-select-choices
-                        repeat="user in workOffFormCtrlVm.executiveUsers | groupSelectpickerOptions: {name: $select.search}">
-                    <span ng-bind-html="user.name + '(' + user.excutive_count + ')'| highlight: $select.search"></span>
-                </ui-select-choices>
-            </ui-select>
-        </div>
-    </div>
-</div>
+<!--<div class="row">-->
+    <!--<div class="col-md-12">-->
+        <!--<div class="form-group">-->
+            <!--<label>選擇員工</label>-->
+            <!--<ui-select ng-model="workOffFormCtrlVm.executive.selected"-->
+                       <!--class="btn-group bootstrap-select form-control"-->
+                       <!--ng-disabled="false"-->
+                       <!--ng-change="findWorkOffItemByUserDID_executive()"-->
+                       <!--append-to-body="true"-->
+                       <!--search-enabled="true">-->
+                <!--<ui-select-match placeholder="選擇員工">-->
+                    <!--{{$select.selected.name}} ({{$select.selected.excutive_count}})-->
+                <!--</ui-select-match>-->
+                <!--<ui-select-choices-->
+                        <!--repeat="user in workOffFormCtrlVm.executiveUsers | groupSelectpickerOptions: {name: $select.search}">-->
+                    <!--<span ng-bind-html="user.name + '(' + user.excutive_count + ')'| highlight: $select.search"></span>-->
+                <!--</ui-select-choices>-->
+            <!--</ui-select>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
 
-<div class="row" ng-if="workOffFormCtrlVm.executive.selected">
+<div class="row" >
     <table class="table table-bordered table-hover table-condensed">
         <thead>
         <tr style="white-space:nowrap">
             <td style="vertical-align: inherit; text-align: center" width="80px"></td>
+            <td style="vertical-align: inherit; text-align: center" width="80px">申請人</td>
             <td style="vertical-align: inherit; text-align: center" width="150px">日期</td>
             <td style="vertical-align: inherit; text-align: center">星期</td>
             <td style="vertical-align: inherit; text-align: center">假別</td>
@@ -42,6 +43,10 @@
             <!--序號-->
             <td style="vertical-align: inherit; text-align: center">
                 <span>{{$index + 1}}</span>
+            </td>
+            <!--申請人-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                {{showApplier(table)}}
             </td>
             <!--日期-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
@@ -108,10 +113,10 @@
                 <section>
 
                     <div ng-if="table.isSendReview"
-                         class="attachedzone" ng-init="fetchWorkOffPDFFiles(table, workOffFormCtrlVm.executive.selected._id)"  ng-show="pdfList[table.fileMapNumber] != undefined">
+                         class="attachedzone" ng-init="fetchWorkOffPDFFiles(table)"  ng-show="pdfList[table.fileMapNumber] != undefined">
 
                         <my ng-if="pdfList[table.fileMapNumber] != undefined" ng-repeat="pdfItem in pdfList[table.fileMapNumber]">
-                            <div class="pdf-item" ng-click="showWorkOffPDF(this, table.fileMapNumber, workOffFormCtrlVm.executive.selected._id)">
+                            <div class="pdf-item" ng-click="showWorkOffPDF(this, table.fileMapNumber, table.creatorDID)">
                                 <div class="pdf-img">
                                     <img src="assets/img/pdf-svgrepo-com.svg"/>
                                 </div>

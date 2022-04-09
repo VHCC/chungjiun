@@ -9,13 +9,28 @@
       .directive('baSidebar', baSidebar);
 
   /** @ngInject */
-  function baSidebar($timeout, baSidebarService, baUtil, layoutSizes) {
+  function baSidebar($timeout, baSidebarService, baUtil, layoutSizes, $compile) {
     var jqWindow = $(window);
     return {
       restrict: 'E',
       templateUrl: 'app/theme/components/baSidebar/ba-sidebar.html',
+      scope: {
+          // menuItems: '@'
+          'flag': '=refreshSideBar',
+      },
+      // @：單向繫結，外部scope能夠影響內部scope，但反過來不成立
+      // =：雙向繫結，外部scope和內部scope的model能夠相互改變
+      // &：把內部scope的函式的返回值和外部scope的任何屬性繫結起來
       controller: 'BaSidebarCtrl',
-      link: function(scope, el) {
+      link: function(scope, el, attrs) {
+
+        scope.$watch("refreshSideBar", function (flag) {
+            // console.log("refreshSideBar:> " + flag)
+        })
+
+        attrs.$observe('refreshSideBar', function (flag) {
+            // console.log("refreshSideBar:> " + flag)
+        });
 
         scope.menuHeight = el[0].childNodes[0].clientHeight - 84;
         jqWindow.on('click', _onWindowClick);
@@ -53,6 +68,7 @@
         function _calculateMenuHeight() {
           return el[0].childNodes[0].clientHeight - 84;
         }
+        // console.log("directive ready")
       }
     };
   }

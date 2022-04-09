@@ -78,9 +78,7 @@
             $scope.workOffExchangeTablesItems = [];
 
             $scope.$watchCollection('exchangeForm',function(exchangeFormCallback, oldValue) {
-                console.log(exchangeFormCallback);
                 if (exchangeFormCallback != undefined) {
-
                     $scope.specialRest = (parseFloat(exchangeFormCallback.rest_special))  // 剩餘特休
                         - (parseFloat(exchangeFormCallback.calculate_special)) // 所有區間內已請特休
                         - (parseFloat(exchangeFormCallback.specificUser_exchange_special_history)); // 所有區間內已請特休
@@ -93,7 +91,6 @@
             });
 
             $scope.$watch('workOffExchangeTablesItems',function(exchangeItems, oldValue) {
-                console.log(exchangeItems);
                 $scope.observedRest_exchange = 0.0;
                 $scope.specialRest_exchange = 0.0;
                 if (exchangeItems != undefined) {
@@ -113,9 +110,8 @@
             });
 
             $scope.fetchWorkOffExchange_form = function (userID, year) {
-                // console.log($scope);
                 bsLoadingOverlayService.start({
-                    referenceId: 'exchange_workOff'
+                    referenceId: 'mainPage_workOff'
                 });
 
                 var formData = {
@@ -153,7 +149,6 @@
                 });
 
 
-
                 var formData = {
                     creatorDID: vm.workAdd.selected._id,
                     year: specificYear,
@@ -175,9 +170,9 @@
 
                         $timeout(function () {
                             bsLoadingOverlayService.stop({
-                                referenceId: 'exchange_workOff'
+                                referenceId: 'mainPage_workOff'
                             });
-                        }, 500);
+                        }, 100);
                     })
 
 
@@ -232,8 +227,6 @@
                         }
                         WorkOffExchangeFormUtil.fetchExchangeItemsByYear(formData)
                             .success(function (res) {
-                                console.log(res);
-
                                 res.payload = res.payload.sort(function (a, b) {
                                     return a._id > b._id ? 1 : -1;
                                 });
@@ -258,12 +251,9 @@
                     .success(function (res) {
                         WorkOffExchangeFormUtil.fetchExchangeItemsByYear(formData)
                             .success(function (res) {
-                                console.log(res);
-
                                 res.payload = res.payload.sort(function (a, b) {
                                     return a._id > b._id ? 1 : -1;
                                 });
-
                                 $scope.workOffExchangeTablesItems = res.payload;
                             })
                     })

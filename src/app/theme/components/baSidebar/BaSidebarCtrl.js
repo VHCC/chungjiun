@@ -8,22 +8,31 @@
     angular.module('BlurAdmin.theme.components')
         .controller('BaSidebarCtrl', [
             '$scope',
+            '$rootScope',
             '$cookies',
+            '$element',
+            '$compile',
+            'NotificationMsgUtil',
             'baSidebarService',
             BaSidebarCtrl
         ]);
 
     /** @ngInject */
     function BaSidebarCtrl($scope,
-                           cookies,
+                           $rootScope,
+                           $cookies,
+                           $element,
+                           $compile,
+                           NotificationMsgUtil,
                            baSidebarService) {
-        var roleType = cookies.get('roletype');
-        var officialDocFeature = cookies.get('feature_official_doc');
+
+        var roleType = $cookies.get('roletype');
+        var officialDocFeature = $cookies.get('feature_official_doc');
 
         $scope.menuItems = baSidebarService.getMenuItems();
         $scope.defaultSidebarState = $scope.menuItems[0].stateRef;
 
-        $scope.hoverItem = function ($event) {
+        $scope.hoverItem = function ($event, item) {
             $scope.showHoverElem = true;
             $scope.hoverElemHeight = $event.currentTarget.clientHeight;
             var menuTopValue = 66;
@@ -35,6 +44,7 @@
                 baSidebarService.setMenuCollapsed(true);
             }
         });
+
         $scope.isMenuHaveRight = function (subitem) {
 
             var right_level = true;
@@ -55,7 +65,7 @@
             if (subitem.accessFeature !== undefined) {
                 for (var index = 0; index < subitem.accessFeature.length; index ++) {
 
-                    if (cookies.get(subitem.accessFeature[index]) === 'true') {
+                    if ($cookies.get(subitem.accessFeature[index]) === 'true') {
                         right_feature = true;
                         break;
                     }
@@ -66,7 +76,20 @@
             }
 
             return (right_level && right_feature);
-
         }
+
+        $scope.initWatchRelatedTask = function() {
+
+            $scope.$watch(function() {
+                return $rootScope.workOff_Total;
+            }, function() {
+                $rootScope.workOff_Total == 0 ? $('[id="cgWorkManage.workOffForm"]').css("display", "none") :
+                    $('[id="cgWorkManage.workOffForm"]').css("display", "");
+                $('[id="cgWorkManage.workOffForm"]')[0].innerHTML = $rootScope.workOff_Total;
+            }, true);
+
+        };
+
+        $scope.initWatchRelatedTask();
     }
 })();

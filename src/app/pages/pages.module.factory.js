@@ -1514,6 +1514,13 @@
                 }
             }
         }])
+        .factory('RelatedTasksUtil', ['$http', function (http) {
+            return {
+                fetchRelatedTasks: function (formData) {
+                    return http.post('/api/fetch_related_tasks', formData);
+                },
+            }
+        }])
         .factory('NotificationUtil', ['$http', function (http) {
             return {
                 showMsg: function (title, msg, level) {

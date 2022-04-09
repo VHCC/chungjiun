@@ -4,7 +4,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label>選擇員工</label>
-                <ui-select ng-model="workOffExchangeCtrlVm.workAdd.selected"
+                <ui-select ng-model="vm.workAdd.selected"
                            class="btn-group bootstrap-select form-control"
                            ng-disabled="false"
                            ng-change="fetchWorkOffExchange_form($select.selected._id)"
@@ -14,7 +14,7 @@
                         {{$select.selected.name}}
                     </ui-select-match>
                     <ui-select-choices
-                            repeat="user in workOffExchangeCtrlVm.executiveUsers |
+                            repeat="user in vm.executiveUsers |
                             groupSelectpickerOptions: {name: $select.search}">
                         <span ng-bind-html="user.name| highlight: $select.search"></span>
                     </ui-select-choices>
@@ -24,13 +24,12 @@
     </div>
 
     <div bs-loading-overlay
-         ng-show="workOffExchangeCtrlVm.workAdd.selected"
-         bs-loading-overlay-reference-id="exchange_workOff">
+         ng-show="vm.workAdd.selected">
 
         <my-year-picker ng-click="listenYear(this)"></my-year-picker>
 
-        <h3 class="with-line" ng-show="workOffExchangeCtrlVm.workAdd.selected">
-            {{workOffExchangeCtrlVm.workAdd.selected.name}} {{myYear}} 兌換單</h3>
+        <h3 class="with-line" ng-show="vm.workAdd.selected">
+            {{vm.workAdd.selected.name}} {{myYear}} 兌換單</h3>
 
         <table class="table table-bordered table-hover table-condensed">
             <thead>

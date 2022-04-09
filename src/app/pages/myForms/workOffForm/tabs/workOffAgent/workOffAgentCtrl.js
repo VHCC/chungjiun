@@ -9,42 +9,40 @@
             .controller('workOffAgentCtrl',
                 [
                     '$scope',
+                    '$rootScope',
                     '$filter',
                     '$cookies',
                     '$uibModal',
+                    '$timeout',
                     'ngDialog',
                     'DateUtil',
                     'User',
                     'Project',
                     'WorkOffFormUtil',
                     'UpdateActionUtil',
+                    'bsLoadingOverlayService',
                     '$compile',
                     WorkOffAgentCtrl
                 ]);
-
         /**
          * @ngInject
          */
         function WorkOffAgentCtrl($scope,
+                                 $rootScope,
                                  $filter,
                                  $cookies,
                                  $uibModal,
+                                 $timeout,
                                  ngDialog,
                                  DateUtil,
                                  User,
                                  Project,
                                  WorkOffFormUtil,
                                  UpdateActionUtil,
+                                 bsLoadingOverlayService,
                                  $compile) {
             var vm = this;
-
             $scope.userDID = $cookies.get('userDID');
-
-            var formData = {
-                userDID: $scope.userDID
-            }
-
-            $scope.agentUsers = [];
 
             Project.findAll()
                 .success(function (relatedProjects) {
@@ -60,7 +58,6 @@
 
             User.getAllUsers()
                 .success(function (allUsers) {
-                    // console.log(allUsers);
                     $scope.allUsersCache = allUsers;
                     // 經理、主承辦
                     $scope.allUsers = [];
@@ -74,58 +71,15 @@
                             name: allUsers[i].name
                         };
                     }
-
-                    WorkOffFormUtil.fetchAllAgentItem(formData)
-                        .success(function (resp) {
-                            $scope.agentUsers = [];
-                            for (var index = 0; index < resp.payload.length; index ++) {
-                                var selected = [];
-                                selected = $filter('filter')($scope.allUsers, {
-                                    value: resp.payload[index]._id
-                                });
-                                if (selected.length) {
-                                    var user = {
-                                        _id: selected[0].value,
-                                        name: selected[0].name,
-                                        count: resp.payload[index].count
-                                    }
-                                    $scope.agentUsers.push(user);
-                                }
-                            }
-                        })
                 })
 
-            $scope.fetchAllAgentItems = function () {
-                WorkOffFormUtil.fetchAllAgentItem(formData)
-                    .success(function (resp) {
-                        console.log(resp);
-                        $scope.agentUsers = [];
-                        for (var index = 0; index < resp.payload.length; index ++) {
-                            var selected = [];
-                            selected = $filter('filter')($scope.allUsers, {
-                                value: resp.payload[index]._id
-                            });
-                            if (selected.length) {
-                                var user = {
-                                    _id: selected[0].value,
-                                    name: selected[0].name,
-                                    count: resp.payload[index].count
-                                }
-                                $scope.agentUsers.push(user);
-                            }
-                        }
-                    })
-            }
-
-
             // *** Biz Logic ***
-
-            $scope.showReceiver = function (officialItem) {
+            $scope.showApplier = function (item) {
                 var selected = [];
                 if ($scope.allUsers === undefined) return;
-                if (officialItem.creatorDID) {
+                if (item.creatorDID) {
                     selected = $filter('filter')($scope.allUsers, {
-                        value: officialItem.creatorDID
+                        value: item.creatorDID
                     });
                 }
                 return selected.length ? selected[0].name : 'Not Set';
@@ -172,12 +126,15 @@
 
             // *********************** 審核 ************************
 
-            $scope.findWorkOffItemByUserDID_agent = function (userSelected) {
+            $scope.findWorkOffItemByUserDID_agent = function () {
 
-                console.log(userSelected);
+                bsLoadingOverlayService.start({
+                    referenceId: 'mainPage_workOff'
+                });
 
                 var formData = {
-                    creatorDID: userSelected._id,
+                    // creatorDID: userSelected._id,
+                    agentID: $scope.userDID,
                     isSendReview: true,
                     isAgentCheck: false,
                 };
@@ -188,6 +145,8 @@
                             if (res.payload[index].agentID == $scope.userDID) {
                                 var detail = {
                                     tableID: res.payload[index]._id,
+
+                                    creatorDID: res.payload[index].creatorDID,
 
                                     workOffType: res.payload[index].workOffType,
                                     create_formDate: res.payload[index].create_formDate,
@@ -212,17 +171,29 @@
                                 };
                                 $scope.agentCheckWorkOffItems.push(detail);
                             }
-
                         }
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'mainPage_workOff'
+                            });
+                            $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
+                        },200);
                     })
                     .error(function () {
                         console.log('ERROR WorkOffFormUtil.findWorkOffTableItemByParameter');
+                        $timeout(function () {
+                            bsLoadingOverlayService.stop({
+                                referenceId: 'mainPage_workOff'
+                            });
+                        },200);
                     })
             }
 
+            $scope.findWorkOffItemByUserDID_agent();
+
             //代理人確認
             $scope.reviewAgentItem = function (table, index) {
-                $scope.checkText = '確定 同意 [代理]：' + vm.agentItem.selected.name + " " +
+                $scope.checkText = '確定 同意 [代理]：' + $scope.showApplier(table) + " " +
                     DateUtil.getShiftDatefromFirstDate(
                         DateUtil.getFirstDayofThisWeek(moment(table.create_formDate)),
                         table.day === 0 ? 6 : table.day - 1) +
@@ -248,13 +219,13 @@
 
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-                        $scope.findWorkOffItemByUserDID_agent(vm.agentItem.selected);
+                        $scope.findWorkOffItemByUserDID_agent();
                     })
             }
 
             //代理人退回
             $scope.disagreeItem_agent = function (table, index) {
-                $scope.checkText = '確定 退回：' + vm.agentItem.selected.name + " " +
+                $scope.checkText = '確定 退回：' + $scope.showApplier(table) + " " +
                     DateUtil.getShiftDatefromFirstDate(
                         DateUtil.getFirstDayofThisWeek(moment(table.create_formDate)),
                         table.day === 0 ? 6 : table.day - 1) +
@@ -290,7 +261,7 @@
 
                 WorkOffFormUtil.updateWorkOffItem(formData)
                     .success(function (res) {
-                        $scope.findWorkOffItemByUserDID_agent(vm.agentItem.selected);
+                        $scope.findWorkOffItemByUserDID_agent();
                     })
             }
 
