@@ -560,7 +560,7 @@
                             class="attachedzone" ng-init="fetchWorkOffPDFFiles(table, userDID)"  ng-show="pdfList[table.fileMapNumber] != undefined">
 
                         <my ng-if="pdfList[table.fileMapNumber] != undefined" ng-repeat="pdfItem in pdfList[table.fileMapNumber]">
-                            <div class="pdf-item" ng-click="showWorkOffPDF(this, table.fileMapNumber, userDID)">
+                            <div class="pdf-item" ng-click="showWorkOffPDF(this, table.fileMapNumber, table.creatorDID)">
                                 <div class="pdf-img">
                                     <img src="assets/img/pdf-svgrepo-com.svg"/>
                                 </div>
