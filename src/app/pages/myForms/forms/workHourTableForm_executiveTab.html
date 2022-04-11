@@ -38,6 +38,7 @@
                     <td rowspan="3" style="vertical-align: inherit; text-align: center">合計</td>
                     <td rowspan="3" style="vertical-align: inherit; text-align: center">經理/主任確認</td>
                     <td rowspan="3" style="vertical-align: inherit; text-align: center">行政確認</td>
+                    <td rowspan="3" style="vertical-align: inherit; text-align: center" width="50px">更新時間</td>
                 </tr>
                 <tr>
                     <td colspan="2" style="vertical-align: inherit; text-align: center">星期一</td>
@@ -313,6 +314,17 @@
                                 編輯中
                             </button>
                         </div>
+                    </td>
+
+                    <!--更新時間-->
+                    <td rowspan="2" style="vertical-align: inherit;">
+                        <span ng-if="item.updateTs != undefined">
+                            {{item.updateTs}}
+                        </span>
+                        <br>
+                        <span ng-if="item.updateTs != undefined">
+                            {{showUpdateAction(item.updateAction)}}
+                        </span>
                     </td>
 
                 </tr>
@@ -710,15 +722,16 @@
                               || (user.crossDay > 1 && $index === 0)
                               || (user.crossDay <= 1 && $index === 1)">
                                 {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 1, 3, table)}}
+                                <br>
+                                {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20011, 3, table)}}
                             </span>
-                        <br>
                         <!-- 本週加班 1 -->
-                        <span ng-class="showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 1, 3, table) > 8 ? 'sumWarning' : 'sunNormal'"
-                              ng-if="checkIsCrossMonth(firstFullDate_executive) < 0
-                                          || (table.crossDay > 1 && $index === 0)
-                                          || (table.crossDay <= 1 && $index === 1)">
-                            {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20011, 1, table)}}
-                        </span>
+                        <!--<span ng-class="showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 1, 3, table) > 8 ? 'sumWarning' : 'sunNormal'"-->
+                              <!--ng-if="checkIsCrossMonth(firstFullDate_executive) < 0-->
+                                          <!--|| (table.crossDay > 1 && $index === 0)-->
+                                          <!--|| (table.crossDay <= 1 && $index === 1)">-->
+                            <!--{{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20011, 3, table)}}-->
+                        <!--</span>-->
                     </td>
                     <!--TUE-->
                     <td colspan="2" style="text-align: center">
@@ -727,15 +740,16 @@
                               || (user.crossDay > 2 && $index === 0)
                               || (user.crossDay <= 2 && $index === 1)">
                                 {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 2, 3, table)}}
+                                <br>
+                                {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20012, 3, table)}}
                             </span>
-                        <br>
                         <!-- 本週加班 2 -->
-                        <span ng-class="showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 2, 3, table) > 8 ? 'sumWarning' : 'sunNormal'"
-                              ng-if="checkIsCrossMonth(firstFullDate_executive) < 0
-                                          || (table.crossDay > 2 && $index === 0)
-                                          || (table.crossDay <= 2 && $index === 1)">
-                            {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20012, 1, table)}}
-                        </span>
+                        <!--<span ng-class="showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 2, 3, table) > 8 ? 'sumWarning' : 'sunNormal'"-->
+                              <!--ng-if="checkIsCrossMonth(firstFullDate_executive) < 0-->
+                                          <!--|| (table.crossDay > 2 && $index === 0)-->
+                                          <!--|| (table.crossDay <= 2 && $index === 1)">-->
+                            <!--{{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20012, 3, table)}}-->
+                        <!--</span>-->
                     </td>
                     <!--WED-->
                     <td colspan="2" style="text-align: center">
@@ -744,15 +758,16 @@
                               || (user.crossDay > 3 && $index === 0)
                               || (user.crossDay <= 3 && $index === 1)">
                                 {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 3, 3, table)}}
+                                <br>
+                                {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20013, 3, table)}}
                             </span>
-                        <br>
                         <!-- 本週加班 3 -->
-                        <span ng-class="showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 3, 3, table) > 8 ? 'sumWarning' : 'sunNormal'"
-                              ng-if="checkIsCrossMonth(firstFullDate_executive) < 0
-                                          || (table.crossDay > 3 && $index === 0)
-                                          || (table.crossDay <= 3 && $index === 1)">
-                            {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20013, 1, table)}}
-                        </span>
+                        <!--<span ng-class="showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 3, 3, table) > 8 ? 'sumWarning' : 'sunNormal'"-->
+                              <!--ng-if="checkIsCrossMonth(firstFullDate_executive) < 0-->
+                                          <!--|| (table.crossDay > 3 && $index === 0)-->
+                                          <!--|| (table.crossDay <= 3 && $index === 1)">-->
+                            <!--{{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20013, 3, table)}}-->
+                        <!--</span>-->
                     </td>
                     <!--THU-->
                     <td colspan="2" style="text-align: center">
@@ -761,15 +776,16 @@
                               || (user.crossDay > 4 && $index === 0)
                               || (user.crossDay <= 4 && $index === 1)">
                                 {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 4, 3, table)}}
+                                <br>
+                                {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20014, 3, table)}}
                             </span>
-                        <br>
                         <!-- 本週加班 4 -->
-                        <span ng-class="showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 4, 3, table) > 8 ? 'sumWarning' : 'sunNormal'"
-                              ng-if="checkIsCrossMonth(firstFullDate_executive) < 0
-                                          || (table.crossDay > 4 && $index === 0)
-                                          || (table.crossDay <= 4 && $index === 1)">
-                            {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20014, 1, table)}}
-                        </span>
+                        <!--<span ng-class="showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 4, 3, table) > 8 ? 'sumWarning' : 'sunNormal'"-->
+                              <!--ng-if="checkIsCrossMonth(firstFullDate_executive) < 0-->
+                                          <!--|| (table.crossDay > 4 && $index === 0)-->
+                                          <!--|| (table.crossDay <= 4 && $index === 1)">-->
+                            <!--{{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20014, 3, table)}}-->
+                        <!--</span>-->
                     </td>
                     <!--FRI-->
                     <td colspan="2" style="text-align: center">
@@ -778,15 +794,16 @@
                               || (user.crossDay > 5 && $index === 0)
                               || (user.crossDay <= 5 && $index === 1)">
                                 {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 5, 3, table)}}
+                                <br>
+                                {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20015, 3, table)}}
                             </span>
-                        <br>
                         <!-- 本週加班 5 -->
-                        <span ng-class="showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 5, 3, table) > 8 ? 'sumWarning' : 'sunNormal'"
-                              ng-if="checkIsCrossMonth(firstFullDate_executive) < 0
-                                          || (table.crossDay > 5 && $index === 0)
-                                          || (table.crossDay <= 5 && $index === 1)">
-                            {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20015, 1, table)}}
-                        </span>
+                        <!--<span ng-class="showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 5, 3, table) > 8 ? 'sumWarning' : 'sunNormal'"-->
+                              <!--ng-if="checkIsCrossMonth(firstFullDate_executive) < 0-->
+                                          <!--|| (table.crossDay > 5 && $index === 0)-->
+                                          <!--|| (table.crossDay <= 5 && $index === 1)">-->
+                            <!--{{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20015, 3, table)}}-->
+                        <!--</span>-->
                     </td>
                     <!--SAT-->
                     <td colspan="2" style="text-align: center">
@@ -795,15 +812,16 @@
                               || (user.crossDay > 6 && $index === 0)
                               || (user.crossDay <= 6 && $index === 1)">
                                 {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 6, 3, table)}}
+                                <br>
+                                {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20016, 3, table)}}
                             </span>
-                        <br>
                         <!-- 本週加班 6 -->
-                        <span ng-class="showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 6, 3, table) > 8 ? 'sumWarning' : 'sunNormal'"
-                              ng-if="checkIsCrossMonth(firstFullDate_executive) < 0
-                                          || (table.crossDay > 6 && $index === 0)
-                                          || (table.crossDay <= 6 && $index === 1)">
-                            {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20016, 1, table)}}
-                        </span>
+                        <!--<span ng-class="showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 6, 3, table) > 8 ? 'sumWarning' : 'sunNormal'"-->
+                              <!--ng-if="checkIsCrossMonth(firstFullDate_executive) < 0-->
+                                          <!--|| (table.crossDay > 6 && $index === 0)-->
+                                          <!--|| (table.crossDay <= 6 && $index === 1)">-->
+                            <!--{{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20016, 3, table)}}-->
+                        <!--</span>-->
                     </td>
                     <!--SUN-->
                     <td colspan="2" style="text-align: center">
@@ -812,15 +830,16 @@
                               || (user.crossDay > 7 && $index === 0)
                               || (user.crossDay <= 7 && $index === 1)">
                                 {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 7, 3, table)}}
+                                <br>
+                                {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20017, 3, table)}}
                             </span>
-                        <br>
                         <!-- 本週加班 7 -->
-                        <span ng-class="showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 7, 3, table) > 8 ? 'sumWarning' : 'sunNormal'"
-                              ng-if="checkIsCrossMonth(firstFullDate_executive) < 0
-                                          || (table.crossDay > 7 && $index === 0)
-                                          || (table.crossDay <= 7 && $index === 1)">
-                            {{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20017, 1, table)}}
-                        </span>
+                        <!--<span ng-class="showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 7, 3, table) > 8 ? 'sumWarning' : 'sunNormal'"-->
+                              <!--ng-if="checkIsCrossMonth(firstFullDate_executive) < 0-->
+                                          <!--|| (table.crossDay > 7 && $index === 0)-->
+                                          <!--|| (table.crossDay <= 7 && $index === 1)">-->
+                            <!--{{showCalculateHour($index, firstFullDate_executive, fetchFormDataFromScope(table), 20017, 3, table)}}-->
+                        <!--</span>-->
                     </td>
                     <!-- summation-->
                     <td style="text-align: center">

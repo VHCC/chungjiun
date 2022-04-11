@@ -71,6 +71,7 @@
         <td rowspan="3" style="vertical-align: inherit; text-align: center">狀態</td>
         <td rowspan="3" style="vertical-align: inherit; text-align: center">經理/主任確認</td>
         <td rowspan="3" style="vertical-align: inherit; text-align: center">行政確認</td>
+        <td rowspan="3" style="vertical-align: inherit; text-align: center" width="50px">更新時間</td>
     </tr>
     <tr>
         <td colspan="2" style="vertical-align: inherit; text-align: center">星期一</td>
@@ -447,6 +448,14 @@
                 <button class="btn btn-warning editable-table-button btn-xs">
                     審查中
                 </button>
+                <!--抽單-->
+                <div ng-if="item.isSendReview">
+                    <div class="buttons" >
+                        <button class="btn btn-success editable-table-button btn-xs"
+                                ng-click="cancelReview(item) ">抽單
+                        </button>
+                    </div>
+                </div>
             </div>
             <div ng-show="item.isSendReview && item.isManagerCheck && item.isExecutiveCheck">
                 <button class="btn btn-success editable-table-button btn-xs">
@@ -458,7 +467,7 @@
                 <form editable-form name="rowform1" ng-show="rowform1.$visible"
                       class="form-buttons form-inline">
                     <button type="submit"
-                            ng-click="saveTemp()"
+                            ng-click="saveTemp(item)"
                             class="btn btn-primary editable-table-button btn-xs">
                         暫存
                     </button>
@@ -545,6 +554,17 @@
                 原因：<i class="ion-clipboard"></i>
                 <span class="tooltiptext">{{item.executiveReject_memo}}</span>
             </my>
+        </td>
+
+        <!--更新時間-->
+        <td rowspan="2" style="vertical-align: inherit;">
+                <span ng-if="item.updateTs != undefined">
+                    {{item.updateTs}}
+                </span>
+            <br>
+            <span ng-if="item.updateTs != undefined">
+                    {{showUpdateAction(item.updateAction)}}
+                </span>
         </td>
 
     </tr>
