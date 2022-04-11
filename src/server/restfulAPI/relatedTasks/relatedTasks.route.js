@@ -163,7 +163,7 @@ module.exports = function (app) {
         promiseArray.push(getTravelApply_Reject(userDID)); // 8
 
         promiseArray.push(getPayment_Manager(findDataOr_Manager)); // 9
-        promiseArray.push(getPayment_Executive()); // 10
+        promiseArray.push(getPayment_Executive(findDataOr_Executive)); // 10
         promiseArray.push(getPayment_Reject(userDID)); // 11
 
 
@@ -390,19 +390,22 @@ module.exports = function (app) {
 
     async function getPayment_Manager(findDataOr_Manager) {
         return new Promise((resolve, reject) => {
-            var findDataAnd_Manager = [];
-            findDataAnd_Manager.push({isSendReview: true});
-            findDataAnd_Manager.push({isManagerCheck: false});
 
+            var findDataAnd = [];
+            findDataAnd.push({isSendReview: true});
+            findDataAnd.push({isManagerCheck: false});
+
+            console.log(findDataOr_Manager.length)
             PaymentFormItem.find({
                     $or: findDataOr_Manager,
-                    $and: findDataAnd_Manager
+                    $and: findDataAnd
                 },
                 function (err, tables) {
                     if (err) {
                         console.log(err);
                         reject(err);
                     } else {
+                        console.log(tables);
                         resolve(tables.length);
                     }
                 })
@@ -412,8 +415,9 @@ module.exports = function (app) {
     var thisYear = new Date().getFullYear() - 1911;
     var thisMonth = new Date().getMonth() + 1; //January is 0!;
 
-    async function getPayment_Executive() {
+    async function getPayment_Executive(findDataOr_Executive) {
         return new Promise((resolve, reject) => {
+
             var findDataAnd = [];
             findDataAnd.push({isSendReview: true});
             findDataAnd.push({isManagerCheck: true});
@@ -423,7 +427,7 @@ module.exports = function (app) {
 
 
             PaymentFormItem.find({
-                    // $or: findDataOr_Boss,
+                    $or: findDataOr_Executive,
                     $and: findDataAnd
                 },
                 function (err, tables) {
