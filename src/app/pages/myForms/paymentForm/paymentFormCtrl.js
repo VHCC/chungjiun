@@ -51,8 +51,6 @@
         $scope.roleType = $cookies.get('roletype');
         $scope.username = $cookies.get('username');
 
-        $scope.managersRelatedProjects = JSON.parse($cookies.get('managersRelatedProjects'));
-
         var vm = this;
 
         var thisYear = new Date().getFullYear() - 1911;
@@ -696,18 +694,17 @@
         //顯示經理審查人員
         // Fetch Manager Related Members
         $scope.fetchRelatedMembers = function () {
-
+            var managersRelatedProjects = [];
             var formData = {
                 relatedID: $cookies.get('userDID'),
             }
-
             Project.getProjectRelatedToManager(formData)
                 .success(function (relatedProjects) {
+                    console.log(relatedProjects);
                     for(var index = 0; index < relatedProjects.length; index ++) {
                         // 相關專案
                         managersRelatedProjects.push(relatedProjects[index]._id);
                     }
-
                 })
         }
 
@@ -728,18 +725,21 @@
             //紀錄 manager, executive review data.
             $scope.tables_review.tablesItems = [];
 
+            managersRelatedProjects = $rootScope.managersRelatedProjects;
+
             var formData = {
                 // relatedMembers: $scope.mainRelatedMembers,
-                managersRelatedProjects: $scope.managersRelatedProjects,
+                managersRelatedProjects: managersRelatedProjects,
                 // year: specificYear,
                 // month: specificMonth,
                 isFindSendReview: true,
                 isFindManagerCheck: false,
-                isFindExecutiveCheck: false,
+                isFindExecutiveCheck: null,
             }
 
             PaymentFormsUtil.getPaymentsMultiple(formData)
                 .success(function (res) {
+                    console.log(res);
                     var userResult = [];
                     var evalString;
 

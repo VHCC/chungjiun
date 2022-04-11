@@ -113,7 +113,8 @@
                                 // 相關專案
                                 $scope.managersRelatedProjects.push(relatedProjects[index]._id);
                             }
-                            $cookies.put('managersRelatedProjects', JSON.stringify($scope.managersRelatedProjects));
+                            // $cookies.put('managersRelatedProjects', JSON.stringify($scope.managersRelatedProjects));
+                            $rootScope.managersRelatedProjects = $scope.managersRelatedProjects;
                             $scope.fetchUserRelatedTasks();
                         })
                 });
@@ -190,7 +191,6 @@
 
                     // $$ 會計管理
                     $rootScope.cgAccountingManage = $rootScope.payment_Total;
-                    console.log($rootScope)
                 })
                 .error(function (err) {
                     console.log(err)

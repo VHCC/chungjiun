@@ -111,7 +111,7 @@
                 return $rootScope.travelApply_Total;
             }, function() {
                 if ($rootScope == undefined || $rootScope.travelApply_Total == undefined) return;
-                $rootScope.hr_Total == 0 ? $('[id="cgWorkManage.travelApplication"]').css("display", "none") :
+                $rootScope.travelApply_Total == 0 ? $('[id="cgWorkManage.travelApplication"]').css("display", "none") :
                     $('[id="cgWorkManage.travelApplication"]').css("display", "");
                 $('[id="cgWorkManage.travelApplication"]')[0].innerHTML = "\xa0" + $rootScope.travelApply_Total + "\xa0";
             }, true);
