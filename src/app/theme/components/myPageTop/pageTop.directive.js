@@ -53,13 +53,16 @@
         $scope.username = $cookies.get('username');
         $scope.userDID = $cookies.get('userDID');
 
+        // 差勤管理
+        $rootScope.cgWorkManage = 0;
         $rootScope.workOff_Total = 0;
+        $rootScope.hr_Total = 0;
+        $rootScope.travelApply_Total = 0;
 
         // $rootScope.isNeedUpdateRelatedTask = false;
 
         $scope.initPageTop = function () {
-            var roleType = $cookies.get('roletype');
-            $scope.roleType = roleType;
+            $scope.roleType = $cookies.get('roletype');
 
             if ($cookies.get('bossID') === undefined || $cookies.get('userMonthSalary') === undefined || $cookies.get('userMonthSalary') === 0) {
                 toastr['error']('您的系統資訊未設定完全，請聯絡 行政人員 設定 !', '系統初步設定 不完全');
@@ -95,32 +98,55 @@
                     $cookies.put('relatedUserDIDArray_Boss', JSON.stringify($scope.relatedUserDIDArray_Boss));
                     $cookies.put('relatedUserDIDArray_Executive', JSON.stringify($scope.relatedUserDIDArray_Executive));
 
+
+                    $scope.managersRelatedProjects = [];
+                    var formData = {
+                        relatedID: $scope.userDID,
+                    }
+                    Project.getProjectRelatedToManager(formData)
+                        .success(function (relatedProjects) {
+                            for(var index = 0; index < relatedProjects.length; index ++) {
+                                // 相關專案
+                                $scope.managersRelatedProjects.push(relatedProjects[index]._id);
+                            }
+                            $cookies.put('managersRelatedProjects', JSON.stringify($scope.managersRelatedProjects));
+                            $scope.fetchUserRelatedTasks();
+                        })
                 });
         };
 
-        // var intervalID = setInterval(getUserRelatedTasks, 10000);
+        var intervalID = setInterval(getUserRelatedTasks, 60000);
 
         function getUserRelatedTasks() {
-            console.log('10 秒鐘又到了！ ===> getUserRelatedTasks...');
+            console.log('60 秒鐘又到了！ ===> getUserRelatedTasks...');
             $scope.fetchUserRelatedTasks();
             // $rootScope.isNeedUpdateRelatedTask = false;
         }
 
         $rootScope.$on("ProxyFetchUserRelatedTasks", function(){
+            if (!canFetchFlag) return;
             console.log(" === ProxyFetchUserRelatedTasks === ");
             $scope.fetchUserRelatedTasks();
         });
 
+        var canFetchFlag = false;
+
+        var getData ={};
+
         $scope.fetchUserRelatedTasks = function () {
-            var getData = {
+            getData = {
                 userDID: $cookies.get('userDID'),
                 relatedUserDIDArray_Boss: $scope.relatedUserDIDArray_Boss,
                 relatedUserDIDArray_Executive: $scope.relatedUserDIDArray_Executive,
+                managersRelatedProjects: $scope.managersRelatedProjects,
             }
+            console.log(getData);
             RelatedTasksUtil.fetchRelatedTasks(getData)
                 .success(function (resp) {
+                    console.log(" ### fetchRelatedTasks ### ");
                     console.log(resp);
-
+                    canFetchFlag = true;
+                    // 人員請假
                     $rootScope.workOff_Rejected = resp.payload.workOff_Rejected;
                     $rootScope.workOff_Agent_Tasks = resp.payload.workOff_Agent_Tasks;
                     $rootScope.workOff_Boss_Tasks = resp.payload.workOff_Boss_Tasks;
@@ -129,13 +155,30 @@
                         + $rootScope.workOff_Agent_Tasks
                         + $rootScope.workOff_Boss_Tasks
                         + $rootScope.workOff_Executive_Tasks);
+
+                    // 差勤紀錄
+                    $rootScope.hrRemedy_Boss_Tasks = resp.payload.hrRemedy_Boss_Tasks;
+                    $rootScope.hrRemedy_Rejected = resp.payload.hrRemedy_Rejected;
+                    $rootScope.hr_Total = ($rootScope.hrRemedy_Boss_Tasks
+                        + $rootScope.hrRemedy_Rejected);
+
+                    // 公差公出
+                    $rootScope.travelApply_Rejected = resp.payload.travelApply_Rejected;
+                    $rootScope.travelApply_Manager_Tasks = resp.payload.travelApply_Manager_Tasks;
+                    $rootScope.travelApply_Boss_Tasks = resp.payload.travelApply_Boss_Tasks;
+                    $rootScope.travelApply_Total = ($rootScope.travelApply_Manager_Tasks
+                        + $rootScope.travelApply_Rejected
+                        + $rootScope.travelApply_Boss_Tasks);
+
+                    // 差勤管理
+                    $rootScope.cgWorkManage = $rootScope.workOff_Total
+                        + $rootScope.hr_Total
+                        + $rootScope.travelApply_Total;
                 })
                 .error(function (err) {
                     console.log(err)
                 })
         }
-
-
 
     }
 

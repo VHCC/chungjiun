@@ -15,6 +15,9 @@
     <uib-tabset active="$tabSetStatus.activeTab" >
         <uib-tab heading="申請"
                  ng-click="getApply()">
+            <uib-tab-heading>
+                申請 <span class="badge" ng-if="travelApply_Rejected > 0">{{travelApply_Rejected}}</span>
+            </uib-tab-heading>
             <div class="row"
                  ng-controller="travelApplicationApplyCtrl as vm"
                  ng-include="'app/pages/myForms/travelApplication/tabs/travelApplication_main.html'"></div>
@@ -22,6 +25,9 @@
         <uib-tab heading="經理審核"
                  ng-click="getManagerReview()"
                  ng-if="roleType === '2' || roleType === '100' || roleType === '6' || roleType === '1'">
+            <uib-tab-heading>
+                經理審核 <span class="badge" ng-if="travelApply_Manager_Tasks > 0">{{travelApply_Manager_Tasks}}</span>
+            </uib-tab-heading>
             <div class="row"
                  ng-controller="TravelApplicationManagerReviewCtrl as vm">
                 <div class="col-md-12" id="includeHead_review_manage">
@@ -31,6 +37,9 @@
         <uib-tab heading="主管審核"
                  ng-click="getBossReview()"
                  ng-if="roleType === '2' || roleType === '100' || roleType === '6' || roleType === '1'">
+            <uib-tab-heading>
+                主管審核 <span class="badge" ng-if="travelApply_Boss_Tasks > 0">{{travelApply_Boss_Tasks}}</span>
+            </uib-tab-heading>
             <div class="row"
                  ng-controller="travelApplicationBossReviewCtrl">
                 <div class="col-md-12" id="includeHead_review_boss">

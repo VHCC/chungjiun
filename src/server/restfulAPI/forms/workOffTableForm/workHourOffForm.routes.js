@@ -107,8 +107,8 @@ module.exports = function (app) {
                 eval(evalString + " : " + evalFooter + "})");
             }
 
-            console.log(findDataOr);
-            console.log(findDataAnd);
+            // console.log(findDataOr);
+            // console.log(findDataAnd);
             WorkOffTableForm.find({
                     $or: findDataOr,
                     $and: findDataAnd

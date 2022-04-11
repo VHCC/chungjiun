@@ -52,13 +52,22 @@
             <div ng-include="'app/pages/myForms/hrMachine/hrMachineForm_monthReportsTab.html'"></div>
         </uib-tab>
         <uib-tab heading="打卡機補登"
+                 ng-click="apiProxyDirective(this)"
                  style="color: blue">
+            <uib-tab-heading>
+                打卡機補登 <span class="badge" ng-if="hrRemedy_Rejected > 0">{{hrRemedy_Rejected}}</span>
+            </uib-tab-heading>
             <hr-machine-form-remedy></hr-machine-form-remedy>
         </uib-tab>
-        <uib-tab heading="打卡機補登主管審核" ng-if="roleType === '2' || roleType === '6' || roleType === '100' || roleType === '1'"
+        <uib-tab heading="打卡機補登主管審核"
+                 ng-click="apiProxy(this)"
+                 ng-if="roleType === '2' || roleType === '6' || roleType === '100' || roleType === '1'"
                  style="color: blue">
+                <uib-tab-heading>
+                    打卡機補登主管審核 <span class="badge" ng-if="hrRemedy_Boss_Tasks > 0">{{hrRemedy_Boss_Tasks}}</span>
+                </uib-tab-heading>
                 <div class="row"
-                     ng-controller="hrMachineFormRemedyReviewCtrl">
+                     ng-controller="hrMachineFormRemedyReviewCtrl as vm">
                     <div class="col-md-12" id="includeHead_review">
                     </div>
                 </div>

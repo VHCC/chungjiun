@@ -15,8 +15,8 @@
             <a ng-mouseenter="hoverItem($event, item)" ng-if="::item.subMenu"
                class="al-sidebar-list-link" ba-ui-sref-toggler>
                 <i class="{{ ::item.icon }}"></i>
-                <span>{{ ::item.title }}　</span>
-                <span style="color:red" id="{{::item.name}}"></span>
+                <span>{{ ::item.title }}</span>
+                <span class="circle" id="{{::item.name}}"></span>
                 <b class="fa fa-angle-down" ui-sref-active="fa-angle-up"
                    ng-if="::item.subMenu"></b>
 

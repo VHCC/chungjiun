@@ -5,6 +5,7 @@
         .controller('travelApplicationBossReviewCtrl',
             [
                 '$scope',
+                '$rootScope',
                 '$http',
                 '$filter',
                 '$cookies',
@@ -15,6 +16,8 @@
                 'ProjectUtil',
                 'TravelApplicationUtil',
                 'UpdateActionUtil',
+                'bsLoadingOverlayService',
+                '$timeout',
                 '$compile',
                 travelApplicationBossReviewCtrl
             ]);
@@ -23,6 +26,7 @@
      * @ngInject
      */
     function travelApplicationBossReviewCtrl($scope,
+                                             $rootScope,
                                          $http,
                                          $filter,
                                          $cookies,
@@ -33,6 +37,8 @@
                                          ProjectUtil,
                                          TravelApplicationUtil,
                                          UpdateActionUtil,
+                                         bsLoadingOverlayService,
+                                         $timeout,
                                          $compile) {
 
         var vm = this;
@@ -43,6 +49,10 @@
         var creatorDIDArray = [];
 
         $scope.getBossReviewData = function () {
+
+            bsLoadingOverlayService.start({
+                referenceId: 'travelApplication_tab_main'
+            });
 
             document.getElementById('includeHead_review_boss').innerHTML = "";
 
@@ -73,12 +83,17 @@
                             "</div>" +
                             "</div>"
                         )($scope));
+                    $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
+                    $timeout(function () {
+                        bsLoadingOverlayService.stop({
+                            referenceId: 'travelApplication_tab_main'
+                        });
+                    }, 500)
                 });
         }
 
         Project.findAll()
             .success(function (allProjects) {
-                console.log(" ======== related login user Projects ======== ");
                 vm.projects = allProjects.slice();
                 $scope.allProjectCache = [];
                 for (var index = 0; index < allProjects.length; index++) {

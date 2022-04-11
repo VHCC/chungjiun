@@ -5,6 +5,7 @@
         .controller('TravelApplicationManagerReviewCtrl',
             [
                 '$scope',
+                '$rootScope',
                 '$http',
                 '$filter',
                 '$cookies',
@@ -15,6 +16,8 @@
                 'ProjectUtil',
                 'TravelApplicationUtil',
                 'UpdateActionUtil',
+                'bsLoadingOverlayService',
+                '$timeout',
                 '$compile',
                 TravelApplicationManagerReviewCtrl
             ]);
@@ -23,6 +26,7 @@
      * @ngInject
      */
     function TravelApplicationManagerReviewCtrl($scope,
+                                                $rootScope,
                                          $http,
                                          $filter,
                                          $cookies,
@@ -33,6 +37,8 @@
                                          ProjectUtil,
                                          TravelApplicationUtil,
                                          UpdateActionUtil,
+                                         bsLoadingOverlayService,
+                                         $timeout,
                                          $compile) {
 
         var vm = this;
@@ -40,6 +46,10 @@
         $scope.roleType = $cookies.get('roletype');
 
         $scope.getManagerReviewData = function () {
+
+            bsLoadingOverlayService.start({
+                referenceId: 'travelApplication_tab_main'
+            });
 
             document.getElementById('includeHead_review_manage').innerHTML = "";
 
@@ -49,9 +59,6 @@
 
             $http.post('/api/post_travel_application_search_item_by_prjDID', formData)
                 .success(function (response) {
-
-                    console.log(response);
-
                     $scope.travelApplicationReviewItems = response.payload;
                     $scope.travelApplicationReviewItems.slice(0, response.payload.length);
 
@@ -67,13 +74,17 @@
                             "</div>" +
                             "</div>"
                         )($scope));
-
+                    $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
+                    $timeout(function () {
+                        bsLoadingOverlayService.stop({
+                            referenceId: 'travelApplication_tab_main'
+                        });
+                    }, 500)
                 });
         }
 
         Project.findAll()
             .success(function (allProjects) {
-                console.log(" ======== related login user Projects ======== ");
                 vm.projects = allProjects.slice();
                 $scope.allProjectCache = [];
                 for (var index = 0; index < allProjects.length; index++) {
@@ -207,7 +218,6 @@
                 updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
                 updateAction: "managerAgree"
             }
-            console.log("isManagerCheck");
             TravelApplicationUtil.updateTravelApplicationItem(formData)
                 .success(function (resp) {
                     $scope.getManagerReviewData();

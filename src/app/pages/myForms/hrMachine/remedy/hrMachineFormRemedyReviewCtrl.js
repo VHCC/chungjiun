@@ -8,6 +8,7 @@
             .controller('hrMachineFormRemedyReviewCtrl',
                 [
                     '$scope',
+                    '$rootScope',
                     '$http',
                     '$filter',
                     '$cookies',
@@ -20,11 +21,12 @@
                     'RemedyUtil',
                     'bsLoadingOverlayService',
                     'toastr',
-                    hrMachineFormRemedyReviewCtrl
+                    HrMachineFormRemedyReviewCtrl
                 ]);
 
         /** @ngInject */
-        function hrMachineFormRemedyReviewCtrl($scope,
+        function HrMachineFormRemedyReviewCtrl($scope,
+                                               $rootScope,
                                             $http,
                                             $filter,
                                             $cookies,
@@ -39,10 +41,11 @@
                                             toastr) {
 
             var vm = this;
-
             document.getElementById('includeHead_review').innerHTML = "";
 
             $scope.roleType = $cookies.get('roletype');
+            $scope.relatedUserDIDArray_Boss = JSON.parse($cookies.get('relatedUserDIDArray_Boss'));
+
 
             var creatorDIDArray = [];
 
@@ -50,14 +53,14 @@
 
                 document.getElementById('includeHead_review').innerHTML = "";
 
-                for (var index = 0; index < $scope.allUsers.length; index++) {
-                    if ($scope.allUsers[index].bossID === $cookies.get('userDID')) {
-                        creatorDIDArray.push($scope.allUsers[index]._id)
-                    }
-                }
+                // for (var index = 0; index < $scope.allUsers.length; index++) {
+                //     if ($scope.allUsers[index].bossID === $cookies.get('userDID')) {
+                //         creatorDIDArray.push($scope.allUsers[index]._id)
+                //     }
+                // }
 
                 var formData = {
-                    creatorDIDList: creatorDIDArray
+                    creatorDIDList: $scope.relatedUserDIDArray_Boss
                 }
 
                 $http.post('/api/post_hr_remedy_search_item_review', formData)
@@ -78,7 +81,7 @@
                                 "</div>" +
                                 "</div>"
                             )($scope));
-
+                        $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
                     });
             }
 
@@ -98,36 +101,13 @@
                     }
 
                     // if ($scope.roleType === '2' || $scope.roleType === '100' || $scope.roleType === '6') {
-                        for (var index = 0; index < allUsers.length; index++) {
-                            if (allUsers[index].bossID === $cookies.get('userDID')) {
-                                creatorDIDArray.push(allUsers[index]._id)
-                            }
-                        }
+                    //     for (var index = 0; index < allUsers.length; index++) {
+                    //         if (allUsers[index].bossID === $cookies.get('userDID')) {
+                    //             creatorDIDArray.push(allUsers[index]._id)
+                    //         }
+                    //     }
 
-                        var formData = {
-                            creatorDIDList: creatorDIDArray
-                        }
-
-                        $http.post('/api/post_hr_remedy_search_item_review', formData)
-                            .success(function (response) {
-
-                                $scope.remedyReviewItems = response.payload;
-                                $scope.remedyReviewItems.slice(0, response.payload.length);
-
-                                angular.element(
-                                    document.getElementById('includeHead_review'))
-                                    .append($compile(
-                                        "<div ba-panel ba-panel-title=" +
-                                        "'待審列表 - " + response.payload.length + "'" +
-                                        "ba-panel-class= " +
-                                        "'with-scroll'" + ">" +
-                                        "<div " +
-                                        "ng-include=\"'app/pages/myForms/hrMachine/remedy/table/remedyReviewTable.html'\">" +
-                                        "</div>" +
-                                        "</div>"
-                                    )($scope));
-
-                            });
+                    $scope.getReviewData();
                     // }
                 })
 

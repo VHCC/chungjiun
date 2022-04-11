@@ -5,6 +5,7 @@
         .controller('travelApplicationApplyCtrl',
             [
                 '$scope',
+                '$rootScope',
                 '$filter',
                 '$cookies',
                 '$timeout',
@@ -25,6 +26,7 @@
      */
     function TravelApplicationApplyCtrl(
                                     $scope,
+                                    $rootScope,
                                     $filter,
                                     $cookies,
                                     $timeout,
@@ -275,23 +277,27 @@
 
         $scope.getUsersTravelApplicationData = function (userDID, year) {
 
+            bsLoadingOverlayService.start({
+                referenceId: 'travelApplication_tab_main'
+            });
+
             var formData = {
                 creatorDID: userDID,
                 year: year,
             };
             TravelApplicationUtil.getTravelApplicationItem(formData)
                 .success(function (resp) {
-                    console.log(resp)
+                    console.log(resp);
                     $scope.loginUserTablesItems = [];
                     for (var index = 0; index < resp.payload.length; index ++) {
                         $scope.loginUserTablesItems.push(resp.payload[index]);
                     }
-
+                    $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
                     $timeout(function () {
                         bsLoadingOverlayService.stop({
                             referenceId: 'travelApplication_tab_main'
                         });
-                    }, 100)
+                    }, 300)
 
                     $(document).ready(function () {
                         $('.customDate').mask('2KY0/M0/D0', {
@@ -426,7 +432,9 @@
 
                 isSendReview: false,
                 isManagerCheck: false,
+                isManagerReject: false,
                 isBossCheck: false,
+                isBossReject: false,
 
                 updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
                 updateAction: "cancelReview"

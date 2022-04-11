@@ -9,6 +9,7 @@
             .controller('hrMachineCtrl',
                 [
                     '$scope',
+                    '$rootScope',
                     '$filter',
                     '$cookies',
                     '$timeout',
@@ -27,6 +28,7 @@
         /** @ngInject */
         function HrMachineCtrl(
                                 $scope,
+                                $rootScope,
                                 $filter,
                                 cookies,
                                 $timeout,
@@ -46,6 +48,23 @@
             $scope.userDID = cookies.get('userDID');
             $scope.roleType = cookies.get('roletype');
             $scope.machineDID = cookies.get('machineDID');
+
+            $scope.initWatchRelatedTask = function() {
+
+                $scope.$watch(function() {
+                    return $rootScope.hrRemedy_Boss_Tasks;
+                }, function() {
+                    $scope.hrRemedy_Boss_Tasks = $rootScope.hrRemedy_Boss_Tasks;
+                }, true);
+
+                $scope.$watch(function() {
+                    return $rootScope.hrRemedy_Rejected;
+                }, function() {
+                    $scope.hrRemedy_Rejected = $rootScope.hrRemedy_Rejected;
+                }, true);
+            }
+
+            $scope.initWatchRelatedTask();
 
             var vm = this;
 
@@ -1931,10 +1950,27 @@
                                 }
                             }
                         }
-
-                        console.log(operateTable);
-
+                        // console.log(operateTable);
                     })
+            }
+
+
+            $scope.apiProxy = function (dom) {
+                console.log(dom);
+                switch (dom.$$childHead.$$nextSibling.vm.constructor.name) {
+                    case "HrMachineFormRemedyReviewCtrl":
+                        dom.$$childHead.$$nextSibling.getReviewData();
+                        break;
+                }
+            }
+
+            $scope.apiProxyDirective = function (dom) {
+                console.log(dom);
+                switch (dom.vm.constructor.name) {
+                    case "HrMachineFormRemedyCtrl":
+                        dom.getRemedyHrData();
+                        break;
+                }
             }
         } // End of function
     }
