@@ -5,6 +5,7 @@
         .controller('travelApplicationHomeCtrl',
             [
                 '$scope',
+                '$rootScope',
                 '$filter',
                 '$cookies',
                 '$uibModal',
@@ -18,11 +19,12 @@
      * @ngInject
      */
     function TravelApplicationHomeCtrl($scope,
-                                 $filter,
-                                 $cookies,
-                                 $uibModal,
-                                 User,
-                                 $compile) {
+                                       $rootScope,
+                                     $filter,
+                                     $cookies,
+                                     $uibModal,
+                                     User,
+                                     $compile) {
 
         $scope.roleType = $cookies.get('roletype');
         $scope.username = $cookies.get('username');
@@ -32,12 +34,30 @@
         }
 
         $scope.getManagerReview = function() {
-            this.$$childTail.getManagerReviewData();
+            this.$$childHead.$$nextSibling.getManagerReviewData();
         }
 
         $scope.getBossReview = function () {
-            this.$$childTail.getBossReviewData();
+            this.$$childHead.$$nextSibling.getBossReviewData();
         }
+
+        $scope.initWatchRelatedTask = function() {
+
+            $scope.$watch(function() {
+                return $rootScope.travelApply_Manager_Tasks;
+            }, function() {
+                $scope.travelApply_Manager_Tasks = $rootScope.travelApply_Manager_Tasks;
+            }, true);
+
+            $scope.$watch(function() {
+                return $rootScope.travelApply_Boss_Tasks;
+            }, function() {
+                $scope.travelApply_Boss_Tasks = $rootScope.travelApply_Boss_Tasks;
+            }, true);
+
+        }
+
+        $scope.initWatchRelatedTask();
     }
 
 })();

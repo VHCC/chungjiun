@@ -18,7 +18,7 @@
             replace: true,
             restrict: 'E',
             controller: 'hrMachineFormRemedyCtrl',
-            controllerAs: 'hrMachineFormRemedyCtrlVm',
+            controllerAs: 'vm',
             link: function ($scope, elem, attrs) {
                 console.log("load hrMachineFormRemedy directive");
                 // $scope.format = attrs.formatted == undefined ? 'YYYY/MM' : attrs.formatted;

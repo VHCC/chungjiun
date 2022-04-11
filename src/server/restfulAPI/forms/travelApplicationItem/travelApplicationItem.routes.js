@@ -181,7 +181,7 @@ module.exports = function (app) {
                         $match: {
                             $or: findData,
                             isSendReview: true,
-                            isBossCheck: false
+                            isManagerCheck: false
                         }
                     },
                     {

@@ -81,12 +81,41 @@
         $scope.initWatchRelatedTask = function() {
 
             $scope.$watch(function() {
+                return $rootScope.cgWorkManage;
+            }, function() {
+                if ($rootScope == undefined || $rootScope.cgWorkManage == undefined) return;
+                $rootScope.cgWorkManage == 0 ? $('[id="cgWorkManage"]').css("display", "none") :
+                    $('[id="cgWorkManage"]').css("display", "");
+                $('[id="cgWorkManage"]')[0].innerHTML = "\xa0" + $rootScope.cgWorkManage + "\xa0";
+            }, true);
+
+            $scope.$watch(function() {
                 return $rootScope.workOff_Total;
             }, function() {
+                if ($rootScope == undefined || $rootScope.workOff_Total == undefined) return;
                 $rootScope.workOff_Total == 0 ? $('[id="cgWorkManage.workOffForm"]').css("display", "none") :
                     $('[id="cgWorkManage.workOffForm"]').css("display", "");
-                $('[id="cgWorkManage.workOffForm"]')[0].innerHTML = $rootScope.workOff_Total;
+                $('[id="cgWorkManage.workOffForm"]')[0].innerHTML = "\xa0" + $rootScope.workOff_Total + "\xa0";
             }, true);
+
+            $scope.$watch(function() {
+                return $rootScope.hr_Total;
+            }, function() {
+                if ($rootScope == undefined || $rootScope.hr_Total == undefined) return;
+                $rootScope.hr_Total == 0 ? $('[id="cgWorkManage.hrMachine"]').css("display", "none") :
+                    $('[id="cgWorkManage.hrMachine"]').css("display", "");
+                $('[id="cgWorkManage.hrMachine"]')[0].innerHTML = "\xa0" + $rootScope.hr_Total + "\xa0";
+            }, true);
+
+            $scope.$watch(function() {
+                return $rootScope.travelApply_Total;
+            }, function() {
+                if ($rootScope == undefined || $rootScope.travelApply_Total == undefined) return;
+                $rootScope.hr_Total == 0 ? $('[id="cgWorkManage.travelApplication"]').css("display", "none") :
+                    $('[id="cgWorkManage.travelApplication"]').css("display", "");
+                $('[id="cgWorkManage.travelApplication"]')[0].innerHTML = "\xa0" + $rootScope.travelApply_Total + "\xa0";
+            }, true);
+
 
         };
 

@@ -8,6 +8,7 @@
             .controller('hrMachineFormRemedyCtrl',
                 [
                     '$scope',
+                    '$rootScope',
                     '$filter',
                     '$cookies',
                     '$timeout',
@@ -20,11 +21,12 @@
                     'RemedyUtil',
                     'bsLoadingOverlayService',
                     'toastr',
-                    hrMachineFormRemedyCtrl
+                    HrMachineFormRemedyCtrl
                 ]);
 
         /** @ngInject */
-        function hrMachineFormRemedyCtrl($scope,
+        function HrMachineFormRemedyCtrl($scope,
+                                         $rootScope,
                                             $filter,
                                             cookies,
                                             $timeout,
@@ -168,7 +170,6 @@
                         .success(function (res) {
                             $scope.getRemedyHrData();
                         })
-
                 }, time);
             }
 
@@ -201,7 +202,6 @@
             // Send WorkOffTable to Review
             $scope.reviewRemedyItem = function (table, button, index) {
                 $timeout(function () {
-                    console.log(table);
                     var remedyString = $scope.showWRemedyTypeString($scope.redemyTablesItems[index].workType);
                     $scope.checkText = '確定提交 ' + remedyString + '：' +
                         DateUtil.getShiftDatefromFirstDate(
@@ -213,7 +213,6 @@
                     $scope.checkingButton = button;
                     $scope.checkingIndex = index;
 
-                    console.log(table.start_time.length)
                     if (table.start_time == "") {
                         toastr.error('輸入法異常', '（時間輸入格式錯誤，可能有輸入到中文、注音、英文字母、請重新整理後再次輸入）');
                         return;
@@ -230,8 +229,9 @@
                         scope: $scope,
                         showClose: false,
                     });
-                }, 150)
+                }, 100)
             }
+
             //跟後臺溝通
             $scope.sendRemedyItemReview = function (checkingTable, checkingButton, checkingIndex) {
                 checkingButton.rowform1.$waiting = true;
@@ -287,7 +287,8 @@
                             bsLoadingOverlayService.stop({
                                 referenceId: 'overlay_hrMachine'
                             });
-                        }, 300)
+                            $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
+                        }, 200)
                     })
             }
 
