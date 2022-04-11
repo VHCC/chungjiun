@@ -1,18 +1,18 @@
 <div class="row col-md-12" >
 
-    <my-month-picker ng-click="listenMonth_manager(this)"
-                     formatted="YYYY/MM">
-    </my-month-picker>
-    <br>
-    <button type="button" class="btn btn-default btn-icon"
-            ng-click="changePaymentMonth_manager(-1, this)">
-        <i class="ion-chevron-left"></i>
-    </button>
-    {{myMonth}}
-    <button type="button" class="btn btn-default btn-icon"
-            ng-click="changePaymentMonth_manager(1, this)">
-        <i class="ion-chevron-right"></i>
-    </button>
+    <!--<my-month-picker ng-click="listenMonth_manager(this)"-->
+                     <!--formatted="YYYY/MM">-->
+    <!--</my-month-picker>-->
+    <!--<br>-->
+    <!--<button type="button" class="btn btn-default btn-icon"-->
+            <!--ng-click="changePaymentMonth_manager(-1, this)">-->
+        <!--<i class="ion-chevron-left"></i>-->
+    <!--</button>-->
+    <!--{{myMonth}}-->
+    <!--<button type="button" class="btn btn-default btn-icon"-->
+            <!--ng-click="changePaymentMonth_manager(1, this)">-->
+        <!--<i class="ion-chevron-right"></i>-->
+    <!--</button>-->
 
     <hr>
 
@@ -25,6 +25,8 @@
                         <!--<td style="vertical-align: inherit; text-align: center" width="80px"></td>-->
                         <td style="vertical-align: inherit; text-align: center" width="100px">專案代碼</td>
                         <td style="vertical-align: inherit; text-align: center" width="150px">發票日期</td>
+                        <td style="vertical-align: inherit; text-align: center" width="30px">年份</td>
+                        <td style="vertical-align: inherit; text-align: center" width="30px">月份</td>
                         <td style="vertical-align: inherit; text-align: center" width="150px">發票號碼</td>
                         <td style="vertical-align: inherit; text-align: center">內容說明</td>
                         <td style="vertical-align: inherit; text-align: center" width="100px">墊付金額</td>
@@ -50,6 +52,14 @@
                                    ng-model="item.payDate"
                                    value="{{item.payDate}}"
                                    class="form-control input-sm">
+                        </td>
+                        <!--年-->
+                        <td class="form-group" style="vertical-align: inherit; text-align: center">
+                            <span>{{item.year}}</span>
+                        </td>
+                        <!--月-->
+                        <td class="form-group" style="vertical-align: inherit; text-align: center">
+                            <span>{{item.month}}</span>
                         </td>
                         <!--發票號碼-->
                         <td class="form-group" style="vertical-align: inherit; text-align: center">

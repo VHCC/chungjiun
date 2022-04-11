@@ -68,6 +68,16 @@ module.exports = mongoose.model('PaymentFormItem', {
         default: false,
     },
 
+    isExecutiveReject: {
+        type: Boolean,
+        default: false,
+    },
+
+    isExecutiveReject_memo: {
+        type: Boolean,
+        default: false,
+    },
+
     // 行政新增
     isExecutiveAdd: {
         type: Boolean,

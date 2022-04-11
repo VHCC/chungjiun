@@ -117,6 +117,25 @@
             }, true);
 
 
+            $scope.$watch(function() {
+                return $rootScope.cgAccountingManage;
+            }, function() {
+                if ($rootScope == undefined || $rootScope.cgAccountingManage == undefined) return;
+                $rootScope.cgAccountingManage == 0 ? $('[id="cgAccountingManage"]').css("display", "none") :
+                    $('[id="cgAccountingManage"]').css("display", "");
+                $('[id="cgAccountingManage"]')[0].innerHTML = "\xa0" + $rootScope.cgAccountingManage + "\xa0";
+            }, true);
+
+            $scope.$watch(function() {
+                return $rootScope.payment_Total;
+            }, function() {
+                if ($rootScope == undefined || $rootScope.payment_Total == undefined) return;
+                $rootScope.payment_Total == 0 ? $('[id="cgAccountingManage.paymentForm"]').css("display", "none") :
+                    $('[id="cgAccountingManage.paymentForm"]').css("display", "");
+                $('[id="cgAccountingManage.paymentForm"]')[0].innerHTML = "\xa0" + $rootScope.payment_Total + "\xa0";
+            }, true);
+
+
         };
 
         $scope.initWatchRelatedTask();
