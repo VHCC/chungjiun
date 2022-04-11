@@ -168,6 +168,14 @@ module.exports = mongoose.model('WorkHourTableForm', {
         type : String,
     },
 
+    updateTs: {
+        type : String,
+    },
+
+    updateAction: {
+
+    }
+
 
 
 

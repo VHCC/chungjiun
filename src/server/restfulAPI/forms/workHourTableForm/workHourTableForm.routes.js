@@ -219,7 +219,7 @@ module.exports = function (app) {
         if (d.getMonth() == 11) {
             WorkHourForm.find(query)
                 .sort({
-                    month: -1,
+                    month: 1,
                 })
                 .exec(function (err, workHourForms) {
                     if (err) {
@@ -234,7 +234,7 @@ module.exports = function (app) {
         } else {
             WorkHourForm.find(query)
                 .sort({
-                    month: 1,
+                    month: -1,
                 })
                 .exec(function (err, workHourForms) {
                     if (err) {
@@ -453,6 +453,8 @@ module.exports = function (app) {
             }, {
                 $set: {
                     isSendReview: true,
+                    updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                    updateAction: "sendReview"
                 }
             }, function (err) {
                 if (err) {
@@ -487,10 +489,6 @@ module.exports = function (app) {
             evalFooter += keyArray[index];
             eval(evalString + " = " + evalFooter);
         }
-        // console.log(query);
-
-        // var setQuery = {};
-
         WorkHourTable.update({
             _id: req.body.tableID,
         }, {
