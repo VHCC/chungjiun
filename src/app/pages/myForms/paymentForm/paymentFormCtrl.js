@@ -9,6 +9,7 @@
         .controller('paymentFormCtrl',
             [
                 '$scope',
+                '$rootScope',
                 'toastr',
                 '$cookies',
                 '$filter',
@@ -29,6 +30,7 @@
 
     /** @ngInject */
     function PaymentFormCtrl($scope,
+                             $rootScope,
                              toastr,
                              $cookies,
                              $filter,
@@ -48,6 +50,8 @@
         $scope.userDID = $cookies.get('userDID');
         $scope.roleType = $cookies.get('roletype');
         $scope.username = $cookies.get('username');
+
+        $scope.managersRelatedProjects = JSON.parse($cookies.get('managersRelatedProjects'));
 
         var vm = this;
 
@@ -74,6 +78,31 @@
 
         // ***** 墊付款 executive Tab 主要顯示 *****
         $scope.usersReviewForExecutive;
+
+        $scope.initWatchRelatedTask = function() {
+
+            $scope.$watch(function() {
+                return $rootScope.payment_Manager_Tasks;
+            }, function() {
+                $scope.payment_Manager_Tasks = $rootScope.payment_Manager_Tasks;
+            }, true);
+
+            $scope.$watch(function() {
+                return $rootScope.payment_Executive_Tasks;
+            }, function() {
+                $scope.payment_Executive_Tasks = $rootScope.payment_Executive_Tasks;
+            }, true);
+
+            $scope.$watch(function() {
+                return $rootScope.payment_Rejected;
+            }, function() {
+                $scope.payment_Rejected = $rootScope.payment_Rejected;
+            }, true);
+
+        }
+
+        $scope.initWatchRelatedTask();
+
 
         // 所有人，對照資料
         User.getAllUsers()
@@ -464,14 +493,15 @@
                         bsLoadingOverlayService.stop({
                             referenceId: 'payment_main'
                         });
-                    }, 100)
+                    }, 500)
+                    $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
                 })
                 .error(function (res) {
                     $timeout(function () {
                         bsLoadingOverlayService.stop({
                             referenceId: 'payment_main'
                         });
-                    }, 100)
+                    }, 500)
                 })
 
             $('#paymentItemIndexInput').mask('DD', {
@@ -699,14 +729,14 @@
             $scope.tables_review.tablesItems = [];
 
             var formData = {
-                relatedMembers: $scope.mainRelatedMembers,
-                year: specificYear,
-                month: specificMonth,
+                // relatedMembers: $scope.mainRelatedMembers,
+                managersRelatedProjects: $scope.managersRelatedProjects,
+                // year: specificYear,
+                // month: specificMonth,
                 isFindSendReview: true,
                 isFindManagerCheck: false,
-                isFindExecutiveCheck: null,
+                isFindExecutiveCheck: false,
             }
-
 
             PaymentFormsUtil.getPaymentsMultiple(formData)
                 .success(function (res) {
@@ -758,6 +788,7 @@
                             });
                         }, 100)
                     }
+                    $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
                 })
         }
 
@@ -827,7 +858,6 @@
                         resultCount ++
                         if (resultCount == updateTables.length) {
                             $scope.getPaymentReviewData_manager();
-
                         }
                     })
             }
@@ -887,11 +917,12 @@
                 month: specificMonth,
                 isFindSendReview: true,
                 isFindManagerCheck: true,
-                isFindExecutiveCheck: null,
+                isFindExecutiveCheck: false,
             }
 
             PaymentFormsUtil.getPaymentsMultiple(formData)
                 .success(function (res) {
+                    console.log(res);
                     var userResult = [];
                     var evalString;
                     if (res.payload.length > 0) {
@@ -941,7 +972,6 @@
                                 referenceId: 'payment_main'
                             });
                         }, 100)
-
                     } else {
                         $scope.usersReviewForExecutive = [];
 
@@ -951,6 +981,7 @@
                             });
                         }, 100)
                     }
+                    $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
                 })
         }
 
@@ -1027,7 +1058,6 @@
                         resultCount ++
                         if (resultCount == updateTables.length) {
                             $scope.getPaymentReviewData_executive();
-
                         }
                     })
             }
@@ -1055,8 +1085,12 @@
             var formData = {
                 _id: item._id,
                 isSendReview: false,
+
                 isManagerCheck: false,
                 isManagerReject: false,
+
+                isExecutiveCheck: false,
+                isExecutiveReject: true,
 
                 updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
                 updateAction: "executiveReject"

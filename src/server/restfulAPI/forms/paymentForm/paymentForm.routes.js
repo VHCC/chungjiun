@@ -321,14 +321,35 @@ module.exports = function (app) {
     // 多組creator, create_formDate
     app.post(global.apiUrl.post_payment_multiple_get, function (req, res) {
         var findData = []
-        for (var index = 0; index < req.body.relatedMembers.length; index++) {
-            var target = {
-                creatorDID: req.body.relatedMembers[index],
-                year: req.body.year,
-                month: req.body.month,
+        if (req.body.relatedMembers) {
+            if (req.body.year && req.body.year) {
+                for (var index = 0; index < req.body.relatedMembers.length; index++) {
+                    var target = {
+                        creatorDID: req.body.relatedMembers[index],
+                        year: req.body.year,
+                        month: req.body.month,
+                    }
+                    findData.push(target);
+                }
+            } else {
+                for (var index = 0; index < req.body.relatedMembers.length; index++) {
+                    var target = {
+                        creatorDID: req.body.relatedMembers[index],
+                    }
+                    findData.push(target);
+                }
             }
-            findData.push(target);
         }
+
+        if (req.body.managersRelatedProjects) {
+            for (var index = 0; index < req.body.managersRelatedProjects.length; index++) {
+                var target = {
+                    prjDID: req.body.managersRelatedProjects[index],
+                }
+                findData.push(target);
+            }
+        }
+
 
         var query = {
             $or: findData,
@@ -345,8 +366,6 @@ module.exports = function (app) {
         if (req.body.isFindExecutiveCheck !== null) {
             query.isExecutiveCheck = req.body.isFindExecutiveCheck;
         }
-
-        console.log(query);
 
         PaymentFormItem.find(query)
             .sort({})

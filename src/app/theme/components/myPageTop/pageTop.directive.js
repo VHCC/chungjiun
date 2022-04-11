@@ -59,6 +59,10 @@
         $rootScope.hr_Total = 0;
         $rootScope.travelApply_Total = 0;
 
+        // 會計管理
+        $rootScope.cgAccountingManage = 0;
+        $rootScope.payment_Total = 0;
+
         // $rootScope.isNeedUpdateRelatedTask = false;
 
         $scope.initPageTop = function () {
@@ -170,10 +174,23 @@
                         + $rootScope.travelApply_Rejected
                         + $rootScope.travelApply_Boss_Tasks);
 
-                    // 差勤管理
+                    // $$ 差勤管理
                     $rootScope.cgWorkManage = $rootScope.workOff_Total
                         + $rootScope.hr_Total
                         + $rootScope.travelApply_Total;
+
+
+                    // 墊付款
+                    $rootScope.payment_Manager_Tasks = resp.payload.payment_Manager_Tasks;
+                    $rootScope.payment_Executive_Tasks = resp.payload.payment_Executive_Tasks;
+                    $rootScope.payment_Rejected = resp.payload.payment_Rejected;
+                    $rootScope.payment_Total = $rootScope.payment_Manager_Tasks
+                        + $rootScope.payment_Executive_Tasks
+                        + $rootScope.payment_Rejected;
+
+                    // $$ 會計管理
+                    $rootScope.cgAccountingManage = $rootScope.payment_Total;
+                    console.log($rootScope)
                 })
                 .error(function (err) {
                     console.log(err)
