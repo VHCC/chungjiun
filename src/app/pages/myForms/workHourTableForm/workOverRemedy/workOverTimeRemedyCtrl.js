@@ -152,7 +152,6 @@
         $scope.workOverTimeTablesItems = [];
 
         $scope.fetchWorkOverTimeData = function (selectedUser) {
-
             $scope.selectedUser = selectedUser;
 
             bsLoadingOverlayService.start({
@@ -173,7 +172,7 @@
                         bsLoadingOverlayService.stop({
                             referenceId: 'mainPage_workHour'
                         });
-                    }, 500)
+                    }, 200)
                 })
                 .error(function (res) {
 
@@ -181,7 +180,7 @@
                         bsLoadingOverlayService.stop({
                             referenceId: 'mainPage_workHour'
                         });
-                    }, 500)
+                    }, 200)
                 })
 
         }

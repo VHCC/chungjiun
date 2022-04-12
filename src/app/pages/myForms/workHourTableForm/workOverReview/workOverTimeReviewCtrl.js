@@ -9,6 +9,7 @@
         .controller('workHourOverTimeReviewCtrl',
             [
                 '$scope',
+                '$rootScope',
                 'toastr',
                 '$cookies',
                 '$filter',
@@ -29,21 +30,22 @@
 
     /** @ngInject */
     function workHourOverTimeReviewCtrl($scope,
-                             toastr,
-                             $cookies,
-                             $filter,
-                             $compile,
-                             $timeout,
-                             window,
-                             ngDialog,
-                             User,
-                             Project,
-                             ProjectUtil,
-                             DateUtil,
-                             PaymentFormsUtil,
-                             WorkOverTimeUtil,
-                             GlobalConfigUtil,
-                             bsLoadingOverlayService) {
+                                        $rootScope,
+                                     toastr,
+                                     $cookies,
+                                     $filter,
+                                     $compile,
+                                     $timeout,
+                                     window,
+                                     ngDialog,
+                                     User,
+                                     Project,
+                                     ProjectUtil,
+                                     DateUtil,
+                                     PaymentFormsUtil,
+                                     WorkOverTimeUtil,
+                                     GlobalConfigUtil,
+                                     bsLoadingOverlayService) {
 
         $scope.userDID = $cookies.get('userDID');
         $scope.roleType = $cookies.get('roletype');
@@ -81,7 +83,6 @@
                     relatedMembers.push(allUsers[index]._id);
                 }
                 $scope.mainRelatedMembers = relatedMembers;
-
             });
 
         Project.findAll()
@@ -201,29 +202,30 @@
         // loginUser's relatedMembers.
         $scope.mainRelatedMembers = null;
 
-        var managersRelatedProjects = [];
+        var managersRelatedProjects = $rootScope.managersRelatedProjects;
 
         //顯示經理審查人員
         // Fetch Manager Related Members
-        $scope.fetchRelatedProjects = function () {
-
-            var formData = {
-                relatedID: $cookies.get('userDID'),
-            }
-
-            Project.getProjectRelatedToManager(formData)
-                .success(function (relatedProjects) {
-                    console.log(relatedProjects);
-                    for(var index = 0; index < relatedProjects.length; index ++) {
-                        // 相關專案
-                        managersRelatedProjects.push(relatedProjects[index]._id);
-                    }
-                })
-        }
+        // $scope.fetchRelatedProjects = function () {
+        //
+        //     var formData = {
+        //         relatedID: $cookies.get('userDID'),
+        //     }
+        //
+        //     Project.getProjectRelatedToManager(formData)
+        //         .success(function (relatedProjects) {
+        //             console.log(relatedProjects);
+        //             for(var index = 0; index < relatedProjects.length; index ++) {
+        //                 // 相關專案
+        //                 managersRelatedProjects.push(relatedProjects[index]._id);
+        //             }
+        //         })
+        // }
 
         // ***** 經理審查 *****
         $scope.getWOTReviewData_manager = function () {
-            console.log("getWOTReviewData_manager")
+            console.log(" === 加班單審核 === ");
+            managersRelatedProjects = $rootScope.managersRelatedProjects;
             bsLoadingOverlayService.start({
                 referenceId: 'mainPage_workHour'
             });
@@ -237,19 +239,19 @@
             var formData = {
                 // relatedMembers: $scope.mainRelatedMembers,
                 relatedProjects: managersRelatedProjects,
-                year: specificYear,
-                month: specificMonth,
+                // year: specificYear,
+                // month: specificMonth,
                 isFindSendReview: true,
                 isFindManagerCheck: false,
                 isFindExecutiveSet: false,
             }
 
-
             WorkOverTimeUtil.getWOTMultiple(formData)
                 .success(function (res) {
                     var userResult = [];
                     var evalString;
-
+                    // console.log(res);
+                    $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
                     if (res.payload.length > 0) {
                         for (var itemIndex = 0; itemIndex < res.payload.length; itemIndex ++) {
                             var isProjectIncluded = false;
@@ -296,61 +298,6 @@
                         }, 500)
                     }
                 })
-
-            // PaymentFormsUtil.getPaymentsMultiple(formData)
-            //     .success(function (res) {
-            //         // console.log(res);
-            //         var userResult = [];
-            //         var evalString;
-            //
-            //         if (res.payload.length > 0) {
-            //             for (var paymentsItemsIndex = 0; paymentsItemsIndex < res.payload.length; paymentsItemsIndex ++) {
-            //                 var isProjectIncluded = false;
-            //                 inter:
-            //                 if (managersRelatedProjects.includes(res.payload[paymentsItemsIndex].prjDID)) { // 行政總管跟每個人都有關, 經理只跟專案掛鉤
-            //                     // console.log(paymentsItemsIndex);
-            //                     // console.log(res.payload[paymentsItemsIndex].prjDID);
-            //                     isProjectIncluded = true;
-            //                     break inter;
-            //                 }
-            //                 if (isProjectIncluded) {
-            //                     // users
-            //                     if (!userResult.includes(res.payload[paymentsItemsIndex].creatorDID)) {
-            //                         userResult.push(res.payload[paymentsItemsIndex].creatorDID);
-            //
-            //                         evalString = "$scope.tables_review['" + res.payload[paymentsItemsIndex].creatorDID + "'] = []";
-            //                         eval(evalString);
-            //
-            //                         var manipulateObject = undefined;
-            //                         evalString = "manipulateObject = $scope.tables_review['" + res.payload[paymentsItemsIndex].creatorDID + "']";
-            //                         eval(evalString);
-            //                         manipulateObject.push(res.payload[paymentsItemsIndex]);
-            //                     } else {
-            //                         var manipulateObject = undefined;
-            //                         evalString = "manipulateObject = $scope.tables_review['" + res.payload[paymentsItemsIndex].creatorDID + "']";
-            //                         eval(evalString);
-            //                         manipulateObject.push(res.payload[paymentsItemsIndex]);
-            //                     }
-            //                 }
-            //             }
-            //             $scope.usersReviewForManagers = userResult;
-            //
-            //             $timeout(function () {
-            //                 bsLoadingOverlayService.stop({
-            //                     referenceId: 'mainPage_workHour'
-            //                 });
-            //             }, 500)
-            //
-            //         } else {
-            //             $scope.usersReviewForManagers = [];
-            //
-            //             $timeout(function () {
-            //                 bsLoadingOverlayService.stop({
-            //                     referenceId: 'mainPage_workHour'
-            //                 });
-            //             }, 500)
-            //         }
-            //     })
         }
 
         $scope.fetchReviewItemsFromScope = function(user) {
