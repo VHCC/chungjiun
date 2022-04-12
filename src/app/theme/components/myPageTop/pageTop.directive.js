@@ -58,6 +58,7 @@
         $rootScope.workOff_Total = 0;
         $rootScope.hr_Total = 0;
         $rootScope.travelApply_Total = 0;
+        $rootScope.workHour_Total = 0;
 
         // 會計管理
         $rootScope.cgAccountingManage = 0;
@@ -102,6 +103,13 @@
                     $cookies.put('relatedUserDIDArray_Boss', JSON.stringify($scope.relatedUserDIDArray_Boss));
                     $cookies.put('relatedUserDIDArray_Executive', JSON.stringify($scope.relatedUserDIDArray_Executive));
 
+                    // 工時表
+                    $scope.create_formDate_array = [];
+                    $scope.create_formDate_array.push(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0));
+                    $scope.create_formDate_array.push(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), -7));
+                    $scope.create_formDate_array.push(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), -14));
+                    // $scope.create_formDate_array.push(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), -21));
+
 
                     $scope.managersRelatedProjects = [];
                     var formData = {
@@ -139,11 +147,13 @@
         var getData ={};
 
         $scope.fetchUserRelatedTasks = function () {
+            canFetchFlag = false;
             getData = {
                 userDID: $cookies.get('userDID'),
                 relatedUserDIDArray_Boss: $scope.relatedUserDIDArray_Boss,
                 relatedUserDIDArray_Executive: $scope.relatedUserDIDArray_Executive,
                 managersRelatedProjects: $scope.managersRelatedProjects,
+                create_formDate_array: $scope.create_formDate_array,
             }
             console.log(getData);
             RelatedTasksUtil.fetchRelatedTasks(getData)
@@ -175,10 +185,26 @@
                         + $rootScope.travelApply_Rejected
                         + $rootScope.travelApply_Boss_Tasks);
 
+                    // 工時系統
+                    $rootScope.workHour_Rejected = resp.payload.workHour_Rejected;
+                    $rootScope.workHour_Manager_Tasks = resp.payload.workHour_Manager_Tasks;
+                    $rootScope.workHour_Executive_Tasks = resp.payload.workHour_Executive_Tasks;
+
+                    // 工時系統 - 加班申請
+                    $rootScope.workOverTime_Manager_Tasks = resp.payload.workOverTime_Manager_Tasks;
+                    $rootScope.workOverTime_Rejected = resp.payload.workOverTime_Rejected;
+
+                    $rootScope.workHour_Total = $rootScope.workHour_Rejected
+                        + $rootScope.workHour_Manager_Tasks
+                        + $rootScope.workHour_Executive_Tasks
+                        + $rootScope.workOverTime_Manager_Tasks
+                        + $rootScope.workOverTime_Rejected;
+
                     // $$ 差勤管理
                     $rootScope.cgWorkManage = $rootScope.workOff_Total
                         + $rootScope.hr_Total
-                        + $rootScope.travelApply_Total;
+                        + $rootScope.travelApply_Total
+                        + $rootScope.workHour_Total;
 
 
                     // 墊付款
@@ -191,6 +217,7 @@
 
                     // $$ 會計管理
                     $rootScope.cgAccountingManage = $rootScope.payment_Total;
+
                 })
                 .error(function (err) {
                     console.log(err)

@@ -104,6 +104,9 @@
 
     <uib-tabset active="$tabSetStatus.activeTab">
         <uib-tab heading="個人填寫" ng-click="getWorkHourTables()">
+            <uib-tab-heading>
+                個人填寫 <span class="badge" ng-if="workHour_Rejected > 0">{{workHour_Rejected}}</span>
+            </uib-tab-heading>
             <div ng-include="'app/pages/myForms/forms/workHourTableForm_mainTab.html'"></div>
         </uib-tab>
         <!--<uib-tab heading="個人加班單">-->
@@ -112,18 +115,27 @@
         <uib-tab heading="經理/主任審核"
                  ng-click="showRelatedMembersTableReview(1)"
                  ng-if="roleType === '2' || roleType === '100' || roleType === '6' || roleType === '1'">
+            <uib-tab-heading>
+                經理/主任審核 <span class="badge" ng-if="workHour_Manager_Tasks > 0">{{workHour_Manager_Tasks}}</span>
+            </uib-tab-heading>
             <div ng-include="'app/pages/myForms/forms/workHourTableForm_managerTab.html'"></div>
         </uib-tab>
         <uib-tab heading="行政確認"
                  ng-click="showRelatedMembersTableReview(2)"
                  ng-if="roleType === '100' || userDID == '5d197f16a6b04756c893a162'">
+            <uib-tab-heading>
+                行政確認 <span class="badge" ng-if="workHour_Executive_Tasks > 0">{{workHour_Executive_Tasks}}</span>
+            </uib-tab-heading>
             <div ng-include="'app/pages/myForms/forms/workHourTableForm_executiveTab.html'"></div>
         </uib-tab>
         <uib-tab heading="歷史檢視" ng-if="roleType === '2' || roleType === '100' || roleType === '6' || roleType === '1'">
             <!--20200518 check right-->
             <div ng-include="'app/pages/myForms/forms/workHourTableForm_historyTab.html'"></div>
         </uib-tab>
-        <uib-tab heading="加班申請">
+        <uib-tab heading="加班申請" ng-click="proxyApi(this)">
+            <uib-tab-heading>
+                加班申請 <span class="badge" ng-if="workOverTime_Rejected > 0">{{workOverTime_Rejected}}</span>
+            </uib-tab-heading>
             <!--20200518 check right-->
             <work-hour-over-time></work-hour-over-time>
         </uib-tab>
@@ -135,6 +147,9 @@
         </uib-tab>
         <uib-tab heading="加班審核" ng-click="reloadWOTReviewPage(this)"
                  ng-if="roleType === '2' || roleType === '100' || roleType === '6' || roleType === '1'">
+            <uib-tab-heading>
+                加班審核 <span class="badge" ng-if="workOverTime_Manager_Tasks > 0">{{workOverTime_Manager_Tasks}}</span>
+            </uib-tab-heading>
             <!--20200518 check right-->
             <work-hour-over-time-review ></work-hour-over-time-review>
         </uib-tab>

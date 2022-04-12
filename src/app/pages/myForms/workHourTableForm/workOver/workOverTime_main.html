@@ -37,7 +37,7 @@
 
     <br>
 
-    <div class="row col-md-12" ng-init="fetchWorkOverTimeData()">
+    <div class="row col-md-12" >
 
         <my-month-picker ng-click="listenOTMonth(this)"
                          formatted="YYYY/MM">
@@ -146,7 +146,7 @@
                         class="mytooltip"
                         ng-mouseover="hover = true"
                         ng-mouseleave="hover = false">
-                        原因：<i class="ion-clipboard"></i>
+                        退回原因：<i class="ion-clipboard"></i>
                         <span class="tooltiptext">{{table.managerReject_memo}}</span>
                     </my>
                 </td>

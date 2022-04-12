@@ -9,6 +9,7 @@
         .controller('workHourOverTimeCtrl',
             [
                 '$scope',
+                '$rootScope',
                 'toastr',
                 '$cookies',
                 '$filter',
@@ -28,20 +29,21 @@
 
     /** @ngInject */
     function workHourOverTimeCtrl($scope,
-                             toastr,
-                             $cookies,
-                             $filter,
-                             $compile,
-                             $timeout,
-                             window,
-                             ngDialog,
-                             User,
-                             Project,
-                             ProjectUtil,
-                             DateUtil,
-                             WorkOverTimeUtil,
-                             GlobalConfigUtil,
-                             bsLoadingOverlayService) {
+                                  $rootScope,
+                                 toastr,
+                                 $cookies,
+                                 $filter,
+                                 $compile,
+                                 $timeout,
+                                 window,
+                                 ngDialog,
+                                 User,
+                                 Project,
+                                 ProjectUtil,
+                                 DateUtil,
+                                 WorkOverTimeUtil,
+                                 GlobalConfigUtil,
+                                 bsLoadingOverlayService) {
 
         $scope.userDID = $cookies.get('userDID');
         $scope.roleType = $cookies.get('roletype');
@@ -139,7 +141,6 @@
         $scope.workOverTimeTablesItems = [];
 
         $scope.fetchWorkOverTimeData = function () {
-
             bsLoadingOverlayService.start({
                 referenceId: 'mainPage_workHour'
             });
@@ -149,16 +150,15 @@
                 year: specificYear,
                 month: specificMonth,
             }
-
+            $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
             WorkOverTimeUtil.fetchWOTItemFromDB(formData)
                 .success(function (res) {
                     $scope.workOverTimeTablesItems = res.payload;
-
                     $timeout(function () {
                         bsLoadingOverlayService.stop({
                             referenceId: 'mainPage_workHour'
                         });
-                    }, 500)
+                    }, 200)
                 })
                 .error(function (res) {
 
@@ -166,7 +166,7 @@
                         bsLoadingOverlayService.stop({
                             referenceId: 'mainPage_workHour'
                         });
-                    }, 500)
+                    }, 200)
                 })
 
         }
@@ -234,7 +234,6 @@
         // Send WorkOffTable to Review
         $scope.applyWOTItem = function (table, button, index) {
             $timeout(function () {
-                console.log(table)
                 $scope.checkText = '確定申請 ' + '：' +
                     DateUtil.getShiftDatefromFirstDate(
                         DateUtil.getFirstDayofThisWeek(moment($scope.workOverTimeTablesItems[index].create_formDate)),

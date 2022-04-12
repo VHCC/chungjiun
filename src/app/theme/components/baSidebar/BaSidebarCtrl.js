@@ -116,6 +116,15 @@
                 $('[id="cgWorkManage.travelApplication"]')[0].innerHTML = "\xa0" + $rootScope.travelApply_Total + "\xa0";
             }, true);
 
+            $scope.$watch(function() {
+                return $rootScope.workHour_Total;
+            }, function() {
+                if ($rootScope == undefined || $rootScope.workHour_Total == undefined) return;
+                $rootScope.workHour_Total == 0 ? $('[id="cgWorkManage.workHourTableForm"]').css("display", "none") :
+                    $('[id="cgWorkManage.workHourTableForm"]').css("display", "");
+                $('[id="cgWorkManage.workHourTableForm"]')[0].innerHTML = "\xa0" + $rootScope.workHour_Total + "\xa0";
+            }, true);
+
 
             $scope.$watch(function() {
                 return $rootScope.cgAccountingManage;

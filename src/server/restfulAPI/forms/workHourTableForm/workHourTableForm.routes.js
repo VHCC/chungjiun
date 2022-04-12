@@ -260,9 +260,7 @@ module.exports = function (app) {
     app.post(global.apiUrl.post_work_hour_multiple_get, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_multiple_get");
         var findData = []
-
         if (req.body.relatedMembers != null) {
-
             for (var index = 0; index < req.body.relatedMembers.length; index++) {
                 var target = {
                     creatorDID: req.body.relatedMembers[index],
@@ -272,11 +270,16 @@ module.exports = function (app) {
             }
         }
 
+        // var query = {
+        //     $or: findData,
+        // }
 
         var query = {
-            $or: findData,
+            creatorDID: {
+                $in: req.body.relatedMembers,
+            },
+            create_formDate: req.body.create_formDate,
         }
-
         var d = new Date(req.body.create_formDate);
         if (d.getMonth() == 11) {
             WorkHourForm.find(query)
@@ -569,7 +572,6 @@ module.exports = function (app) {
     // management List
     app.post(global.apiUrl.get_work_hour_table_management_list, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, get_work_hour_table_management_list");
-
         Temp.aggregate(
             [
                 {
@@ -662,7 +664,6 @@ module.exports = function (app) {
                             console.log(err);
                         }
                     });
-
                     res.status(200).send({
                         code: 200,
                         error: global.status._200,

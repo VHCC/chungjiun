@@ -156,20 +156,27 @@ module.exports = function (app) {
     // 多組creator, create_formDate
     app.post(global.apiUrl.post_work_over_time_multiple_get, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_over_time_multiple_get");
-        console.log(JSON.stringify(req.body));
+        // console.log(JSON.stringify(req.body));
 
-        var findData = []
-        for (var index = 0; index < req.body.relatedProjects.length; index++) {
-            var target = {
-                prjDID: req.body.relatedProjects[index],
-                year: req.body.year,
-                month: req.body.month,
-            }
-            findData.push(target);
-        }
+        // var findData = []
+        // for (var index = 0; index < req.body.relatedProjects.length; index++) {
+        //     var target = {
+        //         prjDID: req.body.relatedProjects[index],
+        //         // year: req.body.year,
+        //         // month: req.body.month,
+        //     }
+        //     findData.push(target);
+        // }
+
+        // var query = {
+        //     $or: findData,
+        // }
 
         var query = {
-            $or: findData,
+            prjDID: {
+                $in: req.body.relatedProjects
+            }
+            // $or: findData,
         }
 
         if (req.body.isFindSendReview !== null) {
@@ -183,7 +190,6 @@ module.exports = function (app) {
         if (req.body.isFindExecutiveSet !== null) {
             query.isExecutiveSet = req.body.isFindExecutiveSet;
         }
-
 
         WorkOverTimeItem.find(query)
             .sort({

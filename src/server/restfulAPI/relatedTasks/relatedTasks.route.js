@@ -11,6 +11,11 @@ var TravelApplicationItem = require('../models/travelApplicationItem');
 // 墊付款
 var PaymentFormItem = require('../models/paymentFormItem');
 
+// 工時表
+var WorkHourTable = require('../models/workHourTableForm');
+
+// 加班單
+var WorkOverTimeItem = require('../models/workOverTimeItem');
 
 var moment = require('moment');
 
@@ -42,6 +47,15 @@ module.exports = function (app) {
         var payment_Manager_Tasks = 0;
         var payment_Executive_Tasks = 0;
 
+        // 工時表
+        var workHour_Rejected = 0;
+        var workHour_Manager_Tasks = 0;
+        var workHour_Executive_Tasks = 0;
+
+        // 加班申請
+        var workOverTime_Rejected = 0;
+        var workOverTime_Manager_Tasks = 0;
+
         var findDataOr_Boss = [{creatorDID: "empty"}];
         for (var index = 0; index < req.body.relatedUserDIDArray_Boss.length; index++) {
             findDataOr_Boss.push({creatorDID: req.body.relatedUserDIDArray_Boss[index]});
@@ -56,8 +70,32 @@ module.exports = function (app) {
         for (var index = 0; index < req.body.managersRelatedProjects.length; index++) {
             findDataOr_Manager.push({prjDID: req.body.managersRelatedProjects[index]});
         }
+
+        var findDataOr_create_formDate_rejected = [
+            {
+                creatorDID: "empty",
+                create_formDate: "empty",
+            }];
+        for (var subIndex = 0; subIndex < req.body.create_formDate_array.length; subIndex++) {
+            findDataOr_create_formDate_rejected.push(
+                {
+                    create_formDate: req.body.create_formDate_array[subIndex],
+                    isManagerReject: true,
+                });
+            findDataOr_create_formDate_rejected.push(
+                {
+                    create_formDate: req.body.create_formDate_array[subIndex],
+                    isExecutiveReject: true,
+                });
+        }
+
+
         executiveAllPromise(req.body.userDID, findDataOr_Boss,
-            findDataOr_Executive, findDataOr_Manager).then(function (resp) {
+            findDataOr_Executive, findDataOr_Manager,
+            req.body.relatedUserDIDArray_Executive,
+            req.body.managersRelatedProjects,
+            req.body.create_formDate_array,
+            findDataOr_create_formDate_rejected).then(function (resp) {
 
             workOff_Agent_Tasks = resp[0];
             workOff_Boss_Tasks = resp[1];
@@ -74,6 +112,14 @@ module.exports = function (app) {
             payment_Manager_Tasks = resp[9];
             payment_Executive_Tasks = resp[10];
             payment_Rejected = resp[11];
+
+            workHour_Manager_Tasks = resp[12];
+            workHour_Executive_Tasks = resp[13];
+            workHour_Rejected = resp[14];
+
+            workOverTime_Manager_Tasks = resp[15];
+            workOverTime_Rejected = resp[16];
+
 
             res.status(200).send({
                 code: 200,
@@ -94,60 +140,25 @@ module.exports = function (app) {
                     payment_Rejected: payment_Rejected,
                     payment_Manager_Tasks: payment_Manager_Tasks,
                     payment_Executive_Tasks: payment_Executive_Tasks,
+
+                    workHour_Manager_Tasks: workHour_Manager_Tasks,
+                    workHour_Executive_Tasks: workHour_Executive_Tasks,
+                    workHour_Rejected: workHour_Rejected,
+
+                    workOverTime_Manager_Tasks: workOverTime_Manager_Tasks,
+                    workOverTime_Rejected: workOverTime_Rejected,
                 },
             });
         })
 
-        // getWorkOff_Agent(req.body.userDID).then(function (resp) {
-        //     // workOff_Agent_Tasks = resp;
-        //     getWorkOff_Boss(findDataOr_Boss).then(function (resp) {
-        //         // workOff_Boss_Tasks = resp;
-        //         getWorkOff_Executive(findDataOr_Executive).then(function (resp) {
-        //             // workOff_Executive_Tasks = resp;
-        //             getWorkOff_Reject(req.body.userDID).then(function (resp) {
-        //                 // workOff_Rejected = resp;
-        //                 getHrRemedy_Boss(findDataOr_Boss).then(function (resp) {
-        //                     // hrRemedy_Boss_Tasks = resp;
-        //                     getHrRemedy_Reject(req.body.userDID).then(function (resp) {
-        //                         // hrRemedy_Rejected = resp;
-        //                         getTravelApply_Manager(findDataOr_Manager).then(function (resp) {
-        //                             // travelApply_Manager_Tasks = resp;
-        //                             getTravelApply_Boss(findDataOr_Boss).then(function (resp) {
-        //                                 // travelApply_Boss_Tasks = resp;
-        //                                 getTravelApply_Reject(req.body.userDID).then(function (resp) {
-        //                                     // travelApply_Rejected = resp;
-        //
-        //                                     res.status(200).send({
-        //                                         code: 200,
-        //                                         error: global.status._200,
-        //                                         payload: {
-        //                                             workOff_Rejected: workOff_Rejected,
-        //                                             workOff_Agent_Tasks: workOff_Agent_Tasks,
-        //                                             workOff_Boss_Tasks: workOff_Boss_Tasks,
-        //                                             workOff_Executive_Tasks: workOff_Executive_Tasks,
-        //
-        //                                             hrRemedy_Boss_Tasks: hrRemedy_Boss_Tasks,
-        //                                             hrRemedy_Rejected: hrRemedy_Rejected,
-        //
-        //                                             travelApply_Rejected: travelApply_Rejected,
-        //                                             travelApply_Manager_Tasks: travelApply_Manager_Tasks,
-        //                                             travelApply_Boss_Tasks: travelApply_Boss_Tasks,
-        //                                         },
-        //                                     });
-        //                                 })
-        //                             })
-        //
-        //
-        //                         })
-        //                     })
-        //                 })
-        //             })
-        //         })
-        //     })
-        // })
     });
 
-    function executiveAllPromise(userDID, findDataOr_Boss, findDataOr_Executive, findDataOr_Manager) {
+    function executiveAllPromise(userDID, findDataOr_Boss,
+                                 findDataOr_Executive, findDataOr_Manager,
+                                 related_userDIDArrays,
+                                 related_prjDIDArrays,
+                                 related_create_formDateArrays,
+                                 findDataOr_Create_FormDate_Rejected) {
 
         var promiseArray = [];
         promiseArray.push(getWorkOff_Agent(userDID)); // 0
@@ -166,6 +177,12 @@ module.exports = function (app) {
         promiseArray.push(getPayment_Executive(findDataOr_Executive)); // 10
         promiseArray.push(getPayment_Reject(userDID)); // 11
 
+        promiseArray.push(getWorkHour_Manager(related_prjDIDArrays, related_create_formDateArrays)); // 12
+        promiseArray.push(getWorkHour_Executive(related_userDIDArrays, related_create_formDateArrays)); // 13
+        promiseArray.push(getWorkHour_Reject(userDID, findDataOr_Create_FormDate_Rejected)); // 14
+
+        promiseArray.push(getWorkOverTime_Manager(related_prjDIDArrays)); // 15
+        promiseArray.push(getWorkOverTime_Reject(userDID)); // 16
 
         return Promise.all(promiseArray);
     }
@@ -178,16 +195,16 @@ module.exports = function (app) {
             findDataAnd_Agent.push({isSendReview: true});
             findDataAnd_Agent.push({isAgentCheck: false});
 
-            WorkOffTableForm.find({
+            WorkOffTableForm.countDocuments({
                     agentID: userDID,
                     $and: findDataAnd_Agent
                 },
-                function (err, tables) {
+                function (err, counts) {
                     if (err) {
                         console.log(err);
                         reject(err);
                     } else {
-                        resolve(tables.length);
+                        resolve(counts);
                     };
             });
         });
@@ -200,16 +217,16 @@ module.exports = function (app) {
             findDataAnd_Boss.push({isAgentCheck: true});
             findDataAnd_Boss.push({isBossCheck: false});
 
-            WorkOffTableForm.find({
+            WorkOffTableForm.countDocuments({
                     $or: findDataOr_Boss,
                     $and: findDataAnd_Boss
                 },
-                function (err, tables) {
+                function (err, counts) {
                     if (err) {
                         console.log(err);
                         reject(err);
                     } else {
-                        resolve(tables.length);
+                        resolve(counts);
                     }
                 });
         });
@@ -223,16 +240,16 @@ module.exports = function (app) {
             findDataAnd_Executive.push({isBossCheck: true});
             findDataAnd_Executive.push({isExecutiveCheck: false});
 
-            WorkOffTableForm.find({
+            WorkOffTableForm.countDocuments({
                     $or: findDataOr_Executive,
                     $and: findDataAnd_Executive
                 },
-                function (err, tables) {
+                function (err, counts) {
                     if (err) {
                         console.log(err);
                         reject(err);
                     } else {
-                        resolve(tables.length);
+                        resolve(counts);
                     }
                 });
         });
@@ -249,16 +266,16 @@ module.exports = function (app) {
             findDataAnd_Rejected.push({creatorDID: userDID});
             findDataAnd_Rejected.push({isSendReview: false});
 
-            WorkOffTableForm.find({
+            WorkOffTableForm.countDocuments({
                     $or: findDataOr_Rejected,
                     $and: findDataAnd_Rejected
                 },
-                function (err, tables) {
+                function (err, counts) {
                     if (err) {
                         console.log(err);
                         reject(err);
                     } else {
-                        resolve(tables.length);
+                        resolve(counts);
                     }
                 })
         });
@@ -281,16 +298,16 @@ module.exports = function (app) {
             findDataAnd_Boss.push({isSendReview: true});
             findDataAnd_Boss.push({isBossCheck: false});
 
-            HrRemedyTable.find({
+            HrRemedyTable.countDocuments({
                     $or: findDataOr_Boss,
                     $and: findDataAnd_Boss
                 },
-                function (err, tables) {
+                function (err, counts) {
                     if (err) {
                         console.log(err);
                         reject(err);
                     } else {
-                        resolve(tables.length);
+                        resolve(counts);
                     }
                 })
         });
@@ -305,16 +322,16 @@ module.exports = function (app) {
             findDataAnd_Rejected.push({creatorDID: userDID});
             findDataAnd_Rejected.push({isSendReview: false});
 
-            HrRemedyTable.find({
+            HrRemedyTable.count({
                     $or: findDataOr_Rejected,
                     $and: findDataAnd_Rejected
                 },
-                function (err, tables) {
+                function (err, counts) {
                     if (err) {
                         console.log(err);
                         reject(err);
                     } else {
-                        resolve(tables.length);
+                        resolve(counts);
                     }
                 })
         });
@@ -326,16 +343,16 @@ module.exports = function (app) {
             findDataAnd_Manager.push({isSendReview: true});
             findDataAnd_Manager.push({isManagerCheck: false});
 
-            TravelApplicationItem.find({
+            TravelApplicationItem.countDocuments({
                     $or: findDataOr_Manager,
                     $and: findDataAnd_Manager
                 },
-                function (err, tables) {
+                function (err, counts) {
                     if (err) {
                         console.log(err);
                         reject(err);
                     } else {
-                        resolve(tables.length);
+                        resolve(counts);
                     }
                 })
         });
@@ -348,16 +365,16 @@ module.exports = function (app) {
             findDataAnd_Manager.push({isManagerCheck: true});
             findDataAnd_Manager.push({isBossCheck: false});
 
-            TravelApplicationItem.find({
+            TravelApplicationItem.countDocuments({
                     $or: findDataOr_Boss,
                     $and: findDataAnd_Manager
                 },
-                function (err, tables) {
+                function (err, counts) {
                     if (err) {
                         console.log(err);
                         reject(err);
                     } else {
-                        resolve(tables.length);
+                        resolve(counts);
                     }
                 })
         });
@@ -373,16 +390,16 @@ module.exports = function (app) {
             findDataAnd_Rejected.push({creatorDID: userDID});
             findDataAnd_Rejected.push({isSendReview: false});
 
-            TravelApplicationItem.find({
+            TravelApplicationItem.countDocuments({
                     $or: findDataOr_Rejected,
                     $and: findDataAnd_Rejected
                 },
-                function (err, tables) {
+                function (err, counts) {
                     if (err) {
                         console.log(err);
                         reject(err);
                     } else {
-                        resolve(tables.length);
+                        resolve(counts);
                     }
                 })
         });
@@ -395,18 +412,16 @@ module.exports = function (app) {
             findDataAnd.push({isSendReview: true});
             findDataAnd.push({isManagerCheck: false});
 
-            console.log(findDataOr_Manager.length)
-            PaymentFormItem.find({
+            PaymentFormItem.countDocuments({
                     $or: findDataOr_Manager,
                     $and: findDataAnd
                 },
-                function (err, tables) {
+                function (err, counts) {
                     if (err) {
                         console.log(err);
                         reject(err);
                     } else {
-                        console.log(tables);
-                        resolve(tables.length);
+                        resolve(counts);
                     }
                 })
         });
@@ -425,17 +440,16 @@ module.exports = function (app) {
             findDataAnd.push({year: thisYear});
             findDataAnd.push({month: thisMonth});
 
-
-            PaymentFormItem.find({
+            PaymentFormItem.countDocuments({
                     $or: findDataOr_Executive,
                     $and: findDataAnd
                 },
-                function (err, tables) {
+                function (err, counts) {
                     if (err) {
                         console.log(err);
                         reject(err);
                     } else {
-                        resolve(tables.length);
+                        resolve(counts);
                     }
                 })
         });
@@ -451,16 +465,141 @@ module.exports = function (app) {
             findDataAnd.push({creatorDID: userDID});
             findDataAnd.push({isSendReview: false});
 
-            PaymentFormItem.find({
+            PaymentFormItem.countDocuments({
                     $or: findDataOr,
                     $and: findDataAnd
                 },
-                function (err, tables) {
+                function (err, counts) {
                     if (err) {
                         console.log(err);
                         reject(err);
                     } else {
-                        resolve(tables.length);
+                        resolve(counts);
+                    }
+                })
+        });
+    }
+
+    // 工時表
+    async function getWorkHour_Manager(prjDIDArrays, create_formDateArrays) {
+        return new Promise((resolve, reject) => {
+
+            var findDataAnd = [];
+            findDataAnd.push({isSendReview: true});
+            findDataAnd.push({isManagerCheck: false});
+
+            WorkHourTable.countDocuments({
+                    // $or: findDataOr_Create_FormDate_Manager,
+                    prjDID: {
+                        $in: prjDIDArrays
+                    },
+                    create_formDate: {
+                        $in: create_formDateArrays
+                    },
+                    $and: findDataAnd
+                },
+                function (err, counts) {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    } else {
+                        resolve(counts);
+                    }
+                })
+        });
+    }
+
+    async function getWorkHour_Executive(userDIDArrays, create_formDateArrays) {
+        return new Promise((resolve, reject) => {
+
+            var findDataAnd = [];
+            findDataAnd.push({isSendReview: true});
+            findDataAnd.push({isManagerCheck: true});
+            findDataAnd.push({isExecutiveCheck: false});
+
+            WorkHourTable.countDocuments({
+                    // $or: findDataOr_Create_FormDate_Executive,
+                    creatorDID: {
+                        $in: userDIDArrays
+                    },
+                    create_formDate: {
+                        $in: create_formDateArrays
+                    },
+                    $and: findDataAnd
+                },
+                function (err, counts) {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    } else {
+                        resolve(counts);
+                    }
+                })
+        });
+    }
+
+    async function getWorkHour_Reject(userDID, findDataOr_Create_FormDate_Rejected) {
+        return new Promise((resolve, reject) => {
+            var findDataAnd = [];
+            findDataAnd.push({creatorDID: userDID});
+            findDataAnd.push({isSendReview: false});
+
+            WorkHourTable.countDocuments({
+                    $or: findDataOr_Create_FormDate_Rejected,
+                    $and: findDataAnd
+                },
+                function (err, counts) {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    } else {
+                        resolve(counts);
+                    }
+                })
+        });
+    }
+
+    // 加班申請
+    async function getWorkOverTime_Manager(prjDIDArrays) {
+        return new Promise((resolve, reject) => {
+
+            var findDataAnd = [];
+            findDataAnd.push({isSendReview: true});
+            findDataAnd.push({isManagerCheck: false});
+
+            WorkOverTimeItem.countDocuments({
+                    prjDID: {
+                        $in: prjDIDArrays
+                    },
+                    $and: findDataAnd
+                },
+                function (err, counts) {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    } else {
+                        resolve(counts);
+                    }
+                })
+        });
+    }
+
+    async function getWorkOverTime_Reject(userDID) {
+        return new Promise((resolve, reject) => {
+            var findDataAnd = [];
+            findDataAnd.push({creatorDID: userDID});
+            findDataAnd.push({isSendReview: false});
+            findDataAnd.push({isManagerReject: true});
+
+            WorkOverTimeItem.countDocuments({
+                    $and: findDataAnd
+                },
+                function (err, counts) {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    } else {
+                        resolve(counts);
                     }
                 })
         });
