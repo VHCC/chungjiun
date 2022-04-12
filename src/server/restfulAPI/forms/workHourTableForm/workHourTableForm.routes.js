@@ -259,16 +259,16 @@ module.exports = function (app) {
     // 多組creator, create_formDate
     app.post(global.apiUrl.post_work_hour_multiple_get, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_multiple_get");
-        var findData = []
-        if (req.body.relatedMembers != null) {
-            for (var index = 0; index < req.body.relatedMembers.length; index++) {
-                var target = {
-                    creatorDID: req.body.relatedMembers[index],
-                    create_formDate: req.body.create_formDate,
-                }
-                findData.push(target);
-            }
-        }
+        // var findData = []
+        // if (req.body.relatedMembers != null) {
+        //     for (var index = 0; index < req.body.relatedMembers.length; index++) {
+        //         var target = {
+        //             creatorDID: req.body.relatedMembers[index],
+        //             create_formDate: req.body.create_formDate,
+        //         }
+        //         findData.push(target);
+        //     }
+        // }
 
         // var query = {
         //     $or: findData,
@@ -384,8 +384,12 @@ module.exports = function (app) {
             findData.push(target);
         }
 
-        var query = {};
-        query.$or = findData;
+        var query = {
+            _id: {
+                $in: req.body.tableIDArray
+            }
+        };
+        // query.$or = findData;
         if (req.body.isFindSendReview !== null) {
             query.isSendReview = req.body.isFindSendReview;
         }
