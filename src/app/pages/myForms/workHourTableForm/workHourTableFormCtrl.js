@@ -3085,7 +3085,7 @@
         };
 
         // loginUser's relatedMembers.
-        $scope.mainRelatedMembers = null;
+        $scope.mainRelatedMembers = [];
 
         var managersRelatedProjects = [];
 
@@ -3984,11 +3984,15 @@
 
             var apiData = {};
 
+            if ($scope.mainRelatedMembers.length == 0) {
+                $scope.mainRelatedMembers.push($cookies.get('userDID'));
+            }
             apiData = {
                 users: $scope.mainRelatedMembers,
                 creatorDID: $cookies.get('userDID')
                 // date: $scope.firstFullDate_management
             }
+
 
             switch($scope.roleType) {
                 case "100": {

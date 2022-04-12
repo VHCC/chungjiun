@@ -210,6 +210,9 @@
                     // 墊付款
                     $rootScope.payment_Manager_Tasks = resp.payload.payment_Manager_Tasks;
                     $rootScope.payment_Executive_Tasks = resp.payload.payment_Executive_Tasks;
+                    if ($scope.userDID === '5d197f16a6b04756c893a162') {
+                        $rootScope.payment_Executive_Tasks = 0;
+                    }
                     $rootScope.payment_Rejected = resp.payload.payment_Rejected;
                     $rootScope.payment_Total = $rootScope.payment_Manager_Tasks
                         + $rootScope.payment_Executive_Tasks
