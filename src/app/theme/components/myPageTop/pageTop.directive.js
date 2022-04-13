@@ -83,11 +83,13 @@
                 .success(function (allUsers) {
                     // 主觀相關
                     $scope.relatedUserDIDArray_Boss = [];
+                    $scope.relatedUserDIDArray_All = [];
                     if ($scope.roleType === '2' || $scope.roleType === '100' || $scope.roleType === '6' || $scope.roleType === '1') {
 
                         for (var x = 0; x < allUsers.length; x++) {
                             if (allUsers[x].bossID === $scope.userDID) {
-                                $scope.relatedUserDIDArray_Boss.push(allUsers[x]._id)
+                                $scope.relatedUserDIDArray_Boss.push(allUsers[x]._id);
+                                $scope.relatedUserDIDArray_All.push(allUsers[x]._id)
                             }
                         }
                     }
@@ -102,6 +104,7 @@
 
                     $cookies.put('relatedUserDIDArray_Boss', JSON.stringify($scope.relatedUserDIDArray_Boss));
                     $cookies.put('relatedUserDIDArray_Executive', JSON.stringify($scope.relatedUserDIDArray_Executive));
+                    $cookies.put('relatedUserDIDArray_All', JSON.stringify($scope.relatedUserDIDArray_All));
 
                     // 工時表
                     $scope.create_formDate_array = [];
