@@ -561,14 +561,21 @@ module.exports = function (app) {
                 Temp.create({
                     tempID: req.body.users[userCounts],
                     creatorDID: req.body.creatorDID
+                }, function (err) {
+                    userCounts ++;
+                    if(err) {
+
+                    } else {
+                        if (userCounts == req.body.users.length) {
+                            res.status(200).send({
+                                code: 200,
+                                error: global.status._200,
+                            });
+                        }
+                    }
                 });
-                userCounts ++;
-                if (userCounts == req.body.users.length) {
-                    res.status(200).send({
-                        code: 200,
-                        error: global.status._200,
-                    });
-                }
+
+
             }
         }
 
