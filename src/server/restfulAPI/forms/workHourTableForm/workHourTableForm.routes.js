@@ -552,31 +552,49 @@ module.exports = function (app) {
 
     app.post(global.apiUrl.insert_work_hour_table_temp, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, insert_work_hour_table_temp");
-        // console.log(req.body.users);
-        var userCounts = 0
-        if (req.body.users != null) {
-            while(userCounts < req.body.users.length) {
-                var items = {};
-                items.userID = req.body.users[userCounts];
-                Temp.create({
-                    tempID: req.body.users[userCounts],
-                    creatorDID: req.body.creatorDID
-                }, function (err) {
-                    userCounts ++;
-                    if(err) {
+        var insertArray = [];
 
-                    } else {
-                        if (userCounts == req.body.users.length) {
-                            res.status(200).send({
-                                code: 200,
-                                error: global.status._200,
-                            });
-                        }
-                    }
+        for (var index = 0; index < req.body.users.length; index ++) {
+            insertArray.push({
+                tempID: req.body.users[index],
+                creatorDID: req.body.creatorDID
+            })
+        }
+        Temp.insertMany(insertArray, function (err) {
+            if(err) {
+
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
                 });
-
-
             }
+        });
+
+
+        // while(userCounts < req.body.users.length) {
+        //     Temp.create({
+        //         tempID: req.body.users[userCounts],
+        //         creatorDID: req.body.creatorDID
+        //     }, function (err) {
+        //         userCounts ++;
+        //         if(err) {
+        //
+        //         } else {
+        //             console.log(userCounts);
+        //             if (userCounts == req.body.users.length) {
+        //                 res.status(200).send({
+        //                     code: 200,
+        //                     error: global.status._200,
+        //                 });
+        //             }
+        //         }
+        //     });
+        // }
+
+
+        if (req.body.users != null) {
+
         }
 
     })
@@ -666,7 +684,7 @@ module.exports = function (app) {
                     console.log(err);
                     res.send(err);
                 } else {
-                    Temp.remove({
+                    Temp.deleteMany({
                         creatorDID: req.body.creatorDID
                     }, function (err) {
                         if (err) {
