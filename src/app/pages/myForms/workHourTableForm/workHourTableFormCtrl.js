@@ -4014,7 +4014,6 @@
         $scope.lastDate_management = DateUtil.formatDate(DateUtil.getShiftDatefromFirstDate(moment($scope.firstFullDate_management), 6));
 
         $scope.showManagementList = function () {
-
             var apiData = {};
 
             if ($scope.mainRelatedMembers.length == 0) {
@@ -4025,7 +4024,6 @@
                 creatorDID: $cookies.get('userDID')
                 // date: $scope.firstFullDate_management
             }
-
 
             switch($scope.roleType) {
                 case "100": {

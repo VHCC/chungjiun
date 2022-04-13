@@ -66,11 +66,11 @@ module.exports = function (app) {
         if (req.body.isBulletin) {
             delete findRequest ['isBulletin'];
             findRequest.year = {
-                $gte: req.body.year
+                $eq: req.body.year
             }
-            findRequest.month = {
-                $gte: req.body.month
-            }
+            // findRequest.month = {
+            //     $gte: req.body.month
+            // }
         }
 
         console.log("--- find Request ---");
