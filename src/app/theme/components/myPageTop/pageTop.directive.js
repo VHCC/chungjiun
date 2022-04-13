@@ -110,7 +110,7 @@
                     $scope.create_formDate_array = [];
                     $scope.create_formDate_array.push(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), 0));
                     $scope.create_formDate_array.push(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), -7));
-                    $scope.create_formDate_array.push(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), -14));
+                    // $scope.create_formDate_array.push(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), -14));
                     // $scope.create_formDate_array.push(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), -21));
 
 

@@ -139,11 +139,11 @@ module.exports = function (app) {
             if (req.body.isBulletin) {
                 delete findQuery ['isBulletin'];
                 findQuery.year = {
-                    $gte: req.body.year
+                    $eq: req.body.year
                 }
-                findQuery.month = {
-                    $gte: req.body.month
-                }
+                // findQuery.month = {
+                //     $gte: req.body.month
+                // }
             }
 
             WorkOffTableForm.find(
