@@ -4047,17 +4047,19 @@
             bsLoadingOverlayService.start({
                 referenceId: 'management_workHour'
             });
-
+            console.log(apiData);
             WorkHourUtil.insertWorkHourTempsData(apiData)
                 .success(function (res) {
-                    apiData = {
+                    console.log(res);
+                    var nextApiData = {
                         date: $scope.firstFullDate_management,
                         creatorDID: $cookies.get('userDID'),
                     }
-                    WorkHourUtil.fetchWorkHourFormManagementList(apiData)
+                    console.log(nextApiData);
+                    WorkHourUtil.fetchWorkHourFormManagementList(nextApiData)
                         .success(function (res) {
+                            console.log(res);
                             $scope.workHourManagementList = res.payload;
-
                             $timeout(function () {
                                 bsLoadingOverlayService.stop({
                                     referenceId: 'management_workHour'
