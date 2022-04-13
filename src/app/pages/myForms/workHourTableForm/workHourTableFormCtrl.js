@@ -321,7 +321,7 @@
 
             WorkHourUtil.updateWHTable(formData)
                 .success(function (res) {
-                    $scope.getWorkHourTables();
+                    // $scope.getWorkHourTables();
                 })
             // $scope.createSubmit(10, true);
         }
