@@ -1821,12 +1821,12 @@
                 break;
                 case 2: { // manager review
                     $scope.firstFullDate_manager = moment($scope.firstFullDate_manager).day(8).format('YYYY/MM/DD');
-                    $scope.showRelatedMembersTableReview(typeManager);
+                    $scope.showRelatedMembersTableReview(TypeManager);
                 }
                 break;
                 case 3: { // executive reviewe
                     $scope.firstFullDate_executive = moment($scope.firstFullDate_executive).day(8).format('YYYY/MM/DD');
-                    $scope.showRelatedMembersTableReview(typeExecutive);
+                    $scope.showRelatedMembersTableReview(TypeExecutive);
                 }
                 break;
                 case 4: { // history view
@@ -1853,12 +1853,12 @@
                 break;
                 case 2: {
                     $scope.firstFullDate_manager = moment($scope.firstFullDate_manager).day(-6).format('YYYY/MM/DD');
-                    $scope.showRelatedMembersTableReview(typeManager);
+                    $scope.showRelatedMembersTableReview(TypeManager);
                 }
                 break;
                 case 3: {
                     $scope.firstFullDate_executive = moment($scope.firstFullDate_executive).day(-6).format('YYYY/MM/DD');
-                    $scope.showRelatedMembersTableReview(typeExecutive);
+                    $scope.showRelatedMembersTableReview(TypeExecutive);
                 }
                 break;
                 case 4: {
@@ -3102,87 +3102,89 @@
                 case "6": // 主任
                 case "1": // 技師
                 case "2": // 經理
-                    Project.getProjectRelatedToManager(formData)
-                        .success(function (relatedProjects) {
-                            for(var index = 0; index < relatedProjects.length; index ++) {
-                                // 相關專案
-                                managersRelatedProjects.push(relatedProjects[index]._id);
-                            }
-                            // 工時表有填寫過的項目就會出現
-                            User.getAllUsers()
-                                .success(function (allUsers) {
-                                    for (var index = 0; index < allUsers.length; index ++) {
-                                        relatedMembers.push(allUsers[index]._id);
-                                    }
-                                    $scope.mainRelatedMembers = relatedMembers;
-                                    $scope.showRelatedMembersTableReview(typeManager);
-                                });
-                        })
+                    // Project.getProjectRelatedToManager(formData)
+                    //     .success(function (relatedProjects) {
+                    //         for(var index = 0; index < relatedProjects.length; index ++) {
+                    //             // 相關專案
+                    //             managersRelatedProjects.push(relatedProjects[index]._id);
+                    //         }
+                    //         // 工時表有填寫過的項目就會出現
+                    //         User.getAllUsers()
+                    //             .success(function (allUsers) {
+                    //                 for (var index = 0; index < allUsers.length; index ++) {
+                    //                     relatedMembers.push(allUsers[index]._id);
+                    //                 }
+                    //                 $scope.mainRelatedMembers = relatedMembers;
+                    //                 $scope.showRelatedMembersTableReview(TypeManager);
+                                // });
+                        // })
                     break;
                 case "100": //顯示行政審查人員
-                    Project.getProjectRelatedToManager(formData)
-                        .success(function (relatedProjects) {
-                            // console.log(" ======== Projects related to manager  ======== ");
-                            for(var index = 0; index < relatedProjects.length; index ++) {
-                                // 相關專案
-                                managersRelatedProjects.push(relatedProjects[index]._id);
-                            }
-
-                            // 行政總管跟每個人都有關
-
-                            // // 所有人，對照資料
-                            User.getAllUsers()
-                                .success(function (allUsers) {
-                                    var relatedMembers_all = [];
-                                    vm.executiveUsers = allUsers;
-
-                                    for (var index = 0; index < vm.executiveUsers.length; index ++) {
-                                        relatedMembers_all.push(vm.executiveUsers[index]._id);
-                                        relatedMembers.push(vm.executiveUsers[index]._id);
-                                    }
-                                    $scope.mainRelatedMembers = relatedMembers;
-                                    $scope.showRelatedMembersTableReview(typeManager);
-                                    $scope.mainRelatedMembers_all = relatedMembers_all;
-                                    $scope.showRelatedMembersTableReview(typeExecutive);
-                                });
-                        })
+                    // Project.getProjectRelatedToManager(formData)
+                    //     .success(function (relatedProjects) {
+                    //         // console.log(" ======== Projects related to manager  ======== ");
+                    //         for(var index = 0; index < relatedProjects.length; index ++) {
+                    //             // 相關專案
+                    //             managersRelatedProjects.push(relatedProjects[index]._id);
+                    //         }
+                    //
+                    //         // 行政總管跟每個人都有關
+                    //
+                    //         // // 所有人，對照資料
+                    //         User.getAllUsers()
+                    //             .success(function (allUsers) {
+                    //                 var relatedMembers_all = [];
+                    //                 vm.executiveUsers = allUsers;
+                    //
+                    //                 for (var index = 0; index < vm.executiveUsers.length; index ++) {
+                    //                     relatedMembers_all.push(vm.executiveUsers[index]._id);
+                    //                     relatedMembers.push(vm.executiveUsers[index]._id);
+                    //                 }
+                    //                 $scope.mainRelatedMembers = relatedMembers;
+                    //                 $scope.showRelatedMembersTableReview(TypeManager);
+                    //                 $scope.mainRelatedMembers_all = relatedMembers_all;
+                    //                 $scope.showRelatedMembersTableReview(TypeExecutive);
+                    //             });
+                    //     })
                     break;
             }
 
-            if ($scope.userDID  == '5d197f16a6b04756c893a162') {
-                Project.getProjectRelatedToManager(formData)
-                    .success(function (relatedProjects) {
-                        // console.log(" ======== Projects related to manager  ======== ");
-                        for(var index = 0; index < relatedProjects.length; index ++) {
-                            // 相關專案
-                            managersRelatedProjects.push(relatedProjects[index]._id);
-                        }
-                        // 行政總管跟每個人都有關
-
-                        // // 所有人，對照資料
-                        User.getAllUsers()
-                            .success(function (allUsers) {
-                                var relatedMembers_all = [];
-                                vm.executiveUsers = allUsers;
-
-                                for (var index = 0; index < vm.executiveUsers.length; index ++) {
-                                    relatedMembers_all.push(vm.executiveUsers[index]._id);
-                                    relatedMembers.push(vm.executiveUsers[index]._id);
-                                }
-                                $scope.mainRelatedMembers = relatedMembers;
-                                $scope.showRelatedMembersTableReview(typeManager);
-                                $scope.mainRelatedMembers_all = relatedMembers_all;
-                                $scope.showRelatedMembersTableReview(typeExecutive);
-                            });
-                    })
-            }
+            // if ($scope.userDID  == '5d197f16a6b04756c893a162') {
+            //     Project.getProjectRelatedToManager(formData)
+            //         .success(function (relatedProjects) {
+            //             // console.log(" ======== Projects related to manager  ======== ");
+            //             for(var index = 0; index < relatedProjects.length; index ++) {
+            //                 // 相關專案
+            //                 managersRelatedProjects.push(relatedProjects[index]._id);
+            //             }
+            //             // 行政總管跟每個人都有關
+            //
+            //             // // 所有人，對照資料
+            //             User.getAllUsers()
+            //                 .success(function (allUsers) {
+            //                     var relatedMembers_all = [];
+            //                     vm.executiveUsers = allUsers;
+            //
+            //                     for (var index = 0; index < vm.executiveUsers.length; index ++) {
+            //                         relatedMembers_all.push(vm.executiveUsers[index]._id);
+            //                         relatedMembers.push(vm.executiveUsers[index]._id);
+            //                     }
+            //                     $scope.mainRelatedMembers = relatedMembers;
+            //                     $scope.showRelatedMembersTableReview(TypeManager);
+            //                     $scope.mainRelatedMembers_all = relatedMembers_all;
+            //                     $scope.showRelatedMembersTableReview(TypeExecutive);
+            //                 });
+            //         })
+            // }
         }
 
-        var typeManager = 1;
-        var typeExecutive = 2;
+        const TypeManager = 1;
+        const TypeExecutive = 2;
 
         // show Related Members Table Review.
         $scope.showRelatedMembersTableReview = function(type) {
+            managersRelatedProjects = $rootScope.managersRelatedProjects;
+
             var targetFormFullDate = undefined;
 
             $scope.userMap_review = [];
@@ -3196,7 +3198,7 @@
                 create_formDate: targetFormFullDate,
             }
             switch(type) {
-                case typeManager: {
+                case TypeManager: {
                     bsLoadingOverlayService.start({
                         referenceId: 'manager_workHour'
                     });
@@ -3216,11 +3218,12 @@
                     targetFormFullDate = $scope.firstFullDate_manager;
 
                     getData = {
-                        relatedMembers: $scope.mainRelatedMembers,
+                        // relatedMembers: $scope.mainRelatedMembers,
+                        relatedMembers: JSON.parse($cookies.get('relatedUserDIDArray_Boss')),
                         create_formDate: targetFormFullDate,
                     }
                 } break;
-                case typeExecutive: {
+                case TypeExecutive: {
 
                     bsLoadingOverlayService.start({
                         referenceId: 'executive_workHour'
@@ -3242,13 +3245,15 @@
                     targetFormFullDate = $scope.firstFullDate_executive;
 
                     getData = {
-                        relatedMembers: $scope.mainRelatedMembers_all,
+                        // relatedMembers: $scope.mainRelatedMembers_all,
+                        relatedMembers: JSON.parse($cookies.get('relatedUserDIDArray_Executive')),
                         create_formDate: targetFormFullDate,
                     }
                 } break;
             }
             $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
             // 為審查做準備的資料
+            console.log(getData)
             WorkHourUtil.getWorkHourFormMultiple(getData)
                 .success(function (res) {
                     var relatedUsersAndTables = [];
@@ -3269,10 +3274,10 @@
                             // customized
                             userObject.DID = res.payload[formIndex].creatorDID;
                             switch (type) {
-                                case typeManager:
+                                case TypeManager:
                                     userObject.crossDay = $scope.checkIsCrossMonth($scope.firstFullDate_manager);
                                     break;
-                                case typeExecutive:
+                                case TypeExecutive:
                                     userObject.crossDay = $scope.checkIsCrossMonth($scope.firstFullDate_executive);
                                     break;
                             }
@@ -3317,21 +3322,21 @@
                             }
                         }
                         switch (type) {
-                            case typeManager:
+                            case TypeManager:
                                 $scope.checkUserReviewStatus(relatedUsersAndTables, false, null, type);
                                 break;
-                            case typeExecutive:
+                            case TypeExecutive:
                                 $scope.checkUserReviewStatus(relatedUsersAndTables, true, false, type);
                                 break;
                         }
                     } else {
                         switch (type) {
-                            case typeManager:
+                            case TypeManager:
                                 bsLoadingOverlayService.stop({
                                     referenceId: 'manager_workHour'
                                 });
                                 break;
-                            case typeExecutive:
+                            case TypeExecutive:
                                 bsLoadingOverlayService.stop({
                                     referenceId: 'executive_workHour'
                                 });
@@ -3341,14 +3346,14 @@
                 })
                 .error(function () {
                     switch (type) {
-                        case typeManager:
+                        case TypeManager:
                             $timeout(function () {
                                 bsLoadingOverlayService.stop({
                                     referenceId: 'manager_workHour'
                                 });
                             }, 200);
                             break;
-                        case typeExecutive:
+                        case TypeExecutive:
                             $timeout(function () {
                                 bsLoadingOverlayService.stop({
                                     referenceId: 'executive_workHour'
@@ -3382,22 +3387,22 @@
                         }
                         // userCount ++;
                         switch (type) {
-                            case typeManager:
+                            case TypeManager:
                                 $scope.usersReviewForManagers = userResult;
                                 break;
-                            case typeExecutive:
+                            case TypeExecutive:
                                 $scope.usersReviewForExecutive = userResult;
                                 break;
                         }
                         switch (type) {
-                            case typeManager:
+                            case TypeManager:
                                 $timeout(function () {
                                     bsLoadingOverlayService.stop({
                                         referenceId: 'manager_workHour'
                                     });
                                 }, 200);
                                 break;
-                            case typeExecutive:
+                            case TypeExecutive:
                                 $timeout(function () {
                                     bsLoadingOverlayService.stop({
                                         referenceId: 'executive_workHour'
@@ -3408,14 +3413,14 @@
                     })
                     .error(function () {
                         switch (type) {
-                            case typeManager:
+                            case TypeManager:
                                 $timeout(function () {
                                     bsLoadingOverlayService.stop({
                                         referenceId: 'manager_workHour'
                                     });
                                 }, 200);
                                 break;
-                            case typeExecutive:
+                            case TypeExecutive:
                                 $timeout(function () {
                                     bsLoadingOverlayService.stop({
                                         referenceId: 'executive_workHour'
@@ -3486,14 +3491,14 @@
             })
             if (tableTotalCounts == 0) {
                 switch (type) {
-                    case typeManager:
+                    case TypeManager:
                         $timeout(function () {
                             bsLoadingOverlayService.stop({
                                 referenceId: 'manager_workHour'
                             });
                         }, 200);
                         break;
-                    case typeExecutive:
+                    case TypeExecutive:
                         $timeout(function () {
                             bsLoadingOverlayService.stop({
                                 referenceId: 'executive_workHour'
@@ -3673,10 +3678,10 @@
             var create_formDate;
 
             switch (type) {
-                case typeManager: {
+                case TypeManager: {
                     create_formDate = $scope.firstFullDate_manager;
                 } break;
-                case typeExecutive: {
+                case TypeExecutive: {
                     create_formDate = $scope.firstFullDate_executive;
                 } break;
             }
@@ -3773,13 +3778,13 @@
             var fetchNationalHolidayData = {};
 
             switch (type) {
-                case typeManager: {
+                case TypeManager: {
                     fetchNationalHolidayData = {
                         create_formDate: $scope.firstFullDate_manager,
                         // year: thisYear,
                     }
                 } break;
-                case typeExecutive: {
+                case TypeExecutive: {
                     fetchNationalHolidayData = {
                         create_formDate: $scope.firstFullDate_executive,
                         // year: thisYear,
@@ -3947,11 +3952,11 @@
                 } break;
                 case 2: {
                     $scope.firstFullDate_manager = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment(datepicker.myDT)), 0);
-                    $scope.showRelatedMembersTableReview(typeManager)
+                    $scope.showRelatedMembersTableReview(TypeManager)
                 } break;
                 case 3: {
                     $scope.firstFullDate_executive = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment(datepicker.myDT)), 0);
-                    $scope.showRelatedMembersTableReview(typeExecutive);
+                    $scope.showRelatedMembersTableReview(TypeExecutive);
                 } break;
                 // management
                 case 5: {
@@ -3997,7 +4002,7 @@
             switch($scope.roleType) {
                 case "100": {
                     apiData = {
-                        users: $scope.mainRelatedMembers_all,
+                        users: JSON.parse($cookies.get('relatedUserDIDArray_Executive')),
                         creatorDID: $cookies.get('userDID')
                         // date: $scope.firstFullDate_management
                     }
@@ -4007,7 +4012,7 @@
 
             if ($cookies.get('userDID') == '5d197f16a6b04756c893a162') {
                 apiData = {
-                    users: $scope.mainRelatedMembers_all,
+                    users: JSON.parse($cookies.get('relatedUserDIDArray_Executive')),
                     creatorDID: $cookies.get('userDID')
                     // date: $scope.firstFullDate_management
                 }
@@ -4345,6 +4350,8 @@
         $scope.proxyApi = function (dom) {
             dom.fetchWorkOverTimeData();
         }
+
+        $scope.getWorkHourTables();
 
     } // function End line
 })();
