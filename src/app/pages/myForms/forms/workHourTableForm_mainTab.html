@@ -85,7 +85,7 @@
     </thead>
 
     <tbody id="tableItemBody{{$parent.$index}}"
-           ng-repeat="item in fetchTableItems($index)">
+           ng-repeat="item in tables[$index].tablesItems">
     <tr style="vertical-align: inherit; text-align: center">
         <td rowspan="2" style="vertical-align: inherit; text-align: center">
             <span id="prjCode{{$parent.$index}}">{{showPrjCode(item.prjDID)}}</span>
@@ -1254,13 +1254,13 @@
     <tr>
         <td colspan="22">
             <section class="col-md-12" >
-                <button progress-button="createSubmit(1500, false)"
-                        style="float: inherit; display: none"
-                        id="btnCreate"
-                        pb-style="shrink"
-                        class="btn btn-warning">
-                    Save
-                </button>
+                <!--<button progress-button="createSubmit(1500, false)"-->
+                        <!--style="float: inherit; display: none"-->
+                        <!--id="btnCreate"-->
+                        <!--pb-style="shrink"-->
+                        <!--class="btn btn-warning">-->
+                    <!--Save-->
+                <!--</button>-->
 
                 <button ng-click="reviewFormCheck($index, table)"
                         style="float: right; padding: 0 60px; line-height: 4"

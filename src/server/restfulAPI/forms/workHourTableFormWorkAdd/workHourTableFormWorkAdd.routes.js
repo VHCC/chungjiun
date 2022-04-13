@@ -9,7 +9,6 @@ module.exports = function (app) {
     // create Form
     app.post(global.apiUrl.post_work_hour_work_add_create_item, function (req, res) {
         try {
-
             if (req.body.hasOwnProperty('formTables')) {
                 for (var index = 0; index < req.body.formTables.length; index++) {
                     WorkHourTableFormWorkAdd.create({
@@ -41,7 +40,6 @@ module.exports = function (app) {
                 }
 
                 if (req.body.oldTables.length > 0) {
-
                     WorkHourTableFormWorkAdd.remove(
                         {
                             $or: findData,
@@ -52,19 +50,92 @@ module.exports = function (app) {
                         })
                 }
             }
-
         } finally {
             res.status(200).send({
                 code: 200,
                 error: global.status._200,
             });
         }
-
-
     });
 
-    app.post(global.apiUrl.post_work_hour_work_add_get_items, function (req, res) {
+    // 更新加班單
+    app.post(global.apiUrl.post_work_hour_work_add_update_item, function (req, res) {
+        console.log(req.body)
+        var updateCounts = 0;
+        for(var index = 0; index < req.body.workAddItems.length; index ++) {
+            WorkHourTableFormWorkAdd.updateOne({
+                _id: req.body.workAddItems[index]._id,
+            }, {
+                $set: {
+                    workAddType: req.body.workAddItems[index].workAddType,
+                    start_time: req.body.workAddItems[index].start_time,
+                    end_time: req.body.workAddItems[index].end_time,
+                    reason: req.body.workAddItems[index].reason,
+                }
+            }, function (err) {
+                updateCounts++;
+                if (err) {
+                    res.send(err);
+                } else {
+                    if (updateCounts == req.body.workAddItems.length) {
+                        res.status(200).send({
+                            code: 200,
+                            error: global.status._200,
+                        });
+                    }
+                }
+            })
+        }
+    });
 
+    // 移除新加班單
+    app.post(global.apiUrl.post_work_hour_work_add_remove_item, function (req, res) {
+        console.log(req.body)
+        var updateCounts = 0;
+            WorkHourTableFormWorkAdd.remove({
+                _id: req.body._id,
+            },function (err) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                    });
+                }
+            })
+    });
+
+    // create Form
+    app.post(global.apiUrl.post_work_hour_work_add_create_item_one, function (req, res) {
+        WorkHourTableFormWorkAdd.create({
+            creatorDID: req.body.creatorDID,
+            workAddType: req.body.workAddType,
+            create_formDate: req.body.create_formDate,
+            prjDID: req.body.prjDID,
+            year: req.body.year,
+            month: req.body.month,
+            day: req.body.day,
+            start_time: req.body.start_time,
+            end_time: req.body.end_time,
+            userMonthSalary: req.body.userMonthSalary,
+            reason: req.body.reason,
+            timestamp: moment(new Date()).format("YYYYMMDD_HHmmss")
+        }, function (err, resp) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: resp,
+                });
+            }
+        })
+    });
+
+
+    app.post(global.apiUrl.post_work_hour_work_add_get_items, function (req, res) {
         var keyArray = Object.keys(req.body);
         var query = {};
         for (var index = 0; index < keyArray.length; index++) {
@@ -251,8 +322,6 @@ module.exports = function (app) {
     });
 
     app.post(global.apiUrl.post_work_hour_work_add_month_salary_update, function (req, res) {
-        console.log(req.body);
-
         var resultCount = 0;
 
         for (var index = 0; index < req.body.items.length; index ++) {
@@ -280,8 +349,6 @@ module.exports = function (app) {
 
 
     app.post(global.apiUrl.post_work_hour_work_add_month_salary_update_all, function (req, res) {
-        console.log(req.body);
-
         WorkHourTableFormWorkAdd.updateMany({
             creatorDID: req.body.creatorDID,
             year: req.body.year,

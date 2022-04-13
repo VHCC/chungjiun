@@ -42,34 +42,28 @@
         // 主要顯示
         $scope.workAddTablesItems = [];
 
-        console.log($scope.table);
-
         var formData = {
             creatorDID: $scope.table.creatorDID,
             prjDID: $scope.table.prjDID,
             create_formDate: $scope.table.create_formDate,
             day: $scope.day,
         }
-        console.log(formData);
-        // console.log($scope.table);
-        var workAddTableIDArray = [];
+        // var workAddTableIDArray = [];
         WorkHourAddItemUtil.getWorkHourAddItems(formData)
             .success(function (res) {
-                console.log(res.payload);
                 $scope.workAddTablesItems = res.payload;
-                workAddTableIDArray = [];
+                // workAddTableIDArray = [];
                 // 組成 prjID Array, TableID Array，再去Server要資料
-                for (var index = 0; index < res.payload.length; index++) {
-                    workAddTableIDArray[index] = res.payload[index]._id;
-                }
-                // console.log(workAddTableIDArray);
+                // for (var index = 0; index < res.payload.length; index++) {
+                //     workAddTableIDArray[index] = res.payload[index]._id;
+                // }
             })
             .error(function () {
                 console.log('ERROR  WorkHourAddItemUtil.getWorkHourAddItems')
             })
 
-        $scope.addWorkAddItem = function () {
-            var inserted = {
+        $scope.createWorkAddItem = function (items) {
+            var createData = {
                 creatorDID: $scope.userDID,
                 workAddType: 1,
                 create_formDate: $scope.table.create_formDate,
@@ -79,16 +73,26 @@
                 month: (new Date(DateUtil.getShiftDatefromFirstDate(moment($scope.table.create_formDate), ($scope.day - 1))).getMonth() + 1),
                 day: $scope.day,
                 start_time: "08:30",
-                end_time: "17:30",
+                end_time: "08:30",
                 reason: "",
                 userMonthSalary: $scope.userMonthSalary,
-                // userHourSalary: $scope.userHourSalary,
             };
-            $scope.workAddTablesItems.push(inserted);
+
+            WorkHourAddItemUtil.createWorkHourAddItemOne(createData)
+                .success(function (resp) {
+                    $scope.workAddTablesItems.push(resp.payload);
+                })
         }
 
-        $scope.removeWorkAddItem = function (index) {
-            $scope.workAddTablesItems.splice(index, 1);
+        $scope.removeWorkAddItem = function (index, item) {
+            var removeData = {
+                _id: item._id
+            }
+
+            WorkHourAddItemUtil.removeWorkHourAddItem(removeData)
+                .success(function (resp) {
+                    $scope.workAddTablesItems.splice(index, 1);
+                })
         };
 
         $scope.setWorkAddType = function (table, type) {
@@ -108,7 +112,6 @@
                 // $scope.table.totalHourTemp = 0;
                 return 0;
             }
-
             // $scope.table.totalHourTemp = result;
             return result;
         }
@@ -169,8 +172,6 @@
 
         // 分鐘數
         $scope.showWorkOverMin = function (workOverOn, workOverOff, type) {
-            // console.log(workOverOn);
-            // console.log(workOverOff);
             var workOnHour;
             var workOnMin;
             var workOffHour;
@@ -196,13 +197,9 @@
         }
 
         // **************** time section ********************
-
         $scope.saveWorkAddItem = function (button) {
-
-            var result = $scope.showTotalAddHour($scope.workAddTablesItems, 1) + $scope.showTotalAddHour($scope.workAddTablesItems, 2);
-
-            console.log($scope.showTotalAddHour($scope.workAddTablesItems, 1) + $scope.showTotalAddHour($scope.workAddTablesItems, 2));
-
+            var result = $scope.showTotalAddHour($scope.workAddTablesItems, 1) +
+                $scope.showTotalAddHour($scope.workAddTablesItems, 2);
             if (isNaN(result)) {
                 toastr.error('加班單格式錯誤，請檢查', '錯誤');
                 return;
@@ -212,8 +209,8 @@
             $scope.table.totalHourTemp = result;
             var data = {
                 table: $scope.table,
-                formTables: $scope.workAddTablesItems,
-                oldTables: workAddTableIDArray,
+                workAddTablesItems: $scope.workAddTablesItems,
+                // oldTables: workAddTableIDArray,
             };
             $uibModalInstance.close(data);
         };

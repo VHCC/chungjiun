@@ -689,6 +689,22 @@
                     return http.post('/api/removeWorkHourTableForm', formData);
                 },
 
+                insertWorkHourTableItem : function (formData) {
+                    return http.post('/api/post_work_hour_insert_table_item', formData);
+                },
+
+                removeWorkHourTableItem: function(formData) {
+                    return http.post('/api/post_work_hour_remove_table_item_by_did', formData);
+                },
+
+                updateWorkHourForm: function(formData) {
+                    return http.post('/api/post_work_hour_form_update', formData);
+                },
+
+                createWorkHourForm: function(formData) {
+                    return http.post('/api/post_work_hour_create_form', formData);
+                },
+
                 getWorkHourForm: function (formData) {
                     return http.post('/api/getWorkHourForm', formData);
                 },
@@ -1219,6 +1235,19 @@
                 createWorkHourAddItem: function (formData) {
                     return http.post('/api/post_work_hour_work_add_create_item', formData);
                 },
+
+                updateWorkHourAddItem: function (formData) {
+                    return http.post('/api/post_work_hour_work_add_update_item', formData);
+                },
+
+                removeWorkHourAddItem: function (formData) {
+                    return http.post('/api/post_work_hour_work_add_remove_item', formData);
+                },
+
+                createWorkHourAddItemOne: function(formData) {
+                    return http.post('/api/post_work_hour_work_add_create_item_one', formData);
+                },
+
                 getWorkHourAddItems: function (formData) {
                     return http.post('/api/post_work_hour_work_add_get_items', formData);
                 },

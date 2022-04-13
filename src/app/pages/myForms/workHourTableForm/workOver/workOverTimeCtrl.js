@@ -150,7 +150,7 @@
                 year: specificYear,
                 month: specificMonth,
             }
-            $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
+            // $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
             WorkOverTimeUtil.fetchWOTItemFromDB(formData)
                 .success(function (res) {
                     $scope.workOverTimeTablesItems = res.payload;
@@ -277,6 +277,7 @@
 
             WorkOverTimeUtil.updateWOTItemFromDB(formData)
                 .success(function (res) {
+                    $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
                     $scope.fetchWorkOverTimeData();
                 })
         }

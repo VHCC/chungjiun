@@ -83,7 +83,6 @@
             if (vm.prjItems) {
                 vm.prjItems.selected = null;
             }
-            vm.projects = $scope.allProject_raw.slice();
         }
 
         //所有專案，資料比對用
