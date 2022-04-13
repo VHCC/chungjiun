@@ -3219,7 +3219,7 @@
 
                     getData = {
                         // relatedMembers: $scope.mainRelatedMembers,
-                        relatedMembers: JSON.parse($cookies.get('relatedUserDIDArray_Executive')),
+                        relatedMembers: JSON.parse($cookies.get('relatedUserDIDArray_All')),
                         create_formDate: targetFormFullDate,
                     }
                 } break;
