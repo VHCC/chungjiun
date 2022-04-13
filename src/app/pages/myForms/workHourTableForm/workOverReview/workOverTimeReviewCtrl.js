@@ -65,7 +65,6 @@
         // 所有人，對照資料
         User.getAllUsers()
             .success(function (allUsers) {
-
                 var relatedMembers = [];
 
                 vm.users = allUsers; // 新增表單
@@ -87,7 +86,6 @@
 
         Project.findAll()
             .success(function (allProjects) {
-
                 $scope.allProject_raw = allProjects;
 
                 $scope.allProjectCache = [];
@@ -251,7 +249,7 @@
                     var userResult = [];
                     var evalString;
                     // console.log(res);
-                    $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
+                    // $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
                     if (res.payload.length > 0) {
                         for (var itemIndex = 0; itemIndex < res.payload.length; itemIndex ++) {
                             var isProjectIncluded = false;
@@ -341,7 +339,6 @@
 
         //專案經理一鍵確認 -2
         $scope.sendWOTManagerAllAgree = function (userDID) {
-
             var updateTables = [];
             for (var index = 0; index < $scope.fetchReviewItemsFromScope(userDID).length; index ++) {
                 if (managersRelatedProjects.includes($scope.fetchReviewItemsFromScope(userDID)[index].prjDID)) { // 只跟自己有關的專案
@@ -361,6 +358,7 @@
                     .success(function (res) {
                         resultCount ++;
                         if (resultCount == updateTables.length) {
+                            $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
                             $scope.getWOTReviewData_manager();
                         }
                     })
@@ -394,7 +392,7 @@
             }
             WorkOverTimeUtil.updateWOTItemFromDB(formData)
                 .success(function (res) {
-                    console.log(res);
+                    $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
                     $scope.getWOTReviewData_manager();
                 })
         }

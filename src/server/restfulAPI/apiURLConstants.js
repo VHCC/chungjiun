@@ -128,6 +128,12 @@ global.apiUrl = {
     //workHourTable Form
     post_work_hour_create_table : '/api/createWorkHourTableForm',
     post_work_hour_remove_table : '/api/removeWorkHourTableForm',
+
+    post_work_hour_insert_table_item : '/api/post_work_hour_insert_table_item',
+    post_work_hour_remove_table_item_by_did : '/api/post_work_hour_remove_table_item_by_did',
+    post_work_hour_form_update: '/api/post_work_hour_form_update',
+    post_work_hour_create_form: '/api/post_work_hour_create_form',
+
     post_work_hour_get : '/api/getWorkHourForm',
     post_work_hour_multiple_get : '/api/post_work_hour_multiple_get',
     post_work_hour_get_for_manager : '/api/post_work_hour_get_for_manager',
@@ -156,6 +162,10 @@ global.apiUrl = {
 
     //workHourTable Form Work Add
     post_work_hour_work_add_create_item : '/api/post_work_hour_work_add_create_item',
+    post_work_hour_work_add_update_item : '/api/post_work_hour_work_add_update_item',
+    post_work_hour_work_add_remove_item : '/api/post_work_hour_work_add_remove_item',
+    post_work_hour_work_add_create_item_one : '/api/post_work_hour_work_add_create_item_one',
+
     post_work_hour_work_add_get_items : '/api/post_work_hour_work_add_get_items',
     post_work_hour_work_remove_related_work_add_items : '/api/post_work_hour_work_remove_related_work_add_items',
     post_work_hour_work_executive_confirm : '/api/post_work_hour_work_executive_confirm',

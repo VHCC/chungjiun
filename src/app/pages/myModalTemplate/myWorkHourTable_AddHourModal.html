@@ -28,7 +28,7 @@
                         <br>
                         <button class="btn btn-danger editable-table-button btn-xs"
                                 ng-show="editableFlag"
-                                ng-click="removeWorkAddItem($index);">
+                                ng-click="removeWorkAddItem($index, table);">
                             移除
                         </button>
                     </td>
@@ -118,7 +118,7 @@
         </div>
         <div style="margin-left: 20px" ng-show="editableFlag">
             <button type="button"
-                    ng-click="addWorkAddItem(workAddTablesItems)"
+                    ng-click="createWorkAddItem(workAddTablesItems)"
                     class="btn btn-info btn-icon">
                 <i class="ion-plus-round"/>
             </button>
