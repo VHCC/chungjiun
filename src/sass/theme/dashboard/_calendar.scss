@@ -415,6 +415,10 @@ a.fc-more {
   }
 }
 
+.fc-event-container {
+  cursor: pointer;
+}
+
 .fc-toolbar {
   text-align: center;
   margin-bottom: 1em;
@@ -671,6 +675,7 @@ a.fc-more {
   &.fc-short {
     .fc-content {
       white-space: nowrap;
+      cursor: pointer;
     }
 
     .fc-time {
