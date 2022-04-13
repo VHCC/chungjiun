@@ -3251,9 +3251,7 @@
                     }
                 } break;
             }
-            $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
             // 為審查做準備的資料
-            console.log(getData)
             WorkHourUtil.getWorkHourFormMultiple(getData)
                 .success(function (res) {
                     var relatedUsersAndTables = [];
@@ -3343,6 +3341,7 @@
                                 break;
                         }
                     }
+                    $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
                 })
                 .error(function () {
                     switch (type) {
@@ -3669,7 +3668,7 @@
                 $scope.fetchNHReviewTables(userData.DID, type);
                 $scope.fetchWorkAddReviewTables(userData.DID, $scope.firstFullDate_executive);
             }
-            $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
+            // $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
         }
 
         // get work Off tables
@@ -3730,6 +3729,7 @@
                     }
                     var evalString = "$scope.workOffTablesItems['" + userDID + "'] = formTables";
                     eval(evalString);
+                    $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
                 })
                 .error(function () {
                     console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByUserDID');
