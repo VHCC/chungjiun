@@ -553,22 +553,25 @@ module.exports = function (app) {
     app.post(global.apiUrl.insert_work_hour_table_temp, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, insert_work_hour_table_temp");
         // console.log(req.body.users);
-        var index = 0
+        var userCounts = 0
         if (req.body.users != null) {
-            while(index < req.body.users.length) {
+            while(userCounts < req.body.users.length) {
                 var items = {};
-                items.userID = req.body.users[index];
+                items.userID = req.body.users[userCounts];
                 Temp.create({
-                    tempID: req.body.users[index],
+                    tempID: req.body.users[userCounts],
                     creatorDID: req.body.creatorDID
                 });
-                index ++;
+                userCounts ++;
+                if (userCounts == req.body.users.length) {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                    });
+                }
             }
         }
-        res.status(200).send({
-            code: 200,
-            error: global.status._200,
-        });
+
     })
 
     // management List
