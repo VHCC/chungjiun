@@ -4,6 +4,7 @@ var Project = require('../../models/project');
 var Temp = require('../../models/temp');
 // var NotificationMsgItem = require('../../models/notificationMsgItem');
 var moment = require('moment');
+var Mongoose = require('mongoose');
 
 module.exports = function (app) {
     'use strict';
@@ -742,7 +743,11 @@ module.exports = function (app) {
         }
         delete query['_id'];
 
-        console.log(query)
+        if (query.formTables.length > 0) {
+            for (var index = 0; index < query.formTables.length; index ++) {
+                query.formTables[index].tableID = Mongoose.Types.ObjectId(query.formTables[index].tableID);
+            }
+        }
 
         WorkHourForm.updateOne(
             {
@@ -813,7 +818,8 @@ module.exports = function (app) {
                 res.status(200).send({
                     code: 200,
                     error: global.status._200,
-                    payload: table,
+                    tableID: Mongoose.Types.ObjectId(table._id),
+                    prjDID: table.prjDID,
                 });
             }
         })

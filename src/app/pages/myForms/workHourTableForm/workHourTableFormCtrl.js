@@ -254,8 +254,8 @@
                     .success(function (resp) {
                         completeCount ++;
                         var newItem = {
-                            prjDID: resp.payload.prjDID,
-                            tableID: resp.payload._id,
+                            prjDID: resp.prjDID,
+                            tableID: resp.tableID,
                         }
                         $scope.tables[0].formTables.push(newItem);
                         if (completeCount == insertCount){
@@ -276,8 +276,8 @@
                     .success(function (resp) {
                         completeCount ++;
                         var newItem = {
-                            prjDID: resp.payload.prjDID,
-                            tableID: resp.payload._id,
+                            prjDID: resp.prjDID,
+                            tableID: resp.tableID,
                         }
                         $scope.tables[1].formTables.push(newItem);
                         if (completeCount == insertCount){
