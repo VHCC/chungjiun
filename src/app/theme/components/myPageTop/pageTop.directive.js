@@ -87,9 +87,9 @@
                     if ($scope.roleType === '2' || $scope.roleType === '100' || $scope.roleType === '6' || $scope.roleType === '1') {
 
                         for (var x = 0; x < allUsers.length; x++) {
+                            $scope.relatedUserDIDArray_All.push(allUsers[x]._id)
                             if (allUsers[x].bossID === $scope.userDID) {
                                 $scope.relatedUserDIDArray_Boss.push(allUsers[x]._id);
-                                $scope.relatedUserDIDArray_All.push(allUsers[x]._id)
                             }
                         }
                     }
