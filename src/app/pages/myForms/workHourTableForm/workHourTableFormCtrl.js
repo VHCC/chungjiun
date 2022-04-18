@@ -4026,6 +4026,71 @@
             }
 
             switch($scope.roleType) {
+                case "2": {
+
+                    bsLoadingOverlayService.start({
+                        referenceId: 'management_workHour'
+                    });
+
+                    var fetchData = {
+                        prjDIDs: $rootScope.managersRelatedProjects,
+                        create_formDate: $scope.firstFullDate_management,
+                    }
+                    WorkHourUtil.fetchRelatedUserDIDByProjectDID(fetchData)
+                        .success(function (resp) {
+                            var relatedMangerUserDID = [];
+                            for (var index = 0; index < resp.payload.length; index ++) {
+                                relatedMangerUserDID.push(resp.payload[index]._id);
+                            }
+
+                            if (!relatedMangerUserDID.includes($cookies.get('userDID'))) {
+
+                                relatedMangerUserDID.push($cookies.get('userDID'));
+
+                            }
+
+                            apiData = {
+                                users: relatedMangerUserDID,
+                                creatorDID: $cookies.get('userDID')
+                            }
+
+                            WorkHourUtil.insertWorkHourTempsData(apiData)
+                                .success(function (res) {
+                                    var nextApiData = {
+                                        date: $scope.firstFullDate_management,
+                                        creatorDID: $cookies.get('userDID'),
+                                    }
+                                    WorkHourUtil.fetchWorkHourFormManagementList(nextApiData)
+                                        .success(function (res) {
+                                            $scope.workHourManagementList = res.payload;
+                                            $timeout(function () {
+                                                bsLoadingOverlayService.stop({
+                                                    referenceId: 'management_workHour'
+                                                });
+                                            }, 200)
+                                        })
+                                        .error(function () {
+                                            $timeout(function () {
+                                                bsLoadingOverlayService.stop({
+                                                    referenceId: 'management_workHour'
+                                                });
+                                            }, 200)
+                                            console.log("Error, WorkHourUtil.fetchWorkHourFormManagementList");
+                                        })
+                                })
+                                .error(function () {
+                                    $timeout(function () {
+                                        bsLoadingOverlayService.stop({
+                                            referenceId: 'management_workHour'
+                                        });
+                                    }, 200)
+                                    console.log('Error, WorkHourUtil.insertWorkHourFormManagementRelatedMembersTemp');
+                                    toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
+                                })
+
+                        })
+                }
+                    return;
                 case "100": {
                     apiData = {
                         users: JSON.parse($cookies.get('relatedUserDIDArray_Executive')),
@@ -4047,18 +4112,14 @@
             bsLoadingOverlayService.start({
                 referenceId: 'management_workHour'
             });
-            console.log(apiData);
             WorkHourUtil.insertWorkHourTempsData(apiData)
                 .success(function (res) {
-                    console.log(res);
                     var nextApiData = {
                         date: $scope.firstFullDate_management,
                         creatorDID: $cookies.get('userDID'),
                     }
-                    console.log(nextApiData);
                     WorkHourUtil.fetchWorkHourFormManagementList(nextApiData)
                         .success(function (res) {
-                            console.log(res);
                             $scope.workHourManagementList = res.payload;
                             $timeout(function () {
                                 bsLoadingOverlayService.stop({
