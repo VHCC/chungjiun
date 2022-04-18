@@ -738,6 +738,10 @@
                     return http.post('/api/insert_work_hour_table_temp', formData);
                 },
 
+                fetchRelatedUserDIDByProjectDID: function (formData) {
+                    return http.post('/api/fetch_work_hour_table_related_userDID_by_pro_did', formData);
+                },
+
                 fetchWorkHourFormManagementList: function (formData) {
                     return http.post('/api/get_work_hour_table_management_list', formData);
                 },

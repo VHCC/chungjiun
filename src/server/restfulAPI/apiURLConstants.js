@@ -145,6 +145,7 @@ global.apiUrl = {
         // management
     get_work_hour_table_management_list : '/api/get_work_hour_table_management_list',
     insert_work_hour_table_temp : '/api/insert_work_hour_table_temp',
+    fetch_work_hour_table_related_userDID_by_pro_did : '/api/fetch_work_hour_table_related_userDID_by_pro_did',
         // statistics
     query_statistics_form : '/api/query_statistics_form',
     query_statistics_form_CJ : '/api/query_statistics_form_CJ',

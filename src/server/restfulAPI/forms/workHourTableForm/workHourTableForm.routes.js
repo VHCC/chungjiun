@@ -1,5 +1,6 @@
 var WorkHourForm = require('../../models/workHourForm');
 var WorkHourTable = require('../../models/workHourTableForm');
+
 var Project = require('../../models/project');
 var Temp = require('../../models/temp');
 // var NotificationMsgItem = require('../../models/notificationMsgItem');
@@ -850,6 +851,65 @@ module.exports = function (app) {
                 });
             }
         });
+    });
+
+    // fetch related User
+    app.post(global.apiUrl.fetch_work_hour_table_related_userDID_by_pro_did, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, fetch_work_hour_table_related_userDID_by_pro_did");
+        console.log(res.body)
+        // WorkHourTable.find({
+        //     prjDID: {
+        //         $in: req.body.prjDIDs
+        //     },
+        //     create_formDate: req.body.create_formDate,
+        // }, function (err, userDIDs) {
+        //     if (err) {
+        //         console.log(global.timeFormat(new Date()) + global.log.e + "API, fetch_work_hour_table_related_userDID_by_pro_did");
+        //         console.log(req.body);
+        //         console.log(" ***** ERROR ***** ");
+        //         console.log(err);
+        //         res.send(err);
+        //     } else {
+        //         res.status(200).send({
+        //             code: 200,
+        //             error: global.status._200,
+        //             payload: userDIDs,
+        //         });
+        //     }
+        // });
+
+        WorkHourTable.aggregate(
+            [
+                {
+                    $match: {
+                        prjDID: {
+                            $in: req.body.prjDIDs
+                        },
+                        create_formDate: req.body.create_formDate,
+                    }
+                },
+                {
+                    $group: {
+                        _id: "$creatorDID",
+                        count: {
+                            $sum: 1
+                        }
+                    }
+                }
+            ], function (err, tables) {
+                if (err) {
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.status(200).send({
+                        code: 200,
+                        error: global.status._200,
+                        payload: tables,
+                    });
+                }
+            }
+        )
+
     });
 
 
