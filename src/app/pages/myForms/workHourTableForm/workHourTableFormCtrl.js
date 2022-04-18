@@ -4026,6 +4026,7 @@
             }
 
             switch($scope.roleType) {
+                case "1":
                 case "2": {
 
                     bsLoadingOverlayService.start({
