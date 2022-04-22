@@ -279,6 +279,9 @@
             SubContractorApplyUtil.fetchSCApplyItems(formData)
                 .success(function (res) {
                     $scope.displaySubContractorApplyItems = res.payload;
+                    $scope.displaySubContractorApplyItems = $scope.displaySubContractorApplyItems.sort(function (a, b) {
+                        return a.contractDate < b.contractDate ? 1 : -1;
+                    });
 
                     $timeout(function () {
                         bsLoadingOverlayService.stop({
