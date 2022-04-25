@@ -86,7 +86,8 @@
             <td style="vertical-align: inherit; text-align: center">內容說明</td>
             <td style="vertical-align: inherit; text-align: center" width="100px">墊付金額</td>
             <td style="vertical-align: inherit; text-align: center" width="50px">更新時間</td>
-            <td style="vertical-align: inherit; text-align: center">經理簽章</td>
+            <td style="vertical-align: inherit; text-align: center">經理/主任簽章</td>
+            <td style="vertical-align: inherit; text-align: center">行政簽章</td>
         </tr>
         </thead>
         <tbody ng-repeat="item in displayPaymentItems">
@@ -98,6 +99,12 @@
                         ng-if="!item.isSendReview"
                         ng-click="removePaymentItem(item, 0);">移除
                 </button>
+                <!--抽單-->
+                <div class="buttons" ng-if="item.isSendReview && (!item.isExecutiveCheck || !item.isManagerCheck)">
+                    <button class="btn btn-success editable-table-button btn-xs"
+                    ng-click="cancelReview(item) ">抽單
+                    </button>
+                </div>
             </td>
             <!--專案代碼-->
             <td class="form-group" style="vertical-align: inherit; text-align: center">
@@ -151,7 +158,7 @@
                 </span>
             </td>
 
-            <!--經理簽章-->
+            <!--經理/主任簽章-->
             <td rowspan="2" style="vertical-align: inherit;">
                 <div ng-if="(item.isSendReview && !item.isManagerCheck)">
                     <button class="btn btn-warning editable-table-button btn-xs"
@@ -192,6 +199,58 @@
                     ng-mouseleave="hover = false">
                     原因：<i class="ion-clipboard"></i>
                     <span class="tooltiptext">{{item.managerReject_memo}}</span>
+                </my>
+                <!--抽單-->
+                <!--<div ng-if="item.isSendReview">-->
+                    <!--<div class="buttons" >-->
+                        <!--<button class="btn btn-success editable-table-button btn-xs"-->
+                                <!--ng-click="cancelReview(item) ">抽單-->
+                        <!--</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </td>
+
+            <!--行政-->
+            <td rowspan="2" style="vertical-align: inherit;">
+                <div ng-if="(item.isSendReview && !item.isExecutiveCheck)">
+                    <button class="btn btn-warning editable-table-button btn-xs"
+                            style="color: black">
+                        行政
+                        <br>
+                        確認作業中
+                    </button>
+                </div>
+                <div ng-if="item.isExecutiveCheck">
+                    <div ng-if="!item.isExecutiveAdd">
+                        <button class="btn btn-info editable-table-button btn-xs"
+                                style="color: black">
+                            行政
+                            <br>
+                            確認完成
+                        </button>
+                    </div>
+                    <div ng-if="item.isExecutiveAdd">
+                        <button class="btn btn-primary editable-table-button btn-xs"
+                                style="color: black">
+                            行政修訂
+                        </button>
+                    </div>
+                </div>
+                <div ng-if="!item.isSendReview && item.isExecutiveReject">
+                    <button class="btn btn-warning editable-table-button btn-xs"
+                            style="color: black">
+                        行政
+                        <br>
+                        退回
+                    </button>
+                </div>
+                <my ng-if="!item.isSendReview && item.isExecutiveReject"
+                    ng-class="{workAdd: hover}"
+                    class="mytooltip"
+                    ng-mouseover="hover = true"
+                    ng-mouseleave="hover = false">
+                    原因：<i class="ion-clipboard"></i>
+                    <span class="tooltiptext">{{item.executiveReject_memo}}</span>
                 </my>
                 <!--抽單-->
                 <!--<div ng-if="item.isSendReview">-->
