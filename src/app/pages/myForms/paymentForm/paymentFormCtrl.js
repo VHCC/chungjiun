@@ -1092,6 +1092,8 @@
                 isExecutiveCheck: false,
                 isExecutiveReject: true,
 
+                executiveReject_memo: rejectMsg,
+
                 updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
                 updateAction: "executiveReject"
             }
