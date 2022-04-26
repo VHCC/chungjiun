@@ -4038,6 +4038,7 @@
                         prjDIDs: $rootScope.managersRelatedProjects,
                         create_formDate: $scope.firstFullDate_management,
                     }
+
                     WorkHourUtil.fetchRelatedUserDIDByProjectDID(fetchData)
                         .success(function (resp) {
                             var relatedMangerUserDID = [];
@@ -4048,12 +4049,19 @@
                             if (!relatedMangerUserDID.includes($cookies.get('userDID'))) {
 
                                 relatedMangerUserDID.push($cookies.get('userDID'));
-
                             }
 
                             apiData = {
                                 users: relatedMangerUserDID,
                                 creatorDID: $cookies.get('userDID')
+                            }
+
+                            if ($cookies.get('userDID') == '5d197f16a6b04756c893a162') {
+                                apiData = {
+                                    users: JSON.parse($cookies.get('relatedUserDIDArray_Executive')),
+                                    creatorDID: $cookies.get('userDID')
+                                    // date: $scope.firstFullDate_management
+                                }
                             }
 
                             WorkHourUtil.insertWorkHourTempsData(apiData)
