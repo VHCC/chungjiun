@@ -65,7 +65,7 @@
             var specificMonth = thisMonth;
 
             // 所有人，對照資料
-            User.getAllUsers()
+            User.getAllUsersWithSignOut()
                 .success(function (allUsers) {
                     vm.mainUsers = allUsers; // 俸給設定
                 });
@@ -77,7 +77,7 @@
             }
 
             $scope.showWageTable = function (userDID) {
-                console.log(userDID);
+                // console.log(userDID);
                 var formData = {
                     creatorDID: userDID == null ? vm.main.selected._id : userDID,
                     year: specificYear,
@@ -92,7 +92,7 @@
 
                 WageManageUtil.fetchUserWageMain(formData)
                     .success(function (res) {
-                        console.log(res)
+                        // console.log(res);
                         if (res.payload == null) {
                             WageManageUtil.createUserWageMain(formData)
                                 .success(function (res) {
