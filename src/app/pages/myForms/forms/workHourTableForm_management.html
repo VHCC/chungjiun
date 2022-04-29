@@ -55,28 +55,33 @@
                 </td>
                 <!--工時表狀態-->
                 <td style="vertical-align: inherit; text-align: center">
-                    <span id="a_{{$index}}" ng-show="item.work_hour_tables.length != 0">{{checkManagementStatus(item, 1, this, 1)}}</span>
-                    <span ng-show="item.work_hour_tables.length == 0" style="color:#ff0000">未填寫</span>
+                    <span id="a_{{$index}}" ng-show="item.work_hour_forms[0].formTables.length != 0">{{checkManagementStatus(item, 1, this, 1)}}</span>
+                    <span ng-if="item.work_hour_forms[0].formTables.length == 0" style="color:#ff0000">未填寫</span>
+                    <span ng-if="item.work_hour_forms.length == 0" style="color:#ff0000">未填寫</span>
                 </td>
 
                 <!--經理/主任審核狀態-->
                 <td style="vertical-align: inherit; text-align: center">
-                    <span id="b_{{$index}}" ng-show="item.work_hour_forms.length != 0">{{checkManagementStatus(item, 2, this, 1)}}</span>
+                    <span id="b_{{$index}}" ng-if="item.work_hour_forms[0].formTables.length != 0">{{checkManagementStatus(item, 2, this, 1)}}</span>
                 </td>
 
                 <!--行政確認狀態-->
                 <td style="vertical-align: inherit; text-align: center">
-                    <span id="c_{{$index}}" ng-show="item.work_hour_forms.length != 0">{{checkManagementStatus(item, 3, this, 1)}}</span>
+                    <span id="c_{{$index}}" ng-if="item.work_hour_forms[0].formTables.length != 0">{{checkManagementStatus(item, 3, this, 1)}}</span>
                 </td>
-                <td style="vertical-align: inherit; text-align: center" ng-show="checkIsCrossMonth(firstFullDate_management)>0">
-                    <span ng-show="item.work_hour_forms.length > 1" id="aa_{{$index}}" >{{checkManagementStatus(item, 1, this, 2)}}</span>
-                    <span ng-show="item.work_hour_forms.length < 2" style="color:#ff0000">未填寫</span>
+                <td style="vertical-align: inherit; text-align: center"
+                    ng-if="checkIsCrossMonth(firstFullDate_management)>0">
+                    <span ng-if="item.work_hour_forms[1].formTables.length != 0" id="aa_{{$index}}" >{{checkManagementStatus(item, 1, this, 2)}}</span>
+                    <span ng-if="item.work_hour_forms[1].formTables.length == 0" style="color:#ff0000">未填寫</span>
+                    <span ng-if="item.work_hour_forms.length == 0" style="color:#ff0000">未填寫</span>
                 </td>
-                <td style="vertical-align: inherit; text-align: center" ng-show="checkIsCrossMonth(firstFullDate_management)>0">
-                    <span ng-show="item.work_hour_forms.length > 1" id="bb_{{$index}}">{{checkManagementStatus(item, 2, this, 2)}}</span>
+                <td style="vertical-align: inherit; text-align: center"
+                    ng-if="checkIsCrossMonth(firstFullDate_management)>0">
+                    <span ng-if="item.work_hour_forms[1].formTables.length != 0" id="bb_{{$index}}">{{checkManagementStatus(item, 2, this, 2)}}</span>
                 </td>
-                <td style="vertical-align: inherit; text-align: center" ng-show="checkIsCrossMonth(firstFullDate_management)>0">
-                    <span ng-show="item.work_hour_forms.length > 1" id="cc_{{$index}}">{{checkManagementStatus(item, 3, this, 2)}}</span>
+                <td style="vertical-align: inherit; text-align: center"
+                    ng-if="checkIsCrossMonth(firstFullDate_management)>0">
+                    <span ng-if="item.work_hour_forms[1].formTables.length != 0" id="cc_{{$index}}">{{checkManagementStatus(item, 3, this, 2)}}</span>
                 </td>
             </tr>
             </tbody>
