@@ -91,7 +91,59 @@
 
             WorkHourAddItemUtil.removeWorkHourAddItem(removeData)
                 .success(function (resp) {
+
                     $scope.workAddTablesItems.splice(index, 1);
+
+                    var result = $scope.showTotalAddHour($scope.workAddTablesItems, 1) +
+                        $scope.showTotalAddHour($scope.workAddTablesItems, 2);
+                    if (isNaN(result)) {
+                        toastr.error('加班單格式錯誤，請檢查', '錯誤');
+                        return;
+                    }
+
+                    $scope.table.totalHourTemp = result;
+                    console.log(result);
+                    console.log($scope);
+
+                    switch ($scope.day) {
+                        case 1 : {
+                            $scope.table.mon_hour_add = $scope.table.totalHourTemp;
+                        }
+                            break;
+                        case 2 : {
+                            $scope.table.tue_hour_add = $scope.table.totalHourTemp;
+                        }
+                            break;
+                        case 3 : {
+                            $scope.table.wes_hour_add = $scope.table.totalHourTemp;
+                        }
+                            break;
+                        case 4 : {
+                            $scope.table.thu_hour_add = $scope.table.totalHourTemp;
+                        }
+                            break;
+                        case 5 : {
+                            $scope.table.fri_hour_add = $scope.table.totalHourTemp;
+                        }
+                            break;
+                        case 6 : {
+                            $scope.table.sat_hour_add = $scope.table.totalHourTemp;
+                        }
+                            break;
+                        case 7 : {
+                            $scope.table.sun_hour_add = $scope.table.totalHourTemp;
+                        }
+                            break;
+                    }
+                    $scope.table.hourAddTotal = $scope.table.mon_hour_add +
+                        $scope.table.tue_hour_add +
+                        $scope.table.wes_hour_add +
+                        $scope.table.thu_hour_add +
+                        $scope.table.fri_hour_add +
+                        $scope.table.sat_hour_add +
+                        $scope.table.sun_hour_add;
+
+                    $scope.parent.saveTemp($scope.table);
                 })
         };
 
