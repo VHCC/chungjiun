@@ -720,8 +720,10 @@
                         if ($scope.checkIsCrossMonth($scope.firstFullDate) > 0) {
 
                             var createFormData = {
-                                year: thisYear,
-                                month: thisMonth,
+                                year: moment($scope.firstFullDate).year() - 1911,
+                                // year: thisYear,
+                                month: moment($scope.firstFullDate).month() + 1,
+                                // month: thisMonth,
                                 creatorDID: $cookies.get('userDID'),
                                 create_formDate: $scope.firstFullDate,
                             };
@@ -729,7 +731,7 @@
                             WorkHourUtil.createWorkHourForm(createFormData)
                                 .success(function (res) {
                                     var createFormData = {
-                                        year: $scope.getNextMonth($scope.firstFullDate) == 1 ? thisYear + 1 : thisYear,
+                                        year: $scope.getNextMonth($scope.firstFullDate) == 1 ? moment($scope.firstFullDate).year() - 1911 + 1 : moment($scope.firstFullDate).year() - 1911,
                                         month: $scope.getNextMonth($scope.firstFullDate),
                                         creatorDID: $cookies.get('userDID'),
                                         create_formDate: $scope.firstFullDate,
@@ -743,8 +745,10 @@
 
                         } else {
                             var createFormData = {
-                                year: thisYear,
-                                month: thisMonth,
+                                year: moment($scope.firstFullDate).year() - 1911,
+                                // year: thisYear,
+                                month: moment($scope.firstFullDate).month() + 1,
+                                // month: thisMonth,
                                 creatorDID: $cookies.get('userDID'),
                                 create_formDate: $scope.firstFullDate,
                                 formTables: [],
