@@ -359,6 +359,23 @@
                     })
             }
 
+            $scope.printPDF = function () {
+                $("#form_dis_pdf").print({
+                    globalStyles: true,
+                    mediaPrint: false,
+                    stylesheet: null,
+                    noPrintSelector: ".no-print",
+                    iframe: true,
+                    append: null,
+                    prepend: null,
+                    manuallyCopyFormValues: true,
+                    deferred: $.Deferred(),
+                    timeout: 750,
+                    title: null,
+                    doctype: '<!doctype html>'
+                });
+            }
+
             $scope.changeSalary = function (tables) {
                 console.log(tables);
                 var formData = {
