@@ -1,5 +1,6 @@
 var WorkHourForm = require('../../models/workHourForm');
 var WorkHourTable = require('../../models/workHourTableForm');
+var WorkHourTableWorkAdd = require('../../models/workHourTableFormWorkAdd');
 var Project = require('../../models/project');
 
 module.exports = function (app) {
@@ -7,7 +8,8 @@ module.exports = function (app) {
     // ------------------------ Statistics ---------------------
     app.post(global.apiUrl.query_employee_statistics, function (req, res) {
         console.log("query_employee_statistics");
-        console.log(req.body);
+
+        // console.log(req.body);
 
         var results = [];
         var results_add = [];
@@ -16,43 +18,7 @@ module.exports = function (app) {
         var overTime = false;
         var isRespSent = false;
 
-
         var prjInfo = {};
-        //
-        // if (req.body.branch != undefined) {
-        //     prjInfo.branch = req.body.branch;
-        // }
-        //
-        // if (req.body.year != undefined) {
-        //     prjInfo.year = req.body.year;
-        // }
-        //
-        // if (req.body.code != undefined) {
-        //     prjInfo.code = req.body.code;
-        // }
-        //
-        // if (req.body.prjNumber != undefined) {
-        //     prjInfo.prjNumber = req.body.prjNumber;
-        // }
-        //
-        // if (req.body.prjSubNumber != undefined) {
-        //     prjInfo.prjSubNumber = req.body.prjSubNumber;
-        // }
-        //
-        // if (req.body.type != undefined) {
-        //     prjInfo.type = req.body.type;
-        // }
-
-        // prjInfo = {
-        //     branch: 'C',
-        //     year: '108',
-        //     code: '11',
-        //     prjNumber: '00',
-        //     prjSubNumber: '00',
-        //     type: '5'
-        // }
-
-        console.log(prjInfo);
 
         var $project_hour_table_Conds = [
             {$eq: [ "$work_hour_forms.formTables.prjDID", "$_projectTargetString" ]}
@@ -70,8 +36,17 @@ module.exports = function (app) {
                 table_year_Conds.push({$eq: [ "$work_hour_forms.year", req.body.form_yearArray[x] ]})
                 table_year_Conds_add.push({$eq: [ "$work_hour_add_tables.year", req.body.form_yearArray[x] ]})
             }
-            $project_hour_table_Conds.push({$or:table_year_Conds});
-            $project_hour_add_table_Conds.push({$or:table_year_Conds_add});
+            // $project_hour_table_Conds.push({$or:table_year_Conds});
+            // $project_hour_table_Conds.push({
+            //         "$work_hour_forms.year": {
+            //             $in: req.body.form_yearArray
+            //     }});
+            // $project_hour_add_table_Conds.push({$or:table_year_Conds_add});
+            // $project_hour_add_table_Conds.push({
+            //     "$work_hour_add_tables.year": {
+            //         $in: req.body.form_yearArray
+            //     }
+            // });
         }
 
         if (req.body.form_monthArray != undefined) {
@@ -85,9 +60,11 @@ module.exports = function (app) {
             $project_hour_add_table_Conds.push({$or:table_month_Conds_add});
         }
 
+        var table_creatorDID_array = [];
         var table_creatorDID_Conds = [];
         var table_creatorDID_add_Conds = [];
         for (var index = 0; index < req.body.targerUsers.length; index ++) {
+            table_creatorDID_array.push(req.body.targerUsers[index]._id)
             table_creatorDID_Conds.push({$eq: [ "$work_hour_forms.creatorDID", req.body.targerUsers[index]._id ]})
             table_creatorDID_add_Conds.push({$eq: [ "$work_hour_add_tables.creatorDID", req.body.targerUsers[index]._id ]})
         }
@@ -96,52 +73,55 @@ module.exports = function (app) {
 
         console.log($project_hour_table_Conds);
 
-        Project.aggregate( // 由專案找起
+        WorkHourForm.aggregate( // 由專案找起
             [
                 {
-                    $match: prjInfo
+                    $match: {
+                        year: {
+                            $in: req.body.form_yearArray
+                        },
+                        month: {
+                            $in: req.body.form_monthArray
+                        },
+                        creatorDID: {
+                            $in: table_creatorDID_array
+                        }
+                    }
                 },
                 {
                     $addFields: {
-                        "_projectTargetString": {
-                            $toString: "$_id"
-                        },
-                        "_project_info" : "$$CURRENT"
+                        "_work_hour_forms_info" : "$$CURRENT"
                     }
                 },
-                {
-                    $lookup: {
-                        from: "workhourforms", // 年跟月的屬性
-                        localField: "_projectTargetString",
-                        foreignField: "formTables.prjDID",
-                        as: "work_hour_forms"
-                    }
-                },
-                {
-                    $unwind: "$work_hour_forms"
-                },
-                {
-                    $unwind: "$work_hour_forms.formTables"
-                },
-                {
-                    $project: {
-                        "_id": 0,
-                        "_work_hour_forms_info" : {
-                            $cond: {
-                                if: {
-                                    // $and: $project_hour_table_Conds
-                                    $and: $project_hour_table_Conds
-                                },
-                                then: "$work_hour_forms",
-                                else: "$$REMOVE"
-                            }
-                        },
-                        "_project_info" : 1,
-                    }
-                },
+
                 {
                     $unwind: "$_work_hour_forms_info"
                 },
+                {
+                    $unwind: "$_work_hour_forms_info.formTables"
+                },
+
+                {
+                    $addFields: {
+                        "_prjObjectID": {
+                            $toObjectId: "$_work_hour_forms_info.formTables.prjDID"
+                        },
+                    }
+                },
+
+                {
+                    $lookup: {
+                        from: "projects", // join target
+                        localField: "_prjObjectID",
+                        foreignField: "_id",
+                        as: "_project_info"
+                    }
+                },
+
+                {
+                    $unwind: "$_project_info"
+                },
+
                 {
                     $lookup: {
                         from: "workhourtableforms", // 年跟月的屬性
@@ -177,7 +157,8 @@ module.exports = function (app) {
                         "_project_info" : 1,
                         "_work_hour_forms_info" : 1,
                         "_work_hour_tables_info" : 1,
-                        "_user_info" : 1,
+                        "_user_info.name" : 1,
+                        "_user_info._id" : 1,
                     }
                 },
                 {
@@ -220,65 +201,53 @@ module.exports = function (app) {
             }
         )
 
-        // console.log($project_hour_add_table_Conds);
-
-        Project.aggregate( // 由專案找起
+        WorkHourTableWorkAdd.aggregate( // 由專案找起
             [
                 {
-                    $match: prjInfo
+                    $match: {
+                        year: {
+                            $in: req.body.form_yearArray
+                        },
+                        month: {
+                            $in: req.body.form_monthArray
+                        },
+                        creatorDID: {
+                            $in: table_creatorDID_array
+                        }
+                    }
                 },
+
                 {
                     $addFields: {
-                        "_projectTargetString": {
-                            $toString: "$_id"
-                        },
-                        "_project_info" : "$$CURRENT"
+                        "_work_hour_add_tables_info" : "$$CURRENT"
                     }
                 },
-                {
-                    $lookup: {
-                        from: "workhourtableformworkadds", // 年跟月的屬性
-                        localField: "_projectTargetString",
-                        foreignField: "prjDID",
-                        as: "work_hour_add_tables"
-                    }
-                },
-                {
-                    $unwind: "$work_hour_add_tables"
-                },
-                // {
-                //     $unwind: "$work_hour_forms.formTables"
-                // },
-                {
-                    $project: {
-                        "_id": 0,
-                        "_work_hour_add_tables_info" : {
-                            $cond: {
-                                if: {
-                                    // $and: $project_hour_add_table_Conds
-                                    $and: $project_hour_add_table_Conds
-                                },
-                                then: "$work_hour_add_tables",
-                                else: "$$REMOVE"
-                            }
-                        },
-                        "_project_info" : 1,
-                    }
-                },
+
                 {
                     $unwind: "$_work_hour_add_tables_info"
                 },
-                // {
-                //     $lookup: {
-                //         from: "workhourtableforms", // 年跟月的屬性
-                //         localField: "_work_hour_forms_info.formTables.tableID",
-                //         foreignField: "_id",
-                //         as: "_work_hour_tables_info"
-                //     }
-                // },
-                // {
-                //     $unwind: "$_work_hour_tables_info"
-                // },
+
+                {
+                    $addFields: {
+                        "_prjObjectID": {
+                            $toObjectId: "$_work_hour_add_tables_info.prjDID"
+                        },
+                    }
+                },
+
+                {
+                    $lookup: {
+                        from: "projects", // join target
+                        localField: "_prjObjectID",
+                        foreignField: "_id",
+                        as: "_project_info"
+                    }
+                },
+
+                {
+                    $unwind: "$_project_info"
+                },
+
                 {
                     $addFields: {
                         "_userDID": {
@@ -292,7 +261,7 @@ module.exports = function (app) {
                         localField: "_userDID",
                         foreignField: "_id",
                         as: "_user_info"
-                    }
+                    },
                 },
                 {
                     $unwind: "$_user_info"
@@ -302,7 +271,9 @@ module.exports = function (app) {
                         "_id": 0,
                         "_project_info" : 1,
                         "_work_hour_add_tables_info" : 1,
-                        "_user_info" : 1,
+                        // "_user_info" : 1,
+                        "_user_info.name" : 1,
+                        "_user_info._id" : 1,
                     }
                 },
                 {
