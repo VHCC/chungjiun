@@ -872,6 +872,85 @@
 
             // Send WorkOffTable to Review
             $scope.reviewWorkOffItem = function (table, button, index) {
+
+                var targetDate = DateUtil.getShiftDatefromFirstDate(
+                    DateUtil.getFirstDayofThisWeek(moment($scope.specificUserTablesItems[index].create_formDate)),
+                    $scope.specificUserTablesItems[index].day === 0 ? 6 : $scope.specificUserTablesItems[index].day - 1)
+
+                var filterBegin;
+                var filterEnd;
+                var needCheckType = false;
+
+                switch (table.workOffType) {
+                    // 特
+                    case 3: {
+                        needCheckType = true;
+                        filterBegin = vm.loginUserHolidayForm.start_special;
+                        filterEnd = vm.loginUserHolidayForm.end_special;
+                        break;
+                    }
+                    // 婚
+                    case 4:
+                        needCheckType = true;
+                        filterBegin = vm.loginUserHolidayForm.start_married;
+                        filterEnd = vm.loginUserHolidayForm.end_married;
+                        break;
+                    // 喪
+                    case 5:
+                        needCheckType = true;
+                        filterBegin = vm.loginUserHolidayForm.start_mourning;
+                        filterEnd = vm.loginUserHolidayForm.end_mourning;
+                        break;
+                    // 公
+                    case 6:
+                        needCheckType = true;
+                        filterBegin = vm.loginUserHolidayForm.start_official;
+                        filterEnd = vm.loginUserHolidayForm.end_official;
+                        break;
+                    // 公傷
+                    case 7:
+                        needCheckType = true;
+                        filterBegin = vm.loginUserHolidayForm.start_workinjury;
+                        filterEnd = vm.loginUserHolidayForm.end_workinjury;
+                        break;
+                    // 產
+                    case 8:
+                        needCheckType = true;
+                        filterBegin = vm.loginUserHolidayForm.start_maternity;
+                        filterEnd = vm.loginUserHolidayForm.end_maternity;
+                        break;
+                    // 陪產(檢)
+                    case 9:
+                        needCheckType = true;
+                        filterBegin = vm.loginUserHolidayForm.start_paternity;
+                        filterEnd = vm.loginUserHolidayForm.end_paternity;
+                        break;
+                    case 1001:
+                        needCheckType = true;
+                        filterBegin = vm.loginUserHolidayForm.start_others;
+                        filterEnd = vm.loginUserHolidayForm.end_others;
+                        break;
+                    case -1:
+                        toastr.error('請選擇假別', '錯誤');
+                        return;
+                }
+
+                if (needCheckType) {
+                    var isBetween = moment(targetDate).isBetween(filterBegin, filterEnd, null ,"[]");
+
+                    if (filterBegin == "" || filterEnd == "") {
+                        toastr.error('假期期間設定不正確，請聯繫系統管理員', '錯誤');
+                        return;
+                    }
+
+                    // console.log(historyDate + ", isBetween= " + isBetween);
+
+                    if (!isBetween) {
+                        toastr.error('該假別不在允許期限內', '錯誤');
+                        return;
+                    }
+                }
+
                 $timeout(function () {
 
                     var hour = "";
@@ -884,9 +963,7 @@
 
                     var workOffString = $scope.showWorkOffTypeString($scope.specificUserTablesItems[index].workOffType);
                     $scope.checkText = '確定提交 ' + workOffString + '：' +
-                        DateUtil.getShiftDatefromFirstDate(
-                            DateUtil.getFirstDayofThisWeek(moment($scope.specificUserTablesItems[index].create_formDate)),
-                            $scope.specificUserTablesItems[index].day === 0 ? 6 : $scope.specificUserTablesItems[index].day - 1) +
+                        targetDate +
                         "  審查？ 時數：" + hour;
                     try {
                         $scope.checkText += "\n" + "代理人：" + table.agent.name;
