@@ -37,13 +37,24 @@
         }
 
         $scope.reloadDatePicker = function (type) {
-            console.log(type);
 
             switch (type) {
                 case 0:
                 case 1:
                 case 2:
+                    $scope.myOptions = {
+                        showWeeks: false,
+                        startingDay: 0,
+                    };
+                    break;
                 case 3:
+                    $scope.myOptions = {
+                        showWeeks: false,
+                        startingDay: 0,
+                        minDate: $scope.loginUserForm.start_special,
+                        maxDate: $scope.loginUserForm.end_special
+                    };
+                    break;
                 case 1001:
                     // $scope.myDT = new Date();
                     $scope.myOptions = {
@@ -52,7 +63,7 @@
                         minDate: $scope.loginUserForm.start_others,
                         maxDate: $scope.loginUserForm.end_others
                     };
-                    return;
+                    break;
                 case 4:
                     $scope.myOptions = {
                         showWeeks: false,
