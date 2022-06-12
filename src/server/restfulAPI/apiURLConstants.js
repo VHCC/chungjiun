@@ -158,6 +158,7 @@ global.apiUrl = {
 
     // employeeStatistics
     query_employee_statistics : '/api/query_employee_statistics',
+    query_employee_statistics_workOff : '/api/query_employee_statistics_workOff',
     query_kpi_personal_workhour : '/api/query_kpi_personal_workhour',
 
 
