@@ -1,0 +1,109 @@
+<div class="horizontal-scroll">
+    <table class="table table-bordered table-hover table-condensed" st-table="statisticsResults">
+        <thead>
+        <tr style="white-space:nowrap" class="sortable">
+            <th class="table-id"
+                style="vertical-align: inherit; text-align: center" width="20px">序號</th>
+            <th style="vertical-align: inherit; text-align: center" width="30px">區間</th>
+
+            <th style="vertical-align: inherit; text-align: center" width="80px">人員</th>
+
+            <th style="vertical-align: inherit; text-align: center" width="30px">病假(時)</th>
+            <th style="vertical-align: inherit; text-align: center" width="30px">事假(時)</th>
+            <th style="vertical-align: inherit; text-align: center" width="30px">補休(時)</th>
+            <th style="vertical-align: inherit; text-align: center" width="30px">特休(時)</th>
+
+            <th style="vertical-align: inherit; text-align: center" width="30px">婚假(天)</th>
+            <th style="vertical-align: inherit; text-align: center" width="30px">喪假(天)</th>
+            <th style="vertical-align: inherit; text-align: center" width="30px">公假(時)</th>
+            <th style="vertical-align: inherit; text-align: center" width="30px">公傷假(天)</th>
+            <th style="vertical-align: inherit; text-align: center" width="30px">產假(天)</th>
+            <th style="vertical-align: inherit; text-align: center" width="30px">陪產(檢)假(天)</th>
+            <th style="vertical-align: inherit; text-align: center" width="30px">其他(時)</th>
+
+        </tr>
+        </thead>
+        <tbody ng-repeat="item in statisticsResults">
+        <tr style="vertical-align: inherit; text-align: center">
+            <!--序號-->
+            <td style="vertical-align: inherit; text-align: center">
+                <span>{{$index + 1}}</span>
+            </td>
+            <!--區間-->
+            <td style="vertical-align: inherit; text-align: center">
+                <span>{{startDay}} - {{endDay}}</span>
+            </td>
+            <!--人員-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                {{item._user_info.name}}
+            </td>
+            <!--病假-->
+            <td class="form-group has-success" style="vertical-align: inherit;">
+                <my >
+                    {{calculateWorkOff_type5(item, 0)}}
+                </my>
+            </td>
+            <!--事假-->
+            <td class="form-group has-success" style="vertical-align: inherit;">
+                <my >
+                    {{calculateWorkOff_type5(item, 1)}}
+                </my>
+            </td>
+            <!--補休-->
+            <td class="form-group has-success" style="vertical-align: inherit;">
+                <my >
+                    {{calculateWorkOff_type5(item, 2)}}
+                </my>
+            </td>
+            <!--特休-->
+            <td class="form-group has-success" style="vertical-align: inherit;">
+                <my >
+                    {{calculateWorkOff_type5(item, 3)}}
+                </my>
+            </td>
+            <!--婚假-->
+            <td class="form-group has-success" style="vertical-align: inherit;">
+                <my >
+                    {{calculateWorkOff_type5(item, 4)}}
+                </my>
+            </td>
+            <!--喪假-->
+            <td class="form-group has-success" style="vertical-align: inherit;">
+                <my >
+                    {{calculateWorkOff_type5(item, 5)}}
+                </my>
+            </td>
+            <!--公假-->
+            <td class="form-group has-success" style="vertical-align: inherit;">
+                <my >
+                    {{calculateWorkOff_type5(item, 6)}}
+                </my>
+            </td>
+            <!--公傷假-->
+            <td class="form-group has-success" style="vertical-align: inherit;">
+                <my >
+                    {{calculateWorkOff_type5(item, 7)}}
+                </my>
+            </td>
+            <!--產假-->
+            <td class="form-group has-success" style="vertical-align: inherit;">
+                <my >
+                    {{calculateWorkOff_type5(item, 8)}}
+                </my>
+            </td>
+            <!--陪產(檢)假-->
+            <td class="form-group has-success" style="vertical-align: inherit;">
+                <my >
+                    {{calculateWorkOff_type5(item, 9)}}
+                </my>
+            </td>
+            <!--其他-->
+            <td class="form-group has-success" style="vertical-align: inherit;">
+                <my >
+                    {{calculateWorkOff_type5(item, 1001)}}
+                </my>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

@@ -781,6 +781,11 @@
                     return http.post('/api/query_employee_statistics', formData);
                 },
 
+                // 20220610
+                queryEmployeeStatisticsWorkOff: function (formData) {
+                    return http.post('/api/query_employee_statistics_workOff', formData);
+                },
+
                 // 20211117
                 queryKPIPersonalWorkHour: function (formData) {
                     return http.post('/api/query_kpi_personal_workhour', formData);
