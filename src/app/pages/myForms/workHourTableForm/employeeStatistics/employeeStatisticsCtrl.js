@@ -107,9 +107,9 @@
                 getData.targerUsers = vm.users.selected == undefined ? vm.users : vm.users.selected;
                 console.log(getData);
 
-                // bsLoadingOverlayService.start({
-                //     referenceId: 'mainPage_employee_statistics'
-                // });
+                bsLoadingOverlayService.start({
+                    referenceId: 'mainPage_employee_statistics'
+                });
 
                 if ($('#inlineRadio1_employee')[0].checked) {
                     // 第 1 類型
