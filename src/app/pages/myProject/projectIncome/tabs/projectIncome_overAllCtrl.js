@@ -187,17 +187,17 @@
                 rootPrjDID: $scope.selectPrjInfo._id
             }
 
-            Project.fetchRelatedCombinedPrjArray(formData)
-                .success(function (res) {
-                    $scope.selectPrjArray = res;
-                    $scope.getFinancialRate();
-                })
-
             $timeout(function () {
                 bsLoadingOverlayService.start({
                     referenceId: 'mainPage_project_income_overall'
                 });
             }, 100)
+
+            Project.fetchRelatedCombinedPrjArray(formData)
+                .success(function (res) {
+                    $scope.selectPrjArray = res;
+                    $scope.getFinancialRate();
+                })
         }
 
         $scope.getFinancialRate = function () {
@@ -298,7 +298,7 @@
                                                     }
                                                 }
                                             }
-                                            console.log($scope.overall_data);
+                                            // console.log($scope.overall_data);
                                         })
                                         .error(function (resp) {
                                         })
@@ -375,7 +375,7 @@
                                     WorkHourUtil.queryStatisticsForms_projectIncome_Cost_ByPrjDIDArray(formData)
                                         .success(function (res) {
                                             console.log(" === 人工時 === ")
-                                            console.log(res);
+                                            // console.log(res);
 
                                             var manipulateData = jQuery.extend(true, {}, res); // 深度複製
                                             console.log(manipulateData)
@@ -451,7 +451,7 @@
                                     bsLoadingOverlayService.stop({
                                         referenceId: 'mainPage_project_income_overall'
                                     });
-                                }, 1000)
+                                }, 500)
                             })
                     })
             }, 100)
@@ -499,7 +499,7 @@
                         break;
                 }
             }
-            console.log(item);
+            // console.log(item);
             var hourTotal = 0;
             var totalCost = 0.0;
             for (var index = 0; index < item.tables.length; index++) {
@@ -698,13 +698,13 @@
                 }
             }
             var hour = 0
-            console.log(type2_add_data);
+            // console.log(type2_add_data);
             for (var i = 0; i < type2_add_data.length; i++) {
                 hour = type2_add_data[i].min % 60 < 30 ? Math.round(type2_add_data[i].min / 60) : Math.round(type2_add_data[i].min / 60) - 0.5;
                 if (hour < 1) {
                     hourTotal += 0;
                 } else {
-                    console.log("add hour:> " + hour + ", cost:> " + (hour * type2_add_data[i].monthSalary / 30 / 8))
+                    // console.log("add hour:> " + hour + ", cost:> " + (hour * type2_add_data[i].monthSalary / 30 / 8))
                     hourTotal += hour;
                     totalCost += hour * type2_add_data[i].monthSalary / 30 / 8;
                 }
@@ -1485,7 +1485,7 @@
                 }
             }
             // console.log(itemList);
-            console.log(type1_data);
+            // console.log(type1_data);
 
             var result = [];
             var result_sort = [];
@@ -1494,7 +1494,7 @@
                 result.push(type1_data[itemList[index]]);
             }
 
-            console.log(result);
+            // console.log(result);
             result_sort = result.sort(function (a, b) {
 
                 if (a._date == b._date) {
@@ -1503,7 +1503,7 @@
                 return a._date > b._date ? 1 : -1;
 
             });
-            console.log(result_sort);
+            // console.log(result_sort);
             return result_sort;
         }
 
