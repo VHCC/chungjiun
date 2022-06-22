@@ -123,11 +123,11 @@ module.exports = function (app) {
         console.log(req.body);
 
         mailTransport.sendMail({
-            from: 'ERM System <0973138343@chongjun.tw>',
+            from: 'ERM System <r99521320@gmail.com>',
             to: req.body.name + ' <' + req.body.cjMail + '>',
-            subject: '崇峻 ERM 測試信件',
-            html: '<h1> 崇峻工程股份有限公司 </h1> ERM 測試信件' +
-                'https://erm.chongjun.myds.me/'
+            subject: 'ERM 測試信件',
+            html: '<h1> 源隆技術顧問有限公司 </h1> ERM 測試信件'
+                // 'https://erm.chongjun.myds.me/'
         }, function(err){
             if(err){
                 console.log(global.timeFormat(new Date()) + global.log.e + "API, get_official_doc_fetch_all_item");

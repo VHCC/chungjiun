@@ -63,7 +63,7 @@
         }
 
         $scope.fetchNotification();
-        var intervalID = setInterval(getNotificationMsg, 10000);
+        // var intervalID = setInterval(getNotificationMsg, 10000);
 
         function getNotificationMsg() {
             $scope.messages = [];

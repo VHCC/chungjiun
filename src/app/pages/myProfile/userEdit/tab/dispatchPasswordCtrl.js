@@ -121,7 +121,7 @@
 
             var isSalary = user.userMonthSalary === 0 ? " (未設定薪水)" : ""
             var isBoss = user.bossID ? "" : " (未設定主管)"
-            var isCJMail = user.cjMail ? "" : " (未設定崇峻信箱)"
+            var isCJMail = user.cjMail ? "" : ""
 
             var workStatus = user.workStatus ? "" : " **無法登入**"
             var feature_official_doc = user.feature_official_doc ? " (公文收發人員)" : ""

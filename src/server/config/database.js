@@ -1,10 +1,11 @@
 var mongoose = require('mongoose');
 
-var localDB = 'mongodb://localhost:27017/workhourexpress';
-var remoteDB = 'mongodb://ichenprocin.dsmynas.com:27017/workhourexpress';
+var isDev = true;
+var dbName = 'com001'
+
+var localDB = 'mongodb://localhost:27017/' + dbName;
 
 module.exports = {
-    remoteUrl: remoteDB,
     localUrl: localDB
 };
 
@@ -15,5 +16,7 @@ db.on('error', function callback() {
 });
 
 db.once('open', function callback() {
-    console.log("----- Database Connected to " + remoteDB.toString() + " -----");
+    if(isDev) {
+        console.log("----- Database Connected to " + localDB.toString() + " -----");
+    }
 });

@@ -10,32 +10,32 @@
 
   /** @ngInject */
   function routeConfig($stateProvider) {
-    $stateProvider
-        .state('tables', {
-          url: '/tables',
-          template : '<ui-view  autoscroll="true" autoscroll-body-top></ui-view>',
-          abstract: true,
-          controller: 'TablesPageCtrl',
-          title: 'Tables',
-          sidebarMeta: {
-            icon: 'ion-grid',
-            order: global.pages.tables,
-          },
-        }).state('tables.basic', {
-          url: '/basic',
-          templateUrl: 'app/pages/tables/basic/tables.html',
-          title: 'Basic Tables',
-          sidebarMeta: {
-            order: 0,
-          },
-        }).state('tables.smart', {
-          url: '/smart',
-          templateUrl: 'app/pages/tables/smart/tables.html',
-          title: 'Smart Tables',
-          sidebarMeta: {
-            order: 100,
-          },
-        });
+    // $stateProvider
+        // .state('tables', {
+        //   url: '/tables',
+        //   template : '<ui-view  autoscroll="true" autoscroll-body-top></ui-view>',
+        //   abstract: true,
+        //   controller: 'TablesPageCtrl',
+        //   title: 'Tables',
+        //   sidebarMeta: {
+        //     icon: 'ion-grid',
+        //     order: global.pages.tables,
+        //   },
+        // }).state('tables.basic', {
+        //   url: '/basic',
+        //   templateUrl: 'app/pages/tables/basic/tables.html',
+        //   title: 'Basic Tables',
+        //   sidebarMeta: {
+        //     order: 0,
+        //   },
+        // }).state('tables.smart', {
+        //   url: '/smart',
+        //   templateUrl: 'app/pages/tables/smart/tables.html',
+        //   title: 'Smart Tables',
+        //   sidebarMeta: {
+        //     order: 100,
+        //   },
+        // });
   }
 
 })();

@@ -16,7 +16,7 @@ angular.module('BlurAdmin', [
 
 
     'BlurAdmin.theme',
-    'BlurAdmin.pages',
+    'BlurAdmin.pages.com001',
     'ngDialog'
 ]);
 

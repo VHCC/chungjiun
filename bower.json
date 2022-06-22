@@ -59,7 +59,7 @@
     "angular-ui-select": "^0.19.6",
     "noty": "latest",
     "ng-dialog": "latest",
-    "angular-file-saver": "latest",
+    "file-saver": "latest",
     "jquery-mask-plugin": "latest",
     "timepicker": "latest",
     "socket.io": "2.0.4",
