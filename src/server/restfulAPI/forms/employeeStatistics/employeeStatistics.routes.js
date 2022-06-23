@@ -157,7 +157,20 @@ module.exports = function (app) {
                         "_id": 0,
                         "_project_info" : 1,
                         "_work_hour_forms_info" : 1,
-                        "_work_hour_tables_info" : 1,
+                        // "_work_hour_tables_info" : 1,
+                        "_work_hour_tables_info" : {
+                            $cond: {
+                                if: {
+                                    // $and: $project_hour_table_Conds
+                                    $and: [
+                                        {$eq: [ "$_work_hour_tables_info.isExecutiveCheck", true ]}
+                                    ]
+
+                                },
+                                then: "$_work_hour_tables_info",
+                                else: "$$REMOVE"
+                            }
+                        },
                         "_user_info.name" : 1,
                         "_user_info._id" : 1,
                     }
@@ -427,7 +440,20 @@ module.exports = function (app) {
                         "_id": 0,
                         "_project_info" : 1,
                         "_work_hour_forms_info" : 1,
-                        "_work_hour_tables_info" : 1,
+                        // "_work_hour_tables_info" : 1,
+                        "_work_hour_tables_info" : {
+                            $cond: {
+                                if: {
+                                    // $and: $project_hour_table_Conds
+                                    $and: [
+                                        {$eq: [ "$_work_hour_tables_info.isExecutiveCheck", true ]}
+                                    ]
+
+                                },
+                                then: "$_work_hour_tables_info",
+                                else: "$$REMOVE"
+                            }
+                        },
                         "_user_info" : 1,
                     }
                 },
