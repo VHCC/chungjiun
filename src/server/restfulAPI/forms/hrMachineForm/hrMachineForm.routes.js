@@ -235,14 +235,16 @@ module.exports = function (app) {
                         console.log(" ***** ERROR ***** ");
                         console.log(err);
                         res.send(err);
+                        return;
                     } else {
                         // console.log("resultIndex= " + resultIndex);
-                        if (resultIndex === index - 1) {
+                        if (resultIndex === (index - 1)) {
                             res.status(200).send({
                                 code: 200,
                                 fileDate: fileDate,
                                 error: global.status._200,
                             });
+                            return;
                         }
                     }
 
