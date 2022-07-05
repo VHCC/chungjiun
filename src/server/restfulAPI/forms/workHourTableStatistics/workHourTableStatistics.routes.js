@@ -837,6 +837,7 @@ module.exports = function (app) {
             ], function (err, tables) {
                 normal = true;
                 if (err) {
+                    isRespSended = true;
                     console.log("1111");
                     console.log(err);
                     res.status(500).send(err);
@@ -964,6 +965,7 @@ module.exports = function (app) {
             ], function (err, tables) {
                 overTime = true;
                 if (err) {
+                    isRespSended = true;
                     console.log("2222")
                     console.log(err)
                     res.status(500).send(err);
