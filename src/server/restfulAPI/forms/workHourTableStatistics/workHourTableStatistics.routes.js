@@ -848,6 +848,7 @@ module.exports = function (app) {
                             payload: results,
                             payload_add: results_add,
                         });
+                        return;
                     }
                 }
             }
@@ -972,6 +973,7 @@ module.exports = function (app) {
                             payload: results,
                             payload_add: results_add,
                         });
+                        return;
                     }
                 }
             }
