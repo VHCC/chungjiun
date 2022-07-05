@@ -131,7 +131,7 @@
                 });
         };
 
-        // var intervalID = setInterval(getUserRelatedTasks, 60000);
+        var intervalID = setInterval(getUserRelatedTasks, 60000);
         var checkUserUUID = setInterval(checkUserUUID, 10000);
 
 
@@ -141,7 +141,7 @@
                 decodeURI(readCookie('username')) == 'null' ||
                 decodeURI(readCookie('userDID')) == 'null') {
                 console.log("checkUserUUID ERROR")
-                window.location.href = 'http://localhost:3000/login.html';
+                window.location.href = 'https://erm.chongjun.synology.me/login.html';
             }
         }
 
