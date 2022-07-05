@@ -131,7 +131,19 @@
                 });
         };
 
-        var intervalID = setInterval(getUserRelatedTasks, 60000);
+        // var intervalID = setInterval(getUserRelatedTasks, 60000);
+        var checkUserUUID = setInterval(checkUserUUID, 10000);
+
+
+        function checkUserUUID() {
+            console.log('10 秒鐘又到了！ ===> checkUserUUID...');
+            if (decodeURI(readCookie('username')) == '' ||
+                decodeURI(readCookie('username')) == 'null' ||
+                decodeURI(readCookie('userDID')) == 'null') {
+                console.log("checkUserUUID ERROR")
+                window.location.href = 'http://localhost:3000/login.html';
+            }
+        }
 
         function getUserRelatedTasks() {
             console.log('60 秒鐘又到了！ ===> getUserRelatedTasks...');
