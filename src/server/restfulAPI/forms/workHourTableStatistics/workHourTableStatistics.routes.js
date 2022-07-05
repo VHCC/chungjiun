@@ -674,7 +674,7 @@ module.exports = function (app) {
             prjInfo.type = req.body.type;
         }
 
-        // console.log(prjInfo);
+        console.log(prjInfo);
 
         var $project_hour_table_Conds = [
             {$eq: [ "$work_hour_forms.formTables.prjDID", "$_projectTargetString" ]}
@@ -837,7 +837,10 @@ module.exports = function (app) {
             ], function (err, tables) {
                 normal = true;
                 if (err) {
-                    res.send(err);
+                    console.log("1111");
+                    console.log(err);
+                    res.status(500).send(err);
+                    return;
                 } else {
                     results = results.concat(tables);
                     if (normal && overTime && !isRespSended) {
@@ -961,7 +964,10 @@ module.exports = function (app) {
             ], function (err, tables) {
                 overTime = true;
                 if (err) {
-                    res.send(err);
+                    console.log("2222")
+                    console.log(err)
+                    res.status(500).send(err);
+                    return;
                 } else {
                     results_add = results_add.concat(tables);
 

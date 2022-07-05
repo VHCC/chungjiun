@@ -177,6 +177,7 @@
                             }
                         })
                         .error(function () {
+                            toastr['warning']('請回報管理員', '後台異常');
                             $timeout(function () {
                                 bsLoadingOverlayService.stop({
                                     referenceId: 'mainPage_statistics'
@@ -188,6 +189,9 @@
                     // 第 2 類型
                     WorkHourUtil.queryStatisticsFormsCJ_type2(getData)
                         .success(function (res) {
+
+                            console.log(res)
+
                             res.payload = res.payload.sort(function (a, b) {
                                 return a._id.userDID > b._id.userDID ? 1 : -1;
                             });
@@ -224,6 +228,7 @@
                             }, 500)
                         })
                         .error(function () {
+                            toastr['warning']('請回報管理員', '後台異常');
                             $timeout(function () {
                                 bsLoadingOverlayService.stop({
                                     referenceId: 'mainPage_statistics'
@@ -235,6 +240,8 @@
                     // 第 3 類型
                     WorkHourUtil.queryStatisticsFormsCJ_type2(getData)
                         .success(function (res) {
+
+
                             res.payload = res.payload.sort(function (a, b) {
                                 return a._id.userDID > b._id.userDID ? 1 : -1;
                             });
@@ -280,6 +287,7 @@
                             }
                         })
                         .error(function () {
+                            toastr['warning']('請回報管理員', '後台異常');
                             $timeout(function () {
                                 bsLoadingOverlayService.stop({
                                     referenceId: 'mainPage_statistics'
