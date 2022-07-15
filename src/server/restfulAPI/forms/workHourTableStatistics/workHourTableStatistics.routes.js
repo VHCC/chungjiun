@@ -838,10 +838,12 @@ module.exports = function (app) {
                 normal = true;
                 if (err) {
                     isRespSended = true;
-                    console.log("1111");
-                    console.log(err);
-                    res.status(500).send(err);
-                    return;
+                    if (!isRespSended) {
+                        console.log("1111");
+                        console.log(err);
+                        res.status(500).send(err);
+                        return;
+                    }
                 } else {
                     results = results.concat(tables);
                     if (normal && overTime && !isRespSended) {
@@ -966,10 +968,12 @@ module.exports = function (app) {
                 overTime = true;
                 if (err) {
                     isRespSended = true;
-                    console.log("2222")
-                    console.log(err)
-                    res.status(500).send(err);
-                    return;
+                    if (!isRespSended) {
+                        console.log("2222");
+                        console.log(err);
+                        res.status(500).send(err);
+                        return;
+                    }
                 } else {
                     results_add = results_add.concat(tables);
 
