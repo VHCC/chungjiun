@@ -5,35 +5,48 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.com001WorkManage', [
+    angular.module('BlurAdmin.pages.001.PersonalManage', [
+        'ui.select',
+        'ngSanitize',
+        'BlurAdmin.pages.ui.notifications'
     ])
         .config(routeConfig);
 
     /** @ngInject */
     function routeConfig($stateProvider, $urlRouterProvider) {
         $stateProvider
-            .state('cgWorkManage',
+            .state('001PersonalManage',
                 {
-                    url: '/cgWorkManage',
+                    url: '/personalManage',
                     template: '<ui-view autoscroll="true" autoscroll-body-top></ui-view>',
                     abstract: true,
-                    title: '差勤管理',
+                    title: '個人管理',
                     sidebarMeta: {
                         icon: 'ion-compose',
-                        order: global.pages.cgWorkManage,
+                        order: global.pages._001_PersonalManage,
                     },
                 })
-            .state('cgWorkManage.userEdit', {
-                url: '/userEdit',
-                title: '個人資料',
-                templateUrl: 'app/pages/myProfile/userEdit/userEdit.html',
-                controller: 'userEditCtrl',
-                controllerAs: 'userEditCtrlVm',
+            .state('001PersonalManage.caseInfo', {
+                url: '/caseInfo',
+                title: '專案資料',
+                templateUrl: 'app/custom/com001/pages/personalManage/caseInfo/001caseInfoHome.html',
+                controller: '_001_caseInfoHomeCtrl',
+                controllerAs: 'vm',
                 sidebarMeta: {
-                    order: global.pages.cgWorkManage_userEdit,
+                    order: global.pages._001_PersonalManage_caseInfo,
                 },
             })
-            .state('cgWorkManage.workHourTableForm',
+            .state('001PersonalManage.userInfo', {
+                url: '/userInfo',
+                title: '個人資料',
+                templateUrl: 'app/custom/com001/pages/personalManage/userInfo/001userInfoHome.html',
+                controller: '_001_userInfoHomeCtrl',
+                controllerAs: 'vm',
+                sidebarMeta: {
+                    order: global.pages._001_PersonalManage_userEdit,
+                },
+            })
+            .state('001PersonalManage.workHourTableForm',
                 {
                     url: '/workHourTableForm',
                     templateUrl: 'app/pages/myForms/workHourTableForm/workHourTableFormPage.html',
@@ -41,7 +54,7 @@
                     controllerAs: 'workHourTableCtrlVm',
                     title: '工時系統',
                     sidebarMeta: {
-                        order: global.pages.cgWorkManage_workHourTable,
+                        order: global.pages._001_PersonalManage_workHourTable,
                     },
                 })
             // .state('cgWorkManage.travelApplication',
@@ -66,18 +79,18 @@
             //             order: global.pages.cgWorkManage_bulletin,
             //         },
             //     })
-            .state('cgWorkManage.workOffForm',
-                {
-                    url: '/workOffForm',
-                    templateUrl: 'app/pages/myForms/workOffForm/workOffFormPage.html',
-                    controller: 'workOffFormCtrl',
-                    controllerAs: 'workOffFormCtrlVm',
-                    title: '人員請假',
-                    accessLevel: [1,2,3,4,6,7,100],
-                    sidebarMeta: {
-                        order: global.pages.cgWorkManage_workOff,
-                    },
-                })
+            // .state('cgWorkManage.workOffForm',
+            //     {
+            //         url: '/workOffForm',
+            //         templateUrl: 'app/pages/myForms/workOffForm/workOffFormPage.html',
+            //         controller: 'workOffFormCtrl',
+            //         controllerAs: 'workOffFormCtrlVm',
+            //         title: '人員請假',
+            //         accessLevel: [1,2,3,4,6,7,100],
+            //         sidebarMeta: {
+            //             order: global.pages.cgWorkManage_workOff,
+            //         },
+            //     })
             // .state('cgWorkManage.hrMachine',
             //     {
             //         url: '/hrMachine',

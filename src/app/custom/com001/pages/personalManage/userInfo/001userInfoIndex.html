@@ -1,0 +1,117 @@
+<style type='text/css'>
+
+    .modal::before {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+        margin-right: -4px;
+    }
+
+    .modal-dialog {
+        display: inline-block;
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    .workAdd {
+        cursor: pointer;
+    }
+
+    .sumWarning {
+        color: red;
+        font-weight: bold;
+    }
+
+    .sumNormal {
+        color: black;
+    }
+
+    .mytooltip {
+        position: relative;
+        display: inline-block;
+        /*overflow : hidden;*/
+        text-overflow : ellipsis;
+        cursor: pointer;
+        /*white-space : nowrap;*/
+    }
+
+    /* Tooltip text */
+    .mytooltip .tooltiptext, .mytooltip .tooltiptextprj{
+        visibility: hidden;
+        width: 360px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+
+        /* Position the tooltip text */
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -180px;
+
+        /* Fade in tooltip */
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    /* Tooltip arrow */
+    .mytooltip .tooltiptext::after, .mytooltip .tooltiptextprj:after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    /* Show the tooltip text when you mouse over the tooltip container */
+    .mytooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    textarea:focus, input:focus{
+        outline: none;
+    }
+
+    *:focus {
+        outline: none;
+    }
+
+    .mytooltip:focus .tooltiptextprj {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .uib-datepicker-popup table tbody tr:hover{
+        background-color: #99c7ee;
+    }
+
+</style>
+
+<div bs-loading-overlay
+     bs-loading-overlay-reference-id="mainPage_001userInfo">
+
+    <uib-tabset active="$tabSetStatus.activeTab">
+        <uib-tab heading="個人資料" ng-click="apiProxy(this, 'userInfoCtrl')">
+            <div ng-controller="_001_userInfoCtrl as vm"
+                    ng-include="'app/custom/com001/pages/personalManage/userInfo/tab/userInfo/userInfo.html'"></div>
+        </uib-tab>
+        <uib-tab heading="人事輸入" ng-click="apiProxy(this, 'userEditCtrl')">
+            <div ng-controller="_001_userEditCtrl as vm"
+                 ng-include="'app/custom/com001/pages/personalManage/userInfo/tab/userEdit/userEdit.html'"></div>
+        </uib-tab>
+        <uib-tab heading="密碼派發">
+            <div ng-controller="dispatchPasswordCtrl as vm"
+                 ng-include="'app/pages/myProfile/userEdit/tab/dispatchPassword.html'"></div>
+        </uib-tab>
+
+    </uib-tabset>
+
+</div>

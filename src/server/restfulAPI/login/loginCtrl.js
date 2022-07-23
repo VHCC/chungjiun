@@ -77,7 +77,7 @@
                         console.log('cookies.username= ' + cookies.username);
                         console.log('cookies.username= ' + cookies.get('username'));
                         // window.location.href = 'http://localhost:3000';
-                        window.location.href = 'https://test.ichenprocin.dsmynas.com';
+                        window.location.href = 'http://localhost:3000';
 
                         scope.todos = data; // assign our new list of todos
                     })

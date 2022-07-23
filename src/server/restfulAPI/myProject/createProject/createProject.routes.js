@@ -36,7 +36,7 @@ module.exports = function (app) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, get_all_resign_users");
         User.find(
             {
-                workStatus:false
+                workStatus: false
             },
             {
                 password: 0
@@ -57,9 +57,14 @@ module.exports = function (app) {
     app.get(global.apiUrl.get_all_users_with_unregister, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, getAllUsersWithUnRegister");
         User.find(
+            {},
             {
-            },
-            {
+                machineDID: 0,
+                residualRestHour: 0,
+                isSetResidualRestHour: 0,
+                feature_official_doc: 0,
+                before108Kpi: 0,
+                cjMail: 0,
                 password: 0
             },
             function (err, users) {
@@ -69,8 +74,10 @@ module.exports = function (app) {
                     console.log(" ***** ERROR ***** ");
                     console.log(err);
                     res.send(err);
+                    return;
                 } else {
                     res.json(users);
+                    return;
                 }
             });
     });
@@ -80,7 +87,7 @@ module.exports = function (app) {
         User.find(
             {
                 roleType: 1, // 技師
-                workStatus:true
+                workStatus: true
             },
             {
                 password: 0
@@ -103,7 +110,7 @@ module.exports = function (app) {
         User.find(
             {
                 roleType: 2, // 技師
-                workStatus:true
+                workStatus: true
             },
             {
                 password: 0
@@ -416,22 +423,6 @@ module.exports = function (app) {
                 res.json(projects);
             }
         })
-
-
-        // Project.find({
-        //         isPrjClose: true
-        //     },
-        //     function (err, projects) {
-        //         if (err) {
-        //             console.log(global.timeFormat(new Date()) + global.log.e + "API, get_project_find_all_closed");
-        //             console.log(req.body);
-        //             console.log(" ***** ERROR ***** ");
-        //             console.log(err);
-        //             res.send(err);
-        //         } else {
-        //             res.json(projects);
-        //         }
-        //     })
     });
 
     app.get(global.apiUrl.get_project_find_all_by_group, function (req, res) {
@@ -451,7 +442,6 @@ module.exports = function (app) {
                     prjCode: {$first: '$prjCode'},
                     year: {$first: '$year'},
                     branch: {$first: '$branch'},
-                    // branch: "C",
                 }
             }
         ], function (err, projects) {
@@ -530,13 +520,10 @@ module.exports = function (app) {
             console.log(response);
             res.json(response);
         }, (fail) => {
-            // console.log(fail);
         })
     });
 
     function findPrj(parentPrjDID, projectsArray) {
-        // console.log("findPrj")
-
         return new Promise(function(resolve, reject) {
             // console.log(" Promise -- parentPrjDID:> " + parentPrjDID)
             // console.log(projectsArray)
@@ -576,8 +563,6 @@ module.exports = function (app) {
             })
         })
     }
-
-
 
     app.get(global.apiUrl.get_project_find_by_code_distinct, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, get projects by name distinct.");

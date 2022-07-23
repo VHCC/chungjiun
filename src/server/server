@@ -64,4 +64,13 @@ require('./restfulAPI/forms/kpi/kpi.routes')(app);
 require('./restfulAPI/forms/kpi/kpiTechDistribute.routes')(app);
 
 
+// com001
+require('./custom/com001/restfulAPI/001apiURLConstants');
+require('./custom/com001/restfulAPI/dto/institute/001Institute.routes')(app);
+require('./custom/com001/restfulAPI/dto/projectContract/001ProjectContract.routes')(app);
+require('./custom/com001/restfulAPI/dto/projectCase/001ProjectCase.routes')(app);
+require('./custom/com001/restfulAPI/dto/project/001Project.routes')(app);
+require('./custom/com001/restfulAPI/dto/caseTask/001CaseTask.routes')(app);
+
+
 

@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.com001Project', [
+    angular.module('BlurAdmin.pages.001.Project', [
         'ui.select',
         'ngSanitize',
         'BlurAdmin.pages.ui.notifications'
@@ -15,111 +15,61 @@
     /** @ngInject */
     function routeConfig($stateProvider, $urlRouterProvider) {
         $stateProvider
-            .state('cgProject',
+            .state('001Project',
                 {
-                    url: '/cgProject',
+                    url: '/project',
                     template: '<ui-view autoscroll="true" autoscroll-body-top></ui-view>',
                     abstract: true,
                     title: '專案管理',
                     sidebarMeta: {
                         icon: 'ion-compose',
-                        order: global.pages.myProject,
+                        order: global.pages._001_Project,
                     },
                 })
-            // .state('myProject.createProject',
-            //     {
-            //         url: '/createProject',
-            //         templateUrl: 'app/pages/myProject/createProject/createProject.html',
-            //         controller: 'createProjectCtrl',
-            //         controllerAs: 'cC',
-            //         title: '建置專案',
-            //         sidebarMeta: {
-            //             order: global.pages.myProject_createProject,
-            //         },
-            //     })
-            .state('cgProject.createNewProject',
+            .state('001Project.createProject',
                 {
-                    url: '/createNewProject',
-                    templateUrl: 'app/pages/myExecutive/createNewProject/createProjectHomePage.html',
-                    controller: 'createNewProjectCtrl',
-                    controllerAs: 'createNewProjectCtrlVm',
+                    url: '/createProject',
+                    templateUrl: 'app/custom/com001/pages/project/createProject/001createProjectHome.html',
                     title: '建立專案',
-                    accessLevel: [100],
-                    <!--20200518 check right-->
+                    controller: '_001_createProjectHomeCtrl',
+                    controllerAs: 'vm',
+                    // accessLevel: [100],
                     sidebarMeta: {
-                        order: global.pages.myProject_createProject,
+                        order: global.pages._001_Project_createProject,
                     },
                 })
-            .state('cgProject.listProject',
+            .state('001Project.listProject',
             {
                 url: '/listProject',
-                templateUrl: 'app/pages/myProject/listProject/listProject.html',
-                controller: 'listProjectCtrl',
+                templateUrl: 'app/custom/com001/pages/project/listProject/001listProjectHome.html',
+                controller: '_001_listProjectHomeCtrl',
+                controllerAs: 'vm',
                 title: '執行專案',
-                accessLevel: [1,2,6,100],
-                <!--20200518 check right-->
+                // accessLevel: [100],
                 sidebarMeta: {
-                    order: global.pages.myProject_listProject,
+                    order: global.pages._001_Project_listProject,
                 },
             })
-            // .state('cgProject.listProjectCharger',
-            //     {
-            //         url: '/listProjectCharger',
-            //         templateUrl: 'app/pages/myProject/listProjectCharger/listProjectCharger.html',
-            //         controller: 'listProjectChargerCtrl',
-            //         title: '主辦專案',
-            //         accessLevel: [1,2,3,4,6,7,100],
-            //         <!--20200518 check right-->
-            //         sidebarMeta: {
-            //             order: global.pages.myProject_listProject_charger,
-            //         },
-            //     })
-            // .state('cgProject.listProjectAll',
-            //     {
-            //         url: '/listProjectAll',
-            //         templateUrl: 'app/pages/myProject/listProjectAll/listProjectAllEnableHome.html',
-            //         controller: 'listProjectAllCtrl',
-            //         title: '專案總表',
-            //         <!--20200518 check right-->
-            //         // accessLevel: [1,2,3,6,100],
-            //         sidebarMeta: {
-            //             order: global.pages.myProject_listProjectAll,
-            //         },
-            //     })
-            // .state('myProject.endProject',
-            //     {
-            //         url: '/endProject',
-            //         templateUrl: 'app/pages/myProject/listProject/listProject.html',
-            //         controller: 'listProjectCtrl',
-            //         title: '已結案專案',
-            //         accessLevel: [1, 2, 3, 100],
-            //         sidebarMeta: {
-            //             order: global.pages.myProject_endProject,
-            //         },
-            //     })
-            // .state('cgProject.projectIncome',
-            //     {
-            //         url: '/projectIncome',
-            //         templateUrl: 'app/pages/myProject/projectIncome/projectIncomeHomePage.html',
-            //         title: '專案收支',
-            //         controller: 'projectIncomeHomeCtrl',
-            //         controllerAs: 'projectIncomeHomeCtrlVm',
-            //         accessLevel: [1,2,3,4,6,7,100],
-            //         sidebarMeta: {
-            //             order: global.pages.myProject_projectIncome,
-            //         },
-            //     })
-            // .state('cgProject.projectFinancial',
-            //     {
-            //         url: '/projectFinancial',
-            //         templateUrl: 'app/pages/myProject/projectFinancial/projectFinancialHomePage.html',
-            //         title: '專案結算',
-            //         controller: 'projectFinancialHomeCtrl',
-            //         controllerAs: 'projectFinancialHomeCtrlVm',
-            //         accessLevel: [1,2,6,100],
-            //         sidebarMeta: {
-            //             order: global.pages.myProject_projectFinancial,
-            //         },
-            //     })
+            .state('001Project.listProjectContract',
+                {
+                    url: '/listProjectContract',
+                    templateUrl: 'app/custom/com001/pages/project/listContract/001listContractHome.html',
+                    controller: '_001_listContractHomeCtrl',
+                    controllerAs: 'vm',
+                    title: '契約基本資料',
+                    sidebarMeta: {
+                        order: global.pages._001_Project_listProjectContract,
+                    },
+                })
+            .state('001Project.listProjectCase',
+                {
+                    url: '/listProjectCase',
+                    templateUrl: 'app/pages/myProject/listProject/listProject.html',
+                    controller: 'listProjectCtrl',
+                    title: '工程基本資料',
+                    sidebarMeta: {
+                        order: global.pages._001_Project_listProjectCase,
+                    },
+                })
     }
 })();

@@ -1,5 +1,6 @@
-
 var userModel = require('../models/user');
+
+var moment = require('moment');
 
 module.exports = function(app) {
 // application -------------------------------------------------------------
@@ -13,6 +14,7 @@ module.exports = function(app) {
             email: req.body.email,
             password: req.body.password,
             roleType: req.body.roletype,
+            timestamp: moment(new Date()).format("YYYYMMDD_HHmmss")
         }, function (err, project) {
             if (err) {
                 res.send(err);
@@ -28,10 +30,10 @@ module.exports = function(app) {
         console.log(req.body);
         userModel.find({
             email : req.body.email,
-
         }, function(err, user) {
             if (err) {
                 res.send(err);
+                return;
             }
             if (user != '') {
                 res.json(user);
@@ -41,6 +43,7 @@ module.exports = function(app) {
                 code: 200,
                 error: global.status._200,
             });
+            return;
         });
     });
 }

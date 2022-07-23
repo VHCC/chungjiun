@@ -10,17 +10,15 @@ global.pages = {
     maps : 5500,
 
 
-
-
     // Customize
     myProject  : 100,
     myProject_createProject  : 100,
     myProject_listProject  : 200,
-    myProject_listProject_charger  : 205,
-    myProject_listProjectAll  : 210,
-    myProject_endProject  : 300,
-    myProject_projectIncome  : 400,
-    myProject_projectFinancial  : 500,
+    myProject_listProject_charger  : 205, // 001 abandon
+    myProject_listProjectAll  : 210, // 001 abandon
+    myProject_endProject  : 300, // 001 abandon
+    myProject_projectIncome  : 400, // 001 abandon
+    myProject_projectFinancial  : 500, // 001 abandon
     //
     cgWorkManage: 200,
     cgWorkManage_userEdit: 100,
@@ -76,4 +74,15 @@ global.pages = {
 
 
 
+    // com 001
+    _001_Project  : 100,
+    _001_Project_createProject  : 100,
+    _001_Project_listProject  : 200,
+    _001_Project_listProjectContract  : 300,
+    _001_Project_listProjectCase  : 400,
+
+    _001_PersonalManage: 200,
+    _001_PersonalManage_caseInfo: 100,
+    _001_PersonalManage_userEdit: 200,
+    _001_PersonalManage_workHourTable  : 300,
 };

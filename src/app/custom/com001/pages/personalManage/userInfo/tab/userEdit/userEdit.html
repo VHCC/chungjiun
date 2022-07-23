@@ -1,0 +1,156 @@
+<form>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <ui-select ng-model="vm.edit.user"
+                           class="btn-group bootstrap-select form-control"
+                           id="userName"
+                           ng-change="userSelected(vm.edit.user)"
+                           ng-disabled="false"
+                           append-to-body="true"
+                           search-enabled="true">
+                    <ui-select-match placeholder="選擇同仁">
+                        {{$select.selected.name}}
+                    </ui-select-match>
+                    <ui-select-choices
+                            repeat="user in vm.allUserWithSignOut | filter: $select.search">
+                        <span ng-bind-html="showUserStatus(user) | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+    <h3 class="with-line"></h3>
+    <!--姓名-->
+    <div class="row" ng-if="vm.edit.user">
+        <div class="col-md-6">
+            <div class="form-group row clearfix">
+                <label class="col-md-3 control-label">姓名</label>
+
+                <div class="col-md-9">
+                    <input type="text"
+                           ng-model="vm.edit.user.name"
+                           class="form-control"
+                           placeholder=""
+                           required
+                           value=" {{vm.edit.user.name}}">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--帳號-->
+    <div class="row" ng-if="vm.edit.user">
+        <div class="col-md-6">
+            <div class="form-group row clearfix">
+                <label class="col-md-3 control-label">系統帳號</label>
+
+                <div class="col-md-9">
+                    <input type="text"
+                           class="form-control"
+                           ng-model="vm.edit.user.email"
+                           placeholder=""
+                           required
+                           value="{{vm.edit.user.email}}">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--部門-->
+    <div class="row" ng-if="vm.edit.user">
+        <div class="col-md-6">
+            <div class="form-group row clearfix">
+                <label class="col-md-3 control-label">隸屬部門</label>
+                <div class="col-md-9">
+                    <ui-select ng-model="vm.edit.user.userDep"
+                               class="btn-group bootstrap-select form-control"
+                               append-to-body="true"
+                               search-enabled="true">
+                        <ui-select-match placeholder="請選擇隸屬部門">
+                            {{$select.selected.name}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                repeat="option in vm.departmentOptions | filter: $select.search">
+                            <span ng-bind-html="option.name"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--職務-->
+    <div class="row" ng-if="vm.edit.user">
+        <div class="col-md-6">
+            <div class="form-group row clearfix">
+                <label class="col-md-3 control-label">同仁職務</label>
+                <div class="col-md-9">
+                    <ui-select ng-model="vm.edit.user.userRole"
+                               class="btn-group bootstrap-select form-control"
+                               append-to-body="true"
+                               search-enabled="true">
+                        <ui-select-match placeholder="請選擇同仁職務">
+                            {{$select.selected.name}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                repeat="option in vm.roleOptions | filter: $select.search">
+                            <span ng-bind-html="option.name"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--主管-->
+    <div class="row" ng-if="vm.edit.user">
+        <div class="col-md-6">
+            <div class="form-group row clearfix">
+                <label class="col-md-3 control-label" style="color:red">{{vm.edit.user.name}}
+                    的主管</label>
+                <div class="col-md-9">
+                    <ui-select ng-model="vm.edit.user.userBoss"
+                               class="btn-group bootstrap-select form-control"
+                               required
+                               ng-disabled="false"
+                               append-to-body="true"
+                               search-enabled="true">
+                        <ui-select-match placeholder="請選擇 {{vm.edit.user.name}} 的主管">
+                            {{$select.selected.name}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                repeat="item in vm.managersList | filter: $select.search">
+                            <span ng-bind-html="item.name | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--ERM 狀態-->
+    <div class="row" ng-if="vm.edit.user">
+        <div class="col-md-6">
+            <div class="form-group row clearfix">
+                <label class="col-md-3 control-label" style="color:blue">ERM 狀態</label>
+                <div class="col-md-9" >
+                    <switch class="wide"
+                            ng-model="vm.edit.user.workStatus"
+                            on="可登入"
+                            off="不可登入"
+                            value="{{vm.edit.user.workStatus}}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="with-line"></h3>
+    <div class="form-group">
+        <button type="submit"
+                ng-click="updateUser()"
+                class="btn btn-info">儲存人事資料
+        </button>
+    </div>
+
+</form>

@@ -1,0 +1,326 @@
+<uib-accordion ng-repeat="case in tableData">
+    <!--<uib-accordion-group heading="{{showUser(user.DID)}}"-->
+    <uib-accordion-group heading="{{case.branch}} {{case.caseName}} {{(case.typeName)}}"
+                         ng-click="showCaseInformation(case)"
+                         panel-class="bootstrap-panel accordion-panel panel-default">
+        <!--<table class="table table-bordered table-hover table-condensed">-->
+               <!--&lt;!&ndash;ng-repeat="table in fetchReviewTableFromScope(case)">&ndash;&gt;-->
+            <!--<thead>-->
+                <!--<tr>-->
+                    <!--<td rowspan="3" style="vertical-align: inherit; text-align: center" width="50px">代碼</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td colspan="2" style="vertical-align: inherit; text-align: center">星期一</td>-->
+                <!--</tr>-->
+                <!--<r>-->
+                    <!--<td>-->
+                        <!--{{case.code}}-->
+                    <!--</td>-->
+                <!--</r>-->
+            <!--</thead>-->
+
+            <!--&lt;!&ndash;<tbody ng-repeat="item in fetchFormDataFromScope(table)">&ndash;&gt;-->
+            <!--<tbody >-->
+                <!--<tr style="vertical-align: inherit; text-align: center">-->
+                    <!--<td rowspan="2" style="vertical-align: inherit; text-align: center">-->
+                        <!--<span id="prjCode">{{showPrjCode(item.prjDID)}}</span>-->
+                        <!--<span style="display: none;" id="prjDID">{{item.prjDID}}</span>-->
+                    <!--</td>-->
+                    <!--<td rowspan="2" style="vertical-align: inherit; text-align: center">-->
+                        <!--<p class="mytooltip" tabindex="{{$index}}">-->
+                            <!--{{showPrjNameEZ(item.prjDID)}}-->
+                            <!--&lt;!&ndash;<span class="tooltiptext">{{showPrjName(item.prjDID)}}</span>&ndash;&gt;-->
+                            <!--<span class="tooltiptextprj">-->
+                                    <!--{{showPrjName(item.prjDID)}}-->
+                                <!--</span>-->
+                        <!--</p>-->
+
+                    <!--</td>-->
+
+                    <!--<td rowspan="2" style="vertical-align: inherit; text-align: center">-->
+                        <!--<span>{{ showProjectManager(item.prjDID)}}</span>-->
+                    <!--</td>-->
+
+                    <!--<td rowspan="2" style="vertical-align: inherit;">-->
+                            <!--<span>-->
+                                <!--正常-->
+                                <!--<br>-->
+                                <!--加班/換休-->
+                            <!--</span>-->
+                    <!--</td>-->
+
+                    <!--<td class="form-group has-success" style="vertical-align: inherit;">-->
+                            <!--<span editable-number="item.mon_hour"-->
+                                  <!--ng-if="$parent.$index === 0"-->
+                                  <!--e-form="rowform1"-->
+                                  <!--e-ng-change="hourChange(this)"-->
+                                  <!--e-min="0"-->
+                                  <!--id="mon_hour"-->
+                                  <!--e-required>{{ item.mon_hour || 0 }}</span>-->
+                    <!--</td>-->
+                    <!--<td style="vertical-align: inherit;">-->
+                        <!--<my ng-show="item.mon_memo !== undefined && item.mon_memo !== '' && !rowform1.$visible"-->
+                            <!--ng-class="{workAdd: hover}"-->
+                            <!--ng-if="$parent.$index === 0"-->
+                            <!--class="mytooltip"-->
+                            <!--ng-mouseover="hover = true"-->
+                            <!--ng-mouseleave="hover = false"-->
+                            <!--id="mon_memo"-->
+                            <!--ng-click="editMemo(item, 1, false)">-->
+                            <!--<i class="fa fa-pencil"></i>-->
+                            <!--<span class="tooltiptext">{{item.mon_memo}}</span>-->
+                        <!--</my>-->
+                    <!--</td>-->
+                    <!--<td class="form-group has-success" style="vertical-align: inherit;">-->
+                            <!--<span editable-number="item.tue_hour"-->
+                                  <!--ng-if="checkIsCrossMonth(firstFullDate_manager) < 0-->
+                                  <!--|| (user.crossDay > 2 && $parent.$index === 0)-->
+                                  <!--|| (user.crossDay <= 2 && $parent.$index === 1)"-->
+                                  <!--e-form="rowform1"-->
+                                  <!--e-ng-change="hourChange(this)"-->
+                                  <!--e-min="0"-->
+                                  <!--id="tue_hour"-->
+                                  <!--e-required>{{ item.tue_hour || 0 }}</span>-->
+                    <!--</td>-->
+                    <!--<td style="vertical-align: inherit;">-->
+                        <!--<my ng-show="item.tue_memo !== undefined && item.tue_memo !== '' && !rowform1.$visible"-->
+                            <!--ng-class="{workAdd: hover}"-->
+                            <!--ng-if="checkIsCrossMonth(firstFullDate_manager) < 0-->
+                                  <!--|| (user.crossDay > 2 && $parent.$index === 0)-->
+                                  <!--|| (user.crossDay <= 2 && $parent.$index === 1)"-->
+                            <!--class="mytooltip"-->
+                            <!--ng-mouseover="hover = true"-->
+                            <!--ng-mouseleave="hover = false"-->
+                            <!--id="mon_memo"-->
+                            <!--ng-click="editMemo(item, 2, false)">-->
+                            <!--<i class="fa fa-pencil"></i>-->
+                            <!--<span class="tooltiptext">{{item.tue_memo}}</span>-->
+                        <!--</my>-->
+                    <!--</td>-->
+                    <!--<td class="form-group has-success" style="vertical-align: inherit;">-->
+                            <!--<span editable-number="item.wes_hour"-->
+                                  <!--ng-if="checkIsCrossMonth(firstFullDate_manager) < 0-->
+                              <!--|| (user.crossDay > 3 && $parent.$index === 0)-->
+                              <!--|| (user.crossDay <= 3 && $parent.$index === 1)"-->
+                                  <!--e-form="rowform1"-->
+                                  <!--e-ng-change="hourChange(this)"-->
+                                  <!--e-min="0"-->
+                                  <!--id="wes_hour"-->
+                                  <!--e-required>{{ item.wes_hour || 0 }}</span>-->
+                    <!--</td>-->
+                    <!--<td style="vertical-align: inherit;">-->
+                        <!--<my ng-show="item.wes_memo !== undefined && item.wes_memo !== '' && !rowform1.$visible"-->
+                            <!--ng-if="checkIsCrossMonth(firstFullDate_manager) < 0-->
+                              <!--|| (user.crossDay > 3 && $parent.$index === 0)-->
+                              <!--|| (user.crossDay <= 3 && $parent.$index === 1)"-->
+                            <!--ng-class="{workAdd: hover}"-->
+                            <!--class="mytooltip"-->
+                            <!--ng-mouseover="hover = true"-->
+                            <!--ng-mouseleave="hover = false"-->
+                            <!--id="mon_memo"-->
+                            <!--ng-click="editMemo(item, 3, false)">-->
+                            <!--<i class="fa fa-pencil"></i>-->
+                            <!--<span class="tooltiptext">{{item.wes_memo}}</span>-->
+                        <!--</my>-->
+                    <!--</td>-->
+                    <!--<td class="form-group has-success" style="vertical-align: inherit;">-->
+                            <!--<span editable-number="item.thu_hour"-->
+                                  <!--ng-if="checkIsCrossMonth(firstFullDate_manager) < 0-->
+                              <!--|| (user.crossDay > 4 && $parent.$index === 0)-->
+                              <!--|| (user.crossDay <= 4 && $parent.$index === 1)"-->
+                                  <!--e-form="rowform1"-->
+                                  <!--e-ng-change="hourChange(this)"-->
+                                  <!--e-min="0"-->
+                                  <!--id="thu_hour"-->
+                                  <!--e-required>{{ item.thu_hour || 0}}</span>-->
+                    <!--</td>-->
+                    <!--<td style="vertical-align: inherit;">-->
+                        <!--<my ng-show="item.thu_memo !== undefined && item.thu_memo !== '' && !rowform1.$visible"-->
+                            <!--ng-if="checkIsCrossMonth(firstFullDate_manager) < 0-->
+                              <!--|| (user.crossDay > 4 && $parent.$index === 0)-->
+                              <!--|| (user.crossDay <= 4 && $parent.$index === 1)"-->
+                            <!--ng-class="{workAdd: hover}"-->
+                            <!--class="mytooltip"-->
+                            <!--ng-mouseover="hover = true"-->
+                            <!--ng-mouseleave="hover = false"-->
+                            <!--id="mon_memo"-->
+                            <!--ng-click="editMemo(item, 4, false)">-->
+                            <!--<i class="fa fa-pencil"></i>-->
+                            <!--<span class="tooltiptext">{{item.thu_memo}}</span>-->
+                        <!--</my>-->
+                    <!--</td>-->
+                    <!--<td class="form-group has-success" style="vertical-align: inherit;">-->
+                            <!--<span editable-number="item.fri_hour"-->
+                                  <!--ng-if="checkIsCrossMonth(firstFullDate_manager) < 0-->
+                              <!--|| (user.crossDay > 5 && $parent.$index === 0)-->
+                              <!--|| (user.crossDay <= 5 && $parent.$index === 1)"-->
+                                  <!--e-form="rowform1"-->
+                                  <!--e-ng-change="hourChange(this)"-->
+                                  <!--e-min="0"-->
+                                  <!--id="fri_hour"-->
+                                  <!--e-required>{{ item.fri_hour || 0}}</span>-->
+                    <!--</td>-->
+                    <!--<td style="vertical-align: inherit;">-->
+                        <!--<my ng-show="item.fri_memo !== undefined && item.fri_memo !== '' && !rowform1.$visible"-->
+                            <!--ng-if="checkIsCrossMonth(firstFullDate_manager) < 0-->
+                              <!--|| (user.crossDay > 5 && $parent.$index === 0)-->
+                              <!--|| (user.crossDay <= 5 && $parent.$index === 1)"-->
+                            <!--ng-class="{workAdd: hover}"-->
+                            <!--class="mytooltip"-->
+                            <!--ng-mouseover="hover = true"-->
+                            <!--ng-mouseleave="hover = false"-->
+                            <!--id="mon_memo"-->
+                            <!--ng-click="editMemo(item, 5, false)">-->
+                            <!--<i class="fa fa-pencil"></i>-->
+                            <!--<span class="tooltiptext">{{item.fri_memo}}</span>-->
+                        <!--</my>-->
+                    <!--</td>-->
+                    <!--<td class="form-group has-success" style="vertical-align: inherit;">-->
+                            <!--<span editable-number="item.sat_hour"-->
+                                  <!--ng-if="checkIsCrossMonth(firstFullDate_manager) < 0-->
+                              <!--|| (user.crossDay > 6 && $parent.$index === 0)-->
+                              <!--|| (user.crossDay <= 6 && $parent.$index === 1)"-->
+                                  <!--e-form="rowform1"-->
+                                  <!--e-ng-change="hourChange(this)"-->
+                                  <!--e-min="0"-->
+                                  <!--id="sat_hour"-->
+                                  <!--e-required>{{ item.sat_hour || 0}}</span>-->
+                    <!--</td>-->
+                    <!--<td style="vertical-align: inherit;">-->
+                        <!--<my ng-show="item.sat_memo !== undefined && item.sat_memo !== '' && !rowform1.$visible"-->
+                            <!--ng-if="checkIsCrossMonth(firstFullDate_manager) < 0-->
+                              <!--|| (user.crossDay > 6 && $parent.$index === 0)-->
+                              <!--|| (user.crossDay <= 6 && $parent.$index === 1)"-->
+                            <!--ng-class="{workAdd: hover}"-->
+                            <!--class="mytooltip"-->
+                            <!--ng-mouseover="hover = true"-->
+                            <!--ng-mouseleave="hover = false"-->
+                            <!--id="mon_memo"-->
+                            <!--ng-click="editMemo(item, 6, false)">-->
+                            <!--<i class="fa fa-pencil"></i>-->
+                            <!--<span class="tooltiptext">{{item.sat_memo}}</span>-->
+                        <!--</my>-->
+                    <!--</td>-->
+                    <!--<td class="form-group has-success" style="vertical-align: inherit;">-->
+                            <!--<span editable-number="item.sun_hour"-->
+                                  <!--ng-if="checkIsCrossMonth(firstFullDate_manager) < 0-->
+                              <!--|| (user.crossDay > 7 && $parent.$index === 0)-->
+                              <!--|| (user.crossDay <= 7 && $parent.$index === 1)"-->
+                                  <!--e-form="rowform1"-->
+                                  <!--e-ng-change="hourChange(this)"-->
+                                  <!--e-min="0"-->
+                                  <!--id="sun_hour"-->
+                                  <!--e-required>{{ item.sun_hour || 0}}</span>-->
+                    <!--</td>-->
+                    <!--<td style="vertical-align: inherit;">-->
+                        <!--<my ng-show="item.sun_memo !== undefined && item.sun_memo !== '' && !rowform1.$visible"-->
+                            <!--ng-if="checkIsCrossMonth(firstFullDate_manager) < 0-->
+                              <!--|| (user.crossDay > 7 && $parent.$index === 0)-->
+                              <!--|| (user.crossDay <= 7 && $parent.$index === 1)"-->
+                            <!--ng-class="{workAdd: hover}"-->
+                            <!--class="mytooltip"-->
+                            <!--ng-mouseover="hover = true"-->
+                            <!--ng-mouseleave="hover = false"-->
+                            <!--id="mon_memo"-->
+                            <!--ng-click="editMemo(item, 7, false)">-->
+                            <!--<i class="fa fa-pencil"></i>-->
+                            <!--<span class="tooltiptext">{{item.sun_memo}}</span>-->
+                        <!--</my>-->
+                    <!--</td>-->
+
+                    <!--&lt;!&ndash;合計&ndash;&gt;-->
+                    <!--<td style="vertical-align: inherit;">-->
+                            <!--<span e-form="rowform1"-->
+                                  <!--e-required>{{item.hourTotal}}</span>-->
+                    <!--</td>-->
+                    <!--&lt;!&ndash;經理/主任確認&ndash;&gt;-->
+                    <!--<td rowspan="2" style="vertical-align: inherit;">-->
+                        <!--<form editable-form name="rowform1" ng-show="rowform1.$visible"-->
+                              <!--class="form-buttons form-inline">-->
+                        <!--</form>-->
+                        <!--<div ng-show="isFitManager(item.prjDID) && item.isSendReview">-->
+                            <!--&lt;!&ndash;<div ng-show="!item.isManagerCheck">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<button class="btn btn-info editable-table-button btn-xs"&ndash;&gt;-->
+                            <!--&lt;!&ndash;ng-click="reviewWHManagerItem(user, item, $index)"&ndash;&gt;-->
+                            <!--&lt;!&ndash;style="color: black">&ndash;&gt;-->
+                            <!--&lt;!&ndash;同意&ndash;&gt;-->
+                            <!--&lt;!&ndash;</button>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--<div ng-show="!item.isManagerCheck">-->
+                                <!--<button class="btn btn-danger editable-table-button btn-xs"-->
+                                        <!--ng-click="disagreeWHItem_manager(user, item, $index)"-->
+                                        <!--style="color: black">-->
+                                    <!--退回-->
+                                <!--</button>-->
+                            <!--</div>-->
+                            <!--<div ng-show="item.isManagerCheck">-->
+                                <!--<button class="btn btn-info editable-table-button btn-xs"-->
+                                        <!--style="color: black">-->
+                                    <!--{{ showProjectManager(item.prjDID)}}-->
+                                    <!--<br>-->
+                                    <!--確認完成-->
+                                <!--</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                        <!--<div ng-show="!item.isSendReview">-->
+                            <!--<button class="btn btn-warning editable-table-button btn-xs">-->
+                                <!--編輯中-->
+                            <!--</button>-->
+                        <!--</div>-->
+
+
+                        <!--<div ng-show="!isFitManager(item.prjDID)">-->
+                            <!--<div ng-show="rowform1.$waiting || (item.isSendReview && !item.isManagerCheck)">-->
+                                <!--<button class="btn btn-warning editable-table-button btn-xs"-->
+                                        <!--style="color: black">-->
+                                    <!--{{ showProjectManager(item.prjDID)}}-->
+                                    <!--<br>-->
+                                    <!--確認作業中-->
+                                <!--</button>-->
+                            <!--</div>-->
+                            <!--<div ng-show="item.isManagerCheck">-->
+                                <!--<button class="btn btn-info editable-table-button btn-xs"-->
+                                        <!--style="color: black">-->
+                                    <!--{{ showProjectManager(item.prjDID)}}-->
+                                    <!--<br>-->
+                                    <!--確認完成-->
+                                <!--</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</td>-->
+
+                    <!--&lt;!&ndash;更新時間&ndash;&gt;-->
+                    <!--<td rowspan="2" style="vertical-align: inherit;">-->
+                            <!--<span ng-if="item.updateTs != undefined">-->
+                                <!--{{item.updateTs}}-->
+                            <!--</span>-->
+                        <!--<br>-->
+                        <!--<span ng-if="item.updateTs != undefined">-->
+                                <!--{{showUpdateAction(item.updateAction)}}-->
+                            <!--</span>-->
+                    <!--</td>-->
+
+                <!--</tr>-->
+            <!--</tbody>-->
+
+            <!--<tfoot>-->
+                <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td colspan="22">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<section class="col-md-12" >&ndash;&gt;-->
+                            <!--&lt;!&ndash;<button ng-click="reviewWHManagerAll(user, fetchReviewTableFromScope(user), $index)"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;style="float: right; padding: 0 60px; line-height: 4"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;id="btnReview"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;pb-style="shrink"&ndash;&gt;-->
+                                    <!--&lt;!&ndash;class="btn btn-primary">&ndash;&gt;-->
+                                <!--&lt;!&ndash;全部確認&ndash;&gt;-->
+                            <!--&lt;!&ndash;</button>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</section>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+                <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+            <!--</tfoot>-->
+        <!--</table>-->
+        <img style="width: -webkit-fill-available"
+                src="app/custom/com001/pages/personalManage/caseInfo/tab/editCaseInfo/editCaseInfo.png">
+    </uib-accordion-group>
+</uib-accordion>

@@ -73,14 +73,15 @@ module.exports = function (app) {
         }, {
             $set: {
                 roleType: req.body.roleType,
+                depType: req.body.depType,
                 name: req.body.userName,
                 email: req.body.email,
-                cjMail: req.body.cjMail,
-                userMonthSalary: req.body.userMonthSalary,
+                // cjMail: req.body.cjMail,
+                // userMonthSalary: req.body.userMonthSalary,
                 bossID: req.body.bossID,
-                machineDID: req.body.machineDID,
+                // machineDID: req.body.machineDID,
                 workStatus: req.body.workStatus,
-                feature_official_doc: req.body.feature_official_doc,
+                // feature_official_doc: req.body.feature_official_doc,
             }
         }, function (err) {
             if (err) {

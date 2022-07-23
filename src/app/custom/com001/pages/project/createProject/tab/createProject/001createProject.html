@@ -1,0 +1,191 @@
+
+<!--<div class="row" id="rowHead">-->
+    <!--<div class="col-md-12" id="colHead">-->
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="form-group row clearfix">
+                <label class="col-md-2 control-label">專案代碼: </label>
+                    <p class="col-md-10">
+                    {{vm.new.branch.value}} <!-- 分支 1-->
+                    {{vm.new.institute.code}} <!-- 機關代碼 10-->
+                    {{vm.new.projectContract.code}} <!-- 契約編號-->
+                    {{vm.new.projectCase.code}} <!-- 工程編號-->
+                    {{vm.new.projectType.value}} <!-- 類型-->
+                    <!--{{mainProject.number.code}} &lt;!&ndash; 專案 OO&ndash;&gt;-->
+                    <!--{{mainProject.subNumber.code}} &lt;!&ndash; 子案 OO&ndash;&gt;-->
+                    <!--{{mainProject.type.selected.value}} &lt;!&ndash; 類型 O&ndash;&gt;-->
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!--分支主題-->
+            <div class="col-md-12">
+                <div class="form-group row clearfix">
+                    <label class="col-md-2 control-label">分支主題</label>
+                    <div class="col-md-10">
+                        <ui-select ng-model="vm.new.branch"
+                                   class="btn-group bootstrap-select form-control"
+                                   append-to-body="true"
+                                   search-enabled="true">
+                            <ui-select-match placeholder="請選擇分支主題">
+                                {{$select.selected.value}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    repeat="option in vm.branchOption | filter: $select.search">
+                                <span ng-bind-html="option.label | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+
+        <!--機關名稱-->
+            <div class="col-md-12">
+                <div class="form-group row clearfix">
+                    <label class="col-md-2 control-label">機關名稱</label>
+                    <div class="col-md-10">
+                        <ui-select ng-model="vm.new.institute"
+                                   class="btn-group bootstrap-select form-control"
+                                   ng-change="changeInstitute(vm.new.institute)"
+                                   append-to-body="true"
+                                   search-enabled="true">
+                            <ui-select-match placeholder="請選擇機關">
+                                {{$select.selected.name}} - {{$select.selected.code}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    repeat="option in vm.instituteOptions | filter: $select.search">
+                                <span ng-bind-html="option.name + ' - ' + option.code
+                                | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+
+        <!--契約名稱-->
+            <div class="col-md-12" ng-if="vm.new.institute">
+                <div class="form-group row clearfix">
+                    <label class="col-md-2 control-label">契約名稱</label>
+                    <div class="col-md-10">
+                        <ui-select ng-model="vm.new.projectContract"
+                                   class="btn-group bootstrap-select form-control"
+                                   ng-change="changeContract(vm.new.projectContract, vm.new.institute)"
+                                   append-to-body="true"
+                                   search-enabled="true">
+                            <ui-select-match placeholder="請選擇契約">
+                                {{$select.selected.name}} - {{$select.selected.code}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    repeat="option in vm.contractOptions | filter: $select.search">
+                                        <span ng-bind-html="option.name + ' - ' + option.code
+                                        | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+
+        <!--工程名稱-->
+            <div class="col-md-12" ng-if="vm.new.projectContract">
+                <div class="form-group row clearfix">
+                    <label class="col-md-2 control-label">工程名稱</label>
+                    <div class="col-md-10">
+                        <ui-select ng-model="vm.new.projectCase"
+                                   class="btn-group bootstrap-select form-control"
+                                   ng-change="changeCase(vm.new.projectCase)"
+                                   append-to-body="true"
+                                   search-enabled="true">
+                            <ui-select-match placeholder="請選擇工程">
+                                {{$select.selected.name}} - {{$select.selected.code}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    repeat="option in vm.caseOptions | filter: $select.search">
+                                                <span ng-bind-html="option.name + ' - ' + option.code
+                                                | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+
+
+        <!--類型-->
+            <div class="col-md-12">
+                <div class="form-group row clearfix" ng-if="vm.new.projectCase">
+                    <label class="col-md-2 control-label">類型</label>
+                    <div class="col-md-10">
+                        <ui-select ng-model="vm.new.projectType"
+                                   class="btn-group bootstrap-select form-control"
+                                   append-to-body="true"
+                                   search-enabled="true">
+                            <ui-select-match placeholder="請選擇類型">
+                                {{$select.selected.label}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    repeat="option in vm.prjTypeOptions | filter: $select.search">
+                                    <span ng-bind-html="option.label
+                                    | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-md-12">
+                <div class="form-group row clearfix" ng-if="vm.new.projectType">
+                    <label class="col-md-2 control-label">部門主管</label>
+                    <div class="col-md-10">
+                        <ui-select ng-model="vm.new.projectManagers"
+                                   class="btn-group bootstrap-select form-control"
+                                   required
+                                   ng-disabled="false"
+                                   append-to-body="true"
+                                   search-enabled="true">
+                            <ui-select-match placeholder="請選擇部門主管">
+                                {{$select.selected.name}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    repeat="item in vm.managers | filter: $select.search">
+                                <span ng-bind-html="item.name | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-12">
+                <div class="form-group row clearfix" ng-show="vm.new.projectManagers">
+                    <label class="col-md-2 control-label">負責技師</label>
+                    <div class="col-md-10">
+                        <ui-select multiple
+                                   ng-model="vm.new.projectTechs"
+                                   ng-disabled="false"
+                                   search-enabled="true"
+                                   append-to-body="true"
+                                   class="form-control"
+                                   array-required>
+                            <ui-select-match placeholder="請選擇技師">
+                                {{$item.name}}
+                            </ui-select-match>
+                            <ui-select-choices
+                                    repeat="item in vm.techsItems | filter: $select.search">
+                                <span ng-bind-html="item.name | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+
+        <hr>
+
+        <div class="form-group">
+            <button type="submit"
+                    class="btn btn-danger"
+                    ng-click="submitProject()">建立專案
+            </button>
+        </div>

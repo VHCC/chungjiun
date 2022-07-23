@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.com001AccountingManage', [])
+    angular.module('BlurAdmin.pages.001.AccountingManage', [])
         .config(routeConfig);
 
     /** @ngInject */

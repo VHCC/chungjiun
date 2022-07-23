@@ -5,11 +5,12 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.com001', [
+    angular.module('BlurAdmin.pages.001', [
         'ui.router',
         'ngCookies',
 
         'BlurAdmin.pages.factory',
+        'BlurAdmin.pages.001.api',
 
         'BlurAdmin.pages.dashboard',
         'BlurAdmin.pages.ui',
@@ -27,9 +28,10 @@
         'BlurAdmin.pages.myExecutive',
         'BlurAdmin.pages.myProfile',
 
-        'BlurAdmin.pages.com001WorkManage',
-        'BlurAdmin.pages.com001Project',
-        'BlurAdmin.pages.com001AccountingManage',
+
+        'BlurAdmin.pages.001.Project',
+        'BlurAdmin.pages.001.PersonalManage',
+        'BlurAdmin.pages.001.AccountingManage',
         // 'BlurAdmin.pages.com001KPI',
     ])
         .config(routeConfig)

@@ -21,28 +21,21 @@ module.exports = mongoose.model('User', {
     name: {
         type: String
     },
-    //
-    // value="1">技師
-    // value="2">經理
-    // value="3">工程師
-    // value="4">行政
-    // value="5">工讀生
-    // value="6">主任
-    // value="7">專案管理 <!--20200518 add role-->
-    // value="100">行政總管
-    // 員工角色
+
+    // 員工職務
     roleType: {
         type: Number
     },
+
+    // 部門
+    depType: {
+        type: String
+    },
+
     // 主管ID
     bossID: {
         type: String,
     },
-    // 時薪（不使用）
-    // userHourSalary: {
-    //     type: Number,
-    //     default: 0,
-    // },
 
     // 月薪
     // 換算月薪定義：月薪/30/8
@@ -87,7 +80,10 @@ module.exports = mongoose.model('User', {
 
     timestamp: {
         type: String,
-        default: moment(new Date()).format("YYYYMMDD_HHmmss")
+    },
+
+    updateTs: {
+        type: String,
     },
 
     passwordChangeTs: {

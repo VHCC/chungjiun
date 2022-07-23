@@ -214,7 +214,6 @@ module.exports = function (app) {
             create_formDate: req.body.create_formDate,
         }
 
-        // console.log(query);
         var d = new Date(req.body.create_formDate);
         if (d.getMonth() == 11) {
             WorkHourForm.find(query)
@@ -259,20 +258,6 @@ module.exports = function (app) {
     // 多組creator, create_formDate
     app.post(global.apiUrl.post_work_hour_multiple_get, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_multiple_get");
-        // var findData = []
-        // if (req.body.relatedMembers != null) {
-        //     for (var index = 0; index < req.body.relatedMembers.length; index++) {
-        //         var target = {
-        //             creatorDID: req.body.relatedMembers[index],
-        //             create_formDate: req.body.create_formDate,
-        //         }
-        //         findData.push(target);
-        //     }
-        // }
-
-        // var query = {
-        //     $or: findData,
-        // }
 
         var query = {
             creatorDID: {

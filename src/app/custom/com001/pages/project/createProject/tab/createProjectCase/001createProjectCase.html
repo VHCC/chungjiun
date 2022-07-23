@@ -1,0 +1,90 @@
+
+<div class="row">
+
+    <!--機關名稱-->
+        <div class="col-md-12">
+            <div class="form-group row clearfix">
+                <label class="col-md-2 control-label">機關名稱</label>
+                <div class="col-md-10">
+                    <ui-select ng-model="vm.new.institute"
+                               class="btn-group bootstrap-select form-control"
+                               ng-change="changeInstitute(vm.new.institute)"
+                               append-to-body="true"
+                               search-enabled="true">
+                        <ui-select-match placeholder="請選擇機關">
+                            {{$select.selected.name}} - {{$select.selected.code}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                repeat="option in vm.instituteOptions | filter: $select.search">
+                                <span ng-bind-html="option.name + ' - ' + option.code
+                                | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+
+    <!--契約名稱-->
+        <div class="col-md-12" ng-if="vm.new.institute">
+            <div class="form-group row clearfix">
+                <label class="col-md-2 control-label">契約名稱</label>
+                <div class="col-md-10">
+                    <ui-select ng-model="vm.new.projectContract"
+                               class="btn-group bootstrap-select form-control"
+                               append-to-body="true"
+                               search-enabled="true">
+                        <ui-select-match placeholder="請選擇契約">
+                            {{$select.selected.name}} - {{$select.selected.code}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                repeat="option in vm.contractOptions | filter: $select.search">
+                                        <span ng-bind-html="option.name + ' - ' + option.code
+                                        | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+
+    <!--工程名稱-->
+    <div class="col-md-12">
+        <div class="form-group row clearfix">
+            <label class="col-md-2 control-label">新工程名稱</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control"
+                       ng-model="vm.caseName"
+                       placeholder="請輸入新工程名稱">
+            </div>
+        </div>
+    </div>
+
+    <!--工程編碼-->
+    <div class="col-md-12">
+        <div class="form-group row clearfix">
+            <label class="col-md-2 control-label">工程編號 ({{vm.caseCode.length}})</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control"
+                       ng-model="vm.caseCode"
+                       placeholder="請輸入工程編號">
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="form-group">
+        <button type="submit"
+                class="btn btn-danger"
+                ng-click="submitProjectCase()">建立工程
+        </button>
+    </div>
+</div>
+
+    <hr>
+
+<div class="row">
+    <div class="row">
+        <div class="col-md-12" id="includeHead_case">
+        </div>
+    </div>
+</div>

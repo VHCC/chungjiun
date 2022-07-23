@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    angular.module('BlurAdmin.pages.com001KPI', [
+    angular.module('BlurAdmin.pages.001.KPI', [
         'ui.select',
         'ngSanitize',
         'BlurAdmin.pages.ui.notifications',
