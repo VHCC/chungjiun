@@ -253,15 +253,15 @@ module.exports = function (app) {
                         return;
                     } else {
                         // console.log("resultIndex= " + resultIndex);
-                        if (resultIndex === (index - 1) && readCardDone) {
-                            console.log(" ===== $$$$$ SEND REQUEST BACK ===== , DAO counts= " + resultIndex + ", readFile index:> " + index);
-                            res.status(200).send({
-                                code: 200,
-                                fileDate: fileDate,
-                                error: global.status._200,
-                            });
-                            return;
-                        }
+                        // if (resultIndex === (index - 1) && readCardDone) {
+                            // console.log(" ===== $$$$$ SEND REQUEST BACK ===== , DAO counts= " + resultIndex + ", readFile index:> " + index);
+                            // res.status(200).send({
+                            //     code: 200,
+                            //     fileDate: fileDate,
+                            //     error: global.status._200,
+                            // });
+                            // return;
+                        // }
                     }
                 })
                 // console.log(index);
@@ -270,7 +270,7 @@ module.exports = function (app) {
             objReadline.on('close', function () {
                 readCardDone = true;
                 console.log(' ***** READ CARD DONE ***** Readline close... CARD data rows:> ' + index);
-                loadGPSData(fileDate);
+                loadGPSData(fileDate, res);
             });
 
             objReadline.on('resume', function () {
@@ -284,7 +284,7 @@ module.exports = function (app) {
     }
 
 
-    function loadGPSData(fileDate) {
+    function loadGPSData(fileDate, res) {
         var fReadName_gps = '../HR/GPS/' + fileDate + '.txt';
 
         var fRead_gps = fs.createReadStream(fReadName_gps);
@@ -376,6 +376,13 @@ module.exports = function (app) {
 
             objReadLine.on('close', function () {
                 console.log('Readline GPS close...GPS data rows:> ' + index);
+                console.log(" ===== $$$$$ SEND REQUEST BACK ===== ");
+                res.status(200).send({
+                    code: 200,
+                    fileDate: fileDate,
+                    error: global.status._200,
+                });
+                return;
             });
 
             objReadLine.on('resume', function () {
