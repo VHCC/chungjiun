@@ -100,7 +100,6 @@ module.exports = function (app) {
                     });
                 }
             });
-
     });
 
     // Load Date File for specific date
@@ -153,7 +152,19 @@ module.exports = function (app) {
         });
     });
 
+    // var exec = require('child_process').exec;
+
+
+
     function loadData(fileDate, fReadName, req, res) {
+
+        // var rowLength = 0;
+        // exec('wc -l ' + fReadName, function (error, results) {
+        //     console.log("QQQQQQ");
+        //     console.log(results);
+        //     rowLength = results[0];
+        // });
+
         var fRead = fs.createReadStream(fReadName);
 
         var hrMachineModel = require('../../models/hrMachine')(fileDate);
@@ -174,7 +185,8 @@ module.exports = function (app) {
             if (err) {
                 throw err;
             }
-            console.log("Readline start !!!, fileDate= " + fileDate);
+
+            console.log("Readline CARD start !!!, fileDate= " + fileDate);
 
             hrMachineModel.remove({
             }, function (err) {
@@ -184,6 +196,7 @@ module.exports = function (app) {
                     console.log(" ***** ERROR ***** ");
                     console.log(err);
                     res.send(err);
+                    return;
                 }
             })
 
@@ -196,7 +209,9 @@ module.exports = function (app) {
             });
 
             var index = 1;
+            var readCardDone = false;
             objReadline.on('line', function (line) {
+                index ++;
                 var tempObject = [];
                 for (var lineIndex = 0; lineIndex < line.split(',').length; lineIndex ++) {
                     switch (lineIndex) {
@@ -238,7 +253,8 @@ module.exports = function (app) {
                         return;
                     } else {
                         // console.log("resultIndex= " + resultIndex);
-                        if (resultIndex === (index - 1)) {
+                        if (resultIndex === (index - 1) && readCardDone) {
+                            console.log(" ===== $$$$$ SEND REQUEST BACK ===== , DAO counts= " + resultIndex + ", readFile index:> " + index);
                             res.status(200).send({
                                 code: 200,
                                 fileDate: fileDate,
@@ -247,14 +263,13 @@ module.exports = function (app) {
                             return;
                         }
                     }
-
                 })
                 // console.log(index);
-                index ++;
             });
 
             objReadline.on('close', function () {
-                console.log('Readline close...');
+                readCardDone = true;
+                console.log(' ***** READ CARD DONE ***** Readline close... CARD data rows:> ' + index);
                 loadGPSData(fileDate);
             });
 
@@ -287,7 +302,6 @@ module.exports = function (app) {
             console['log'](err && err['stack'] ? err['stack'] : err);
             return;
         }
-
 
         fs.readFile(fReadName_gps, function (err, data) {
             if (err) {
@@ -354,13 +368,14 @@ module.exports = function (app) {
                     if (err) {
                         console.log("err= " + err);
                         res.send(err);
+                        return
                     }
                 })
                 index ++;
             });
 
             objReadLine.on('close', function () {
-                console.log('Readline GPS close...index= ' + index);
+                console.log('Readline GPS close...GPS data rows:> ' + index);
             });
 
             objReadLine.on('resume', function () {
