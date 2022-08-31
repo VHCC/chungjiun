@@ -105,13 +105,13 @@ module.exports = function (app) {
     // Load Date File for specific date
     app.post(global.apiUrl.post_load_hrmachine_data_by_date, function (req, res) {
         var fileDate = req.body.loadDate;
-        var fReadName = '../HR/CARD/' + fileDate + '.txt';
+        var fReadName = '../../HR/CARD/' + fileDate + '.txt';
 
         fs.stat(fReadName, function(err, stat) {
             if(err == null) {
                 console.log('File exist, fileDate= ' + fileDate);
 
-                var fReadName_gps = '../HR/GPS/' + fileDate + '.txt';
+                var fReadName_gps = '../../HR/GPS/' + fileDate + '.txt';
 
                 fs.stat(fReadName_gps, function(err, stat) {
                     if(err == null) {
@@ -285,7 +285,7 @@ module.exports = function (app) {
 
 
     function loadGPSData(fileDate, res) {
-        var fReadName_gps = '../HR/GPS/' + fileDate + '.txt';
+        var fReadName_gps = '../../HR/GPS/' + fileDate + '.txt';
 
         var fRead_gps = fs.createReadStream(fReadName_gps);
 
