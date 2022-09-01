@@ -255,6 +255,7 @@
                                     $scope.getRemedyHistoryData(selectedUser._id, 1);
                                     break;
                                 case 2:
+                                    console.log("讀取月報表, specificDate:>" + specificDate)
                                     var targetMonth = moment(specificDate).month();
                                     // console.log(hrMachineTableSorted)
                                     for (var key in hrMachineTableSorted) {
@@ -266,7 +267,7 @@
                                         }
                                     }
                                     $scope.hrMachineTable_month_reports = hrMachineTableSorted;
-                                    $scope.getUsersTravelApplicationData(selectedUser._id, thisYear, 2);
+                                    $scope.getUsersTravelApplicationData(selectedUser._id, thisYear, 2, specificDate);
                                     $scope.getRemedyHistoryData(selectedUser._id, 2);
                                     break;
                             }
@@ -1116,7 +1117,7 @@
 
             $scope.travelApplicationItems = [];
 
-            $scope.getUsersTravelApplicationData = function (userDID, year, type) {
+            $scope.getUsersTravelApplicationData = function (userDID, year, type, specificDate) {
                 var operateTable = undefined;
 
                 switch (type) {
@@ -1156,6 +1157,7 @@
 
                         // console.log(startDate)
                         // console.log(endDate)
+                        // console.log(dateList)
                         for (var index = 0; index < resp.payload.length; index ++) {
                             $scope.travelApplicationItems.push(resp.payload[index]);
 
@@ -1163,7 +1165,7 @@
                             var monthDayTemp = moment(resp.payload[index].taStartDate).format("MMDD");
 
                             var dateTemp = yearTemp + monthDayTemp;
-                            // console.log(dateTemp)
+                            // console.log("dateTemp:> " + dateTemp);
 
                             var hrMachineTravelItem = {
                                 date: "",
@@ -1180,33 +1182,68 @@
                             // console.log("targetDate :> " + targetDate)
                             // console.log("targetDate.isAfter(startDate) :> " + targetDate.isAfter(startDate))
 
-                            if (targetDate.isAfter(startDate)) {
+                            if (type == 2) { // 月報表集中在月
 
-                                if (operateTable[dateTemp] === undefined) {
-                                    var hrMachineCollection = [];
+                                var endMonthDate = moment(specificDate);
+                                // console.log("endMonthDate:> " + endMonthDate);
 
-                                    hrMachineTravelItem.date = dateTemp;
-                                    hrMachineTravelItem.location = resp.payload[index].location;
-                                    // hrMachineItem.printType = arrayResult[0][index].printType;
-                                    hrMachineTravelItem.time = resp.payload[index].start_time.replace(":", "");
-                                    // hrMachineTravelItem.workType = "1";
-                                    hrMachineTravelItem.applyHour = resp.payload[index].applyHour;;
+                                if (targetDate.isAfter(startDate) && targetDate.isBefore(endMonthDate)) {
 
-                                    hrMachineCollection.push(hrMachineTravelItem);
+                                    if (operateTable[dateTemp] === undefined) {
+                                        var hrMachineCollection = [];
 
-                                    operateTable[dateTemp] = hrMachineCollection;
-                                } else {
-                                    hrMachineTravelItem.date = dateTemp;
-                                    hrMachineTravelItem.location = resp.payload[index].location;
-                                    // hrMachineItem.printType = arrayResult[0][index].printType;
-                                    hrMachineTravelItem.time = resp.payload[index].start_time.replace(":", "");
-                                    // hrMachineTravelItem.workType = "1";
-                                    hrMachineTravelItem.applyHour = resp.payload[index].applyHour;
+                                        hrMachineTravelItem.date = dateTemp;
+                                        hrMachineTravelItem.location = resp.payload[index].location;
+                                        // hrMachineItem.printType = arrayResult[0][index].printType;
+                                        hrMachineTravelItem.time = resp.payload[index].start_time.replace(":", "");
+                                        // hrMachineTravelItem.workType = "1";
+                                        hrMachineTravelItem.applyHour = resp.payload[index].applyHour;;
 
-                                    operateTable[dateTemp].push(hrMachineTravelItem);
+                                        hrMachineCollection.push(hrMachineTravelItem);
+
+                                        operateTable[dateTemp] = hrMachineCollection;
+                                    } else {
+                                        hrMachineTravelItem.date = dateTemp;
+                                        hrMachineTravelItem.location = resp.payload[index].location;
+                                        // hrMachineItem.printType = arrayResult[0][index].printType;
+                                        hrMachineTravelItem.time = resp.payload[index].start_time.replace(":", "");
+                                        // hrMachineTravelItem.workType = "1";
+                                        hrMachineTravelItem.applyHour = resp.payload[index].applyHour;
+
+                                        operateTable[dateTemp].push(hrMachineTravelItem);
+                                    }
                                 }
+                            } else {
 
+                                if (targetDate.isAfter(startDate)) {
+
+                                    if (operateTable[dateTemp] === undefined) {
+                                        var hrMachineCollection = [];
+
+                                        hrMachineTravelItem.date = dateTemp;
+                                        hrMachineTravelItem.location = resp.payload[index].location;
+                                        // hrMachineItem.printType = arrayResult[0][index].printType;
+                                        hrMachineTravelItem.time = resp.payload[index].start_time.replace(":", "");
+                                        // hrMachineTravelItem.workType = "1";
+                                        hrMachineTravelItem.applyHour = resp.payload[index].applyHour;;
+
+                                        hrMachineCollection.push(hrMachineTravelItem);
+
+                                        operateTable[dateTemp] = hrMachineCollection;
+                                    } else {
+                                        hrMachineTravelItem.date = dateTemp;
+                                        hrMachineTravelItem.location = resp.payload[index].location;
+                                        // hrMachineItem.printType = arrayResult[0][index].printType;
+                                        hrMachineTravelItem.time = resp.payload[index].start_time.replace(":", "");
+                                        // hrMachineTravelItem.workType = "1";
+                                        hrMachineTravelItem.applyHour = resp.payload[index].applyHour;
+
+                                        operateTable[dateTemp].push(hrMachineTravelItem);
+                                    }
+                                }
                             }
+
+
                         }
 
                         console.log(operateTable);
