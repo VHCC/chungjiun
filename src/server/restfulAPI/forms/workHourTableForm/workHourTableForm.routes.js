@@ -815,27 +815,50 @@ module.exports = function (app) {
     // create Form
     app.post(global.apiUrl.post_work_hour_create_form, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_create_form");
-        WorkHourForm.create({
+
+        var query = {
             year: req.body.year,
             month: req.body.month,
             creatorDID: req.body.creatorDID,
             create_formDate: req.body.create_formDate,
-            formTables: [],
-            timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
-        }, function (err) {
+        }
+
+        WorkHourForm.find(query, function (err, forms) {
             if (err) {
-                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_create_table");
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_create_form");
                 console.log(req.body);
                 console.log(" ***** ERROR ***** ");
                 console.log(err);
                 res.send(err);
             } else {
-                res.status(200).send({
-                    code: 200,
-                    error: global.status._200,
-                });
+                console.log("forms Length:> " + forms.length + ", createForm query :> " );
+                console.log( query)
+                if (forms.length == 0) {
+                    WorkHourForm.create({
+                        year: req.body.year,
+                        month: req.body.month,
+                        creatorDID: req.body.creatorDID,
+                        create_formDate: req.body.create_formDate,
+                        formTables: [],
+                        timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
+                    }, function (err) {
+                        if (err) {
+                            console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_create_table");
+                            console.log(req.body);
+                            console.log(" ***** ERROR ***** ");
+                            console.log(err);
+                            res.send(err);
+                        } else {
+                            res.status(200).send({
+                                code: 200,
+                                error: global.status._200,
+                            });
+                        }
+                    });
+                }
             }
         });
+
     });
 
     // fetch related User
