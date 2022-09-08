@@ -647,6 +647,13 @@ module.exports = function (app) {
         var overTime = false;
         var isRespSended = false;
 
+        req.setTimeout(60000, function(){
+            // call back function is called when request timed out.
+            isRespSended = true;
+            console.log(" ***** timeout ***** ");
+            // res.status(200).send();
+            return;
+        });
 
         var prjInfo = {};
 
