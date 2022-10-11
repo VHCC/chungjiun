@@ -647,7 +647,7 @@ module.exports = function (app) {
         var overTime = false;
         var isRespSended = false;
 
-        req.setTimeout(60000, function(){
+        req.setTimeout(180000, function(){
             // call back function is called when request timed out.
             isRespSended = true;
             console.log(" ***** timeout ***** ");
@@ -846,9 +846,11 @@ module.exports = function (app) {
                 if (err) {
                     isRespSended = true;
                     if (!isRespSended) {
+                        isRespSended = true;
                         console.log("1111");
                         console.log(err);
                         res.status(500).send(err);
+                        console.log("Q")
                         return;
                     }
                 } else {
@@ -861,6 +863,7 @@ module.exports = function (app) {
                             payload: results,
                             payload_add: results_add,
                         });
+                        console.log("Q1")
                         return;
                     }
                 }
@@ -979,6 +982,7 @@ module.exports = function (app) {
                         console.log("2222");
                         console.log(err);
                         res.status(500).send(err);
+                        console.log("Q2")
                         return;
                     }
                 } else {
@@ -992,6 +996,7 @@ module.exports = function (app) {
                             payload: results,
                             payload_add: results_add,
                         });
+                        console.log("Q3")
                         return;
                     }
                 }
