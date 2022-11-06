@@ -730,17 +730,36 @@
                             // TODO 跨月
                             WorkHourUtil.createWorkHourForm(createFormData)
                                 .success(function (res) {
-                                    var createFormData = {
-                                        year: $scope.getNextMonth($scope.firstFullDate) == 1 ? moment($scope.firstFullDate).year() - 1911 + 1 : moment($scope.firstFullDate).year() - 1911,
-                                        month: $scope.getNextMonth($scope.firstFullDate),
-                                        creatorDID: $cookies.get('userDID'),
-                                        create_formDate: $scope.firstFullDate,
-                                    };
-                                    // TODO 跨月
-                                    WorkHourUtil.createWorkHourForm(createFormData)
-                                        .success(function (res) {
-                                            $scope.getWorkHourTables();
-                                        })
+                                    $scope.getWorkHourTables();
+                                })
+                                .error(function () {
+                                    console.log('ERROR WorkHourUtil.createWorkHourTableForm');
+                                    $timeout(function () {
+                                        bsLoadingOverlayService.stop({
+                                            referenceId: 'mainPage_workHour'
+                                        });
+                                    }, 200)
+                                })
+
+
+                            var createFormData_next = {
+                                year: $scope.getNextMonth($scope.firstFullDate) == 1 ? moment($scope.firstFullDate).year() - 1911 + 1 : moment($scope.firstFullDate).year() - 1911,
+                                month: $scope.getNextMonth($scope.firstFullDate),
+                                creatorDID: $cookies.get('userDID'),
+                                create_formDate: $scope.firstFullDate,
+                            };
+                            // TODO 跨月
+                            WorkHourUtil.createWorkHourForm(createFormData_next)
+                                .success(function (res) {
+                                    $scope.getWorkHourTables();
+                                })
+                                .error(function () {
+                                    console.log('ERROR WorkHourUtil.createWorkHourTableForm');
+                                    $timeout(function () {
+                                        bsLoadingOverlayService.stop({
+                                            referenceId: 'mainPage_workHour'
+                                        });
+                                    }, 200)
                                 })
 
                         } else {
@@ -754,8 +773,6 @@
                                 formTables: [],
                             };
 
-
-                            // TODO 跨月
                             WorkHourUtil.createWorkHourForm(createFormData)
                                 .success(function (res) {
                                     $scope.getWorkHourTables();
