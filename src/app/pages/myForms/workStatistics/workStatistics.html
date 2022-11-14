@@ -73,11 +73,11 @@
                                     ng-model="prjName"
                                     repeat="prjItems in workStatisticsCtrlVm.allProjectCache |
                                     groupSelectpickerOptions: {
-                                    mainName: $select.search,
-                                    prjName: $select.search,
-                                    prjSubName: $select.search,
-                                    prjCode: $select.search
-                                    }"
+                                        mainName: $select.search,
+                                        prjName: $select.search,
+                                        prjSubName: $select.search,
+                                        prjCode: $select.search
+                                    } | limitTo: 100"
                                     group-by="'mainName'">
                                 <span ng-bind-html="prjItems.prjName + ' - ' +
                                 prjItems.prjSubName + ' - ' +
