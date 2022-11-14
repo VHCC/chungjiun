@@ -21,10 +21,10 @@
                         ng-model="prjName"
                         repeat="prjItems in subContractorPaySearchCtrlVm.canManipulateProjects |
                             groupSelectpickerOptions: {
-                            mainName: $select.search,
-                            ezName: $select.search,
-                            prjCode: $select.search
-                            }"
+                                mainName: $select.search,
+                                ezName: $select.search,
+                                prjCode: $select.search
+                            } | limitTo: 100"
                         group-by="'mainName'">
                     <span ng-bind-html="prjItems.ezName + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
                 </ui-select-choices>

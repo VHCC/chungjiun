@@ -21,11 +21,11 @@
                             ng-model="prjName"
                             repeat="prjItems_A in combineProjectCtrlVm.projects |
                             groupSelectpickerOptions: {
-                            mainName: $select.search,
-                            prjName: $select.search,
-                            prjSubName: $select.search,
-                            prjCode: $select.search
-                            }"
+                                mainName: $select.search,
+                                prjName: $select.search,
+                                prjSubName: $select.search,
+                                prjCode: $select.search
+                            } | limitTo: 100"
                             group-by="'mainName'">
                     <span ng-bind-html="prjItems_A.prjName + ' - ' +
                     prjItems_A.prjSubName + ' - ' +
@@ -58,11 +58,11 @@
                             ng-model="prjName"
                             repeat="prjItems_B in combineProjectCtrlVm.projects |
                             groupSelectpickerOptions: {
-                            mainName: $select.search,
-                            prjName: $select.search,
-                            prjSubName: $select.search,
-                            prjCode: $select.search
-                            }"
+                                mainName: $select.search,
+                                prjName: $select.search,
+                                prjSubName: $select.search,
+                                prjCode: $select.search
+                            } | limitTo: 100"
                             group-by="'mainName'">
                     <span ng-bind-html="prjItems_B.prjName + ' - ' +
                     prjItems_B.prjSubName + ' - ' +
@@ -131,10 +131,10 @@
                         <ui-select-choices
                                 repeat="prjItems_result in combineProjectCtrlVm.projectsByGroup |
                                 groupSelectpickerOptions: {
-                                mainName: $select.search,
-                                code: $select.search,
-                                prjCode: $select.search
-                                }" >
+                                    mainName: $select.search,
+                                    code: $select.search,
+                                    prjCode: $select.search
+                                } | limitTo: 100" >
                             <span ng-bind-html="
                             prjItems_result.mainName +
                             ' : ' + prjItems_result.branch +
