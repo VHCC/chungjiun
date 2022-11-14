@@ -23,11 +23,11 @@
                     ng-model="prjName"
                     repeat="prjItems in projectFinancialResultCtrlVm.projects |
                             groupSelectpickerOptions: {
-                            mainName: $select.search,
-                            prjName: $select.search,
-                            prjSubName: $select.search,
-                            prjCode: $select.search
-                            }"
+                                mainName: $select.search,
+                                prjName: $select.search,
+                                prjSubName: $select.search,
+                                prjCode: $select.search
+                            } | limitTo: 100"
                     group-by="'mainName'">
                 <span ng-bind-html="prjItems.prjName + ' - ' + prjItems.prjSubName + ' - ' + prjTypeToName(prjItems.type) + ' - ' + prjItems.prjCode| highlight: $select.search"></span>
             </ui-select-choices>
