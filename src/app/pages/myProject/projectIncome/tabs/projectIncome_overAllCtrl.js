@@ -378,7 +378,7 @@
                                             // console.log(res);
 
                                             var manipulateData = jQuery.extend(true, {}, res); // 深度複製
-                                            console.log(manipulateData)
+                                            console.log(manipulateData);
                                             manipulateData.payload = manipulateData.payload.sort(function (a, b) {
                                                 return a._id.userDID > b._id.userDID ? 1 : -1;
                                             });
@@ -499,7 +499,6 @@
                         break;
                 }
             }
-            // console.log(item);
             var hourTotal = 0;
             var totalCost = 0.0;
             for (var index = 0; index < item.tables.length; index++) {
@@ -617,8 +616,6 @@
         }
 
         $scope.calculateHours_type2_add = function (item, type, showType) {
-            // console.log(" *** calculateHours_type2_add *** ");
-            // console.log(item);
             switch (type) {
                 case 1:
                     if (item.iscalculate_A) {
@@ -668,7 +665,7 @@
             }
 
             var type2_add_data = [];
-            // console.log("add size:> " + item._add_tables.length)
+
             for (var index = 0; index < item._add_tables.length; index++) {
                 var operatedFormDate = item._add_tables[index].create_formDate;
                 if (moment(DateUtil.getShiftDatefromFirstDate(moment(operatedFormDate), item._add_tables[index].day - 1)) < moment("2020/01/01")) {
@@ -679,7 +676,6 @@
                         continue;
                     }
 
-                    // var date_id = DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1)
                     var date_id = DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1) + "_"+ item._add_tables[index].creatorDID;
                     var min = parseInt(TimeUtil.getCalculateHourDiffByTime(item._add_tables[index].start_time, item._add_tables[index].end_time))
                     if (type2_add_data[date_id] != undefined) {
@@ -698,13 +694,12 @@
                 }
             }
             var hour = 0
-            // console.log(type2_add_data);
+            console.log(type2_add_data);
             for (var i = 0; i < type2_add_data.length; i++) {
                 hour = type2_add_data[i].min % 60 < 30 ? Math.round(type2_add_data[i].min / 60) : Math.round(type2_add_data[i].min / 60) - 0.5;
                 if (hour < 1) {
                     hourTotal += 0;
                 } else {
-                    // console.log("add hour:> " + hour + ", cost:> " + (hour * type2_add_data[i].monthSalary / 30 / 8))
                     hourTotal += hour;
                     totalCost += hour * type2_add_data[i].monthSalary / 30 / 8;
                 }
