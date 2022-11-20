@@ -467,33 +467,40 @@
                                     console.log(" === 人工時 === ")
                                     console.log(res)
 
-                                    res.payload = res.payload.sort(function (a, b) {
+                                    var manipulateData = jQuery.extend(true, {}, res); // 深度複製
+                                    console.log(manipulateData);
+
+                                    manipulateData.payload = manipulateData.payload.sort(function (a, b) {
                                         return a._id.userDID > b._id.userDID ? 1 : -1;
                                     });
 
-                                    for (var index = 0; index < res.payload.length; index ++) {
+                                    for (var index = 0; index < manipulateData.payload.length; index ++) {
                                         for (var index_sub = 0; index_sub < res.payload_add.length; index_sub ++) {
-                                            if( res.payload_add[index_sub]._id.prjCode == res.payload[index]._id.prjCode &&
-                                                res.payload_add[index_sub]._id.userDID == res.payload[index]._id.userDID) {
-                                                res.payload[index]._add_tables = res.payload_add[index_sub].add_tables;
+                                            if( manipulateData.payload_add[index_sub]._id.prjCode == manipulateData.payload[index]._id.prjCode &&
+                                                manipulateData.payload_add[index_sub]._id.userDID == manipulateData.payload[index]._id.userDID) {
+                                                manipulateData.payload[index]._add_tables = manipulateData.payload_add[index_sub].add_tables;
                                             }
                                         }
                                     }
-                                    manipulatePrj.statisticsResults_type1 = $scope.filter_type1_data(res.payload);
+                                    manipulatePrj.statisticsResults_type1 = $scope.filter_type1_data(manipulateData.payload);
+                                    console.log(" ----- filter_type1_data -------- ")
+                                    console.log(manipulatePrj.statisticsResults_type1);
                                     // $scope.statisticsResults = $scope.filter_type2_data(res.payload);
                                     // console.log($scope.statisticsResults);
-                                    manipulatePrj.statisticsResults_type1 = $scope.filter_type2_data_item(manipulatePrj.statisticsResults_type1);
+                                    manipulatePrj.statisticsResults_type2 = $scope.filter_type2_data_item(manipulatePrj.statisticsResults_type1);
                                     // console.log($scope.statisticsResults_type1);
+                                    console.log(" ----- filter_type2_data_item -------- ")
+                                    console.log(manipulatePrj.statisticsResults_type2);
 
-                                    for (var i = 0; i < manipulatePrj.statisticsResults_type1.length; i ++) {
-                                        var tempDate = manipulatePrj.statisticsResults_type1[i]._date;
+                                    for (var i = 0; i < manipulatePrj.statisticsResults_type2.length; i ++) {
+                                        var tempDate = manipulatePrj.statisticsResults_type2[i]._date;
 
                                         if (moment(tempDate) >= moment("2020/01")) {
                                             if (manipulatePrj.overall_data[tempDate] != undefined) {
                                                 var data = manipulatePrj.overall_data[tempDate];
-                                                data._overall += manipulatePrj.statisticsResults_type1[i].totalCost +
-                                                    manipulatePrj.statisticsResults_type1[i].hourTotal_add_cost_A +
-                                                    manipulatePrj.statisticsResults_type1[i].hourTotal_add_cost_B;
+                                                data._overall += manipulatePrj.statisticsResults_type2[i].totalCost +
+                                                    manipulatePrj.statisticsResults_type2[i].hourTotal_add_cost_A +
+                                                    manipulatePrj.statisticsResults_type2[i].hourTotal_add_cost_B;
                                             } else {
                                                 var data = {
                                                     _date: tempDate,
@@ -501,9 +508,9 @@
                                                     _payments: [],
                                                     _otherCost: [],
                                                     _subContractorPay: [],
-                                                    _overall: manipulatePrj.statisticsResults_type1[i].totalCost +
-                                                    manipulatePrj.statisticsResults_type1[i].hourTotal_add_cost_A +
-                                                    manipulatePrj.statisticsResults_type1[i].hourTotal_add_cost_B,
+                                                    _overall: manipulatePrj.statisticsResults_type2[i].totalCost +
+                                                    manipulatePrj.statisticsResults_type2[i].hourTotal_add_cost_A +
+                                                    manipulatePrj.statisticsResults_type2[i].hourTotal_add_cost_B,
                                                 }
                                                 manipulatePrj.overall_data.push(data);
                                                 eval('manipulatePrj.overall_data[tempDate] = data')
@@ -530,7 +537,9 @@
             console.log(rawTables);
             var type2_result = [];
             for (var index = 0 ;index < rawTables.length; index ++) {
-                if ( ($scope.calculateHours_type2_item(rawTables[index]) + $scope.calculateHours_type2_add(rawTables[index], 1) + $scope.calculateHours_type2_add(rawTables[index], 2) != 0)) {
+                if ( ($scope.calculateHours_type2_item(rawTables[index]) +
+                    $scope.calculateHours_type2_add(rawTables[index], 1) +
+                    $scope.calculateHours_type2_add(rawTables[index], 2) != 0)) {
                     type2_result.push(rawTables[index]);
                 }
             }
@@ -542,19 +551,16 @@
         var cons_3 = 1.67; // 加班
 
         $scope.calculateHours_type2_item = function (item, type) {
-            // console.log(item)
             if (item.iscalculate_A && item.iscalculate_B) {
                 switch (type) {
                     case 1:
                         return item.hourTotal;
-                        // return item.totalCost;
                         break;
                     case 2:
                         return parseInt(item.totalCost);
                         break;
                 }
             }
-            // console.log(item);
             var hourTotal = 0;
             var totalCost = 0.0;
             for (var index = 0; index < item.tables.length; index ++) {
@@ -613,14 +619,12 @@
         }
 
         $scope.calculateHours_type2_add = function (item, type, showType) {
-            // console.log(item)
             switch (type) {
                 case 1:
                     if (item.iscalculate_A) {
                         switch (showType) {
                             case 1:
                                 return item.hourTotal_add_A;
-                                // return item.totalCost;
                                 break;
                             case 2:
                                 return parseInt(item.hourTotal_add_cost_A);
@@ -633,7 +637,6 @@
                         switch (showType) {
                             case 1:
                                 return item.hourTotal_add_B;
-                                // return item.totalCost;
                                 break;
                             case 2:
                                 return parseInt(item.hourTotal_add_cost_B);
@@ -672,11 +675,6 @@
                     continue
                 }
                 if (item._add_tables[index].workAddType == type) {
-
-                    // var date_id = DateUtil.getShiftDatefromFirstDate_typeB(moment(operatedFormDate), item._add_tables[index].day - 1) + "_"
-                    //     + item._id.prjCode + "_"
-                    //     + item._user_info._id;
-
                     if (!item._add_tables[index].isExecutiveConfirm) {
                         continue;
                     }
@@ -1394,6 +1392,7 @@
                             reason: rawTables[memberCount]._add_tables[table_add_index].reason,
                             userMonthSalary: rawTables[memberCount]._add_tables[table_add_index].userMonthSalary,
                             isExecutiveConfirm: rawTables[memberCount]._add_tables[table_add_index].isExecutiveConfirm,
+                            creatorDID: rawTables[memberCount]._add_tables[table_add_index].creatorDID,
                         }
 
                         if (type1_data[item] != undefined) {

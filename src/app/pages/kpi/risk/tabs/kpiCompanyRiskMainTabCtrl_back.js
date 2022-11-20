@@ -1380,6 +1380,7 @@
                             reason: rawTables[memberCount]._add_tables[table_add_index].reason,
                             userMonthSalary: rawTables[memberCount]._add_tables[table_add_index].userMonthSalary,
                             isExecutiveConfirm: rawTables[memberCount]._add_tables[table_add_index].isExecutiveConfirm,
+                            creatorDID: rawTables[memberCount]._add_tables[table_add_index].creatorDID,
                         }
 
                         if (type1_data[item] != undefined) {

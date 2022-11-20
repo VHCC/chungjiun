@@ -1415,6 +1415,7 @@
                                     start_time: rawTables[memberCount]._add_tables[table_add_index].start_time,
                                     end_time: rawTables[memberCount]._add_tables[table_add_index].end_time,
                                     reason: rawTables[memberCount]._add_tables[table_add_index].reason,
+                                    creatorDID: rawTables[memberCount]._add_tables[table_add_index].creatorDID,
                                 }
 
                                 if (type4_data[item] != undefined) {
