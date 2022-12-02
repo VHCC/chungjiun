@@ -281,6 +281,15 @@
                     </span>
                 </div>
                 <span ng-if="prj.isCombined">因已合併、轉換。專案關閉</span>
+                <br>
+                <p class="mytooltip" ng-if="prj.updater != undefined">
+                    <i class="ion-information-circled"/>
+                    <span class="tooltiptext">
+                        最後更新人：{{prj.updater}}
+                        <br>
+                        時間：{{prj.update_ts}}
+                    </span>
+                </p>
             </td>
 
         </tr>
