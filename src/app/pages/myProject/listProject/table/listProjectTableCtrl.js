@@ -358,6 +358,8 @@
             var formData = {
                 prjID: table.prj._id,
                 enable: table.prj.enable,
+                update_ts: moment(new Date()).format("YYYYMMDD_HHmmss"),
+                updater: $cookies.get('username')
             }
             Project.updateStatus(formData)
                 .success(function (res) {

@@ -251,6 +251,8 @@ module.exports = function (app) {
         }, {
             $set: {
                 enable: req.body.enable,
+                update_ts: req.body.update_ts,
+                updater: req.body.updater,
             }
         }, function (err) {
             if (err) {
