@@ -733,6 +733,9 @@
                 kpi11: $scope.calResult(9, item), <!--可分配金額-->
                 kpi12: $scope.calcAllCost_special20210819(1), <!-- 執行成本 -->
                 kpi13: ($scope.calResult(9, item) - $scope.calcAllCost_special20210819(1)), <!-- 績效結餘 -->
+
+                update_ts: moment(new Date()).format("YYYYMMDD_HHmmss"),
+                updater: $cookies.get('username')
             }
 
             ProjectFinancialResultUtil.updateFR(formData)

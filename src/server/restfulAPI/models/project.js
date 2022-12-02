@@ -131,5 +131,13 @@ module.exports = mongoose.model('Project', {
 
     isCombined: {
         type: Boolean,
+    },
+
+    update_ts: {
+        type : String,
+    },
+
+    updater: {
+        type : String,
     }
 });
