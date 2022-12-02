@@ -1,9 +1,5 @@
 <!-- 執行專案 -->
-<style>
-    /*.ui-select-bootstrap .ui-select-choices-row > a{*/
-        /*white-space: normal;*/
-    /*}*/
-</style>
+
 <div class="horizontal-scroll">
     <table class="table table-hover" st-table="projects">
         <thead>
@@ -305,6 +301,15 @@
                     </span>
                 </div>
                 <span ng-if="prj.isCombined" style="color:red"><b>因已合併、轉換。專案關閉</b></span>
+                <br>
+                <p class="mytooltip" ng-if="prj.updater != undefined">
+                    <i class="ion-information-circled"/>
+                    <span class="tooltiptext">
+                        最後更新人：{{prj.updater}}
+                        <br>
+                        時間：{{prj.update_ts}}
+                    </span>
+                </p>
             </td>
 
         </tr>

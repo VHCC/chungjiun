@@ -223,6 +223,11 @@
                         return;
                     }
 
+                    if ($scope.redemyTablesItems[index].workType == -1) {
+                        toastr.error('補打卡別異常', '（請選擇補打卡別）');
+                        return;
+                    }
+
                     ngDialog.open({
                         template: 'app/pages/myModalTemplate/remedyFormReviewModal.html',
                         className: 'ngdialog-theme-default',
