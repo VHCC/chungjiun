@@ -133,6 +133,7 @@ global.apiUrl = {
     post_work_hour_remove_table_item_by_did : '/api/post_work_hour_remove_table_item_by_did',
     post_work_hour_form_update: '/api/post_work_hour_form_update',
     post_work_hour_create_form: '/api/post_work_hour_create_form',
+    post_work_hour_create_form_cross: '/api/post_work_hour_create_form_cross',
 
     post_work_hour_get : '/api/getWorkHourForm',
     post_work_hour_multiple_get : '/api/post_work_hour_multiple_get',
