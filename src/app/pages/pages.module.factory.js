@@ -705,6 +705,10 @@
                     return http.post('/api/post_work_hour_create_form', formData);
                 },
 
+                createWorkHourForm_cross: function(formData) {
+                    return http.post('/api/post_work_hour_create_form_cross', formData);
+                },
+
                 getWorkHourForm: function (formData) {
                     return http.post('/api/getWorkHourForm', formData);
                 },
