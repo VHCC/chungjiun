@@ -720,9 +720,9 @@
                         if ($scope.checkIsCrossMonth($scope.firstFullDate) > 0) {
 
                             var createFormData = {
-                                year: moment($scope.firstFullDate).year() - 1911,
+                                // year: moment($scope.firstFullDate).year() - 1911,
                                 // year: thisYear,
-                                month: moment($scope.firstFullDate).month() + 1,
+                                // month: moment($scope.firstFullDate).month() + 1,
                                 // month: thisMonth,
                                 creatorDID: $cookies.get('userDID'),
                                 create_formDate: $scope.firstFullDate,
@@ -743,13 +743,13 @@
 
 
                             var createFormData_next = {
-                                year: $scope.getNextMonth($scope.firstFullDate) == 1 ? moment($scope.firstFullDate).year() - 1911 + 1 : moment($scope.firstFullDate).year() - 1911,
-                                month: $scope.getNextMonth($scope.firstFullDate),
+                                // year: $scope.getNextMonth($scope.firstFullDate) == 1 ? moment($scope.firstFullDate).year() - 1911 + 1 : moment($scope.firstFullDate).year() - 1911,
+                                // month: $scope.getNextMonth($scope.firstFullDate),
                                 creatorDID: $cookies.get('userDID'),
                                 create_formDate: $scope.firstFullDate,
                             };
                             // TODO 跨月
-                            WorkHourUtil.createWorkHourForm(createFormData_next)
+                            WorkHourUtil.createWorkHourForm_cross(createFormData_next)
                                 .success(function (res) {
                                     $scope.getWorkHourTables();
                                 })
@@ -764,9 +764,9 @@
 
                         } else {
                             var createFormData = {
-                                year: moment($scope.firstFullDate).year() - 1911,
+                                // year: moment($scope.firstFullDate).year() - 1911,
                                 // year: thisYear,
-                                month: moment($scope.firstFullDate).month() + 1,
+                                // month: moment($scope.firstFullDate).month() + 1,
                                 // month: thisMonth,
                                 creatorDID: $cookies.get('userDID'),
                                 create_formDate: $scope.firstFullDate,

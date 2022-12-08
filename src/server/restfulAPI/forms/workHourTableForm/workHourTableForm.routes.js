@@ -832,8 +832,10 @@ module.exports = function (app) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_create_form");
 
         var query = {
-            year: req.body.year,
-            month: req.body.month,
+            // year: req.body.year,
+            year: moment(req.body.create_formDate).year() - 1911,
+            // month: req.body.month,
+            month: moment(req.body.create_formDate).month() + 1,
             creatorDID: req.body.creatorDID,
             create_formDate: req.body.create_formDate,
         }
@@ -850,8 +852,8 @@ module.exports = function (app) {
                 console.log( query)
                 if (forms.length == 0) {
                     WorkHourForm.create({
-                        year: req.body.year,
-                        month: req.body.month,
+                        year: moment(req.body.create_formDate).year() - 1911,
+                        month: moment(req.body.create_formDate).month() + 1,
                         creatorDID: req.body.creatorDID,
                         create_formDate: req.body.create_formDate,
                         formTables: [],
@@ -873,7 +875,67 @@ module.exports = function (app) {
                 }
             }
         });
+    });
 
+    function getNextMonth(create_formDate) {
+        return moment(create_formDate).month() == 11 ? 1 :
+            moment(create_formDate).month() + 2;
+    }
+
+
+
+    // create Form Cross
+    app.post(global.apiUrl.post_work_hour_create_form_cross, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, post_work_hour_create_form_cross");
+
+        var query = {
+            // year: req.body.year,
+            // month: req.body.month,
+            year: getNextMonth(req.body.create_formDate) == 1 ? moment(req.body.create_formDate).year() - 1911 + 1 :
+                moment(req.body.create_formDate).year() - 1911,
+            month: getNextMonth(req.body.create_formDate),
+            creatorDID: req.body.creatorDID,
+            create_formDate: req.body.create_formDate,
+        }
+
+        WorkHourForm.find(query, function (err, forms) {
+            if (err) {
+                console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_create_form_cross");
+                console.log(req.body);
+                console.log(" ***** ERROR ***** ");
+                console.log(err);
+                res.send(err);
+            } else {
+                console.log("forms Length:> " + forms.length + ", createForm query :> " );
+                console.log( query)
+                if (forms.length == 0) {
+                    WorkHourForm.create({
+                        // year: req.body.year,
+                        // month: req.body.month,
+                        year: getNextMonth(req.body.create_formDate) == 1 ? moment(req.body.create_formDate).year() - 1911 + 1 :
+                            moment(req.body.create_formDate).year() - 1911,
+                        month: getNextMonth(req.body.create_formDate),
+                        creatorDID: req.body.creatorDID,
+                        create_formDate: req.body.create_formDate,
+                        formTables: [],
+                        timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
+                    }, function (err) {
+                        if (err) {
+                            console.log(global.timeFormat(new Date()) + global.log.e + "API, post_work_hour_create_table");
+                            console.log(req.body);
+                            console.log(" ***** ERROR ***** ");
+                            console.log(err);
+                            res.send(err);
+                        } else {
+                            res.status(200).send({
+                                code: 200,
+                                error: global.status._200,
+                            });
+                        }
+                    });
+                }
+            }
+        });
     });
 
     // fetch related User
