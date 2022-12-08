@@ -627,14 +627,29 @@
                 // + parseFloat(rateItem.rate_item_5)
         }
 
-        // type 2, 一專案加一人名 為一筆
+        // type 2, 一人名 為一筆
         $scope.filter_type2_data = function(rawTables) {
             console.log(rawTables)
             var type2_result = [];
             for (var index = 0 ;index < rawTables.length; index ++) {
-                if ( ($scope.calculateHours_type2(rawTables[index]) + $scope.calculateHours_type2_add(rawTables[index], 1) + $scope.calculateHours_type2_add(rawTables[index], 2) != 0)) {
+                if ( ($scope.calculateHours_type2(rawTables[index]) +
+                    $scope.calculateHours_type2_add(rawTables[index], 1) +
+                    $scope.calculateHours_type2_add(rawTables[index], 2) != 0)) {
                     type2_result.push(rawTables[index]);
-                    eval('type2_result[rawTables[index]._id.userDID] = rawTables[index]')
+                    var tempData = {};
+                    Object.assign(tempData, rawTables[index]);
+                    // eval('type2_result[rawTables[index]._id.userDID] = rawTables[index]');
+                    if (type2_result[rawTables[index]._id.userDID] == undefined) {
+                        eval('type2_result[rawTables[index]._id.userDID] = tempData')
+                    } else {
+                        type2_result[rawTables[index]._id.userDID].hourTotal += rawTables[index].hourTotal;
+                        type2_result[rawTables[index]._id.userDID].hourTotal_add_A += rawTables[index].hourTotal_add_A;
+                        type2_result[rawTables[index]._id.userDID].hourTotal_add_B += rawTables[index].hourTotal_add_B;
+
+                        type2_result[rawTables[index]._id.userDID].totalCost += rawTables[index].totalCost;
+                        type2_result[rawTables[index]._id.userDID].hourTotal_add_cost_A += rawTables[index].hourTotal_add_cost_A;
+                        type2_result[rawTables[index]._id.userDID].hourTotal_add_cost_B += rawTables[index].hourTotal_add_cost_B;
+                    }
                 }
             }
             return type2_result;

@@ -147,6 +147,7 @@
                                         }, 500)
                                     })
                             } else {
+                                console.log(res.payload);
                                 $scope.relatedMembers = []
                                 for (var index = 0; index < res.payload.length; index ++) {
                                     $scope.relatedMembers.push(res.payload[index]._user_info._id)
@@ -575,7 +576,7 @@
                                             // $scope.statisticsResults_type1 = $scope.filter_type1_data(res.payload);
                                             // console.log(" ----- filter_type1_data -------- ")
 
-                                            $scope.statisticsResults_type2 = $scope.filter_type2_data(res.payload);
+                                            $scope.statisticsResults_type2 = $scope.filter_type2_data(res.payload); // 需要多專案
                                             console.log(" ----- filter_type2_data_item -------- ")
                                             console.log($scope.statisticsResults_type2);
 
@@ -627,14 +628,29 @@
                 // + parseFloat(rateItem.rate_item_5)
         }
 
-        // type 2, 一專案加一人名 為一筆
+        // type 2, 一人名 為一筆
         $scope.filter_type2_data = function(rawTables) {
-            console.log(rawTables)
+            console.log(rawTables);
             var type2_result = [];
             for (var index = 0 ;index < rawTables.length; index ++) {
-                if ( ($scope.calculateHours_type2(rawTables[index]) + $scope.calculateHours_type2_add(rawTables[index], 1) + $scope.calculateHours_type2_add(rawTables[index], 2) != 0)) {
+                if ( ($scope.calculateHours_type2(rawTables[index]) +
+                    $scope.calculateHours_type2_add(rawTables[index], 1) +
+                    $scope.calculateHours_type2_add(rawTables[index], 2) != 0)) {
                     type2_result.push(rawTables[index]);
-                    eval('type2_result[rawTables[index]._id.userDID] = rawTables[index]')
+                    var tempData = {};
+                    Object.assign(tempData, rawTables[index]);
+                    if (type2_result[rawTables[index]._id.userDID] == undefined) {
+                        eval('type2_result[rawTables[index]._id.userDID] = tempData')
+                    } else {
+                        type2_result[rawTables[index]._id.userDID].hourTotal += rawTables[index].hourTotal;
+                        type2_result[rawTables[index]._id.userDID].hourTotal_add_A += rawTables[index].hourTotal_add_A;
+                        type2_result[rawTables[index]._id.userDID].hourTotal_add_B += rawTables[index].hourTotal_add_B;
+
+                        type2_result[rawTables[index]._id.userDID].totalCost += rawTables[index].totalCost;
+                        type2_result[rawTables[index]._id.userDID].hourTotal_add_cost_A += rawTables[index].hourTotal_add_cost_A;
+                        type2_result[rawTables[index]._id.userDID].hourTotal_add_cost_B += rawTables[index].hourTotal_add_cost_B;
+                    }
+
                 }
             }
             return type2_result;
