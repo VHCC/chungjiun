@@ -78,18 +78,23 @@ module.exports = function (app) {
             if (err) {
                 res.send(err);
             }
-            Project.updateOne({
-                _id: fr[0].prjDID,
-            }, {
-                $set: {
-                    enable: req.body.enable,
-                    isPrjClose: req.body.isPrjClose,
-                }
-            }, function (err) {
-                if (err) {
-                    res.send(err);
-                }
-            });
+
+            if (req.body.changePrjStatus) {
+                Project.updateOne({
+                    _id: fr[0].prjDID,
+                }, {
+                    $set: {
+                        enable: req.body.enable,
+                        isPrjClose: req.body.isPrjClose,
+                        update_ts: req.body.update_ts,
+                        updater: req.body.updater,
+                    }
+                }, function (err) {
+                    if (err) {
+                        res.send(err);
+                    }
+                });
+            }
 
             ProjectFinancialResult.updateOne({
                 _id: req.body._id,

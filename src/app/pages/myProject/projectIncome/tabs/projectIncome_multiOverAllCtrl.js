@@ -976,6 +976,8 @@
                 overAllMemo: item.overAllMemo,
                 preIncome: item.preIncome,
                 preCost: item.preCost,
+
+                changePrjStatus: false,
             }
             ProjectFinancialResultUtil.updateFR(formData)
                 .success(function (res) {

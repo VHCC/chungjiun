@@ -692,6 +692,8 @@
                 rate_item_5: item.rate_item_5,
                 memo: item.memo,
                 is011Set: true,
+
+                changePrjStatus: false,
             }
 
             ProjectFinancialResultUtil.updateFR(formData)
@@ -717,8 +719,6 @@
                 rate_item_5: item.rate_item_5,
                 memo: item.memo,
                 is011Set: true,
-                enable: false,
-                isPrjClose: true,
 
                 kpi1: $scope.calIncome(1), <!-- 收入 -->
                 kpi2: $scope.calIncome(2), <!-- 不含稅收入B=A/1.05 -->
@@ -734,6 +734,10 @@
                 kpi12: $scope.calcAllCost_special20210819(1), <!-- 執行成本 -->
                 kpi13: ($scope.calResult(9, item) - $scope.calcAllCost_special20210819(1)), <!-- 績效結餘 -->
 
+                changePrjStatus: true,
+
+                enable: false,
+                isPrjClose: true,
                 update_ts: moment(new Date()).format("YYYYMMDD_HHmmss"),
                 updater: $cookies.get('username')
             }
@@ -749,8 +753,13 @@
         $scope.openProjectFR = function(item) {
             var formData = {
                 _id: item._id,
+
+                changePrjStatus: true,
+
                 enable: true,
-                isPrjClose: false
+                isPrjClose: false,
+                update_ts: moment(new Date()).format("YYYYMMDD_HHmmss"),
+                updater: $cookies.get('username')
             }
 
             ProjectFinancialResultUtil.updateFR(formData)
