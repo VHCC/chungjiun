@@ -286,13 +286,18 @@
             <!--專案上線-->
             <td style="width: 5%; padding-top: 5px">
                 <ba-switcher
-                        ng-show="isFitPrjManager(prj.managerID) || isFitExecutive()"
+                        ng-if="(isFitPrjManager(prj.managerID) || isFitExecutive())
+                        && !prj.isCombined && !prj.isPrjClose"
                         ng-click="changePrjStatus(this)"
-                        ng-if="!prj.isCombined"
                         ng-model="prj.enable"
                         switcher-style="primary"
                         switcher-value="prj.enable"/>
-                <div ng-show="!isFitPrjManager(prj.managerID) && !isFitExecutive()">
+                <div
+                        ng-if="(isFitPrjManager(prj.managerID) || isFitExecutive())
+                        && prj.isPrjClose">
+                    關閉
+                </div>
+                <div ng-if="!isFitPrjManager(prj.managerID) && !isFitExecutive()">
                     <span ng-if="prj.enable">
                         開啟
                     </span>
@@ -301,6 +306,8 @@
                     </span>
                 </div>
                 <span ng-if="prj.isCombined" style="color:red"><b>因已合併、轉換。專案關閉</b></span>
+                <br>
+                <span ng-if="prj.isPrjClose" style="color:blue">因已結算。專案關閉</span>
                 <br>
                 <p class="mytooltip" ng-if="prj.updater != undefined">
                     <i class="ion-information-circled"/>
