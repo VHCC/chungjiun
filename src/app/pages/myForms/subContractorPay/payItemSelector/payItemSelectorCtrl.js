@@ -63,15 +63,43 @@
         }
 
         $scope.fetchSubContractPayItem = function (prjDID) {
+
             var formData = {
-                isManagerCheck: true,
                 prjDID: prjDID
             }
-
-            SubContractorApplyUtil.fetchSCApplyItems(formData)
+            SubContractorPayItemUtil.fetchSCPayItems(formData)
                 .success(function (res) {
-                    $scope.subContractorPayItemOptions = res.payload;
+                    console.log(res);
+                    var subContractorPayItems_temp = [];
+                    for (var index = 0; index < res.payload.length; index ++) {
+                        if (res.payload[index].isClosed) {
+                            subContractorPayItems_temp.push(res.payload[index].subContractDID);
+                        }
+                    }
+
+                    console.log(subContractorPayItems_temp);
+                    var formData = {
+                        isManagerCheck: true,
+                        prjDID: prjDID
+                    }
+
+                    $scope.subContractorPayItemOptions = [];
+
+                    SubContractorApplyUtil.fetchSCApplyItems(formData)
+                        .success(function (res) {
+                            console.log(res);
+                            for (var index = 0; index < res.payload.length; index ++) {
+                                if (!subContractorPayItems_temp.includes(res.payload[index]._id)) {
+                                    $scope.subContractorPayItemOptions.push(res.payload[index]);
+                                }
+                            }
+                            console.log($scope.subContractorPayItemOptions);
+                            // $scope.subContractorPayItemOptions = res.payload;
+                        })
+
+
                 })
+
         }
 
     }
