@@ -77,38 +77,40 @@ module.exports = function (app) {
         }, function (err, fr) {
             if (err) {
                 res.send(err);
-            }
+            } else {
+                if (req.body.changePrjStatus) {
+                    Project.updateOne({
+                        _id: fr[0].prjDID,
+                    }, {
+                        $set: {
+                            enable: req.body.enable,
+                            isPrjClose: req.body.isPrjClose,
+                            update_ts: req.body.update_ts,
+                            updater: req.body.updater,
+                        }
+                    }, function (err) {
+                        if (err) {
+                            console.log(err);
+                        }
+                    });
+                }
 
-            if (req.body.changePrjStatus) {
-                Project.updateOne({
-                    _id: fr[0].prjDID,
+                ProjectFinancialResult.updateOne({
+                    _id: req.body._id,
                 }, {
-                    $set: {
-                        enable: req.body.enable,
-                        isPrjClose: req.body.isPrjClose,
-                        update_ts: req.body.update_ts,
-                        updater: req.body.updater,
-                    }
+                    $set: updateTarget
                 }, function (err) {
                     if (err) {
                         res.send(err);
+                    } else {
+                        res.status(200).send({
+                            code: 200,
+                            error: global.status._200,
+                        });
                     }
                 });
             }
 
-            ProjectFinancialResult.updateOne({
-                _id: req.body._id,
-            }, {
-                $set: updateTarget
-            }, function (err) {
-                if (err) {
-                    res.send(err);
-                }
-                res.status(200).send({
-                    code: 200,
-                    error: global.status._200,
-                });
-            });
         });
     })
 
