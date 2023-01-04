@@ -18,7 +18,8 @@
 <!--<uib-accordion ng-repeat="form in workHourFormsForManagers">-->
     <uib-accordion ng-repeat="user in usersReviewForManagers">
         <uib-accordion-group heading="{{showUser(user.DID)}}"
-                             ng-click="showTableOfItem(user, null, null, null, null, null, 1)"
+                             is-open="user.isOpened"
+                             ng-click="showTableOfItem(user, null, null, null, null, null, 1, false)"
                              panel-class="bootstrap-panel accordion-panel panel-default">
             <table class="table table-bordered table-hover table-condensed"
                    ng-repeat="table in fetchReviewTableFromScope(user)">
