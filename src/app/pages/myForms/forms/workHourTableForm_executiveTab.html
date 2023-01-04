@@ -16,7 +16,8 @@
 
     <uib-accordion ng-repeat="user in usersReviewForExecutive">
         <uib-accordion-group heading="{{showUser(user.DID)}}"
-                             ng-click="showTableOfItem(user, null, null, null, null, null, 2)"
+                             is-open="user.isOpened"
+                             ng-click="showTableOfItem(user, null, null, null, null, null, 2, false)"
                              panel-class="bootstrap-panel accordion-panel panel-default">
             <table class="table table-bordered table-hover table-condensed"
                    ng-repeat="table in fetchReviewTableFromScope(user)">
