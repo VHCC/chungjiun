@@ -198,11 +198,13 @@
 
             var formData = {
                 isBulletin: true,
-                year: 111,
-                month: 3,
+                year: thisYear,
+                month: thisMonth,
                 isSendReview: true,
                 isBossCheck: true,
             };
+
+            console.log(formData);
 
             TravelApplicationUtil.getTravelApplicationItem(formData)
                 .success(function (resp) {
@@ -210,6 +212,10 @@
                     $scope.bulletinItems_travel = [];
                     for (var index = 0; index < resp.payload.length; index ++) {
                         var date = resp.payload[index].taStartDate;
+                        console.log(index)
+                        console.log(date)
+                        console.log(moment(date))
+                        console.log(moment(moment(new Date()).format("YYYY/MM/DD")))
                         if(moment(date) >= moment(moment(new Date()).format("YYYY/MM/DD"))) {
                             $scope.bulletinItems_travel.push(resp.payload[index]);
                         }

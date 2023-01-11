@@ -166,7 +166,7 @@
 
                     var formData = {
                         isBulletin: true,
-                        year: 111,
+                        year: thisYear,
                         // month: 3,
                         isSendReview: true,
                         isBossCheck: true,
