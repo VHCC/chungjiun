@@ -112,6 +112,11 @@
                     $scope.create_formDate_array.push(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), -7));
                     $scope.create_formDate_array.push(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), -14));
                     $scope.create_formDate_array.push(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), -21));
+                    // 新增4週, 共8週
+                    $scope.create_formDate_array.push(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), -28));
+                    $scope.create_formDate_array.push(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), -35));
+                    $scope.create_formDate_array.push(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), -42));
+                    $scope.create_formDate_array.push(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment()), -49));
 
 
                     $scope.managersRelatedProjects = [];
@@ -132,7 +137,7 @@
         };
 
         // var intervalID = setInterval(getUserRelatedTasks, 60000);
-        var checkUserUUID = setInterval(checkUserUUID, 10000);
+        // var checkUserUUID = setInterval(checkUserUUID, 10000);
 
 
         function checkUserUUID() {
