@@ -708,7 +708,8 @@
                     ];
 
                     if (TimeUtil.getHour(dom.table.end_time) == 12) {
-                        result = result[0] + (result[1] > 0 ? 0.5 : 0);
+                        result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
+                        // result = result[0] + (result[1] > 0 ? 0.5 : 0);
                     } else {
                         result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
                     }
@@ -762,13 +763,18 @@
                     // result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
                     // return result <= 1 ? 1 : result >= 8 ? 8 : result;
 
+
+
                     if (TimeUtil.getHour(end) == 12) {
-                        result = result[0] + (result[1] > 0 ? 0.5 : 0);
+                        console.log(result);
+                        result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
+                        // result = result[0] + (result[1] > 0 ? 0.5 : 0);
                     } else {
                         result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
                     }
+
                     var resultFinal;
-                    if (TimeUtil.getHour(start) <= 12 && TimeUtil.getHour(end) >= 13) {
+                    if (TimeUtil.getHour(start) <= 12 && TimeUtil.getHour(end) >= 13) { // 跨越中午
                         if (this.workOffType !== undefined) {
                             // 請假單
                             if (this.workOffType.type == 2) {
@@ -882,6 +888,15 @@
                 var needCheckType = false;
 
                 switch (table.workOffType) {
+                    case 2: {
+                        var canUserHour = $scope.showWorkOffCount(2);
+                        console.log(table.myHourDiff);
+                        if (table.myHourDiff < canUserHour) {
+                            toastr.warn('補休剩餘時數不足，請確認申請時數', 'warn');
+                            return;
+                        }
+                        break;
+                    }
                     // 特
                     case 3: {
                         needCheckType = true;
