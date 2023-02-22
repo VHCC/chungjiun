@@ -891,8 +891,9 @@
                     case 2: {
                         var canUserHour = $scope.showWorkOffCount(2);
                         console.log(table.myHourDiff);
-                        if (table.myHourDiff < canUserHour) {
-                            toastr.warn('補休剩餘時數不足，請確認申請時數', 'warn');
+                        if (table.myHourDiff > canUserHour) {
+                            // toastr.warn('補休剩餘時數不足，請確認申請時數', 'warn');
+                            toastr.error('補休剩餘時數不足，請確認申請時數', 'Warn');
                             return;
                         }
                         break;
