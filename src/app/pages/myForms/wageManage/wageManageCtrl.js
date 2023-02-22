@@ -399,7 +399,8 @@
                         ];
 
                         if (TimeUtil.getHour(end) == 12) {
-                            result = result[0] + (result[1] > 0 ? 0.5 : 0);
+                            // result = result[0] + (result[1] > 0 ? 0.5 : 0);
+                            result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
                         } else {
                             result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
                         }
