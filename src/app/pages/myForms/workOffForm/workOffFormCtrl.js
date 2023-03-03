@@ -889,8 +889,14 @@
 
                 switch (table.workOffType) {
                     case 2: {
-                        var canUserHour = $scope.showWorkOffCount(2);
-                        console.log(table.myHourDiff);
+                        // var canUserHour = $scope.showWorkOffCount(2);
+
+                        var canUserHour = vm.loginUserHolidayForm.rest_observed +
+                        vm.loginUserHolidayForm.person_residual_rest_hour -
+                        $scope.showWorkOffCount_history(2, vm.loginUserHolidayForm) -
+                        $scope.loginUser_exchange_observed_history
+                        console.log("table.myHourDiff:> " + table.myHourDiff);
+                        console.log("canUserHour:> " + canUserHour);
                         if (table.myHourDiff > canUserHour) {
                             // toastr.warn('補休剩餘時數不足，請確認申請時數', 'warn');
                             toastr.error('補休剩餘時數不足，請確認申請時數', 'Warn');
