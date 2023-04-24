@@ -187,26 +187,11 @@
                                     hrMachineCollection.push(hrMachineItem);
                                     hrMachineTableSorted[arrayResult[0][index].date] = hrMachineCollection;
 
-                                    if (arrayResult[0][index].workType == 4) {
-                                        var hrMachineItemTemp = {
-                                            date: "",
-                                            did: "",
-                                            location: "",
-                                            printType: "",
-                                            time: "",
-                                            workType: ""
-                                        }
-                                        hrMachineItemTemp.date = arrayResult[0][index].date;
-                                        hrMachineItemTemp.did = arrayResult[0][index].did;
-                                        hrMachineItemTemp.location = arrayResult[0][index].location;
-                                        hrMachineItemTemp.printType = arrayResult[0][index].printType;
-                                        hrMachineItemTemp.time = "0000";
-                                        hrMachineItemTemp.workType = "3";
-                                        hrMachineTableSorted[arrayResult[0][index].date].push(hrMachineItemTemp);
+                                    if (hrMachineTableSorted[lastDate] !== undefined) {
+                                        var lastDateDataLength = hrMachineTableSorted[lastDate].length;
 
-                                        if (hrMachineTableSorted[lastDate] !== undefined) {
-
-                                            var hrMachineItemLastDate = {
+                                        if (arrayResult[0][index].workType == 4 && hrMachineTableSorted[lastDate][lastDateDataLength - 1].workType == 3) {
+                                            var hrMachineItemTemp = {
                                                 date: "",
                                                 did: "",
                                                 location: "",
@@ -214,15 +199,36 @@
                                                 time: "",
                                                 workType: ""
                                             }
-                                            hrMachineItemLastDate.date = arrayResult[0][index].date;
-                                            hrMachineItemLastDate.did = arrayResult[0][index].did;
-                                            hrMachineItemLastDate.location = arrayResult[0][index].location;
-                                            hrMachineItemLastDate.printType = arrayResult[0][index].printType;
-                                            hrMachineItemLastDate.time = "2400";
-                                            hrMachineItemLastDate.workType = "4";
-                                            hrMachineTableSorted[lastDate].push(hrMachineItemLastDate);
+                                            hrMachineItemTemp.date = arrayResult[0][index].date;
+                                            hrMachineItemTemp.did = arrayResult[0][index].did;
+                                            hrMachineItemTemp.location = arrayResult[0][index].location;
+                                            hrMachineItemTemp.printType = arrayResult[0][index].printType;
+                                            hrMachineItemTemp.time = "0000";
+                                            hrMachineItemTemp.workType = "3";
+                                            hrMachineTableSorted[arrayResult[0][index].date].push(hrMachineItemTemp);
+
+                                            if (hrMachineTableSorted[lastDate] !== undefined) {
+
+                                                var hrMachineItemLastDate = {
+                                                    date: "",
+                                                    did: "",
+                                                    location: "",
+                                                    printType: "",
+                                                    time: "",
+                                                    workType: ""
+                                                }
+                                                hrMachineItemLastDate.date = arrayResult[0][index].date;
+                                                hrMachineItemLastDate.did = arrayResult[0][index].did;
+                                                hrMachineItemLastDate.location = arrayResult[0][index].location;
+                                                hrMachineItemLastDate.printType = arrayResult[0][index].printType;
+                                                hrMachineItemLastDate.time = "2400";
+                                                hrMachineItemLastDate.workType = "4";
+                                                hrMachineTableSorted[lastDate].push(hrMachineItemLastDate);
+                                            }
                                         }
                                     }
+
+
                                     lastDate = arrayResult[0][index].date;
 
                                 } else {
