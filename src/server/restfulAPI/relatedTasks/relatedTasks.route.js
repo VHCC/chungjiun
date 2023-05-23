@@ -433,12 +433,15 @@ module.exports = function (app) {
     async function getPayment_Executive(findDataOr_Executive) {
         return new Promise((resolve, reject) => {
 
+            var thisYear = new Date().getFullYear() - 1911;
+            var thisMonth = new Date().getMonth() + 1; //January is 0!;
+
             var findDataAnd = [];
             findDataAnd.push({isSendReview: true});
             findDataAnd.push({isManagerCheck: true});
             findDataAnd.push({isExecutiveCheck: false});
             findDataAnd.push({year: thisYear});
-            findDataAnd.push({month: thisMonth});
+            // findDataAnd.push({month: thisMonth});
 
             PaymentFormItem.countDocuments({
                     $or: findDataOr_Executive,
