@@ -29,10 +29,76 @@
         <tr ng-repeat="item in institutes" class="editable-tr-wrap">
 
             <!--代碼-->
-            <td class="table-id" style="width: 30%">{{item.code}}</td>
+            <td class="table-id" style="width: 50%">
+                <form data-editable-form
+                      name="uInstituteCodeForm">
+                    <div editable-textarea="item.code"
+                         data-e-form="instituteCode"
+                         data-e-name="instituteCode"
+                         data-e-ng-model="item.code">
+                        {{item.code}}
+                    </div>
+                    <br/>
+                    <div class="buttons">
+                        <button type="button"
+                                ng-disabled="uInstituteCodeForm.$visible"
+                                ng-click="uInstituteCodeForm.$show()"
+                                ng-show="!uInstituteCodeForm.$visible;"
+                                class="btn btn-primary editable-table-button btn-xs">
+                            更換
+                        </button>
+                        <span ng-show="uInstituteCodeForm.$visible">
+                            <br/>
+                            <button type="submit" class="btn btn-primary editable-table-button btn-xs"
+                                    ng-click="changeInstituteCode(uInstituteCodeForm, this)"
+                                    ng-disabled="uInstituteCodeForm.$waiting">
+                              確認
+                            </button>
+                            <button type="button" class="btn btn-default editable-table-button btn-xs"
+                                    ng-disabled="uInstituteCodeForm.$waiting"
+                                    ng-click="uInstituteCodeForm.$cancel()">
+                              取消
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </td>
 
             <!--機關名稱-->
-            <td style="width: 70%">{{item.name}}</td>
+            <td style="width: 50%">
+                <form data-editable-form
+                      name="uInstituteNameForm">
+                    <div editable-textarea="item.name"
+                         data-e-form="instituteName"
+                         data-e-name="instituteName"
+                         data-e-ng-model="item.name">
+                        {{item.name}}
+                    </div>
+                    <br/>
+                    <div class="buttons">
+                        <button type="button"
+                                ng-disabled="uInstituteNameForm.$visible"
+                                ng-click="uInstituteNameForm.$show()"
+                                ng-show="!uInstituteNameForm.$visible;"
+                                class="btn btn-primary editable-table-button btn-xs">
+                            更換
+                        </button>
+                        <span ng-show="uInstituteNameForm.$visible">
+                            <br/>
+                            <button type="submit" class="btn btn-primary editable-table-button btn-xs"
+                                    ng-click="changeInstituteName(uInstituteNameForm, this)"
+                                    ng-disabled="uInstituteNameForm.$waiting">
+                              確認
+                            </button>
+                            <button type="button" class="btn btn-default editable-table-button btn-xs"
+                                    ng-disabled="uInstituteNameForm.$waiting"
+                                    ng-click="uInstituteNameForm.$cancel()">
+                              取消
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </td>
 
         </tr>
         </tbody>

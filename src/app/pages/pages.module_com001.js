@@ -31,7 +31,7 @@
 
         'BlurAdmin.pages.001.Project',
         'BlurAdmin.pages.001.PersonalManage',
-        'BlurAdmin.pages.001.AccountingManage',
+        // 'BlurAdmin.pages.001.AccountingManage',
         // 'BlurAdmin.pages.com001KPI',
     ])
         .config(routeConfig)

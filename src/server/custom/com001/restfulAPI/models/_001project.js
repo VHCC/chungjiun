@@ -84,6 +84,10 @@ module.exports = mongoose.model('_001Project', {
 
     updateTs: {
         type : String,
-    }
+    },
+
+    userUpdateTs: {
+        type : String,
+    },
 
 });

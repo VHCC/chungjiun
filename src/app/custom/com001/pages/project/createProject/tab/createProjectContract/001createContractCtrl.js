@@ -11,6 +11,8 @@
             '$window',
             '$filter',
             '$compile',
+            'editableOptions',
+            'editableThemes',
             'toastr',
             'User',
             '$timeout',
@@ -26,6 +28,8 @@
                               window,
                               $filter,
                               $compile,
+                              editableOptions,
+                              editableThemes,
                               toastr,
                               User,
                               $timeout,
@@ -35,6 +39,12 @@
 
         $scope.username = cookies.get('username');
         var roleType = cookies.get('roletype');
+
+        editableOptions.theme = 'bs3';
+
+        editableThemes['bs3'].submitTpl = '<button type="submit" ng-click="updateMajor($form, $parent)" class="btn btn-primary btn-with-icon"><i class="ion-checkmark-round"></i></button>';
+        editableThemes['bs3'].cancelTpl = '<button type="button" ng-click="$form.$cancel()" class="btn btn-default btn-with-icon"><i class="ion-close-round"></i></button>';
+
 
         var vm = this;
         var nameList = [];
@@ -149,6 +159,47 @@
                     return emptyInstitute;
                 }
                 return selected[0];
+            }
+        }
+
+        // 更新契約編碼
+        $scope.changeContractCode = function (form, table) {
+            try {
+                var formData = {
+                    _id: table.item._id,
+                    code: form.$data.contractCode,
+                }
+                _001_ProjectContract.updateOneContractInfo(formData)
+                    .success(function (res) {
+                        console.log(res.code);
+                    })
+                    .error(function () {
+
+                    })
+            } catch (err) {
+                toastr['warning']('變更契約編碼 !', '更新失敗');
+                return;
+            }
+        }
+
+
+        // 更新契約名稱
+        $scope.changeContractName = function (form, table) {
+            try {
+                var formData = {
+                    _id: table.item._id,
+                    name: form.$data.contractName,
+                }
+                _001_ProjectContract.updateOneContractInfo(formData)
+                    .success(function (res) {
+                        console.log(res.code);
+                    })
+                    .error(function () {
+
+                    })
+            } catch (err) {
+                toastr['warning']('變更契約名稱 !', '更新失敗');
+                return;
             }
         }
 

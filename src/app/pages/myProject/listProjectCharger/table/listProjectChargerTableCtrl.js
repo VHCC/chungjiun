@@ -176,8 +176,6 @@
         editableThemes['bs3'].cancelTpl = '<button type="button" ng-click="$form.$cancel()" class="btn btn-default btn-with-icon"><i class="ion-close-round"></i></button>';
 
         $scope.updateMajor = function (form, table) {
-            // console.log(form.$data);
-            // console.log(table.$parent.prj._id);
             var formData = {
                 prjID: table.$parent.prj._id,
                 majorID: form.$data.majorID,

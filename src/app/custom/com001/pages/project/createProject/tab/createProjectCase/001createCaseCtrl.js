@@ -9,6 +9,8 @@
             '$window',
             '$filter',
             '$compile',
+            'editableOptions',
+            'editableThemes',
             'toastr',
             'User',
             '$timeout',
@@ -25,6 +27,8 @@
                               window,
                               $filter,
                               $compile,
+                              editableOptions,
+                              editableThemes,
                               toastr,
                               User,
                               $timeout,
@@ -35,6 +39,12 @@
 
         $scope.username = cookies.get('username');
         var roleType = cookies.get('roletype');
+
+        editableOptions.theme = 'bs3';
+
+        editableThemes['bs3'].submitTpl = '<button type="submit" ng-click="updateMajor($form, $parent)" class="btn btn-primary btn-with-icon"><i class="ion-checkmark-round"></i></button>';
+        editableThemes['bs3'].cancelTpl = '<button type="button" ng-click="$form.$cancel()" class="btn btn-default btn-with-icon"><i class="ion-close-round"></i></button>';
+
 
         var vm = this;
         var nameList = [];
@@ -190,10 +200,49 @@
                 }
                 return selected[0];
             }
-
         }
 
 
+
+        // 更新工程編碼
+        $scope.changeCaseCode = function (form, table) {
+            try {
+                var formData = {
+                    _id: table.item._id,
+                    code: form.$data.caseCode,
+                }
+                _001_ProjectCase.updateOneCaseInfo(formData)
+                    .success(function (res) {
+                        console.log(res.code);
+                    })
+                    .error(function () {
+
+                    })
+            } catch (err) {
+                toastr['warning']('變更工程編碼 !', '更新失敗');
+                return;
+            }
+        }
+
+        // 更新工程名稱
+        $scope.changeCaseName = function (form, table) {
+            try {
+                var formData = {
+                    _id: table.item._id,
+                    name: form.$data.caseName,
+                }
+                _001_ProjectCase.updateOneCaseInfo(formData)
+                    .success(function (res) {
+                        console.log(res.code);
+                    })
+                    .error(function () {
+
+                    })
+            } catch (err) {
+                toastr['warning']('變更工程名稱 !', '更新失敗');
+                return;
+            }
+        }
 
     }
 })();

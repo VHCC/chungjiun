@@ -28,4 +28,27 @@ module.exports = mongoose.model('ProjectContract', {
         type : String,
     },
 
+    userUpdateTs: {
+        type : String,
+    },
+
+    // 契約關閉 Flag
+    enable : {
+        type: Boolean,
+        default: true,
+    },
+
+    contractMemo: {
+        type: Array,
+        default: []
+    },
+
+    mount: {
+        type : String,
+    },
+
+    ext_mount: {
+        type : String,
+    }
+
 });

@@ -20,48 +20,48 @@ require('./restfulAPI/myProject/createProject/createProject.routes')(app);
 require('./restfulAPI/myProject/listProject/listProject.routes')(app);
 require('./restfulAPI/myNewPage/todo.routes')(app);
 
-require('./restfulAPI/officialDoc/officialDoc.routes')(app);
-require('./restfulAPI/officialDoc/officialDocPublic.routes')(app);
-require('./restfulAPI/officialDoc/officialDocVendor.routes')(app);
-require('./restfulAPI/officialDoc/officialDocNotify.routes')(app);
+// require('./restfulAPI/officialDoc/officialDoc.routes')(app);
+// require('./restfulAPI/officialDoc/officialDocPublic.routes')(app);
+// require('./restfulAPI/officialDoc/officialDocVendor.routes')(app);
+// require('./restfulAPI/officialDoc/officialDocNotify.routes')(app);
 
-require('./restfulAPI/forms/executiveExpenditure/executiveExpenditure.routes')(app);
-require('./restfulAPI/forms/executiveExpenditure/expenditureTarget.routes')(app);
+// require('./restfulAPI/forms/executiveExpenditure/executiveExpenditure.routes')(app);
+// require('./restfulAPI/forms/executiveExpenditure/expenditureTarget.routes')(app);
 
-require('./restfulAPI/forms/subContractorApply/subContractorApply.routes')(app);
-require('./restfulAPI/forms/subContractorVendor/subContractorVendor.routes')(app);
-require('./restfulAPI/forms/subContractorItem/subContractorItem.routes')(app);
-require('./restfulAPI/forms/subContractorPayItem/subContractorPayItem.routes')(app);
+// require('./restfulAPI/forms/subContractorApply/subContractorApply.routes')(app);
+// require('./restfulAPI/forms/subContractorVendor/subContractorVendor.routes')(app);
+// require('./restfulAPI/forms/subContractorItem/subContractorItem.routes')(app);
+// require('./restfulAPI/forms/subContractorPayItem/subContractorPayItem.routes')(app);
 
-require('./restfulAPI/forms/paymentForm/paymentForm.routes')(app);
+// require('./restfulAPI/forms/paymentForm/paymentForm.routes')(app);
 require('./restfulAPI/forms/wageManageForm/wageManageForm.routes')(app);
 require('./restfulAPI/forms/workHourTableForm/workHourTableForm.routes')(app);
 require('./restfulAPI/forms/workHourTableStatistics/workHourTableStatistics.routes')(app); // Statistics
 require('./restfulAPI/forms/employeeStatistics/employeeStatistics.routes')(app); // employee Statistics
 require('./restfulAPI/forms/workHourTableFormWorkAdd/workHourTableFormWorkAdd.routes')(app);
-require('./restfulAPI/forms/workOffTableForm/workHourOffForm.routes')(app);
-require('./restfulAPI/forms/workOffTableExchangeForm/workOffTableExchangeForm.routes')(app);
-require('./restfulAPI/forms/holidayDataForm/holidayDataForm.routes')(app);
-require('./restfulAPI/forms/nationalHolidayForm/nationalHolidayForm.routes')(app);
-require('./restfulAPI/forms/overTimeDayForm/overTimeDayForm.routes')(app);
+// require('./restfulAPI/forms/workOffTableForm/workHourOffForm.routes')(app);
+// require('./restfulAPI/forms/workOffTableExchangeForm/workOffTableExchangeForm.routes')(app);
+// require('./restfulAPI/forms/holidayDataForm/holidayDataForm.routes')(app);
+// require('./restfulAPI/forms/nationalHolidayForm/nationalHolidayForm.routes')(app);
+// require('./restfulAPI/forms/overTimeDayForm/overTimeDayForm.routes')(app);
 require('./restfulAPI/userEdit/userEdit.routes')(app);
-require('./restfulAPI/forms/workAddConfirmForm/workAddConfirmForm.routes')(app);
-require('./restfulAPI/forms/hrMachineForm/hrMachineForm.routes')(app);
+// require('./restfulAPI/forms/workAddConfirmForm/workAddConfirmForm.routes')(app);
+// require('./restfulAPI/forms/hrMachineForm/hrMachineForm.routes')(app);
 require('./restfulAPI/lineNotify/auth/auth.route')(app);
 require('./restfulAPI/notificationMsg/notificationMsg.route')(app);
 require('./restfulAPI/relatedTasks/relatedTasks.route')(app);
 require('./restfulAPI/globalConfig/globalConfig.routes')(app);
 require('./restfulAPI/projectFinancialRate/projectFinancialRate.routes')(app);
 
-require('./restfulAPI/forms/travelApplicationItem/travelApplicationItem.routes')(app);
-require('./restfulAPI/forms/hrRemedyItem/hrRemedyItem.routes')(app);
-require('./restfulAPI/forms/workOverTime/workOverTimeItem.routes')(app);
-require('./restfulAPI/forms/projectIncome/projectIncome.routes')(app);
-require('./restfulAPI/forms/projectFinancialResult/projectFinancialResult.routes')(app);
-require('./restfulAPI/forms/projectFinancialResult/projectFinancialDistribute.routes')(app);
+// require('./restfulAPI/forms/travelApplicationItem/travelApplicationItem.routes')(app);
+// require('./restfulAPI/forms/hrRemedyItem/hrRemedyItem.routes')(app);
+// require('./restfulAPI/forms/workOverTime/workOverTimeItem.routes')(app);
+// require('./restfulAPI/forms/projectIncome/projectIncome.routes')(app);
+// require('./restfulAPI/forms/projectFinancialResult/projectFinancialResult.routes')(app);
+// require('./restfulAPI/forms/projectFinancialResult/projectFinancialDistribute.routes')(app);
 
-require('./restfulAPI/forms/kpi/kpi.routes')(app);
-require('./restfulAPI/forms/kpi/kpiTechDistribute.routes')(app);
+// require('./restfulAPI/forms/kpi/kpi.routes')(app);
+// require('./restfulAPI/forms/kpi/kpiTechDistribute.routes')(app);
 
 
 // com001
@@ -71,6 +71,7 @@ require('./custom/com001/restfulAPI/dto/projectContract/001ProjectContract.route
 require('./custom/com001/restfulAPI/dto/projectCase/001ProjectCase.routes')(app);
 require('./custom/com001/restfulAPI/dto/project/001Project.routes')(app);
 require('./custom/com001/restfulAPI/dto/caseTask/001CaseTask.routes')(app);
+require('./custom/com001/restfulAPI/dto/depBoss/001DepBoss.routes')(app);
 
 
 

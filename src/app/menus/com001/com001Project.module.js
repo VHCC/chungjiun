@@ -33,7 +33,8 @@
                     title: '建立專案',
                     controller: '_001_createProjectHomeCtrl',
                     controllerAs: 'vm',
-                    // accessLevel: [100],
+                    // accessLevel: [9999],
+                    // accessFeature: ['isDepG'],
                     sidebarMeta: {
                         order: global.pages._001_Project_createProject,
                     },
@@ -57,6 +58,8 @@
                     controller: '_001_listContractHomeCtrl',
                     controllerAs: 'vm',
                     title: '契約基本資料',
+                    accessLevel: [2,3,5],
+                    // accessFeature: ['isDepBoss'],
                     sidebarMeta: {
                         order: global.pages._001_Project_listProjectContract,
                     },

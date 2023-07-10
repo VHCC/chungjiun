@@ -3,7 +3,6 @@
 
     // createDate: 2022/07/13
     angular.module('BlurAdmin.pages.001.PersonalManage')
-    // .controller('createProjectCtrl', createProject);
         .controller('_001_editCaseInfoCtrl', [
             '$scope',
             '$cookies',
@@ -52,7 +51,6 @@
         }
 
         $scope.changeInstitute = function(institute) {
-
             vm.filter.projectContract = null;
             vm.filter.projectCase = null;
             vm.filter.projectType = null;
@@ -77,7 +75,7 @@
                 bsLoadingOverlayService.start({
                     referenceId: loadingReferenceId
                 });
-            }, 100)
+            }, 100);
 
             vm.filter.projectCase = null;
             // 工程

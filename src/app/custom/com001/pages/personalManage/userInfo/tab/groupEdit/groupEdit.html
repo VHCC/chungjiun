@@ -1,0 +1,59 @@
+<form>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <ui-select ng-model="vm.edit.dep"
+                           class="btn-group bootstrap-select form-control"
+                           id="depName"
+                           ng-change="depSelected(vm.edit.dep)"
+                           ng-disabled="false"
+                           append-to-body="true"
+                           search-enabled="true">
+                    <ui-select-match placeholder="選擇部門">
+                        {{$select.selected.name}}
+                    </ui-select-match>
+                    <ui-select-choices
+                            repeat="dep in vm.departmentOptions | filter: $select.search">
+                        <span ng-bind-html="showDepStatus(dep) | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+    <!--<h3 class="with-line"></h3>-->
+
+    <!--部門主管-->
+    <div class="row" ng-if="vm.edit.dep">
+        <div class="col-md-6">
+            <div class="form-group row clearfix">
+                <label class="col-md-3 control-label" style="color:red">{{vm.edit.dep.name}}
+                    的主管</label>
+                <div class="col-md-9">
+                    <ui-select ng-model="vm.edit.dep.user"
+                               class="btn-group bootstrap-select form-control"
+                               required
+                               ng-disabled="false"
+                               append-to-body="true"
+                               search-enabled="true">
+                        <ui-select-match placeholder="請選擇 {{vm.edit.dep.name}} 的主管">
+                            {{$select.selected.name}}
+                        </ui-select-match>
+                        <ui-select-choices
+                                repeat="user in vm.managersList | filter: $select.search">
+                            <span ng-bind-html="user.name | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="with-line"></h3>
+    <div class="form-group">
+        <button type="submit"
+                ng-click="updateDep()"
+                class="btn btn-info">儲存部門資料
+        </button>
+    </div>
+
+</form>

@@ -133,20 +133,20 @@
         }
 
         // *****************
-        // 總經理
-        // 經理
-        // 副理
-        // 組長
-        // 技師
-        // 資深工程師
-        // 高級工程師
-        // 工程師
-        // 助理工程師
-        // 資深專員
-        // 高級專員
-        // 專員
-        // 駐府人員
-        // 工讀人員
+        // 總經理-1
+        // 經理-2
+        // 副理-3
+        // 組長-4
+        // 技師-5
+        // 資深工程師-6
+        // 高級工程師-7
+        // 工程師-8
+        // 助理工程師-9
+        // 資深專員-10
+        // 高級專員-11
+        // 專員-12
+        // 駐府人員-13
+        // 工讀人員-14
         vm.roleOptions = [
             {name: "總經理", roleType: 1},
             {name: "經理", roleType: 2},
@@ -155,21 +155,22 @@
             {name: "技師", roleType: 5},
             {name: "資深工程師", roleType: 6},
             {name: "高級工程師", roleType: 7},
-            {name: "助理工程師", roleType: 8},
-            {name: "資深專員", roleType: 9},
-            {name: "高級專員", roleType: 10},
-            {name: "專員", roleType: 11},
-            {name: "駐府人員", roleType: 12},
-            {name: "工讀人員", roleType: 13},
+            {name: "工程師", roleType: 8},
+            {name: "助理工程師", roleType: 9},
+            {name: "資深專員", roleType: 10},
+            {name: "高級專員", roleType: 11},
+            {name: "專員", roleType: 12},
+            {name: "駐府人員", roleType: 13},
+            {name: "工讀人員", roleType: 14},
         ];
 
-        // 老闆
-        // 主管部
-        // 設計部
-        // 監造部-分4群組
-        // 專管部
-        // 測量部
-        // 管理部
+        // 老闆-A
+        // 主管部-B
+        // 設計部-C
+        // 監造部-分4群組-D
+        // 專管部-E
+        // 測量部-F
+        // 管理部-G
         vm.departmentOptions = [
             {name: "老闆", depType: 'A'},
             {name: "主管部", depType: 'B'},
@@ -185,8 +186,8 @@
 
 
         var emptyObject = {
-            name: "Can not find",
-            code: "Can not find",
+            name: "尚未設定",
+            code: "尚未設定",
         }
 
         $scope.getBoss = function (did, options) {

@@ -7,32 +7,32 @@
             </td>
         </tr>
         <tr class="sortable">
+            <th st-sort="instituteCode" style="text-align: left">機關代碼</th>
             <th st-sort="instituteName" style="width: 5%;text-align: left">機關名稱</th>
-            <th st-sort="instituteCode" >機關代碼</th>
-            <th st-sort="contractName" >契約名稱</th>
             <th st-sort="contractCode" >契約編碼</th>
+            <th st-sort="contractName" >契約名稱</th>
             <th class="table-id" st-sort="code" st-sort-default="true" >工程編碼</th>
             <th st-sort="name" >工程名稱</th>
         </tr>
         <tr>
-            <th><input st-search="instituteName"
-                       placeholder="尋找機關名稱"
-                       class="input-sm form-control search-input"
-                       type="search"/>
-            </th>
             <th><input st-search="instituteCode"
                        placeholder="尋找機關代碼"
                        class="input-sm form-control search-input"
                        type="search"/>
             </th>
-
-            <th><input st-search="contractName"
-                       placeholder="尋找契約名稱"
+            <th><input st-search="instituteName"
+                       placeholder="尋找機關名稱"
                        class="input-sm form-control search-input"
                        type="search"/>
             </th>
+
             <th><input st-search="contractCode"
                        placeholder="尋找契約編碼"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+            <th><input st-search="contractName"
+                       placeholder="尋找契約名稱"
                        class="input-sm form-control search-input"
                        type="search"/>
             </th>
@@ -54,23 +54,91 @@
 
         <tr ng-repeat="item in cases" class="editable-tr-wrap">
 
+            <!--機關代碼-->
+            <td style="text-align: left; width: 15%">{{item.instituteCode}}</td>
+
             <!--機關名稱-->
             <td style="text-align: left; width: 15%">{{item.instituteName}}</td>
-
-            <!--機關代碼-->
-            <td style="width: 15%">{{item.instituteCode}}</td>
-
-            <!--契約名稱-->
-            <td style="width: 15%">{{item.contractName}}</td>
 
             <!--契約編碼-->
             <td style="width: 15%">{{item.contractCode}}</td>
 
+            <!--契約名稱-->
+            <td style="width: 15%">{{item.contractName}}</td>
+
+
             <!--工程編碼-->
-            <td class="table-id" style="width: 20%">{{item.code}}</td>
+            <td class="table-id" style="width: 20%">
+                <form data-editable-form
+                      name="uCaseCodeForm">
+                    <div editable-textarea="item.code"
+                         data-e-form="caseCode"
+                         data-e-name="caseCode"
+                         data-e-ng-model="item.code">
+                        {{item.code}}
+                    </div>
+                    <br/>
+                    <div class="buttons">
+                        <button type="button"
+                                ng-disabled="uCaseCodeForm.$visible"
+                                ng-click="uCaseCodeForm.$show()"
+                                ng-show="!uCaseCodeForm.$visible;"
+                                class="btn btn-primary editable-table-button btn-xs">
+                            更換
+                        </button>
+                        <span ng-show="uCaseCodeForm.$visible">
+                            <br/>
+                            <button type="submit" class="btn btn-primary editable-table-button btn-xs"
+                                    ng-click="changeCaseCode(uCaseCodeForm, this)"
+                                    ng-disabled="uCaseCodeForm.$waiting">
+                              確認
+                            </button>
+                            <button type="button" class="btn btn-default editable-table-button btn-xs"
+                                    ng-disabled="uCaseCodeForm.$waiting"
+                                    ng-click="uCaseCodeForm.$cancel()">
+                              取消
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </td>
 
             <!--工程名稱-->
-            <td style="width: 20%">{{item.name}} </td>
+            <!--<td style="width: 20%">{{item.name}} </td>-->
+            <td style="width: 20%">
+                <form data-editable-form
+                      name="uCaseNameForm">
+                    <div editable-textarea="item.name"
+                         data-e-form="caseName"
+                         data-e-name="caseName"
+                         data-e-ng-model="item.name">
+                        {{item.name}}
+                    </div>
+                    <br/>
+                    <div class="buttons">
+                        <button type="button"
+                                ng-disabled="uCaseNameForm.$visible"
+                                ng-click="uCaseNameForm.$show()"
+                                ng-show="!uCaseNameForm.$visible;"
+                                class="btn btn-primary editable-table-button btn-xs">
+                            更換
+                        </button>
+                        <span ng-show="uCaseNameForm.$visible">
+                            <br/>
+                            <button type="submit" class="btn btn-primary editable-table-button btn-xs"
+                                    ng-click="changeCaseName(uCaseNameForm, this)"
+                                    ng-disabled="uCaseNameForm.$waiting">
+                              確認
+                            </button>
+                            <button type="button" class="btn btn-default editable-table-button btn-xs"
+                                    ng-disabled="uCaseNameForm.$waiting"
+                                    ng-click="uCaseNameForm.$cancel()">
+                              取消
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </td>
 
         </tr>
         </tbody>

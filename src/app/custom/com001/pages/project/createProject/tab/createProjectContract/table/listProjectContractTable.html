@@ -7,22 +7,23 @@
             </td>
         </tr>
         <tr class="sortable">
-            <th st-sort="instituteName" style="width: 20%; text-align: left">機關名稱</th>
-            <th st-sort="instituteCode" style="width: 20%">機關代碼</th>
-            <th class="table-id" st-sort="code" st-sort-default="true" style="width: 20%">契約編碼</th>
-            <th st-sort="name" style="width: 40%">契約名稱</th>
+            <th st-sort="instituteCode" style="width: 25%; text-align: left">機關代碼</th>
+            <th st-sort="instituteName" style="width: 25%; text-align: left">機關名稱</th>
+            <th class="table-id" st-sort="code" st-sort-default="true" style="width: 25%">契約編碼</th>
+            <th st-sort="name" style="width: 25%">契約名稱</th>
         </tr>
         <tr>
-            <th><input st-search="instituteName"
-                       placeholder="尋找機關名稱"
-                       class="input-sm form-control search-input"
-                       type="search"/>
-            </th>
             <th><input st-search="instituteCode"
                        placeholder="尋找機關代碼"
                        class="input-sm form-control search-input"
                        type="search"/>
             </th>
+            <th><input st-search="instituteName"
+                       placeholder="尋找機關名稱"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+
             <th><input st-search="code"
                        placeholder="尋找契約編碼"
                        class="input-sm form-control search-input"
@@ -33,6 +34,8 @@
                        class="input-sm form-control search-input"
                        type="search"/>
             </th>
+
+
         </tr>
 
         </thead>
@@ -40,18 +43,82 @@
 
         <tr ng-repeat="item in contracts" class="editable-tr-wrap">
 
-            <!--機關名稱-->
-            <td style="text-align: left">{{item.instituteName}}</td>
-
             <!--機關代碼-->
-            <td >{{item.instituteCode}}</td>
+            <td style="text-align: left; width: 25%">{{item.instituteCode}}</td>
+
+            <!--機關名稱-->
+            <td style="text-align: left; width: 25%">{{item.instituteName}}</td>
 
             <!--契約編碼-->
-            <td class="table-id" >{{item.code}}</td>
+            <td class="table-id" style="width: 25%">
+                <form data-editable-form
+                      name="uContractCodeForm">
+                    <div editable-textarea="item.code"
+                         data-e-form="contractCode"
+                         data-e-name="contractCode"
+                         data-e-ng-model="item.code">
+                        {{item.code}}
+                    </div>
+                    <br/>
+                    <div class="buttons">
+                        <button type="button"
+                                ng-disabled="uContractCodeForm.$visible"
+                                ng-click="uContractCodeForm.$show()"
+                                ng-show="!uContractCodeForm.$visible;"
+                                class="btn btn-primary editable-table-button btn-xs">
+                            更換
+                        </button>
+                        <span ng-show="uContractCodeForm.$visible">
+                            <br/>
+                            <button type="submit" class="btn btn-primary editable-table-button btn-xs"
+                                    ng-click="changeContractCode(uContractCodeForm, this)"
+                                    ng-disabled="uContractCodeForm.$waiting">
+                              確認
+                            </button>
+                            <button type="button" class="btn btn-default editable-table-button btn-xs"
+                                    ng-disabled="uContractCodeForm.$waiting"
+                                    ng-click="uContractCodeForm.$cancel()">
+                              取消
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </td>
 
             <!--契約名稱-->
-            <td >
-                {{item.name}}
+            <td style="width: 25%">
+                <form data-editable-form
+                      name="uContractNameForm">
+                    <div editable-textarea="item.name"
+                         data-e-form="contractName"
+                         data-e-name="contractName"
+                         data-e-ng-model="item.name">
+                        {{item.name}}
+                    </div>
+                    <br/>
+                    <div class="buttons">
+                        <button type="button"
+                                ng-disabled="uContractNameForm.$visible"
+                                ng-click="uContractNameForm.$show()"
+                                ng-show="!uContractNameForm.$visible;"
+                                class="btn btn-primary editable-table-button btn-xs">
+                            更換
+                        </button>
+                        <span ng-show="uContractNameForm.$visible">
+                            <br/>
+                            <button type="submit" class="btn btn-primary editable-table-button btn-xs"
+                                    ng-click="changeContractName(uContractNameForm, this)"
+                                    ng-disabled="uContractNameForm.$waiting">
+                              確認
+                            </button>
+                            <button type="button" class="btn btn-default editable-table-button btn-xs"
+                                    ng-disabled="uContractNameForm.$waiting"
+                                    ng-click="uContractNameForm.$cancel()">
+                              取消
+                            </button>
+                        </span>
+                    </div>
+                </form>
             </td>
 
         </tr>

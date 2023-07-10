@@ -11,6 +11,7 @@
             '$scope',
             '$rootScope',
             '$cookies',
+            '$filter',
             'toastr',
             'User',
             'Project',
@@ -21,6 +22,7 @@
             'NotificationMsgUtil',
             'RelatedTasksUtil',
             '$document',
+            '_001_DepBoss',
             MyPageTopController]);
 
     /** @ngInject */
@@ -34,6 +36,7 @@
     function MyPageTopController($scope,
                                  $rootScope,
                                  $cookies,
+                                 $filter,
                                  toastr,
                                  User,
                                  Project,
@@ -43,15 +46,22 @@
                                  NotificationUtil,
                                  NotificationMsgUtil,
                                  RelatedTasksUtil,
-                                 document) {
+                                 document,
+                                 _001_DepBoss) {
         console.log(" - cookies.username= " + $cookies.get('username'));
         console.log(" - cookies.userDID= " + $cookies.get('userDID'));
         console.log(" - cookies.roletype= " + $cookies.get('roletype'));
         console.log(" - cookies.bossID= " + $cookies.get('bossID'));
-        console.log(" - cookies.userMonthSalary= " + $cookies.get('userMonthSalary'));
+        console.log(" - cookies.depType= " + $cookies.get('depType'));
+        console.log(" - cookies.isDepBoss= " + $cookies.get('isDepBoss'));
+        console.log(" - cookies.isDepG= " + $cookies.get('isDepG'));
+        // console.log(" - cookies.userMonthSalary= " + $cookies.get('userMonthSalary'));
 
         $scope.username = $cookies.get('username');
         $scope.userDID = $cookies.get('userDID');
+
+
+
 
         // 差勤管理
         $rootScope.cgWorkManage = 0;
@@ -69,14 +79,13 @@
         $scope.initPageTop = function () {
             $scope.roleType = $cookies.get('roletype');
 
-            if ($cookies.get('bossID') === undefined || $cookies.get('userMonthSalary') === undefined || $cookies.get('userMonthSalary') === 0) {
+            // if ($cookies.get('bossID') === undefined || $cookies.get('userMonthSalary') === undefined || $cookies.get('userMonthSalary') === 0) {
+            //     toastr['error']('您的系統資訊未設定完全，請聯絡 行政人員 設定 !', '系統初步設定 不完全');
+            // }
+
+            if ($cookies.get('bossID') === undefined || $cookies.get('depType') === undefined) {
                 toastr['error']('您的系統資訊未設定完全，請聯絡 行政人員 設定 !', '系統初步設定 不完全');
             }
-
-            // if (roleType !== '100') {
-            //     var entrance = window.document.getElementById('registerEntrance');
-            //     entrance.parentNode.removeChild(entrance);
-            // }
 
             // ============== notification ==============
             User.getAllUsers()
@@ -131,9 +140,8 @@
                 });
         };
 
-        var intervalID = setInterval(getUserRelatedTasks, 60000);
-        var checkUserUUID = setInterval(checkUserUUID, 10000);
-
+        // var intervalID = setInterval(getUserRelatedTasks, 180000);
+        // var checkUserUUID = setInterval(checkUserUUID, 10000);
 
         function checkUserUUID() {
             console.log('10 秒鐘又到了！ ===> checkUserUUID...');
@@ -141,12 +149,12 @@
                 decodeURI(readCookie('username')) == 'null' ||
                 decodeURI(readCookie('userDID')) == 'null') {
                 console.log("checkUserUUID ERROR")
-                window.location.href = 'https://erm.chongjun.synology.me/login.html';
+                window.location.href = 'http://localhost:3000/login.html';
             }
         }
 
         function getUserRelatedTasks() {
-            console.log('60 秒鐘又到了！ ===> getUserRelatedTasks...');
+            console.log('180 秒鐘又到了！ ===> getUserRelatedTasks...');
             $scope.fetchUserRelatedTasks();
             // $rootScope.isNeedUpdateRelatedTask = false;
         }

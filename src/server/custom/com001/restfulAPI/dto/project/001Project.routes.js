@@ -130,6 +130,37 @@ module.exports = function (app) {
             });
     });
 
+    app.post(global._001_apiUrl._001_post_project_find_all_case_with_multi_contract, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, _001_post_project_find_all_case_with_multi_contract");
+        console.log(req.body);
+
+        var findData = [];
+        for (var index = 0; index < req.body.contractDIDs.length; index++) {
+            var target = {
+                contractDID: req.body.contractDIDs[index],
+            }
+            findData.push(target);
+        }
+
+        _001Project.find(
+            {
+                // contractDID: req.body.contractDID,
+                $or: findData,
+            },
+            function (err, projects) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, _001_post_project_find_all_case_with_multi_contract");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    res.status(200).send(projects);
+                }
+                return;
+            });
+    });
+
     app.post(global._001_apiUrl._001_post_project_find_all_case_with_specific_type_specific_contract, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, _001_post_project_find_all_case_with_specific_type_specific_contract");
         console.log(req.body);
@@ -151,7 +182,5 @@ module.exports = function (app) {
                 return;
             });
     });
-
-
 
 }

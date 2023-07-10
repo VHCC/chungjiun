@@ -75,7 +75,7 @@
                 right_feature =  true;
             }
 
-            return (right_level && right_feature);
+            return (right_level || right_feature);
         }
 
         $scope.initWatchRelatedTask = function() {

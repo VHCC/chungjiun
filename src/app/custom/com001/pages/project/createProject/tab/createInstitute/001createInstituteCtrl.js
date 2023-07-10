@@ -11,6 +11,8 @@
             '$window',
             '$filter',
             '$compile',
+            'editableOptions',
+            'editableThemes',
             'toastr',
             'User',
             '$timeout',
@@ -25,6 +27,8 @@
                               window,
                               $filter,
                               $compile,
+                              editableOptions,
+                              editableThemes,
                               toastr,
                               User,
                               $timeout,
@@ -33,6 +37,12 @@
 
         $scope.username = cookies.get('username');
         var roleType = cookies.get('roletype');
+
+        editableOptions.theme = 'bs3';
+
+        editableThemes['bs3'].submitTpl = '<button type="submit" ng-click="updateMajor($form, $parent)" class="btn btn-primary btn-with-icon"><i class="ion-checkmark-round"></i></button>';
+        editableThemes['bs3'].cancelTpl = '<button type="button" ng-click="$form.$cancel()" class="btn btn-default btn-with-icon"><i class="ion-close-round"></i></button>';
+
 
         var vm = this;
         var nameList = [];
@@ -114,10 +124,50 @@
                     .error(function (err) {
                         toastr.error(err, 'API 錯誤, 請聯繫管理員');
                     })
-
             }
         }
 
+
+        // 更新機關代碼
+        $scope.changeInstituteCode = function (form, table) {
+            try {
+                var formData = {
+                    _id: table.item._id,
+                    code: form.$data.instituteCode,
+                }
+                _001_Institute.updateOneInstituteInfo(formData)
+                    .success(function (res) {
+                        console.log(res.code);
+                    })
+                    .error(function () {
+
+                    })
+            } catch (err) {
+                toastr['warning']('變更機關代碼 !', '更新失敗');
+                return;
+            }
+        }
+
+
+        // 更新機關名稱
+        $scope.changeInstituteName = function (form, table) {
+            try {
+                var formData = {
+                    _id: table.item._id,
+                    name: form.$data.instituteName,
+                }
+                _001_Institute.updateOneInstituteInfo(formData)
+                    .success(function (res) {
+                        console.log(res.code);
+                    })
+                    .error(function () {
+
+                    })
+            } catch (err) {
+                toastr['warning']('變更機關名稱 !', '更新失敗');
+                return;
+            }
+        }
 
 
     }

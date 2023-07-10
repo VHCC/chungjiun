@@ -33,4 +33,8 @@ module.exports = mongoose.model('CaseTask', {
         type : String,
     },
 
+    userUpdateTs: {
+        type : String,
+    },
+
 });

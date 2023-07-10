@@ -22,4 +22,8 @@ module.exports = mongoose.model('Institute', {
         type : String,
     },
 
+    userUpdateTs: {
+        type : String,
+    },
+
 });

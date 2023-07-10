@@ -57,7 +57,7 @@
 
         var cC = this;
 
-        cC.prj = {};
+        cC.item = {};
         cC.mjr = {};
 
         User.getAllUsers()

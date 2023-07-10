@@ -46,17 +46,17 @@
                     order: global.pages._001_PersonalManage_userEdit,
                 },
             })
-            .state('001PersonalManage.workHourTableForm',
-                {
-                    url: '/workHourTableForm',
-                    templateUrl: 'app/pages/myForms/workHourTableForm/workHourTableFormPage.html',
-                    controller: 'workHourTableCtrl',
-                    controllerAs: 'workHourTableCtrlVm',
-                    title: '工時系統',
-                    sidebarMeta: {
-                        order: global.pages._001_PersonalManage_workHourTable,
-                    },
-                })
+            // .state('001PersonalManage.workHourTableForm',
+            //     {
+            //         url: '/workHourTableForm',
+            //         templateUrl: 'app/pages/myForms/workHourTableForm/workHourTableFormPage.html',
+            //         controller: 'workHourTableCtrl',
+            //         controllerAs: 'workHourTableCtrlVm',
+            //         title: '工時系統',
+            //         sidebarMeta: {
+            //             order: global.pages._001_PersonalManage_workHourTable,
+            //         },
+            //     })
             // .state('cgWorkManage.travelApplication',
             //     {
             //         url: '/travelApplication',

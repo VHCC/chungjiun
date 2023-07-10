@@ -29,7 +29,16 @@ module.exports = mongoose.model('ProjectCase', {
     },
 
     updateTs: {
-        type : String,
+        type: String,
+    },
+
+    userUpdateTs: {
+        type: String,
+    },
+
+    caseMemo: {
+        type: Array,
+        default: []
     },
 
 });

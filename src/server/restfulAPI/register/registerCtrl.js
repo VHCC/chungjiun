@@ -55,17 +55,14 @@ function RegisterCtrl(scope,
                 return;
             }
 
-            if (!scope.checkNewUserEmail(scope)) {
+            if (isEmailRepeat) {
                 scope.loading = false;
                 window.errorText('Email已存在');
                 return;
             }
-            // // call the create function from our service (returns a promise object)
             Register.create(scope.formData)
-
-            // if successful creation, call our get function to get all the new todos
                 .success(function (data) {
-                    console.log('CREATE  SUCCESS');
+                    console.log('CREATE SUCCESS');
                     scope.loading = false;
                     window.createSuccess('員工建立成功');
                     scope.formData = {}; // clear the form so our user is ready to enter another
@@ -73,17 +70,22 @@ function RegisterCtrl(scope,
         }
     };
 
+    var isEmailRepeat = false;
 
     scope.checkNewUserEmail = function (node) {
         Register.findByEmail(scope.formData)
         // if successful creation, call our get function to get all the new todos
             .success(function (data) {
-                console.log(data)
+                console.log(data);
                 if (data.length > 0) {
+                    isEmailRepeat = true;
+                    window.errorText('該email已存在');
                     return false;
+                } else {
+                    isEmailRepeat = false;
+                    return true;
                 }
             });
-        return true;
     }
 
     scope.initReg = function () {

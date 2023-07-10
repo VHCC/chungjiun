@@ -36,10 +36,11 @@
         var vm = this;
 
         $scope.apiProxy = function (dom, targetName) {
-            console.log(dom);
             var targetCtrl = findNextSibling(dom.$$childHead, targetName);
-            console.log(targetCtrl);
             switch (targetCtrl.vm.constructor.name) {
+                case "createProject":
+                    targetCtrl.init();
+                    break;
                 case "createInstitute":
                     targetCtrl.init();
                     break;

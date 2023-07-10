@@ -107,9 +107,14 @@
             <div ng-controller="_001_userEditCtrl as vm"
                  ng-include="'app/custom/com001/pages/personalManage/userInfo/tab/userEdit/userEdit.html'"></div>
         </uib-tab>
-        <uib-tab heading="密碼派發">
-            <div ng-controller="dispatchPasswordCtrl as vm"
-                 ng-include="'app/pages/myProfile/userEdit/tab/dispatchPassword.html'"></div>
+        <!--<uib-tab heading="密碼派發">-->
+            <!--<div ng-controller="dispatchPasswordCtrl as vm"-->
+                 <!--ng-include="'app/pages/myProfile/userEdit/tab/dispatchPassword.html'"></div>-->
+        <!--</uib-tab>-->
+
+        <uib-tab heading="部門主管" ng-click="apiProxy(this, 'groupEditCtrl')">
+            <div ng-controller="_001_groupEditCtrl as vm"
+                 ng-include="'app/custom/com001/pages/personalManage/userInfo/tab/groupEdit/groupEdit.html'"></div>
         </uib-tab>
 
     </uib-tabset>
