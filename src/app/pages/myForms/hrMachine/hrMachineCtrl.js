@@ -1193,7 +1193,7 @@
                                 var endMonthDate = moment(specificDate);
                                 // console.log("endMonthDate:> " + endMonthDate);
 
-                                if (targetDate.isAfter(startDate) && targetDate.isBefore(endMonthDate)) {
+                                if (targetDate.isSameOrAfter(startDate) && targetDate.isBefore(endMonthDate)) {
 
                                     if (operateTable[dateTemp] === undefined) {
                                         var hrMachineCollection = [];
@@ -1221,7 +1221,7 @@
                                 }
                             } else {
 
-                                if (targetDate.isAfter(startDate)) {
+                                if (targetDate.isSameOrAfter(startDate)) {
 
                                     if (operateTable[dateTemp] === undefined) {
                                         var hrMachineCollection = [];
