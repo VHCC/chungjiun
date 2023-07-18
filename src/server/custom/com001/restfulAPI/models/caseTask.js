@@ -24,6 +24,11 @@ module.exports = mongoose.model('CaseTask', {
         type : String,
     },
 
+    isSet: {
+        type: Boolean,
+        default: false
+    },
+
     enable: {
         type: Boolean,
         default: false

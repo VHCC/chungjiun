@@ -80,6 +80,7 @@ global.pages = {
     _001_Project_listProject  : 200,
     _001_Project_listProjectContract  : 300,
     _001_Project_listProjectCase  : 400,
+    _001_Project_processStage : 500,
 
     _001_PersonalManage: 200,
     _001_PersonalManage_caseInfo: 100,

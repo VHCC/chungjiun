@@ -93,32 +93,16 @@
         background-color: #99c7ee;
     }
 
-    td {
-        padding-top:20px;
-        padding-bottom:20px;
-        padding-right:20px;
-    }
-
-    td:first-child {
-        padding-left:20px;
-        padding-right:0;
-    }
-
 </style>
 
 <div bs-loading-overlay
-     bs-loading-overlay-reference-id="mainPage_001caseInfo">
+     bs-loading-overlay-reference-id="mainPage_001listCase">
 
     <uib-tabset active="$tabSetStatus.activeTab">
-        <uib-tab heading="專案資料" ng-click="apiProxy(this, 'editCaseInfo')">
-            <div ng-controller="_001_editCaseInfoCtrl as vm"
-                    ng-include="'app/custom/com001/pages/personalManage/caseInfo/tab/editCaseInfo/editCaseInfo.html'"></div>
+        <uib-tab heading="工程列表" ng-click="apiProxy(this, 'listCase')">
+            <div ng-controller="_001_listCaseCtrl as vm"
+                    ng-include="'app/custom/com001/pages/project/listCase/tab/listCase/listCase.html'"></div>
         </uib-tab>
-        <!--<uib-tab heading="辦理階段項目選單" ng-click="apiProxy(this, 'caseTask')">-->
-            <!--<div ng-controller="_001_caseTaskCtrl as vm"-->
-                 <!--ng-include="'app/custom/com001/pages/personalManage/caseInfo/tab/caseTask/caseTask.html'"></div>-->
-        <!--</uib-tab>-->
-
     </uib-tabset>
 
 </div>

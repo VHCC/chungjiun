@@ -107,17 +107,13 @@
 </style>
 
 <div bs-loading-overlay
-     bs-loading-overlay-reference-id="mainPage_001caseInfo">
+     bs-loading-overlay-reference-id="mainPage_001processStage">
 
     <uib-tabset active="$tabSetStatus.activeTab">
-        <uib-tab heading="專案資料" ng-click="apiProxy(this, 'editCaseInfo')">
-            <div ng-controller="_001_editCaseInfoCtrl as vm"
-                    ng-include="'app/custom/com001/pages/personalManage/caseInfo/tab/editCaseInfo/editCaseInfo.html'"></div>
+        <uib-tab heading="辦理階段項目選單" ng-click="apiProxy(this, 'processStage')">
+            <div ng-controller="_001_processStageCtrl as vm"
+                 ng-include="'app/custom/com001/pages/project/processStage/tab/processStage/processStage.html'"></div>
         </uib-tab>
-        <!--<uib-tab heading="辦理階段項目選單" ng-click="apiProxy(this, 'caseTask')">-->
-            <!--<div ng-controller="_001_caseTaskCtrl as vm"-->
-                 <!--ng-include="'app/custom/com001/pages/personalManage/caseInfo/tab/caseTask/caseTask.html'"></div>-->
-        <!--</uib-tab>-->
 
     </uib-tabset>
 

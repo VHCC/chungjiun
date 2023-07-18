@@ -14,6 +14,8 @@ global._001_apiUrl = {
     _001_post_project_find_all_case_with_specific_type_specific_contract : '/api/_001_post_project_find_all_case_with_specific_type_specific_contract',
     _001_post_project_update_one_by_projectDID : '/api/_001_post_project_update_one_by_projectDID',
 
+
+
     // Institute
     _001_post_institute_create : '/api/_001_post_institute_create',
     _001_post_institute_find_all : '/api/_001_post_institute_find_all',
@@ -30,6 +32,7 @@ global._001_apiUrl = {
     // Project Case
     _001_post_project_case_create : '/api/_001_post_project_case_create',
     _001_post_project_case_find_all : '/api/_001_post_project_case_find_all',
+    _001_post_project_case_find_one : '/api/_001_post_project_case_find_one',
     _001_post_project_case_find_by_contractDID_and_instituteDID : '/api/_001_post_project_case_find_by_contractDID_and_instituteDID',
     _001_post_project_case_find_by_contractDIDMulti_and_instituteDID : '/api/_001_post_project_case_find_by_contractDIDMulti_and_instituteDID',
     _001_post_project_case_update_one_by_caseDID : '/api/_001_post_project_case_update_one_by_caseDID',
@@ -37,6 +40,7 @@ global._001_apiUrl = {
     // Case Task
     _001_post_case_task_create : '/api/_001_post_case_task_create',
     _001_post_case_task_find_all : '/api/_001_post_case_task_find_all',
+    _001_post_case_task_find_all_enable : '/api/_001_post_case_task_find_all_enable',
     _001_post_case_task_update_one : '/api/_001_post_case_task_update_one',
 
     // Dep Boss

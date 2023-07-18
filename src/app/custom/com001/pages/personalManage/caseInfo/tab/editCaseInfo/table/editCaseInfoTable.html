@@ -1,25 +1,25 @@
-<uib-accordion ng-repeat="case in tableData">
+<uib-accordion ng-repeat="item in tableData">
     <!--<uib-accordion-group heading="{{showUser(user.DID)}}"-->
-    <uib-accordion-group heading="{{case.branch}} {{case.caseName}} {{(case.typeName)}}"
-                         ng-click="showCaseInformation(case)"
+    <uib-accordion-group heading="{{item.branch}} - {{item.caseName}} - {{(item.typeName)}}"
+                         ng-click="showCaseInformation(item)"
                          panel-class="bootstrap-panel accordion-panel panel-default">
         <table class="table table-bordered table-hover table-condensed" style="table-layout: fixed">
                <!--ng-repeat="table in fetchReviewTableFromScope(case)">-->
             <thead>
                 <tr>
-                    <th style="vertical-align: inherit; text-align: center; width: 200px" class="head_blue"></th>
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="">工程編號</th>
+                    <th style="vertical-align: inherit; text-align: center; width: 200px" class="head_blue">序號</th>
                     <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">工程名稱</th>
                     <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">類型</th>
+
                     <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">核定金額</th>
                     <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">決標金額</th>
 
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_red">辦理階段</th><!--全部部門-->
+                    <th colspan="2" style="vertical-align: inherit; text-align: center; width: 300px" class="head_red">辦理階段</th><!--主承辦人員-->
 
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_orange">鑽探日期</th><!--設計部、專管部-->
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_orange">基設日期</th><!--設計部、專管部-->
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_orange">細設日期</th><!--設計部、專管部-->
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_orange">發包日期</th><!--設計部、專管部-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_orange">鑽探日期</th><!--主承辦人員-->
+                    <th colspan="2" style="vertical-align: inherit; text-align: center; width: 300px" class="head_orange">基設日期</th><!--主承辦人員-->
+                    <th colspan="2" style="vertical-align: inherit; text-align: center; width: 300px" class="head_orange">細設日期</th><!--主承辦人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_orange">發包日期</th><!--主承辦人員-->
 
                     <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_green">施工廠商</th><!--監造部、專管部-->
                     <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_green">開工日期</th><!--監造部、專管部-->
@@ -40,22 +40,192 @@
             <!--<tbody ng-repeat="item in fetchFormDataFromScope(table)">-->
             <tbody >
                 <tr style="vertical-align: inherit; text-align: center;">
-                    <td style="vertical-align: inherit; text-align: center;" >
-                        <span >{{case.code}}</span>
-                        <span style="display: none;" id="prjDID">{{item.prjDID}}</span>
-                    </td><!--序號-->
-                    <td><span >{{case.caseCode}}</span></td><!--工程編號-->
-                    <td><span >{{case.caseName}}</span></td><!--工程名稱-->
-                    <td><span >{{getProjectType(case.type).label}}</span></td> <!--類型-->
-                    <td><span >[工程基本資料]</span> </td> <!--核定金額-->
-                    <td><span >[工程基本資料]</span> </td> <!--決標金額-->
 
-                    <td><span >{{getProjectType(case.type)}}</span> </td> <!--辦理階段-->
+                    <!--序號-->
+                    <td style="vertical-align: inherit; text-align: center;" >
+                        <span >{{item.code}}</span>
+                        <!--<span style="display: none;" id="prjDID">{{item.prjDID}}</span>-->
+                    </td>
+
+                    <!--<td><span >{{case.caseCode}}</span></td>&lt;!&ndash;工程編號&ndash;&gt;-->
+                    <!--工程名稱-->
+                    <td style="vertical-align: inherit; text-align: center;">
+                        <span >{{item.caseName}}</span>
+                    </td>
+
+                    <!--類型-->
+                    <td style="vertical-align: inherit; text-align: center;">
+                        <span >{{getProjectType(item.type).label}}</span>
+                    </td>
+
+                    <!--核定金額-->
+                    <td style="vertical-align: inherit; text-align: center;">
+                        <span >[工程基本資料]</span>
+                    </td>
+
+                    <!--決標金額-->
+                    <td style="vertical-align: inherit; text-align: center;">
+                        <span >[工程基本資料]</span>
+                    </td>
+
+                    <!--辦理階段 選項-->
+                    <td style="vertical-align: inherit; text-align: center;">
+                        <span style="color:grey"> 新增代入</span>
+                    </td>
+                    <!--辦理階段 文字-->
+                    <td style="vertical-align: inherit; text-align: center;">
+                    </td>
+
+                    <td style="vertical-align: inherit; text-align: center;">
+                        <span >{{item.userUpdateTs}}</span>
+                    </td><!--更新日期-->
 
                 </tr>
             </tbody>
+
+            <tbody id="tableItemBody_{{$index}}"
+                   ng-repeat="memo in item.unitMemo">
+            <tr style="vertical-align: inherit; text-align: center;">
+                <td> ( {{$index + 1}} ) </td>
+                <td colspan="2"></td>
+                <td>
+                    <div style="margin:3px">
+                        <input type="text"
+                               ng-model="memo.mount_ext"
+                               placeholder=""
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </div>
+                </td>
+                <td>
+                    <div style="margin:3px">
+                        <input type="text"
+                               ng-model="memo.ext_mount_ext"
+                               placeholder=""
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </div>
+                </td>
+
+                <!--辦理階段-->
+                <td>
+                    <my >
+                        <process-stage-selector
+                                processStageDID="{{memo.processStageUUID}}"
+                                source="{{qqqqq}}"
+                        >
+                        </process-stage-selector>
+                    </my>
+                </td>
+
+                <td colspan="2"></td>
+                <td>
+                    <!--<input type="text"-->
+                    <!--ng-model="memo.field_1"-->
+                    <!--placeholder="0"-->
+                    <!--style="text-align: right"-->
+                    <!--class="form-control input-sm"-->
+                    <!--value="">-->
+                    <!--服務費率-->
+                </td>
+                <td>
+                    <!--<input type="text"-->
+                    <!--ng-model="memo.field_2"-->
+                    <!--placeholder=""-->
+                    <!--style="text-align: right"-->
+                    <!--class="form-control input-sm"-->
+                    <!--value="">-->
+                    <!--評選日期-->
+                </td>
+                <td>
+                    <!--<input type="text"-->
+                    <!--ng-model="memo.field_3"-->
+                    <!--placeholder=""-->
+                    <!--style="text-align: right"-->
+                    <!--class="form-control input-sm"-->
+                    <!--value="">-->
+                    <!--決標日期-->
+                </td>
+                <td>
+                    <div style="margin:3px">
+                        <input type="text"
+                               ng-model="memo.data3_ext"
+                               placeholder=""
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </div>
+                    <!--議價日期-->
+                </td>
+                <td>
+                    <!--<input type="text"-->
+                    <!--ng-model="memo.field_5"-->
+                    <!--placeholder=""-->
+                    <!--style="text-align: right"-->
+                    <!--class="form-control input-sm"-->
+                    <!--value="">-->
+                    <!--訂約日期-->
+                </td>
+                <td>
+                    <div style="margin:3px">
+                        <input type="text"
+                               ng-model="memo.data5_ext"
+                               placeholder=""
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </div>
+
+                    <!--履約期限-->
+                </td>
+                <td>
+                    <div style="margin:3px">
+                        <input type="text"
+                               ng-model="memo.data6_ext"
+                               placeholder=""
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </div>
+
+                    <!--保險期限-->
+                </td>
+                <td>
+                    <!--<input type="text"-->
+                    <!--ng-model="memo.field_8"-->
+                    <!--placeholder=""-->
+                    <!--style="text-align: right"-->
+                    <!--class="form-control input-sm"-->
+                    <!--value="">-->
+                    <!--機關承辦-->
+                </td>
+            </tr>
+            </tbody>
+
             <tfoot>
             </tfoot>
         </table>
+        <!--<div style="margin-top: 10px" ng-if="isDepG">-->
+            <div style="margin-top: 10px" ng-if="true">
+            <button type="button"
+                    ng-click="insertUnitMemo(item)"
+                    class="btn btn-info btn-icon">
+                <i class="ion-plus-round"/>
+            </button>
+        </div>
+        <!--<div style="margin-top: 10px" ng-if="isDepG">-->
+            <div style="margin-top: 10px" ng-if="true">
+            <button ng-click="updateUnit(item, this)"
+                    style="float: left; padding: 0 30px; line-height: 4"
+                    id="btnReview"
+                    pb-style="shrink"
+                    class="btn btn-primary">
+                <span>
+                    儲存
+                </span>
+            </button>
+        </div>
     </uib-accordion-group>
 </uib-accordion>

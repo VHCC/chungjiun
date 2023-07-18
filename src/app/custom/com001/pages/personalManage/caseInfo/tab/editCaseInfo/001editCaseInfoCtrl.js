@@ -17,6 +17,7 @@
             '_001_ProjectContract',
             '_001_ProjectCase',
             '_001_Project',
+            '_001_CaseTask',
             editCaseInfo
         ])
 
@@ -33,7 +34,8 @@
                               _001_Institute,
                               _001_ProjectContract,
                               _001_ProjectCase,
-                              _001_Project) {
+                              _001_Project,
+                              _001_CaseTask) {
 
         $scope.username = cookies.get('username');
         var roleType = cookies.get('roletype');
@@ -271,6 +273,78 @@
                 return emptyObject;
             }
             return selected[0];
+        }
+
+
+        $scope.insertUnitMemo = function (item) {
+
+            if (item.unitMemo == undefined) {
+                item.unitMemo = [{
+                    // field_1: "0",
+                    data3_ext: moment(new Date()).format("YYYY/MM/DD"),
+                    data5_ext: moment(new Date()).format("YYYY/MM/DD"),
+                    data6_ext: moment(new Date()).format("YYYY/MM/DD"),
+                    // field_5: moment(new Date()).format("YYYY/MM/DD"),
+                    // field_6: moment(new Date()).format("YYYY/MM/DD"),
+                    // field_7: moment(new Date()).format("YYYY/MM/DD"),
+                    // field_8: "承辦機關",
+                }];
+            } else {
+                item.unitMemo.push({
+                    data3_ext: moment(new Date()).format("YYYY/MM/DD"),
+                    data5_ext: moment(new Date()).format("YYYY/MM/DD"),
+                    data6_ext: moment(new Date()).format("YYYY/MM/DD"),
+                })
+
+            }
+
+            var formData = {
+                _id: item._id,
+                unitMemo: item.unitMemo,
+                userUpdateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+            }
+
+            _001_Project.updateOneUnit(formData)
+                .success(function (res) {
+                    toastr['success'](item.name, '新增成功');
+                })
+                .error(function () {
+                    toastr['warning']('儲存失敗 !', '更新失敗');
+                })
+        }
+
+        _001_CaseTask.findAll()
+            .success(function (resp) {
+                $scope.qqqqq = resp;
+            })
+
+
+        $scope.updateUnit = function (item, dom) {
+            console.log(dom);
+            console.log(item);
+            console.log($scope);
+            var ts = moment(new Date()).format("YYYY/MM/DD HH:mm:ss");
+
+            try {
+                var formData = {
+                    _id: item._id,
+
+                    unitMemo: item.unitMemo,
+
+                    userUpdateTs: ts,
+                }
+                _001_Project.updateOneUnit(formData)
+                    .success(function (res) {
+                        item.userUpdateTs = ts;
+                        toastr['success'](item.name, '更新成功');
+                    })
+                    .error(function () {
+                        toastr['warning']('儲存失敗 !', '更新失敗');
+                    })
+            } catch (err) {
+                toastr['warning']('變更專案 !', '更新失敗');
+                return;
+            }
         }
     }
 })();

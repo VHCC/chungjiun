@@ -50,6 +50,10 @@
                     return http.post('/api/_001_post_project_case_find_by_contractDID_and_instituteDID', requestData);
                 },
 
+                findByCaseDID: function (requestData) {
+                    return http.post('/api/_001_post_project_case_find_one', requestData);
+                },
+
                 findByContractDIDMultiAndInstituteDID: function (requestData) {
                     return http.post('/api/_001_post_project_case_find_by_contractDIDMulti_and_instituteDID', requestData);
                 },
@@ -66,6 +70,10 @@
                 },
                 findAll: function () {
                     return http.get('/api/_001_post_case_task_find_all');
+                },
+
+                findAllEnable: function () {
+                    return http.get('/api/_001_post_case_task_find_all_enable');
                 },
                 updateCaseTask: function (requestData) {
                     return http.post('/api/_001_post_case_task_update_one', requestData);
@@ -99,6 +107,10 @@
 
                 findAllByOneContractWithOneType: function (requestData) {
                     return http.post('/api/_001_post_project_find_all_case_with_specific_type_specific_contract', requestData);
+                },
+
+                updateOneUnit: function (requestData) {
+                    return http.post('/api/_001_post_project_update_one_by_projectDID', requestData);
                 },
             }
         }])

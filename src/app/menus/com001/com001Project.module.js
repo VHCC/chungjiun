@@ -67,11 +67,23 @@
             .state('001Project.listProjectCase',
                 {
                     url: '/listProjectCase',
-                    templateUrl: 'app/pages/myProject/listProject/listProject.html',
-                    controller: 'listProjectCtrl',
+                    templateUrl: 'app/custom/com001/pages/project/listCase/001listCaseHome.html',
+                    controller: '_001_listCaseHomeCtrl',
+                    controllerAs: 'vm',
                     title: '工程基本資料',
                     sidebarMeta: {
                         order: global.pages._001_Project_listProjectCase,
+                    },
+                })
+            .state('001Project.listProcessStage',
+                {
+                    url: '/listProcessStage',
+                    templateUrl: 'app/custom/com001/pages/project/processStage/001processStageHome.html',
+                    controller: '_001_processStageHomeCtrl',
+                    controllerAs: 'vm',
+                    title: '辦理階段項目',
+                    sidebarMeta: {
+                        order: global.pages._001_Project_processStage,
                     },
                 })
     }

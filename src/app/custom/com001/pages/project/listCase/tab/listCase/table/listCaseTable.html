@@ -1,29 +1,32 @@
-<uib-accordion ng-repeat="contract in tableData">
-    <uib-accordion-group heading="{{contract.name}} - {{contract.code}}"
-                         ng-click="showContractInformation(contract)"
+<uib-accordion ng-repeat="case in tableData">
+    <uib-accordion-group heading="{{case.name}} - {{case.code}}"
+                         ng-click="showCaseInformation(case)"
                          panel-class="bootstrap-panel accordion-panel panel-default">
         <table class="table table-bordered table-hover table-condensed" style="table-layout: fixed">
             <thead>
                 <tr>
-                    <th style="vertical-align: inherit; text-align: center; width: 50px" class="head_blue">序號</th>
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">契約編號</th>
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >契約名稱</th>
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">工程編號</th>
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">工程名稱</th>
 
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >契約金額</th><!--管理部人員-->
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >擴充金額</th><!--管理部人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">工程地點</th><!--管理部人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">機關承辦</th><!--管理部人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">核定金額</th><!--管理部人員-->
 
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">契約工程數量</th>
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">已執行金額</th>
+                    <!--<th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">契約工程數量</th>-->
+                    <!--<th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">已執行金額</th>-->
 
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >服務費率</th><!--管理部人員-->
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >評選日期</th><!--管理部人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >基設日期</th><!--管理部人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >細設日期</th><!--管理部人員-->
+
                     <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >決標日期</th><!--管理部人員-->
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >議價日期</th><!--管理部人員-->
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >訂約日期</th><!--管理部人員-->
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >履約期限</th><!--管理部人員-->
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >保險期限</th><!--管理部人員-->
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >機關承辦</th><!--管理部人員-->
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >結案</th><!--管理部人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >決標金額</th><!--管理部人員-->
+
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >變更日期</th><!--管理部人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >請款日期</th><!--管理部人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >請款類型</th><!--管理部人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >請款金額</th><!--管理部人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >開發票</th><!--管理部人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >結案歸檔</th><!--管理部人員-->
 
                     <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">更新狀態</th>
 
@@ -33,248 +36,227 @@
             <!--<tbody ng-repeat="item in fetchFormDataFromScope(table)">-->
             <tbody >
                 <tr style="vertical-align: inherit; text-align: center;">
+                    <!--工程編號-->
                     <td style="vertical-align: inherit; text-align: center;" >
-                        <span >{{$index + 1}}</span>
-                        <!--<span style="display: none;" id="prjDID">{{item.prjDID}}</span>-->
-                    </td><!--序號-->
-                    <td style="vertical-align: inherit; text-align: center;" ><span >{{contract.code}}</span></td><!--契約編號-->
-                    <td style="vertical-align: inherit; text-align: center;" ><span >{{contract.name}}</span></td><!--契約名稱-->
+                        <span >{{case.code}}</span>
+                    </td>
 
+                    <!--工程名稱-->
+                    <td style="vertical-align: inherit; text-align: center;" ><span >{{case.name}}</span></td>
+
+                    <!--工程地點-->
                     <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
-                        {{contract.mount}}
+                        {{case.position}}
                     </td>
                     <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
                         <input type="text"
-                               ng-model="contract.mount"
+                               ng-model="case.position"
                                placeholder="0"
                                style="text-align: right"
                                class="form-control input-sm"
                                value="">
+                    </td>
 
-                        <!--<button type="button"-->
-                                <!--ng-click="insertContractMemo(contract)"-->
-                                <!--class="btn btn-info btn-icon">-->
-                            <!--<i class="ion-plus-round"/>-->
-                        <!--</button>-->
-                    </td><!--契約金額-->
-
+                    <!--機關承辦-->
                     <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
-                        {{contract.ext_mount}}
+                        {{case.caseBoss}}
                     </td>
                     <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
                         <input type="text"
-                               ng-model="contract.ext_mount"
+                               ng-model="case.caseBoss"
                                placeholder="0"
                                style="text-align: right"
                                class="form-control input-sm"
                                value="">
+                    </td>
 
-                        <!--<button type="button"-->
-                                <!--ng-click="insertContractMemo(contract)"-->
-                                <!--class="btn btn-info btn-icon">-->
-                            <!--<i class="ion-plus-round"/>-->
-                        <!--</button>-->
-
-                    </td><!--擴充金額-->
-
-                    <td style="vertical-align: inherit; text-align: center;" ><span >{{contract.caseOptions.length}}</span></td><!--契約工程數量-->
-                    <td style="vertical-align: inherit; text-align: center;" ><span >[自動統計]</span></td><!--已執行金額-->
-
+                    <!--核定金額-->
                     <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
-                        {{contract.service_percent}}
+                        {{case.approved_mount}}
                     </td>
                     <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
                         <input type="text"
-                               ng-model="contract.service_percent"
-                               placeholder="西元年/月/日"
+                               ng-model="case.approved_mount"
+                               placeholder="0"
                                style="text-align: right"
                                class="form-control input-sm"
                                value="">
-                    </td><!--服務費率-->
+                    </td>
 
+                    <!--基設日期-->
                     <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
-                        {{contract.date_1}}
+                        {{case.date_1}}
                     </td>
                     <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
                         <input type="text"
-                               ng-model="contract.date_1"
-                               placeholder="西元年/月/日"
+                               ng-model="case.date_1"
+                               placeholder="0"
                                style="text-align: right"
                                class="form-control input-sm"
                                value="">
-                    </td><!--評選日期-->
+                    </td>
 
+                    <!--細設日期-->
                     <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
-                        {{contract.date_2}}
+                        {{case.date_2}}
                     </td>
                     <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
                         <input type="text"
-                               ng-model="contract.date_2"
-                               placeholder="西元年/月/日"
+                               ng-model="case.date_2"
+                               placeholder="0"
                                style="text-align: right"
                                class="form-control input-sm"
                                value="">
-                    </td><!--決標日期-->
+                    </td>
 
+                    <!--決標日期-->
                     <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
-                        {{contract.date_3}}
+                        {{case.date_3}}
                     </td>
                     <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
                         <input type="text"
-                               ng-model="contract.date_3"
-                               placeholder="西元年/月/日"
+                               ng-model="case.date_3"
+                               placeholder="0"
                                style="text-align: right"
                                class="form-control input-sm"
                                value="">
-                        <!--<button type="button"-->
-                                <!--ng-click="insertContractMemo(contract)"-->
-                                <!--class="btn btn-info btn-icon">-->
-                            <!--<i class="ion-plus-round"/>-->
-                        <!--</button>-->
-                        <!--可新增-->
-                    </td><!--議價日期-->
+                    </td>
 
+                    <!--決標金額-->
                     <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
-                        {{contract.date_4}}
+                        {{case.date_3_mount}}
                     </td>
                     <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
                         <input type="text"
-                               ng-model="contract.date_4"
-                               placeholder="西元年/月/日"
+                               ng-model="case.date_3_mount"
+                               placeholder="0"
                                style="text-align: right"
                                class="form-control input-sm"
                                value="">
-                    </td><!--訂約日期-->
+                    </td>
 
+                    <!--變更日期-->
                     <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
-                        {{contract.date_5}}
+                        {{case.date_4}}
                     </td>
                     <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
-                        <div style="margin-top: 5px">
-                            <input type="text"
-                                   ng-model="contract.date_5"
-                                   placeholder="西元年/月/日"
-                                   style="text-align: right"
-                                   class="form-control input-sm"
-                                   value="">
+                        <input type="text"
+                               ng-model="case.date_4"
+                               placeholder="0"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--請款日期-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
+                        {{case.date_5}}
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
+                        <input type="text"
+                               ng-model="case.date_5"
+                               placeholder="0"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--請款類型-->
+                    <td style="vertical-align: inherit; text-align: center;">
+                        <div style="margin-top: 0px;color: black">
+                            <label class="custom-checkbox">
+                                <input type="checkbox"
+                                       ng-model="case.pay_type_1"
+                                       ng-disabled="!isDepG">
+                                <span style="color:black">鑽探</span>
+                            </label>
+                            <label class="custom-checkbox">
+                                <input type="checkbox"
+                                       ng-model="case.pay_type_2"
+                                       ng-disabled="!isDepG">
+                                <span style="color:black">設計</span>
+                            </label>
+                            <label class="custom-checkbox">
+                                <input type="checkbox"
+                                       ng-model="case.pay_type_3"
+                                       ng-disabled="!isDepG">
+                                <span style="color:black">監造</span>
+                            </label>
+                            <label class="custom-checkbox">
+                                <input type="checkbox"
+                                       ng-model="case.pay_type_4"
+                                       ng-disabled="!isDepG">
+                                <span style="color:black">尾款</span>
+                            </label>
                         </div>
-
-                        <div style="margin-top: 10px">
-                            <!--<ba-switcher style="horiz-align: center; vertical-align: center"-->
-                                         <!--ng-click="changeContractStatus(contract)"-->
-                                         <!--ng-model="contract.enable"-->
-                                         <!--switcher-style="primary"-->
-                                         <!--switcher-value="contract.enable"/>-->
-                            <cj-switcher
-                                    style="horiz-align: center; vertical-align: center"
-                                    ng-click="changeContractDate5Notify(contract)"
-                                    ng-model="contract.date5Enable"
-                                    switcher-on="提醒"
-                                    switcher-off="關閉"
-                                    switcher-style="primary"
-                                    switcher-value="contract.date5Enable"/>
-                            <br>
-                            <p class="mytooltip" ng-if="contract.date5Enable">
-                                <i class="ion-information-circled"/>
-                                <span class="tooltiptext">
-                                    通知對象：管理部
-                                    <br>
-                                    時間：
-                                </span>
-                            </p>
-                        </div>
-                        <!--<button type="button"-->
-                                <!--ng-click="insertContractMemo(contract)"-->
-                                <!--class="btn btn-info btn-icon">-->
-                            <!--<i class="ion-plus-round"/>-->
-                        <!--</button>-->
-                        <!--可新增-->
-                    </td><!--履約期限-->
-
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
-                        {{contract.date_6}}
                     </td>
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
-                        <div style="margin-top: 5px">
-                            <input type="text"
-                                   ng-model="contract.date_6"
-                                   placeholder="西元年/月/日"
-                                   style="text-align: right"
-                                   class="form-control input-sm"
-                                   value="">
-                        </div>
 
-                        <div style="margin-top: 10px">
-                            <cj-switcher
-                                    style="horiz-align: center; vertical-align: center"
-                                    ng-click="changeContractDate6Notify(contract)"
-                                    ng-model="contract.date6Enable"
-                                    switcher-on="提醒"
-                                    switcher-off="關閉"
-                                    switcher-style="primary"
-                                    switcher-value="contract.date6Enable"/>
-                            <br>
-                            <p class="mytooltip" ng-if="contract.date6Enable">
-                                <i class="ion-information-circled"/>
-                                <span class="tooltiptext">
-                                    通知對象：管理部
-                                    <br>
-                                    時間：
-                                </span>
-                            </p>
-                        </div>
-                        <!--<button type="button"-->
-                                <!--ng-click="insertContractMemo(contract)"-->
-                                <!--class="btn btn-info btn-icon">-->
-                            <!--<i class="ion-plus-round"/>-->
-                        <!--</button>-->
-                        <!--可新增-->
-                    </td><!--保險期限-->
-
+                    <!--請款金額-->
                     <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
-                        {{contract.boss}}
+                        {{case.pay_mount}}
                     </td>
                     <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
                         <input type="text"
-                               ng-model="contract.boss"
-                               placeholder="機關承辦"
+                               ng-model="case.pay_mount"
+                               placeholder="0"
                                style="text-align: right"
                                class="form-control input-sm"
                                value="">
-                    </td><!--機關承辦-->
+                    </td>
+
+                    <!--開發票-->
+                    <td style="vertical-align: inherit; text-align: center;">
+                        <div style="margin-top: 0px;color: black">
+                            <label class="custom-checkbox">
+                                <input type="checkbox"
+                                       id="checkboxSuccess"
+                                       ng-model="case.is_bill_apply"
+                                       ng-disabled="!isDepG">
+                                <span style="color:black">請款</span>
+                            </label>
+                            <label class="custom-checkbox">
+                                <input type="checkbox"
+                                       id="checkboxWarning"
+                                       ng-model="case.is_bill_count"
+                                       ng-disabled="!isDepG">
+                                <span style="color:black">入帳</span>
+                            </label>
+                        </div>
+                    </td>
+
 
                     <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
-                        <span ng-if="contract.enable">
+                        <span ng-if="case.enable">
                             未結
                         </span>
-                        <span ng-if="!contract.enable">
+                        <span ng-if="!case.enable">
                             已結案
                         </span>
                     </td>
                     <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
                         <div style="margin-top: 15px">
                             <ba-switcher style="horiz-align: center; vertical-align: center"
-                                         ng-click="changeContractStatus(contract)"
-                                         ng-model="contract.enable"
+                                         ng-click="changeCaseStatus(case)"
+                                         ng-model="case.enable"
                                          switcher-style="primary"
-                                         switcher-value="contract.enable"/>
+                                         switcher-value="case.enable"/>
                             <br>
-                            <p class="mytooltip" ng-if="contract.enable">
+                            <p class="mytooltip" ng-if="case.enable">
                                 <i class="ion-information-circled"/>
                                 <span class="tooltiptext">
-                                    此契約項下工程全部關閉才可以選擇結案
+                                    設定開發票選項勾選入帳，才可關閉
                                 </span>
                             </p>
                         </div>
                     </td><!--結案-->
 
-                    <td style="vertical-align: inherit; text-align: center;"><span >{{contract.userUpdateTs}}</span></td><!--更新日期-->
+                    <td style="vertical-align: inherit; text-align: center;"><span >{{case.userUpdateTs}}</span></td><!--更新日期-->
                 </tr>
             </tbody>
 
             <tbody id="tableItemBody_{{$index}}"
                    ng-if="isDepG"
-                   ng-repeat="memo in contract.contractMemo">
+                   ng-repeat="memo in case.caseMemo">
                     <tr style="vertical-align: inherit; text-align: center;">
                         <td> ( {{$index + 1}} ) </td>
                         <td colspan="2"></td>
@@ -385,14 +367,14 @@
         <div style="margin-top: 10px" ng-if="isDepG">
         <!--<div style="margin-top: 10px" ng-if="true">-->
             <button type="button"
-                    ng-click="insertContractMemo(contract)"
+                    ng-click="insertCaseMemo(case)"
                     class="btn btn-info btn-icon">
                 <i class="ion-plus-round"/>
             </button>
         </div>
         <div style="margin-top: 10px" ng-if="isDepG">
         <!--<div style="margin-top: 10px" ng-if="true">-->
-            <button ng-click="updateContract(contract)"
+            <button ng-click="updateCase(case)"
                     style="float: left; padding: 0 30px; line-height: 4"
                     id="btnReview"
                     pb-style="shrink"

@@ -1,0 +1,114 @@
+<div class="horizontal-scroll">
+    <table class="table table-hover" st-table="caseTasks" >
+        <thead>
+        <tr>
+            <td colspan="10" class="text-center">
+                <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
+            </td>
+        </tr>
+        <tr class="sortable">
+            <th style="text-align: left"></th>
+            <th st-sort="title" style="text-align: left">辦理階段</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th>
+                <input st-search="title"
+                       placeholder="尋找辦理階段"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+        </tr>
+
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="item in caseTasks"
+            class="editable-tr-wrap" style="padding: 5px; margin: 5px">
+
+            <td style="width:2%; padding: 5px">
+                <span >{{$index + 1}}</span>
+                <button class="btn btn-danger editable-table-button btn-xs"
+                        ng-hide="true"
+                        ng-if="item.enable">
+                    移除
+                </button>
+                <!--設定-->
+                <button ng-if="!item.isSet"
+                        class="btn btn-warning editable-table-button btn-xs"
+                        style="margin-left: 15px"
+                        ng-click="setItemTitle(item) ">
+                    設定
+                </button>
+                <div ng-if="item.isSet">
+                    <cj-switcher
+                            style="horiz-align: center; vertical-align: center"
+                            ng-click="switchItem(item)"
+                            ng-model="item.enable"
+                            switcher-on="可選填"
+                            switcher-off="關閉"
+                            switcher-style="primary"
+                            switcher-value="item.enable"/>
+                    <br>
+                    <p class="mytooltip" ng-if="contract.date5Enable">
+                        <i class="ion-information-circled"/>
+                        <span class="tooltiptext">
+                                    通知對象：管理部
+                                    <br>
+                                    時間：
+                                </span>
+                    </p>
+                </div>
+
+            </td>
+
+            <!---->
+            <td style="text-align: left; padding: 5px">
+                <form data-editable-form
+                      name="contentForm">
+                    <my ng-if="!item.isSet || contentForm.$visible">
+                        <input type="text"
+                               data-e-form="contentForm"
+                               class="form-control"
+                               placeholder="請填入內容"
+                               ng-model="item.title"
+                               value="{{item.title}}"
+                               style="color: #000000;">
+                    </my>
+                    <my ng-if="item.isSet && !contentForm.$visible">
+                        {{item.title}}
+                    </my>
+                    <br ng-if="contentForm.$visible">
+                    <button class="btn btn-info editable-table-button btn-xs"
+                            style="margin-left: 15px"
+                            ng-if="item.isSet"
+                            ng-disabled="contentForm.$visible"
+                            ng-click="contentForm.$show()">
+                        修改
+                    </button>
+                    <button type="submit" class="btn btn-primary editable-table-button btn-xs"
+                            ng-hide="!contentForm.$visible"
+                            ng-if="contentForm.$visible"
+                            ng-click="updateCaseTask(item)"
+                            ng-disabled="contentForm.$waiting">
+                        確認
+                    </button>
+                </form>
+            </td>
+
+            <!---->
+            <!--<td >-->
+                <!--{{item}}-->
+            <!--</td>-->
+
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="10" class="text-center">
+                <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>

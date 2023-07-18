@@ -38,6 +38,7 @@ module.exports = mongoose.model('ProjectContract', {
         default: true,
     },
 
+    // 新增
     contractMemo: {
         type: Array,
         default: []
@@ -49,6 +50,52 @@ module.exports = mongoose.model('ProjectContract', {
 
     ext_mount: {
         type : String,
-    }
+    },
+
+
+    // 服務費率
+    service_percent: {
+        type : String,
+    },
+    // 評選日期
+    date_1: {
+        type : String,
+    },
+    // 決標日期
+    date_2: {
+        type : String,
+    },
+    // 議價日期
+    date_3: {
+        type : String,
+    },
+    // 訂約日期
+    date_4: {
+        type : String,
+    },
+
+    // 履約期限, 可提醒
+    date_5: {
+        type : String,
+    },
+    // 保險期限, 可提醒
+    date_6: {
+        type : String,
+    },
+
+    // 承辦機關
+    boss: {
+        type : String,
+    },
+
+    date5Enable : {
+        type: Boolean,
+        default: false,
+    },
+    date6Enable : {
+        type: Boolean,
+        default: false,
+    },
+
 
 });

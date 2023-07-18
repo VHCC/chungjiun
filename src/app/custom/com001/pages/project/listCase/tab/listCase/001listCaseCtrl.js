@@ -1,9 +1,9 @@
 (function () {
     'use strict';
 
-    // createDate: 2022/07/13
+    // createDate: 2023/07/13
     angular.module('BlurAdmin.pages.001.Project')
-        .controller('_001_listContractCtrl', [
+        .controller('_001_listCaseCtrl', [
             '$scope',
             '$cookies',
             '$window',
@@ -17,7 +17,7 @@
             '_001_ProjectContract',
             '_001_ProjectCase',
             '_001_Project',
-            listContract
+            listCase
         ])
         .filter('thousandSeparator', function() {
             return function(input) {
@@ -33,26 +33,26 @@
         });
 
     /** @ngInject */
-    function listContract($scope,
-                              cookies,
-                              window,
-                              $filter,
-                              $compile,
-                              toastr,
-                              User,
-                              $timeout,
-                              bsLoadingOverlayService,
-                              _001_Institute,
-                              _001_ProjectContract,
-                              _001_ProjectCase,
-                              _001_Project) {
+    function listCase($scope,
+                      cookies,
+                      window,
+                      $filter,
+                      $compile,
+                      toastr,
+                      User,
+                      $timeout,
+                      bsLoadingOverlayService,
+                      _001_Institute,
+                      _001_ProjectContract,
+                      _001_ProjectCase,
+                      _001_Project) {
 
         $scope.username = cookies.get('username');
         $scope.isDepG = cookies.get('isDepG') == "false" ? false : true;
 
         var roleType = cookies.get('roletype');
 
-        var loadingReferenceId = 'mainPage_001listContract'
+        var loadingReferenceId = 'mainPage_001listCase'
 
         var vm = this;
 
@@ -81,7 +81,7 @@
             })
         }
 
-        // 變更契約
+        // 單選契約
         $scope.changeContract = function(projectContract, institute) {
             vm.filter.projectCase = null;
             vm.filter.projectType = null;
@@ -102,12 +102,8 @@
                 vm.caseOptions = resp;
                 vm.caseOptionsAll = resp;
 
-                _001_Project.findAllCaseWithOneContract({
-                    contractDID: projectContract._id
-                })
-                    .success(function (resp) {
-                        $scope.showTable(resp);
-                    })
+                console.log(resp);
+                $scope.showCaseTable(resp);
                 $timeout(function () {
                     bsLoadingOverlayService.stop({
                         referenceId: loadingReferenceId
@@ -123,73 +119,17 @@
             })
         }
 
-        // 多選契約
-        $scope.changeContractMulti = function(projectContracts, institute) {
-            // vm.filter.projectCase = null;
-            // vm.filter.projectType = null;
-
-            $timeout(function () {
-                bsLoadingOverlayService.start({
-                    referenceId: loadingReferenceId
-                });
-            }, 100);
-
-            // var contractDIDsArray = [];
-            // for (var index = 0; index < projectContracts.length; index++) {
-            //     contractDIDsArray.push(projectContracts[index]._id);
-            // }
-
-            // vm.filter.projectCase = null;
-
-            $scope.showContractTable(projectContracts);
-
-            $timeout(function () {
-                bsLoadingOverlayService.stop({
-                    referenceId: loadingReferenceId
-                });
-            }, 500)
-
-            // 工程
-            // _001_ProjectCase.findByContractDIDMultiAndInstituteDID({
-            //     contractDIDs: contractDIDsArray,
-            //     instituteDID: institute._id
-            // })
-            // .success(function (resp) {
-            //     vm.caseOptions = resp;
-            //     vm.caseOptionsAll = resp;
-            //
-            //     // 專案
-            //     _001_Project.findAllCaseWithMultiContract({
-            //         contractDIDs: contractDIDsArray
-            //     })
-            //     .success(function (resp) {
-            //         $scope.showTable(resp);
-            //     });
-            //     $timeout(function () {
-            //         bsLoadingOverlayService.stop({
-            //             referenceId: loadingReferenceId
-            //         });
-            //     }, 500)
-            // })
-            // .error(function (err) {
-            //     $timeout(function () {
-            //         bsLoadingOverlayService.stop({
-            //             referenceId: loadingReferenceId
-            //         });
-            //     }, 500)
-            // })
-        }
 
         // 變更工程
         $scope.changeCase = function(projectCase) {
-
+            console.log(projectCase);
             vm.filter.projectType = null;
 
-            _001_Project.findOneCaseWithAllType({
+            _001_ProjectCase.findByCaseDID({
                 caseDID: projectCase._id
             })
             .success(function (resp) {
-                $scope.showTable(resp);
+                $scope.showCaseTable(resp);
             })
         }
 
@@ -201,7 +141,7 @@
                     type: vm.filter.projectType.value
                 })
                 .success(function (resp) {
-                    $scope.showTable(resp, true);
+                    $scope.showCaseTable(resp, true);
                 })
             } else {
                 _001_Project.findOneCaseWithOneType({
@@ -209,79 +149,51 @@
                     type: vm.filter.projectType.value
                 })
                 .success(function (resp) {
-                    $scope.showTable(resp, true);
+                    $scope.showCaseTable(resp, true);
                 })
             }
         }
 
         $scope.init();
 
-        // $scope.showTable = function (caseData, notFreshType) {
-        //     if (!notFreshType) {
-        //         prjTypeOptionsCanSelect = [];
-        //         prjTypeOptionsList = [];
-        //     }
-        //     caseData.forEach(function (projectCase) {
-        //         $scope.checkProjectType(projectCase.type);
-        //         projectCase.caseName = $scope.getProjectCase(projectCase.caseDID).name;
-        //         projectCase.caseCode = $scope.getProjectCase(projectCase.caseDID).code;
-        //
-        //         projectCase.typeName = $scope.getProjectType(projectCase.type).label;
-        //     })
-        //
-        //     vm.prjTypeOptionsAll = prjTypeOptionsCanSelect;
-        //     $scope.tableData = caseData;
-        //     angular.element(
-        //         document.getElementById('includeHead_listContract'))
-        //         .html($compile(
-        //             "<div ba-panel ba-panel-title=" +
-        //             "'專案列表 - " + caseData.length + "'" +
-        //             "ba-panel-class= " +
-        //             "'with-scroll'" + ">" +
-        //             "<div " +
-        //             "ng-include=\"'app/custom/com001/pages/project/listContract/tab/listContract/table/listContractTable.html'\">" +
-        //             "</div>" +
-        //             "</div>"
-        //         )($scope));
-        // }
+        $scope.showCaseTable = function (caseData, notFreshType) {
+            console.log(caseData);
+            if (!notFreshType) {
+                prjTypeOptionsCanSelect = [];
+                prjTypeOptionsList = [];
+            }
+            // caseData.forEach(function (projectCase) {
+            //     $scope.checkProjectType(projectCase.type);
+            //     projectCase.caseName = $scope.getProjectCase(projectCase.caseDID).name;
+            //     projectCase.caseCode = $scope.getProjectCase(projectCase.caseDID).code;
+            //
+            //     projectCase.typeName = $scope.getProjectType(projectCase.type).label;
+            // })
 
-
-        $scope.showContractTable = function (contractData) {
-            $scope.tableData = contractData;
+            vm.prjTypeOptionsAll = prjTypeOptionsCanSelect;
+            $scope.tableData = caseData;
+            console.log(vm);
             angular.element(
-                document.getElementById('includeHead_listContract'))
+                document.getElementById('includeHead_listCase'))
                 .html($compile(
                     "<div ba-panel ba-panel-title=" +
-                    "'契約列表 - " + contractData.length + "'" +
+                    "'工程列表 - " + caseData.length + "'" +
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
-                    "ng-include=\"'app/custom/com001/pages/project/listContract/tab/listContract/table/listContractTable.html'\">" +
+                    "ng-include=\"'app/custom/com001/pages/project/listCase/tab/listCase/table/listCaseTable.html'\">" +
                     "</div>" +
                     "</div>"
                 )($scope));
         }
 
-        $scope.showContractInformation = function (contract) {
-            // console.log(contract);
-            // 工程
-            _001_ProjectCase.findByContractDIDAndInstituteDID({
-                contractDID: contract._id,
-                instituteDID: contract.instituteDID
-            })
-            .success(function (resp) {
-                // console.log(resp);
-                contract.caseOptions = resp;
-            })
+
+        $scope.showCaseInformation = function (prjCase) {
+            console.log(prjCase);
+
+
 
         }
-
-        $scope.$watchCollection('vm.filter.projectContract', function(newItems) {
-            var newItemCount = newItems.length;
-            console.log("契約數量：", newItemCount);
-
-            $scope.changeContractMulti(vm.filter.projectContract, vm.filter.institute);
-        });
 
         // ****** options *******
         var prjTypeOptionsCanSelect = [];
@@ -380,54 +292,60 @@
             return selected[0];
         }
 
-        $scope.updateContract = function (contract) {
+        $scope.updateCase = function (prjCase) {
             var ts = moment(new Date()).format("YYYY/MM/DD HH:mm:ss");
 
             try {
                 var formData = {
-                    _id: contract._id,
-                    mount: contract.mount,
-                    ext_mount: contract.ext_mount,
-                    contractMemo: contract.contractMemo,
+                    _id: prjCase._id,
+                    caseMemo: prjCase.caseMemo,
 
-                    service_percent: contract.service_percent,
-                    date_1: contract.date_1,
-                    date_2: contract.date_2,
-                    date_3: contract.date_3,
-                    date_4: contract.date_4,
-                    date_5: contract.date_5,
-                    date_6: contract.date_6,
-                    boss: contract.boss,
+                    position: prjCase.position,
+                    caseBoss: prjCase.caseBoss,
+                    approved_mount: prjCase.approved_mount,
+                    date_1: prjCase.date_1,
+                    date_2: prjCase.date_2,
+                    date_3: prjCase.date_3,
+                    date_3_mount: prjCase.date_3_mount,
+                    date_4: prjCase.date_4,
+                    date_5: prjCase.date_5,
+                    payType_1: prjCase.payType_1,
+                    payType_2: prjCase.payType_2,
+                    payType_3: prjCase.payType_3,
+                    payType_4: prjCase.payType_4,
+                    pay_mount: prjCase.pay_mount,
+                    is_bill_apply: prjCase.is_bill_apply,
+                    is_bill_count: prjCase.is_bill_count,
 
                     userUpdateTs: ts,
                     // updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
                 }
-                _001_ProjectContract.updateOneContractInfo(formData)
+                _001_ProjectCase.updateOneCaseInfo(formData)
                     .success(function (res) {
-                        contract.userUpdateTs = ts;
-                        toastr['success'](contract.name, '更新成功');
+                        prjCase.userUpdateTs = ts;
+                        toastr['success'](prjCase.name, '更新成功');
                     })
                     .error(function () {
                         toastr['warning']('儲存失敗 !', '更新失敗');
                     })
             } catch (err) {
-                toastr['warning']('變更契約名稱 !', '更新失敗');
+                toastr['warning']('變更工程 !', '更新失敗');
                 return;
             }
         }
 
-        //履約期限
-        $scope.changeContractDate5Notify = function (contract) {
+
+        $scope.changeCaseStatus = function (prjCase) {
             var ts = moment(new Date()).format("YYYY/MM/DD HH:mm:ss");
 
             var formData = {
-                _id: contract._id,
-                date5Enable: contract.date5Enable,
+                _id: prjCase._id,
+                enable: prjCase.enable,
                 userUpdateTs: ts,
             }
-            _001_ProjectContract.updateOneContractInfo(formData)
+            _001_ProjectCase.updateOneCaseInfo(formData)
                 .success(function (res) {
-                    contract.userUpdateTs = ts;
+                    prjCase.userUpdateTs = ts;
                     // toastr['success'](contract.name, '更新成功');
                 })
                 .error(function () {
@@ -435,87 +353,39 @@
                 })
         }
 
-        //保險期限
-        $scope.changeContractDate6Notify = function (contract) {
-            var ts = moment(new Date()).format("YYYY/MM/DD HH:mm:ss");
+        $scope.insertCaseMemo = function (prjCase) {
 
-            var formData = {
-                _id: contract._id,
-                date6Enable: contract.date6Enable,
-                userUpdateTs: ts,
-            }
-            _001_ProjectContract.updateOneContractInfo(formData)
-                .success(function (res) {
-                    contract.userUpdateTs = ts;
-                    // toastr['success'](contract.name, '更新成功');
-                })
-                .error(function () {
-                    // toastr['warning']('儲存失敗 !', '更新失敗');
-                })
-        }
-
-        $scope.changeContractStatus = function (contract) {
-            var ts = moment(new Date()).format("YYYY/MM/DD HH:mm:ss");
-
-            var formData = {
-                _id: contract._id,
-                enable: contract.enable,
-                userUpdateTs: ts,
-            }
-            _001_ProjectContract.updateOneContractInfo(formData)
-                .success(function (res) {
-                    contract.userUpdateTs = ts;
-                    // toastr['success'](contract.name, '更新成功');
-                })
-                .error(function () {
-                    // toastr['warning']('儲存失敗 !', '更新失敗');
-                })
-        }
-
-        $scope.insertContractMemo = function (contract) {
-
-            if (contract.contractMemo == undefined) {
-                contract.contractMemo = [{
+            if (prjCase.caseMemo == undefined) {
+                prjCase.caseMemo = [{
                     // field_1: "0",
                     data3_ext: moment(new Date()).format("YYYY/MM/DD"),
                     data5_ext: moment(new Date()).format("YYYY/MM/DD"),
                     data6_ext: moment(new Date()).format("YYYY/MM/DD"),
-                    // field_5: moment(new Date()).format("YYYY/MM/DD"),
-                    // field_6: moment(new Date()).format("YYYY/MM/DD"),
-                    // field_7: moment(new Date()).format("YYYY/MM/DD"),
-                    // field_8: "承辦機關",
                 }];
             } else {
-                contract.contractMemo.push({
+                prjCase.caseMemo.push({
                     data3_ext: moment(new Date()).format("YYYY/MM/DD"),
                     data5_ext: moment(new Date()).format("YYYY/MM/DD"),
                     data6_ext: moment(new Date()).format("YYYY/MM/DD"),
                 })
 
-                // "field_1" : "0",
-                //     "field_2" : "2023/07/12",
-                //     "field_3" : "2023/07/12",
-                //     "field_4" : "33-1",
-                //     "field_5" : "2023/07/12",
-                //     "field_6" : "55-1",
-                //     "field_7" : "66-1",
-                //     "field_8" : "承辦機關"
             }
 
             var formData = {
-                _id: contract._id,
-                contractMemo: contract.contractMemo,
+                _id: prjCase._id,
+                caseMemo: prjCase.caseMemo,
                 userUpdateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
             }
 
-            _001_ProjectContract.updateOneContractInfo(formData)
+            _001_ProjectCase.updateOneCaseInfo(formData)
                 .success(function (res) {
-                    toastr['success'](contract.name, '新增成功');
+                    toastr['success'](prjCase.name, '新增成功');
                 })
                 .error(function () {
                     toastr['warning']('儲存失敗 !', '更新失敗');
                 })
         }
+
 
     }
 })();

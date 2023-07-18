@@ -50,6 +50,27 @@ module.exports = function (app) {
             });
     });
 
+    app.post(global._001_apiUrl._001_post_project_case_find_one, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, _001_post_project_case_find_one");
+        ProjectCase.find(
+            {
+                _id: req.body.caseDID,
+            },
+            function (err, results) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, _001_post_project_case_find_one");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.status(500).send(err);
+                    return;
+                } else {
+                    res.status(200).json(results);
+                    return;
+                }
+            });
+    });
+
     app.post(global._001_apiUrl._001_post_project_case_find_by_contractDID_and_instituteDID, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, _001_post_project_case_find_by_contractDID_and_instituteDID");
         ProjectCase.find(

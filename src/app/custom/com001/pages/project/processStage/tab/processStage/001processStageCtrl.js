@@ -1,9 +1,9 @@
 (function () {
     'use strict';
 
-    // createDate: 2022/07/14
-    angular.module('BlurAdmin.pages.001.PersonalManage')
-        .controller('_001_caseTaskCtrl', [
+    // createDate: 2023/07/17
+    angular.module('BlurAdmin.pages.001.Project')
+        .controller('_001_processStageCtrl', [
             '$scope',
             '$cookies',
             '$window',
@@ -20,11 +20,11 @@
             '_001_ProjectCase',
             '_001_Project',
             '_001_CaseTask',
-            caseTask
+            processStage
         ])
 
     /** @ngInject */
-    function caseTask($scope,
+    function processStage($scope,
                       cookies,
                       window,
                       $filter,
@@ -45,21 +45,21 @@
         // editableThemes['bs3'].submitTpl = '<button type="submit" class="btn btn-primary btn-with-icon"><i class="ion-checkmark-round"></i></button>';
         // editableThemes['bs3'].cancelTpl = '<button type="button" ng-click="$form.$cancel()" class="btn btn-default btn-with-icon"><i class="ion-close-round"></i></button>';
 
-
         $scope.username = cookies.get('username');
         var roleType = cookies.get('roletype');
 
-        var loadingReferenceId = 'mainPage_001caseInfo';
+        var loadingReferenceId = 'mainPage_001processStage';
 
         var vm = this;
         vm.userDID = cookies.get("userDID");
 
-        $scope.fetchCaseTaskList = function() {
+        $scope.fetchProcessStageList = function() {
+            //fetchCaseTaskList
             $timeout(function () {
                 bsLoadingOverlayService.start({
                     referenceId: loadingReferenceId
                 });
-            }, 100)
+            }, 200);
 
             _001_CaseTask.findAll()
                 .success(function (resp) {
@@ -67,14 +67,14 @@
                     $scope.caseTasks = resp;
 
                     angular.element(
-                        document.getElementById('includeHead_caseInfo'))
+                        document.getElementById('includeHead_processStage'))
                         .html($compile(
                             "<div ba-panel ba-panel-title=" +
                             "'辦理階段項目選單列表 - " + resp.length + "'" +
                             "ba-panel-class= " +
                             "'with-scroll'" + ">" +
                             "<div " +
-                            "ng-include=\"'app/custom/com001/pages/personalManage/caseInfo/tab/caseTask/table/caseTaskTable.html'\">" +
+                            "ng-include=\"'app/custom/com001/pages/project/processStage/tab/processStage/table/processStageTable.html'\">" +
                             "</div>" +
                             "</div>"
                         )($scope));
@@ -96,12 +96,11 @@
 
         $scope.addCaseTask = function () {
             _001_CaseTask.createCaseTask({
-                    creatorDID: vm.userDID
-                })
-                .success(function (resp) {
-                    console.log(resp);
-                    $scope.fetchCaseTaskList();
-                })
+                creatorDID: vm.userDID
+            })
+            .success(function (resp) {
+                $scope.fetchProcessStageList();
+            })
         }
 
         $scope.updateCaseTask = function (item) {
@@ -110,24 +109,23 @@
                 title: item.title,
                 updateTs: moment(new Date()).format("YYYYMMDD_HHmmss"),
             })
-                .success(function (resp) {
-                    console.log(resp);
-                    $scope.fetchCaseTaskList();
-                })
+            .success(function (resp) {
+                $scope.fetchProcessStageList();
+            })
         }
 
         $scope.setItemTitle = function (item) {
             console.log(item);
             _001_CaseTask.updateCaseTask({
-                    _id: item._id,
-                    title: item.title,
-                    enable: true,
-                    updateTs: moment(new Date()).format("YYYYMMDD_HHmmss"),
-                })
-                .success(function (resp) {
-                    console.log(resp);
-                    $scope.fetchCaseTaskList();
-                })
+                _id: item._id,
+                title: item.title,
+                isSet: true,
+                enable: true,
+                updateTs: moment(new Date()).format("YYYYMMDD_HHmmss"),
+            })
+            .success(function (resp) {
+                $scope.fetchProcessStageList();
+            })
         }
 
         // Remove Check
@@ -154,6 +152,27 @@
             //     })
             //     .error(function (res) {
             //     })
+        }
+
+        $scope.init = function () {
+            console.log(" *** Initialize");
+            $timeout(function () {
+                $scope.fetchProcessStageList();
+            }, 200);
+
+        }
+
+        $scope.init();
+
+        $scope.switchItem = function (item) {
+            _001_CaseTask.updateCaseTask({
+                _id: item._id,
+                enable: item.enable,
+                updateTs: moment(new Date()).format("YYYYMMDD_HHmmss"),
+            })
+            .success(function (resp) {
+                // $scope.fetchProcessStageList();
+            })
         }
 
     }

@@ -90,4 +90,10 @@ module.exports = mongoose.model('_001Project', {
         type : String,
     },
 
+    // 新增
+    unitMemo: {
+        type: Array,
+        default: []
+    },
+
 });
