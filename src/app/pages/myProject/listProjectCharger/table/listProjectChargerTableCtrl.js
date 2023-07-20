@@ -101,11 +101,17 @@
                             selected = $filter('filter')($scope.allWorkers, {
                                 value: $scope.projects[index].workers[subIndex],
                             });
-
                             selected.length == 1 ? $scope.projects[index].workers[subIndex] = selected[0] : $scope.projects[index].workers[subIndex];
-
                         }
+
+                        selected = $filter('filter')($scope.allWorkers, {
+                            value: $scope.projects[index].majorID,
+                        });
+                        selected.length == 1 ? $scope.projects[index].majorID = selected[0] : '未指派主辦';
+
                     }
+
+
                 })
 
         })
@@ -147,10 +153,10 @@
             if ($scope.projectManagers === undefined) return;
             if (project.majorID) {
                 selected = $filter('filter')($scope.projectManagers, {
-                    value: project.majorID,
+                    value: project.majorID.value,
                 });
             }
-            return selected.length ? selected[0].name : 'Not Set';
+            return selected.length ? selected[0].name : '未指派主辦';
         };
 
         editableOptions.theme = 'bs3';
@@ -160,16 +166,16 @@
         }
 
         $scope.showTechs = function (techs) {
-            var resault = "";
+            var results = "";
             var selected = [];
             if ($scope.projectTechs === undefined) return;
             for (var index = 0; index < techs.length; index++) {
                 selected = $filter('filter')($scope.projectTechs, {
                     value: techs[index],
                 });
-                resault += selected.length ? selected[0].name + ", " : '未指定';
+                results += selected.length ? selected[0].name + ", " : '未指定';
             }
-            return resault;
+            return results;
         }
 
         editableThemes['bs3'].submitTpl = '<button type="submit" ng-click="updateMajor($form, $parent)" class="btn btn-primary btn-with-icon"><i class="ion-checkmark-round"></i></button>';
@@ -185,10 +191,22 @@
 
             Project.updateMajorID(formData)
                 .success(function (res) {
-                    console.log(res.code);
                 })
                 .error(function () {
+                })
+        }
 
+        $scope.updateMajorEUI = function (form, table) {
+            table.prj.majorID = form.$data.majorID;
+            var formData = {
+                prjID: table.prj._id,
+                majorID: form.$data.majorID.value,
+            }
+
+            Project.updateMajorID(formData)
+                .success(function (res) {
+                })
+                .error(function () {
                 })
         }
 

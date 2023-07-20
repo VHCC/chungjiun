@@ -17,7 +17,8 @@ module.exports = function (app) {
                 workStatus:true
             },
             {
-                password: 0
+                password: 0,
+                userMonthSalary: 0,
             },
             function (err, users) {
                 if (err) {
@@ -39,7 +40,8 @@ module.exports = function (app) {
                 workStatus:false
             },
             {
-                password: 0
+                password: 0,
+                userMonthSalary: 0,
             },
             function (err, users) {
                 if (err) {
@@ -60,7 +62,8 @@ module.exports = function (app) {
             {
             },
             {
-                password: 0
+                password: 0,
+                userMonthSalary: 0,
             },
             function (err, users) {
                 if (err) {
@@ -83,7 +86,8 @@ module.exports = function (app) {
                 workStatus:true
             },
             {
-                password: 0
+                password: 0,
+                userMonthSalary: 0,
             },
             function (err, techs) {
                 if (err) {
@@ -103,10 +107,11 @@ module.exports = function (app) {
         User.find(
             {
                 roleType: 2, // 技師
-                workStatus:true
+                workStatus: true
             },
             {
-                password: 0
+                password: 0,
+                userMonthSalary: 0,
             },
             function (err, managers) {
                 if (err) {

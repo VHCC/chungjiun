@@ -176,8 +176,6 @@
                                     }, 500)
                                 })
                         } else {
-                            console.log(vm);
-
                             vm.formID = res.payload._id;
 
                             if (vm.wageForm_blue) {

@@ -197,21 +197,64 @@
             <td style="width: 4%">{{ showManager(prj) }}</td>
             <!--主承辦-->
             <td class="select-td" style="width: 5%">
-                <span editable-select="prj.majorID"
-                      e-name="majorID"
-                      e-form="rowform"
-                      e-selectpicker
-                      e-ng-options="user.value as user.name for user in projectManagers">
-                {{ showMajor(prj) }}
-                </span>
-                <br>
-                <button type="button"
-                        ng-disabled="rowform.$visible"
-                        ng-click="rowform.$show()"
-                        ng-show="isFitPrjManager(prj.managerID) || isFitExecutive()"
-                        class="btn btn-primary editable-table-button btn-xs">
-                    指派主承辦
-                </button>
+                <!--<span editable-select="prj.majorID"-->
+                      <!--e-name="majorID"-->
+                      <!--e-form="rowform"-->
+                      <!--e-selectpicker-->
+                      <!--e-ng-options="user.value as user.name for user in projectManagers">-->
+                <!--{{ showMajor(prj) }}-->
+                <!--</span>-->
+                <!--<br>-->
+                <!--<button type="button"-->
+                        <!--ng-disabled="rowform.$visible"-->
+                        <!--ng-click="rowform.$show()"-->
+                        <!--ng-show="isFitPrjManager(prj.managerID) || isFitExecutive()"-->
+                        <!--class="btn btn-primary editable-table-button btn-xs">-->
+                    <!--指派主承辦-->
+                <!--</button>-->
+                <form data-editable-form
+                      name="prjMajorSelectForm">
+                    <div editable-ui-select="prj.majorID"
+                         e-close-on-select="true"
+                         data-e-form="prjMajorSelectForm"
+                         data-e-name="majorID"
+                         name="majorID"
+                         e-append-to-body="true"
+                         data-e-style="min-width:100px;max-width:500px;white-space:normal;"
+                         data-e-ng-model="prj.majorID">
+                        {{showMajor(prj)}}
+                        <editable-ui-select-match placeholder="請選擇主承辦">
+                            {{$select.selected.name}}
+                        </editable-ui-select-match>
+                        <editable-ui-select-choices repeat="user in projectManagers | limitTo: 40 | filter: $select.search ">
+                            <span ng-bind-html="user.name | highlight: $select.search"></span>
+                        </editable-ui-select-choices>
+                    </div>
+                    <br>
+                    <div class="buttons">
+                        <!-- buttons to submit / cancel form -->
+                        <button type="button"
+                                ng-disabled="prjMajorSelectForm.$visible"
+                                ng-click="prjMajorSelectForm.$show()"
+                                ng-show="isFitPrjManager(prj.managerID) || isFitExecutive()"
+                                class="btn btn-primary editable-table-button btn-xs">
+                            指派主承辦
+                        </button>
+                        <span ng-show="prjMajorSelectForm.$visible">
+                            <br/>
+                            <button type="submit" class="btn btn-primary editable-table-button btn-xs"
+                                    ng-click="updateMajorEUI(prjMajorSelectForm, this)"
+                                    ng-disabled="prjMajorSelectForm.$waiting">
+                              確認
+                            </button>
+                            <button type="button" class="btn btn-default editable-table-button btn-xs"
+                                    ng-disabled="prjMajorSelectForm.$waiting"
+                                    ng-click="prjMajorSelectForm.$cancel()">
+                              取消
+                            </button>
+                        </span>
+                    </div>
+                </form>
             </td>
             <!--<td>{{prj.workers}}</td>-->
             <!--協辦-->
