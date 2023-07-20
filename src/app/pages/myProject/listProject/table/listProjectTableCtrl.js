@@ -6,7 +6,8 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.myProject')
-        .service('intiProjectsService', function ($http, $cookies) {
+        .service('intiProjectsService', ['$http', '$cookies', '$rootScope', function ($http, $cookies, $rootScope) {
+            $rootScope.isFirstLoading = false;
 
             // console.log($cookies.get('userDID'));
             var formData = {
@@ -28,9 +29,10 @@
             }
 
 
-        })
+        }])
         .controller('listProjectTableCtrl',
             [
+                '$rootScope',
                 '$scope',
                 '$filter',
                 '$cookies',
@@ -40,8 +42,10 @@
                 'editableThemes',
                 'Project',
                 'ProjectUtil',
+                '$http',
                 'intiProjectsService',
-                function (scope,
+                function ($rootScope,
+                          scope,
                           filter,
                           $cookies,
                           User,
@@ -50,8 +54,10 @@
                           editableThemes,
                           Project,
                           ProjectUtil,
+                          $http,
                           intiProjectsService) {
                     return new ListProjectPageCtrl(
+                        $rootScope,
                         scope,
                         filter,
                         $cookies,
@@ -61,13 +67,15 @@
                         editableThemes,
                         Project,
                         ProjectUtil,
+                        $http,
                         intiProjectsService
                     );
                 }])
     ;
 
     /** @ngInject */
-    function ListProjectPageCtrl($scope,
+    function ListProjectPageCtrl($rootScope,
+                                 $scope,
                                  $filter,
                                  $cookies,
                                  User,
@@ -76,13 +84,16 @@
                                  editableThemes,
                                  Project,
                                  ProjectUtil,
+                                 $http,
                                  intiProjectsService) {
         $scope.loading = true;
 
+
         intiProjectsService.then(function (resp) {
-            // console.log(resp.data);
             $scope.projects = resp.data;
             $scope.projects.slice(0, resp.data.length);
+
+            $rootScope.isFirstLoading = true;
 
             angular.element(
                 document.getElementById('includeHead'))
@@ -126,7 +137,7 @@
 
                 })
 
-            User.getAllUsersWithSignOut()
+            User.getAllUsersWithSignOut() // 包含已離職
                 .success(function (allUsers) {
                     $scope.allWorkersTemp = [];
                     for (var i = 0; i < allUsers.length; i++) {
@@ -135,7 +146,7 @@
                             name: allUsers[i].name,
                         };
                     }
-                    // 顯示
+                    // 顯示 worker
                     for (var index = 0; index < $scope.projects.length; index++) {
                         var selected = [];
                         for (var subIndex = 0; subIndex < $scope.projects[index].workers.length; subIndex++) {
@@ -144,6 +155,17 @@
                             });
                             selected.length == 1 ? $scope.projects[index].workers[subIndex] = selected[0] : $scope.projects[index].workers[subIndex];
                         }
+
+                        selected = $filter('filter')($scope.allWorkersTemp, {
+                            value: $scope.projects[index].majorID,
+                        });
+                        selected.length == 1 ? $scope.projects[index].majorID = selected[0] : '未指派主辦';
+
+                        selected = $filter('filter')($scope.allWorkersTemp, {
+                            value: $scope.projects[index].managerID,
+                        });
+                        selected.length == 1 ? $scope.projects[index].managerID = selected[0] : '未指派經理';
+
                     }
                 })
         })
@@ -165,10 +187,10 @@
             if ($scope.projectManagers === undefined) return;
             if (project.managerID) {
                 selected = $filter('filter')($scope.projectManagers, {
-                    value: project.managerID
+                    value: project.managerID.value
                 });
             }
-            return selected.length ? selected[0].name : 'Not Set';
+            return selected.length ? selected[0].name : '未指派經理';
         };
 
         $scope.isFitPrjManager = function(managerDID) {
@@ -185,10 +207,10 @@
             if ($scope.projectManagers === undefined) return;
             if (project.majorID) {
                 selected = $filter('filter')($scope.projectManagers, {
-                    value: project.majorID,
+                    value: project.majorID.value,
                 });
             }
-            return selected.length ? selected[0].name : 'Not Set';
+            return selected.length ? selected[0].name : '未指派主辦';
         };
 
         editableOptions.theme = 'bs3';
@@ -198,8 +220,6 @@
         }
 
         $scope.updateManager = function (form, table) {
-            console.log(form.$data);
-            // console.log(table.$parent.prj._id);
             var formData = {
                 prjID: table.$parent.prj._id,
                 managerID: form.$data.managerID,
@@ -210,7 +230,21 @@
                     console.log(res.code);
                 })
                 .error(function () {
+                })
+        }
 
+        $scope.updateManagerEUI = function (form, table) {
+            table.prj.managerID = form.$data.managerID;
+            var formData = {
+                prjID: table.prj._id,
+                managerID: form.$data.managerID.value,
+            }
+
+            Project.updateManagerID(formData)
+                .success(function (res) {
+                    // console.log(res.code);
+                })
+                .error(function () {
                 })
         }
 
@@ -219,8 +253,6 @@
         }
 
         $scope.updateMajor = function (form, table) {
-            console.log(form.$data);
-            // console.log(table.$parent.prj._id);
             var formData = {
                 prjID: table.$parent.prj._id,
                 majorID: form.$data.majorID,
@@ -231,7 +263,20 @@
                     console.log(res.code);
                 })
                 .error(function () {
+                })
+        }
 
+        $scope.updateMajorEUI = function (form, table) {
+            table.prj.majorID = form.$data.majorID;
+            var formData = {
+                prjID: table.prj._id,
+                majorID: form.$data.majorID.value,
+            }
+
+            Project.updateMajorID(formData)
+                .success(function (res) {
+                })
+                .error(function () {
                 })
         }
 
@@ -343,15 +388,15 @@
         }
 
         $scope.showWorkersName = function (workers) {
-            var resault = "";
-            // console.log(workers);
+            var results = "";
+            if (workers.length == 0) return "未指派協辦"
             for (var index = 0; index < workers.length; index++) {
                 if (workers[index] == null || workers[index].name == undefined) {
                     continue;
                 }
-                resault += workers[index].name + ", ";
+                results += workers[index].name + ", ";
             }
-            return resault;
+            return results;
         }
 
         $scope.changePrjStatus = function (table) {

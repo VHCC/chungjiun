@@ -15,7 +15,7 @@
 
     /** @ngInject */
     function myYearPickerCtrl($scope, DateUtil) {
-        console.log(" - myYearPickerCtrl()");
+        // console.log(" - myYearPickerCtrl()");
         $scope.openYearPicker = showYearPicker;
         $scope.myDT = new Date();
         $scope.myYear = moment(new Date()).format('YYYY');
@@ -31,13 +31,13 @@
         //     }
         // });
         function showYearPicker() {
-            console.log(" - showYearPicker()");
+            // console.log(" - showYearPicker()");
             $scope.yearPickerDom = this;
             $scope.opened = true;
         }
 
         $scope.shiftYear = function (dom) {
-            console.log(" - shiftYear()");
+            // console.log(" - shiftYear()");
             $scope.isShiftYearSelect = true;
             $scope.myYear = moment($scope.myYear).format('YYYY');
             $scope.myDT = moment(dom.myYear);

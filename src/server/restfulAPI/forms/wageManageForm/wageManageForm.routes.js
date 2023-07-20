@@ -7,6 +7,53 @@ module.exports = function (app) {
     // fetch items
     app.post(global.apiUrl.post_wage_manage_fetch_item, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, post_wage_manage_fetch_item");
+
+        const cookieHeader = req.headers.cookie;
+        var requestUserDID = '';
+        var requestUserEmail = '';
+        var requestUserRole = -1;
+        var isAllow = false;
+
+        // 解析Cookie字符串來獲取特定的Cookie值
+        if (cookieHeader) {
+            const cookies = cookieHeader.split(';');
+            const cookieObj = {};
+
+            cookies.forEach((cookie) => {
+                const parts = cookie.split('=');
+                const key = parts[0].trim();
+                const value = parts[1].trim();
+                cookieObj[key] = value;
+            });
+
+            // 現在你可以從cookieObj對象中獲取特定的Cookie值
+            requestUserDID = cookieObj['userDID'];
+            requestUserRole = cookieObj['roletype'];
+            requestUserEmail = cookieObj['email'];
+
+            // 使用Cookie值進行後續處理
+            console.log('requestUserDID:> ' + requestUserDID);
+            console.log('requestUserRole:> ' + requestUserRole);
+
+            if (req.body.creatorDID == requestUserDID) { // 可以取自己
+                isAllow = true;
+            }
+
+            if (requestUserRole == 100 || requestUserDID == '5d197f16a6b04756c893a162') {
+                isAllow = true;
+            }
+        }
+        if (!isAllow) {
+            console.log(global.timeFormat(new Date()) + global.log.e + "API, post_wage_manage_fetch_items");
+            console.log(req.body);
+            console.log(" ***** ERROR ***** ; requestUserDID:> " + requestUserDID);
+            console.log(" ***** ERROR ***** ; requestUserRole:> " + requestUserRole);
+            console.log(" ***** ERROR ***** ; requestUserEmail:> " + requestUserEmail);
+            // console.log(err);
+            res.send("no Authority");
+            return;
+        }
+
         WageItem.findOne({
             creatorDID: req.body.creatorDID,
             year: req.body.year,
