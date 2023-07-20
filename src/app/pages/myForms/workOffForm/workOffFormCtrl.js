@@ -674,6 +674,7 @@
                 // 個人請假
                 if (dom.$parent.table != undefined) {
                     dom.$parent.table.workOffType = dom.workOffType.type;
+                    dom.$parent.table.create_formDate = undefined;
                 }
                 if (dom.$parent.reloadDatePicker != null) {
                     dom.$parent.reloadDatePicker(dom.workOffType.type);
@@ -878,6 +879,10 @@
 
             // Send WorkOffTable to Review
             $scope.reviewWorkOffItem = function (table, button, index) {
+                if (table.create_formDate == undefined) {
+                    toastr.error('請選擇日期', '錯誤');
+                    return;
+                }
 
                 var targetDate = DateUtil.getShiftDatefromFirstDate(
                     DateUtil.getFirstDayofThisWeek(moment($scope.specificUserTablesItems[index].create_formDate)),
