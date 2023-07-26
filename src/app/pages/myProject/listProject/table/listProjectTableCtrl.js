@@ -194,7 +194,7 @@
         };
 
         $scope.isFitPrjManager = function(managerDID) {
-            return managerDID === $cookies.get('userDID');
+            return managerDID.value === $cookies.get('userDID');
         }
 
         // 對應行政總管
