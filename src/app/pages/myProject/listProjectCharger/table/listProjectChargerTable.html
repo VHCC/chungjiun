@@ -226,7 +226,10 @@
                         <editable-ui-select-match placeholder="請選擇主承辦">
                             {{$select.selected.name}}
                         </editable-ui-select-match>
-                        <editable-ui-select-choices repeat="user in projectManagers | limitTo: 40 | filter: $select.search ">
+                        <editable-ui-select-choices repeat="user in projectManagers |
+                            groupSelectpickerOptions: {
+                                name: $select.search
+                            } | limitTo: 5 | filter: $select.search ">
                             <span ng-bind-html="user.name | highlight: $select.search"></span>
                         </editable-ui-select-choices>
                     </div>
