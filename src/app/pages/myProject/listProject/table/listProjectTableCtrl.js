@@ -123,7 +123,6 @@
                             name: allUsers[i].name
                         };
                     }
-
                 })
 
             User.getAllUsersWithSignOut()

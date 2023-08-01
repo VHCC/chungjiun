@@ -146,6 +146,7 @@
                                value="">
                     </td><!--訂約日期-->
 
+                    <!--履約期限-->
                     <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
                         {{contract.date_5}}
                     </td>
@@ -165,6 +166,8 @@
                                          <!--ng-model="contract.enable"-->
                                          <!--switcher-style="primary"-->
                                          <!--switcher-value="contract.enable"/>-->
+                            <span >提醒</span>
+                            <br>
                             <cj-switcher
                                     style="horiz-align: center; vertical-align: center"
                                     ng-click="changeContractDate5Notify(contract)"
@@ -189,7 +192,7 @@
                             <!--<i class="ion-plus-round"/>-->
                         <!--</button>-->
                         <!--可新增-->
-                    </td><!--履約期限-->
+                    </td>
 
                     <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
                         {{contract.date_6}}
@@ -205,6 +208,8 @@
                         </div>
 
                         <div style="margin-top: 10px">
+                            <span >提醒</span>
+                            <br>
                             <cj-switcher
                                     style="horiz-align: center; vertical-align: center"
                                     ng-click="changeContractDate6Notify(contract)"

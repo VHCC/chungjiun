@@ -126,6 +126,38 @@ module.exports = function (app) {
             });
     });
 
+    app.post(global._001_apiUrl._001_post_project_case_find_by_caseDIDMulti, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, _001_post_project_case_find_by_caseDIDMulti");
+        console.log(JSON.stringify(req.body));
+
+        var findData = [];
+        for (var index = 0; index < req.body.contractDIDs.length; index++) {
+            var target = {
+                _id: req.body.contractDIDs[index],
+            }
+            findData.push(target);
+        }
+
+        console.log(findData);
+        ProjectCase.find(
+            {
+                $or: findData,
+            },
+            function (err, results) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, _001_post_project_case_find_by_caseDIDMulti");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.status(500).send(err);
+                    return;
+                } else {
+                    res.status(200).json(results);
+                    return;
+                }
+            });
+    });
+
 
     // 更新工程
     app.post(global._001_apiUrl._001_post_project_case_update_one_by_caseDID, function (req, res) {

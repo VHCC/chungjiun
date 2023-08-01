@@ -17,6 +17,7 @@
             '_001_ProjectContract',
             '_001_ProjectCase',
             '_001_Project',
+            '_001_CaseTask',
             listCase
         ])
         .filter('thousandSeparator', function() {
@@ -45,7 +46,8 @@
                       _001_Institute,
                       _001_ProjectContract,
                       _001_ProjectCase,
-                      _001_Project) {
+                      _001_Project,
+                      _001_CaseTask) {
 
         $scope.username = cookies.get('username');
         $scope.isDepG = cookies.get('isDepG') == "false" ? false : true;
@@ -57,10 +59,23 @@
         var vm = this;
 
         $scope.init = function() {
+            console.log("init")
             // 機關
             _001_Institute.findAll()
                 .success(function (resp) {
                     vm.instituteOptions = resp;
+                })
+
+            // 辦理階段項目
+            _001_CaseTask.findAllEnable()
+                .success(function (resp) {
+                    $scope.processStages_Enable = resp;
+                })
+
+            _001_CaseTask.findAll()
+                .success(function (resp) {
+                    console.log(resp);
+                    $scope.processStages_All = resp;
                 })
         }
 
@@ -102,7 +117,7 @@
                 vm.caseOptions = resp;
                 vm.caseOptionsAll = resp;
 
-                console.log(resp);
+                $scope.cachedTable = resp;
                 $scope.showCaseTable(resp);
                 $timeout(function () {
                     bsLoadingOverlayService.stop({
@@ -129,6 +144,7 @@
                 caseDID: projectCase._id
             })
             .success(function (resp) {
+                $scope.cachedTable = resp;
                 $scope.showCaseTable(resp);
             })
         }
@@ -141,6 +157,7 @@
                     type: vm.filter.projectType.value
                 })
                 .success(function (resp) {
+                    $scope.cachedTable = resp;
                     $scope.showCaseTable(resp, true);
                 })
             } else {
@@ -149,6 +166,7 @@
                     type: vm.filter.projectType.value
                 })
                 .success(function (resp) {
+                    $scope.cachedTable = resp;
                     $scope.showCaseTable(resp, true);
                 })
             }
@@ -157,7 +175,6 @@
         $scope.init();
 
         $scope.showCaseTable = function (caseData, notFreshType) {
-            console.log(caseData);
             if (!notFreshType) {
                 prjTypeOptionsCanSelect = [];
                 prjTypeOptionsList = [];
@@ -172,7 +189,6 @@
 
             vm.prjTypeOptionsAll = prjTypeOptionsCanSelect;
             $scope.tableData = caseData;
-            console.log(vm);
             angular.element(
                 document.getElementById('includeHead_listCase'))
                 .html($compile(
@@ -189,10 +205,52 @@
 
 
         $scope.showCaseInformation = function (prjCase) {
-            console.log(prjCase);
 
+            if (prjCase.needRefresh || prjCase.needRefresh == undefined) {
+                _001_Project.findOneCaseWithAllType({
+                    caseDID: prjCase._id
+                })
+                .success(function (resp) {
+                    prjCase.needRefresh = false;
+                    prjCase.prjUnits = resp;
+                    // $scope.showTable(resp);
 
+                    prjCase.prjUnits.forEach(function (project) {
 
+                        // project.instituteName = $scope.getInstitute(project.instituteDID).name;
+                        // project.instituteCode = $scope.getInstitute(project.instituteDID).code;
+
+                        // project.contractName = $scope.getProjectContract(project.contractDID).name;
+                        // project.contractCode = $scope.getProjectContract(project.contractDID).code;
+
+                        // project.caseName = $scope.getProjectCase(project.caseDID).name;
+                        // project.caseCode = $scope.getProjectCase(project.caseDID).code;
+
+                        project.typeName = $scope.getProjectType(project.type).label;
+                        $scope.checkRowSpan(project);
+                        // project.prjManager = $scope.showPrjManager(project);
+
+                    })
+                })
+            }
+        }
+
+        $scope.checkRowSpan = function(project) {
+            project.rowSpan = 1;
+            if (project.unitMemoByCase != undefined) {
+                project.rowSpan = project.unitMemoByCase.length + 1;
+                $scope.checkIsBilled(project.unitMemoByCase, project);
+            }
+        }
+
+        $scope.checkIsBilled = function (memos, project) {
+            var isBilled = true;
+            memos.forEach(function (memo) {
+                if (!memo.is_bill_count) {
+                    isBilled = false;
+                }
+            })
+            project.canChangeEnable = isBilled;
         }
 
         // ****** options *******
@@ -252,13 +310,13 @@
             // 5.管理
             // 6.投標
             // 7.其他
-            {label: '設計-1', value: '1'},
-            {label: '監造-2', value: '2'},
-            {label: '規劃-3', value: '3'},
-            {label: '專管-4', value: '4'},
-            {label: '管理-5', value: '5'},
-            {label: '投標-6', value: '6'},
-            {label: '其他-7', value: '7'},
+            {label: '設計', value: '1'},
+            {label: '監造', value: '2'},
+            {label: '規劃', value: '3'},
+            {label: '專管', value: '4'},
+            {label: '管理', value: '5'},
+            {label: '投標', value: '6'},
+            {label: '其他', value: '7'},
         ];
 
         var emptyObject = {
@@ -292,7 +350,9 @@
             return selected[0];
         }
 
+        // Deprecated
         $scope.updateCase = function (prjCase) {
+            console.log(prjCase);
             var ts = moment(new Date()).format("YYYY/MM/DD HH:mm:ss");
 
             try {
@@ -300,15 +360,15 @@
                     _id: prjCase._id,
                     caseMemo: prjCase.caseMemo,
 
-                    position: prjCase.position,
-                    caseBoss: prjCase.caseBoss,
-                    approved_mount: prjCase.approved_mount,
-                    date_1: prjCase.date_1,
-                    date_2: prjCase.date_2,
-                    date_3: prjCase.date_3,
-                    date_3_mount: prjCase.date_3_mount,
-                    date_4: prjCase.date_4,
-                    date_5: prjCase.date_5,
+                    position: prjCase.position, // 工程地點
+                    caseBoss: prjCase.caseBoss, // 承辦機關
+                    approved_mount: prjCase.approved_mount, // 核定金額
+                    date_1: prjCase.date_1, // date_1
+                    date_2: prjCase.date_2, // 細設日期
+                    date_3: prjCase.date_3, // 決標日期
+                    date_3_mount: prjCase.date_3_mount, // 決標金額
+                    date_4: prjCase.date_4, // 變更日期
+                    date_5: prjCase.date_5, // 請款日期
                     payType_1: prjCase.payType_1,
                     payType_2: prjCase.payType_2,
                     payType_3: prjCase.payType_3,
@@ -328,6 +388,22 @@
                     .error(function () {
                         toastr['warning']('儲存失敗 !', '更新失敗');
                     })
+
+                // if (prjCase.prjUnits.length > 0) {
+                //
+                //     var formData_sub = {
+                //         units: prjCase.prjUnits,
+                //         userUpdateTs: ts,
+                //     }
+                //     _001_Project.updateMultiUnit(formData_sub)
+                //         .success(function (res) {
+                //             // item.userUpdateTs = ts;
+                //             toastr['success'](prjCase.name, '專案更新成功');
+                //         })
+                //         .error(function () {
+                //             // toastr['warning']('儲存失敗 !', '更新失敗');
+                //         })
+                // }
             } catch (err) {
                 toastr['warning']('變更工程 !', '更新失敗');
                 return;
@@ -353,6 +429,7 @@
                 })
         }
 
+        // Deprecated
         $scope.insertCaseMemo = function (prjCase) {
 
             if (prjCase.caseMemo == undefined) {
@@ -379,12 +456,98 @@
 
             _001_ProjectCase.updateOneCaseInfo(formData)
                 .success(function (res) {
+
                     toastr['success'](prjCase.name, '新增成功');
                 })
                 .error(function () {
                     toastr['warning']('儲存失敗 !', '更新失敗');
                 })
         }
+
+        $scope.showUnitProcessStage = function (prjUnit) {
+            var resultString = "沒有辦理項目";
+            if (prjUnit.unitMemo.length > 0) {
+                // console.log(prjUnit.unitMemo[prjUnit.unitMemo.length - 1]);
+                resultString = $scope.showProcessStageName(prjUnit.unitMemo[prjUnit.unitMemo.length - 1].processStageUUID);
+            }
+            return resultString;
+        }
+
+
+        $scope.insertPrjUnitMemoInCase = function (prjUnit, PrjCase) {
+            var ts = moment(new Date()).format("YYYY/MM/DD HH:mm:ss");
+            if (prjUnit.unitMemoByCase == undefined) {
+                prjUnit.unitMemoByCase = [{}];
+            } else {
+                prjUnit.unitMemoByCase.push({});
+            }
+
+            try {
+                var formData = {
+                    _id: prjUnit._id,
+                    enable: true,
+                    unitMemoByCase: prjUnit.unitMemoByCase,
+                }
+                _001_Project.updateOneUnit(formData)
+                    .success(function (res) {
+                        prjUnit.userUpdateTs = ts;
+                        $scope.checkRowSpan(prjUnit);
+                        toastr['success'](prjUnit.code, '更新成功');
+                        toastr['success'](prjUnit.code + "因新增項目，故尚未入帳前，專案若已關閉，會自動變更為開啟", '專案開啟');
+                    })
+                    .error(function () {
+                        toastr['warning']('儲存失敗 !', '更新失敗');
+                    })
+            } catch (err) {
+                toastr['warning']('變更專案 !', '更新失敗');
+                return;
+            }
+
+        }
+
+        $scope.updatePrjUnitMemoInCase = function (prjUnit) {
+            var ts = moment(new Date()).format("YYYY/MM/DD HH:mm:ss");
+
+            try {
+                var formData = {
+                    _id: prjUnit._id,
+
+                    enable: prjUnit.enable,
+                    viewable: prjUnit.viewable,
+
+                    unitMemoByCase: prjUnit.unitMemoByCase,
+                    userUpdateTs: ts,
+                }
+                _001_Project.updateOneUnit(formData)
+                    .success(function (res) {
+                        prjUnit.userUpdateTs = ts;
+                        $scope.checkRowSpan(prjUnit);
+                        toastr['success'](prjUnit.name, '更新成功');
+                    })
+                    .error(function () {
+                        toastr['warning']('儲存失敗 !', '更新失敗');
+                    })
+            } catch (err) {
+                toastr['warning']('變更專案 !', '更新失敗');
+                return;
+            }
+        }
+
+        $scope.showProcessStageName = function (processstagedid) {
+            if (processstagedid == undefined || processstagedid == "") {
+                return '沒有辦理項目';
+            }
+
+            var processStages_All = $scope.processStages_All;
+            var selected = [];
+            selected = $filter('filter')(processStages_All, {
+                _id: processstagedid,
+            });
+
+            if (selected == undefined) return '沒有辦理項目';
+            return selected[0].title;
+        }
+
 
 
     }

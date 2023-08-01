@@ -58,6 +58,10 @@
                     return http.post('/api/_001_post_project_case_find_by_contractDIDMulti_and_instituteDID', requestData);
                 },
 
+                findByCaseDIDMulti: function (requestData) {
+                    return http.post('/api/_001_post_project_case_find_by_caseDIDMulti', requestData);
+                },
+
                 updateOneCaseInfo: function (requestData) {
                     return http.post('/api/_001_post_project_case_update_one_by_caseDID', requestData);
                 },
@@ -111,6 +115,14 @@
 
                 updateOneUnit: function (requestData) {
                     return http.post('/api/_001_post_project_update_one_by_projectDID', requestData);
+                },
+
+                updateMultiUnit: function (requestData) {
+                    return http.post('/api/_001_post_project_update_multi_by_object', requestData);
+                },
+
+                findAllByMajorDID: function (requestData) {
+                    return http.post('/api/_001_post_project_find_all_by_majorDID', requestData);
                 },
             }
         }])

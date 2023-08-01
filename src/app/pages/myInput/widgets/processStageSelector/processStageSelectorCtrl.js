@@ -35,7 +35,6 @@
         }
 
         $scope.loadProcessStageSettings = function () {
-            console.log("WQERQERQ");
             _001_CaseTask.findAllEnable()
                 .success(function (resp) {
                     $scope.processStages_Enable = resp;

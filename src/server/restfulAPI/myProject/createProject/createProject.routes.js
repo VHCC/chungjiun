@@ -17,7 +17,8 @@ module.exports = function (app) {
                 workStatus:true
             },
             {
-                password: 0
+                password: 0,
+                userMonthSalary: 0
             },
             function (err, users) {
                 if (err) {
@@ -39,7 +40,8 @@ module.exports = function (app) {
                 workStatus: false
             },
             {
-                password: 0
+                password: 0,
+                userMonthSalary: 0,
             },
             function (err, users) {
                 if (err) {
@@ -65,7 +67,8 @@ module.exports = function (app) {
                 feature_official_doc: 0,
                 before108Kpi: 0,
                 cjMail: 0,
-                password: 0
+                password: 0,
+                userMonthSalary: 0,
             },
             function (err, users) {
                 if (err) {
@@ -90,7 +93,8 @@ module.exports = function (app) {
                 workStatus: true
             },
             {
-                password: 0
+                password: 0,
+                userMonthSalary: 0
             },
             function (err, techs) {
                 if (err) {
@@ -113,7 +117,8 @@ module.exports = function (app) {
                 workStatus: true
             },
             {
-                password: 0
+                password: 0,
+                userMonthSalary: 0
             },
             function (err, managers) {
                 if (err) {

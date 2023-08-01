@@ -51,6 +51,7 @@ module.exports = mongoose.model('_001Project', {
         type: String,
         required: true
     },
+
     // 承辦人員
     majorID: {
         type: String,
@@ -90,8 +91,112 @@ module.exports = mongoose.model('_001Project', {
         type : String,
     },
 
-    // 新增
+    // 專案資料新增
     unitMemo: {
+        type: Array,
+        default: []
+    },
+
+    // 鑽探日期
+    drill_date:{
+        type : String,
+    },
+
+    // 基設日期
+    date_1_ext: {
+        type : String,
+    },
+
+    // 細設日期
+    date_2_ext: {
+        type : String,
+    },
+
+    // 發包日期
+    pack_date:{
+        type : String,
+    },
+
+    // 施工廠商
+    pack_company:{
+        type : String,
+    },
+
+    // 開工日期
+    start_date:{
+        type : String,
+    },
+
+    // 完工日期
+    done_date:{
+        type : String,
+    },
+
+    // 預定進度
+    predict_process:{
+        type : String,
+    },
+
+    // 實際進度
+    real_process:{
+        type : String,
+    },
+
+    // 驗收日期
+    check_date:{
+        type : String,
+    },
+
+    // 結算日期
+    pay_end_date:{
+        type : String,
+    },
+
+    // 變更日期
+    change_date:{
+        type : String,
+    },
+
+    // 變更金額
+    change_amount:{
+        type : String,
+    },
+
+
+
+    // 開發票
+    // 請款
+    is_bill_apply : {
+        type: Boolean,
+        default: false,
+    },
+
+    // 開發票
+    // 入帳
+    is_bill_count : {
+        type: Boolean,
+        default: false,
+    },
+
+
+
+    // 工程地點 (從工程基本進入)
+    position: {
+        type : String,
+    },
+
+    // 承辦機關 (從工程基本進入)
+    caseBoss: {
+        type : String,
+    },
+
+    // 核定金額 (從工程基本進入)
+    approved_mount: {
+        type : String,
+    },
+
+    // 工程基本資料的專案新增資料
+    unitMemoByCase: {
         type: Array,
         default: []
     },

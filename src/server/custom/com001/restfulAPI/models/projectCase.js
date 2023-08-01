@@ -49,19 +49,19 @@ module.exports = mongoose.model('ProjectCase', {
     },
 
     // 工程地點
-    position: {
-        type : String,
-    },
+    // position: {
+    //     type : String,
+    // },
 
     // 承辦機關
-    caseBoss: {
-        type : String,
-    },
+    // caseBoss: {
+    //     type : String,
+    // },
 
     // 核定金額
-    approved_mount: {
-        type : String,
-    },
+    // approved_mount: {
+    //     type : String,
+    // },
 
     // 基設日期
     date_1: {

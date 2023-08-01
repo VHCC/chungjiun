@@ -2,40 +2,58 @@
     <uib-accordion-group heading="{{case.name}} - {{case.code}}"
                          ng-click="showCaseInformation(case)"
                          panel-class="bootstrap-panel accordion-panel panel-default">
-        <table class="table table-bordered table-hover table-condensed" style="table-layout: fixed">
+        <table class="table table-bordered table-hover table-condensed"
+               style="table-layout: fixed">
             <thead>
                 <tr>
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">工程編號</th>
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">工程名稱</th>
+                    <th rowspan="3" style="vertical-align: inherit; text-align: center; width: 80px"  class="">序號</th>
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="">工程編號</th>
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="">工程名稱</th>
+                    <th style="vertical-align: inherit; text-align: center; width: 50px"  class="">類型</th>
 
                     <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">工程地點</th><!--管理部人員-->
                     <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">機關承辦</th><!--管理部人員-->
                     <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">核定金額</th><!--管理部人員-->
 
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="">辦理項目</th>
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="">鑽探日期</th>
+
                     <!--<th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">契約工程數量</th>-->
                     <!--<th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">已執行金額</th>-->
 
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >基設日期</th><!--管理部人員-->
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >細設日期</th><!--管理部人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >基設日期(可新增)</th><!--管理部人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >細設日期(可新增)</th><!--管理部人員-->
 
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >決標日期</th><!--管理部人員-->
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >決標金額</th><!--管理部人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="" >發包日期[帶入]</th>
 
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >變更日期</th><!--管理部人員-->
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >請款日期</th><!--管理部人員-->
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >請款類型</th><!--管理部人員-->
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >請款金額</th><!--管理部人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >決標日期(可新增)</th><!--管理部人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >決標金額(可新增)</th><!--管理部人員-->
+
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="" >施工廠商</th>
+                    <th style="vertical-align: inherit; text-align: center; width: 300px" class="" colspan="2">開工日期(可新增)</th>
+                    <th style="vertical-align: inherit; text-align: center; width: 300px" class="" colspan="2">完工日期(可新增)</th>
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="" >驗收日期</th>
+
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >變更日期(可新增)</th><!--管理部人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >請款日期(可新增)</th><!--管理部人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" ng-if="false">請款類型(可新增)</th><!--管理部人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >請款金額(可新增)</th><!--管理部人員-->
                     <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >開發票</th><!--管理部人員-->
                     <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue" >結案歸檔</th><!--管理部人員-->
 
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_blue">更新狀態</th>
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="">更新狀態</th>
 
                 </tr>
             </thead>
 
             <!--<tbody ng-repeat="item in fetchFormDataFromScope(table)">-->
-            <tbody >
+            <tbody ng-if="false">
                 <tr style="vertical-align: inherit; text-align: center;">
+
+                    <!--序號-->
+                    <td style="vertical-align: inherit; text-align: center;" >
+
+                    </td>
                     <!--工程編號-->
                     <td style="vertical-align: inherit; text-align: center;" >
                         <span >{{case.code}}</span>
@@ -44,44 +62,63 @@
                     <!--工程名稱-->
                     <td style="vertical-align: inherit; text-align: center;" ><span >{{case.name}}</span></td>
 
+                    <!--專案類型 - 專案帶入-->
+                    <td></td>
+
                     <!--工程地點-->
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
-                        {{case.position}}
+                    <td style="vertical-align: inherit; text-align: center;">
+                        <span style="color:grey" ng-if="isDepG"> 輸入文字</span>
                     </td>
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
-                        <input type="text"
-                               ng-model="case.position"
-                               placeholder="0"
-                               style="text-align: right"
-                               class="form-control input-sm"
-                               value="">
-                    </td>
+                    <!--<td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">-->
+                        <!--{{case.position}}-->
+                    <!--</td>-->
+                    <!--<td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">-->
+                        <!--<input type="text"-->
+                               <!--ng-model="case.position"-->
+                               <!--placeholder="0"-->
+                               <!--style="text-align: right"-->
+                               <!--class="form-control input-sm"-->
+                               <!--value="">-->
+                    <!--</td>-->
 
                     <!--機關承辦-->
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
-                        {{case.caseBoss}}
+                    <td style="vertical-align: inherit; text-align: center;">
+                        <span style="color:grey" ng-if="isDepG"> 輸入文字</span>
                     </td>
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
-                        <input type="text"
-                               ng-model="case.caseBoss"
-                               placeholder="0"
-                               style="text-align: right"
-                               class="form-control input-sm"
-                               value="">
-                    </td>
+                    <!--<td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">-->
+                        <!--{{case.caseBoss}}-->
+                    <!--</td>-->
+                    <!--<td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">-->
+                        <!--<input type="text"-->
+                               <!--ng-model="case.caseBoss"-->
+                               <!--placeholder="0"-->
+                               <!--style="text-align: right"-->
+                               <!--class="form-control input-sm"-->
+                               <!--value="">-->
+                    <!--</td>-->
 
                     <!--核定金額-->
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
-                        {{case.approved_mount}}
+                    <td style="vertical-align: inherit; text-align: center;">
+                        <span style="color:grey" ng-if="isDepG"> 輸入文字</span>
                     </td>
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
-                        <input type="text"
-                               ng-model="case.approved_mount"
-                               placeholder="0"
-                               style="text-align: right"
-                               class="form-control input-sm"
-                               value="">
-                    </td>
+                    <!--<td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">-->
+                        <!--{{case.approved_mount}}-->
+                    <!--</td>-->
+                    <!--<td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">-->
+                        <!--<input type="text"-->
+                               <!--ng-model="case.approved_mount"-->
+                               <!--placeholder="0"-->
+                               <!--style="text-align: right"-->
+                               <!--class="form-control input-sm"-->
+                               <!--value="">-->
+                    <!--</td>-->
+
+                    <!--辦理項目 - 專案帶入-->
+                    <td></td>
+
+                    <!--鑽探日期 - 專案帶入-->
+                    <td></td>
+
 
                     <!--基設日期-->
                     <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
@@ -107,6 +144,10 @@
                                style="text-align: right"
                                class="form-control input-sm"
                                value="">
+                    </td>
+
+                    <!--發包日期 - 專案帶入-->
+                    <td style="vertical-align: inherit; text-align: center;" >
                     </td>
 
                     <!--決標日期-->
@@ -135,6 +176,25 @@
                                value="">
                     </td>
 
+                    <!--施工廠商 - 專案帶入-->
+                    <td style="vertical-align: inherit; text-align: center;" >
+                    </td>
+
+                    <!--開工日期 - 專案帶入-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        colspan="2">
+                    </td>
+
+                    <!--完工日期 - 專案帶入-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        colspan="2">
+                    </td>
+
+                    <!--驗收日期 - 專案帶入-->
+                    <td style="vertical-align: inherit; text-align: center;" >
+                    </td>
+
+
                     <!--變更日期-->
                     <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
                         {{case.date_4}}
@@ -162,7 +222,7 @@
                     </td>
 
                     <!--請款類型-->
-                    <td style="vertical-align: inherit; text-align: center;">
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="false">
                         <div style="margin-top: 0px;color: black">
                             <label class="custom-checkbox">
                                 <input type="checkbox"
@@ -198,7 +258,7 @@
                     <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
                         <input type="text"
                                ng-model="case.pay_mount"
-                               placeholder="0"
+                               placeholder="請款金額"
                                style="text-align: right"
                                class="form-control input-sm"
                                value="">
@@ -254,33 +314,466 @@
                 </tr>
             </tbody>
 
+            <!--各個專案-->
+            <tbody ng-repeat="unit in case.prjUnits">
+                <tr style="vertical-align: inherit; text-align: center;">
+                    <!-- 序號-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        rowspan="{{unit.rowSpan}}">
+                        ( {{$index + 1}} )
+                        <div style="margin-bottom: 5px; margin-top: 10px;" ng-if="isDepG">
+                            <button type="button"
+                                    ng-click="insertPrjUnitMemoInCase(unit, case)"
+                                    class="btn btn-info btn-icon">
+                                <i class="ion-plus-round"/>
+                            </button>
+                        </div>
+
+                        <div style="margin-bottom: 5px; margin-top: 10px" ng-if="isDepG">
+                            <button ng-click="updatePrjUnitMemoInCase(unit)"
+                                    pb-style="shrink"
+                                    class="btn btn-primary">
+                                <i class="ion-document-text"/>
+                            </button>
+                        </div>
+                    </td>
+
+                    <!--工程編號-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        rowspan="{{unit.rowSpan}}">
+                        <span >{{case.code}}</span>
+                    </td>
+
+                    <!--工程名稱-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        rowspan="{{unit.rowSpan}}">
+                        <span >{{case.name}}</span>
+                    </td>
+
+                    <!--專案類型-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        rowspan="{{unit.rowSpan}}">
+                        <span >{{unit.typeName}}</span>
+                    </td>
+
+                    <!--工程地點-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG"
+                        rowspan="{{unit.rowSpan}}">
+                        {{unit.position}}
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG"
+                        rowspan="{{unit.rowSpan}}">
+                        <input type="text"
+                               ng-model="unit.position"
+                               placeholder="工程地點"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--機關承辦-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG"
+                        rowspan="{{unit.rowSpan}}">
+                        {{unit.caseBoss}}
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG"
+                        rowspan="{{unit.rowSpan}}">
+                        <input type="text"
+                               ng-model="unit.caseBoss"
+                               placeholder="機關承辦"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--核定金額-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG"
+                        rowspan="{{unit.rowSpan}}">
+                        {{unit.approved_mount}}
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG"
+                        rowspan="{{unit.rowSpan}}">
+                        <input type="text"
+                               ng-model="unit.approved_mount"
+                               placeholder="核定金額"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--辦理項目 - 帶入-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        rowspan="{{unit.rowSpan}}">
+                        <span>{{showUnitProcessStage(unit)}}</span>
+                    </td>
+
+                    <!--鑽探日期 - 帶入-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        rowspan="{{unit.rowSpan}}">
+                        <span>{{unit.drill_date}}</span>
+                    </td>
+
+                    <!--基設日期(可新增)-->
+                    <td style="vertical-align: inherit; text-align: center;">
+                        <!--{{unit.unitMemoByCase}}-->
+                    </td>
+                    <!--<td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">-->
+                        <!--<input type="text"-->
+                               <!--ng-model="case.date_1"-->
+                               <!--placeholder="0"-->
+                               <!--style="text-align: right"-->
+                               <!--class="form-control input-sm"-->
+                               <!--value="">-->
+                    <!--</td>-->
+
+                    <!--細設日期(可新增)-->
+                    <td style="vertical-align: inherit; text-align: center;">
+                    </td>
+
+                    <!--發包日期 - 專案帶入-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        rowspan="{{unit.rowSpan}}">
+                        <span>{{unit.pack_date}}</span>
+                    </td>
+
+                    <!--決標日期(可新增)-->
+                    <td style="vertical-align: inherit; text-align: center;">
+                    </td>
+
+                    <!--決標金額(可新增)-->
+                    <td style="vertical-align: inherit; text-align: center;">
+                    </td>
+
+                    <!--施工廠商 - 專案帶入-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        rowspan="{{unit.rowSpan}}">
+                        <span>{{unit.pack_company}}</span>
+                    </td>
+
+                    <!--開工日期 - 專案帶入(可新增)-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        rowspan="{{unit.rowSpan}}">
+                        <span>{{unit.start_date}}</span>
+                    </td>
+                    <td></td>
+
+                    <!--完工日期 - 專案帶入(可新增)-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        rowspan="{{unit.rowSpan}}">
+                        <span>{{unit.done_date}}</span>
+                    </td>
+                    <td></td>
+
+                    <!--驗收日期 - 專案帶入-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        rowspan="{{unit.rowSpan}}">
+                        <span>{{unit.check_date}}</span>
+                    </td>
+
+                    <!--變更日期(可新增)-->
+                    <td style="vertical-align: inherit; text-align: center;">
+                    </td>
+
+                    <!--請款日期(可新增)-->
+                    <td style="vertical-align: inherit; text-align: center;">
+                    </td>
+
+                    <!--請款類型(可新增)-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="false">
+                    </td>
+
+                    <!--請款金額(可新增)-->
+                    <td style="vertical-align: inherit; text-align: center;">
+                    </td>
+
+                    <!--開發票-->
+                    <td style="vertical-align: inherit; text-align: center;"></td>
+                    <td style="vertical-align: inherit; text-align: center;"
+                        ng-if="false"
+                        rowspan="{{unit.rowSpan}}">
+                        <div style="margin-top: 0px;color: black">
+                            <label class="custom-checkbox">
+                                <input type="checkbox"
+                                       ng-model="unit.is_bill_apply"
+                                       ng-disabled="!isDepG">
+                                <span style="color:black">請款</span>
+                            </label>
+                            <label class="custom-checkbox">
+                                <input type="checkbox"
+                                       ng-model="unit.is_bill_count"
+                                       ng-disabled="!isDepG">
+                                <span style="color:black">入帳</span>
+                            </label>
+                        </div>
+                    </td>
+
+                    <!--結案-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        rowspan="{{unit.rowSpan}}"
+                        ng-if="!isDepG">
+                        <span ng-if="unit.enable">
+                            未結
+                        </span>
+                        <span ng-if="!unit.enable">
+                            已結案
+                        </span>
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;"
+                        rowspan="{{unit.rowSpan}}"
+                        ng-if="isDepG">
+                        <div style="margin-top: 15px">
+                            <span >專案 執行/結案</span>
+                            <br>
+                            <p class="mytooltip" ng-if="!unit.canChangeEnable">
+                                <i class="ion-information-circled"/>
+                                <span class="tooltiptext">
+                                    設定開發票選項(全)勾選入帳，才可關閉
+                                </span>
+                            </p>
+                            <cj-switcher
+                                    ng-show="unit.canChangeEnable"
+                                    style="horiz-align: center; vertical-align: center"
+                                    ng-model="unit.enable"
+                                    switcher-style="primary"
+                                    switcher-value="unit.enable"
+                                    switcher-on="執行"
+                                    switcher-off="結案"/>
+                            <br>
+                            <span>專案可視</span>
+                            <cj-switcher
+                                    style="horiz-align: center; vertical-align: center"
+                                    ng-model="unit.viewable"
+                                    switcher-style="danger"
+                                    switcher-value="unit.viewable"
+                                    switcher-on="顯示"
+                                    switcher-off="隱藏"/>
+
+                        </div>
+                    </td>
+
+                    <td style="vertical-align: inherit; text-align: center;"
+                        rowspan="{{unit.rowSpan}}">
+                        <span>{{unit.userUpdateTs}}</span>
+                    </td>
+                </tr>
+
+                <!--unitMemoByCase-->
+                <tr ng-repeat="unitMemo_ByCase in unit.unitMemoByCase" >
+
+                    <!--基設日期-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
+                        <span>{{unitMemo_ByCase.date_1}}</span>
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
+                        <input type="text"
+                               ng-model="unitMemo_ByCase.date_1"
+                               placeholder="基設日期"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--細設日期-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
+                        <span>{{unitMemo_ByCase.date_2}}</span>
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
+                        <input type="text"
+                               ng-model="unitMemo_ByCase.date_2"
+                               placeholder="細設日期"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--發包日期-->
+                    <!--<td></td>-->
+
+                    <!--決標日期-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
+                        <span>{{unitMemo_ByCase.date_3}}</span>
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
+                        <input type="text"
+                               ng-model="unitMemo_ByCase.date_3"
+                               placeholder="決標日期"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--決標金額-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
+                        <span>{{unitMemo_ByCase.date_3_mount}}</span>
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
+                        <input type="text"
+                               ng-model="unitMemo_ByCase.date_3_mount"
+                               placeholder="決標金額"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--施工廠商-->
+                    <!--<td></td>-->
+
+                    <!--開工日期-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
+                        <span>{{unitMemo_ByCase.start_date}}</span>
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
+                        <input type="text"
+                               ng-model="unitMemo_ByCase.start_date"
+                               placeholder="開工日期"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--完工日期-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
+                        <span>{{unitMemo_ByCase.done_date}}</span>
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
+                        <input type="text"
+                               ng-model="unitMemo_ByCase.done_date"
+                               placeholder="完工日期"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--驗收日期-->
+                    <!--<td></td>-->
+
+                    <!--變更日期-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
+                        <span>{{unitMemo_ByCase.date_4}}</span>
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
+                        <input type="text"
+                               ng-model="unitMemo_ByCase.date_4"
+                               placeholder="變更日期"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--請款日期-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
+                        <span>{{unitMemo_ByCase.date_5}}</span>
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
+                        <input type="text"
+                               ng-model="unitMemo_ByCase.date_5"
+                               placeholder="請款日期"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--請款類型-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="false">
+                        <div style="margin-top: 0px;color: black">
+                            <label class="custom-checkbox">
+                                <input type="checkbox"
+                                       ng-model="unitMemo_ByCase.pay_type_1"
+                                       ng-disabled="!isDepG">
+                                <span style="color:black">鑽探</span>
+                            </label>
+                            <label class="custom-checkbox">
+                                <input type="checkbox"
+                                       ng-model="unitMemo_ByCase.pay_type_2"
+                                       ng-disabled="!isDepG">
+                                <span style="color:black">設計</span>
+                            </label>
+                            <label class="custom-checkbox">
+                                <input type="checkbox"
+                                       ng-model="unitMemo_ByCase.pay_type_3"
+                                       ng-disabled="!isDepG">
+                                <span style="color:black">監造</span>
+                            </label>
+                            <label class="custom-checkbox">
+                                <input type="checkbox"
+                                       ng-model="unitMemo_ByCase.pay_type_4"
+                                       ng-disabled="!isDepG">
+                                <span style="color:black">尾款</span>
+                            </label>
+                        </div>
+                    </td>
+
+                    <!--請款金額-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isDepG">
+                        <span>{{unitMemo_ByCase.pay_mount}}</span>
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isDepG">
+                        <input type="text"
+                               ng-model="unitMemo_ByCase.pay_mount"
+                               placeholder="請款金額"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--開發票-->
+                    <td style="vertical-align: inherit; text-align: center;">
+                        <div style="margin-top: 0px;color: black">
+                            <label class="custom-checkbox">
+                                <input type="checkbox"
+                                       ng-model="unitMemo_ByCase.is_bill_apply"
+                                       ng-disabled="!isDepG">
+                                <span style="color:black">請款</span>
+                            </label>
+                            <label class="custom-checkbox">
+                                <input type="checkbox"
+                                       ng-model="unitMemo_ByCase.is_bill_count"
+                                       ng-disabled="!isDepG">
+                                <span style="color:black">入帳</span>
+                            </label>
+                        </div>
+                    </td>
+
+                    <!--更新狀態-->
+                    <!--<td style="vertical-align: inherit; text-align: center;">-->
+                        <!--<span >{{unitMemo_ByCase.userUpdateTs}}</span>-->
+                    <!--</td>-->
+
+
+
+
+                </tr>
+
+            </tbody>
+
+            <!--case memo-->
             <tbody id="tableItemBody_{{$index}}"
-                   ng-if="isDepG"
+                   ng-if="false"
                    ng-repeat="memo in case.caseMemo">
                     <tr style="vertical-align: inherit; text-align: center;">
                         <td> ( {{$index + 1}} ) </td>
                         <td colspan="2"></td>
                         <td>
-                            <div style="margin:3px">
-                                <input type="text"
-                                       ng-model="memo.mount_ext"
-                                       placeholder=""
-                                       style="text-align: right"
-                                       class="form-control input-sm"
-                                       value="">
-                            </div>
+                            <!--<div style="margin:3px">-->
+                                <!--<input type="text"-->
+                                       <!--ng-model="memo.mount_ext"-->
+                                       <!--placeholder=""-->
+                                       <!--style="text-align: right"-->
+                                       <!--class="form-control input-sm"-->
+                                       <!--value="">-->
+                            <!--</div>-->
                         </td>
                         <td>
-                            <div style="margin:3px">
-                                <input type="text"
-                                       ng-model="memo.ext_mount_ext"
-                                       placeholder=""
-                                       style="text-align: right"
-                                       class="form-control input-sm"
-                                       value="">
-                            </div>
+                            <!--<div style="margin:3px">-->
+                                <!--<input type="text"-->
+                                       <!--ng-model="memo.ext_mount_ext"-->
+                                       <!--placeholder=""-->
+                                       <!--style="text-align: right"-->
+                                       <!--class="form-control input-sm"-->
+                                       <!--value="">-->
+                            <!--</div>-->
                         </td>
-                        <td colspan="2"></td>
+                        <td colspan="1"></td>
                         <td>
                             <!--<input type="text"-->
                                    <!--ng-model="memo.field_1"-->
@@ -312,68 +805,146 @@
                             <div style="margin:3px">
                                 <input type="text"
                                        ng-model="memo.data3_ext"
-                                       placeholder=""
+                                       placeholder="基設日期"
                                        style="text-align: right"
                                        class="form-control input-sm"
                                        value="">
                             </div>
-                            <!--議價日期-->
-                        </td>
-                        <td>
-                            <!--<input type="text"-->
-                                   <!--ng-model="memo.field_5"-->
-                                   <!--placeholder=""-->
-                                   <!--style="text-align: right"-->
-                                   <!--class="form-control input-sm"-->
-                                   <!--value="">-->
-                            <!--訂約日期-->
+                            <!--基設日期-->
                         </td>
                         <td>
                             <div style="margin:3px">
                                 <input type="text"
-                                       ng-model="memo.data5_ext"
-                                       placeholder=""
+                                       ng-model="memo.field_5"
+                                       placeholder="細設日期"
                                        style="text-align: right"
                                        class="form-control input-sm"
                                        value="">
                             </div>
-
-                            <!--履約期限-->
+                            <!--細設日期-->
                         </td>
                         <td>
-                            <div style="margin:3px">
-                                <input type="text"
-                                       ng-model="memo.data6_ext"
-                                       placeholder=""
-                                       style="text-align: right"
-                                       class="form-control input-sm"
-                                       value="">
-                            </div>
-
-                            <!--保險期限-->
+                            <!--<div style="margin:3px">-->
+                                <!--<input type="text"-->
+                                       <!--ng-model="memo.data5_ext"-->
+                                       <!--placeholder="發包日期"-->
+                                       <!--style="text-align: right"-->
+                                       <!--class="form-control input-sm"-->
+                                       <!--value="">-->
+                            <!--</div>-->
+                            <!--發包日期-->
+                        </td>
+                        <td>
+                            <!--<div style="margin:3px">-->
+                                <!--<input type="text"-->
+                                       <!--ng-model="memo.data6_ext"-->
+                                       <!--placeholder="決標日期"-->
+                                       <!--style="text-align: right"-->
+                                       <!--class="form-control input-sm"-->
+                                       <!--value="">-->
+                            <!--</div>-->
+                            <!--決標日期-->
                         </td>
                         <td>
                             <!--<input type="text"-->
                                    <!--ng-model="memo.field_8"-->
-                                   <!--placeholder=""-->
+                                   <!--placeholder="決標金額"-->
                                    <!--style="text-align: right"-->
                                    <!--class="form-control input-sm"-->
                                    <!--value="">-->
-                            <!--機關承辦-->
+                            <!--決標金額-->
+                        </td>
+
+                        <td>
+                            <!--施工廠商-->
+                        </td>
+
+                        <td>
+                            <div style="margin:3px">
+                                <input type="text"
+                                       ng-model="memo.field_5"
+                                       placeholder="開工日期"
+                                       style="text-align: right"
+                                       class="form-control input-sm"
+                                       value="">
+                            </div>
+                            <!--開工日期-->
+                        </td>
+
+                        <td>
+                            <div style="margin:3px">
+                                <input type="text"
+                                       ng-model="memo.field_5"
+                                       placeholder="完工日期"
+                                       style="text-align: right"
+                                       class="form-control input-sm"
+                                       value="">
+                            </div>
+                            <!--完工日期-->
+                        </td>
+
+                        <td>
+                            <!--驗收日期-->
+                        </td>
+
+                        <td>
+                            <div style="margin:3px">
+                                <input type="text"
+                                       ng-model="memo.field_5"
+                                       placeholder="變更日期"
+                                       style="text-align: right"
+                                       class="form-control input-sm"
+                                       value="">
+                            </div>
+                            <!--變更日期-->
+                        </td>
+
+                        <td>
+                            <div style="margin:3px">
+                                <input type="text"
+                                       ng-model="memo.field_5"
+                                       placeholder="請款日期"
+                                       style="text-align: right"
+                                       class="form-control input-sm"
+                                       value="">
+                            </div>
+                            <!--請款日期-->
+                        </td>
+
+                        <td>
+                            <div style="margin:3px">
+                                <input type="text"
+                                       ng-model="memo.field_5"
+                                       placeholder="請款類型"
+                                       style="text-align: right"
+                                       class="form-control input-sm"
+                                       value="">
+                            </div>
+                            <!--請款類型-->
+                        </td>
+
+                        <td>
+                            <div style="margin:3px">
+                                <input type="text"
+                                       ng-model="memo.field_5"
+                                       placeholder="請款金額"
+                                       style="text-align: right"
+                                       class="form-control input-sm"
+                                       value="">
+                            </div>
+                            <!--請款金額-->
                         </td>
                     </tr>
             </tbody>
         </table>
-        <div style="margin-top: 10px" ng-if="isDepG">
-        <!--<div style="margin-top: 10px" ng-if="true">-->
+        <div style="margin-top: 10px" ng-if="false">
             <button type="button"
                     ng-click="insertCaseMemo(case)"
                     class="btn btn-info btn-icon">
                 <i class="ion-plus-round"/>
             </button>
         </div>
-        <div style="margin-top: 10px" ng-if="isDepG">
-        <!--<div style="margin-top: 10px" ng-if="true">-->
+        <div style="margin-top: 10px" ng-if="false">
             <button ng-click="updateCase(case)"
                     style="float: left; padding: 0 30px; line-height: 4"
                     id="btnReview"

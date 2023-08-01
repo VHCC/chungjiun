@@ -38,6 +38,7 @@
                               _001_CaseTask) {
 
         $scope.username = cookies.get('username');
+        $scope.userDID = cookies.get('userDID');
         var roleType = cookies.get('roletype');
 
         var loadingReferenceId = 'mainPage_001caseInfo'
@@ -174,8 +175,18 @@
                 )($scope));
         }
 
-        $scope.showCaseInformation = function (projectCase) {
-            console.log(projectCase);
+        $scope.showPrjUnitInformation = function (projectUnit) {
+            console.log(projectUnit);
+            $scope.checkRowSpan(projectUnit);
+
+            _001_ProjectCase.findByCaseDID({
+                caseDID: projectUnit.caseDID
+            })
+            .success(function (resp) {
+                if (resp.length > 0) {
+                    projectUnit.case = resp[0];
+                }
+            })
         }
 
         // ****** options *******
@@ -275,27 +286,20 @@
             return selected[0];
         }
 
+        $scope.checkRowSpan = function(project) {
+            project.rowSpan = 1;
+            if (project.unitMemoByCase != undefined) {
+                project.rowSpan = project.unitMemo.length + 1;
+            }
+        }
+
 
         $scope.insertUnitMemo = function (item) {
 
             if (item.unitMemo == undefined) {
-                item.unitMemo = [{
-                    // field_1: "0",
-                    data3_ext: moment(new Date()).format("YYYY/MM/DD"),
-                    data5_ext: moment(new Date()).format("YYYY/MM/DD"),
-                    data6_ext: moment(new Date()).format("YYYY/MM/DD"),
-                    // field_5: moment(new Date()).format("YYYY/MM/DD"),
-                    // field_6: moment(new Date()).format("YYYY/MM/DD"),
-                    // field_7: moment(new Date()).format("YYYY/MM/DD"),
-                    // field_8: "承辦機關",
-                }];
+                item.unitMemo = [{}];
             } else {
-                item.unitMemo.push({
-                    data3_ext: moment(new Date()).format("YYYY/MM/DD"),
-                    data5_ext: moment(new Date()).format("YYYY/MM/DD"),
-                    data6_ext: moment(new Date()).format("YYYY/MM/DD"),
-                })
-
+                item.unitMemo.push({});
             }
 
             var formData = {
@@ -306,6 +310,7 @@
 
             _001_Project.updateOneUnit(formData)
                 .success(function (res) {
+                    $scope.checkRowSpan(item);
                     toastr['success'](item.name, '新增成功');
                 })
                 .error(function () {
@@ -315,19 +320,35 @@
 
         _001_CaseTask.findAll()
             .success(function (resp) {
-                $scope.qqqqq = resp;
+                $scope.processStageOptionAll = resp;
             })
 
 
         $scope.updateUnit = function (item, dom) {
-            console.log(dom);
-            console.log(item);
-            console.log($scope);
+            // console.log(dom);
+            // console.log(item);
+            // console.log($scope);
             var ts = moment(new Date()).format("YYYY/MM/DD HH:mm:ss");
 
             try {
                 var formData = {
                     _id: item._id,
+
+                    drill_date: item.drill_date, // 鑽探日期
+                    date_1_ext: item.date_1_ext, // 基設日期
+                    date_2_ext: item.date_2_ext, // 細設日期
+                    pack_date: item.pack_date, // 發包日期
+
+                    pack_company: item.pack_company, // 施工廠商
+                    start_date: item.start_date, // 開工日期
+                    done_date: item.done_date, // 完工日期
+                    predict_process: item.predict_process, // 預定進度
+                    real_process: item.real_process, // 實際進度
+
+                    check_date: item.check_date, // 驗收日期
+                    pay_end_date: item.pay_end_date, // 結算日期
+                    change_date: item.change_date, // 變更日期
+                    change_amount: item.change_amount, // 變更金額
 
                     unitMemo: item.unitMemo,
 
@@ -345,6 +366,10 @@
                 toastr['warning']('變更專案 !', '更新失敗');
                 return;
             }
+        }
+
+        $scope.isMajor = function (unit) {
+            return (unit.majorID == $scope.userDID);
         }
     }
 })();

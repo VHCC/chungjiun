@@ -13,6 +13,8 @@ global._001_apiUrl = {
     _001_post_project_find_one_case_with_specific_type : '/api/_001_post_project_find_one_case_with_specific_type',
     _001_post_project_find_all_case_with_specific_type_specific_contract : '/api/_001_post_project_find_all_case_with_specific_type_specific_contract',
     _001_post_project_update_one_by_projectDID : '/api/_001_post_project_update_one_by_projectDID',
+    _001_post_project_update_multi_by_object : '/api/_001_post_project_update_multi_by_object',
+    _001_post_project_find_all_by_majorDID : '/api/_001_post_project_find_all_by_majorDID',
 
 
 
@@ -35,6 +37,7 @@ global._001_apiUrl = {
     _001_post_project_case_find_one : '/api/_001_post_project_case_find_one',
     _001_post_project_case_find_by_contractDID_and_instituteDID : '/api/_001_post_project_case_find_by_contractDID_and_instituteDID',
     _001_post_project_case_find_by_contractDIDMulti_and_instituteDID : '/api/_001_post_project_case_find_by_contractDIDMulti_and_instituteDID',
+    _001_post_project_case_find_by_caseDIDMulti : '/api/_001_post_project_case_find_by_caseDIDMulti',
     _001_post_project_case_update_one_by_caseDID : '/api/_001_post_project_case_update_one_by_caseDID',
 
     // Case Task

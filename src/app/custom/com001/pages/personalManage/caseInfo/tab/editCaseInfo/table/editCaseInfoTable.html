@@ -1,7 +1,7 @@
 <uib-accordion ng-repeat="item in tableData">
     <!--<uib-accordion-group heading="{{showUser(user.DID)}}"-->
     <uib-accordion-group heading="{{item.branch}} - {{item.caseName}} - {{(item.typeName)}}"
-                         ng-click="showCaseInformation(item)"
+                         ng-click="showPrjUnitInformation(item)"
                          panel-class="bootstrap-panel accordion-panel panel-default">
         <table class="table table-bordered table-hover table-condensed" style="table-layout: fixed">
                <!--ng-repeat="table in fetchReviewTableFromScope(case)">-->
@@ -17,7 +17,9 @@
                     <th colspan="2" style="vertical-align: inherit; text-align: center; width: 300px" class="head_red">辦理階段</th><!--主承辦人員-->
 
                     <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_orange">鑽探日期</th><!--主承辦人員-->
-                    <th colspan="2" style="vertical-align: inherit; text-align: center; width: 300px" class="head_orange">基設日期</th><!--主承辦人員-->
+                    <th colspan="2" style="vertical-align: inherit; text-align: center; width: 300px" class="head_orange">
+                        基設日期
+                    </th><!--主承辦人員-->
                     <th colspan="2" style="vertical-align: inherit; text-align: center; width: 300px" class="head_orange">細設日期</th><!--主承辦人員-->
                     <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_orange">發包日期</th><!--主承辦人員-->
 
@@ -60,149 +62,478 @@
 
                     <!--核定金額-->
                     <td style="vertical-align: inherit; text-align: center;">
-                        <span >[工程基本資料]</span>
+                        <span >{{item.approved_mount}}</span>
                     </td>
 
                     <!--決標金額-->
                     <td style="vertical-align: inherit; text-align: center;">
-                        <span >[工程基本資料]</span>
+                        <span >[工程基本資料(有多筆)]</span>
                     </td>
 
                     <!--辦理階段 選項-->
                     <td style="vertical-align: inherit; text-align: center;">
-                        <span style="color:grey"> 新增代入</span>
+                        <span style="color:grey" ng-if="isMajor(item)"> 新增代入</span>
                     </td>
                     <!--辦理階段 文字-->
                     <td style="vertical-align: inherit; text-align: center;">
+                        <span style="color:grey" ng-if="isMajor(item)"> 輸入文字</span>
                     </td>
 
+                    <!--鑽探日期 -->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                        {{item.drill_date}}
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                        <input type="text"
+                               ng-model="item.drill_date"
+                               placeholder="鑽探日期"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--基設日期 -->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                        {{item.date_1_ext}}
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                        <input type="text"
+                               ng-model="item.date_1_ext"
+                               placeholder="基設日期"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--基設日期 - 工程帶入 -->
+                    <td style="vertical-align: inherit; text-align: center;" >
+                        {{item.case.date_1}}
+                        <div style="margin-top: 10px">
+                            <span >提醒</span>
+                            <br>
+                            <cj-switcher
+                                    style="horiz-align: center; vertical-align: center"
+                                    ng-click="changeContractDate6Notify(item)"
+                                    ng-model="contract.date6Enable"
+                                    switcher-on="提醒"
+                                    switcher-off="關閉"
+                                    switcher-style="primary"
+                                    switcher-value="contract.date6Enable"/>
+                            <br>
+                            <p class="mytooltip" ng-if="item.date6Enable">
+                                <i class="ion-information-circled"/>
+                                <span class="tooltiptext">
+                                    通知對象：設計部、專管部
+                                    <br>
+                                    時間：
+                                </span>
+                            </p>
+                        </div>
+                    </td>
+
+                    <!--細設日期 -->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                        {{item.date_2_ext}}
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                        <input type="text"
+                               ng-model="item.date_2_ext"
+                               placeholder="細設日期"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--細設日期 - 工程帶入 -->
                     <td style="vertical-align: inherit; text-align: center;">
+                        {{item.case.date_2}}
+                    </td>
+
+                    <!--發包日期 -->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                        {{item.pack_date}}
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                        <input type="text"
+                               ng-model="item.pack_date"
+                               placeholder="發包日期"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--施工廠商 -->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                        {{item.pack_company}}
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                        <input type="text"
+                               ng-model="item.pack_company"
+                               placeholder="施工廠商"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--開工日期-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                        {{item.start_date}}
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                        <input type="text"
+                               ng-model="item.start_date"
+                               placeholder="開工日期"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--完工日期-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                        {{item.done_date}}
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                        <input type="text"
+                               ng-model="item.done_date"
+                               placeholder="完工日期"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--預定進度-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                        {{item.predict_process}}
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                        <input type="text"
+                               ng-model="item.predict_process"
+                               placeholder="預定進度"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--實際進度-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                        {{item.real_process}}
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                        <input type="text"
+                               ng-model="item.real_process"
+                               placeholder="實際進度"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--驗收日期-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                        {{item.check_date}}
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                        <input type="text"
+                               ng-model="item.check_date"
+                               placeholder="驗收日期"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--結算日期-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                        {{item.pay_end_date}}
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                        <input type="text"
+                               ng-model="item.pay_end_date"
+                               placeholder="結算日期"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--變更日期-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                        {{item.change_date}}
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                        <input type="text"
+                               ng-model="item.change_date"
+                               placeholder="變更日期"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <!--變更金額-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                        {{item.change_amount}}
+                    </td>
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                        <input type="text"
+                               ng-model="item.change_amount"
+                               placeholder="變更金額"
+                               style="text-align: right"
+                               class="form-control input-sm"
+                               value="">
+                    </td>
+
+                    <td rowspan="{{item.rowSpan}}"
+                            style="vertical-align: inherit; text-align: center;">
                         <span >{{item.userUpdateTs}}</span>
                     </td><!--更新日期-->
 
                 </tr>
+
+
+
+                <!--新增-->
+                <tr style="vertical-align: inherit; text-align: center;"
+                    id="tableItemBody_{{$index}}"
+                    ng-repeat="memo in item.unitMemo">
+                    <td> ( {{$index + 1}} ) </td>
+                    <td colspan="4"></td>
+
+                    <!--辦理階段-->
+                    <td>
+                        <my >
+                            <process-stage-selector
+                                    processStageDID="{{memo.processStageUUID}}"
+                                    source="{{processStageOptionAll}}"
+                            >
+                            </process-stage-selector>
+                        </my>
+                    </td>
+
+                    <!--辦理階段文字-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        ng-if="!isMajor(item)">
+                        {{memo.processStageText}}
+                    </td>
+                    <td ng-if="isMajor(item)">
+                        <div style="margin:3px">
+                            <input type="text"
+                                   ng-model="memo.processStageText"
+                                   placeholder="辦理階段文字"
+                                   style="text-align: right"
+                                   class="form-control input-sm"
+                                   value="">
+                        </div>
+                    </td>
+
+                    <!--鑽探日期-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        ng-if="!isMajor(item)">
+                        {{memo.drill_date}}
+                    </td>
+                    <td ng-if="isMajor(item)">
+                        <div style="margin:3px">
+                            <input type="text"
+                                   ng-model="memo.drill_date"
+                                   placeholder="鑽探日期"
+                                   style="text-align: right"
+                                   class="form-control input-sm"
+                                   value="">
+                        </div>
+                    </td>
+
+                    <!--基設日期-->
+                    <td colspan="2" style="vertical-align: inherit; text-align: center;"
+                        ng-if="!isMajor(item)">
+                        {{memo.date_1_ext}}
+                    </td>
+                    <td colspan="2" ng-if="isMajor(item)">
+                        <div style="margin:3px">
+                            <input type="text"
+                                   ng-model="memo.date_1_ext"
+                                   placeholder="基設日期"
+                                   style="text-align: right"
+                                   class="form-control input-sm"
+                                   value="">
+                        </div>
+                    </td>
+
+                    <!--細設日期-->
+                    <td colspan="2" style="vertical-align: inherit; text-align: center;"
+                        ng-if="!isMajor(item)">
+                        {{memo.date_2_ext}}
+                    </td>
+                    <td colspan="2" ng-if="isMajor(item)">
+                        <div style="margin:3px">
+                            <input type="text"
+                                   ng-model="memo.date_2_ext"
+                                   placeholder="細設日期"
+                                   style="text-align: right"
+                                   class="form-control input-sm"
+                                   value="">
+                        </div>
+                    </td>
+
+                    <!--發包日期-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        ng-if="!isMajor(item)">
+                        {{memo.pack_date}}
+                    </td>
+                    <td ng-if="isMajor(item)">
+                        <div style="margin:3px">
+                            <input type="text"
+                                   ng-model="memo.pack_date"
+                                   placeholder="發包日期"
+                                   style="text-align: right"
+                                   class="form-control input-sm"
+                                   value="">
+                        </div>
+                    </td>
+
+                    <!--施工廠商-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        ng-if="!isMajor(item)">
+                        {{memo.pack_company}}
+                    </td>
+                    <td ng-if="isMajor(item)">
+                        <div style="margin:3px">
+                            <input type="text"
+                                   ng-model="memo.pack_company"
+                                   placeholder="施工廠商"
+                                   style="text-align: right"
+                                   class="form-control input-sm"
+                                   value="">
+                        </div>
+                    </td>
+
+                    <!--開工日期-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        ng-if="!isMajor(item)">
+                        {{memo.start_date}}
+                    </td>
+                    <td ng-if="isMajor(item)">
+                        <div style="margin:3px">
+                            <input type="text"
+                                   ng-model="memo.start_date"
+                                   placeholder="開工日期"
+                                   style="text-align: right"
+                                   class="form-control input-sm"
+                                   value="">
+                        </div>
+                    </td>
+
+                    <!--完工日期-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        ng-if="!isMajor(item)">
+                        {{memo.done_date}}
+                    </td>
+                    <td ng-if="isMajor(item)">
+                        <div style="margin:3px">
+                            <input type="text"
+                                   ng-model="memo.done_date"
+                                   placeholder="完工日期"
+                                   style="text-align: right"
+                                   class="form-control input-sm"
+                                   value="">
+                        </div>
+                    </td>
+
+                    <!--預定進度-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        ng-if="!isMajor(item)">
+                        {{memo.predict_process}}
+                    </td>
+                    <td ng-if="isMajor(item)">
+                        <div style="margin:3px">
+                            <input type="text"
+                                   ng-model="memo.predict_process"
+                                   placeholder="預定進度"
+                                   style="text-align: right"
+                                   class="form-control input-sm"
+                                   value="">
+                        </div>
+                    </td>
+
+                    <!--實際進度-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        ng-if="!isMajor(item)">
+                        {{memo.real_process}}
+                    </td>
+                    <td ng-if="isMajor(item)">
+                        <div style="margin:3px">
+                            <input type="text"
+                                   ng-model="memo.real_process"
+                                   placeholder="實際進度"
+                                   style="text-align: right"
+                                   class="form-control input-sm"
+                                   value="">
+                        </div>
+                    </td>
+
+                    <!--驗收日期-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        ng-if="!isMajor(item)">
+                        {{memo.check_date}}
+                    </td>
+                    <td ng-if="isMajor(item)">
+                        <div style="margin:3px">
+                            <input type="text"
+                                   ng-model="memo.check_date"
+                                   placeholder="驗收日期"
+                                   style="text-align: right"
+                                   class="form-control input-sm"
+                                   value="">
+                        </div>
+                    </td>
+
+                    <!--結算日期-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        ng-if="!isMajor(item)">
+                        {{memo.pay_end_date}}
+                    </td>
+                    <td ng-if="isMajor(item)">
+                        <div style="margin:3px">
+                            <input type="text"
+                                   ng-model="memo.pay_end_date"
+                                   placeholder="結算日期"
+                                   style="text-align: right"
+                                   class="form-control input-sm"
+                                   value="">
+                        </div>
+                    </td>
+
+                    <!--變更日期-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        ng-if="!isMajor(item)">
+                        {{memo.change_date}}
+                    </td>
+                    <td ng-if="isMajor(item)">
+                        <div style="margin:3px">
+                            <input type="text"
+                                   ng-model="memo.change_date"
+                                   placeholder="變更日期"
+                                   style="text-align: right"
+                                   class="form-control input-sm"
+                                   value="">
+                        </div>
+                    </td>
+
+                    <!--變更金額-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        ng-if="!isMajor(item)">
+                        {{memo.change_amount}}
+                    </td>
+                    <td ng-if="isMajor(item)">
+                        <div style="margin:3px">
+                            <input type="text"
+                                   ng-model="memo.change_amount"
+                                   placeholder="變更金額"
+                                   style="text-align: right"
+                                   class="form-control input-sm"
+                                   value="">
+                        </div>
+                    </td>
+                </tr>
             </tbody>
 
-            <tbody id="tableItemBody_{{$index}}"
-                   ng-repeat="memo in item.unitMemo">
-            <tr style="vertical-align: inherit; text-align: center;">
-                <td> ( {{$index + 1}} ) </td>
-                <td colspan="2"></td>
-                <td>
-                    <div style="margin:3px">
-                        <input type="text"
-                               ng-model="memo.mount_ext"
-                               placeholder=""
-                               style="text-align: right"
-                               class="form-control input-sm"
-                               value="">
-                    </div>
-                </td>
-                <td>
-                    <div style="margin:3px">
-                        <input type="text"
-                               ng-model="memo.ext_mount_ext"
-                               placeholder=""
-                               style="text-align: right"
-                               class="form-control input-sm"
-                               value="">
-                    </div>
-                </td>
 
-                <!--辦理階段-->
-                <td>
-                    <my >
-                        <process-stage-selector
-                                processStageDID="{{memo.processStageUUID}}"
-                                source="{{qqqqq}}"
-                        >
-                        </process-stage-selector>
-                    </my>
-                </td>
 
-                <td colspan="2"></td>
-                <td>
-                    <!--<input type="text"-->
-                    <!--ng-model="memo.field_1"-->
-                    <!--placeholder="0"-->
-                    <!--style="text-align: right"-->
-                    <!--class="form-control input-sm"-->
-                    <!--value="">-->
-                    <!--服務費率-->
-                </td>
-                <td>
-                    <!--<input type="text"-->
-                    <!--ng-model="memo.field_2"-->
-                    <!--placeholder=""-->
-                    <!--style="text-align: right"-->
-                    <!--class="form-control input-sm"-->
-                    <!--value="">-->
-                    <!--評選日期-->
-                </td>
-                <td>
-                    <!--<input type="text"-->
-                    <!--ng-model="memo.field_3"-->
-                    <!--placeholder=""-->
-                    <!--style="text-align: right"-->
-                    <!--class="form-control input-sm"-->
-                    <!--value="">-->
-                    <!--決標日期-->
-                </td>
-                <td>
-                    <div style="margin:3px">
-                        <input type="text"
-                               ng-model="memo.data3_ext"
-                               placeholder=""
-                               style="text-align: right"
-                               class="form-control input-sm"
-                               value="">
-                    </div>
-                    <!--議價日期-->
-                </td>
-                <td>
-                    <!--<input type="text"-->
-                    <!--ng-model="memo.field_5"-->
-                    <!--placeholder=""-->
-                    <!--style="text-align: right"-->
-                    <!--class="form-control input-sm"-->
-                    <!--value="">-->
-                    <!--訂約日期-->
-                </td>
-                <td>
-                    <div style="margin:3px">
-                        <input type="text"
-                               ng-model="memo.data5_ext"
-                               placeholder=""
-                               style="text-align: right"
-                               class="form-control input-sm"
-                               value="">
-                    </div>
-
-                    <!--履約期限-->
-                </td>
-                <td>
-                    <div style="margin:3px">
-                        <input type="text"
-                               ng-model="memo.data6_ext"
-                               placeholder=""
-                               style="text-align: right"
-                               class="form-control input-sm"
-                               value="">
-                    </div>
-
-                    <!--保險期限-->
-                </td>
-                <td>
-                    <!--<input type="text"-->
-                    <!--ng-model="memo.field_8"-->
-                    <!--placeholder=""-->
-                    <!--style="text-align: right"-->
-                    <!--class="form-control input-sm"-->
-                    <!--value="">-->
-                    <!--機關承辦-->
-                </td>
-            </tr>
-            </tbody>
 
             <tfoot>
             </tfoot>
@@ -218,13 +549,11 @@
         <!--<div style="margin-top: 10px" ng-if="isDepG">-->
             <div style="margin-top: 10px" ng-if="true">
             <button ng-click="updateUnit(item, this)"
-                    style="float: left; padding: 0 30px; line-height: 4"
+                    style="float: left; line-height: 2"
                     id="btnReview"
                     pb-style="shrink"
                     class="btn btn-primary">
-                <span>
-                    儲存
-                </span>
+                <i class="ion-document-text"/>
             </button>
         </div>
     </uib-accordion-group>

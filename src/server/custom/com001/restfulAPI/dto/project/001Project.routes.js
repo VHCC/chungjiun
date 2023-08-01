@@ -218,4 +218,99 @@ module.exports = function (app) {
         });
     });
 
+    // 更新多個專案 from 工程基本資料
+    app.post(global._001_apiUrl._001_post_project_update_multi_by_object, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, _001_post_project_update_multi_by_object");
+        console.log(JSON.stringify(req.body));
+
+        var workCount = 0;
+
+        for (var unitIndex = 0; unitIndex < req.body.units.length; unitIndex++) {
+            req.body.units[unitIndex].userUpdateTs = req.body.userUpdateTs;
+            var updateTarget = req.body.units[unitIndex];
+            var unitId = updateTarget._id;
+            delete updateTarget._id;
+            delete updateTarget.typeName;
+            console.log("-----");
+            console.log(updateTarget);
+            _001Project.updateOne({
+                _id: unitId,
+            }, {
+                $set: updateTarget
+            }, function (err, results) {
+                workCount ++;
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, _001_post_project_update_multi_by_object");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.status(500).send(err);
+                    return;
+                } else {
+                    if (workCount == req.body.units.length) {
+                        res.status(200).json(results);
+                        return;
+                    }
+                }
+            });
+        }
+
+
+
+        // var keyArray = Object.keys(req.body);
+        // var updateTarget = {};
+        // for (var index = 0; index < keyArray.length; index++) {
+        //     var evalString = "updateTarget.";
+        //     evalString += keyArray[index];
+        //
+        //     var evalFooter = "req.body.";
+        //     evalFooter += keyArray[index];
+        //     eval(evalString + " = " + evalFooter);
+        // }
+
+        // res.status(200);
+        // _001Project.updateOne({
+        //     _id: req.body._id,
+        // }, {
+        //     $set: updateTarget
+        // }, function (err, results) {
+        //     if (err) {
+        //         console.log(global.timeFormat(new Date()) + global.log.e + "API, _001_post_project_update_multi_by_object");
+        //         console.log(req.body);
+        //         console.log(" ***** ERROR ***** ");
+        //         console.log(err);
+        //         res.status(500).send(err);
+        //         return;
+        //     } else {
+        //         res.status(200).json(results);
+        //         return;
+        //     }
+        // });
+    });
+
+
+    app.post(global._001_apiUrl._001_post_project_find_all_by_majorDID, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, _001_post_project_find_all_by_majorDID");
+        console.log(req.body);
+        _001Project.find(
+            {
+                majorID: req.body.userDID,
+            },
+            function (err, projects) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, _001_post_project_find_all_by_majorDID");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    res.status(200).send(projects);
+                }
+                return;
+            });
+    });
+
+
+
+
 }

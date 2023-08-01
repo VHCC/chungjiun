@@ -1,0 +1,38 @@
+<!-- 2023/07/19 對照PPT 1111104進度管理-12-3(範例)-->
+<div class="horizontal-scroll">
+    <table class="table table-hover" st-table="prjUnits">
+        <thead>
+        <tr class="sortable">
+            <th >序號</th>
+            <th >代碼</th>
+            <th >工程名稱</th>
+            <th >專案資料</th>
+            <th >工時表</th>
+        </tr>
+
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="prjUnit in prjUnits" class="editable-tr-wrap">
+
+            <!--序號-->
+            <td>{{$index + 1}}</td>
+
+            <!--代碼-->
+            <td style="width: 10%">{{prjUnit.code}}</td>
+
+            <!--工程名稱-->
+            <td style="width: 10%">{{getProjectCase(prjUnit.caseDID).name}}</td>
+
+            <!--專案資料-->
+            <td style="width: 10%">{{prjUnit.userUpdateTs}}</td>
+
+            <!--工時表-->
+            <td style="width: 10%"></td>
+
+        </tr>
+        </tbody>
+        <tfoot>
+        </tfoot>
+    </table>
+</div>

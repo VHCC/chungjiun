@@ -107,8 +107,56 @@
 
                         project.typeName = $scope.getProjectType(project.type).label;
 
-                        console.log(project);
+                        project.prjManager = $scope.showPrjManager(project);
+
                     })
+
+                    User.getAllUsers()
+                        .success(function (allUsers) {
+                            console.log(allUsers);
+                            // 協辦人員
+                            $scope.allWorkers = [];
+                            $scope.allWorkersID = [];
+                            for (var i = 0; i < allUsers.length; i++) {
+                                $scope.allWorkers[i] = {
+                                    value: allUsers[i]._id,
+                                    name: allUsers[i].name,
+                                };
+                                $scope.allWorkersID[i] = allUsers[i]._id;
+                            }
+
+                            // 經理、主承辦
+                            $scope.projectManagers = [];
+                            // 2021/01/22 不能不指派經理
+                            // $scope.projectManagers[0] = {
+                            //     value: "",
+                            //     name: "None"
+                            // };
+                            for (var i = 0; i < allUsers.length; i++) {
+                                $scope.projectManagers[i] = {
+                                    value: allUsers[i]._id,
+                                    name: allUsers[i].name
+                                };
+                            }
+
+
+                            // 顯示
+                            for (var index = 0; index < $scope.projects.length; index++) {
+                                var selected = [];
+                                for (var subIndex = 0; subIndex < $scope.projects[index].workers.length; subIndex++) {
+                                    selected = $filter('filter')($scope.allWorkers, {
+                                        value: $scope.projects[index].workers[subIndex],
+                                    });
+                                    selected.length == 1 ? $scope.projects[index].workers[subIndex] = selected[0] : $scope.projects[index].workers[subIndex];
+                                }
+
+                                selected = $filter('filter')($scope.allWorkers, {
+                                    value: $scope.projects[index].majorID,
+                                });
+                                selected.length == 1 ? $scope.projects[index].majorID = selected[0] : '未指派主辦';
+                            }
+
+                        })
 
                     angular.element(
                         document.getElementById('includeHead_listProject'))
@@ -137,11 +185,11 @@
                 })
         }
 
+
+
         $timeout(function () {
             $scope.refreshData();
         }, 100)
-
-
 
 
         var emptyObject = {
@@ -202,6 +250,88 @@
         }
 
 
+        $scope.showUserNameByDID = function (userDID) {
+            var selected = [];
+            if ($scope.projectManagers === undefined) return;
+            selected = $filter('filter')($scope.projectManagers, {
+                value: userDID
+            });
+            return selected.length ? selected[0].name : 'Not Set';
+        };
+
+        $scope.showPrjManager = function (project) {
+            var selected = [];
+            if ($scope.projectManagers === undefined) return;
+            if (project.managerID) {
+                selected = $filter('filter')($scope.projectManagers, {
+                    value: project.managerID
+                });
+            }
+            return selected.length ? selected[0].name : 'Not Set';
+        };
+
+        $scope.showPrjMajor = function (project) {
+            var selected = [];
+            if ($scope.projectManagers === undefined) return;
+            if (project.majorID) {
+                selected = $filter('filter')($scope.projectManagers, {
+                    value: project.majorID.value,
+                });
+            }
+            return selected.length ? selected[0].name : 'Not Set';
+        };
+
+        $scope.updateMajorEUI = function (form, table) {
+            table.prjUnit.majorID = form.$data.majorID;
+            var formData = {
+                _id: table.prjUnit._id,
+                majorID: form.$data.majorID.value,
+            }
+            _001_Project.updateOneUnit(formData)
+                .success(function (res) {
+                })
+                .error(function () {
+                })
+        }
+
+        $scope.updateWorkers = function (form, table) {
+            console.log(form);
+            console.log(table);
+            try {
+                var workers = [];
+                for (var index = 0; index < form.$data.workers.length; index++) {
+                    if (form.$data.workers[index] == null ) {
+                        continue;
+                    }
+                    workers.push(form.$data.workers[index].value);
+                }
+                var formData = {
+                    _id: table.prjUnit._id,
+                    workers: workers,
+                }
+                console.log(formData);
+                _001_Project.updateOneUnit(formData)
+                    .success(function (res) {
+                    })
+                    .error(function () {
+                    })
+            } catch (err) {
+                toastr['warning']('資訊未完整 !', '更新失敗');
+                return;
+            }
+        }
+
+        $scope.showWorkersName = function (workers) {
+            var resault = "";
+            console.log(workers);
+            for (var index = 0; index < workers.length; index++) {
+                if (workers[index] == null || workers[index].name == undefined) {
+                    continue;
+                }
+                resault += workers[index].name + ", ";
+            }
+            return resault;
+        }
 
     }
 })();
