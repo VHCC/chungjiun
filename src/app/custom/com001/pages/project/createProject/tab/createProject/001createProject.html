@@ -137,7 +137,7 @@
 
             <div class="col-md-12">
                 <div class="form-group row clearfix" ng-if="vm.new.projectType">
-                    <label class="col-md-2 control-label">部門主管</label>
+                    <label class="col-md-2 control-label">專案主管</label>
                     <div class="col-md-10">
                         <ui-select ng-model="vm.new.projectManagers"
                                    class="btn-group bootstrap-select form-control"
@@ -145,7 +145,7 @@
                                    ng-disabled="false"
                                    append-to-body="true"
                                    search-enabled="true">
-                            <ui-select-match placeholder="請選擇部門主管">
+                            <ui-select-match placeholder="請選擇專案主管">
                                 {{$select.selected.name}}
                             </ui-select-match>
                             <ui-select-choices

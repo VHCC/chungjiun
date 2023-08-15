@@ -81,6 +81,33 @@
             {label: '其他', value: '7'},
         ];
 
+        $scope.findRoleType = function(roleType, callBack) {
+
+            var formData = {
+                roleType: roleType
+            }
+            User.findByRoleType(formData)
+                .success(function (result) {
+                    callBack(result);
+                })
+        }
+
+        // *****************
+        // 總經理-1
+        // 經理-2
+        // 副理-3
+        // 組長-4
+        // 技師-5
+        // 資深工程師-6
+        // 高級工程師-7
+        // 工程師-8
+        // 助理工程師-9
+        // 資深專員-10
+        // 高級專員-11
+        // 專員-12
+        // 駐府人員-13
+        // 工讀人員-14
+
         $scope.refreshData = function() {
 
             $timeout(function () {
@@ -111,9 +138,14 @@
 
                     })
 
+
+                    $scope.findRoleType(5, function (resp) {
+                        $scope.techsItems = resp;
+                    })
+
+
                     User.getAllUsers()
                         .success(function (allUsers) {
-                            console.log(allUsers);
                             // 協辦人員
                             $scope.allWorkers = [];
                             $scope.allWorkersID = [];
@@ -148,6 +180,13 @@
                                         value: $scope.projects[index].workers[subIndex],
                                     });
                                     selected.length == 1 ? $scope.projects[index].workers[subIndex] = selected[0] : $scope.projects[index].workers[subIndex];
+                                }
+
+                                for (var subIndex = 0; subIndex < $scope.projects[index].technician.length; subIndex++) {
+                                    selected = $filter('filter')($scope.allWorkers, {
+                                        value: $scope.projects[index].technician[subIndex],
+                                    });
+                                    selected.length == 1 ? $scope.projects[index].technician[subIndex] = selected[0] : $scope.projects[index].technician[subIndex];
                                 }
 
                                 selected = $filter('filter')($scope.allWorkers, {
@@ -295,8 +334,6 @@
         }
 
         $scope.updateWorkers = function (form, table) {
-            console.log(form);
-            console.log(table);
             try {
                 var workers = [];
                 for (var index = 0; index < form.$data.workers.length; index++) {
@@ -309,7 +346,6 @@
                     _id: table.prjUnit._id,
                     workers: workers,
                 }
-                console.log(formData);
                 _001_Project.updateOneUnit(formData)
                     .success(function (res) {
                     })
@@ -322,15 +358,51 @@
         }
 
         $scope.showWorkersName = function (workers) {
-            var resault = "";
-            console.log(workers);
+            var results = "";
             for (var index = 0; index < workers.length; index++) {
                 if (workers[index] == null || workers[index].name == undefined) {
                     continue;
                 }
-                resault += workers[index].name + ", ";
+                results += workers[index].name + ", ";
             }
-            return resault;
+            return results;
+        }
+
+        $scope.showMembersName = function (members) {
+            var results = "";
+            for (var index = 0; index < members.length; index++) {
+                if (members[index] == null || members[index].name == undefined) {
+                    continue;
+                }
+                results += members[index].name + ", ";
+            }
+            return results;
+        }
+
+        $scope.updateTechs = function (form, table) {
+            console.log(form)
+            console.log(table)
+            try {
+                var techs = [];
+                for (var index = 0; index < form.$data.techs.length; index++) {
+                    if (form.$data.techs[index] == null ) {
+                        continue;
+                    }
+                    techs.push(form.$data.techs[index]._id);
+                }
+                var formData = {
+                    _id: table.prjUnit._id,
+                    technician: techs,
+                }
+                _001_Project.updateOneUnit(formData)
+                    .success(function (res) {
+                    })
+                    .error(function () {
+                    })
+            } catch (err) {
+                toastr['warning']('資訊未完整 !', '更新失敗');
+                return;
+            }
         }
 
     }

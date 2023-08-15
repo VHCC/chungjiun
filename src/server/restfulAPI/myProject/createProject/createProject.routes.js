@@ -85,6 +85,50 @@ module.exports = function (app) {
             });
     });
 
+
+    // *****************
+    // 總經理-1
+    // 經理-2
+    // 副理-3
+    // 組長-4
+    // 技師-5
+    // 資深工程師-6
+    // 高級工程師-7
+    // 工程師-8
+    // 助理工程師-9
+    // 資深專員-10
+    // 高級專員-11
+    // 專員-12
+    // 駐府人員-13
+    // 工讀人員-14
+    app.post(global.apiUrl.post_findByRoleType, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "AP, post_findByRoleType");
+
+        console.log(req.body);
+
+        User.find(
+            {
+                roleType: req.body.roleType,
+                workStatus: true
+            },
+            {
+                password: 0,
+                userMonthSalary: 0
+            },
+            function (err, techs) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, post_findByRoleType");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.json(techs);
+                }
+            })
+    });
+
+
     app.get(global.apiUrl.get_all_techs, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "AP, getAllTechs");
         User.find(

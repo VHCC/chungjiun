@@ -14,7 +14,8 @@ global._001_apiUrl = {
     _001_post_project_find_all_case_with_specific_type_specific_contract : '/api/_001_post_project_find_all_case_with_specific_type_specific_contract',
     _001_post_project_update_one_by_projectDID : '/api/_001_post_project_update_one_by_projectDID',
     _001_post_project_update_multi_by_object : '/api/_001_post_project_update_multi_by_object',
-    _001_post_project_find_all_by_majorDID : '/api/_001_post_project_find_all_by_majorDID',
+    _001_post_project_find_all_by_userDID : '/api/_001_post_project_find_all_by_userDID',
+    _001_post_project_find_all_by_depType : '/api/_001_post_project_find_all_by_depType',
 
 
 

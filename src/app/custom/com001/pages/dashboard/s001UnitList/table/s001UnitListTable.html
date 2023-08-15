@@ -25,7 +25,8 @@
             <td style="width: 10%">{{getProjectCase(prjUnit.caseDID).name}}</td>
 
             <!--專案資料-->
-            <td style="width: 10%">{{prjUnit.userUpdateTs}}</td>
+            <td ng-class="(checkUpdateStatus(prjUnit)) ? 'normal' : 'delay'">
+                {{prjUnit.userUpdateTs}}</td>
 
             <!--工時表-->
             <td style="width: 10%"></td>

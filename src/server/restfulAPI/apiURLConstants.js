@@ -322,6 +322,8 @@ global.apiUrl = {
     post_user_send_test_mail : '/api/post_user_send_test_mail',
     post_user_info_update_before_108_kpi : '/api/post_user_info_update_before_108_kpi',
 
+    post_findByRoleType : '/api/post_findByRoleType',
+
 
     // WorkAddConfirmFormUtil
     post_create_work_add_confirm_form : '/api/post_create_work_add_confirm_form',

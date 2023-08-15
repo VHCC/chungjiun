@@ -18,6 +18,11 @@
                 getAllUsersWithSignOut: function () {
                     return http.get('/api/getAllUsersWithSignOut');
                 },
+
+                findByRoleType: function (formData) {
+                    return http.post('/api/post_findByRoleType', formData);
+                },
+
                 findTechs: function () {
                     return http.get('/api/getAllTechs');
                 },

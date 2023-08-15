@@ -20,7 +20,7 @@
             <th st-sort="code" >專案編碼</th>
             <th st-sort="typeName" >專案類型</th>
 
-            <th st-sort="prjManager" >部門主管</th>
+            <th st-sort="prjManager" >專案主管</th>
             <th st-sort="typeName" >主承辦</th>
             <th st-sort="typeName" >協辦人員</th>
             <th st-sort="typeName" >負責技師</th>
@@ -75,7 +75,7 @@
             </th>
 
             <th><input st-search="prjManager"
-                       placeholder="尋找部門主管"
+                       placeholder="尋找專案主管"
                        class="input-sm form-control search-input"
                        type="search"/>
             </th>
@@ -212,6 +212,56 @@
                         <button type="button" class="btn btn-default editable-table-button btn-xs"
                                 ng-disabled="uiSelectForm.$waiting"
                                 ng-click="uiSelectForm.$cancel()">
+                          取消
+                        </button>
+                      </span>
+                    </div>
+                </form>
+            </td>
+
+
+            <!--技師-->
+            <td class="select-td" style="width: 20%">
+                <form data-editable-form
+                      name="uiTechSelectForm">
+                    <div editable-ui-select="prjUnit.technician"
+                         e-multiple
+                         e-close-on-select="false"
+                         data-e-form="uiTechSelectForm"
+                         data-e-name="techs"
+                         name="techs"
+                         e-append-to-body="true"
+                         data-e-style="min-width:100px;max-width:500px;white-space:normal;"
+                         data-e-ng-model="prjUnit.technician">
+                        {{showMembersName(prjUnit.technician)}}
+                        <editable-ui-select-match
+                                placeholder="請選擇技師">
+                            {{$select.selected[$index].name}}
+                        </editable-ui-select-match>
+                        <editable-ui-select-choices repeat="user in techsItems | filter: $select.search ">
+                            <span ng-bind-html="user.name | highlight: $select.search"></span>
+                        </editable-ui-select-choices>
+                    </div>
+                    <br/>
+                    <div class="buttons">
+                        <!-- button to show form -->
+                        <button type="button" class="btn btn-primary editable-table-button btn-xs"
+                                ng-disabled="uiTechSelectForm.$visible"
+                                ng-click="uiTechSelectForm.$show()"
+                                ng-show="true">
+                            指定技師
+                        </button>
+                        <!-- buttons to submit / cancel form -->
+                        <span ng-show="uiTechSelectForm.$visible">
+                        <br/>
+                        <button type="submit" class="btn btn-primary editable-table-button btn-xs"
+                                ng-click="updateTechs(uiTechSelectForm, this)"
+                                ng-disabled="uiSelectForm.$waiting">
+                          確認
+                        </button>
+                        <button type="button" class="btn btn-default editable-table-button btn-xs"
+                                ng-disabled="uiTechSelectForm.$waiting"
+                                ng-click="uiTechSelectForm.$cancel()">
                           取消
                         </button>
                       </span>

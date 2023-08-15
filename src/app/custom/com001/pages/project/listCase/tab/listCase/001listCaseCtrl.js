@@ -512,6 +512,10 @@
                 var formData = {
                     _id: prjUnit._id,
 
+                    position: prjUnit.position,
+                    caseBoss: prjUnit.caseBoss,
+                    approved_mount: prjUnit.approved_mount,
+
                     enable: prjUnit.enable,
                     viewable: prjUnit.viewable,
 

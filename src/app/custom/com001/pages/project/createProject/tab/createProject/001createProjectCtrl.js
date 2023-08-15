@@ -186,11 +186,42 @@
             })
         }
 
+        $scope.findRoleType = function(roleType, callBack) {
 
-        User.findTechs()
-            .success(function (techs) {
-                vm.techsItems = techs;
+            console.log(roleType);
+            var formData = {
+                roleType: roleType
+            }
+            User.findByRoleType(formData)
+                .success(function (result) {
+                    callBack(result);
+                })
+        }
+
+        $scope.init = function() {
+            $scope.findRoleType(5, function (resp) {
+                // console.log(resp);
+                vm.techsItems = resp;
             })
+        }
+
+        $scope.init();
+
+        // *****************
+        // 總經理-1
+        // 經理-2
+        // 副理-3
+        // 組長-4
+        // 技師-5
+        // 資深工程師-6
+        // 高級工程師-7
+        // 工程師-8
+        // 助理工程師-9
+        // 資深專員-10
+        // 高級專員-11
+        // 專員-12
+        // 駐府人員-13
+        // 工讀人員-14
 
         User.getAllUsers()
             .success(function (managers) {
@@ -214,7 +245,7 @@
                 bsLoadingOverlayService.start({
                     referenceId: loadingReferenceId
                 });
-            }, 100)
+            }, 100);
 
             var code = vm.new.branch.value +
                 vm.new.institute.code +
@@ -222,33 +253,39 @@
                 vm.new.projectCase.code +
                 vm.new.projectType.value;
 
-                _001_Project.createProject({
-                    branch: vm.new.branch.value,
-                    instituteDID: vm.new.institute._id,
-                    contractDID: vm.new.projectContract._id,
-                    caseDID: vm.new.projectCase._id,
-                    type: vm.new.projectType.value,
-                    managerID: vm.new.projectManagers._id,
-                    code: code,
-                })
-                .success(function (res) {
-                    vm.new = null;
-                    console.log(res);
-                    $timeout(function () {
-                        bsLoadingOverlayService.stop({
-                            referenceId: loadingReferenceId
-                        });
-                        toastr.info('建立 '  + code, '成功');
-                    }, 1000)
-                })
-                .error(function (err) {
-                    toastr.error(err, 'API 錯誤, 請聯繫管理員');
-                    $timeout(function () {
-                        bsLoadingOverlayService.stop({
-                            referenceId: loadingReferenceId
-                        });
-                    }, 500)
-                })
+            var prjTechs = [];
+            for (var index = 0; index < vm.new.projectTechs.length; index++) {
+                prjTechs[index] = vm.new.projectTechs[index]._id;
+            }
+
+            _001_Project.createProject({
+                branch: vm.new.branch.value,
+                instituteDID: vm.new.institute._id,
+                contractDID: vm.new.projectContract._id,
+                caseDID: vm.new.projectCase._id,
+                type: vm.new.projectType.value,
+                managerID: vm.new.projectManagers._id,
+                code: code,
+                technician: prjTechs,
+            })
+            .success(function (res) {
+                vm.new = null;
+                console.log(res);
+                $timeout(function () {
+                    bsLoadingOverlayService.stop({
+                        referenceId: loadingReferenceId
+                    });
+                    toastr.info('建立 '  + code, '成功');
+                }, 1000)
+            })
+            .error(function (err) {
+                toastr.error(err, 'API 錯誤, 請聯繫管理員');
+                $timeout(function () {
+                    bsLoadingOverlayService.stop({
+                        referenceId: loadingReferenceId
+                    });
+                }, 500)
+            })
         }
 
     }
