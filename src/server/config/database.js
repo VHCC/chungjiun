@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var localDB = 'mongodb://192.168.1.151:27017/vhcsystem';
+var localDB = 'mongodb://localhost:27017/vhcsystem';
 var remoteDB = 'mongodb://ichenprocin.dsmynas.com:27017/vhcsystem';
 // var localDB = 'mongodb://localhost:27017/workhourexpress';
 // var remoteDB = 'mongodb://ichenprocin.dsmynas.com:27017/workhourexpress';
@@ -18,5 +18,5 @@ db.on('error', function callback() {
 });
 
 db.once('open', function callback() {
-    console.log("----- Database Connected to " + remoteDB.toString() + " -----");
+    console.log("----- Database Connected to " + localDB.toString() + " -----");
 });

@@ -23,7 +23,6 @@
                 templateUrl: 'app/pages/vhc/test/vhcTest.html',
                 controller: 'vhcTestController',
                 title: '資料庫轉移',
-                accessLevel: [9999],
                 sidebarMeta: {
                     icon: 'ion-grid',
                     order: global.pages.vhcMigrate,
@@ -49,6 +48,16 @@
                     order: global.pages.vhcPurchaseList,
                 },
             })
+            // .state('vhcTest.lineSignUp', {
+            //     url: '/lineSignUp',
+            //     templateUrl: 'app/pages/vhc/lineSignUp/lineSignUp.html',
+            //     controller: 'lineSignUpController',
+            //     title: 'Line註冊會員',
+            //     sidebarMeta: {
+            //         icon: 'ion-grid',
+            //         order: global.pages.lineSignUp,
+            //     },
+            // })
     }
 
 })();

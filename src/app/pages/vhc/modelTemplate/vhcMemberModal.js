@@ -14,18 +14,18 @@
                 '$cookies',
                 'VhcMemberUtil',
                 '$uibModalInstance',
-                VhcMemberModalC
+                vhcMemberModalCtrl
             ]);
 
     /** @ngInject */
-    function VhcMemberModalC($scope,
+    function vhcMemberModalCtrl($scope,
                              $window,
                              toastr,
                              cookies,
                              VhcMemberUtil,
                              $uibModalInstance) {
 
-        // console.log($scope.$resolve.member);
+        console.log($scope.$resolve.member);
         // Main Data
         $scope.parent = $scope.$resolve.parent;
         $scope.member = $scope.$resolve.member;
@@ -62,6 +62,7 @@
         }
 
         $scope.saveVhcMember = function () {
+            console.log($scope);
             var postData = {
                 member: $scope.member
             }
