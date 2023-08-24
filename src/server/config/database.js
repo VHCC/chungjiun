@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
-var localDB = 'mongodb://localhost:27017/vhcsystem';
-var remoteDB = 'mongodb://ichenprocin.dsmynas.com:27017/vhcsystem';
+var localDB = 'mongodb://localhost:27017/hongsystem';
+var remoteDB = 'mongodb://ichenprocin.dsmynas.com:27017/hongsystem';
 // var localDB = 'mongodb://localhost:27017/workhourexpress';
 // var remoteDB = 'mongodb://ichenprocin.dsmynas.com:27017/workhourexpress';
 

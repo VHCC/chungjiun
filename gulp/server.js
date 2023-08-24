@@ -39,7 +39,7 @@ function browserSyncInit(baseDir, browser) {
 
   var proxyTableAPI = {
       //'0626-118-163-147-182.ngrok.io/api': 'http://localhost:16788',
-      'localhost:4000/api': 'http://localhost:16788',
+      'localhost:4010/api': 'http://localhost:17788',
   }
   // 设置代理
   var apiProxy = proxy('/api', {

@@ -71,7 +71,7 @@
                         console.log('cookies.username= ' + cookies.username);
                         console.log('cookies.username= ' + cookies.get('username'));
                         // window.location.href = 'https://vhc.ichenprocin.dsmynas.com';
-                        window.location.href = 'http://localhost:4000';
+                        window.location.href = 'http://localhost:4010';
                         // window.location.href = 'https://b5b2-118-163-147-182.ngrok.io';
 
                         scope.todos = data; // assign our new list of todos
