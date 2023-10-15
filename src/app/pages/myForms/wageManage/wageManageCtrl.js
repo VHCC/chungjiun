@@ -455,17 +455,17 @@
                         }
 
                         if (this.workOffType !== undefined) {
-                            // 請假單
-                            if (this.workOffType.type == 3 || this.workOffType.type == 4 || this.workOffType.type == 5
-                                || this.workOffType.type == 7 || this.workOffType.type == 8 || this.workOffType.type == 9) {
+                            // 請假單，依據勞動部 2022/01/18 勞動字第 1110140008 修改
+                            if (this.workOffType.type == 4 || this.workOffType.type == 5
+                                || this.workOffType.type == 7) {
 
                                 resultFinal = resultFinal <= 4 ? 4 : 8;
                             }
                             return resultFinal;
                         } else if (this.table != undefined) {
-                            // 主管審核、行政審核
+                            // 主管審核、行政審核，依據勞動部 2022/01/18 勞動字第 1110140008 修改
                             if (this.table.workOffType == 4 || this.table.workOffType == 5
-                                || this.table.workOffType == 7 || this.table.workOffType == 8 || this.table.workOffType == 9) {
+                                || this.table.workOffType == 7 ) {
                                 resultFinal = resultFinal <= 4 ? 4 : 8;
                             }
                             return resultFinal;

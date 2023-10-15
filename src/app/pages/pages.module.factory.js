@@ -1497,7 +1497,7 @@
                         case 2:
                             return "補休"; // Hour
                         case 3:
-                            return "特休"; // Day
+                            return "特休"; // Hour
                         case 4:
                             return "婚假"; // Day
                         case 5:
@@ -1507,9 +1507,9 @@
                         case 7:
                             return "公傷假"; // Day
                         case 8:
-                            return "產假"; // Day
+                            return "產假"; // Hour
                         case 9:
-                            return "陪產(檢)假"; // Day
+                            return "陪產(檢)假"; // Hour
                         case 1001:
                             return "其他"; // Hour as 公假 20190208
                         case -1:

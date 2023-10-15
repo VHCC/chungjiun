@@ -3032,7 +3032,7 @@
 
                 // 總攬
                 if (workOffType == 4 || workOffType == 5
-                    || workOffType == 7 || workOffType == 8 || workOffType == 9) {
+                    || workOffType == 7 || workOffType == 8) {
 
                     resultFinal = resultFinal <= 4 ? 4 : 8;
                 }
