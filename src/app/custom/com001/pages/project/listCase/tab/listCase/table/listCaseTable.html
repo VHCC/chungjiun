@@ -541,8 +541,15 @@
                                     switcher-on="執行"
                                     switcher-off="結案"/>
                             <br>
-                            <span>專案可視</span>
+                            <p class="mytooltip" ng-if="unit.enable">
+                                <i class="ion-information-circled"/>
+                                <span class="tooltiptext">
+                                    專案結案後，可選擇隱藏或顯示
+                                </span>
+                            </p>
+                            <span ng-show="!unit.enable">專案可視</span>
                             <cj-switcher
+                                    ng-show="!unit.enable"
                                     style="horiz-align: center; vertical-align: center"
                                     ng-model="unit.viewable"
                                     switcher-style="danger"
@@ -939,14 +946,18 @@
                     </tr>
             </tbody>
         </table>
-        <div style="margin-top: 10px" ng-if="false">
+        <div style="margin-top: 10px"
+             ng-if="false"
+        >
             <button type="button"
                     ng-click="insertCaseMemo(case)"
                     class="btn btn-info btn-icon">
                 <i class="ion-plus-round"/>
             </button>
         </div>
-        <div style="margin-top: 10px" ng-if="false">
+        <div style="margin-top: 10px"
+             ng-if="false"
+        >
             <button ng-click="updateCase(case)"
                     style="float: left; padding: 0 30px; line-height: 4"
                     id="btnReview"

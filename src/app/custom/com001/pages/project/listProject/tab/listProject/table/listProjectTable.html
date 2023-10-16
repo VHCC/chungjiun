@@ -269,6 +269,16 @@
                 </form>
             </td>
 
+            <!-- 結案歸檔-->
+            <td>
+                <span ng-if="prjUnit.enable">
+                            未結
+                        </span>
+                <span ng-if="!prjUnit.enable">
+                            已結案
+                        </span>
+            </td>
+
         </tr>
         </tbody>
         <tfoot>

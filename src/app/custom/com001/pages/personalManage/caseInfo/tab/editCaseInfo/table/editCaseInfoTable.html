@@ -16,12 +16,12 @@
 
                     <th colspan="2" style="vertical-align: inherit; text-align: center; width: 300px" class="head_red">辦理階段</th><!--主承辦人員-->
 
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_orange">鑽探日期</th><!--主承辦人員-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_orange">鑽探日期</th><!--主承辦人員, 設計部、專管部-->
                     <th colspan="2" style="vertical-align: inherit; text-align: center; width: 300px" class="head_orange">
                         基設日期
-                    </th><!--主承辦人員-->
-                    <th colspan="2" style="vertical-align: inherit; text-align: center; width: 300px" class="head_orange">細設日期</th><!--主承辦人員-->
-                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_orange">發包日期</th><!--主承辦人員-->
+                    </th><!--主承辦人員, 設計部、專管部-->
+                    <th colspan="2" style="vertical-align: inherit; text-align: center; width: 300px" class="head_orange">細設日期</th><!--主承辦人員, 設計部、專管部-->
+                    <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_orange">發包日期</th><!--主承辦人員, 設計部、專管部-->
 
                     <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_green">施工廠商</th><!--監造部、專管部-->
                     <th style="vertical-align: inherit; text-align: center; width: 150px" class="head_green">開工日期</th><!--監造部、專管部-->
@@ -79,11 +79,11 @@
                         <span style="color:grey" ng-if="isMajor(item)"> 輸入文字</span>
                     </td>
 
-                    <!--鑽探日期 -->
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                    <!--鑽探日期, 設計部、專管部-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!(isMajor(item) && (depType == 'C' || depType == 'E'))">
                         {{item.drill_date}}
                     </td>
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="(isMajor(item) && (depType == 'C' || depType == 'E'))">
                         <input type="text"
                                ng-model="item.drill_date"
                                placeholder="鑽探日期"
@@ -92,11 +92,13 @@
                                value="">
                     </td>
 
-                    <!--基設日期 -->
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                    <!--基設日期, 設計部、專管部-->
+                    <td style="vertical-align: inherit; text-align: center;"
+                        ng-if="!(isMajor(item) && (depType == 'C' || depType == 'E'))">
                         {{item.date_1_ext}}
                     </td>
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                    <td style="vertical-align: inherit; text-align: center;"
+                        ng-if="(isMajor(item) && (depType == 'C' || depType == 'E'))">
                         <input type="text"
                                ng-model="item.date_1_ext"
                                placeholder="基設日期"
@@ -131,11 +133,11 @@
                         </div>
                     </td>
 
-                    <!--細設日期 -->
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                    <!--細設日期, 設計部、專管部 -->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!(isMajor(item) && (depType == 'C' || depType == 'E'))">
                         {{item.date_2_ext}}
                     </td>
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="(isMajor(item) && (depType == 'C' || depType == 'E'))">
                         <input type="text"
                                ng-model="item.date_2_ext"
                                placeholder="細設日期"
@@ -149,11 +151,11 @@
                         {{item.case.date_2}}
                     </td>
 
-                    <!--發包日期 -->
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                    <!--發包日期, 設計部、專管部 -->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!(isMajor(item) && (depType == 'C' || depType == 'E'))">
                         {{item.pack_date}}
                     </td>
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="(isMajor(item) && (depType == 'C' || depType == 'E'))">
                         <input type="text"
                                ng-model="item.pack_date"
                                placeholder="發包日期"
@@ -162,11 +164,13 @@
                                value="">
                     </td>
 
-                    <!--施工廠商 -->
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                    <!--施工廠商, 監造部、專管部-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!(isMajor(item)
+                    && (depType == 'D1' || depType == 'D2' || depType == 'D3' || depType == 'D4' || depType == 'E'))">
                         {{item.pack_company}}
                     </td>
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)
+                    && (depType == 'D1' || depType == 'D2' || depType == 'D3' || depType == 'D4' || depType == 'E'))">
                         <input type="text"
                                ng-model="item.pack_company"
                                placeholder="施工廠商"
@@ -175,11 +179,13 @@
                                value="">
                     </td>
 
-                    <!--開工日期-->
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                    <!--開工日期, 監造部、專管部-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!(isMajor(item)
+                    && (depType == 'D1' || depType == 'D2' || depType == 'D3' || depType == 'D4' || depType == 'E'))">
                         {{item.start_date}}
                     </td>
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="(isMajor(item)
+                    && (depType == 'D1' || depType == 'D2' || depType == 'D3' || depType == 'D4' || depType == 'E'))">
                         <input type="text"
                                ng-model="item.start_date"
                                placeholder="開工日期"
@@ -188,11 +194,13 @@
                                value="">
                     </td>
 
-                    <!--完工日期-->
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                    <!--完工日期, 監造部、專管部-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!(isMajor(item)
+                    && (depType == 'D1' || depType == 'D2' || depType == 'D3' || depType == 'D4' || depType == 'E'))">
                         {{item.done_date}}
                     </td>
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="(isMajor(item)
+                    && (depType == 'D1' || depType == 'D2' || depType == 'D3' || depType == 'D4' || depType == 'E'))">
                         <input type="text"
                                ng-model="item.done_date"
                                placeholder="完工日期"
@@ -201,11 +209,13 @@
                                value="">
                     </td>
 
-                    <!--預定進度-->
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                    <!--預定進度, 監造部、專管部-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!(isMajor(item)
+                    && (depType == 'D1' || depType == 'D2' || depType == 'D3' || depType == 'D4' || depType == 'E'))">
                         {{item.predict_process}}
                     </td>
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="(isMajor(item)
+                    && (depType == 'D1' || depType == 'D2' || depType == 'D3' || depType == 'D4' || depType == 'E'))">
                         <input type="text"
                                ng-model="item.predict_process"
                                placeholder="預定進度"
@@ -214,11 +224,13 @@
                                value="">
                     </td>
 
-                    <!--實際進度-->
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="!isMajor(item)">
+                    <!--實際進度, 監造部、專管部-->
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="!(isMajor(item)
+                    && (depType == 'D1' || depType == 'D2' || depType == 'D3' || depType == 'D4' || depType == 'E'))">
                         {{item.real_process}}
                     </td>
-                    <td style="vertical-align: inherit; text-align: center;" ng-if="isMajor(item)">
+                    <td style="vertical-align: inherit; text-align: center;" ng-if="(isMajor(item)
+                    && (depType == 'D1' || depType == 'D2' || depType == 'D3' || depType == 'D4' || depType == 'E'))">
                         <input type="text"
                                ng-model="item.real_process"
                                placeholder="實際進度"
@@ -296,7 +308,11 @@
                     <td colspan="4"></td>
 
                     <!--辦理階段-->
-                    <td>
+                    <td ng-if="!isMajor(item)">
+                        <span>{{showProcessStageNameByUUid(memo.processStageUUID).title}}</span>
+
+                    </td>
+                    <td ng-if="isMajor(item)">
                         <my >
                             <process-stage-selector
                                     processStageDID="{{memo.processStageUUID}}"
@@ -322,12 +338,12 @@
                         </div>
                     </td>
 
-                    <!--鑽探日期-->
+                    <!--鑽探日期, 設計部、專管部-->
                     <td style="vertical-align: inherit; text-align: center;"
-                        ng-if="!isMajor(item)">
+                        ng-if="!(isMajor(item) && (depType == 'C' || depType == 'E'))">
                         {{memo.drill_date}}
                     </td>
-                    <td ng-if="isMajor(item)">
+                    <td ng-if="(isMajor(item) && (depType == 'C' || depType == 'E'))">
                         <div style="margin:3px">
                             <input type="text"
                                    ng-model="memo.drill_date"
@@ -338,12 +354,13 @@
                         </div>
                     </td>
 
-                    <!--基設日期-->
+                    <!--基設日期, 設計部、專管部-->
                     <td colspan="2" style="vertical-align: inherit; text-align: center;"
-                        ng-if="!isMajor(item)">
+                        ng-if="!(isMajor(item) && (depType == 'C' || depType == 'E'))">
                         {{memo.date_1_ext}}
                     </td>
-                    <td colspan="2" ng-if="isMajor(item)">
+                    <td colspan="2"
+                        ng-if="(isMajor(item) && (depType == 'C' || depType == 'E'))">
                         <div style="margin:3px">
                             <input type="text"
                                    ng-model="memo.date_1_ext"
@@ -354,12 +371,13 @@
                         </div>
                     </td>
 
-                    <!--細設日期-->
+                    <!--細設日期, 設計部、專管部-->
                     <td colspan="2" style="vertical-align: inherit; text-align: center;"
-                        ng-if="!isMajor(item)">
+                        ng-if="!(isMajor(item) && (depType == 'C' || depType == 'E'))">
                         {{memo.date_2_ext}}
                     </td>
-                    <td colspan="2" ng-if="isMajor(item)">
+                    <td colspan="2"
+                        ng-if="(isMajor(item) && (depType == 'C' || depType == 'E'))">
                         <div style="margin:3px">
                             <input type="text"
                                    ng-model="memo.date_2_ext"
@@ -370,12 +388,12 @@
                         </div>
                     </td>
 
-                    <!--發包日期-->
+                    <!--發包日期, 設計部、專管部-->
                     <td style="vertical-align: inherit; text-align: center;"
-                        ng-if="!isMajor(item)">
+                        ng-if="!(isMajor(item) && (depType == 'C' || depType == 'E'))">
                         {{memo.pack_date}}
                     </td>
-                    <td ng-if="isMajor(item)">
+                    <td ng-if="(isMajor(item) && (depType == 'C' || depType == 'E'))">
                         <div style="margin:3px">
                             <input type="text"
                                    ng-model="memo.pack_date"
@@ -386,12 +404,14 @@
                         </div>
                     </td>
 
-                    <!--施工廠商-->
+                    <!--施工廠商, 監造部、專管部-->
                     <td style="vertical-align: inherit; text-align: center;"
-                        ng-if="!isMajor(item)">
+                        ng-if="!(isMajor(item)
+                    && (depType == 'D1' || depType == 'D2' || depType == 'D3' || depType == 'D4' || depType == 'E'))">
                         {{memo.pack_company}}
                     </td>
-                    <td ng-if="isMajor(item)">
+                    <td ng-if="(isMajor(item)
+                    && (depType == 'D1' || depType == 'D2' || depType == 'D3' || depType == 'D4' || depType == 'E'))">
                         <div style="margin:3px">
                             <input type="text"
                                    ng-model="memo.pack_company"
@@ -402,12 +422,14 @@
                         </div>
                     </td>
 
-                    <!--開工日期-->
+                    <!--開工日期, 監造部、專管部-->
                     <td style="vertical-align: inherit; text-align: center;"
-                        ng-if="!isMajor(item)">
+                        ng-if="!(isMajor(item)
+                    && (depType == 'D1' || depType == 'D2' || depType == 'D3' || depType == 'D4' || depType == 'E'))">
                         {{memo.start_date}}
                     </td>
-                    <td ng-if="isMajor(item)">
+                    <td ng-if="(isMajor(item)
+                    && (depType == 'D1' || depType == 'D2' || depType == 'D3' || depType == 'D4' || depType == 'E'))">
                         <div style="margin:3px">
                             <input type="text"
                                    ng-model="memo.start_date"
@@ -418,12 +440,14 @@
                         </div>
                     </td>
 
-                    <!--完工日期-->
+                    <!--完工日期, 監造部、專管部-->
                     <td style="vertical-align: inherit; text-align: center;"
-                        ng-if="!isMajor(item)">
+                        ng-if="!(isMajor(item)
+                    && (depType == 'D1' || depType == 'D2' || depType == 'D3' || depType == 'D4' || depType == 'E'))">
                         {{memo.done_date}}
                     </td>
-                    <td ng-if="isMajor(item)">
+                    <td ng-if="(isMajor(item)
+                    && (depType == 'D1' || depType == 'D2' || depType == 'D3' || depType == 'D4' || depType == 'E'))">
                         <div style="margin:3px">
                             <input type="text"
                                    ng-model="memo.done_date"
@@ -434,12 +458,14 @@
                         </div>
                     </td>
 
-                    <!--預定進度-->
+                    <!--預定進度, 監造部、專管部-->
                     <td style="vertical-align: inherit; text-align: center;"
-                        ng-if="!isMajor(item)">
+                        ng-if="!(isMajor(item)
+                    && (depType == 'D1' || depType == 'D2' || depType == 'D3' || depType == 'D4' || depType == 'E'))">
                         {{memo.predict_process}}
                     </td>
-                    <td ng-if="isMajor(item)">
+                    <td ng-if="(isMajor(item)
+                    && (depType == 'D1' || depType == 'D2' || depType == 'D3' || depType == 'D4' || depType == 'E'))">
                         <div style="margin:3px">
                             <input type="text"
                                    ng-model="memo.predict_process"
@@ -450,12 +476,14 @@
                         </div>
                     </td>
 
-                    <!--實際進度-->
+                    <!--實際進度, 監造部、專管部-->
                     <td style="vertical-align: inherit; text-align: center;"
-                        ng-if="!isMajor(item)">
+                        ng-if="!(isMajor(item)
+                    && (depType == 'D1' || depType == 'D2' || depType == 'D3' || depType == 'D4' || depType == 'E'))">
                         {{memo.real_process}}
                     </td>
-                    <td ng-if="isMajor(item)">
+                    <td ng-if="(isMajor(item)
+                    && (depType == 'D1' || depType == 'D2' || depType == 'D3' || depType == 'D4' || depType == 'E'))">
                         <div style="margin:3px">
                             <input type="text"
                                    ng-model="memo.real_process"
@@ -539,7 +567,9 @@
             </tfoot>
         </table>
         <!--<div style="margin-top: 10px" ng-if="isDepG">-->
-            <div style="margin-top: 10px" ng-if="true">
+            <div style="margin-top: 10px"
+                 ng-if="isMajor(item)"
+            >
             <button type="button"
                     ng-click="insertUnitMemo(item)"
                     class="btn btn-info btn-icon">
@@ -547,7 +577,8 @@
             </button>
         </div>
         <!--<div style="margin-top: 10px" ng-if="isDepG">-->
-            <div style="margin-top: 10px" ng-if="true">
+            <div style="margin-top: 10px"
+                 ng-if="isMajor(item)">
             <button ng-click="updateUnit(item, this)"
                     style="float: left; line-height: 2"
                     id="btnReview"

@@ -2,12 +2,32 @@
 <div class="horizontal-scroll">
     <table class="table table-hover" st-table="prjUnits">
         <thead>
+        <tr>
+            <td colspan="15" class="text-center">
+                <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
+            </td>
+        </tr>
         <tr class="sortable">
             <th >序號</th>
-            <th >代碼</th>
-            <th >工程名稱</th>
+            <th st-sort="code">代碼</th>
+            <th st-sort="caseName">工程名稱</th>
             <th >專案資料</th>
             <th >工時表</th>
+        </tr>
+
+        <tr>
+            <th></th>
+            <th><input st-search="code"
+                       placeholder="尋找代碼"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+            <th><input st-search="caseName"
+                       placeholder="尋找工程名稱"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+
         </tr>
 
         </thead>
@@ -16,13 +36,14 @@
         <tr ng-repeat="prjUnit in prjUnits" class="editable-tr-wrap">
 
             <!--序號-->
-            <td>{{$index + 1}}</td>
+            <td style="width: 2%">{{$index + 1}}</td>
 
             <!--代碼-->
             <td style="width: 10%">{{prjUnit.code}}</td>
 
             <!--工程名稱-->
-            <td style="width: 10%">{{getProjectCase(prjUnit.caseDID).name}}</td>
+            <!--<td style="width: 10%">{{getProjectCase(prjUnit.caseDID).name}}</td>-->
+            <td style="width: 10%">{{prjUnit.caseName}}</td>
 
             <!--專案資料-->
             <td ng-class="(checkUpdateStatus(prjUnit)) ? 'normal' : 'delay'">

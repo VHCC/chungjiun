@@ -40,6 +40,7 @@
         $scope.username = cookies.get('username');
         $scope.userDID = cookies.get('userDID');
         var roleType = cookies.get('roletype');
+        $scope.depType = cookies.get('depType');
 
         var loadingReferenceId = 'mainPage_001caseInfo'
 
@@ -322,6 +323,22 @@
             .success(function (resp) {
                 $scope.processStageOptionAll = resp;
             })
+
+        $scope.showProcessStageNameByUUid = function (processstagedid) {
+            if (processstagedid == undefined || processstagedid == "") {
+                return '尚未選擇';
+            }
+
+            // var processStages_All = JSON.parse(attr.source);
+            var selected = [];
+            selected = $filter('filter')($scope.processStageOptionAll, {
+                _id: processstagedid,
+            });
+
+            if (selected == undefined) return '尚未選擇';
+            // console.log(selected[0])
+            return selected[0];
+        }
 
 
         $scope.updateUnit = function (item, dom) {

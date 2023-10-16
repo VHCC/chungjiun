@@ -59,6 +59,7 @@
 
         $scope.username = $cookies.get('username');
         $scope.userDID = $cookies.get('userDID');
+        $scope.depType = $cookies.get('depType');
 
 
 
@@ -248,6 +249,33 @@
                 .error(function (err) {
                     console.log(err)
                 })
+        }
+
+        $scope.showDepType = function (depType) {
+            switch (depType) {
+                case "A":
+                    return "老闆";
+                case "B":
+                    return "主管部";
+                case "C":
+                    return "設計部";
+                case "D1":
+                    return "監造部-1";
+                case "D2":
+                    return "監造部-2";
+                case "D3":
+                    return "監造部-3";
+                case "D4":
+                    return "監造部-4";
+                case "E":
+                    return "專管部";
+                case "F":
+                    return "測量部";
+                case "G":
+                    return "管理部";
+                default:
+                    return "尚未設定"
+            }
         }
 
     }

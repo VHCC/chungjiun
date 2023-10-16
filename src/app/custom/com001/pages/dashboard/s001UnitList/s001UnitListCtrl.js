@@ -104,13 +104,15 @@
                         }
                     });
             }
-
-
         }
 
-        switch($scope.roleType) { // 總經理 1、技師 5
-            case 1:
-            case 5:
+        console.log($scope.roleType);
+
+        switch($scope.roleType) { // 總經理 1、技師 5、經理 2、組長 4
+            case "1":
+            case "2":
+            case "4":
+            case "5":
                 isFetchAllPrj = true;
                 break;
         }
@@ -178,7 +180,7 @@
         }
 
         $scope.showData = function (prjUnits) {
-            console.log(prjUnits);
+            // console.log(prjUnits);
             $scope.prjUnits = prjUnits;
 
             var prjUnit_ContractDIDs = [];
@@ -194,8 +196,15 @@
 
             _001_ProjectCase.findByCaseDIDMulti(formData)
                 .success(function (caseList) {
-                    console.log(caseList);
+                    // console.log(caseList);
                     $scope.allCaseForUser = caseList;
+
+
+                    $scope.prjUnits.forEach(function (prjUnit) {
+
+                        prjUnit.caseName = $scope.getProjectCase(prjUnit.caseDID).name;
+
+                    });
                 })
 
             angular.element(
@@ -213,8 +222,8 @@
         }
 
         $scope.checkUpdateStatus = function (prjUnit) {
-            console.log(prjUnit.userUpdateTs);
-            console.log(moment(prjUnit.userUpdateTs).isSameOrAfter(moment().startOf("week")));
+            // console.log(prjUnit.userUpdateTs);
+            // console.log(moment(prjUnit.userUpdateTs).isSameOrAfter(moment().startOf("week")));
             if (prjUnit.userUpdateTs === undefined) return false;
             return moment(prjUnit.userUpdateTs).isSameOrAfter(moment().startOf("week"));
 
