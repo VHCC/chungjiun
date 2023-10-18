@@ -134,7 +134,8 @@
     if (decodeURI(readCookie('username')) == '' ||
         decodeURI(readCookie('username')) == 'null' ||
         decodeURI(readCookie('userDID')) == 'null') {
-        window.location.href = 'https://test.ichenprocin.dsmynas.com/login.html';
+        // window.location.href = 'https://test.ichenprocin.dsmynas.com/login.html';
+        window.location.href = 'http://localhost:3000/login.html';
     }
 
     function readCookie(name) {
@@ -153,7 +154,7 @@
         if (decodeURI(readCookie('username')) == '' ||
             decodeURI(readCookie('username')) == 'null' ||
             decodeURI(readCookie('userDID')) == 'null') {
-            window.location.href = 'https://test.ichenprocin.dsmynas.com/login.html';
+            window.location.href = 'http://localhost:3000/login.html';
         }
     }
 
