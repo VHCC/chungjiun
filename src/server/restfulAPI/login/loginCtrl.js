@@ -98,7 +98,7 @@
                                 console.log(result);
                                 console.log(result != null);
                                 cookies.put('isDepBoss', result != null);
-                                window.location.href = 'http://localhost:3000';
+                                window.location.href = 'https://yuanlong.myasustor.com:8880/';
                             });
 
 

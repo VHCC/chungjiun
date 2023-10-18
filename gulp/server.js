@@ -38,16 +38,13 @@ function browserSyncInit(baseDir, browser) {
   var proxy = require('http-proxy-middleware')
 
   var proxyTableAPI = {
-      'test.ichenprocin.dsmynas.com/api': 'http://localhost:8000'
+      'yuanlong.myasustor.com:8880/api': 'http://192.168.1.243:16788'
   }
   // 设置代理
   var apiProxy = proxy('/api', {
-      target: 'https://api.github.com',
+      target: 'http://192.168.1.243:16788',
       changeOrigin: true,
       logLevel: 'info',
-      pathRewrite: {
-          '^/api' : '/api'
-      },
       router: proxyTableAPI,
   });
 

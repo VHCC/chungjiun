@@ -7,7 +7,7 @@ var database = require('./database');           // load the database config
 var mongoose = require('mongoose'); 				// mongoose for mongodb
 
 // var port = normalizePort(process.env.PORT || '8080');
-var port = process.env.PORT || 8000; 				// set the port
+var port = process.env.PORT || 16788; 				// set the port
 
 var path = require('path');
 //var favicon = require('serve-favicon');

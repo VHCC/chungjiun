@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var isDev = true;
 var dbName = 'com001'
 
-var localDB = 'mongodb://localhost:27017/' + dbName;
+var localDB = 'mongodb://root:F0973138343f@localhost:31115/' + dbName + "?authSource=admin";
 
 module.exports = {
     localUrl: localDB
