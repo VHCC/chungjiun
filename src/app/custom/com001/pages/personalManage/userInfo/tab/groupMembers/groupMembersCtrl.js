@@ -1,11 +1,11 @@
 /**
  * @author IChen.Chu
- * created on 2022/07/13
+ * created on 2023/10/19
  */
 (function () {
     'use strict';
     angular.module('BlurAdmin.pages.001.PersonalManage')
-        .controller('_001_userEditCtrl', [
+        .controller('_001_groupMemberCtrl', [
             '$compile',
             '$scope',
             '$cookies',
@@ -16,34 +16,70 @@
             'toastr',
             'User',
             'UserEditUtil',
-            userEditCtrl
+            '_001_DepBoss',
+            groupMemberCtrl
         ]);
 
     /** @ngInject */
-    function userEditCtrl($compile,
-                          $scope,
-                          cookies,
-                          $http,
-                          fileReader,
-                          $filter,
-                          $uibModal,
-                          toastr,
-                          User,
-                          UserEditUtil) {
+    function groupMemberCtrl($compile,
+                           $scope,
+                           cookies,
+                           $http,
+                           fileReader,
+                           $filter,
+                           $uibModal,
+                           toastr,
+                           User,
+                           UserEditUtil,
+                           _001_DepBoss) {
         var vm = this;
 
-        // ---------------------- 人事輸入 -----------------------
+        $scope.username = cookies.get('username');
+        $scope.userDID = cookies.get('userDID');
+        $scope.depType = cookies.get('depType');
 
-        $scope.fetchAllUsers = function () {
+        console.log("groupMemberCtrl");
+
+        // ---------------------- 部門成員 -----------------------
+
+        $scope.groupMembersArray = [];
+
+        $scope.fetchAllUserAndDep = function () {
             vm.edit = null;
             User.getAllUsersWithSignOut()
                 .success(function (allUsers) {
                     vm.managersList = allUsers;
                     vm.allUserWithSignOut = allUsers;
+                    for (var i = 0; i < allUsers.length; i++) {
+                        console.log(allUsers[i]);
+                        if (allUsers[i].depType == $scope.depType) {
+                            $scope.groupMembersArray.push(allUsers[i]);
+                        }
+                    }
+                    console.log($scope.groupMembersArray);
+
+                    angular.element(
+                        document.getElementById('includeHead_groupMembers'))
+                        .html($compile(
+                            "<div ba-panel ba-panel-title=" +
+                            "'" + $scope.showDepType($scope.depType) + " 成員 - " + $scope.groupMembersArray.length + "'" +
+                            "ba-panel-class= " +
+                            "'with-scroll'" + ">" +
+                            "<div " +
+                            "ng-include=\"'app/custom/com001/pages/personalManage/userInfo/tab/groupMembers/table/groupMembersTable.html'\">" +
+                            "</div>" +
+                            "</div>"
+                        )($scope));
                 });
+
+            _001_DepBoss.findAll()
+                .success(function (depBoss) {
+                    vm.depBossSettings = depBoss;
+                })
+
         }
 
-        $scope.fetchAllUsers();
+        $scope.fetchAllUserAndDep();
 
         var emptyObject = {
             name: "尚未設定",
@@ -89,6 +125,20 @@
             return selected[0];
         }
 
+        $scope.findDepBoss = function (target, options) {
+            var selected = [];
+            if (target) {
+                selected = $filter('filter')(options, {
+                    depType: target,
+                });
+            }
+            if (selected == undefined || selected.length == 0) {
+                return emptyObject;
+            }
+            var result = $scope.getBoss(selected[0].userDID, vm.managersList);
+            return result;
+        }
+
         // *****************
         // 總經理-1
         // 經理-2
@@ -129,7 +179,7 @@
         // 測量部-F
         // 管理部-G
         vm.departmentOptions = [
-            {name: "老闆", depType: 'A'},
+            // {name: "老闆", depType: 'A'},
             {name: "主管部", depType: 'B'},
             {name: "設計部", depType: 'C'},
             {name: "監造部-1", depType: 'D1'},
@@ -141,61 +191,36 @@
             {name: "管理部", depType: 'G'},
         ];
 
-        $scope.userSelected = function (user) {
-            console.log(vm);
-            console.log(user);
-
-            vm.edit.user.userBoss = $scope.getBoss(user.bossID, vm.managersList);
-            vm.edit.user.userRole = $scope.getRole(user.roleType, vm.roleOptions);
-            vm.edit.user.userDep = $scope.getDep(user.depType, vm.departmentOptions);
-            vm.edit.user.workStatus = user.workStatus;
+        $scope.showDepStatus = function (dep) {
+            var result = $scope.findDepBoss(dep.depType, vm.depBossSettings);
+            return dep.name + " (" + result.name + ")";
         }
 
-        $scope.updateUser = function () {
-            if (vm.edit.user.userRole === undefined) {
-                toastr['warning']('請選擇員工職務', '人事資料更新');
-                return;
+        $scope.showDepType = function (depType) {
+            switch (depType) {
+                case "A":
+                    return "老闆";
+                case "B":
+                    return "主管部";
+                case "C":
+                    return "設計部";
+                case "D1":
+                    return "監造部-1";
+                case "D2":
+                    return "監造部-2";
+                case "D3":
+                    return "監造部-3";
+                case "D4":
+                    return "監造部-4";
+                case "E":
+                    return "專管部";
+                case "F":
+                    return "測量部";
+                case "G":
+                    return "管理部";
+                default:
+                    return "尚未設定"
             }
-
-            var formData = {
-                userDID: vm.edit.user._id,
-                // userName: $('#userNewName')[0].value,
-                userName: vm.edit.user.name,
-                email: vm.edit.user.email,
-                roleType: vm.edit.user.userRole.roleType,
-                // userMonthSalary: $('#userMonthSalary')[0].value,
-                bossID: vm.edit.user.userBoss._id,
-                // machineDID: $('#userMachineDID')[0].value,
-                workStatus: vm.edit.user.workStatus,
-                depType: vm.edit.user.userDep.depType,
-                // feature_official_doc: vm.feature_official_doc,
-                updateTs: moment(new Date()).format("YYYYMMDD_HHmmss"),
-            }
-
-            User.updateUserProfile(formData)
-                .success(function (res) {
-                    toastr['success'](vm.edit.user.name + '人員 資料更新成功', '人事資料變更');
-                    $scope.fetchAllUsers();
-                })
-                .error(function (res) {
-                    toastr['warning'](vm.edit.user.name + '人員 資料更新失敗', '人事資料變更');
-                })
-        }
-
-
-        $scope.showUserStatus = function (user) {
-            // var isSalary = user.userMonthSalary === 0 ? " (未設定薪水)" : ""
-            var isBoss = user.bossID ? "" : " (未設定直屬)"
-            var isDep = user.depType ? "" : " (未設定部門)"
-            // var isCJMail = user.cjMail ? "" : ""
-
-            var workStatus = user.workStatus ? "" : " **無法登入**"
-            // var feature_official_doc = user.feature_official_doc ? " (公文收發人員)" : ""
-
-            // var userInfo = isSalary + isBoss + isCJMail + feature_official_doc + workStatus;
-            var userStatus = isBoss + isDep + workStatus;
-
-            return user.name + userStatus;
         }
 
     }

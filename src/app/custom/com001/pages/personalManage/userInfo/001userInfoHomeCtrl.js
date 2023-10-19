@@ -30,7 +30,10 @@
                               _001_Institute,
                               document) {
         $scope.username = cookies.get('username');
-        var roleType = cookies.get('roletype');
+        $scope.roleType = cookies.get('roletype');
+        $scope.depType = cookies.get('depType');
+        $scope.isDepG = cookies.get('isDepG') == "false" ? false : true;
+
 
         var vm = this;
 

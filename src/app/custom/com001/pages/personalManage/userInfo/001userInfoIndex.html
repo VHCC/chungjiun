@@ -103,7 +103,9 @@
             <div ng-controller="_001_userInfoCtrl as vm"
                     ng-include="'app/custom/com001/pages/personalManage/userInfo/tab/userInfo/userInfo.html'"></div>
         </uib-tab>
-        <uib-tab heading="人事輸入" ng-click="apiProxy(this, 'userEditCtrl')">
+        <uib-tab heading="人事輸入"
+                 ng-if="isDepG"
+                 ng-click="apiProxy(this, 'userEditCtrl')">
             <div ng-controller="_001_userEditCtrl as vm"
                  ng-include="'app/custom/com001/pages/personalManage/userInfo/tab/userEdit/userEdit.html'"></div>
         </uib-tab>
@@ -112,9 +114,18 @@
                  <!--ng-include="'app/pages/myProfile/userEdit/tab/dispatchPassword.html'"></div>-->
         <!--</uib-tab>-->
 
-        <uib-tab heading="部門主管" ng-click="apiProxy(this, 'groupEditCtrl')">
+        <uib-tab heading="部門主管"
+                 ng-if="isDepG"
+                 ng-click="apiProxy(this, 'groupEditCtrl')">
             <div ng-controller="_001_groupEditCtrl as vm"
                  ng-include="'app/custom/com001/pages/personalManage/userInfo/tab/groupEdit/groupEdit.html'"></div>
+        </uib-tab>
+
+        <uib-tab heading="部門成員"
+                 ng-click="apiProxy(this, 'groupMemberCtrl')">
+            <div ng-controller="_001_groupMemberCtrl as vm"
+                 ng-include="'app/custom/com001/pages/personalManage/userInfo/tab/groupMembers/groupMembers.html'"></div>
+            <!--ng-include="'app/custom/com001/pages/personalManage/userInfo/tab/groupEdit/groupEdit.html'"></div>-->
         </uib-tab>
 
     </uib-tabset>

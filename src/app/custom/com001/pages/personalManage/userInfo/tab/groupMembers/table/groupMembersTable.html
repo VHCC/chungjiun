@@ -1,0 +1,47 @@
+<div class="horizontal-scroll">
+    <table class="table table-hover" st-table="groupMembersArray" >
+        <thead>
+        <tr>
+            <td colspan="10" class="text-center">
+                <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
+            </td>
+        </tr>
+        <tr class="sortable">
+            <th style="text-align: left"></th>
+            <th st-sort="title" style="width: 20%; text-align: left">同仁姓名</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th>
+                <input st-search="name"
+                       placeholder="尋找姓名"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+        </tr>
+
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="user in groupMembersArray"
+            class="editable-tr-wrap" style="padding: 5px; margin: 5px">
+
+            <td style="width:2%; padding: 15px">
+                <span >{{$index + 1}}</span>
+            </td>
+            <td>
+                {{user.name}}
+            </td>
+
+
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="10" class="text-center">
+                <div st-pagination="" st-items-by-page="30" st-displayed-pages="10"></div>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
