@@ -147,6 +147,6 @@
 
         };
 
-        $scope.initWatchRelatedTask();
+        // $scope.initWatchRelatedTask();
     }
 })();

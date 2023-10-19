@@ -1,3 +1,56 @@
+<style type='text/css'>
+
+    .mytooltip {
+        position: relative;
+        display: inline-block;
+        /*overflow : hidden;*/
+        text-overflow : ellipsis;
+        cursor: pointer;
+        /*white-space : nowrap;*/
+    }
+
+    /* Tooltip text */
+    .mytooltip .tooltiptext, .mytooltip .tooltiptextprj{
+        visibility: hidden;
+        width: 360px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+
+        /* Position the tooltip text */
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -180px;
+
+        /* Fade in tooltip */
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    /* Tooltip arrow */
+    .mytooltip .tooltiptext::after, .mytooltip .tooltiptextprj:after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    /* Show the tooltip text when you mouse over the tooltip container */
+    .mytooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+
+</style>
+
 
 <div class="row">
     <!--<div class="col-md-12"-->
@@ -7,6 +60,7 @@
         <!--<my-billboard></my-billboard>-->
     <!--</div>-->
     <div class="col-md-8">
+        <!-- 個人專案 -->
         <s001-unit-list></s001-unit-list>
     </div>
 
