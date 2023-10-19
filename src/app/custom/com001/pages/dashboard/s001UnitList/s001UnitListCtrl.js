@@ -61,6 +61,18 @@
             console.log("isFetchAllPrj:> " + isFetchAllPrj);
             console.log("isDepBoss:> " + isDepBoss);
 
+            // 所有人，對照資料
+            User.getAllUsers()
+                .success(function (allUsers) {
+                    $scope.allUsers = [];
+                    for (var i = 0; i < allUsers.length; i++) {
+                        $scope.allUsers[i] = {
+                            value: allUsers[i]._id,
+                            name: allUsers[i].name
+                        };
+                    }
+                });
+
             // 機關
             _001_Institute.findAll()
                 .success(function (resp) {
@@ -75,7 +87,6 @@
                         }
                     })
             } else if (isDepBoss) {
-
                 var bossDep = $scope.getMyDep($scope.userDID, vm.depBossSettings);
 
                 console.log(bossDep);
@@ -105,8 +116,6 @@
                     });
             }
         }
-
-        console.log($scope.roleType);
 
         switch($scope.roleType) { // 總經理 1、技師 5、經理 2、組長 4
             case "1":
@@ -199,11 +208,9 @@
                     // console.log(caseList);
                     $scope.allCaseForUser = caseList;
 
-
                     $scope.prjUnits.forEach(function (prjUnit) {
 
                         prjUnit.caseName = $scope.getProjectCase(prjUnit.caseDID).name;
-
                     });
                 })
 
@@ -226,8 +233,23 @@
             // console.log(moment(prjUnit.userUpdateTs).isSameOrAfter(moment().startOf("week")));
             if (prjUnit.userUpdateTs === undefined) return false;
             return moment(prjUnit.userUpdateTs).isSameOrAfter(moment().startOf("week"));
-
         }
+
+        $scope.showMajorName = function (project) {
+            var selected = [];
+            if ($scope.allUsers === undefined) return;
+            if (project.majorID) {
+                selected = $filter('filter')($scope.allUsers, {
+                    value: project.majorID
+                });
+            }
+            if (selected.length == 1) {
+                project.majorName = selected[0].name;
+            } else if (selected.length == 0) {
+                project.majorName = '未指派主承辦';
+            }
+            return selected.length ? selected[0].name : '未指派主承辦';
+        };
 
     }
 })();

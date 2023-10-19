@@ -18,12 +18,17 @@
         <tr>
             <th></th>
             <th><input st-search="code"
-                       placeholder="尋找代碼"
+                       placeholder="代碼"
                        class="input-sm form-control search-input"
                        type="search"/>
             </th>
             <th><input st-search="caseName"
-                       placeholder="尋找工程名稱"
+                       placeholder="工程名稱"
+                       class="input-sm form-control search-input"
+                       type="search"/>
+            </th>
+            <th><input st-search="majorName"
+                       placeholder="主承辦名稱"
                        class="input-sm form-control search-input"
                        type="search"/>
             </th>
@@ -36,7 +41,9 @@
         <tr ng-repeat="prjUnit in prjUnits" class="editable-tr-wrap">
 
             <!--序號-->
-            <td style="width: 2%">{{$index + 1}}</td>
+            <td style="width: 2%">
+                {{$index + 1}}
+            </td>
 
             <!--代碼-->
             <td style="width: 10%">{{prjUnit.code}}</td>
@@ -46,8 +53,19 @@
             <td style="width: 10%">{{prjUnit.caseName}}</td>
 
             <!--專案資料-->
-            <td ng-class="(checkUpdateStatus(prjUnit)) ? 'normal' : 'delay'">
-                {{prjUnit.userUpdateTs}}</td>
+            <td >
+                <span ng-class="(checkUpdateStatus(prjUnit)) ? 'normal' : 'delay'">
+                    {{prjUnit.userUpdateTs}}
+                </span>
+                <br>
+                主承辦：{{showMajorName(prjUnit)}}
+                <!--<p class="mytooltip" >-->
+                    <!--<span class="tooltiptext">-->
+                        <!--主承辦：{{showMajorName(prjUnit)}}-->
+                    <!--</span>-->
+                    <!--<i class="ion-information-circled"/>-->
+                <!--</p>-->
+            </td>
 
             <!--工時表-->
             <td style="width: 10%"></td>

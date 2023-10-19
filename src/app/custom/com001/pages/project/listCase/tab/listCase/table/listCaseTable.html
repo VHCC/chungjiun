@@ -333,7 +333,8 @@
                             <button ng-click="updatePrjUnitMemoInCase(unit)"
                                     pb-style="shrink"
                                     class="btn btn-primary">
-                                <i class="ion-document-text"/>
+                                <!--<i class="ion-document-text"/>-->
+                                <i class="fa fa fa-save"></i>
                             </button>
                         </div>
                     </td>
@@ -947,8 +948,7 @@
             </tbody>
         </table>
         <div style="margin-top: 10px"
-             ng-if="false"
-        >
+             ng-if="false">
             <button type="button"
                     ng-click="insertCaseMemo(case)"
                     class="btn btn-info btn-icon">
@@ -956,8 +956,7 @@
             </button>
         </div>
         <div style="margin-top: 10px"
-             ng-if="false"
-        >
+             ng-if="false">
             <button ng-click="updateCase(case)"
                     style="float: left; padding: 0 30px; line-height: 4"
                     id="btnReview"
