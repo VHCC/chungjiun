@@ -40,7 +40,9 @@
             console.log(targetCtrl);
             switch (targetCtrl.vm.constructor.name) {
                 case "listProject":
-                    console.log(targetCtrl);
+                    targetCtrl.refreshData();
+                    break;
+                case "listHiddenProject":
                     targetCtrl.refreshData();
                     break;
             }

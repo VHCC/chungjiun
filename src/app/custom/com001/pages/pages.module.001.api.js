@@ -93,6 +93,10 @@
                     return http.post('/api/_001_post_project_find_all', requestData);
                 },
 
+                findAllHidden: function (requestData) {
+                    return http.post('/api/_001_post_project_find_all_hidden', requestData);
+                },
+
                 findAllCaseWithOneContract: function (requestData) {
                     return http.post('/api/_001_post_project_find_all_case_with_one_contract', requestData);
                 },

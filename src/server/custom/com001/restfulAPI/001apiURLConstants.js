@@ -7,6 +7,7 @@ global._001_apiUrl = {
     // Project
     _001_post_project_create : '/api/_001_post_project_create',
     _001_post_project_find_all : '/api/_001_post_project_find_all',
+    _001_post_project_find_all_hidden : '/api/_001_post_project_find_all_hidden',
     _001_post_project_find_all_case_with_one_contract : '/api/_001_post_project_find_all_case_with_one_contract',
     _001_post_project_find_all_case_with_multi_contract : '/api/_001_post_project_find_all_case_with_multi_contract',
     _001_post_project_find_one_case_with_all_type : '/api/_001_post_project_find_one_case_with_all_type',

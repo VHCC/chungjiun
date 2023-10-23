@@ -1,11 +1,10 @@
 (function () {
     'use strict';
 
-    // createDate: 2022/07/08
-
+    // createDate: 2022/10/20
     angular.module('BlurAdmin.pages.001.Project')
     // .controller('createProjectCtrl', createProject);
-        .controller('_001_listProjectCtrl', [
+        .controller('_001_listHiddenProjectCtrl', [
             '$scope',
             '$cookies',
             '$window',
@@ -20,11 +19,11 @@
             '_001_ProjectCase',
             '_001_ProjectContract',
             '_001_DepBoss',
-            listProject
+            listhiddenProject
         ])
 
     /** @ngInject */
-    function listProject($scope,
+    function listhiddenProject($scope,
                               cookies,
                               window,
                               $filter,
@@ -144,7 +143,6 @@
         // 工讀人員-14
 
         $scope.init = function() {
-
             console.log("init...");
             console.log("isFetchAllPrj:> " + isFetchAllPrj);
             console.log("isDepBoss:> " + isDepBoss);
@@ -155,64 +153,78 @@
                 });
             }, 100)
 
+            _001_Project.findAllHidden()
+                .success(function (prjUnits) {
+                    if (prjUnits.length > 0) {
+                        // $scope.showData(prjUnits);
+                    }
+                    $scope.showData(prjUnits);
+                })
+                .error(function () {
+                    $timeout(function () {
+                        bsLoadingOverlayService.stop({
+                            referenceId: loadingReferenceId
+                        });
+                    }, 500)
+                })
 
-            if (isFetchAllPrj) {
-                _001_Project.findAll()
-                    .success(function (prjUnits) {
-                        if (prjUnits.length > 0) {
-                            // $scope.showData(prjUnits);
-                        }
-                        $scope.showData(prjUnits);
-                    })
-                    .error(function () {
-                        $timeout(function () {
-                            bsLoadingOverlayService.stop({
-                                referenceId: loadingReferenceId
-                            });
-                        }, 500)
-                    })
-            } else if (isDepBoss) {
-                var bossDep = $scope.getMyDep($scope.userDID, vm.depBossSettings);
-
-                var userData = {
-                    depType: bossDep.depType,
-                    userDID: $scope.userDID,
-                }
-
-                _001_Project.findAllByDepType(userData)
-                    .success(function (prjUnits) {
-                        if (prjUnits.length > 0) {
-                            // $scope.showData(prjUnits);
-                        }
-                        $scope.showData(prjUnits);
-                    })
-                    .error(function () {
-                        $timeout(function () {
-                            bsLoadingOverlayService.stop({
-                                referenceId: loadingReferenceId
-                            });
-                        }, 500)
-                    })
-
-            } else {
-                var userData = {
-                    userDID: $scope.userDID,
-                }
-                _001_Project.findAllByUserDID(userData)
-                    .success(function (prjUnits) {
-                        if (prjUnits.length > 0) {
-                            // $scope.showData(prjUnits);
-                        }
-                        $scope.showData(prjUnits);
-                    })
-                    .error(function () {
-                        $timeout(function () {
-                            bsLoadingOverlayService.stop({
-                                referenceId: loadingReferenceId
-                            });
-                        }, 500)
-                    })
-            }
+            // if (isFetchAllPrj) {
+            //     _001_Project.findAll()
+            //         .success(function (prjUnits) {
+            //             if (prjUnits.length > 0) {
+            //                 // $scope.showData(prjUnits);
+            //             }
+            //             $scope.showData(prjUnits);
+            //         })
+            //         .error(function () {
+            //             $timeout(function () {
+            //                 bsLoadingOverlayService.stop({
+            //                     referenceId: loadingReferenceId
+            //                 });
+            //             }, 500)
+            //         })
+            // } else if (isDepBoss) {
+            //     var bossDep = $scope.getMyDep($scope.userDID, vm.depBossSettings);
+            //
+            //     var userData = {
+            //         depType: bossDep.depType,
+            //         userDID: $scope.userDID,
+            //     }
+            //
+            //     _001_Project.findAllByDepType(userData)
+            //         .success(function (prjUnits) {
+            //             if (prjUnits.length > 0) {
+            //                 // $scope.showData(prjUnits);
+            //             }
+            //             $scope.showData(prjUnits);
+            //         })
+            //         .error(function () {
+            //             $timeout(function () {
+            //                 bsLoadingOverlayService.stop({
+            //                     referenceId: loadingReferenceId
+            //                 });
+            //             }, 500)
+            //         })
+            //
+            // } else {
+            //     var userData = {
+            //         userDID: $scope.userDID,
+            //     }
+            //     _001_Project.findAllByUserDID(userData)
+            //         .success(function (prjUnits) {
+            //             if (prjUnits.length > 0) {
+            //                 // $scope.showData(prjUnits);
+            //             }
+            //             $scope.showData(prjUnits);
+            //         })
+            //         .error(function () {
+            //             $timeout(function () {
+            //                 bsLoadingOverlayService.stop({
+            //                     referenceId: loadingReferenceId
+            //                 });
+            //             }, 500)
+            //         })
+            // }
 
         }
 
@@ -238,14 +250,14 @@
             $scope.projects = prjUnits;
 
             angular.element(
-                document.getElementById('includeHead_listProject'))
+                document.getElementById('includeHead_listHiddenProject'))
                 .html($compile(
                     "<div ba-panel ba-panel-title=" +
                     "'專案列表 - " + prjUnits.length + "'" +
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
-                    "ng-include=\"'app/custom/com001/pages/project/listProject/tab/listProject/table/listProjectTable.html'\">" +
+                    "ng-include=\"'app/custom/com001/pages/project/listProject/tab/hiddenProject/table/listHiddenProjectTable.html'\">" +
                     "</div>" +
                     "</div>"
                 )($scope));

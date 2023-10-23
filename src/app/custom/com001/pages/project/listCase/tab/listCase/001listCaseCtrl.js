@@ -250,7 +250,33 @@
                     isBilled = false;
                 }
             })
+            if (memos.length == 0) {
+                isBilled = false;
+            }
             project.canChangeEnable = isBilled;
+
+            console.log("checkIsBilled:> " + isBilled);
+            if (!isBilled) {
+                try {
+                    var formData = {
+                        _id: project._id,
+                        enable: true,
+                        viewable: true,
+                    }
+                    _001_Project.updateOneUnit(formData)
+                        .success(function (res) {
+                            project.enable = true;
+                            project.viewable = true;
+                        })
+                        .error(function () {
+                        })
+                } catch (err) {
+                    // toastr['warning']('變更專案 !', '更新失敗');
+                    return;
+                }
+            }
+
+
         }
 
         // ****** options *******
@@ -411,18 +437,51 @@
         }
 
 
-        $scope.changeCaseStatus = function (prjCase) {
+        $scope.changePrjUnitStatus = function (prjUnit) {
             var ts = moment(new Date()).format("YYYY/MM/DD HH:mm:ss");
 
             var formData = {
-                _id: prjCase._id,
-                enable: prjCase.enable,
+                _id: prjUnit._id,
+                enable: prjUnit.enable,
                 userUpdateTs: ts,
             }
-            _001_ProjectCase.updateOneCaseInfo(formData)
+
+            if (prjUnit.enable) {
+                formData = {
+                    _id: prjUnit._id,
+                    enable: prjUnit.enable,
+                    viewable: true,
+                    userUpdateTs: ts,
+                }
+            }
+
+            _001_Project.updateOneUnit(formData)
                 .success(function (res) {
-                    prjCase.userUpdateTs = ts;
-                    // toastr['success'](contract.name, '更新成功');
+                    prjUnit.userUpdateTs = ts;
+                    if (prjUnit.enable) {
+                        prjUnit.viewable = true;
+                    }
+                    // $scope.checkRowSpan(prjUnit);
+                    toastr['success'](prjUnit.name, '更新成功');
+                })
+                .error(function () {
+                    // toastr['warning']('儲存失敗 !', '更新失敗');
+                })
+        }
+
+        $scope.changePrjUnitIsCanView = function (prjUnit) {
+            var ts = moment(new Date()).format("YYYY/MM/DD HH:mm:ss");
+
+            var formData = {
+                _id: prjUnit._id,
+                viewable: prjUnit.viewable,
+                userUpdateTs: ts,
+            }
+            _001_Project.updateOneUnit(formData)
+                .success(function (res) {
+                    prjUnit.userUpdateTs = ts;
+                    // $scope.checkRowSpan(prjUnit);
+                    toastr['success'](prjUnit.name, '更新成功');
                 })
                 .error(function () {
                     // toastr['warning']('儲存失敗 !', '更新失敗');
@@ -445,7 +504,6 @@
                     data5_ext: moment(new Date()).format("YYYY/MM/DD"),
                     data6_ext: moment(new Date()).format("YYYY/MM/DD"),
                 })
-
             }
 
             var formData = {
@@ -456,7 +514,6 @@
 
             _001_ProjectCase.updateOneCaseInfo(formData)
                 .success(function (res) {
-
                     toastr['success'](prjCase.name, '新增成功');
                 })
                 .error(function () {
@@ -486,6 +543,7 @@
                 var formData = {
                     _id: prjUnit._id,
                     enable: true,
+                    viewable: true,
                     unitMemoByCase: prjUnit.unitMemoByCase,
                 }
                 _001_Project.updateOneUnit(formData)
