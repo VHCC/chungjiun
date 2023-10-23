@@ -536,6 +536,7 @@
                             <cj-switcher
                                     ng-show="unit.canChangeEnable"
                                     style="horiz-align: center; vertical-align: center"
+                                    ng-click="changePrjUnitStatus(unit)"
                                     ng-model="unit.enable"
                                     switcher-style="primary"
                                     switcher-value="unit.enable"
@@ -552,6 +553,7 @@
                             <cj-switcher
                                     ng-show="!unit.enable"
                                     style="horiz-align: center; vertical-align: center"
+                                    ng-click="changePrjUnitIsCanView(unit)"
                                     ng-model="unit.viewable"
                                     switcher-style="danger"
                                     switcher-value="unit.viewable"

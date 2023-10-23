@@ -134,7 +134,7 @@
             </td>
 
             <!--主承辦-->
-            <td class="select-td" style="width: 80px" ng-if="isDepG">
+            <td class="select-td" style="width: 80px">
                 <form data-editable-form
                       name="prjMajorSelectForm">
                     <div editable-ui-select="prjUnit.majorID"
@@ -153,30 +153,30 @@
                             <span ng-bind-html="user.name | highlight: $select.search"></span>
                         </editable-ui-select-choices>
                     </div>
-                    <br>
-                    <div class="buttons">
-                        <!-- buttons to submit / cancel form -->
-                        <button type="button"
-                                ng-disabled="prjMajorSelectForm.$visible"
-                                ng-click="prjMajorSelectForm.$show()"
-                                ng-show="true"
-                                class="btn btn-primary editable-table-button btn-xs">
-                            指派主承辦
-                        </button>
-                        <span ng-show="prjMajorSelectForm.$visible">
-                            <br/>
-                            <button type="submit" class="btn btn-primary editable-table-button btn-xs"
-                                    ng-click="updateMajorEUI(prjMajorSelectForm, this)"
-                                    ng-disabled="prjMajorSelectForm.$waiting">
-                              確認
-                            </button>
-                            <button type="button" class="btn btn-default editable-table-button btn-xs"
-                                    ng-disabled="prjMajorSelectForm.$waiting"
-                                    ng-click="prjMajorSelectForm.$cancel()">
-                              取消
-                            </button>
-                        </span>
-                    </div>
+                    <!--<br>-->
+                    <!--<div class="buttons">-->
+                        <!--&lt;!&ndash; buttons to submit / cancel form &ndash;&gt;-->
+                        <!--<button type="button"-->
+                                <!--ng-disabled="prjMajorSelectForm.$visible"-->
+                                <!--ng-click="prjMajorSelectForm.$show()"-->
+                                <!--ng-show="true"-->
+                                <!--class="btn btn-primary editable-table-button btn-xs">-->
+                            <!--指派主承辦-->
+                        <!--</button>-->
+                        <!--<span ng-show="prjMajorSelectForm.$visible">-->
+                            <!--<br/>-->
+                            <!--<button type="submit" class="btn btn-primary editable-table-button btn-xs"-->
+                                    <!--ng-click="updateMajorEUI(prjMajorSelectForm, this)"-->
+                                    <!--ng-disabled="prjMajorSelectForm.$waiting">-->
+                              <!--確認-->
+                            <!--</button>-->
+                            <!--<button type="button" class="btn btn-default editable-table-button btn-xs"-->
+                                    <!--ng-disabled="prjMajorSelectForm.$waiting"-->
+                                    <!--ng-click="prjMajorSelectForm.$cancel()">-->
+                              <!--取消-->
+                            <!--</button>-->
+                        <!--</span>-->
+                    <!--</div>-->
                 </form>
             </td>
 
@@ -203,30 +203,30 @@
                             <span ng-bind-html="user.name | highlight: $select.search"></span>
                         </editable-ui-select-choices>
                     </div>
-                    <br/>
-                    <div class="buttons" ng-if="isDepG">
-                        <!-- button to show form -->
-                        <button type="button" class="btn btn-primary editable-table-button btn-xs"
-                                ng-disabled="uiSelectForm.$visible"
-                                ng-click="uiSelectForm.$show()"
-                                ng-show="true">
-                            分派協辦
-                        </button>
-                        <!-- buttons to submit / cancel form -->
-                        <span ng-show="uiSelectForm.$visible">
-                        <br/>
-                        <button type="submit" class="btn btn-primary editable-table-button btn-xs"
-                                ng-click="updateWorkers(uiSelectForm, this)"
-                                ng-disabled="uiSelectForm.$waiting">
-                          確認
-                        </button>
-                        <button type="button" class="btn btn-default editable-table-button btn-xs"
-                                ng-disabled="uiSelectForm.$waiting"
-                                ng-click="uiSelectForm.$cancel()">
-                          取消
-                        </button>
-                      </span>
-                    </div>
+                    <!--<br/>-->
+                    <!--<div class="buttons">-->
+                        <!--&lt;!&ndash; button to show form &ndash;&gt;-->
+                        <!--<button type="button" class="btn btn-primary editable-table-button btn-xs"-->
+                                <!--ng-disabled="uiSelectForm.$visible"-->
+                                <!--ng-click="uiSelectForm.$show()"-->
+                                <!--ng-show="true">-->
+                            <!--分派協辦-->
+                        <!--</button>-->
+                        <!--&lt;!&ndash; buttons to submit / cancel form &ndash;&gt;-->
+                        <!--<span ng-show="uiSelectForm.$visible">-->
+                        <!--<br/>-->
+                        <!--<button type="submit" class="btn btn-primary editable-table-button btn-xs"-->
+                                <!--ng-click="updateWorkers(uiSelectForm, this)"-->
+                                <!--ng-disabled="uiSelectForm.$waiting">-->
+                          <!--確認-->
+                        <!--</button>-->
+                        <!--<button type="button" class="btn btn-default editable-table-button btn-xs"-->
+                                <!--ng-disabled="uiSelectForm.$waiting"-->
+                                <!--ng-click="uiSelectForm.$cancel()">-->
+                          <!--取消-->
+                        <!--</button>-->
+                      <!--</span>-->
+                    <!--</div>-->
                 </form>
             </td>
 
@@ -253,30 +253,30 @@
                             <span ng-bind-html="user.name | highlight: $select.search"></span>
                         </editable-ui-select-choices>
                     </div>
-                    <br/>
-                    <div class="buttons" ng-if="isDepG">
-                        <!-- button to show form -->
-                        <button type="button" class="btn btn-primary editable-table-button btn-xs"
-                                ng-disabled="uiTechSelectForm.$visible"
-                                ng-click="uiTechSelectForm.$show()"
-                                ng-show="true">
-                            指定技師
-                        </button>
-                        <!-- buttons to submit / cancel form -->
-                        <span ng-show="uiTechSelectForm.$visible">
-                        <br/>
-                        <button type="submit" class="btn btn-primary editable-table-button btn-xs"
-                                ng-click="updateTechs(uiTechSelectForm, this)"
-                                ng-disabled="uiSelectForm.$waiting">
-                          確認
-                        </button>
-                        <button type="button" class="btn btn-default editable-table-button btn-xs"
-                                ng-disabled="uiTechSelectForm.$waiting"
-                                ng-click="uiTechSelectForm.$cancel()">
-                          取消
-                        </button>
-                      </span>
-                    </div>
+                    <!--<br/>-->
+                    <!--<div class="buttons">-->
+                        <!--&lt;!&ndash; button to show form &ndash;&gt;-->
+                        <!--<button type="button" class="btn btn-primary editable-table-button btn-xs"-->
+                                <!--ng-disabled="uiTechSelectForm.$visible"-->
+                                <!--ng-click="uiTechSelectForm.$show()"-->
+                                <!--ng-show="true">-->
+                            <!--指定技師-->
+                        <!--</button>-->
+                        <!--&lt;!&ndash; buttons to submit / cancel form &ndash;&gt;-->
+                        <!--<span ng-show="uiTechSelectForm.$visible">-->
+                        <!--<br/>-->
+                        <!--<button type="submit" class="btn btn-primary editable-table-button btn-xs"-->
+                                <!--ng-click="updateTechs(uiTechSelectForm, this)"-->
+                                <!--ng-disabled="uiSelectForm.$waiting">-->
+                          <!--確認-->
+                        <!--</button>-->
+                        <!--<button type="button" class="btn btn-default editable-table-button btn-xs"-->
+                                <!--ng-disabled="uiTechSelectForm.$waiting"-->
+                                <!--ng-click="uiTechSelectForm.$cancel()">-->
+                          <!--取消-->
+                        <!--</button>-->
+                      <!--</span>-->
+                    <!--</div>-->
                 </form>
             </td>
 

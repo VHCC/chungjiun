@@ -52,10 +52,32 @@ module.exports = function (app) {
         console.log(req.body);
         _001Project.find(
             {
+                viewable: true,
             },
             function (err, projects) {
                 if (err) {
                     console.log(global.timeFormat(new Date()) + global.log.e + "API, _001_post_project_find_all");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.status(500).send(err);
+                } else {
+                    res.status(200).send(projects);
+                }
+                return;
+            });
+    });
+
+    app.post(global._001_apiUrl._001_post_project_find_all_hidden, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, _001_post_project_find_all_hidden");
+        console.log(req.body);
+        _001Project.find(
+            {
+                viewable: false,
+            },
+            function (err, projects) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, _001_post_project_find_all_hidden");
                     console.log(req.body);
                     console.log(" ***** ERROR ***** ");
                     console.log(err);
@@ -72,7 +94,8 @@ module.exports = function (app) {
         console.log(req.body);
         _001Project.find(
             {
-                caseDID: req.body.caseDID
+                caseDID: req.body.caseDID,
+                // viewable: true,
             },
             function (err, projects) {
                 if (err) {
@@ -95,6 +118,7 @@ module.exports = function (app) {
             {
                 caseDID: req.body.caseDID,
                 type: req.body.type,
+                viewable: true,
             },
             function (err, projects) {
                 if (err) {
@@ -116,6 +140,7 @@ module.exports = function (app) {
         _001Project.find(
             {
                 contractDID: req.body.contractDID,
+                viewable: true,
             },
             function (err, projects) {
                 if (err) {
@@ -139,6 +164,7 @@ module.exports = function (app) {
         for (var index = 0; index < req.body.contractDIDs.length; index++) {
             var target = {
                 contractDID: req.body.contractDIDs[index],
+                viewable: true,
             }
             findData.push(target);
         }
@@ -169,6 +195,7 @@ module.exports = function (app) {
             {
                 contractDID: req.body.contractDID,
                 type: req.body.type,
+                viewable: true,
             },
             function (err, projects) {
                 if (err) {
@@ -266,11 +293,13 @@ module.exports = function (app) {
 
         var target = {
             majorID: req.body.userDID,
+            viewable: true,
         }
         findData.push(target);
 
         var target_v2 = {
             managerID: req.body.userDID,
+            viewable: true,
         }
         findData.push(target_v2);
 
@@ -336,9 +365,11 @@ module.exports = function (app) {
                     }
                     findData.push(target_v2);
 
+                    console.log(findData);
                     _001Project.find(
                         {
-                            $or: findData
+                            $or: findData,
+                            viewable: true
                         },
                         function (err, projects) {
                             if (err) {
@@ -354,8 +385,6 @@ module.exports = function (app) {
                         });
                 }
             });
-
-
     });
 
 

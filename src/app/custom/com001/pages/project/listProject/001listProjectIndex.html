@@ -104,6 +104,12 @@
             <div ng-controller="_001_listProjectCtrl as vm"
                     ng-include="'app/custom/com001/pages/project/listProject/tab/listProject/001listProject.html'"></div>
         </uib-tab>
+        <uib-tab heading="隱藏專案"
+                 ng-click="apiProxy(this, 'listHiddenProject')">
+            <div ng-controller="_001_listHiddenProjectCtrl as vm"
+                 ng-include="'app/custom/com001/pages/project/listProject/tab/hiddenProject/001listHiddenProject.html'"></div>
+        </uib-tab>
+
         <!--<uib-tab heading="建立機關" ng-click="apiProxy(this, 'createInstitute')">-->
             <!--<div ng-controller="_001_createInstituteCtrl as vm"-->
                     <!--ng-include="'app/custom/com001/pages/project/createProject/tab/createInstitute/001createInstitute.html'"></div>-->
