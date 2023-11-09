@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>test</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    
+    <style type="text/css">
+        p{
+            margin: 0;
+        }
+        :root{
+            --box_height: 20px;
+            --box_width: 120px;
+            --box_calendar_border_width: 2px;
+            --box_calendar_padding: 10px;
+        }
+        /* div format: for the person-list sitebody */
+        #sitebody_person{
+            height: 60px;               /* 高度應配合RWD調整 */
+            position: -webkit-sticky;
+            position: sticky;
+            bottom: 0;
+            margin: 0 auto;
+            overflow: auto;
+            border: 2px solid #73AD21;  /* 完成後這行可以刪掉 */
+            background-color: #FFECC9;  /* 完成後這行可以刪掉 */
+        }
+        /* div format: for person name in the person-list */
+        #box_person{
+            height: var(--box_height);
+            width: var(--box_width);
+            padding: var(--box_calendar_padding) 0px;
+            border-width: 2px 0px 2px 2px;
+            border-color: #000000;
+            border-style: solid;
+            float: left;
+            text-align: center;
+            background-color: #FFD4D4;  /* 完成後這行可以刪掉 人名清單: 背景 */
+        }
+        /* div format: for the calendar sitebody */
+        #sitebody_calendar{
+            height: calc((var(--box_height) + var(--box_calendar_padding) * 2 + var(--box_calendar_border_width)) * 10);   /* 高度應配合RWD調整 */
+            margin: 0 auto;
+            border: 2px solid #73AD21;  /* 完成後這行可以刪掉 */
+            background-color: #FFECC9;  /* 完成後這行可以刪掉 */
+        }
+        /* div format: for the calendar column */
+        #box_calendar_column{
+            float: left;
+            text-align: center;
+        }
+        /* div format: for the calendar cell */
+        #box_calendar_cell{
+            text-align: center;
+            background-color: #33CCFF;  /* 完成後這行可以刪掉 */
+    	}
+    	/* div format: for the top left cell in the calendar */
+        #box_calendar_none{
+            height: calc((var(--box_height) + var(--box_calendar_padding)) * 2 + var(--box_calendar_border_width));
+            padding: var(--box_calendar_padding) 0px;
+            border: var(--box_calendar_border_width) #000000 solid;
+            text-align: center;
+            line-height: calc((var(--box_height) + var(--box_calendar_padding)) * 2 + var(--box_calendar_border_width));
+     	}
+     	/* div format: for the week in the calendar */
+        #box_calendar_week{
+            height: var(--box_height);
+            padding: var(--box_calendar_padding) 0px;
+            border-width: var(--box_calendar_border_width) var(--box_calendar_border_width) var(--box_calendar_border_width) 0px;
+            border-color: #000000;
+            border-style: solid;
+            text-align: center;
+            line-height: calc(var(--box_height) + var(--box_calendar_border_width));
+     	}
+     	/* div format: for the period (morning and afternoon) in the calendar */
+        #box_calendar_box_period{
+            height: var(--box_height);
+            width: var(--box_width);
+            padding: var(--box_calendar_padding) 0px;
+            border-right: var(--box_calendar_border_width) #000000 solid;
+            border-bottom: var(--box_calendar_border_width) #000000 solid;
+            float: left;
+            text-align: center;
+            line-height: calc(var(--box_height) + var(--box_calendar_border_width));
+            background-color: #99BBFF;
+        }
+        /* div format: for the car name in the calendar */
+        #box_calendar_box_car{
+            height: var(--box_height);
+            padding: var(--box_calendar_padding) 0px;
+            border-width: 0px var(--box_calendar_border_width) var(--box_calendar_border_width) var(--box_calendar_border_width);
+            border-color: #000000;
+            border-style: solid;
+            text-align: center;
+            line-height: calc(var(--box_height) + var(--box_calendar_border_width));
+            background-color: #CCDDFF;
+        }
+        .box_calendar_box_droptarget{
+            
+            height: var(--box_height);
+            width: var(--box_width);
+            padding: var(--box_calendar_padding) 0px;
+            border-right: var(--box_calendar_border_width) #000000 solid;
+            border-bottom: var(--box_calendar_border_width) #000000 solid;
+            float: left;
+            text-align: center;
+            line-height: calc(var(--box_height) + var(--box_calendar_border_width));
+            background-color: #FFD4D4;
+    	}
+    </style>
+    
+    <script type="text/javascript">
+        /* Events fired on the drag target */
+        
+        document.addEventListener("dragstart", function(event) {
+            // The dataTransfer.setData() method sets the data type and the value of the dragged data
+            event.dataTransfer.effectAllowed = "copy";//or "move"
+            event.dataTransfer.setData("Text", event.target.innerHTML);
+            
+            // Change the opacity of the draggable element
+            event.target.style.opacity = "0.4";
+        });
+        
+        // Output some text when finished dragging the p element and reset the opacity
+        document.addEventListener("dragend", function(event) {
+            event.target.style.opacity = "1";
+        });
+        
+        /* Events fired on the drop target */
+        
+        // When the draggable p element enters the droptarget, change the DIVS's border style
+        document.addEventListener("dragenter", function(event) {
+            if ( event.target.className == "box_calendar_box_droptarget" ) {
+                event.target.style.backgroundColor = "#FFECC9";
+            }
+        });
+        
+        // By default, data/elements cannot be dropped in other elements. To allow a drop, we must prevent the default handling of the element
+        document.addEventListener("dragover", function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+            event.dataTransfer.dropEffect = "copy"; // Display a "copy" cursor
+        });
+        
+        // When the draggable p element leaves the droptarget, reset the DIVS's border style
+        document.addEventListener("dragleave", function(event) {
+            if ( event.target.className == "box_calendar_box_droptarget" ) {
+                event.target.style.backgroundColor = "#FFD4D4";
+            }
+        });
+        
+        /* On drop - Prevent the browser default handling of the data (default is open as link on drop)
+           Reset the color of the output text and DIV's border color
+           Get the dragged data with the dataTransfer.getData() method
+           The dragged data is the id of the dragged element ("drag1")
+           Append the dragged element into the drop element
+        */
+        document.addEventListener("drop", function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+            if ( event.target.className == "box_calendar_box_droptarget" ) {
+                event.target.innerHTML = event.dataTransfer.getData("Text");
+                event.target.style.backgroundColor = "#FFD4D4";
+            }
+        });
+    </script>
+    
+    <br>這裡空一行，到時候記得刪掉
+    
+    <div id="sitebody_calendar">
+        <div id="box_calendar_column">
+            <div id="box_calendar_none" style="background-color:#FFFFFF;">&nbsp</div>
+            <div id="box_calendar_box_car">AAA1111</div>
+            <div id="box_calendar_box_car">BBB2222</div>
+            <div id="box_calendar_box_car">CCC3333</div>
+            <div id="box_calendar_box_car">DDD4444</div>
+            <div id="box_calendar_box_car">EEE5555</div>
+            <div id="box_calendar_box_car">FFF6666</div>
+            <div id="box_calendar_box_car">GGG7777</div>
+            <div id="box_calendar_box_car">HHH8888</div>
+        </div>
+        <div id="box_calendar_column">
+            <div id="box_calendar_week" style="background-color:#F5F5F5;">星期一</div>
+            <div id="box_calendar_box_period">上午</div>
+            <div id="box_calendar_box_period">下午</div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+          <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+        </div>
+        <div id="box_calendar_column">
+            <div id="box_calendar_week" style="background-color:#DCDCDC;">星期二</div>
+            <div id="box_calendar_box_period">上午</div>
+            <div id="box_calendar_box_period">下午</div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+          <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+        </div>
+        <div id="box_calendar_column">
+            <div id="box_calendar_week" style="background-color:#D3D3D3;">星期三</div>
+            <div id="box_calendar_box_period">上午</div>
+            <div id="box_calendar_box_period">下午</div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+          <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+        </div>
+        <div id="box_calendar_column">
+            <div id="box_calendar_week" style="background-color:#C0C0C0;">星期四</div>
+            <div id="box_calendar_box_period">上午</div>
+            <div id="box_calendar_box_period">下午</div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+          <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+        </div>
+        <div id="box_calendar_column">
+            <div id="box_calendar_week" style="background-color:#A9A9A9;">星期五</div>
+            <div id="box_calendar_box_period">上午</div>
+            <div id="box_calendar_box_period">下午</div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+          <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+        </div>
+        <div id="box_calendar_column">
+            <div id="box_calendar_week" style="background-color:#808080;">星期六</div>
+            <div id="box_calendar_box_period">上午</div>
+            <div id="box_calendar_box_period">下午</div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+          <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+        </div>
+        <div id="box_calendar_column">
+            <div id="box_calendar_week" style="background-color:#696969;">星期日</div>
+            <div id="box_calendar_box_period">上午</div>
+            <div id="box_calendar_box_period">下午</div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+          <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+            <div id="box_calendar_cell">
+                <div class="box_calendar_box_droptarget"></div>
+                <div class="box_calendar_box_droptarget"></div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <br>這裡空一行，到時候記得刪掉
+    
+    
+    <!-- person-list -->
+    <div id="sitebody_person">
+        <div id="box_person">
+            <p draggable="true" id="dragtarget">王一二三</p>
+        </div>
+        <div id="box_person">
+            <p draggable="true" id="dragtarget">王四五六</p>
+        </div>
+        <div id="box_person">
+            <p draggable="true" id="dragtarget">王七八九</p>
+        </div>
+        <div id="box_person">
+            <p draggable="true" id="dragtarget">李一二三</p>
+        </div>
+        <div id="box_person">
+            <p draggable="true" id="dragtarget">李四五六</p>
+        </div>
+        <div id="box_person">
+            <p draggable="true" id="dragtarget">李七八九</p>
+        </div>
+        <div id="box_person">
+            <p draggable="true" id="dragtarget">林一二三</p>
+        </div>
+        <div id="box_person" style="border-right:2px #000000 solid">
+            <p draggable="true" id="dragtarget">林四五六</p>
+        </div>
+    </div>
+    
+</html>

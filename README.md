@@ -13,3 +13,5 @@ License
 -------------
 <a href=/LICENSE.txt target="_blank">MIT</a> license.
 
+
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=192.168.1.151

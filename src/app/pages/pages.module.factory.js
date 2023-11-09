@@ -12,11 +12,17 @@
                 getAllUsers: function () { // can sign in
                     return http.get('/api/getAllUsers');
                 },
+                getAllUsersExecutive: function () { // can sign in
+                    return http.get('/api/getAllUsersExecutive');
+                },
                 getAllResignUsers: function () { // can sign in
                     return http.get('/api/get_all_resign_users');
                 },
                 getAllUsersWithSignOut: function () {
                     return http.get('/api/getAllUsersWithSignOut');
+                },
+                getAllUsersWithSignOutExecutive: function () {
+                    return http.get('/api/get_all_users_with_unregister_executive');
                 },
                 findTechs: function () {
                     return http.get('/api/getAllTechs');

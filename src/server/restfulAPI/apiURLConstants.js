@@ -13,8 +13,10 @@ global.apiUrl = {
 
     //create project
     get_all_users : '/api/getAllUsers',
+    get_all_users_Executive : '/api/getAllUsersExecutive',
     get_all_resign_users : '/api/get_all_resign_users',
     get_all_users_with_unregister : '/api/getAllUsersWithSignOut',
+    get_all_users_with_unregister_executive : '/api/get_all_users_with_unregister_executive',
     get_all_techs : '/api/getAllTechs',
     get_all_managers : '/api/getAllManagers',
     get_project_find_all : '/api/projectFindAll',

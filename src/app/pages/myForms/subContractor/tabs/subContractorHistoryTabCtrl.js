@@ -101,11 +101,13 @@
         }
 
         $scope.recoverSCApplyItemOne = function (item) {
+            console.log("QQQ")
             var formData = {
                 _id: item._id,
             }
             var formData = {
                 _id: item._id,
+                isClosed: false,
                 isSendReview: false,
                 isManagerCheck: false,
             }

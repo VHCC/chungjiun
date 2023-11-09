@@ -129,14 +129,15 @@
 
 
         $scope.fetchAllUsers = function () {
-            User.getAllUsersWithSignOut()
+            console.log("fetchAllUsersfetchAllUsersfetchAllUsers")
+            User.getAllUsersWithSignOutExecutive()
                 .success(function (allUsers) {
                     vm.users = allUsers;
 
                 });
         }
 
-        $scope.fetchAllUsers();
+        // $scope.fetchAllUsers();
 
         User.getAllUsers()
             .success(function (managers) {

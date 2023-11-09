@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-require('appmetrics-dash').attach();
+// require('appmetrics-dash').attach();
 
 require('../app/pages/pages.order');
 require('./restfulAPI/apiURLConstants');

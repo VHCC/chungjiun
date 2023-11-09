@@ -156,6 +156,9 @@
                                 //     }
                                 // }
 
+                                console.log("index:> " + index);
+                                console.log("newDate:> " + newDate);
+
                                 var hrMachineItem = {
                                     date: "",
                                     did: "",
@@ -170,6 +173,7 @@
                                     console.log("2022/02/27 ignore for 老賢")
                                     continue;
                                 }
+                                console.log("arrayResult[0][index].date:>" + arrayResult[0][index].date)
 
                                 if (hrMachineTableSorted[arrayResult[0][index].date] === undefined) {
                                     hrMachineItem.date = arrayResult[0][index].date;
@@ -249,9 +253,13 @@
                                 }
                             }
 
+
+
                             switch(tabType) {
                                 case 0:
                                     $scope.hrMachineTable = hrMachineTableSorted;
+                                    console.log("lastDate:> " + lastDate)
+                                    console.log($scope.hrMachineTable);
                                     $scope.getUsersTravelApplicationData($scope.userDID, thisYear, 0);
                                     $scope.getRemedyHistoryData($scope.userDID, 0);
                                     break;
@@ -274,7 +282,7 @@
                                     }
                                     $scope.hrMachineTable_month_reports = hrMachineTableSorted;
                                     $scope.getUsersTravelApplicationData(selectedUser._id, thisYear, 2, specificDate);
-                                    $scope.getRemedyHistoryData(selectedUser._id, 2);
+                                    $scope.getRemedyHistoryData(selectedUser._id, 2, specificDate);
                                     break;
                             }
                             $timeout(function () {
@@ -448,6 +456,7 @@
                     // 連續多筆type=4，以最後一筆為主
                     // 遇到 加班簽退 2 就停止
                     case 41:
+
                         var workOverOffArray = [];
                         var isFirstWorkOverOn = false;
                         var isFirstWorkOverOff = false;
@@ -470,6 +479,7 @@
                     //  加班時數1
                     // Deprecated
                     case 51:
+                        console.log("51");
                         var workOnHour;
                         var workOnMin;
                         var workOffHour;
@@ -1171,7 +1181,9 @@
                             var monthDayTemp = moment(resp.payload[index].taStartDate).format("MMDD");
 
                             var dateTemp = yearTemp + monthDayTemp;
-                            // console.log("dateTemp:> " + dateTemp);
+                            if ($scope.isHrDebug) {
+                                console.log("dateTemp:> " + dateTemp);
+                            }
 
                             var hrMachineTravelItem = {
                                 date: "",
@@ -1186,12 +1198,12 @@
                             var targetDate = moment(parseInt(dateTemp.substring(0,3))+ 1911 + dateTemp.substring(3,7))
                             // console.log("startDate :> " + startDate)
                             // console.log("targetDate :> " + targetDate)
-                            // console.log("targetDate.isAfter(startDate) :> " + targetDate.isAfter(startDate))
+                            // console.log("targetDate.isAfter(startDate) :> " + targetDate.isSameOrAfter(startDate))
 
                             if (type == 2) { // 月報表集中在月
 
                                 var endMonthDate = moment(specificDate);
-                                // console.log("endMonthDate:> " + endMonthDate);
+                                console.log("endMonthDate:> " + endMonthDate);
 
                                 if (targetDate.isSameOrAfter(startDate) && targetDate.isBefore(endMonthDate)) {
 
@@ -1248,12 +1260,9 @@
                                     }
                                 }
                             }
-
-
                         }
-
-                        console.log(operateTable);
-                        console.log($scope.travelApplicationItems);
+                        // console.log(operateTable);
+                        // console.log($scope.travelApplicationItems);
                     })
 
                 $scope.showGPSInfo = function (tables, type) {
@@ -1908,7 +1917,7 @@
                 }
             }
 
-            $scope.getRemedyHistoryData = function(userDID, type) {
+            $scope.getRemedyHistoryData = function(userDID, type, specificDate) {
                 var operateTable = undefined;
 
                 switch (type) {
@@ -1944,7 +1953,7 @@
                         for (var index = 0; index < res.payload.length; index ++) {
                             // $scope.travelApplicationItems.push(res.payload[index]);
 
-                            if (!res.payload[index].isBossCheck) continue
+                            if (!res.payload[index].isBossCheck) continue;
 
                             var dateTemp = DateUtil.getShiftDatefromFirstDate(
                                 DateUtil.getFirstDayofThisWeek(moment(res.payload[index].create_formDate)),
@@ -1955,7 +1964,13 @@
                             var monthDayTemp = moment(dateTemp).format("MMDD");
 
                             var dateTempNew = yearTemp + monthDayTemp;
+                            if ($scope.isHrDebug) {
+                            }
                             console.log("=== 補登日期 === :> " + dateTempNew);
+                            if (dateTempNew == '1121101') {
+                               console.log("index:> " + index)
+                               console.log("dateTemp:> " + dateTemp)
+                            }
 
                             var hrRemedyItem = {
                                 date: "",
@@ -1971,27 +1986,67 @@
                             // console.log("startDate :> " + startDate)
                             // console.log("targetDate :> " + targetDate)
                             // console.log("targetDate.isAfter(startDate) :> " + targetDate.isAfter(startDate))
+                            // console.log("targetDate.isSameOrAfter(startDate) :> " + targetDate.isSameOrAfter(startDate))
 
-                            if (targetDate.isSameOrAfter(startDate)) {
+                            if (specificDate != undefined || specificDate != null) {
 
-                                if (operateTable[dateTempNew] === undefined) {
-                                    var hrMachineCollection = [];
+                                var endMonthDate = moment(specificDate);
+                                // console.log("endMonthDate:> " + endMonthDate);
 
-                                    hrRemedyItem.date = dateTempNew;
-                                    hrRemedyItem.time = res.payload[index].start_time.replace(":", "");
-                                    hrRemedyItem.workType = res.payload[index].workType;
+                                if (targetDate.isSameOrAfter(startDate) && targetDate.isBefore(endMonthDate)) {
+                                // if (targetDate.isSameOrAfter(startDate)) {
+                                    if (operateTable[dateTempNew] === undefined) {
+                                        var hrMachineCollection = [];
 
-                                    hrMachineCollection.push(hrRemedyItem);
+                                        hrRemedyItem.date = dateTempNew;
+                                        hrRemedyItem.time = res.payload[index].start_time.replace(":", "");
+                                        hrRemedyItem.workType = res.payload[index].workType;
 
-                                    operateTable[dateTempNew] = hrMachineCollection;
-                                } else {
-                                    hrRemedyItem.date = dateTempNew;
-                                    hrRemedyItem.time = res.payload[index].start_time.replace(":", "");
-                                    hrRemedyItem.workType = res.payload[index].workType;
+                                        hrMachineCollection.push(hrRemedyItem);
 
-                                    operateTable[dateTempNew].push(hrRemedyItem);
+                                        operateTable[dateTempNew] = hrMachineCollection;
+                                    } else {
+                                        hrRemedyItem.date = dateTempNew;
+                                        hrRemedyItem.time = res.payload[index].start_time.replace(":", "");
+                                        hrRemedyItem.workType = res.payload[index].workType;
+
+                                        operateTable[dateTempNew].push(hrRemedyItem);
+                                    }
+                                }
+                            } else {
+                                if (targetDate.isSameOrAfter(startDate)) {
+
+                                    if (operateTable[dateTempNew] === undefined) {
+                                        var hrMachineCollection = [];
+                                        if (dateTempNew == '1121101') {
+                                            console.log("A")
+                                        }
+                                        hrRemedyItem.date = dateTempNew;
+                                        hrRemedyItem.time = res.payload[index].start_time.replace(":", "");
+                                        hrRemedyItem.workType = res.payload[index].workType;
+
+                                        hrMachineCollection.push(hrRemedyItem);
+
+                                        operateTable[dateTempNew] = hrMachineCollection;
+                                    } else {
+                                        if (dateTempNew == '1121101') {
+                                            console.log("B")
+                                        }
+                                        hrRemedyItem.date = dateTempNew;
+                                        hrRemedyItem.time = res.payload[index].start_time.replace(":", "");
+                                        hrRemedyItem.workType = res.payload[index].workType;
+
+                                        operateTable[dateTempNew].push(hrRemedyItem);
+                                    }
+                                    console.log(hrRemedyItem);
+                                    if (hrRemedyItem.date == '1121101') {
+                                        console.log("targetDate:> " + targetDate)
+                                        console.log("startDate:> " + startDate)
+                                    }
                                 }
                             }
+
+
                         }
                         // console.log(operateTable);
                     })

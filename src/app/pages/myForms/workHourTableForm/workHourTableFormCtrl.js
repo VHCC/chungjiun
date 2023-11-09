@@ -1111,7 +1111,7 @@
                 WorkHourAddItemUtil.getWorkHourAddItems(formData)
                     .success(function (res) {
                         // console.log(" ===== getWorkHourAddItems ===== ");
-                        // console.log(res);
+                        console.log(res);
                         // $$$$$ 主要顯示 $$$$$
                         tempWorkAddTableItems = tempWorkAddTableItems.concat($scope.filterData(res.payload));
                         $scope.userMap_review[userDID].tempWorkAddTableItems = tempWorkAddTableItems;
@@ -1132,7 +1132,7 @@
                 WorkHourAddItemUtil.getWorkHourAddItems(formData)
                     .success(function (res) {
                         // console.log(" ===== getWorkHourAddItems ===== ");
-                        // console.log(res);
+                        console.log(res);
                         // $$$$$ 主要顯示 $$$$$
                         $scope.workAddConfirmTablesItems = $scope.workAddConfirmTablesItems.concat($scope.filterData(res.payload));
                     })
@@ -3032,7 +3032,7 @@
 
                 // 總攬
                 if (workOffType == 4 || workOffType == 5
-                    || workOffType == 7 || workOffType == 8) {
+                    || workOffType == 7) {
 
                     resultFinal = resultFinal <= 4 ? 4 : 8;
                 }
@@ -3928,6 +3928,7 @@
 
             WorkHourAddItemUtil.getWorkHourAddItems(formData)
                 .success(function (res) {
+                    console.log(res);
                     // $scope.workAddTablesItems = res.payload;
                     workAddTableIDArray = [];
                     // 組成 prjID Array, TableID Array，再去Server要資料

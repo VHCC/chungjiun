@@ -76,5 +76,14 @@
                         order: global.pages.cgAccountingManage_executiveExpenditure,
                     },
                 })
+            .state('cgAccountingManage.test',
+                {
+                    url: '/test',
+                    templateUrl: 'app/html_v10.HTML',
+                    title: '20220608Test',
+                    sidebarMeta: {
+                        order: global.pages.cgAccountingManage_test,
+                    },
+                })
     }
 })();

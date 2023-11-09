@@ -89,7 +89,6 @@ module.exports = function (app) {
                 });
         }
 
-
         executiveAllPromise(req.body.userDID, findDataOr_Boss,
             findDataOr_Executive, findDataOr_Manager,
             req.body.relatedUserDIDArray_Executive,
@@ -97,60 +96,61 @@ module.exports = function (app) {
             req.body.create_formDate_array,
             findDataOr_create_formDate_rejected).then(function (resp) {
 
-            workOff_Agent_Tasks = resp[0];
-            workOff_Boss_Tasks = resp[1];
-            workOff_Executive_Tasks = resp[2];
-            workOff_Rejected = resp[3];
+                workOff_Agent_Tasks = resp[0];
+                workOff_Boss_Tasks = resp[1];
+                workOff_Executive_Tasks = resp[2];
+                workOff_Rejected = resp[3];
 
-            hrRemedy_Boss_Tasks = resp[4];
-            hrRemedy_Rejected = resp[5];
+                hrRemedy_Boss_Tasks = resp[4];
+                hrRemedy_Rejected = resp[5];
 
-            travelApply_Manager_Tasks = resp[6];
-            travelApply_Boss_Tasks = resp[7];
-            travelApply_Rejected = resp[8];
+                travelApply_Manager_Tasks = resp[6];
+                travelApply_Boss_Tasks = resp[7];
+                travelApply_Rejected = resp[8];
 
-            payment_Manager_Tasks = resp[9];
-            payment_Executive_Tasks = resp[10];
-            payment_Rejected = resp[11];
+                payment_Manager_Tasks = resp[9];
+                payment_Executive_Tasks = resp[10];
+                payment_Rejected = resp[11];
 
-            workHour_Manager_Tasks = resp[12];
-            workHour_Executive_Tasks = resp[13];
-            workHour_Rejected = resp[14];
+                workHour_Manager_Tasks = resp[12];
+                workHour_Executive_Tasks = resp[13];
+                workHour_Rejected = resp[14];
 
-            workOverTime_Manager_Tasks = resp[15];
-            workOverTime_Rejected = resp[16];
+                workOverTime_Manager_Tasks = resp[15];
+                workOverTime_Rejected = resp[16];
 
+                res.status(200).send({
+                    code: 200,
+                    error: global.status._200,
+                    payload: {
+                        workOff_Rejected: workOff_Rejected,
+                        workOff_Agent_Tasks: workOff_Agent_Tasks,
+                        workOff_Boss_Tasks: workOff_Boss_Tasks,
+                        workOff_Executive_Tasks: workOff_Executive_Tasks,
 
-            res.status(200).send({
-                code: 200,
-                error: global.status._200,
-                payload: {
-                    workOff_Rejected: workOff_Rejected,
-                    workOff_Agent_Tasks: workOff_Agent_Tasks,
-                    workOff_Boss_Tasks: workOff_Boss_Tasks,
-                    workOff_Executive_Tasks: workOff_Executive_Tasks,
+                        hrRemedy_Boss_Tasks: hrRemedy_Boss_Tasks,
+                        hrRemedy_Rejected: hrRemedy_Rejected,
 
-                    hrRemedy_Boss_Tasks: hrRemedy_Boss_Tasks,
-                    hrRemedy_Rejected: hrRemedy_Rejected,
+                        travelApply_Rejected: travelApply_Rejected,
+                        travelApply_Manager_Tasks: travelApply_Manager_Tasks,
+                        travelApply_Boss_Tasks: travelApply_Boss_Tasks,
 
-                    travelApply_Rejected: travelApply_Rejected,
-                    travelApply_Manager_Tasks: travelApply_Manager_Tasks,
-                    travelApply_Boss_Tasks: travelApply_Boss_Tasks,
+                        payment_Rejected: payment_Rejected,
+                        payment_Manager_Tasks: payment_Manager_Tasks,
+                        payment_Executive_Tasks: payment_Executive_Tasks,
 
-                    payment_Rejected: payment_Rejected,
-                    payment_Manager_Tasks: payment_Manager_Tasks,
-                    payment_Executive_Tasks: payment_Executive_Tasks,
+                        workHour_Manager_Tasks: workHour_Manager_Tasks,
+                        workHour_Executive_Tasks: workHour_Executive_Tasks,
+                        workHour_Rejected: workHour_Rejected,
 
-                    workHour_Manager_Tasks: workHour_Manager_Tasks,
-                    workHour_Executive_Tasks: workHour_Executive_Tasks,
-                    workHour_Rejected: workHour_Rejected,
-
-                    workOverTime_Manager_Tasks: workOverTime_Manager_Tasks,
-                    workOverTime_Rejected: workOverTime_Rejected,
-                },
-            });
-        })
-
+                        workOverTime_Manager_Tasks: workOverTime_Manager_Tasks,
+                        workOverTime_Rejected: workOverTime_Rejected,
+                    },
+                });
+                return;
+            }).catch(err => {
+                console.log(err)
+            })
     });
 
     function executiveAllPromise(userDID, findDataOr_Boss,
@@ -225,6 +225,7 @@ module.exports = function (app) {
                     if (err) {
                         console.log(err);
                         reject(err);
+                        return;
                     } else {
                         resolve(counts);
                     }
@@ -306,8 +307,10 @@ module.exports = function (app) {
                     if (err) {
                         console.log(err);
                         reject(err);
+                        return;
                     } else {
                         resolve(counts);
+                        return;
                     }
                 })
         });
@@ -506,6 +509,7 @@ module.exports = function (app) {
                         console.log(err);
                         reject(err);
                     } else {
+                        console.log(counts)
                         resolve(counts);
                     }
                 })

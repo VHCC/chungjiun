@@ -1,5 +1,7 @@
 var userModel = require('../models/user');
 var nodemailer = require('nodemailer');
+const websocketUtil = require('../../config/rabbitMQConfig');
+
 
 var mailTransport = nodemailer.createTransport({
     host: 'mail.chongjun.tw',
@@ -17,8 +19,60 @@ module.exports = function(app) {
 // ----- define routes
     // find
     app.post(global.apiUrl.post_login_user_find, function(req, res) {
+        websocketUtil.sendMessageToClient("123", "QERQER");
+        // app.clients.get("123").send("QQQ");
+        console.log(req.body);
         userModel.find({
             email : req.body.email,
+        // })
+        // .then((user) => {
+        //     if (user != '') {
+        //
+        //         if (req.body.password != user[0].get('password') && user[0].isChangedPWD) {
+        //             console.log(global.timeFormat(new Date()) + global.log.w + 'wrong pwd= ' + req.body.password);
+        //             res.status(404).send({
+        //                 code: 401,
+        //                 pwdChangeUserName: user[0].pwdChangeUserName,
+        //                 passwordChangeTs: user[0].passwordChangeTs,
+        //                 error: global.status._400,
+        //             });
+        //             return;
+        //         } else if (req.body.password != user[0].get('password')) {
+        //             console.log(global.timeFormat(new Date()) + global.log.w + 'wrong pwd= ' + req.body.password);
+        //             res.status(404).send({
+        //                 code: 400,
+        //                 error: global.status._400,
+        //             });
+        //             return;
+        //         }
+        //
+        //         userModel.updateOne({
+        //             email: req.body.email,
+        //         }, {
+        //             $set: {
+        //                 isChangedPWD: false,
+        //             }
+        //         }, function (err) {
+        //             if (err) {
+        //                 res.send(err);
+        //             } else {
+        //             }
+        //         })
+        //
+        //         console.log(global.timeFormat(new Date()) + global.log.i + "Login Success, user= " + JSON.stringify(user));
+        //         res.json(user);
+        //         return;
+        //     }
+        //     console.log(global.timeFormat(new Date()) + global.log.i + "no User= " + req.body.email);
+        //     res.status(404).send({
+        //         code: 404,
+        //         error: global.status._404,
+        //     });
+        // })
+        // .catch((err) => {
+        //     console.log(global.timeFormat(new Date()) + global.log.e + error);
+        //     res.send(err);
+        // });
         }, function(err, user) {
             if (err) {
                 console.log(global.timeFormat(new Date()) + global.log.e + error);

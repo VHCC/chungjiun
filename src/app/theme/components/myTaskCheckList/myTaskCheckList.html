@@ -1,0 +1,149 @@
+<ul class="al-msg-center clearfix" ng-click="fetchCheckList()">
+    <li uib-dropdown style="padding-top:10px">
+        <a href class="msg" uib-dropdown-toggle>
+            <i class="ion-clipboard"></i>
+            <span>{{unReadMsg()}}</span>
+
+            <div class="notification-ring"></div>
+        </a>
+        <div uib-dropdown-menu class="top-dropdown-menu" style="width: 200px">
+            <i class="dropdown-arr"></i>
+            <div class="header clearfix">
+                <strong>工作待辦列表</strong>
+                <!--<a href ng-click="allMsgRead()">全部已讀</a>-->
+            </div>
+            <!--<div class="msg-list">-->
+            <!--<a href-->
+            <!--class="clearfix"-->
+            <!--ng-class="{myMsgItemRead: !msg.isRead}"-->
+            <!--ng-repeat="msg in messages"-->
+            <!--ng-click="readMsg(this)">-->
+            <!--&lt;!&ndash;<div class="my-msg-title-area">&ndash;&gt;-->
+            <!--&lt;!&ndash;<div>{{ msg.type }}</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;<img class="photo-msg-item"&ndash;&gt;-->
+            <!--&lt;!&ndash;ng-src="{{::( msg.creatorDID | profilePicture )}}">&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--<div class="img-area">-->
+            <!--<img class="photo-msg-item"-->
+            <!--ng-src="{{::( msg.creatorDID | profilePicture )}}">-->
+            <!--</div>-->
+
+            <!--<div class="msg-area">-->
+            <!--<div>{{msg.creatorInfo.name}} {{ msg.text }}</div>-->
+            <!--<span>{{ msg.timeDiff }}</span>-->
+            <!--&lt;!&ndash;<span>{{ msg.time }}</span>&ndash;&gt;-->
+            <!--</div>-->
+            <!--</a>-->
+            <!--</div>-->
+            <div class="msg-list ">
+                <!-- 工時系統 -->
+                <a href="#/cgWorkManage/workHourTableForm" class="clearfix">
+                    <div class="my-msg-title-area">
+                        工時系統
+                    </div>
+                    <div ng-if="roleType == 2 || roleType == 6 || roleType == 100 || roleType == 1"
+                            class="msg-area">
+                        <subt>工時審核</subt>
+                        <span>{{wh_manager}}</span>
+                    </div>
+                    <div ng-if="roleType == 100"
+                            class="msg-area">
+                        <subt>行政審核</subt>
+                        <span>{{wh_executive}}</span>
+                    </div>
+                </a>
+                <!-- 人員請假 -->
+                <a href="#/cgWorkManage/workOffForm" class="signout clearfix">
+                    <div class="my-msg-title-area">
+                        人員請假
+                    </div>
+                    <div class="msg-area">
+                        <subt>代理人確認</subt>
+                        <span>1</span>
+                    </div>
+                    <div ng-if="roleType == 2 || roleType == 6 || roleType == 100 || roleType == 1"
+                            class="msg-area">
+                        <subt>主管審核</subt>
+                        <span>0</span>
+                    </div>
+                    <div ng-if="roleType == 100"
+                            class="msg-area">
+                        <subt>行政審核</subt>
+                        <span>0</span>
+                    </div>
+                </a>
+                <!-- 出差申請 -->
+                <a href="#/cgWorkManage/workOffForm" class="signout clearfix">
+                    <div class="my-msg-title-area">
+                        出差申請
+                    </div>
+                    <div class="msg-area">
+                        <subt>出差申請</subt>
+                        <span>1</span>
+                    </div>
+                    <div class="msg-area">
+                        <subt>公出申請</subt>
+                        <span>0</span>
+                    </div>
+                </a>
+
+                <!-- 公文辦理 -->
+                <a href="#/cgOfficialDoc/officialDocHandle" class="signout clearfix">
+                    <div class="my-msg-title-area">
+                        公文辦理
+                    </div>
+                    <div class="msg-area">
+                        <subt>款項審核</subt>
+                        <span>1</span>
+                    </div>
+                    <div ng-if="roleType == 100"
+                            class="msg-area">
+                        <subt>行政審核</subt>
+                        <span>1</span>
+                    </div>
+                </a>
+
+                <!-- 公文辦理 -->
+                <a href="#/cgOfficialDoc/officialDocHandle" class="signout clearfix">
+                    <div class="my-msg-title-area">
+                        公文辦理
+                    </div>
+                    <div class="msg-area">
+                        <subt>待辦公文</subt>
+                        <span>1</span>
+                    </div>
+                    <div class="msg-area">
+                        <subt>待簽公文</subt>
+                        <span>1</span>
+                    </div>
+                    <div class="msg-area">
+                        <subt>待審公文</subt>
+                        <span>0</span>
+                    </div>
+                </a>
+                <!-- 發文作業 -->
+                <a href="#/cgOfficialDoc/officialDocHandle" class="signout clearfix">
+                    <div class="my-msg-title-area">
+                        發文作業
+                    </div>
+                    <div class="msg-area">
+                        <subt>待審公文</subt>
+                        <span>1</span>
+                    </div>
+                    <div class="msg-area">
+                        <subt>待發文</subt>
+                        <span>1</span>
+                    </div>
+                    <div class="msg-area">
+                        <subt>代理審核</subt>
+                        <span>0</span>
+                    </div>
+                    <div class="msg-area">
+                        <subt>行政發文</subt>
+                        <span>0</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </li>
+</ul>

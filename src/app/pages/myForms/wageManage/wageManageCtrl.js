@@ -472,7 +472,7 @@
                         } else {
                             // 總攬
                             if (type == 4 || type == 5
-                                || type == 7 || type == 8 || type == 9) {
+                                || type == 7 ) {
                                 resultFinal = resultFinal <= 4 ? 4 : 8;
                             }
                             return resultFinal;

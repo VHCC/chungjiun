@@ -13,7 +13,7 @@
     $stateProvider
         .state('dashboard', {
           url: '/dashboard',
-          templateUrl: 'app/pages/dashboard/dashboardold.html',
+          templateUrl: 'app/pages/dashboard/dashboard.html',
           title: '首頁',
           sidebarMeta: {
             icon: 'ion-android-home',

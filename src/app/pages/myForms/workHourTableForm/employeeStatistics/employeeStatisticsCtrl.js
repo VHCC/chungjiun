@@ -1643,7 +1643,7 @@
                 }
                 var results = 0;
                 for (var index = 0; index < target.length; index ++) {
-                    console.log(target[index]);
+                    // console.log(target[index]);
                     results += $scope.getHourDiffByTime(target[index].start_time, target[index].end_time, type)
                 }
 
@@ -1784,7 +1784,7 @@
                     } else {
                         // 總攬
                         if (type == 4 || type == 5
-                            || type == 7 || type == 8 || type == 9) {
+                            || type == 7 ) {
                             resultFinal = resultFinal <= 4 ? 4 : 8;
                         }
                         return resultFinal;

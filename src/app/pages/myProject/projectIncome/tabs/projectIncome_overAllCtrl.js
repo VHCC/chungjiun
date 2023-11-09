@@ -536,9 +536,13 @@
                     hourTotal += parseFloat(item.tables[index].sun_hour)
                     totalCost += parseFloat(item.tables[index].sun_hour) * item.tables[index].userMonthSalary / 30 / 8 * cons_1;
                 }
+                console.log(item.tables[index]._day)
+                console.log(index)
+                console.log(totalCost);
 
             }
             item.hourTotal = hourTotal;
+            console.log(totalCost)
             item.totalCost = totalCost;
             switch (type) {
                 case 1:

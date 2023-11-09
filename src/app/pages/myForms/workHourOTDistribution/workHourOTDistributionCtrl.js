@@ -54,7 +54,7 @@
             var specificMonth = thisMonth;
 
             // // 所有人，對照資料
-            User.getAllUsers()
+            User.getAllUsersExecutive()
                 .success(function (allUsers) {
                     vm.executiveUsers = allUsers;
                 });

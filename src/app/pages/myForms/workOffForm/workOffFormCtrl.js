@@ -196,9 +196,12 @@
                     })
             }
 
+            $scope.alreadyApplyHour = 0;
+
             // 取得 休假列表
             // 歷史所有 20200305
-            $scope.getWorkOffTable = function (userDID, year, month, subVM) {
+            $scope.getWorkOffTable = function (userDID, year, month, subVM, callback) {
+                $scope.alreadyApplyHour = 0;
                 $scope.specificUserTablesItems = []; // 今年
                 var getData = {
                     creatorDID: (userDID === undefined || userDID == null)? $scope.userDID : userDID,
@@ -258,12 +261,19 @@
                                 updateAction: res.payload[index].updateAction,
                             };
                             $scope.specificUserTablesItems.push(detail);
+                            if (!res.payload[index].isExecutiveCheck && res.payload[index].isSendReview) {
+                                $scope.alreadyApplyHour += $scope.getHourDiffByTime(res.payload[index].start_time,
+                                    res.payload[index].end_time, res.payload[index].workOffType)
+                            }
                         }
 
                         console.log(" === 取得使用者個人休假表 === ");
-                        // console.log($scope.specificUserTablesItems);
+                        console.log($scope.specificUserTablesItems);
                         if (userDID !== undefined && userDID !== null) {
-                            $scope.findHolidayFormByUserDID(userDID === undefined ? $scope.userDID : userDID, subVM);
+                            $scope.findHolidayFormByUserDID(userDID === undefined ? $scope.userDID : userDID, subVM, function () {
+                                console.log("findHolidayFormByUserDID callback ...");
+                                callback();
+                            });
                         } else {
                             $scope.getLoginUserHolidayForm();
                         }
@@ -683,10 +693,14 @@
                 if (dom.$parent.$parent.item != undefined) {
                     dom.$parent.$parent.item.workOffType = dom.workOffType.type;
                 }
+
             }
 
             // 休假規則，未滿一小算一小
             $scope.getHourDiff = function (dom) {
+                console.log("tableTimeStart:> " + dom.tableTimeStart);
+                console.log("tableTimeEnd:> " + dom.tableTimeEnd);
+                console.log(dom);
                 if (dom.tableTimeStart && dom.tableTimeEnd) {
 
                     dom.table.start_time = dom.tableTimeStart;
@@ -768,7 +782,7 @@
 
 
                     if (TimeUtil.getHour(end) == 12) {
-                        console.log(result);
+                        // console.log(result);
                         result = result[0] + (result[1] > 30 ? 1 : result[1] === 0 ? 0 : 0.5);
                         // result = result[0] + (result[1] > 0 ? 0.5 : 0);
                     } else {
@@ -880,6 +894,7 @@
 
             // Send WorkOffTable to Review
             $scope.reviewWorkOffItem = function (table, button, index) {
+                console.log(table);
                 if (table.create_formDate == undefined) {
                     toastr.error('請選擇日期', '錯誤');
                     return;
@@ -900,13 +915,19 @@
                         var canUserHour = vm.loginUserHolidayForm.rest_observed +
                         vm.loginUserHolidayForm.person_residual_rest_hour -
                         $scope.showWorkOffCount_history(2, vm.loginUserHolidayForm) -
-                        $scope.loginUser_exchange_observed_history
+                        $scope.loginUser_exchange_observed_history;
                         console.log("table.myHourDiff:> " + table.myHourDiff);
                         console.log("canUserHour:> " + canUserHour);
+                        console.log("alreadyApplyHour:> " + $scope.alreadyApplyHour);
+
                         if (table.myHourDiff > canUserHour) {
                             // toastr.warn('補休剩餘時數不足，請確認申請時數', 'warn');
                             toastr.error('補休剩餘時數不足，請確認申請時數', 'Warn');
                             return;
+                        }
+
+                        if (table.myHourDiff > (canUserHour - $scope.alreadyApplyHour)) {
+                            toastr.error('補休申請總時數已超過剩餘數，請注意', 'Warn');
                         }
                         break;
                     }
@@ -970,8 +991,6 @@
                         toastr.error('假期期間設定不正確，請聯繫系統管理員', '錯誤');
                         return;
                     }
-
-                    // console.log(historyDate + ", isBetween= " + isBetween);
 
                     if (!isBetween) {
                         toastr.error('該假別不在允許期限內', '錯誤');
@@ -1055,22 +1074,114 @@
 
             //行政確認
             $scope.reviewExecutiveItem = function (table, index) {
-                $scope.checkText = '確定 同意：' + $scope.showApplier(table) + " " +
-                    DateUtil.getShiftDatefromFirstDate(
-                        DateUtil.getFirstDayofThisWeek(moment(table.create_formDate)),
-                        table.day === 0 ? 6 : table.day - 1) +
-                    "  ？";
-                $scope.checkingTable = table;
-                $scope.mIndex = index;
-                ngDialog.open({
-                    template: 'app/pages/myModalTemplate/myWorkOffTableFormExecutiveAgreeModal.html',
-                    className: 'ngdialog-theme-default',
-                    scope: $scope,
-                    showClose: false,
+                console.log(table);
+                bsLoadingOverlayService.start({
+                    referenceId: 'mainPage_workOff_b'
                 });
+
+                $scope.getWorkOffTable(table.creatorDID, null, null, null, function () {
+                   console.log("getWorkOffTable callBack()....");
+                    // 計算剩餘補休數
+                    $timeout(function () {
+                        var canUserHour = 0 ;
+
+                        switch (table.workOffType) {
+                            // 事
+                            case 0: {
+                                break;
+                            }
+                            // 病
+                            case 1: {
+
+                            }
+                            // 補休
+                            case 2: {
+                                canUserHour = vm.holidayForm.rest_observed +
+                                    vm.holidayForm.person_residual_rest_hour -
+                                    $scope.showWorkOffCount_history(2, vm.holidayForm) -
+                                    $scope.specificUser_exchange_observed_history;
+                                break;
+                            }
+                            // 特
+                            case 3: {
+                                canUserHour = vm.holidayForm.rest_special -
+                                    $scope.showWorkOffCount_history(3, vm.holidayForm) -
+                                    ($scope.specificUser_exchange_special_history)
+                                break;
+                            }
+                            // 婚
+                            case 4:
+                                canUserHour = vm.holidayForm.rest_married-
+                                    $scope.showWorkOffCount_history(4, vm.holidayForm);
+                                break;
+                            // 喪
+                            case 5:
+                                canUserHour = vm.holidayForm.rest_mourning-
+                                    $scope.showWorkOffCount_history(5, vm.holidayForm);
+                                break;
+                            // 公
+                            case 6:
+                                canUserHour = vm.holidayForm.rest_official-
+                                    $scope.showWorkOffCount_history(6, vm.holidayForm);
+                                break;
+                            // 公傷
+                            case 7:
+                                canUserHour = vm.holidayForm.rest_workinjury-
+                                    $scope.showWorkOffCount_history(7, vm.holidayForm);
+                                break;
+                            // 產
+                            case 8:
+                                canUserHour = vm.holidayForm.rest_maternity-
+                                    $scope.showWorkOffCount_history(8, vm.holidayForm);
+                                break;
+                            // 陪產(檢)
+                            case 9:
+                                canUserHour = vm.holidayForm.rest_paternity-
+                                    $scope.showWorkOffCount_history(9, vm.holidayForm);
+                                break;
+                            case 1001:
+                                canUserHour = vm.holidayForm.rest_others-
+                                    $scope.showWorkOffCount_history(1001, vm.holidayForm);
+                                break;
+                        }
+
+
+                        // console.log("alreadyApplyHour:> " + $scope.alreadyApplyHour);
+                        console.log("canUserHour:> " + canUserHour);
+
+                        bsLoadingOverlayService.stop({
+                            referenceId: 'mainPage_workOff_b'
+                        });
+
+                        $scope.checkText = '確定 同意：' + $scope.showApplier(table) + " " +
+                            DateUtil.getShiftDatefromFirstDate(
+                                DateUtil.getFirstDayofThisWeek(moment(table.create_formDate)),
+                                table.day === 0 ? 6 : table.day - 1) +
+                            "  ？" + "  剩餘可使用[" + $scope.showWorkOffTypeString(table.workOffType) + "]: " + canUserHour;
+                        $scope.checkingTable = table;
+                        $scope.mIndex = index;
+                        $scope.canUserHour = canUserHour;
+                        ngDialog.open({
+                            template: 'app/pages/myModalTemplate/myWorkOffTableFormExecutiveAgreeModal.html',
+                            className: 'ngdialog-theme-default',
+                            scope: $scope,
+                            showClose: false,
+                        });
+
+
+                    }, 500);
+                });
+
             }
             //跟後臺溝通
-            $scope.sendExecutiveAgree = function (checkingTable, index) {
+            $scope.sendExecutiveAgree = function (checkingTable, index, canUserHour) {
+
+                if (canUserHour < $scope.getHourDiffByTime(checkingTable.start_time,
+                    checkingTable.end_time, checkingTable.workOffType)) {
+                    toastr.error('補休剩餘時數不足，請確認申請時數', '無法核定');
+                    return;
+                }
+
                 var formData = {
                     tableID: checkingTable.tableID,
                     isExecutiveCheck: true,
@@ -1413,7 +1524,7 @@
             }
 
             // -------------選取 指定人員之 假期確認表 ----------------------
-            $scope.findHolidayFormByUserDID = function (userDID, subVM) {
+            $scope.findHolidayFormByUserDID = function (userDID, subVM, callback) {
                 console.log(" ====== 假期確認表 ====== ");
                 var formData = {
                     userDID: userDID,
@@ -1464,17 +1575,24 @@
                                     // subVM.exchangeForm.calculate_paternity = $scope.showWorkOffCount_history(9, subVM.exchangeForm);
                                     // subVM.exchangeForm.calculate_others = $scope.showWorkOffCount_history(1001, subVM.exchangeForm);
                                     subVM.exchangeForm.person_residual_rest_hour = parseFloat($scope.preciseResidualRestHour);
-                                    fetchWorkAddTableData(userDID, null, subVM);
+                                    fetchWorkAddTableData(userDID, null, subVM, function () {
+                                        console.log("fetchWorkAddTableData callback...");
+                                        callback();
+                                    });
                                     fetchWorkAddTableData_history(userDID, null, subVM);
                                     fetchExchangeData(userDID, null, specificYear, subVM);
                                     fetchExchangeData_history(userDID, null, null, subVM);
 
                                 } else {
-                                    fetchWorkAddTableData(userDID, 2);
+                                    fetchWorkAddTableData(userDID, 2, null, function () {
+                                        console.log("fetchWorkAddTableData callback...");
+                                        callback();
+                                    });
                                     fetchWorkAddTableData_history(userDID, 2);
                                     fetchExchangeData(userDID, 2, specificYear);
                                     fetchExchangeData_history(userDID, 2, null);
                                 }
+
                             })
                     })
             }
@@ -1593,7 +1711,8 @@
              * @param user
              */
             // subVM = 兌換單
-            function fetchWorkAddTableData(userDID, showType, subVM) {
+            function fetchWorkAddTableData(userDID, showType, subVM, callback) {
+                console.log(" *** fetchWorkAddTableData *** showType:> " + showType)
                 var formData = {
                     creatorDID: userDID,
                     workAddType: 2,
@@ -1628,6 +1747,9 @@
                         if (subVM) {
                             subVM.exchangeForm.rest_observed = 0;
                             subVM.exchangeForm.rest_observed = $scope.showTotalAddHour(tables, 2);
+                        }
+                        if (callback != undefined) {
+                            callback(); // 执行回调函数，在 B 函数完成后执行后续代码
                         }
                     })
                     .error(function () {
@@ -2107,50 +2229,63 @@
                     month = parseInt($scope.monthPicker.myDT.month()) + 1;
                 }
 
-                vm.userSelected = user;
-
                 var formData = {
-                    creatorDID: user._id,
-                    year: year,
-                    month: month,
-                    isSendReview: true,
-                    isBossCheck: true,
-                    isExecutiveCheck: true
+                    userDID: user._id,
                 }
-                WorkOffFormUtil.findWorkOffTableFormByUserDID(formData)
-                    .success(function (workOffTables) {
-                        $scope.workOffTables = workOffTables.payload;
-                        angular.element(
-                            document.getElementById('includeHead'))
-                            .append($compile(
-                                "<div ba-panel ba-panel-title=" +
-                                "'" + user.name + " " + year + "年" +
-                                month + "月" +
-                                "請假單列表 - " + workOffTables.payload.length + "'" +
-                                "ba-panel-class= " +
-                                "'with-scroll'" + ">" +
-                                "<div " +
-                                "ng-include=\"'app/pages/myForms/workOffForm/tabs/table/workOffForm_AllHistory.html'\">" +
-                                "</div>" +
-                                "</div>"
-                            )($scope));
+                User.findUserByUserDID(formData)
+                    .success(function (user) {
 
-                        $timeout(function () {
-                            bsLoadingOverlayService.stop({
-                                referenceId: 'allHistory_workOff'
+                        console.log(user);
+                        vm.userSelected = user;
+
+
+                        var formData = {
+                            creatorDID: user._id,
+                            year: year,
+                            month: month,
+                            isSendReview: true,
+                            isBossCheck: true,
+                            isExecutiveCheck: true
+                        }
+                        WorkOffFormUtil.findWorkOffTableFormByUserDID(formData)
+                            .success(function (workOffTables) {
+                                $scope.workOffTables = workOffTables.payload;
+                                angular.element(
+                                    document.getElementById('includeHead'))
+                                    .append($compile(
+                                        "<div ba-panel ba-panel-title=" +
+                                        "'" + user.name + " " + year + "年" +
+                                        month + "月" +
+                                        "請假單列表 - " + workOffTables.payload.length + "'" +
+                                        "ba-panel-class= " +
+                                        "'with-scroll'" + ">" +
+                                        "<div " +
+                                        "ng-include=\"'app/pages/myForms/workOffForm/tabs/table/workOffForm_AllHistory.html'\">" +
+                                        "</div>" +
+                                        "</div>"
+                                    )($scope));
+
+                                $timeout(function () {
+                                    bsLoadingOverlayService.stop({
+                                        referenceId: 'allHistory_workOff'
+                                    });
+                                    $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
+                                }, 200);
+                            })
+                            .error(function () {
+                                $timeout(function () {
+                                    bsLoadingOverlayService.stop({
+                                        referenceId: 'allHistory_workOff'
+                                    });
+                                }, 200)
+                                console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByUserDID');
+                                toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
                             });
-                            $rootScope.$emit("ProxyFetchUserRelatedTasks", {});
-                        }, 200);
                     })
-                    .error(function () {
-                        $timeout(function () {
-                            bsLoadingOverlayService.stop({
-                                referenceId: 'allHistory_workOff'
-                            });
-                        }, 200)
-                        console.log('ERROR WorkOffFormUtil.findWorkOffTableFormByUserDID');
-                        toastr.error('Server忙碌中，請再次讀取表單', '錯誤');
-                    });
+
+                // vm.userSelected = user;
+
+
             }
 
             $scope.initWorkOffMonthCheck = function (specificUser) {
@@ -2324,14 +2459,16 @@
             $scope.fileList = [];
             $scope.fileMap = {};
 
+            console.log("ERQEWRQWE")
             $scope.initDropZone = function (index, tableUUID) {
+                console.log("QQQQQ")
                 if (tableUUID == undefined) return;
                 var itemUUID = tableUUID;
 
                 setTimeout(function(){
                     var fileUnique = moment().format("YYYYMMDD_HHmmss");
-                    // console.log(itemUUID)
-                    // console.log("fileUnique:> " + fileUnique);
+                    console.log(itemUUID)
+                    console.log("fileUnique:> " + fileUnique);
                     var $ed = $('.dropzone'), $style = $('#styles');
                     $ed.val($style.html());
                     var targetID = '#demo-upload' + "_" + index;

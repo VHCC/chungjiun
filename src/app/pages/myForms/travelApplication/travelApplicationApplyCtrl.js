@@ -98,7 +98,7 @@
             });
 
         $scope.initProject = function() {
-            Project.findAll()
+            Project.findAllEnable()
                 .success(function (allProjects) {
                     $scope.allProject_raw = allProjects;
                     $scope.relatedProjects = [];

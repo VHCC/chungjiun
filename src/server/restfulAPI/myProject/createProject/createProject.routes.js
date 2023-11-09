@@ -33,6 +33,28 @@ module.exports = function (app) {
             });
     });
 
+    app.get(global.apiUrl.get_all_users_Executive, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, get_all_users_Executive");
+        User.find(
+            {
+                workStatus:true
+            },
+            {
+                password: 0
+            },
+            function (err, users) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, get_all_users_Executive");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.json(users);
+                }
+            });
+    });
+
     app.get(global.apiUrl.get_all_resign_users, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "API, get_all_resign_users");
         User.find(
@@ -77,6 +99,28 @@ module.exports = function (app) {
                 }
             });
     });
+
+    app.get(global.apiUrl.get_all_users_with_unregister_executive, function (req, res) {
+        console.log(global.timeFormat(new Date()) + global.log.i + "API, get_all_users_with_unregister_executive");
+        User.find(
+            {
+            },
+            {
+                password: 0,
+            },
+            function (err, users) {
+                if (err) {
+                    console.log(global.timeFormat(new Date()) + global.log.e + "API, get_all_users_with_unregister_executive");
+                    console.log(req.body);
+                    console.log(" ***** ERROR ***** ");
+                    console.log(err);
+                    res.send(err);
+                } else {
+                    res.json(users);
+                }
+            });
+    });
+
 
     app.get(global.apiUrl.get_all_techs, function (req, res) {
         console.log(global.timeFormat(new Date()) + global.log.i + "AP, getAllTechs");

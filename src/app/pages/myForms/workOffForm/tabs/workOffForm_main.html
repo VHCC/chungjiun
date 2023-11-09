@@ -63,67 +63,89 @@
         text-align: center;
     }
 
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    input[type="time"]::-webkit-calendar-picker-indicator {
+        background: none;
+    }
+
 </style>
 
 <div bs-loading-overlay
      bs-loading-overlay-reference-id="mainPage_workOff">
 
-    <uib-tabset active="$tabSetStatus.activeTab">
-        <uib-tab heading="個人填寫"
-                 ng-click="getWorkOffTable()">
-            <uib-tab-heading>
-                個人填寫 <span class="badge" ng-if="workOff_Rejected > 0">{{workOff_Rejected}}</span>
-            </uib-tab-heading>
-            <!--20200518 check right-->
-            <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_main_Tab.html'"></div>
-        </uib-tab>
-        <uib-tab heading="員工請假單" ng-click="initWorkOffMonthCheck()">
-            <!--20200518 check right-->
-            <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_All_Tab.html'"></div>
-        </uib-tab>
+    <div bs-loading-overlay
+         bs-loading-overlay-reference-id="mainPage_workOff_b">
 
-        <uib-tab heading="代理人審核" ng-click="apiProxy(this)">
-            <uib-tab-heading>
-                代理人審核 <span class="badge" ng-if="workOff_Agent_Tasks > 0">{{workOff_Agent_Tasks}}</span>
-            </uib-tab-heading>
-            <!--20200518 check right-->
-             <work-off-agent ></work-off-agent>
-        </uib-tab>
-        <!--20200518 check right-->
-        <uib-tab heading="主管審核" ng-if="roleType === '2' || roleType === '100' || roleType === '6' || roleType === '1'"
-                 ng-click="findWorkOffItemByUserDID_boss()">
-            <uib-tab-heading>
-                主管審核<span class="badge" ng-if="workOff_Boss_Tasks > 0">{{workOff_Boss_Tasks}}</span>
-            </uib-tab-heading>
-            <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_BossTab.html'"></div>
-        </uib-tab>
-        <!--20200518 check right-->
-        <uib-tab heading="行政確認" ng-if="roleType === '100' || userDID === '5d197f16a6b04756c893a162'"
-                 ng-click="findWorkOffItemByUserDID_executive()">
-            <uib-tab-heading>
-                行政確認<span class="badge" ng-if="workOff_Executive_Tasks > 0"> {{workOff_Executive_Tasks}}</span>
-            </uib-tab-heading>
-            <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_ExecutiveTab.html'"></div>
-        </uib-tab>
-        <!--20200518 check right-->
-        <uib-tab heading="假期確認" ng-if="roleType === '100' || userDID === '5d197f16a6b04756c893a162'"
-                 ng-click="fetchHolidayForm()"
-                 style="color: blue">
-            <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_HolidayTab.html'"></div>
-        </uib-tab>
-        <!--20200518 check right-->
-        <uib-tab heading="國定假日設定" ng-if="roleType === '100'">
-            <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_NationalHolidayTab.html'"></div>
-        </uib-tab>
-        <!--20200518 check right-->
-        <uib-tab heading="補班日設定" ng-if="roleType === '100'">
-            <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_OverTimeDayTab.html'"></div>
-        </uib-tab>
-        <!--20200518 check right-->
-        <uib-tab heading="補休特休兌換" ng-if="roleType === '100'">
-            <work-off-exchange></work-off-exchange>
-        </uib-tab>
+        <uib-tabset active="$tabSetStatus.activeTab">
+            <uib-tab heading="個人填寫"
+                     ng-click="getWorkOffTable()">
+                <uib-tab-heading>
+                    個人填寫 <span class="badge" ng-if="workOff_Rejected > 0">{{workOff_Rejected}}</span>
+                </uib-tab-heading>
+                <!--20200518 check right-->
+                <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_main_Tab.html'"></div>
+            </uib-tab>
+            <uib-tab heading="員工請假單" ng-click="initWorkOffMonthCheck()">
+                <!--20200518 check right-->
+                <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_All_Tab.html'"></div>
+            </uib-tab>
 
-    </uib-tabset>
+            <uib-tab heading="代理人審核" ng-click="apiProxy(this)">
+                <uib-tab-heading>
+                    代理人審核 <span class="badge" ng-if="workOff_Agent_Tasks > 0">{{workOff_Agent_Tasks}}</span>
+                </uib-tab-heading>
+                <!--20200518 check right-->
+                <work-off-agent ></work-off-agent>
+            </uib-tab>
+            <!--20200518 check right-->
+            <uib-tab heading="主管審核" ng-if="roleType === '2' || roleType === '100' || roleType === '6' || roleType === '1'"
+                     ng-click="findWorkOffItemByUserDID_boss()">
+                <uib-tab-heading>
+                    主管審核<span class="badge" ng-if="workOff_Boss_Tasks > 0">{{workOff_Boss_Tasks}}</span>
+                </uib-tab-heading>
+                <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_BossTab.html'"></div>
+            </uib-tab>
+            <!--20200518 check right-->
+            <uib-tab heading="行政確認" ng-if="roleType === '100' || userDID === '5d197f16a6b04756c893a162'"
+                     ng-click="findWorkOffItemByUserDID_executive()">
+                <uib-tab-heading>
+                    行政確認<span class="badge" ng-if="workOff_Executive_Tasks > 0"> {{workOff_Executive_Tasks}}</span>
+                </uib-tab-heading>
+                <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_ExecutiveTab.html'"></div>
+            </uib-tab>
+            <!--20200518 check right-->
+            <uib-tab heading="假期確認" ng-if="roleType === '100' || userDID === '5d197f16a6b04756c893a162'"
+                     ng-click="fetchHolidayForm()"
+                     style="color: blue">
+                <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_HolidayTab.html'"></div>
+            </uib-tab>
+            <!--20200518 check right-->
+            <uib-tab heading="國定假日設定" ng-if="roleType === '100'">
+                <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_NationalHolidayTab.html'"></div>
+            </uib-tab>
+            <!--20200518 check right-->
+            <uib-tab heading="補班日設定" ng-if="roleType === '100'">
+                <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_OverTimeDayTab.html'"></div>
+            </uib-tab>
+            <!--20200518 check right-->
+            <uib-tab heading="補休特休兌換" ng-if="roleType === '100'">
+                <work-off-exchange></work-off-exchange>
+            </uib-tab>
+
+        </uib-tabset>
+
+    </div>
+
+
 </div>
 

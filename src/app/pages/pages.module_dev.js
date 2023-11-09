@@ -23,6 +23,7 @@
         'BlurAdmin.pages.myCalender',
         'BlurAdmin.pages.myProject',
         'BlurAdmin.pages.myInput',
+        'BlurAdmin.pages.webSocket',
         'BlurAdmin.pages.myForms',
         'BlurAdmin.pages.myExecutive',
         'BlurAdmin.pages.myProfile',

@@ -6,6 +6,43 @@
     'use strict';
 
     angular.module('BlurAdmin.theme.components')
+        // .run(function($websocket) {
+        //     console.log($websocket);
+        //     var ws = $websocket.$new('ws://localhost:5566'); // instance of ngWebsocket, handled by $websocket service
+        //
+        //     ws.$on('$open', function () {
+        //         console.log('Oh my gosh, websocket is really open! Fukken awesome!');
+        //
+        //         ws.$emit('ping', 'hi listening websocket server'); // send a message to the websocket server
+        //
+        //         var data = {
+        //             level: 1,
+        //             text: 'ngWebsocket rocks!',
+        //             array: ['one', 'two', 'three'],
+        //             nested: {
+        //                 level: 2,
+        //                 deeper: [{
+        //                     hell: 'yeah'
+        //                 }, {
+        //                     so: 'good'
+        //                 }]
+        //             }
+        //         };
+        //
+        //         ws.$emit('pong', data);
+        //     });
+        //
+        //     ws.$on('pong', function (data) {
+        //         console.log('The websocket server has sent the following data:');
+        //         console.log(data);
+        //
+        //         ws.$close();
+        //     });
+        //
+        //     ws.$on('$close', function () {
+        //         console.log('Noooooooooou, I want to have more fun with ngWebsocket, damn it!');
+        //     });
+        // })
         .directive('myPageTop', MyPageTop)
         .controller('myPageTopController', [
             '$scope',
@@ -20,8 +57,10 @@
             'NotificationUtil',
             'NotificationMsgUtil',
             'RelatedTasksUtil',
+            '$websocket',
             '$document',
-            MyPageTopController]);
+            MyPageTopController])
+
 
     /** @ngInject */
     function MyPageTop() {
@@ -43,6 +82,7 @@
                                  NotificationUtil,
                                  NotificationMsgUtil,
                                  RelatedTasksUtil,
+                                 $websocket,
                                  document) {
         console.log(" - cookies.username= " + $cookies.get('username'));
         console.log(" - cookies.userDID= " + $cookies.get('userDID'));
@@ -52,6 +92,42 @@
 
         $scope.username = $cookies.get('username');
         $scope.userDID = $cookies.get('userDID');
+
+
+        var ws = $websocket.$new('ws://localhost:5566'); // instance of ngWebsocket, handled by $websocket service
+
+        ws.$on('$open', function () {
+            console.log('Oh my gosh, websocket is really open! Fukken awesome!');
+
+            ws.$emit('ping-1', 'hi listening websocket server'); // send a message to the websocket server
+
+            var data = {
+                level: 1,
+                text: 'ngWebsocket rocks!',
+                array: ['one', 'two', 'three'],
+                nested: {
+                    level: 2,
+                    deeper: [{
+                        hell: 'yeah'
+                    }, {
+                        so: 'good'
+                    }]
+                }
+            };
+
+            ws.$emit('pint-2', data);
+        });
+
+        ws.$on('pong', function (data) {
+            console.log('The websocket server has sent the following data:');
+            console.log(data);
+
+            // ws.$close();
+        });
+
+        ws.$on('$close', function () {
+            console.log('Noooooooooou, I want to have more fun with ngWebsocket, damn it!');
+        });
 
         // 差勤管理
         $rootScope.cgWorkManage = 0;
@@ -246,6 +322,8 @@
                     console.log(err)
                 })
         }
+
+
 
     }
 

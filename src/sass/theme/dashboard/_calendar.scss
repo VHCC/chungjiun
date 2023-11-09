@@ -724,10 +724,11 @@ a.fc-more {
 
 .fc-day-grid-container.fc-scroller  {
   height: auto!important;
+  //height: 1500px;
 }
 
 .calendar-panel.panel .panel-body{
-  padding: 0;
+  padding: 5px;
 }
 
 .fc-body > tr > .fc-widget-content{

@@ -1,0 +1,227 @@
+<div >
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>選擇員工 (主管管轄範圍)</label>
+                <ui-select ng-model="hrMachineFormRemedyHistoryCtrlVm.user.selected"
+                           class="btn-group bootstrap-select form-control"
+                           ng-disabled="false"
+                           ng-change="getRemedyHistoryData(hrMachineFormRemedyHistoryCtrlVm.user.selected)"
+                           append-to-body="true"
+                           search-enabled="true">
+                    <ui-select-match placeholder="選擇員工">
+                        {{$select.selected.name}}
+                    </ui-select-match>
+                    <ui-select-choices
+                            repeat="user in hrMachineFormRemedyHistoryCtrlVm.users | groupSelectpickerOptions: {name: $select.search}">
+                        <span ng-bind-html="user.name| highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div ng-if="hrMachineFormRemedyHistoryCtrlVm.user.selected">
+        <my-year-picker ng-click="listenYear(this)"></my-year-picker>
+
+        <h3 class="with-line">{{year}} 年</h3>
+
+        <h3 class="with-line">{{hrMachineFormRemedyHistoryCtrlVm.user.selected.name}} 打卡補登</h3>
+
+        <div class="row" ng-init="getRemedyHrData()">
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                <tr style="white-space:nowrap">
+                    <td style="vertical-align: inherit; text-align: center" width="120px"></td>
+                    <td style="vertical-align: inherit; text-align: center" width="170px">日期</td>
+                    <td style="vertical-align: inherit; text-align: center">星期</td>
+                    <td style="vertical-align: inherit; text-align: center">補打卡別</td>
+
+                    <td style="vertical-align: inherit; text-align: center" width="70px">時間</td>
+                    <td style="vertical-align: inherit; text-align: center; width: 15%" >事由</td>
+                    <td style="vertical-align: inherit; text-align: center">狀態</td>
+                    <!-- 20200218-->
+                    <td style="vertical-align: inherit; text-align: center">主管確認</td>
+                    <!--<td style="vertical-align: inherit; text-align: center">行政確認</td>-->
+                </tr>
+                </thead>
+                <tbody ng-repeat="table in remedyTablesItems">
+                <tr style="vertical-align: inherit; text-align: center">
+                    <!--序號-->
+                    <td style="vertical-align: inherit; text-align: center">
+                        <span id="prjCode">{{$index + 1}}</span>
+                        <!--<span >{{table.tableID}}</span>-->
+                        <button class="btn btn-danger editable-table-button btn-xs"
+                                ng-show="!rowform1.$waiting && table.isBossCheck"
+                                ng-click="recoveryRemedyItem(table, this, $index);">退回主管審查
+                        </button>
+                    </td>
+                    <!--日期-->
+                    <td class="form-group" style="vertical-align: inherit; text-align: center">
+                        <my ng-show="!rowform1.$waiting && !table.isSendReview">
+                            <my-date-picker formatted="yyyy/MM/dd" default="{{showDate(table)}}"></my-date-picker>
+                        </my>
+                        <my ng-show="rowform1.$waiting ||table.isSendReview">
+                            {{showDate(table)}}
+                        </my>
+                        <!--{{table.month}} / {{table.day}}-->
+                    </td>
+                    <!--星期-->
+                    <td style="vertical-align: inherit; text-align: center">
+                        {{showDay(table.day)}}
+                    </td>
+
+                    <!--補打卡別-->
+                    <td class="form-group" style="vertical-align: inherit; text-align: center">
+                        <my ng-show="!rowform1.$waiting && !table.isSendReview">
+                            <remedy-selector type="{{table.workType}}"></remedy-selector>
+                        </my>
+                        <my ng-show="rowform1.$waiting ||table.isSendReview">
+                            {{showWRemedyTypeString(table.workType)}}
+                        </my>
+                    </td>
+
+                    <!--時間-->
+                    <td class="form-group" style="vertical-align: inherit; text-align: center">
+                        <my ng-show="!rowform1.$waiting && !table.isSendReview">
+                            <remedy-time-picker myFormatTime="HH:mm" start="{{table.start_time}}">
+                            </remedy-time-picker>
+                        </my>
+                        <my ng-show="rowform1.$waiting ||table.isSendReview">
+                            {{table.start_time}}
+                        </my>
+                    </td>
+
+                    <!--事由-->
+                    <td class="form-group has-success" style="vertical-align: inherit;">
+                        <div ng-show="!rowform1.$waiting && !table.isSendReview">
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="事由/地點"
+                                   value="{{table.reason}}"
+                                   ng-model="table.reason"
+                                   style="color: #000000; text-align: center">
+                        </div>
+                        <div ng-show="rowform1.$waiting || table.isSendReview">
+                            {{table.reason}}
+                        </div>
+                    </td>
+
+                    <!--狀態-->
+                    <td style="vertical-align: inherit;" rowspan="2">
+                        <form editable-form name="rowform1" ng-show="rowform1.$visible"
+                              class="form-buttons form-inline">
+                        </form>
+                        <!--審查中-->
+                        <div ng-show="rowform1.$waiting || (table.isSendReview && (!table.isBossCheck))">
+                            <button class="btn btn-warning editable-table-button btn-xs">
+                                審查中
+                            </button>
+                        </div>
+                        <!--審查完成-->
+                        <div ng-show="(table.isBossCheck)">
+                            <button class="btn btn-success editable-table-button btn-xs">
+                                審查完成
+                            </button>
+                        </div>
+                        <!--提交-->
+                        <div ng-show="!rowform1.$waiting && !table.isSendReview">
+                            <div class="buttons" ng-show="!rowform1.$visible">
+                                <button class="btn btn-danger editable-table-button btn-xs"
+                                        ng-click="reviewRemedyItem(table, this, $index) ">提交審查
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+
+
+                    <!--主管確認-->
+                    <td rowspan="2" style="vertical-align: inherit;">
+                        <div ng-show="rowform1.$waiting || (table.isSendReview && !table.isBossCheck)">
+                            <button class="btn btn-warning editable-table-button btn-xs"
+                                    style="color: black">
+                                {{ showBoss(bossID)}}
+                                <br>
+                                確認作業中
+                            </button>
+                        </div>
+                        <div ng-show="table.isBossCheck">
+                            <button class="btn btn-info editable-table-button btn-xs"
+                                    style="color: black">
+                                {{ showBoss(bossID)}}
+                                <br>
+                                確認完成
+                            </button>
+                        </div>
+                        <div ng-show="!table.isSendReview && table.isBossReject">
+                            <button class="btn btn-warning editable-table-button btn-xs"
+                                    style="color: black">
+                                {{ showBoss(bossID)}}
+                                <br>
+                                退回
+                            </button>
+                        </div>
+                        <my ng-show="!table.isSendReview && table.isBossReject"
+                            ng-class="{workAdd: hover}"
+                            class="mytooltip"
+                            ng-mouseover="hover = true"
+                            ng-mouseleave="hover = false">
+                            原因：<i class="ion-clipboard"></i>
+                            <span class="tooltiptext">{{table.bossReject_memo}}</span>
+                        </my>
+                    </td>
+                    <!--行政確認-->
+                    <!--<td rowspan="2" style="vertical-align: inherit;">-->
+                    <!--<div ng-show="rowform1.$waiting || table.isSendReview && !table.isExecutiveCheck">-->
+                    <!--<button class="btn btn-warning editable-table-button btn-xs"-->
+                    <!--style="color: black">-->
+                    <!--行政-->
+                    <!--<br>-->
+                    <!--確認作業中-->
+                    <!--</button>-->
+                    <!--</div>-->
+                    <!--<div ng-show="table.isExecutiveCheck">-->
+                    <!--<button class="btn btn-info editable-table-button btn-xs"-->
+                    <!--style="color: black">-->
+                    <!--行政-->
+                    <!--<br>-->
+                    <!--確認完成-->
+                    <!--</button>-->
+                    <!--</div>-->
+                    <!--<div ng-show="!table.isSendReview && table.isExecutiveReject">-->
+                    <!--<button class="btn btn-warning editable-table-button btn-xs"-->
+                    <!--style="color: black">-->
+                    <!--行政-->
+                    <!--<br>-->
+                    <!--退回-->
+                    <!--</button>-->
+                    <!--</div>-->
+                    <!--<my ng-show="!table.isSendReview && table.isExecutiveReject"-->
+                    <!--ng-class="{workAdd: hover}"-->
+                    <!--class="mytooltip"-->
+                    <!--ng-mouseover="hover = true"-->
+                    <!--ng-mouseleave="hover = false">-->
+                    <!--原因：<i class="ion-clipboard"></i>-->
+                    <!--<span class="tooltiptext">{{table.executiveReject_memo}}</span>-->
+                    <!--</my>-->
+                    <!--</td>-->
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <button type="button"
+                    ng-click="addHrRemedyItem()"
+                    class="btn btn-info btn-icon">
+                <i class="ion-plus-round"/>
+            </button>
+        </div>
+        <hr>
+    </div>
+
+
+</div>

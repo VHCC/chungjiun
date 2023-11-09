@@ -122,12 +122,12 @@
                                 <ui-select-choices
                                         ng-model="prjName"
                                         repeat="prjItems in workStatisticsCJCtrlVm.allProjectCache |
-                                    groupSelectpickerOptions: {
-                                    mainName: $select.search,
-                                    prjName: $select.search,
-                                    prjSubName: $select.search,
-                                    prjCode: $select.search
-                                    } | limitTo: 100"
+                                            groupSelectpickerOptions: {
+                                            mainName: $select.search,
+                                            prjName: $select.search,
+                                            prjSubName: $select.search,
+                                            prjCode: $select.search
+                                        } | limitTo: 100"
                                         group-by="'mainName'">
                                 <span ng-bind-html="prjItems.prjName + ' - ' +
                                 prjItems.prjSubName + ' - ' +

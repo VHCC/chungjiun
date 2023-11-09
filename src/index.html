@@ -33,31 +33,6 @@
       gtag('config', 'UA-150100097-2', { 'page_path': window.location.pathname + window.location.hash });
   </script>
 
-  <script>
-      (function(h,o,u,n,d) {
-          h=h[d]=h[d]||{q:[],onReady:function(c){h.q.push(c)}}
-          d=o.createElement(u);d.async=1;d.src=n
-          n=o.getElementsByTagName(u)[0];n.parentNode.insertBefore(d,n)
-      })(window,document,'script','https://www.datadoghq-browser-agent.com/datadog-rum-v4.js','DD_RUM')
-      DD_RUM.onReady(function() {
-          DD_RUM.init({
-              clientToken: 'pub046e7628c292cb0dbf00bff89f770a39',
-              applicationId: 'f7ff887d-d0ff-4d12-b3b0-3ac760b985ce',
-              site: 'us5.datadoghq.com',
-              service: 'erm_chongjun',
-              env: 'prod',
-              // Specify a version number to identify the deployed version of your application in Datadog
-              // version: '1.0.0',
-              sessionSampleRate: 100,
-              premiumSampleRate: 100,
-              trackUserInteractions: true,
-              defaultPrivacyLevel: 'mask-user-input',
-          });
-
-          DD_RUM.startSessionReplayRecording();
-      })
-  </script>
-
   <!-- build:css({.tmp/serve,src}) styles/vendor.css -->
   <!-- bower:css -->
   <!-- run `gulp inject` to automatically populate bower styles dependencies -->
@@ -105,7 +80,7 @@
 
   <script src="../bower_components/noty/lib/noty.js"></script>
   <!--<script src="../bower_components/socket.io-client/dist/socket.io.js"></script>-->
-
+ <!--EWRQEWRQERQ-->
 </head>
 <body onhashchange="hashTagChange()">
 <div class="body-bg"></div>
@@ -154,6 +129,8 @@
 <!-- endinject -->
 
 <script src="../bower_components/angular-cookies/angular-cookies.min.js"></script>
+<script src="../bower_components/ng-websocket/ng-websocket.js"></script>
+
 
 <!-- inject:partials -->
 <!-- angular templates will be automatically converted in js and inserted here -->

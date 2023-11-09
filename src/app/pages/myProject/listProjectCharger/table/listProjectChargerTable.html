@@ -229,7 +229,7 @@
                         <editable-ui-select-choices repeat="user in projectManagers |
                             groupSelectpickerOptions: {
                                 name: $select.search
-                            } | limitTo: 5 | filter: $select.search ">
+                            } | limitTo: 40 | filter: $select.search ">
                             <span ng-bind-html="user.name | highlight: $select.search"></span>
                         </editable-ui-select-choices>
                     </div>

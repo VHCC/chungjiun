@@ -8,7 +8,7 @@ const fileStorageDir = '../OfficialDocs'
 
 var Vendor = require('../models/officialDocVendor');
 var OfficialDocItem = require('../models/officialDocItem');
-var moment = require('moment');
+var moment = require('moment-timezone');
 
 
 module.exports = function (app) {
