@@ -99,7 +99,7 @@
                 document.getElementById('includeHead'))
                 .append($compile(
                     "<div ba-panel ba-panel-title=" +
-                    "'專案列表 - " + resp.data.length + "'" +
+                    "'執行專案列表 - " + resp.data.length + "'" +
                     "ba-panel-class= " +
                     "'with-scroll'" + ">" +
                     "<div " +
@@ -121,7 +121,7 @@
                         $scope.allWorkersID[i] = allUsers[i]._id;
                     }
 
-                    // 經理、主承辦
+                    // 經理
                     $scope.projectManagers = [];
                     // 2021/01/22 不能不指派經理
                     // $scope.projectManagers[0] = {
@@ -130,6 +130,20 @@
                     // };
                     for (var i = 0; i < allUsers.length; i++) {
                         $scope.projectManagers[i] = {
+                            value: allUsers[i]._id,
+                            name: allUsers[i].name
+                        };
+                    }
+
+                    // 主承辦
+                    $scope.projectCharger = [];
+                    // 2023/11/27 可以不指派主承辦
+                    $scope.projectCharger[0] = {
+                        value: "",
+                        name: "None"
+                    };
+                    for (var i = 0; i < allUsers.length; i++) {
+                        $scope.projectCharger[i+1] = {
                             value: allUsers[i]._id,
                             name: allUsers[i].name
                         };
@@ -204,9 +218,9 @@
 
         $scope.showMajor = function (project) {
             var selected = [];
-            if ($scope.projectManagers === undefined) return;
+            if ($scope.projectCharger === undefined) return;
             if (project.majorID) {
-                selected = $filter('filter')($scope.projectManagers, {
+                selected = $filter('filter')($scope.projectCharger, {
                     value: project.majorID.value,
                 });
             }

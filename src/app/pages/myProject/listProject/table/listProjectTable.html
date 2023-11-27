@@ -284,7 +284,7 @@
                         <editable-ui-select-match placeholder="請選擇主承辦">
                             {{$select.selected.name}}
                         </editable-ui-select-match>
-                        <editable-ui-select-choices repeat="user in projectManagers |
+                        <editable-ui-select-choices repeat="user in projectCharger |
                             groupSelectpickerOptions: {
                                 name: $select.search
                             } | limitTo: 40 | filter: $select.search ">
