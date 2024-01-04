@@ -16,6 +16,7 @@ module.exports = function (app) {
             prjDID: req.body.prjDID,
             rate_item_1: req.body.rate_item_1,
             rate_item_2: req.body.rate_item_2,
+            rate_item_21: req.body.rate_item_21,
             rate_item_3: req.body.rate_item_3,
             rate_item_4: req.body.rate_item_4,
             rate_item_5: req.body.rate_item_5,

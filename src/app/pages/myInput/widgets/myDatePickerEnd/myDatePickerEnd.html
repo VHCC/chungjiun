@@ -4,17 +4,17 @@
                class="form-control myDatePicker"
                uib-datepicker-popup="{{format}}"
                datepicker-options=myOptions
-               ng-model="myDT"
-               is-open="opened"
-               id="myDT"
-               ng-change="changeWorkOffItemDay(this, isbatch)"
+               ng-model="myDTEnd"
+               is-open="end_opened"
+               id="myDTEnd"
+               ng-change="changeWorkOffItemDayEnd(this)"
                ng-required="true"
                close-text="Close"
                alt-input-formats="altInputFormats"
                show-button-bar="false"/>
         <span class="input-group-btn">
             <button type="button" class="btn btn-default"
-                    ng-click="openDatePicker()">
+                    ng-click="openDatePickerEnd()">
                 <i class="glyphicon glyphicon-calendar"></i>
             </button>
         </span>

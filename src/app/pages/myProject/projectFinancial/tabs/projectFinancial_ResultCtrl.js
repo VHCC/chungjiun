@@ -148,9 +148,6 @@
                 });
             }
             if (!selected) return 'Not Set'
-            // if (selected[0].combinedID != undefined) {
-            //     return $scope.showPrjCodeWithCombine(selected[0].combinedID);
-            // }
             return selected.length > 0 ? selected[0].prjCode : 'Not Set';
         };
 
@@ -189,6 +186,7 @@
                 year: rateItem.year,
                 rate_item_1: rateItem.rate_item_1,
                 rate_item_2: rateItem.rate_item_2,
+                rate_item_21: rateItem.rate_item_21,
                 rate_item_3: rateItem.rate_item_3,
                 rate_item_4: rateItem.rate_item_4,
                 rate_item_5: rateItem.rate_item_5,
@@ -229,6 +227,7 @@
                                     if (!$scope.projectFinancialResultTable[0].is011Set) {
                                         $scope.projectFinancialResultTable[0].rate_item_1 = $scope.yearRate.rate_item_1;
                                         $scope.projectFinancialResultTable[0].rate_item_2 = $scope.yearRate.rate_item_2;
+                                        $scope.projectFinancialResultTable[0].rate_item_21 = $scope.yearRate.rate_item_21;
                                         $scope.projectFinancialResultTable[0].rate_item_3 = $scope.yearRate.rate_item_3;
                                         $scope.projectFinancialResultTable[0].rate_item_4 = $scope.yearRate.rate_item_4;
                                         $scope.projectFinancialResultTable[0].rate_item_5 = $scope.yearRate.rate_item_5;
@@ -403,7 +402,6 @@
                                             console.log(" ----- filter_type1_data -------- ")
                                             $scope.statisticsResults_type1 = $scope.filter_type2_data_item($scope.statisticsResults_type1);
                                             console.log(" ----- filter_type2_data_item -------- ")
-                                            // console.log($scope.statisticsResults_type1);
 
                                             for (var i = 0; i < $scope.statisticsResults_type1.length; i ++) {
                                                 var tempDate = $scope.statisticsResults_type1[i]._date;
@@ -433,18 +431,55 @@
                                             // console.log($scope.overall_data)
                                         })
 
-                                    angular.element(
-                                        document.getElementById('includeHead_financial_result'))
-                                        .html($compile(
-                                            "<div ba-panel ba-panel-title=" +
-                                            "'" + "" + "'" +
-                                            "ba-panel-class= " +
-                                            "'with-scroll'" + ">" +
-                                            "<div " +
-                                            "ng-include=\"'app/pages/myProject/projectFinancial/tables/projectFinancial_result_table.html'\">" +
-                                            "</div>" +
-                                            "</div>"
-                                        )($scope));
+                                    // console.log($scope.selectPrjInfo);
+                                    if ($scope.selectPrjInfo.year < 113) {
+                                        angular.element(
+                                            document.getElementById('includeHead_financial_result'))
+                                            .html($compile(
+                                                "<div ba-panel ba-panel-title=" +
+                                                "'" + "" + "'" +
+                                                "ba-panel-class= " +
+                                                "'with-scroll'" + ">" +
+                                                "<div " +
+                                                "ng-include=\"'app/pages/myProject/projectFinancial/tables/projectFinancial_result_table.html'\">" +
+                                                "</div>" +
+                                                "</div>"
+                                            )($scope));
+
+                                        angular.element(
+                                            document.getElementById('includeHead_financial_result_after113'))
+                                            .html($compile(
+                                                "<div ba-panel ba-panel-title=" +
+                                                "'" + "" + "'" +
+                                                "ba-panel-class= " +
+                                                "'with-scroll'" + ">" +
+                                                "<div " +
+                                                "ng-include=\"'app/pages/myProject/projectFinancial/tables/projectFinancial_result_table_after113.html'\">" +
+                                                "</div>" +
+                                                "</div>"
+                                            )($scope));
+                                    } else {
+                                        angular.element(
+                                            document.getElementById('includeHead_financial_result'))
+                                            .html("");
+
+                                        angular.element(
+                                            document.getElementById('includeHead_financial_result_after113'))
+                                            .html($compile(
+                                                "<div ba-panel ba-panel-title=" +
+                                                "'" + "" + "'" +
+                                                "ba-panel-class= " +
+                                                "'with-scroll'" + ">" +
+                                                "<div " +
+                                                "ng-include=\"'app/pages/myProject/projectFinancial/tables/projectFinancial_result_table_after113.html'\">" +
+                                                "</div>" +
+                                                "</div>"
+                                            )($scope));
+                                    }
+
+
+
+
                                 }
 
                                 $timeout(function () {
@@ -462,6 +497,7 @@
             if (rateItem == undefined) return 0;
             return parseFloat(rateItem.rate_item_1)
                 + parseFloat(rateItem.rate_item_2)
+                + parseFloat(rateItem.rate_item_21)
                 + parseFloat(rateItem.rate_item_3)
                 + parseFloat(rateItem.rate_item_4)
                 // + parseFloat(rateItem.rate_item_5)
@@ -687,6 +723,7 @@
                 otherCost: item.otherCost,
                 rate_item_1: item.rate_item_1,
                 rate_item_2: item.rate_item_2,
+                rate_item_21: item.rate_item_21,
                 rate_item_3: item.rate_item_3,
                 rate_item_4: item.rate_item_4,
                 rate_item_5: item.rate_item_5,
@@ -714,6 +751,7 @@
                 otherCost: item.otherCost, <!--其他-->
                 rate_item_1: item.rate_item_1,
                 rate_item_2: item.rate_item_2,
+                rate_item_21: item.rate_item_21,
                 rate_item_3: item.rate_item_3,
                 rate_item_4: item.rate_item_4,
                 rate_item_5: item.rate_item_5,
@@ -725,7 +763,8 @@
                 kpi3: $scope.calResult(3, item), <!-- 公司調整(規劃、設計、監造廷整)C=B*調整值 -->
                 kpi4: $scope.calSubContractorPay(), <!-- 廠商請款(未稅金額) D -->
                 kpi5: $scope.calResult(4, item), <!-- 實際收入E=C-D -->
-                kpi6: $scope.calResult(5, item), <!-- 行政費 -->
+                kpi6: $scope.calResult(5, item), <!-- 行政費 1-->
+                kpi61: $scope.calResult(51, item), <!-- 行政費 2-->
                 kpi7: $scope.calResult(6, item), <!--技師費-->
                 kpi8: $scope.calResult(7, item), <!--風險-->
                 kpi9: $scope.calResult(8, item), <!--利潤-->
@@ -935,31 +974,62 @@
                 // 公司調整(規劃、設計、監造廷整)C=B*調整值
                 case 3:
                     return Math.round(item.rate_item_5 * $scope.calIncome(2) / 100);
+                //  113 實際收入 B1=B-C
+                case 31:
+                    return $scope.calIncome(2) - $scope.calSubContractorPay();
                 // 實際收入E=C-D
                 case 4:
                     return Math.round(item.rate_item_5 * $scope.calIncome(2) / 100 - $scope.calSubContractorPay());
+                //  113 公司算法 D=B1*比例
+                case 41:
+                    return Math.round(item.rate_item_5 * ($scope.calIncome(2) - $scope.calSubContractorPay()) / 100 );
                 // 行政費 E*N
                 case 5:
                     return Math.round(item.rate_item_2 * ($scope.calResult(4, item)) / 100);
+                // 行政費 E*N
+                case 51:
+                    if (item.rate_item_21 === undefined) {
+                        return 0;
+                    }
+                    return Math.round(item.rate_item_21 * ($scope.calResult(41, item)) / 100);
+                case 52:
+                    return Math.round(item.rate_item_2 * ($scope.calResult(41, item)) / 100);
                 // 技師費 E*N
                 case 6:
                     return Math.round(item.rate_item_1 * ($scope.calResult(4, item)) / 100);
+                case 61:
+                    return Math.round(item.rate_item_1 * ($scope.calResult(41, item)) / 100);
                 // 風險 E*N
                 case 7:
                     return Math.round(item.rate_item_4 * ($scope.calResult(4, item)) / 100);
+                case 71:
+                    return Math.round(item.rate_item_4 * ($scope.calIncome(2)) / 100);
                 // 利潤 E*N
                 case 8:
                     return Math.round(item.rate_item_3 * ($scope.calResult(4, item)) / 100);
+                case 81:
+                    return Math.round(item.rate_item_3 * ($scope.calResult(41, item)) / 100);
                 // 可分配績效
                 case 9:
                     return Math.round(($scope.calResult(4, item))
                     - ($scope.calResult(5, item))
+                    - ($scope.calResult(51, item))
                     - ($scope.calResult(6, item))
                     - ($scope.calResult(7, item))
                     - ($scope.calResult(8, item))
                     // - $scope.calcAllCost()
                     - $scope.calcAllCost_special20201207()
                     - item.otherCost)
+                case 91:
+                    return Math.round(($scope.calResult(41, item))
+                        - ($scope.calResult(52, item))
+                        - ($scope.calResult(51, item))
+                        - ($scope.calResult(61, item))
+                        - ($scope.calResult(71, item))
+                        - ($scope.calResult(81, item))
+                        // - $scope.calcAllCost()
+                        - $scope.calcAllCost_special20201207()
+                        - item.otherCost)
             }
         }
 

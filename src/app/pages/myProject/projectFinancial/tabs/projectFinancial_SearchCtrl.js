@@ -178,6 +178,7 @@
                 year: rateItem.year,
                 rate_item_1: rateItem.rate_item_1,
                 rate_item_2: rateItem.rate_item_2,
+                rate_item_21: rateItem.rate_item_21,
                 rate_item_3: rateItem.rate_item_3,
                 rate_item_4: rateItem.rate_item_4,
                 rate_item_5: rateItem.rate_item_5,
@@ -218,6 +219,7 @@
                                     if (!$scope.projectFinancialResultTable[0].is011Set) {
                                         $scope.projectFinancialResultTable[0].rate_item_1 = $scope.yearRate.rate_item_1;
                                         $scope.projectFinancialResultTable[0].rate_item_2 = $scope.yearRate.rate_item_2;
+                                        $scope.projectFinancialResultTable[0].rate_item_21 = $scope.yearRate.rate_item_21;
                                         $scope.projectFinancialResultTable[0].rate_item_3 = $scope.yearRate.rate_item_3;
                                         $scope.projectFinancialResultTable[0].rate_item_4 = $scope.yearRate.rate_item_4;
                                         $scope.projectFinancialResultTable[0].rate_item_5 = $scope.yearRate.rate_item_5;
@@ -419,18 +421,78 @@
                                             }
                                         })
 
-                                    angular.element(
-                                        document.getElementById('includeHead_financial_search'))
-                                        .html($compile(
-                                            "<div ba-panel ba-panel-title=" +
-                                            "'" + "" + "'" +
-                                            "ba-panel-class= " +
-                                            "'with-scroll'" + ">" +
-                                            "<div " +
-                                            "ng-include=\"'app/pages/myProject/projectFinancial/tables/projectFinancial_search_table.html'\">" +
-                                            "</div>" +
-                                            "</div>"
-                                        )($scope));
+                                    // angular.element(
+                                    //     document.getElementById('includeHead_financial_search'))
+                                    //     .html($compile(
+                                    //         "<div ba-panel ba-panel-title=" +
+                                    //         "'" + "" + "'" +
+                                    //         "ba-panel-class= " +
+                                    //         "'with-scroll'" + ">" +
+                                    //         "<div " +
+                                    //         "ng-include=\"'app/pages/myProject/projectFinancial/tables/projectFinancial_search_table.html'\">" +
+                                    //         "</div>" +
+                                    //         "</div>"
+                                    //     )($scope));
+                                    //
+                                    // angular.element(
+                                    //     document.getElementById('includeHead_financial_search_after113'))
+                                    //     .html($compile(
+                                    //         "<div ba-panel ba-panel-title=" +
+                                    //         "'" + "" + "'" +
+                                    //         "ba-panel-class= " +
+                                    //         "'with-scroll'" + ">" +
+                                    //         "<div " +
+                                    //         "ng-include=\"'app/pages/myProject/projectFinancial/tables/projectFinancial_search_table_after113.html'\">" +
+                                    //         "</div>" +
+                                    //         "</div>"
+                                    //     )($scope));
+
+                                    if ($scope.selectPrjInfo.year < 113) {
+                                        angular.element(
+                                            document.getElementById('includeHead_financial_search'))
+                                            .html($compile(
+                                                "<div ba-panel ba-panel-title=" +
+                                                "'" + "" + "'" +
+                                                "ba-panel-class= " +
+                                                "'with-scroll'" + ">" +
+                                                "<div " +
+                                                "ng-include=\"'app/pages/myProject/projectFinancial/tables/projectFinancial_search_table.html'\">" +
+                                                "</div>" +
+                                                "</div>"
+                                            )($scope));
+
+                                        angular.element(
+                                            document.getElementById('includeHead_financial_search_after113'))
+                                            .html($compile(
+                                                "<div ba-panel ba-panel-title=" +
+                                                "'" + "" + "'" +
+                                                "ba-panel-class= " +
+                                                "'with-scroll'" + ">" +
+                                                "<div " +
+                                                "ng-include=\"'app/pages/myProject/projectFinancial/tables/projectFinancial_search_table_after113.html'\">" +
+                                                "</div>" +
+                                                "</div>"
+                                            )($scope));
+                                    } else {
+
+                                        angular.element(
+                                            document.getElementById('includeHead_financial_search'))
+                                            .html("");
+
+                                        angular.element(
+                                            document.getElementById('includeHead_financial_search_after113'))
+                                            .html($compile(
+                                                "<div ba-panel ba-panel-title=" +
+                                                "'" + "" + "'" +
+                                                "ba-panel-class= " +
+                                                "'with-scroll'" + ">" +
+                                                "<div " +
+                                                "ng-include=\"'app/pages/myProject/projectFinancial/tables/projectFinancial_search_table_after113.html'\">" +
+                                                "</div>" +
+                                                "</div>"
+                                            )($scope));
+                                    }
+
                                 }
 
 
@@ -451,6 +513,7 @@
             if (rateItem == undefined) return 0;
             return parseFloat(rateItem.rate_item_1)
                 + parseFloat(rateItem.rate_item_2)
+                + parseFloat(rateItem.rate_item_21)
                 + parseFloat(rateItem.rate_item_3)
                 + parseFloat(rateItem.rate_item_4)
                 + parseFloat(rateItem.rate_item_5)
@@ -805,28 +868,58 @@
                 // 公司調整(規劃、設計、監造廷整)C=B*調整值
                 case 3:
                     return Math.round(item.rate_item_5 * $scope.calIncome(2) / 100);
+                //  113 實際收入 B1=B-C
+                case 31:
+                    return $scope.calIncome(2) - $scope.calSubContractorPay();
                 // 實際收入E=C-D
                 case 4:
                     return Math.round(item.rate_item_5 * $scope.calIncome(2) / 100 - $scope.calSubContractorPay());
+                //  113 公司算法 D=B1*比例
+                case 41:
+                    return Math.round(item.rate_item_5 * ($scope.calIncome(2) - $scope.calSubContractorPay()) / 100 );
                 // 行政費 E*N
                 case 5:
                     return Math.round(item.rate_item_2 * ($scope.calResult(4, item)) / 100);
+                // 行政費 E*N
+                case 51:
+                    if (item.rate_item_21 === undefined) {
+                        return 0;
+                    }
+                    return Math.round(item.rate_item_21 * ($scope.calResult(4, item)) / 100);
+                case 52:
+                    return Math.round(item.rate_item_2 * ($scope.calResult(41, item)) / 100);
                 // 技師費 E*N
                 case 6:
                     return Math.round(item.rate_item_1 * ($scope.calResult(4, item)) / 100);
+                case 61:
+                    return Math.round(item.rate_item_1 * ($scope.calResult(41, item)) / 100);
                 // 風險 E*N
                 case 7:
                     return Math.round(item.rate_item_4 * ($scope.calResult(4, item)) / 100);
+                case 71:
+                    return Math.round(item.rate_item_4 * ($scope.calIncome(2)) / 100);
                 // 利潤 E*N
                 case 8:
                     return Math.round(item.rate_item_3 * ($scope.calResult(4, item)) / 100);
-                // 可分配金額
+                case 81:
+                    return Math.round(item.rate_item_3 * ($scope.calResult(41, item)) / 100);
+                // 可分配績效
                 case 9:
                     return Math.round(($scope.calResult(4, item))
                         - ($scope.calResult(5, item))
                         - ($scope.calResult(6, item))
                         - ($scope.calResult(7, item))
                         - ($scope.calResult(8, item))
+                        // - $scope.calcAllCost()
+                        - $scope.calcAllCost_special20201207()
+                        - item.otherCost)
+                case 91:
+                    return Math.round(($scope.calResult(41, item))
+                        - ($scope.calResult(52, item))
+                        - ($scope.calResult(51, item))
+                        - ($scope.calResult(61, item))
+                        - ($scope.calResult(71, item))
+                        - ($scope.calResult(81, item))
                         // - $scope.calcAllCost()
                         - $scope.calcAllCost_special20201207()
                         - item.otherCost)

@@ -267,7 +267,7 @@
         // 所有人，對照資料
         User.getAllUsers()
             .success(function (allUsers) {
-                console.log(allUsers);
+                // console.log(allUsers);
                 vm.users = allUsers;
                 $scope.getQueryUserArray();
                 $scope.projectManagers = [];

@@ -139,6 +139,9 @@
             $scope.specificUserTablesItems = [];
             $scope.specificUserTablesItems_history = [];
 
+            // 批次填寫
+            $scope.specificUserTablesInstant = [];
+
             var vm = this;
             var thisYear = new Date().getFullYear() - 1911;
             var thisMonth = new Date().getMonth() + 1; //January is 0!;
@@ -579,6 +582,8 @@
                 $scope.insertWorkOffItem(0);
             }
 
+
+
             // Insert WorkOff Item
             $scope.insertWorkOffItem = function (time) {
                 return $timeout(function () {
@@ -642,6 +647,13 @@
                     table.day === 0 ? 6 : table.day - 1);
             }
 
+            $scope.setDateModel = function (modelName, dom) {
+                var evalString = '$scope.' + modelName + "= dom.myDT";
+                console.log(evalString);
+                console.log(dom);
+                eval(evalString);
+            }
+
             $scope.showDay = function (day) {
                 return DateUtil.getDay(day)
             }
@@ -668,11 +680,30 @@
             }
 
             // 變更休假單日期
-            $scope.changeWorkOffItemDay = function (dom) {
+            $scope.changeWorkOffItemDay = function (dom, isBatch) {
+                $scope.batchMyDT = dom.myDT;
+                // console.log(dom);
+                // console.log(isBatch);
                 dom.table.create_formDate = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment(dom.myDT)), 0);
                 dom.table.year = dom.myDT.getFullYear() - 1911;
                 dom.table.month = dom.myDT.getMonth() + 1;
                 dom.table.day = dom.myDT.getDay();
+
+                if (isBatch) {
+                    $scope.calcuBatchDays();
+                }
+            }
+
+            $scope.changeWorkOffItemDayEnd = function (dom) {
+                $scope.batchMyDTEnd = dom.myDTEnd;
+                // console.log(dom);
+                dom.table.endDate = {};
+                dom.table.endDate.create_formDate = DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment(dom.myDTEnd)), 0);
+                dom.table.endDate.year = dom.myDTEnd.getFullYear() - 1911;
+                dom.table.endDate.month = dom.myDTEnd.getMonth() + 1;
+                dom.table.endDate.day = dom.myDTEnd.getDay();
+
+                $scope.calcuBatchDays();
             }
 
             // 顯示假期名
@@ -684,11 +715,12 @@
                 // 個人請假
                 if (dom.$parent.table != undefined) {
                     dom.$parent.table.workOffType = dom.workOffType.type;
-                    dom.$parent.table.create_formDate = undefined;
+                    // dom.$parent.table.create_formDate = undefined;
                 }
-                if (dom.$parent.reloadDatePicker != null) {
-                    dom.$parent.reloadDatePicker(dom.workOffType.type);
-                }
+                console.log(dom);
+                // if (dom.$parent.reloadDatePicker != null) {
+                //     dom.$parent.reloadDatePicker(dom.workOffType.type);
+                // }
                 // 補休、特休兌換
                 if (dom.$parent.$parent.item != undefined) {
                     dom.$parent.$parent.item.workOffType = dom.workOffType.type;
@@ -892,17 +924,105 @@
                 }
             }
 
-            // Send WorkOffTable to Review
+            // 批次審查
+            $scope.checkBatchApply = function() {
+                $scope.calcuBatchDays();
+                $scope.reviewWorkOffItem($scope.specificUserTablesInstant[0], null, 0, true);
+            }
+
+            // 初始批次
+            $scope.initWorkOffTableBatch = function() {
+                console.log(" >>>initWorkOffTableBatch>>> ");
+                $scope.specificUserTablesInstant = [];
+                var inserted = {
+                    tableID: "instantUUID",
+                    creatorDID: $scope.userDID,
+                    workOffType: -1,
+                    create_formDate: $scope.firstFullDate,
+                    year: thisYear,
+                    month: thisMonth,
+                    day: thisDay,
+                    start_time: "",
+                    end_time: "",
+                    //RIGHT
+                    isSendReview: false,
+                    isBossCheck: false,
+                    isExecutiveCheck: false,
+                    myDay: DateUtil.getDay(new Date().getDay()),
+                    endDate: {
+                        create_formDate: $scope.firstFullDate,
+                        day: thisDay,
+                    },
+                    userMonthSalary: $scope.userMonthSalary,
+                };
+                $scope.specificUserTablesInstant.push(inserted);
+                $scope.batchMyDT = new Date();
+                $scope.batchMyDTEnd = new Date();
+                $scope.calcuBatchDays();
+                console.log($scope.specificUserTablesInstant);
+            }
+
+            $scope.calcuBatchDays = function() {
+                $scope.specificUserTablesInstant[0].batchMyDT = $scope.batchMyDT;
+                $scope.specificUserTablesInstant[0].batchMyDTEnd = $scope.batchMyDTEnd;
+
+                // 兩個日期的示例
+                var startDate = new Date($scope.specificUserTablesInstant[0].batchMyDT);
+                var endDate = new Date($scope.specificUserTablesInstant[0].batchMyDTEnd);
+
+                if (endDate.getTime() < startDate.getTime()) {
+                    toastr.error("結束日期請確認", "錯誤");
+                    return;
+                }
+
+                // 計算兩個日期之間的毫秒數差距
+                var timeDifference = endDate.getTime() - startDate.getTime();
+
+                // 將毫秒數轉換為天數
+                var daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+                console.log('兩個日期之間的天數差距是：', Math.floor(daysDifference + 1));
+
+                // toastr.warning('總共' + Math.floor(daysDifference + 1) + " 天", '確認');
+                $scope.specificUserTablesInstant[0].batchDays = Math.floor(daysDifference + 1);
+            }
+
+            $scope.checkTotalBatch = function(table) {
+                if (isNaN(table.batchDays * table.myHourDiff)) {
+                    return "--";
+                }
+                return table.batchDays * table.myHourDiff;
+            }
+
             $scope.reviewWorkOffItem = function (table, button, index) {
+                $scope.reviewWorkOffItem(table, button, index, false);
+            }
+
+            // Send WorkOffTable to Review
+            $scope.reviewWorkOffItem = function (table, button, index, isBatch) {
                 console.log(table);
                 if (table.create_formDate == undefined) {
                     toastr.error('請選擇日期', '錯誤');
                     return;
                 }
 
-                var targetDate = DateUtil.getShiftDatefromFirstDate(
-                    DateUtil.getFirstDayofThisWeek(moment($scope.specificUserTablesItems[index].create_formDate)),
-                    $scope.specificUserTablesItems[index].day === 0 ? 6 : $scope.specificUserTablesItems[index].day - 1)
+                var targetDate = null;
+
+                var batchTargetDateStart = null;
+                var batchTargetDateEnd = null;
+
+                if (isBatch) {
+                    batchTargetDateStart = DateUtil.getShiftDatefromFirstDate(
+                        DateUtil.getFirstDayofThisWeek(moment(table.create_formDate)),
+                        table.day === 0 ? 6 : table.day - 1)
+
+                    batchTargetDateEnd = DateUtil.getShiftDatefromFirstDate(
+                        DateUtil.getFirstDayofThisWeek(moment(table.endDate.create_formDate)),
+                        table.endDate.day === 0 ? 6 : table.endDate.day - 1)
+                } else {
+                    targetDate = DateUtil.getShiftDatefromFirstDate(
+                        DateUtil.getFirstDayofThisWeek(moment($scope.specificUserTablesItems[index].create_formDate)),
+                        $scope.specificUserTablesItems[index].day === 0 ? 6 : $scope.specificUserTablesItems[index].day - 1);
+                }
 
                 var filterBegin;
                 var filterEnd;
@@ -910,8 +1030,6 @@
 
                 switch (table.workOffType) {
                     case 2: {
-                        // var canUserHour = $scope.showWorkOffCount(2);
-
                         var canUserHour = vm.loginUserHolidayForm.rest_observed +
                         vm.loginUserHolidayForm.person_residual_rest_hour -
                         $scope.showWorkOffCount_history(2, vm.loginUserHolidayForm) -
@@ -921,7 +1039,6 @@
                         console.log("alreadyApplyHour:> " + $scope.alreadyApplyHour);
 
                         if (table.myHourDiff > canUserHour) {
-                            // toastr.warn('補休剩餘時數不足，請確認申請時數', 'warn');
                             toastr.error('補休剩餘時數不足，請確認申請時數', 'Warn');
                             return;
                         }
@@ -997,79 +1114,224 @@
                         return;
                     }
                 }
+                if (isBatch) {
+                    $timeout(function () {
+                        var hour = "";
 
-                $timeout(function () {
+                        if (table.myHourDiff == "-") {
+                            hour = "（時間輸入格式錯誤，可能有輸入到中文、注音、英文字母、請重新整理後再次輸入） "
+                        } else {
+                            console.log(table);
+                            // hour = table.myHourDiff + " "
+                            hour = (table.batchDays * table.myHourDiff) + " ";
+                        }
 
-                    var hour = "";
+                        var workOffString = $scope.showWorkOffTypeString(table.workOffType);
+                        $scope.checkText = '確定提交 ' + workOffString + '：' +
+                            batchTargetDateStart + '~' + batchTargetDateEnd +
+                            "  審查？ 總天數：" + table.batchDays  + ", 總時數：" + hour;
+                        try {
+                            $scope.checkText += "\n" + "代理人：" + table.agent.name;
+                            $scope.checkingTable = table;
+                            $scope.checkingButton = button;
+                            $scope.checkingIndex = index;
+                            $scope.isBatch = true;
+                            ngDialog.open({
+                                template: 'app/pages/myModalTemplate/myWorkOffTableFormReviewModal.html',
+                                className: 'ngdialog-theme-default',
+                                scope: $scope,
+                                showClose: false,
+                            });
+                        } catch (err) {
+                            toastr.error('項目缺漏', '錯誤');
+                        }
+                    }, 150)
 
-                    if (table.myHourDiff == "-") {
-                        hour = "（時間輸入格式錯誤，可能有輸入到中文、注音、英文字母、請重新整理後再次輸入） "
-                    } else {
-                        hour = table.myHourDiff + " "
-                    }
 
-                    var workOffString = $scope.showWorkOffTypeString($scope.specificUserTablesItems[index].workOffType);
-                    $scope.checkText = '確定提交 ' + workOffString + '：' +
-                        targetDate +
-                        "  審查？ 時數：" + hour;
-                    try {
-                        $scope.checkText += "\n" + "代理人：" + table.agent.name;
-                        $scope.checkingTable = $scope.specificUserTablesItems[index];
-                        $scope.checkingButton = button;
-                        $scope.checkingIndex = index;
-                        ngDialog.open({
-                            template: 'app/pages/myModalTemplate/myWorkOffTableFormReviewModal.html',
-                            className: 'ngdialog-theme-default',
-                            scope: $scope,
-                            showClose: false,
-                        });
-                    } catch (err) {
-                        toastr.error('項目缺漏', '錯誤');
-                    }
-                }, 150)
+                } else {
+                    $timeout(function () {
+                        var hour = "";
+
+                        if (table.myHourDiff == "-") {
+                            hour = "（時間輸入格式錯誤，可能有輸入到中文、注音、英文字母、請重新整理後再次輸入） "
+                        } else {
+                            hour = table.myHourDiff + " "
+                        }
+
+                        var workOffString = $scope.showWorkOffTypeString($scope.specificUserTablesItems[index].workOffType);
+                        $scope.checkText = '確定提交 ' + workOffString + '：' +
+                            targetDate +
+                            "  審查？ 時數：" + hour;
+                        try {
+                            $scope.checkText += "\n" + "代理人：" + table.agent.name;
+                            $scope.checkingTable = $scope.specificUserTablesItems[index];
+                            $scope.checkingButton = button;
+                            $scope.checkingIndex = index;
+                            $scope.isBatch = false;
+                            ngDialog.open({
+                                template: 'app/pages/myModalTemplate/myWorkOffTableFormReviewModal.html',
+                                className: 'ngdialog-theme-default',
+                                scope: $scope,
+                                showClose: false,
+                            });
+                        } catch (err) {
+                            toastr.error('項目缺漏', '錯誤');
+                        }
+                    }, 150)
+                }
+
             }
             //跟後臺溝通
-            $scope.sendWorkOffTable = function (checkingTable, checkingButton, checkingIndex) {
-                checkingButton.rowform1.$waiting = true;
+            $scope.sendWorkOffTable = function (checkingTable, checkingButton, checkingIndex, isBatch) {
+                console.log(checkingTable);
+                console.log($scope);
+                console.log(isBatch);
+
+                // checkingButton.rowform1.$waiting = true;
                 var fileMapNumber = "";
 
                 if ($scope.fileMap[checkingTable.tableID] != undefined) {
                     fileMapNumber = $scope.fileMap[checkingTable.tableID];
                 }
 
-                var formData = {
-                    tableID: checkingTable.tableID,
+                var formData = {};
 
-                    workOffType: checkingTable.workOffType,
-                    create_formDate: checkingTable.create_formDate,
-                    year: checkingTable.year,
-                    month: checkingTable.month,
-                    day: checkingTable.day,
-                    start_time: checkingTable.start_time,
-                    end_time: checkingTable.end_time,
+                if (isBatch) {
 
-                    userMonthSalary: $scope.userMonthSalary,
-                    isSendReview: true,
+                    var tableItem = checkingTable;
 
-                    agentID: checkingTable.agent.value,
-                    isAgentCheck: false,
-                    isAgentReject: false,
+                    var dataItem = {
+                        creatorDID: $scope.userDID,
 
-                    fileMapNumber: fileMapNumber,
+                        workOffType: tableItem.workOffType,
+                        create_formDate: tableItem.create_formDate,
+                        year: tableItem.year,
+                        month: tableItem.month,
+                        day: tableItem.day,
+                        start_time: tableItem.start_time,
+                        end_time: tableItem.end_time,
 
-                    updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
-                    updateAction: "sendReview"
+                        //RIGHT
+                        userMonthSalary: $scope.userMonthSalary,
+                        isSendReview: true,
+                        isBossCheck: false,
+                        isExecutiveCheck: false,
+
+                        agentID: tableItem.agent.value,
+                        isAgentCheck: false,
+                        isAgentReject: false,
+
+                        fileMapNumber: fileMapNumber,
+
+                        updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                        updateAction: "sendReview"
+                    }
+                    var formData = {
+                        creatorDID: $scope.userDID,
+                        year: thisYear,
+                        month: thisMonth,
+                        dataItem: dataItem,
+                    }
+
+                    var execDate = new Date();
+
+                    var resultCount = 0;
+                    for (var index = 0; index < checkingTable.batchDays; index++) {
+                        execDate = new Date(checkingTable.batchMyDT);
+                        execDate.setDate(checkingTable.batchMyDT.getDate() + index);
+
+                        // console.log("index:> " + index);
+                        // console.log(DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment(execDate)), 0));
+                        // console.log(execDate.getFullYear() - 1911);
+                        // console.log(execDate.getMonth() + 1);
+                        // console.log(execDate.getDay());
+
+                        dataItem = {
+                            creatorDID: $scope.userDID,
+
+                            workOffType: tableItem.workOffType,
+                            create_formDate: DateUtil.getShiftDatefromFirstDate(DateUtil.getFirstDayofThisWeek(moment(execDate)), 0),
+                            year: execDate.getFullYear() - 1911,
+                            month: execDate.getMonth() + 1,
+                            day: execDate.getDay(),
+                            start_time: tableItem.start_time,
+                            end_time: tableItem.end_time,
+
+                            //RIGHT
+                            userMonthSalary: $scope.userMonthSalary,
+                            isSendReview: true,
+                            isBossCheck: false,
+                            isExecutiveCheck: false,
+
+                            agentID: tableItem.agent.value,
+                            isAgentCheck: false,
+                            isAgentReject: false,
+
+                            fileMapNumber: fileMapNumber,
+
+                            updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                            updateAction: "sendReview"
+                        }
+
+                        formData = {
+                            creatorDID: $scope.userDID,
+                            year: execDate.getFullYear() - 1911,
+                            month: execDate.getMonth() + 1,
+                            dataItem: dataItem,
+                        }
+
+                        WorkOffFormUtil.insertWorkOffTableItem(formData)
+                            .success(function (res) {
+                                resultCount++;
+                                if (resultCount == checkingTable.batchDays) {
+                                    $scope.getWorkOffTable(null, thisYear);
+                                    toastr.success('批次建立成功', '請至個人填寫確認');
+                                }
+                            })
+                            .error(function () {
+                                console.log('ERROR WorkOffFormUtil.insertWorkOffTableItem');
+                            })
+                    }
+
+
+                } else {
+                    formData = {
+                        tableID: checkingTable.tableID,
+
+                        workOffType: checkingTable.workOffType,
+                        create_formDate: checkingTable.create_formDate,
+                        year: checkingTable.year,
+                        month: checkingTable.month,
+                        day: checkingTable.day,
+                        start_time: checkingTable.start_time,
+                        end_time: checkingTable.end_time,
+
+                        userMonthSalary: $scope.userMonthSalary,
+                        isSendReview: true,
+
+                        agentID: checkingTable.agent.value,
+                        isAgentCheck: false,
+                        isAgentReject: false,
+
+                        fileMapNumber: fileMapNumber,
+
+                        updateTs: moment(new Date()).format("YYYY/MM/DD HH:mm:ss"),
+                        updateAction: "sendReview"
+                    }
+
+                    WorkOffFormUtil.updateWorkOffItem(formData)
+                        .success(function (res) {
+                            $scope.getWorkOffTable(null, thisYear);
+                        })
                 }
 
-                var targetList = [$scope.bossID];
-                var msgTopicList = [2000];
-                var msgDetailList = [2001];
-                var memoList = [$scope.showDate(checkingTable)];
 
-                WorkOffFormUtil.updateWorkOffItem(formData)
-                    .success(function (res) {
-                        $scope.getWorkOffTable(null, thisYear);
-                    })
+                // var targetList = [$scope.bossID];
+                // var msgTopicList = [2000];
+                // var msgDetailList = [2001];
+                // var memoList = [$scope.showDate(checkingTable)];
+
+
             }
 
             //行政確認
@@ -2459,16 +2721,14 @@
             $scope.fileList = [];
             $scope.fileMap = {};
 
-            console.log("ERQEWRQWE")
             $scope.initDropZone = function (index, tableUUID) {
-                console.log("QQQQQ")
+                console.log("initDropZone:>, index:> " + index + ", tableUUID:> " + tableUUID);
                 if (tableUUID == undefined) return;
                 var itemUUID = tableUUID;
 
                 setTimeout(function(){
                     var fileUnique = moment().format("YYYYMMDD_HHmmss");
-                    console.log(itemUUID)
-                    console.log("fileUnique:> " + fileUnique);
+                    console.log("itemUUID:> " + itemUUID + ", fileUnique:> " + fileUnique);
                     var $ed = $('.dropzone'), $style = $('#styles');
                     $ed.val($style.html());
                     var targetID = '#demo-upload' + "_" + index;

@@ -6,22 +6,20 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.myInput')
-        .directive('myDatePicker', myDatePicker);
+        .directive('myDatePickerEnd', myDatePickerEnd);
 
     /** @ngInject */
-    function myDatePicker() {
+    function myDatePickerEnd() {
         return {
             replace: true,
             restrict: 'E',
-            controller: 'MyDatePickerCtrl',
+            controller: 'MyDatePickerEndCtrl',
             // template: "<div><h2>我叫{{name}}</h2></div>",
             link: function ($scope, elem, attrs) {
-                // console.log(attrs);
                 $scope.format = attrs.formatted;
-                $scope.isbatch = attrs.isbatch;
                 $scope.myDT = new Date(attrs.default);
             },
-            templateUrl: 'app/pages/myInput/widgets/myDatePicker/myDatePicker.html',
+            templateUrl: 'app/pages/myInput/widgets/myDatePickerEnd/myDatePickerEnd.html',
         };
     }
 })();

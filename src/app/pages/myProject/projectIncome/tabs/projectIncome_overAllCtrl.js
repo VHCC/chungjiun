@@ -231,6 +231,7 @@
                                     if (!$scope.financialResult.is011Set) {
                                         $scope.financialResult.rate_item_1 = $scope.yearRate.rate_item_1;
                                         $scope.financialResult.rate_item_2 = $scope.yearRate.rate_item_2;
+                                        $scope.financialResult.rate_item_21 = $scope.yearRate.rate_item_21;
                                         $scope.financialResult.rate_item_3 = $scope.yearRate.rate_item_3;
                                         $scope.financialResult.rate_item_4 = $scope.yearRate.rate_item_4;
                                         $scope.financialResult.rate_item_5 = $scope.yearRate.rate_item_5;
@@ -806,6 +807,7 @@
             // console.log($scope.financialResult[0]);
             var rates = parseFloat($scope.financialResult.rate_item_1)
                 + parseFloat($scope.financialResult.rate_item_2)
+                + parseFloat($scope.financialResult.rate_item_21) // 202312 新增 行政 2
                 + parseFloat($scope.financialResult.rate_item_3)
                 + parseFloat($scope.financialResult.rate_item_4);
 
@@ -814,6 +816,7 @@
             } else {
                 return parseFloat($scope.financialResult.rate_item_1)
                     + parseFloat($scope.financialResult.rate_item_2)
+                    + parseFloat($scope.financialResult.rate_item_21)
                     + parseFloat($scope.financialResult.rate_item_3)
                     + parseFloat($scope.financialResult.rate_item_4)
             }

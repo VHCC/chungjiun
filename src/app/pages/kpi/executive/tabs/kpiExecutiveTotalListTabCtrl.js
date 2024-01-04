@@ -234,6 +234,9 @@
                                     )($scope));
                             })
                     }
+                    $scope.projectFinancialResultTable_Total.sort(function(a, b) {
+                        return a.yearShow - b.yearShow; // 按照 yearShow 升序排序
+                    });
                 })
         }
 
@@ -247,8 +250,10 @@
 
         $scope.fetchKPIValue = function(type, item) {
             switch(type) {
-                case 6: // 行政
+                case 6: // 行政 1
                     return item.kpi6;
+                case 61: // 行政 2
+                    return item.kpi61;
                 case 8:
                     return item.kpi8;
                 case 9:
@@ -257,7 +262,7 @@
         }
 
         $scope.calResultKpiAllTotalList = function(type, results) {
-            // console.log(results);
+            console.log(results);
             var result = 0.0;
             switch (type){
                 // 行政 E*N
@@ -270,6 +275,18 @@
                     for (var index = 0; index < KpiElements.length; index++) {
                         var item = KpiElements[index];
                         result += item.amount;
+                    }
+                    return result;
+                // 行政費 2
+                case 61:
+                    for (var index = 0; index < results.length; index++) {
+                        var item = results[index];
+                        result += item.kpi61;
+                    }
+                    var KpiElements = $scope.projectKPIElements_total[results.year];
+                    for (var index = 0; index < KpiElements.length; index++) {
+                        var item = KpiElements[index];
+                        result += item.amount2;
                     }
                     return result;
                 // 風險 E*N

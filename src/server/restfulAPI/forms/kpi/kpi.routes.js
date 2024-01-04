@@ -130,6 +130,7 @@ module.exports = function (app) {
         },{
             $set: {
                 amount: req.body.amount,
+                amount2: req.body.amount2,
                 memo: req.body.memo,
             }
         }, function (err, results) {

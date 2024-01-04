@@ -291,6 +291,7 @@
                     if (!manipulatePrj.financialResult.is011Set) {
                         manipulatePrj.financialResult.rate_item_1 = $scope.yearRate.rate_item_1;
                         manipulatePrj.financialResult.rate_item_2 = $scope.yearRate.rate_item_2;
+                        manipulatePrj.financialResult.rate_item_21 = $scope.yearRate.rate_item_21;
                         manipulatePrj.financialResult.rate_item_3 = $scope.yearRate.rate_item_3;
                         manipulatePrj.financialResult.rate_item_4 = $scope.yearRate.rate_item_4;
                         manipulatePrj.financialResult.rate_item_5 = $scope.yearRate.rate_item_5;

@@ -1,0 +1,44 @@
+<div>
+
+    <div class="form-group">
+        <span
+                ng-if="kpiPersonalCost_SearchCtrlVM.queryUsers.length == 0"
+                style="color:red; padding: 5px">
+            未給予查詢權限
+        </span>
+        <ui-select ng-model="kpiPersonalCost_SearchCtrlVM.queryUsers.selected"
+                   class="btn-group bootstrap-select form-control"
+                   ng-disabled="false"
+                   ng-change="personSelected($select.selected)"
+                   append-to-body="true"
+                   search-enabled="true">
+            <ui-select-match placeholder="選擇員工">
+                {{$select.selected.name}}
+            </ui-select-match>
+            <ui-select-choices
+                    repeat="user in kpiPersonalCost_SearchCtrlVM.queryUsers |
+                        groupSelectpickerOptions: {name: $select.search}">
+                <span ng-bind-html="user.name| highlight: $select.search"></span>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+
+
+    <my-year-picker ng-click="listenYear(this)"
+                    ng-if="kpiPersonalCost_SearchCtrlVM.queryUsers.selected"
+    ></my-year-picker>
+    <h3 class="with-line" id="h3_title"
+        ng-if="kpiPersonalCost_SearchCtrlVM.queryUsers.selected">
+        {{kpiPersonalCost_SearchCtrlVM.queryUsers.selected.name}} - {{year}}年 個人績效</h3>
+
+    <hr>
+
+    <div ng-if="kpiPersonalCost_SearchCtrlVM.queryUsers.selected"
+         bs-loading-overlay
+         bs-loading-overlay-reference-id="mainPage_kpi_personal_result">
+        <div class="row" >
+            <div class="col-md-12" id="includeHead_kpi_personal_cost_search_result">
+            </div>
+        </div>
+    </div>
+</div>

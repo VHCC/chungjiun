@@ -200,7 +200,7 @@
             var projectFinancialResultTable = [];
             var projectKPIElements = [];
 
-            var yearIndex = "_" + specificYear
+            var yearIndex = "_" + specificYear;
 
             projectFinancialResultTable.year = yearIndex;
             projectFinancialResultTable.yearShow = specificYear;
@@ -215,11 +215,11 @@
                         }
                         eval("$scope.projectFinancialResultTable_Total[yearIndex]=projectFinancialResultTable");
                         $scope.projectFinancialResultTable_Total.push(projectFinancialResultTable);
-                        console.log($scope.projectFinancialResultTable_Total)
+                        console.log($scope.projectFinancialResultTable_Total);
                         KpiUtil.findKPIElement(formData)
                             .success(function (res) {
                                 console.log(res);
-                                projectKPIElements = res.payload
+                                projectKPIElements = res.payload;
                                 eval("$scope.projectKPIElements_total[yearIndex]=projectKPIElements");
                                 angular.element(
                                     document.getElementById('includeHead_kpi_companyRisk_result_total'))
@@ -235,6 +235,9 @@
                                     )($scope));
                             })
                     }
+                    $scope.projectFinancialResultTable_Total.sort(function(a, b) {
+                        return a.yearShow - b.yearShow; // 按照 yearShow 升序排序
+                    });
                 })
         }
 
@@ -255,7 +258,7 @@
         }
 
         $scope.calResultKpiAllTotalList = function(type, results) {
-            console.log(results);
+            // console.log(results);
             var result = 0.0;
             switch (type){
                 // 風險 E*N
@@ -265,7 +268,7 @@
                         result += item.kpi8;
                     }
                     var KpiElements = $scope.projectKPIElements_total[results.year];
-                    console.log(KpiElements)
+                    // console.log(KpiElements);
                     for (var index = 0; index < KpiElements.length; index++) {
                         var item = KpiElements[index];
                         result += item.amount;

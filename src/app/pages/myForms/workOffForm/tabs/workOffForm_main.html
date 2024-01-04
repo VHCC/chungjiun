@@ -95,6 +95,13 @@
                 <!--20200518 check right-->
                 <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_main_Tab.html'"></div>
             </uib-tab>
+            <uib-tab heading="批次填寫"
+                     ng-click="initWorkOffTableBatch()">
+                <uib-tab-heading>
+                    批次填寫
+                </uib-tab-heading>
+                <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_batch_Tab.html'"></div>
+            </uib-tab>
             <uib-tab heading="員工請假單" ng-click="initWorkOffMonthCheck()">
                 <!--20200518 check right-->
                 <div ng-include="'app/pages/myForms/workOffForm/tabs/workOffForm_All_Tab.html'"></div>

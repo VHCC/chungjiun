@@ -6,15 +6,13 @@
     'use strict';
 
     angular.module('BlurAdmin.pages.myInput')
-        .controller('MyDatePickerCtrl', myDatePickerCtrl);
+        .controller('MyDatePickerEndCtrl', MyDatePickerEndCtrl);
 
     /** @ngInject */
-    function myDatePickerCtrl($scope) {
-        // console.log("myDatePickerCtrl");
-        // console.log($scope);
-        $scope.openDatePicker = openDatePicker;
-        $scope.myDT = new Date();
-        $scope.opened = false;
+    function MyDatePickerEndCtrl($scope) {
+        $scope.openDatePickerEnd = openDatePickerEnd;
+        $scope.myDTEnd = new Date();
+        $scope.end_opened = false;
         // $scope.formats = ['dd-MMMM-yyyy', 'MM/dd', 'dd.MM.yyyy', 'shortDate'];
         // $scope.format = $scope.formats[1];
         $scope.myOptions = {
@@ -31,16 +29,12 @@
                 }
             }
         });
-        function openDatePicker() {
-            // console.log("Start");
-            // console.log($scope.format);
-            $scope.opened = true;
-            // $('.aaa').find('.panel-body').height(300);
-            // console.log(this);
+        function openDatePickerEnd() {
+            $scope.end_opened = true;
         }
 
         $scope.reloadDatePicker = function (type) {
-            console.log("reloadDatePicker");
+            console.log("reloadDatePicker End");
             switch (type) {
                 case 0:
                 case 1:
@@ -59,7 +53,6 @@
                     };
                     break;
                 case 1001:
-                    // $scope.myDT = new Date();
                     $scope.myOptions = {
                         showWeeks: false,
                         startingDay: 0,
@@ -116,7 +109,7 @@
                     };
                     break;
             }
-            // $scope.myDT = "";
+            $scope.myDTEnd = "";
         }
 
     }

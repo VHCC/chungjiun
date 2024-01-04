@@ -11,8 +11,10 @@ module.exports = mongoose.model('ProjectFinancialRate', {
     // 費率
     // 技師費
     rate_item_1: {type: Number, default: "0"},
-    // 行政
+    // 行政 1
     rate_item_2: {type: Number, default: "0"},
+    // 行政 2
+    rate_item_21: {type: Number, default: "0"},
     // 利潤
     rate_item_3: {type: Number, default: "0"},
     // 風險

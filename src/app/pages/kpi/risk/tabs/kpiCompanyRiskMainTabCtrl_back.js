@@ -255,6 +255,7 @@
                         if (!res.payload[0].is011Set) {
                             res.payload[0].rate_item_1 = $scope.yearRate.rate_item_1;
                             res.payload[0].rate_item_2 = $scope.yearRate.rate_item_2;
+                            res.payload[0].rate_item_21 = $scope.yearRate.rate_item_21;
                             res.payload[0].rate_item_3 = $scope.yearRate.rate_item_3;
                             res.payload[0].rate_item_4 = $scope.yearRate.rate_item_4;
                             res.payload[0].rate_item_5 = $scope.yearRate.rate_item_5;
@@ -936,6 +937,12 @@
                 // 行政費 E*N
                 case 5:
                     return Math.round(item.rate_item_2 * ($scope.calResultKpi(4, item)) / 100);
+                // 行政費 E*N
+                case 51:
+                    if (item.rate_item_21 === undefined) {
+                        return 0;
+                    }
+                    return Math.round(item.rate_item_21 * ($scope.calResultKpi(4, item)) / 100);
                 // 技師費 E*N
                 case 6:
                     return Math.round(item.rate_item_1 * ($scope.calResultKpi(4, item)) / 100);
@@ -950,6 +957,7 @@
                 case 9:
                     return Math.round(($scope.calResultKpi(4, item))
                         - ($scope.calResultKpi(5, item))
+                        - ($scope.calResultKpi(51, item))
                         - ($scope.calResultKpi(6, item))
                         - ($scope.calResultKpi(7, item))
                         - ($scope.calResultKpi(8, item))

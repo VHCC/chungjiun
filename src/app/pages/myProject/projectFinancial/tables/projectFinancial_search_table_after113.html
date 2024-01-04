@@ -1,0 +1,276 @@
+<div class="horizontal-scroll">
+    <table class="table table-bordered table-hover table-condensed"
+           style="width:100%">
+        <colgroup>
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
+        </colgroup>
+        <thead>
+        <tr >
+            <th
+                    style="vertical-align: inherit; text-align: center" >項目</th>
+            <th style="vertical-align: inherit; text-align: center" >
+                含稅收入(發票金額)
+                <br>
+                <span style="color:blue">A</span>
+            </th>
+            <th style="vertical-align: inherit; text-align: center" >
+                不含稅收入
+                <br>
+                <span style="color:blue">B=A/1.05</span>
+            </th>
+            <th style="vertical-align: inherit; text-align: center" >
+                專業廠商費用
+                <br>
+                <span style="color:blue">C</span>
+            </th>
+            <th style="vertical-align: inherit; text-align: center" >
+                實際收入
+                <br>
+                <span style="color:blue">B1=B-C</span>
+            </th>
+            <th style="vertical-align: inherit; text-align: center" class="AutoNewline">
+                公司算法
+                <br>
+                <span style="color:blue">D=B1*比例</span>
+            </th>
+            <th style="vertical-align: inherit; text-align: center" >
+                風險管理支出
+                <br>
+                <span style="color:blue">E1=B*比例</span>
+            </th>
+            <th style="vertical-align: inherit; text-align: center" >
+                公司利潤
+                <br>
+                <span style="color:blue">E2=D*比例</span>
+            </th>
+
+            <th style="vertical-align: inherit; text-align: center" >
+                技師貢獻
+                <br>
+                <span style="color:blue">G=D*比例</span>
+            </th>
+
+            <th style="vertical-align: inherit; text-align: center" >
+                行政費用 1
+                <br>
+                <span style="color:blue">H1=D*比例</span>
+            </th>
+
+            <th style="vertical-align: inherit; text-align: center" >
+                行政費用 2
+                <br>
+                <span style="color:blue">H2=D*比例</span>
+            </th>
+
+
+            <!--風險位置調整-->
+            <!--<th style="vertical-align: inherit; text-align: center" >-->
+            <!--風險-->
+            <!--<br>-->
+            <!--<span style="color:blue">E*N</span>-->
+            <!--</th>-->
+
+            <th style="vertical-align: inherit; text-align: center" >
+                專案執行費用 I
+                <br>
+                <span style="color:blue">(墊付款、其他支出)</span>
+                <br>
+                <span style="color:blue">(匯費、罰款)</span>
+            </th>
+            <th style="vertical-align: inherit; text-align: center" >其他</th>
+            <th style="vertical-align: inherit; text-align: center" >說明</th>
+            <th style="vertical-align: inherit; text-align: center" >
+                應分配費用
+                <br>
+                <span style="color:blue">J=D-E1-E2-G-H1-H2-I</span>
+            </th>
+            <th style="vertical-align: inherit; text-align: center" >人時成本</th>
+            <th style="vertical-align: inherit; text-align: center" >績效結餘</th>
+
+        </tr>
+        </thead>
+        <tbody ng-repeat="item in projectFinancialResultTable">
+        <tr style="vertical-align: inherit; text-align: center">
+            <!--項目-->
+            <td style="vertical-align: inherit; text-align: center">
+                費率
+            </td>
+            <!-- 收入 -->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+            </td>
+            <!-- 不含稅收入B=A/1.05 -->
+            <td class="form-group" style="vertical-align: inherit; text-align: center"></td>
+
+            <!-- 廠商請款(未稅金額) -->
+            <td class="form-group" style="vertical-align: inherit; text-align: center"></td>
+
+            <!-- 實際收入E=C-D -->
+            <td class="form-group" style="vertical-align: inherit; text-align: center"></td>
+
+            <!-- 公司調整(規劃、設計、監造廷整)C=B*調整值 -->
+            <td class="form-group" style="vertical-align: inherit;">
+                <span >{{item.rate_item_5}}</span>
+                %
+            </td>
+
+            <!--風險-->
+            <td class="form-group " style="vertical-align: inherit;">
+                <span >{{item.rate_item_4}}</span>
+                %
+            </td>
+
+            <!--利潤-->
+            <td class="form-group" style="vertical-align: inherit;">
+                <span >{{item.rate_item_3}}</span>
+                %
+            </td>
+
+            <!--技師費-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span >{{item.rate_item_1}}</span>
+                %
+            </td>
+
+            <!--行政費 1-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span >{{item.rate_item_2}}</span>
+                %
+            </td>
+
+            <!--行政費 2-->
+            <td class="form-group" style="vertical-align: inherit; text-align: center">
+                <span >{{item.rate_item_21}}</span>
+                %
+            </td>
+
+
+
+
+            <!-- 專案成本(人時支出、墊付款、其他支出) -->
+            <td class="form-group" style="vertical-align: inherit;">
+            </td>
+            <!--其他-->
+            <td class="form-group" style="vertical-align: inherit;">
+            </td>
+            <!--說明-->
+            <td class="form-group" style="vertical-align: inherit;">
+            </td>
+            <!--可分配績效-->
+            <td class="form-group" style="vertical-align: inherit;">
+            </td>
+        </tr>
+
+        <tr style="vertical-align: inherit; text-align: right">
+            <!--金額-->
+            <td style="vertical-align: inherit; text-align: center" nowrap="nowrap">
+                金額
+                <br>
+                <span ng-if="item.isPrjClose" style="color: red;">[已結算]</span>
+                <span ng-if="!item.isPrjClose" style="color: blue;">[尚未結算]</span>
+            </td>
+            <!-- 收入 -->
+            <td class="form-group" style="vertical-align: inherit">
+                <span>{{calIncome(1).toLocaleString()}}</span>
+            </td>
+            <!-- 不含稅收入B=A/1.05 -->
+            <td class="form-group" style="vertical-align: inherit">
+                <span>{{calIncome(2).toLocaleString()}}</span>
+            </td>
+
+            <!-- 廠商請款(未稅金額) D -->
+            <td class="form-group" style="vertical-align: inherit;">
+                <span >{{calSubContractorPay().toLocaleString()}}</span>
+            </td>
+
+            <!-- 公司算法 C=B*調整值 -->
+            <td class="form-group" style="vertical-align: inherit;">
+                <!--<span >{{item.rate_item_5 * calIncome(2) / 100}}</span>-->
+                <span >{{calResult(31, item).toLocaleString()}}</span>
+            </td>
+
+            <!-- 實際收入E=C-D -->
+            <td class="form-group" style="vertical-align: inherit;">
+                <!--<span >{{ ((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()}}</span>-->
+                <span >{{calResult(41, item).toLocaleString()}}</span>
+            </td>
+
+            <!--風險-->
+            <td class="form-group " style="vertical-align: inherit;">
+                <!--<span >{{item.rate_item_4 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>-->
+                <span>{{calResult(71, item).toLocaleString()}}</span>
+            </td>
+
+            <!--利潤-->
+            <td class="form-group" style="vertical-align: inherit;">
+                <!--<span >{{item.rate_item_3 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>-->
+                <span>{{calResult(81, item).toLocaleString()}}</span>
+            </td>
+
+            <!--技師費-->
+            <td class="form-group" style="vertical-align: inherit">
+                <!--<span >{{item.rate_item_1 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>-->
+                <span>{{calResult(61, item).toLocaleString()}}</span>
+            </td>
+
+            <!-- 行政費 1-->
+            <td class="form-group" style="vertical-align: inherit">
+                <!--<span>{{item.rate_item_2 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>-->
+                <span>{{calResult(52, item).toLocaleString()}}</span>
+            </td>
+
+            <!-- 行政費 2-->
+            <td class="form-group" style="vertical-align: inherit">
+                <!--<span>{{item.rate_item_2 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>-->
+                <span>{{calResult(51, item).toLocaleString()}}</span>
+            </td>
+
+
+
+            <!-- 專案成本(人時支出、墊付款、其他支出) -->
+            <td class="form-group" style="vertical-align: inherit;">
+                <!--<span >{{calcAllCost()}}</span>-->
+                <span >{{calcAllCost_special20201207().toLocaleString()}}</span>
+            </td>
+            <!--其他-->
+            <td class="form-group" style="vertical-align: inherit;">
+                <span >{{item.otherCost}}</span>
+            </td>
+
+            <!--說明-->
+            <td class="form-group" style="vertical-align: inherit;">
+                <span >{{item.memo}}</span>
+            </td>
+
+            <!--可分配金額-->
+            <td style="vertical-align: inherit; text-align: center">
+                {{calResult(91, projectFinancialResultTable[0]).toLocaleString()}}
+            </td>
+
+            <!--執行成本-->
+            <td class="form-group" style="vertical-align: inherit; text-align: right">
+                {{calcAllCost_special20210819(1).toLocaleString()}}
+            </td>
+
+            <!--績效結餘-->
+            <td class="form-group" style="vertical-align: inherit;">
+                <span>{{(calResult(91, item) - calcAllCost_special20210819(1)).toLocaleString()}}</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<hr>

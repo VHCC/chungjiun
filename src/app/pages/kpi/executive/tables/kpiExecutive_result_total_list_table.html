@@ -11,6 +11,7 @@
             <col span="1" style="width: 1%;">
             <col span="1" style="width: 5%;">
             <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
             <!--<col span="1" style="width: 5%;">-->
             <!--<col span="1" style="width: 5%;">-->
             <!--<col span="1" style="width: 5%;">-->
@@ -79,7 +80,10 @@
             <th style="vertical-align: inherit; text-align: center" >項目</th>
             <th style="vertical-align: inherit; text-align: center" >年度</th>
             <th style="vertical-align: inherit; text-align: center" >
-                行政
+                行政 1
+            </th>
+            <th style="vertical-align: inherit; text-align: center" >
+                行政 2
             </th>
         </tr>
         </thead>
@@ -145,12 +149,20 @@
                 <!--<span style="text-align: right">{{calResultKpi(6, item).toLocaleString()}}</span>-->
             <!--</td>-->
 
-            <!--風險-->
+            <!--行政 1 -->
             <td class="form-group " style="vertical-align: inherit;">
                 <!--<span >{{item.rate_item_4 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>-->
                 <!--<span style="text-align: right">{{calResultKpi(7, item).toLocaleString()}}</span>-->
                 <!--<span style="text-align: right">{{fetchKPIValue(8, item).toLocaleString()}}</span>-->
                 <span style="text-align: right">{{calResultKpiAllTotalList(6, item).toLocaleString()}}</span>
+            </td>
+
+            <!--行政 2 -->
+            <td class="form-group " style="vertical-align: inherit;">
+                <!--<span >{{item.rate_item_4 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>-->
+                <!--<span style="text-align: right">{{calResultKpi(7, item).toLocaleString()}}</span>-->
+                <!--<span style="text-align: right">{{fetchKPIValue(8, item).toLocaleString()}}</span>-->
+                <span style="text-align: right">{{calResultKpiAllTotalList(61, item).toLocaleString()}}</span>
             </td>
             <!--利潤-->
             <!--<td class="form-group" style="vertical-align: inherit;">-->

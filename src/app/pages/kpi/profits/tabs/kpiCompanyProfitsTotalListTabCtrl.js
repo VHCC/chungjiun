@@ -215,7 +215,6 @@
                         }
                         eval("$scope.projectFinancialResultTable_Total[yearIndex]=projectFinancialResultTable");
                         $scope.projectFinancialResultTable_Total.push(projectFinancialResultTable);
-                        // console.log($scope.projectFinancialResultTable_Total)
                         KpiUtil.findKPIElement(formData)
                             .success(function (res) {
                                 // console.log(res);
@@ -235,6 +234,9 @@
                                     )($scope));
                             })
                     }
+                    $scope.projectFinancialResultTable_Total.sort(function(a, b) {
+                        return a.yearShow - b.yearShow; // 按照 yearShow 升序排序
+                    });
                 })
         }
 

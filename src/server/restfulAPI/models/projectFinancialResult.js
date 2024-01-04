@@ -27,8 +27,11 @@ module.exports = mongoose.model('ProjectFinancialResult', {
     // 費率
     // 技師費
     rate_item_1: {type: Number},
-    // 行政
+    // 行政 1
     rate_item_2: {type: Number},
+    // 行政 2
+    rate_item_21: {type: Number},
+
     // 利潤
     rate_item_3: {type: Number},
     // 風險
@@ -94,10 +97,16 @@ module.exports = mongoose.model('ProjectFinancialResult', {
         type: Number,
         default: 0
     },
-    kpi6: { <!-- 行政費 -->
+    kpi6: { <!-- 行政費 1 -->
         type: Number,
         default: 0
     },
+
+    kpi61: { <!-- 行政費 2 202312 新增-->
+        type: Number,
+        default: 0
+    },
+
     kpi7: { <!--技師費-->
         type: Number,
         default: 0

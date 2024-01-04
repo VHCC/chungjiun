@@ -26,12 +26,21 @@ module.exports = function (app) {
                 start_time: req.body.dataItem.start_time,
                 end_time: req.body.dataItem.end_time,
 
+                agentID: req.body.dataItem.agentID,
+                fileMapNumber: req.body.dataItem.fileMapNumber,
+
                 //RIGHT
                 isSendReview: req.body.dataItem.isSendReview,
                 isBossCheck: req.body.dataItem.isBossCheck,
                 isExecutiveCheck: req.body.dataItem.isExecutiveCheck,
 
+                isAgentCheck: req.body.dataItem.isAgentCheck,
+                isAgentReject: req.body.dataItem.isAgentReject,
+
                 userMonthSalary: req.body.dataItem.userMonthSalary,
+
+                updateTs: req.body.dataItem.updateTs,
+                updateAction: req.body.dataItem.updateAction,
 
                 timestamp: moment(new Date()).format("YYYYMMDD HHmmss"),
 

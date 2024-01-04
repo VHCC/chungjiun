@@ -264,6 +264,7 @@
                 var formData = {
                     _id: $scope.projectKPIElements[index]._id,
                     amount: $scope.projectKPIElements[index].amount,
+                    amount2: $scope.projectKPIElements[index].amount2,
                     memo: $scope.projectKPIElements[index].memo,
                 }
                 KpiUtil.updateKPIElement(formData)
@@ -275,8 +276,10 @@
 
         $scope.fetchKPIValue = function(type, item) {
             switch(type) {
-                case 6: // 行政
+                case 6: // 行政 1
                     return item.kpi6;
+                case 61: // 行政 2
+                    return item.kpi61;
                 case 8: // 風險
                     return item.kpi8;
                 case 9: // 利潤
@@ -287,7 +290,7 @@
         $scope.calResultKpiAll = function(type) {
             var result = 0.0;
             switch (type){
-                // 行政費
+                // 行政費 1
                 case 6:
                     for (var index = 0; index < $scope.projectFinancialResultTable.length; index++) {
                         var item = $scope.projectFinancialResultTable[index];
@@ -296,6 +299,17 @@
                     for (var index = 0; index < $scope.projectKPIElements.length; index++) {
                         var item = $scope.projectKPIElements[index];
                         result += item.amount;
+                    }
+                    return result;
+                // 行政費 2
+                case 61:
+                    for (var index = 0; index < $scope.projectFinancialResultTable.length; index++) {
+                        var item = $scope.projectFinancialResultTable[index];
+                        result += item.kpi61;
+                    }
+                    for (var index = 0; index < $scope.projectKPIElements.length; index++) {
+                        var item = $scope.projectKPIElements[index];
+                        result += item.amount2;
                     }
                     return result;
                 // 風險 E*N

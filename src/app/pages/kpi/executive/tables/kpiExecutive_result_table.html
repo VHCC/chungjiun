@@ -14,6 +14,7 @@
             <col span="1" style="width: 5%;">
             <col span="1" style="width: 5%;">
             <col span="1" style="width: 5%;">
+            <col span="1" style="width: 5%;">
         </colgroup>
         <thead>
         <!--<tr >-->
@@ -82,7 +83,10 @@
             <th style="vertical-align: inherit; text-align: center" >經理/主任</th>
             <th style="vertical-align: inherit; text-align: center" >技師</th>
             <th style="vertical-align: inherit; text-align: center" >
-                行政績效
+                行政績效 1
+            </th>
+            <th style="vertical-align: inherit; text-align: center" >
+                行政績效 2
             </th>
         </tr>
         </thead>
@@ -150,11 +154,19 @@
                 <!--<span style="text-align: right">{{calResultKpi(7, item).toLocaleString()}}</span>-->
                 <!--<span style="text-align: right">{{fetchKPIValue(8, item).toLocaleString()}}</span>-->
             <!--</td>-->
-            <!--利潤-->
+
+            <!--行政 1 -->
             <td class="form-group" style="vertical-align: inherit;">
                 <!--&lt;!&ndash;<span >{{item.rate_item_3 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>&ndash;&gt;-->
                 <!--<span style="text-align: right">{{calResult(8, item).toLocaleString()}}</span>-->
                 <span style="text-align: right">{{fetchKPIValue(6, item).toLocaleString()}}</span>
+            </td>
+
+            <!--行政 2 -->
+            <td class="form-group" style="vertical-align: inherit;">
+                <!--&lt;!&ndash;<span >{{item.rate_item_3 * (((item.rate_item_5 / 100) * calIncome(2)) - calSubContractorPay()) / 100}}</span>&ndash;&gt;-->
+                <!--<span style="text-align: right">{{calResult(8, item).toLocaleString()}}</span>-->
+                <span style="text-align: right">{{fetchKPIValue(61, item).toLocaleString()}}</span>
             </td>
         </tr>
         </tbody>
@@ -162,8 +174,13 @@
             <td colspan="5" style="vertical-align: inherit;">
                 小計
             </td>
+            <!-- 行政 1 -->
             <td style="vertical-align: inherit; text-align: right">
                 {{calResultKpiAll(6).toLocaleString()}}
+            </td>
+            <!-- 行政 2 -->
+            <td style="vertical-align: inherit; text-align: right">
+                {{calResultKpiAll(61).toLocaleString()}}
             </td>
         </tr>
         <tr style="vertical-align: inherit; text-align: center">
@@ -178,7 +195,10 @@
             <td colspan="2" style="vertical-align: inherit;">
             </td>
             <td style="vertical-align: inherit; text-align: right">
-                金額
+                金額(行政 1)
+            </td>
+            <td style="vertical-align: inherit; text-align: right">
+                金額(行政 2)
             </td>
         </tr>
         <tr style="vertical-align: inherit; text-align: center"
@@ -210,6 +230,13 @@
                        style="text-align: right"
                        ng-model="kpi.amount"
                        value="{{kpi.amount}}"
+                       class="form-control input-sm">
+            </td>
+            <td style="vertical-align: inherit; text-align: right">
+                <input type="number"
+                       style="text-align: right"
+                       ng-model="kpi.amount2"
+                       value="{{kpi.amount2}}"
                        class="form-control input-sm">
             </td>
         </tr>

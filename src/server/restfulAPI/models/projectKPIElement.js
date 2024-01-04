@@ -17,7 +17,12 @@ module.exports = mongoose.model('ProjectKPIElements', {
         default: 0
     },
 
-    type: { // risk, profits, person
+    amount2: {
+        type: Number,
+        default: 0
+    },
+
+    type: { // risk, profits, person, executive
         type: String,
     },
 
