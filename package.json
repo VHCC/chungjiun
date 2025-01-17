@@ -46,7 +46,7 @@
     "main-bower-files": "~2.13.1",
     "method-override": "latest",
     "moment": "^2.22.2",
-    "mongoose": "^5.13.16",
+    "mongoose": "^8.9.5",
     "morgan": "latest",
     "multer": "latest",
     "redbird": "latest",
